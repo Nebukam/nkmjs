@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-inputs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NKMjs Framework UI Inputs",
   "browser": "index.js",
   "repository": {
@@ -16,12 +16,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "0.0.1",
-    "@nkmjs/utils": "0.0.1",
-    "@nkmjs/common": "0.0.1",
-    "@nkmjs/actions": "0.0.1",
-    "@nkmjs/environment": "0.0.1",
-    "@nkmjs/style": "0.0.1",
-    "@nkmjs/ui-core": "0.0.1"
+    "@nkmjs/actions": "^0.0.2",
+    "@nkmjs/collections": "^0.0.2",
+    "@nkmjs/common": "^0.0.2",
+    "@nkmjs/environment": "^0.0.2",
+    "@nkmjs/style": "^0.0.2",
+    "@nkmjs/ui-core": "^0.0.2",
+    "@nkmjs/utils": "^0.0.2"
   }
 }

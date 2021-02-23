@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NKMjs Framework Utils",
   "main": "index.js",
   "repository": {

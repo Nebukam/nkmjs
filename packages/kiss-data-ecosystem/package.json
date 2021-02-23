@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/kiss-data-ecosystem",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NKMjs / KISS Data Ecosystem",
   "main": "index.js",
   "repository": {
@@ -17,12 +17,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "0.0.1",
-    "@nkmjs/collections": "0.0.1",
-    "@nkmjs/common": "0.0.1",
-    "@nkmjs/data-core": "0.0.1",
-    "@nkmjs/dialog": "0.0.1",
-    "@nkmjs/style": "0.0.1",
-    "@nkmjs/utils": "0.0.1"
+    "@nkmjs/actions": "^0.0.2",
+    "@nkmjs/collections": "^0.0.2",
+    "@nkmjs/common": "^0.0.2",
+    "@nkmjs/data-core": "^0.0.2",
+    "@nkmjs/dialog": "^0.0.2",
+    "@nkmjs/style": "^0.0.2",
+    "@nkmjs/utils": "^0.0.2"
   }
 }
