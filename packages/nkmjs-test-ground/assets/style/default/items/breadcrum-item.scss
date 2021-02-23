@@ -1,0 +1,61 @@
+@import '../_constants';
+@import '../_variables';
+@import '../_mixins';
+
+:host{
+
+    height: var(--size);
+    min-height: var(--size);
+
+    border-radius: 2px;
+    background-color: rgba(0,0,0,0.1);
+    padding-left: 2px;
+    padding-right: 2px;
+    
+    max-width: var(--size_xl);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    
+    cursor: pointer;
+
+    --flavor_primary_disabled:rgba(0,0,0,0.1);
+    --flavor_secondary_disabled:rgba(0,0,0,0.1);
+    --flavor_contrast_disabled:rgba(0,0,0,0.5);
+
+    @include state-color-variations( rgba(50,50,50,0), rgba(140,140,140,0.5), 0.1, 0.1) 
+    using ( $index, $st, $p, $s, $c){
+        #{'--flavor_primary_'+$st}: $p;
+        #{'--flavor_secondary_'+$st}: $s;
+        #{'--flavor_contrast_'+$st}: $c;
+    }
+
+}
+
+.label{
+    @include ellipsis();
+}
+
+:host(#{$IDLE}){
+    background-color: var(--flavor_primary_idle);
+    & .label{
+        color: var(--flavor_contrast_idle);
+    }
+}
+
+:host(#{$FOCUSED}){
+    background-color: var(--flavor_primary_focused);
+    & .label{
+        color: var(--flavor_contrast_focused);
+    }
+}
+
+:host(#{$DISABLED}){
+    background-color: var(--flavor_primary_disabled);
+    & .label{
+        color: var(--flavor_contrast_disabled);
+    }
+}
+

@@ -1,0 +1,153 @@
+/*
+
+    COMMON.SCSS
+    Generic/shared style declarations.
+
+    It is imported on a per-component basis
+    For generic, host-related selectors, use main.scss
+
+*/
+
+@import './_mixins';
+@import './_variables';
+@import './_fonts';
+
+@import './_typography';
+
+.row-break{
+    flex-basis: 100%;
+    height: 0;
+    width: 0%;
+}
+
+.column-break{
+    flex-basis: 100%;
+    height: 0%;
+    width: 0;
+}
+
+// ----> Host presets
+
+// Sizes
+
+@include for-each-host-selector('', $SIZES, '', '', $size_varnames)
+using ($index, $val){ 
+    --size:var(#{$val});
+}
+
+// Flavors
+
+@include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) 
+using ($index, $val){
+    --flavor_color: var(#{$val});
+    --flavor_contrast:var(#{$val+'_contrast'});
+}
+
+// ----> Remove costly filters on (presumably) mobile
+@media (hover: none) and (pointer: coarse) {
+    *{
+        filter:none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+}
+/*
+
+    COMMON.SCSS
+    Generic/shared style declarations.
+
+    It is imported on a per-component basis
+    For generic, host-only selectors, use main.scss
+
+*/
+
+@import './_mixins';
+@import './_variables';
+
+// ----> Extended color schemes (state colors)
+
+:host{
+    order: var(--order);
+}
+
+@include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) 
+using ($index, $val){
+
+    --flavor_color: var(#{$val});
+    --flavor_contrast:var(#{$val+'_contrast'});
+
+    $val: str-replace($val, '--col_');
+    $flavor_id: $index;
+
+    @include for-each-in($default_states_ids) using ($i, $st){
+        $short_state: nth($short_states_ids, $i);
+        #{'--flavor_primary_'+$st}:var(#{'--fcol_'+$flavor_id+'_0_'+$short_state});
+        #{'--flavor_secondary_'+$st}:var(#{'--fcol_'+$flavor_id+'_1_'+$short_state});
+        #{'--flavor_contrast_'+$st}:var(#{'--fcol_'+$flavor_id+'_2_'+$short_state});
+    }
+
+}
+
+/* Icon */
+
+.icon {
+    
+    margin:4px;
+    padding: 0;
+    
+    --h-size:calc( var(--size) / 2);
+    --clamped-size: clamp(var(#{$varname_size_xs}), var(--h-size), var(#{$varname_size_l}));
+
+    width: var(--clamped-size);
+    min-width: var(--clamped-size);
+    max-width: var(--clamped-size);
+
+    height: var(--clamped-size);
+    min-height: var(--clamped-size);
+    max-height: var(--clamped-size);
+
+    border: 3px solid #e5e5e5;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    opacity: 0.8;
+
+    border-radius: 1000px;
+
+    box-sizing: border-box;
+
+    &:only-child{
+        margin:0;
+    }
+
+}
+
+/* Extensions */
+
+.ext-overlay{
+    @include click-through-overlay();
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.drag-overlay{
+    border: 1px solid #{$col_active};
+}
+
+.drop-target-overlay{
+    border: 1px solid #{$col_ready};
+}/*
+
+    COMMON.SCSS
+    Generic/shared style declarations.
+
+    It is imported on a per-component basis
+    For generic, host-related selectors, use main.scss
+
+*/
+
+@import './_mixins';
+@import './_variables';
+

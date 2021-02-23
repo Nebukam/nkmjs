@@ -1,0 +1,148 @@
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* OS Theme mixins */
+/* Responsive mixins */
+/* Mobile mixins */
+/*
+@mixin if-not-touch (){
+    @media not (pointer:none), not (pointer:coarse) {
+        @content;
+    }
+}
+
+@mixin if-touch (){
+    @media (pointer:none), (pointer:coarse) {
+        @content;
+    }
+}
+*/
+/* Cosmetics */
+/* Presets */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Scrollbar mixins */
+/* Size mixins */
+/*
+    Repeats the same value for multiple properties
+*/
+/*
+    Spreads a list of value over multiple properties
+    value length & properties length must be the same
+*/
+/* Interactive states mixins */
+:host {
+  transition: all 0s ease;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+     supported by Chrome, Edge, Opera and Firefox */
+  padding: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-right: 1px solid var(--col_workspace_bg);
+  max-width: calc(var(--size_xl) * 2);
+}
+:host .icon {
+  flex: 0 0 auto;
+}
+:host .icon.close {
+  margin-left: 8px;
+  opacity: 0.5;
+}
+:host .icon.close:hover {
+  opacity: 1;
+}
+:host .label {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;
+  text-align: left;
+}
+
+:host::before {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--flavor_primary_idle);
+}
+
+:host(.focused)::before {
+  background-color: var(--flavor_primary_focused);
+}
+
+:host(.selected) {
+  background-color: var(--col_workspace_bg);
+}
+:host(.selected)::before {
+  background-color: var(--flavor_primary_selected);
+}

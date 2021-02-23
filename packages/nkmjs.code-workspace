@@ -1,0 +1,73 @@
+{
+	"folders": [
+		{
+			"path": "kiss-data-ecosystem"
+		},
+		{
+			"path": "kiss-ui-ecosystem"
+		},
+		{
+			"path": "nkmjs-actions"
+		},
+		{
+			"path": "nkmjs-app-core"
+		},
+		{
+			"path": "nkmjs-collections"
+		},
+		{
+			"path": "nkmjs-common"
+		},
+		{
+			"path": "nkmjs-data-core"
+		},
+		{
+			"path": "nkmjs-dialog"
+		},
+		{
+			"path": "nkmjs-documents"
+		},
+		{
+			"path": "nkmjs-electron-core"
+		},
+		{
+			"path": "nkmjs-environment"
+		},
+		{
+			"path": "nkmjs-io-core"
+		},
+		{
+			"path": "nkmjs-io-electron"
+		},
+		{
+			"path": "nkmjs-quick-start"
+		},
+		{
+			"path": "nkmjs-services"
+		},
+		{
+			"path": "nkmjs-style"
+		},
+		{
+			"path": "nkmjs-test-ground"
+		},
+		{
+			"path": "nkmjs-ui-core"
+		},
+		{
+			"path": "nkmjs-ui-inputs"
+		},
+		{
+			"path": "nkmjs-ui-workspace"
+		},
+		{
+			"path": "nkmjs-utils"
+		},
+		{
+			"path": "nkmjs-workbench"
+		},
+		{
+			"path": "nkmjs-core"
+		}
+	]
+}

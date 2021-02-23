@@ -1,0 +1,15 @@
+{
+    "name": "my-app",
+    "description": "My app description, lorem ipsum; dolor si amet.",
+    "repository": "TBD",
+    "license": "TBD",
+    "version": "0.0.1",
+    "scripts": {
+        "nkmjs-start": "nkmjs-task start clean",
+        "nkmjs-bundle": "nkmjs-task bundle",
+        "nkmjs-package": "nkmjs-task package"
+    },
+    "devDependencies": {
+        "@nkmjs/core": "0.0.2"
+    }
+}
