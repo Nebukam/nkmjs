@@ -1,0 +1,548 @@
+/*
+
+    MAIN.SCSS
+    CSS Variable declarations.
+    :host selector traverse shadow dom (and only :host), hence shared variables & styles are stored there.
+
+    It is only imported once, in the root app wrapper.
+    For non-host related selectors, use common.scss
+
+*/
+/* OS Theme mixins */
+/* Responsive mixins */
+/* Mobile mixins */
+/*
+@mixin if-not-touch (){
+    @media not (pointer:none), not (pointer:coarse) {
+        @content;
+    }
+}
+
+@mixin if-touch (){
+    @media (pointer:none), (pointer:coarse) {
+        @content;
+    }
+}
+*/
+/* Cosmetics */
+/* Presets */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Scrollbar mixins */
+/* Size mixins */
+/*
+    Repeats the same value for multiple properties
+*/
+/*
+    Spreads a list of value over multiple properties
+    value length & properties length must be the same
+*/
+/* Interactive states mixins */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+@font-face {
+  font-family: "Regular";
+  src: url("./fonts/roboto/Roboto-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Title";
+  src: url("./fonts/d-din/D-DINCondensed.otf") format("opentype");
+}
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+.label, .subtitle, .message {
+  font-family: "Regular", apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-size: var(--font_size_s);
+  font-size: var(--font-size);
+}
+.label.font-tag, .subtitle.font-tag, .message.font-tag {
+  --font-size: var(--font_size_tag);
+  text-transform: uppercase;
+}
+.label.font-small, .subtitle.font-small, .message.font-small {
+  --font-size: var(--font_size_xs);
+}
+.label.font-medium, .subtitle.font-medium, .message.font-medium {
+  --font-size: var(--font_size_m);
+}
+.label.font-large, .subtitle.font-large, .message.font-large {
+  --font-size: var(--font_size_l);
+}
+.label.font-xlarge, .subtitle.font-xlarge, .message.font-xlarge {
+  --font-size: var(--font_size_xl);
+}
+
+.title {
+  font-family: "Title", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-size: var(--font_size_s_title);
+  font-size: var(--font-size);
+  text-transform: uppercase;
+  line-height: 85%;
+  text-shadow: 0 1px 0 #535353, 0 2px 0 #535353, 0 2px 2px rgba(0, 0, 0, 0.5);
+}
+.title.font-tag {
+  --font-size: var(--font_size_tag_title);
+}
+.title.font-small {
+  --font-size: var(--font_size_xs_title);
+}
+.title.font-medium {
+  --font-size: var(--font_size_m_title);
+}
+.title.font-large {
+  --font-size: var(--font_size_l_title);
+  text-shadow: 0 1px 0 #535353, 0 2px 0 #535353, 0 5px 2px rgba(0, 0, 0, 0.5);
+}
+.title.font-xlarge {
+  --font-size: var(--font_size_xl_title);
+  text-shadow: 0 1px 0 #535353, 0 2px 0 #535353, 0 5px 2px rgba(0, 0, 0, 0.5);
+}
+
+/*
+
+// smartphones, touchscreens
+@media (hover: none) and (pointer: coarse) { }
+// stylus-based screens
+@media (hover: none) and (pointer: fine) { }
+// Nintendo Wii controller, Microsoft Kinect
+@media (hover: hover) and (pointer: coarse) { }
+// mouse, touch pad
+@media (hover: hover) and (pointer: fine) { }
+
+
+*/
+@media (hover: none) and (pointer: coarse) {
+  * {
+    filter: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+}
+:host {
+  --font_size_tag: 0.5625rem;
+  --font_size_tag_title: 0.7875rem;
+  --font_size_xs: 0.75rem;
+  --font_size_xs_title: 1.05rem;
+  --font_size_s: 0.88rem;
+  --font_size_s_title: 1.232rem;
+  --font_size_m: 1.35rem;
+  --font_size_m_title: 1.89rem;
+  --font_size_l: 1.65rem;
+  --font_size_l_title: 2.31rem;
+  --font_size_xl: 1.95rem;
+  --font_size_xl_title: 2.73rem;
+  --size:var(--size_m);
+  --size_xs: 16px;
+  --size_xs_half: 8px;
+  --size_xs_third: 5px;
+  --size_s: 24px;
+  --size_s_half: 12px;
+  --size_s_third: 8px;
+  --size_m: 32px;
+  --size_m_half: 16px;
+  --size_m_third: 11px;
+  --size_l: 50px;
+  --size_l_half: 25px;
+  --size_l_third: 17px;
+  --size_xl: 108px;
+  --size_xl_half: 54px;
+  --size_xl_third: 36px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --col_infos: #66afcc;
+    --col_infos_contrast: #393939;
+    --col_warning: #ffa600;
+    --col_warning_contrast: #393939;
+    --col_error: #e23500;
+    --col_error_contrast: #e5e5e5;
+    --col_ready: #78a400;
+    --col_ready_contrast: #e5e5e5;
+    --col_dirty: #a46400;
+    --col_dirty_contrast: #e5e5e5;
+    --col_loading: #6677cc;
+    --col_loading_contrast: #393939;
+    --col_processing: #6677cc;
+    --col_processing_contrast: #393939;
+    --col_waiting: #6677cc;
+    --col_waiting_contrast: #393939;
+    --col_active: #3ec188;
+    --col_active_contrast: #393939;
+    --col_cta: #3ec188;
+    --col_cta_contrast: #393939;
+  }
+}
+@media (prefers-color-scheme: light) {
+  :host {
+    --col_infos: #66afcc;
+    --col_warning: #ffa600;
+    --col_error: #e23500;
+    --col_ready: #78a400;
+    --col_dirty: #a46400;
+    --col_loading: #6677cc;
+    --col_processing: #6677cc;
+    --col_waiting: #6677cc;
+    --col_active: #3ec188;
+    --col_cta: #3ec188;
+  }
+}
+/*
+
+    MAIN.SCSS
+    CSS Variable declarations.
+    :host selector traverse shadow dom (and only :host), hence shared variables & styles are stored there.
+
+    It is only imported once, in the root app wrapper.
+    For non-host related selectors, use common.scss
+
+*/
+/* OS Theme mixins */
+/* Responsive mixins */
+/* Mobile mixins */
+/*
+@mixin if-not-touch (){
+    @media not (pointer:none), not (pointer:coarse) {
+        @content;
+    }
+}
+
+@mixin if-touch (){
+    @media (pointer:none), (pointer:coarse) {
+        @content;
+    }
+}
+*/
+/* Cosmetics */
+/* Presets */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Scrollbar mixins */
+/* Size mixins */
+/*
+    Repeats the same value for multiple properties
+*/
+/*
+    Spreads a list of value over multiple properties
+    value length & properties length must be the same
+*/
+/* Interactive states mixins */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+:host {
+  --fcol_1_0_i: rgba(102, 175, 204, 0.2);
+  --fcol_1_1_i: rgba(102, 175, 204, 0.5);
+  --fcol_1_2_i: white;
+  --fcol_1_0_f: rgba(140, 195, 217, 0.5);
+  --fcol_1_1_f: rgba(140, 195, 217, 0.8);
+  --fcol_1_2_f: white;
+  --fcol_1_0_s: rgba(121, 185, 210, 0.4);
+  --fcol_1_1_s: rgba(121, 185, 210, 0.64);
+  --fcol_1_2_s: white;
+  --fcol_1_0_sf: rgba(179, 215, 230, 0.75);
+  --fcol_1_1_sf: #b3d7e6;
+  --fcol_1_2_sf: white;
+  --fcol_2_0_i: rgba(255, 166, 0, 0.2);
+  --fcol_2_1_i: rgba(255, 166, 0, 0.5);
+  --fcol_2_2_i: #e6e6e6;
+  --fcol_2_0_f: rgba(255, 184, 51, 0.5);
+  --fcol_2_1_f: rgba(255, 184, 51, 0.8);
+  --fcol_2_2_f: white;
+  --fcol_2_0_s: rgba(255, 175, 26, 0.4);
+  --fcol_2_1_s: rgba(255, 175, 26, 0.64);
+  --fcol_2_2_s: #f3f3f3;
+  --fcol_2_0_sf: rgba(255, 202, 102, 0.75);
+  --fcol_2_1_sf: #ffca66;
+  --fcol_2_2_sf: white;
+  --fcol_3_0_i: rgba(226, 53, 0, 0.2);
+  --fcol_3_1_i: rgba(226, 53, 0, 0.5);
+  --fcol_3_2_i: #d7d7d7;
+  --fcol_3_0_f: rgba(255, 77, 22, 0.5);
+  --fcol_3_1_f: rgba(255, 77, 22, 0.8);
+  --fcol_3_2_f: #f1f1f1;
+  --fcol_3_0_s: rgba(252, 59, 0, 0.4);
+  --fcol_3_1_s: rgba(252, 59, 0, 0.64);
+  --fcol_3_2_s: #e4e4e4;
+  --fcol_3_0_sf: rgba(255, 116, 73, 0.75);
+  --fcol_3_1_sf: #ff7449;
+  --fcol_3_2_sf: white;
+  --fcol_4_0_i: rgba(120, 164, 0, 0.2);
+  --fcol_4_1_i: rgba(120, 164, 0, 0.5);
+  --fcol_4_2_i: #ebebeb;
+  --fcol_4_0_f: rgba(157, 215, 0, 0.5);
+  --fcol_4_1_f: rgba(157, 215, 0, 0.8);
+  --fcol_4_2_f: #d2d2d2;
+  --fcol_4_0_s: rgba(139, 190, 0, 0.4);
+  --fcol_4_1_s: rgba(139, 190, 0, 0.64);
+  --fcol_4_2_s: #f8f8f8;
+  --fcol_4_0_sf: rgba(190, 255, 11, 0.75);
+  --fcol_4_1_sf: #beff0b;
+  --fcol_4_2_sf: #ebebeb;
+  --fcol_5_0_i: rgba(164, 100, 0, 0.2);
+  --fcol_5_1_i: rgba(164, 100, 0, 0.5);
+  --fcol_5_2_i: #ebebeb;
+  --fcol_5_0_f: rgba(215, 131, 0, 0.5);
+  --fcol_5_1_f: rgba(215, 131, 0, 0.8);
+  --fcol_5_2_f: #d2d2d2;
+  --fcol_5_0_s: rgba(190, 116, 0, 0.4);
+  --fcol_5_1_s: rgba(190, 116, 0, 0.64);
+  --fcol_5_2_s: #f8f8f8;
+  --fcol_5_0_sf: rgba(255, 160, 11, 0.75);
+  --fcol_5_1_sf: #ffa00b;
+  --fcol_5_2_sf: #ebebeb;
+  --fcol_6_0_i: rgba(102, 119, 204, 0.2);
+  --fcol_6_1_i: rgba(102, 119, 204, 0.5);
+  --fcol_6_2_i: white;
+  --fcol_6_0_f: rgba(140, 153, 217, 0.5);
+  --fcol_6_1_f: rgba(140, 153, 217, 0.8);
+  --fcol_6_2_f: white;
+  --fcol_6_0_s: rgba(121, 136, 210, 0.4);
+  --fcol_6_1_s: rgba(121, 136, 210, 0.64);
+  --fcol_6_2_s: white;
+  --fcol_6_0_sf: rgba(179, 187, 230, 0.75);
+  --fcol_6_1_sf: #b3bbe6;
+  --fcol_6_2_sf: white;
+  --fcol_7_0_i: rgba(102, 119, 204, 0.2);
+  --fcol_7_1_i: rgba(102, 119, 204, 0.5);
+  --fcol_7_2_i: white;
+  --fcol_7_0_f: rgba(140, 153, 217, 0.5);
+  --fcol_7_1_f: rgba(140, 153, 217, 0.8);
+  --fcol_7_2_f: white;
+  --fcol_7_0_s: rgba(121, 136, 210, 0.4);
+  --fcol_7_1_s: rgba(121, 136, 210, 0.64);
+  --fcol_7_2_s: white;
+  --fcol_7_0_sf: rgba(179, 187, 230, 0.75);
+  --fcol_7_1_sf: #b3bbe6;
+  --fcol_7_2_sf: white;
+  --fcol_8_0_i: rgba(102, 119, 204, 0.2);
+  --fcol_8_1_i: rgba(102, 119, 204, 0.5);
+  --fcol_8_2_i: white;
+  --fcol_8_0_f: rgba(140, 153, 217, 0.5);
+  --fcol_8_1_f: rgba(140, 153, 217, 0.8);
+  --fcol_8_2_f: white;
+  --fcol_8_0_s: rgba(121, 136, 210, 0.4);
+  --fcol_8_1_s: rgba(121, 136, 210, 0.64);
+  --fcol_8_2_s: white;
+  --fcol_8_0_sf: rgba(179, 187, 230, 0.75);
+  --fcol_8_1_sf: #b3bbe6;
+  --fcol_8_2_sf: white;
+  --fcol_9_0_i: rgba(62, 193, 136, 0.2);
+  --fcol_9_1_i: rgba(62, 193, 136, 0.5);
+  --fcol_9_2_i: #e6e6e6;
+  --fcol_9_0_f: rgba(101, 205, 160, 0.5);
+  --fcol_9_1_f: rgba(101, 205, 160, 0.8);
+  --fcol_9_2_f: white;
+  --fcol_9_0_s: rgba(81, 199, 148, 0.4);
+  --fcol_9_1_s: rgba(81, 199, 148, 0.64);
+  --fcol_9_2_s: #f3f3f3;
+  --fcol_9_0_sf: rgba(139, 218, 184, 0.75);
+  --fcol_9_1_sf: #8bdab8;
+  --fcol_9_2_sf: white;
+  --fcol_10_0_i: rgba(62, 193, 136, 0.2);
+  --fcol_10_1_i: rgba(62, 193, 136, 0.5);
+  --fcol_10_2_i: #e6e6e6;
+  --fcol_10_0_f: rgba(101, 205, 160, 0.5);
+  --fcol_10_1_f: rgba(101, 205, 160, 0.8);
+  --fcol_10_2_f: white;
+  --fcol_10_0_s: rgba(81, 199, 148, 0.4);
+  --fcol_10_1_s: rgba(81, 199, 148, 0.64);
+  --fcol_10_2_s: #f3f3f3;
+  --fcol_10_0_sf: rgba(139, 218, 184, 0.75);
+  --fcol_10_1_sf: #8bdab8;
+  --fcol_10_2_sf: white;
+}
+
+/*
+
+    MAIN.SCSS
+    CSS Variable declarations.
+    :host selector traverse shadow dom (and only :host), hence shared variables & styles are stored there.
+
+    It is only imported once, in the root app wrapper.
+    For non-host related selectors, use common.scss
+
+*/
+/* OS Theme mixins */
+/* Responsive mixins */
+/* Mobile mixins */
+/*
+@mixin if-not-touch (){
+    @media not (pointer:none), not (pointer:coarse) {
+        @content;
+    }
+}
+
+@mixin if-touch (){
+    @media (pointer:none), (pointer:coarse) {
+        @content;
+    }
+}
+*/
+/* Cosmetics */
+/* Presets */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Scrollbar mixins */
+/* Size mixins */
+/*
+    Repeats the same value for multiple properties
+*/
+/*
+    Spreads a list of value over multiple properties
+    value length & properties length must be the same
+*/
+/* Interactive states mixins */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+:host {
+  --col_workspace_bg: #191919;
+  --col_workspace_nav_bg: rgba(77, 77, 77, 0.2);
+  --tree_indent: 24px;
+  --tree_size: var(--size_s);
+}

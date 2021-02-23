@@ -1,0 +1,59 @@
+{
+  "name": "@nkmjs/core",
+  "version": "0.0.2",
+  "description": "NKMjs Framework Core Assembly",
+  "main": "lib.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nebukam/nkmjs-core.git"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "bundle-core": "node ./lib/task-build-core-bundle.js",
+    "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README.md"
+  },
+  "bin": {
+    "nkmjs-task": "./bin/cli.js"
+  },
+  "dependencies": {
+    "@nkmjs/actions": "0.0.1",
+    "@nkmjs/app-core": "0.0.1",
+    "@nkmjs/collections": "0.0.1",
+    "@nkmjs/common": "0.0.1",
+    "@nkmjs/data-core": "0.0.1",
+    "@nkmjs/dialog": "0.0.1",
+    "@nkmjs/documents": "0.0.1",
+    "@nkmjs/electron-core": "0.0.2",
+    "@nkmjs/environment": "0.0.1",
+    "@nkmjs/io-core": "0.0.1",
+    "@nkmjs/io-electron": "0.0.1",
+    "@nkmjs/services": "0.0.1",
+    "@nkmjs/style": "0.0.1",
+    "@nkmjs/ui-core": "0.0.1",
+    "@nkmjs/ui-inputs": "0.0.1",
+    "@nkmjs/ui-workspace": "0.0.1",
+    "@nkmjs/utils": "0.0.1",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-syntax-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@pixi/jsdoc-template": "^2.6.0",
+    "axios": "^0.21.1",
+    "browserify": "^17.0.0",
+    "chalk": "^4.1.0",
+    "daybrush-jsdoc-template": "^1.6.0",
+    "docdash": "^1.2.0",
+    "electron": "^11.1.1",
+    "electron-packager": "^15.2.0",
+    "sass": "^1.32.5",
+    "terser": "^5.5.1"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.6",
+    "jsdoc-to-markdown": "^6.0.1"
+  }
+}

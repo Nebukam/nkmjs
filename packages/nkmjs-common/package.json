@@ -1,0 +1,22 @@
+{
+  "name": "@nkmjs/common",
+  "version": "0.0.1",
+  "description": "NKMjs Framework Common",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nebukam/nkmjs-common.git"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/collections": "0.0.1",
+    "@nkmjs/utils": "0.0.1"
+  }
+}

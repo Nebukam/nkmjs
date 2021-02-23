@@ -1,0 +1,147 @@
+@import '../_constants';
+@import '../_variables';
+@import '../_functions';
+@import '../_mixins';
+
+/* Base CSS for all buttons */
+
+:host{
+
+    box-sizing: border-box;
+
+    transition: all 0.05s ease;
+
+    position: relative;    
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    padding: 2px;
+
+    border-radius: 3px;
+
+    background-color:rgba(0,0,0,0.5);
+    border: none;
+
+    --flavor_primary_disabled:rgba(0,0,0,0.1);
+    --flavor_secondary_disabled:rgba(0,0,0,0.1);
+    --flavor_contrast_disabled:rgba(0,0,0,0.5);
+
+    @include state-color-variations( rgba(50,50,50,0.65), rgba(140,140,140,0.5), 1, 0.8) 
+    using ( $index, $st, $p, $s, $c){
+        #{'--flavor_primary_'+$st}: $p;
+        #{'--flavor_secondary_'+$st}: $s;
+        #{'--flavor_contrast_'+$st}: $c;
+    }
+
+    &::after{
+        transition: all 0.15s ease;
+        background-color: var(--flavor_secondary_focused);
+    }
+
+}
+
+// ----> STATES
+
+:host(#{$IDLE}){
+    //opacity:1;
+    background-color: var(--flavor_primary_idle);
+    border-color: var(--flavor_secondary_idle);
+
+    & .label{
+        color: var(--flavor_contrast_idle);
+    }
+}
+
+$th: 4px;
+
+:host(#{$FOCUSED}){
+
+    z-index: 50;
+
+    @include drop-shadow( 0px, 0px, 1px, rgba(0,0,0,1));
+
+    background-color: var(--flavor_primary_focused);
+    border-color: var(--flavor_secondary_focused);
+
+    &::after{
+        content:"";
+        position: absolute;
+        width: $th;
+        height:$th;
+        bottom: -$th/2;
+        left:calc(50% - #{$th/2});
+        border-radius: 10px;
+    }
+
+    & .label{
+        color: var(--flavor_contrast_focused);
+    }
+
+}
+
+:host(#{$SELECTED}){
+
+    background-color: var(--flavor_primary_selected);
+    border-color: var(--flavor_secondary_selected);
+
+    & .label{
+        color: var(--flavor_contrast_selected);
+    }
+
+}
+
+:host(#{$SELECTED+$FOCUSED}){
+
+    background-color: var(--flavor_primary_selected_focused);
+    border-color: var(--flavor_secondary_selected_focused);
+
+    & .label{
+        color: var(--flavor_contrast_selected_focused);
+    }
+
+}
+
+:host(#{$TOGGLED})::after{
+    content:"";
+    position: absolute;
+    width: calc(100% - 6px);
+    height:$th;
+    bottom: -$th/2;
+    left:3px;
+    border-radius: 10px;
+}
+
+:host(#{$SIZE_XS+$TOGGLED})::after, :host(#{$SIZE_S+$TOGGLED})::after{
+    height:2px;
+    bottom: -1px;
+}
+
+/* Base state : DISABLED */
+
+:host(#{$DISABLED}){
+    opacity:0.5;
+
+    background-color: var(--flavor_primary_disabled);
+    border-color: var(--flavor_secondary_disabled);
+
+    & .label{
+        color: var(--flavor_contrast_disabled);
+    }
+}
+
+/* Variants */
+
+:host(#{$FRAME}){
+    background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+}
+
+:host(#{$MINIMAL}){
+    background-color: transparent;
+    border:none;
+}

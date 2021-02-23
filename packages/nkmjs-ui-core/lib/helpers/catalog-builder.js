@@ -1,0 +1,127 @@
+'use strict';
+
+const { U } = require(`@nkmjs/utils`);
+const { BINDINGS, SIGNAL } = require(`@nkmjs/common`);
+const { CatalogItem, Catalog, CatalogWatcher } = require(`@nkmjs/data-core`);
+
+/**
+ * @description A CatalogBuilder observe a catalog's additions and removals 
+ * and keeps a display list up to date.
+ * @class
+ * @hideconstructor
+ * @augments data.core.catalog.CatalogWatcher
+ * @memberof ui.core.helpers
+ */
+class CatalogBuilder extends CatalogWatcher {
+    constructor() { super(); }
+
+    _Init() {
+        super._Init();
+
+        this._defaultItemClass = null;
+        this._defaultGroupClass = null;
+
+        this._host = null;
+
+    }
+
+    /**
+     * @description TODO
+     * @type {Element}
+     */
+    get host() { return this._host; }
+    set host(p_value) { this._host = p_value; }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {data.core.catalog.Catalog} p_catalog 
+     * @param {data.core.catalog.CatalogItem} p_item 
+     */
+    _OnCatalogItemAdded(p_catalog, p_item) {
+
+        if (!super._OnCatalogItemAdded(p_catalog, p_item)) { return false; }
+
+        let mappedObject = null;
+
+        if (U.isInstanceOf(p_item, Catalog)) {
+            mappedObject = this._owner.Add(
+                BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
+                `item group`, this._host);
+        } else {
+            mappedObject = this._owner.Add(
+                BINDINGS.Get(this._owner, p_item, this._defaultItemClass),
+                `item`, this._host);
+        }
+
+        this._map.set(p_item, mappedObject);
+        mappedObject.data = p_item;
+
+        this._Broadcast(SIGNAL.ITEM_ADDED, this, p_item, mappedObject);
+
+        return true;
+
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {data.core.catalog.Catalog} p_catalog 
+     * @param {data.core.catalog.CatalogItem} p_item 
+     */
+    _OnCatalogItemRemoved(p_catalog, p_item) {
+
+        let mappedObject = super._OnCatalogItemRemoved(p_catalog, p_item);
+        if (mappedObject === false) { return false; }
+
+        this._Broadcast(SIGNAL.ITEM_REMOVED, this, p_item, mappedObject);
+        if (mappedObject) { mappedObject.Release(); }
+
+        return mappedObject;
+
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {data.core.catalog.Catalog} p_catalog 
+     */
+    _OnCatalogSorted(p_catalog) {
+
+        let list = this._catalog._items,
+            index = 0;
+
+        for (let i = 0, n = list.length; i < n; i++) {
+
+            let item = this._items[i],
+                mappedObject = this._map.get(item);
+
+            if (!mappedObject) { continue; }
+
+            if (item.isDir) { mappedObject.order = index; }
+            else { mappedObject.order = this._itemCount + index; }
+
+            index++;
+
+        }
+
+        super._OnCatalogSorted(p_catalog);
+
+    }
+
+    _CleanUp() {
+
+        this._defaultItemClass = null;
+        this._defaultGroupClass = null;
+
+        this._host = null;
+
+        super._CleanUp();
+
+    }
+
+
+
+}
+
+module.exports = CatalogBuilder;

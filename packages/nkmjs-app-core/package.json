@@ -1,0 +1,34 @@
+{
+  "name": "@nkmjs/app-core",
+  "version": "0.0.1",
+  "description": "NKMjs Framework App Core",
+  "browser": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nebukam/nkmjs-app-core.git"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/collections": "0.0.1",
+    "@nkmjs/utils": "0.0.1",
+    "@nkmjs/common": "0.0.1",
+    "@nkmjs/services": "0.0.1",
+    "@nkmjs/environment": "0.0.1",
+    "@nkmjs/actions": "0.0.1",
+    "@nkmjs/dialog": "0.0.1",
+    "@nkmjs/data-core": "0.0.1",
+    "@nkmjs/io-core": "0.0.1",
+    "@nkmjs/documents": "0.0.1",
+    "@nkmjs/style": "0.0.1",
+    "@nkmjs/ui-core": "0.0.1",
+    "@nkmjs/ui-inputs": "0.0.1",
+    "@nkmjs/ui-workspace": "0.0.1"
+  }
+}

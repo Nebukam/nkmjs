@@ -1,0 +1,26 @@
+{
+  "name": "@nkmjs/dialog",
+  "version": "0.0.1",
+  "description": "NKMjs Framework Dialog",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nebukam/nkmjs-dialog.git"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "doc": "jsdoc -c ./.jsdoc.conf.json"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/collections": "0.0.1",
+    "@nkmjs/utils": "0.0.1",
+    "@nkmjs/common": "0.0.1",
+    "@nkmjs/services": "0.0.1",
+    "@nkmjs/actions": "0.0.1"
+  }
+}

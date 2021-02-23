@@ -1,0 +1,20 @@
+
+@import './_constants';
+@import './_functions';
+
+$default_states_ids:
+    str-replace($IDLE, '.'),
+    str-replace($FOCUSED, '.'),
+    str-replace($SELECTED, '.'),
+    #{str-replace($SELECTED, '.')+'_'+str-replace($FOCUSED, '.')};
+
+$short_states_ids:
+    'i',
+    'f',
+    's',
+    'sf';
+
+$tree_indent: 24px;
+
+$varname_tree_indent: '--tree_indent';
+$varname_tree_size: '--tree_size';

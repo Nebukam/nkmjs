@@ -1,0 +1,15 @@
+@import '../_constants';
+@import '../_variables';
+@import '../_mixins';
+
+:host{
+    #{$varname_tree_size}: var(--size_s);
+}
+
+.header{
+
+}
+
+.body{
+
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@nkmjs/electron-core",
+  "version": "0.0.2",
+  "description": "NKMjs Framework Electron App Core",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nebukam/nkmjs-electron-core.git"
+  },
+  "scripts": {
+    "test": "electron ./example-app/app.js"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/collections": "0.0.1",
+    "@nkmjs/utils": "0.0.1",
+    "@nkmjs/common": "0.0.1",
+    "@nkmjs/actions": "0.0.1",
+    "@nkmjs/services": "0.0.1",
+    "@nkmjs/io-electron": "0.0.1",
+    "@nkmjs/app-core": "0.0.1"
+  },
+  "devDependencies": {
+    "electron": "^11.1.1"
+  }
+}

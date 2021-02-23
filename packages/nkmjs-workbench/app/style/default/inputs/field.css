@@ -1,0 +1,190 @@
+/* field.scss */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* OS Theme mixins */
+/* Responsive mixins */
+/* Mobile mixins */
+/*
+@mixin if-not-touch (){
+    @media not (pointer:none), not (pointer:coarse) {
+        @content;
+    }
+}
+
+@mixin if-touch (){
+    @media (pointer:none), (pointer:coarse) {
+        @content;
+    }
+}
+*/
+/* Cosmetics */
+/* Presets */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Scrollbar mixins */
+/* Size mixins */
+/*
+    Repeats the same value for multiple properties
+*/
+/*
+    Spreads a list of value over multiple properties
+    value length & properties length must be the same
+*/
+/* Interactive states mixins */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+:host(.size-xs) {
+  height: 16px;
+}
+
+:host(.size-s) {
+  height: 24px;
+}
+
+:host(.size-m) {
+  height: 32px;
+}
+
+:host(.size-l) {
+  height: 50px;
+}
+
+:host(.size-xl) {
+  height: 108px;
+}
+
+:host {
+  position: relative;
+  --flavor_color: rgba(0,0,0,0.1);
+}
+
+.field {
+  font-family: Regular, sans-serif;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 0;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #c8c8c8;
+  border: 1px solid;
+  border-color: var(--flavor_color);
+  resize: vertical;
+  -webkit-appearance: none;
+}
+.field::placeholder {
+  font-style: italic;
+}
+.field:focus {
+  border-color: #3ec188;
+}
+.field::-webkit-search-cancel-button {
+  position: relative;
+  right: -5px;
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  background: url(img/icons/icon_delete.svg) no-repeat center;
+}
+
+.field::-webkit-scrollbar-track {
+  background-color: rgba(127, 127, 127, 0.05);
+}
+
+.field::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.field::-webkit-scrollbar-track-piece::before {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  background-color: red;
+}
+
+.field::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background-color: rgba(127, 127, 127, 0.05);
+}
+
+.field::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.field:hover::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.field:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.field::-webkit-scrollbar-corner {
+  border: none;
+  display: none;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.input-btn {
+  margin-left: 5px;
+}

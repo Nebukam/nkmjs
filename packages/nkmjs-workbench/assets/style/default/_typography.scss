@@ -1,0 +1,73 @@
+@import './_variables';
+//@import './_fonts';
+
+
+$family_regular: 'Regular', apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+.label, .subtitle, .message{
+
+    font-family: $family_regular;
+
+    --font-size: var(#{$varname_font_size_s});
+    font-size: var(--font-size);
+
+    &.font-tag{
+        --font-size: var(#{$varname_font_size_tag});
+        text-transform: uppercase;
+    }
+
+    &.font-small{
+        --font-size: var(#{$varname_font_size_xs});
+    }
+
+    &.font-medium{
+        --font-size: var(#{$varname_font_size_m});
+    }
+
+    &.font-large{
+        --font-size: var(#{$varname_font_size_l});
+    }
+
+    &.font-xlarge{
+        --font-size: var(#{$varname_font_size_xl});
+    }
+
+}
+
+$family_title: 'Title', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+.title{
+
+    font-family: $family_title;
+
+    --font-size: var(#{$varname_font_size_s+'_title'});
+    font-size: var(--font-size);
+
+    text-transform: uppercase;
+    line-height: 85%;
+    
+    text-shadow: 0 1px 0 #535353, 0 2px 0 #535353, 0 2px 2px rgba(0,0,0,0.5);
+
+    &.font-tag{
+        --font-size: var(#{$varname_font_size_tag+'_title'});
+    }
+
+    &.font-small{
+        --font-size: var(#{$varname_font_size_xs+'_title'});
+    }
+
+    &.font-medium{
+        --font-size: var(#{$varname_font_size_m+'_title'});
+    }
+
+    &.font-large{
+        --font-size: var(#{$varname_font_size_l+'_title'});
+        text-shadow: 0 1px 0 #535353, 0 2px 0 #535353, 0 5px 2px rgba(0,0,0,0.5);
+    }
+
+    &.font-xlarge{
+        --font-size: var(#{$varname_font_size_xl+'_title'});
+        text-shadow: 0 1px 0 #535353, 0 2px 0 #535353, 0 5px 2px rgba(0,0,0,0.5);
+    }
+
+}

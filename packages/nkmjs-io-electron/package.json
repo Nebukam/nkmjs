@@ -1,0 +1,24 @@
+{
+  "name": "@nkmjs/io-electron",
+  "version": "0.0.1",
+  "description": "NKMjs Framework IO Electron",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nebukam/nkmjs-io-electron.git"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/collections": "0.0.1",
+    "@nkmjs/utils": "0.0.1",
+    "@nkmjs/common": "0.0.1",
+    "@nkmjs/io-core": "0.0.1"
+  }
+}

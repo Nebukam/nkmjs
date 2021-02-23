@@ -1,0 +1,113 @@
+/**
+ * Command can trigger actions.
+ * Commands are a receptacle for :
+ * - a function to execute
+ * - shortcuts that will execute said function
+ * - events that will allow UI to feedback the availability of a given command
+ */
+
+'use strict';
+
+const { U } = require(`@nkmjs/utils`);
+const { SIGNAL, POOL } = require(`@nkmjs/common`);
+
+const COMMAND_SIGNAL = require(`./command-signal`);
+const Command = require(`./Command`);
+
+/**
+ * @description TODO
+ * @class
+ * @hideconstructor
+ * @augments actions.Command
+ * @memberof actions
+ */
+class CommandFn extends Command {
+    constructor() { super(); }
+
+    // ----> Static members
+
+    /**
+     * @description TODO
+     * @param {object} p_options 
+     */
+    static RentFn(p_options) {
+
+        let fn = U.Get(p_options, `fn`, null);
+        if (!fn) {
+            throw new Error(`Cannot create CommandFn with empty function`);
+        }
+
+        let cmd = POOL.Rent(CommandFn);
+        cmd.options = p_options;
+
+        return cmd;
+    }
+
+    // ----> Init
+
+    _Init() {
+
+        super._Init();
+
+        this._fn = null;
+        this._thisArg = null;
+        this._options = null;
+
+    }
+
+    /**
+     * @description TODO
+     * @type {*}
+     */
+    get thisArg() { return this._thisArg; }
+    set thisArg(p_value) { this._thisArg = p_value; }
+
+    /**
+     * @description TODO
+     * @type {function}
+     */
+    get fn() { return this._fn; }
+    set fn(p_value) { this._fn = p_value; }
+
+    /**
+     * @description TODO
+     * @type {object}
+     */
+    get options() { return this._options; }
+    set options(p_value) {
+
+        this._options = p_value;
+
+        this.fn = U.Get(p_value, `fn`, null);
+        if (!this._fn) {
+            throw new Error(`CommandFn options have no function defined.`);
+        }
+
+        this.thisArg = U.Get(p_value, `thisArg`, null);
+        this.name = U.Get(p_value, `name`, U.CamelSplit(this._fn.name));
+        this.icon = U.Get(p_value, `icon`, `%ICON%/icon_cmd.svg`);
+        this.order = U.Get(p_value, `order`, 0);
+
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     */
+    _InternalExecute() {
+        try {
+            if (this._context) {
+                this._fn.call(this._thisArg, this._context);
+            } else {
+                this._fn.call(this._thisArg);
+            }
+            this._Success();
+        } catch (e) {
+            this._Fail(e.message);
+        }
+
+    }
+
+}
+
+module.exports = CommandFn;

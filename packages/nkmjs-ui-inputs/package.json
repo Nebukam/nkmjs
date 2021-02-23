@@ -1,0 +1,27 @@
+{
+  "name": "@nkmjs/ui-inputs",
+  "version": "0.0.1",
+  "description": "NKMjs Framework UI Inputs",
+  "browser": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nebukam/nkmjs-ui-inputs.git"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/collections": "0.0.1",
+    "@nkmjs/utils": "0.0.1",
+    "@nkmjs/common": "0.0.1",
+    "@nkmjs/actions": "0.0.1",
+    "@nkmjs/environment": "0.0.1",
+    "@nkmjs/style": "0.0.1",
+    "@nkmjs/ui-core": "0.0.1"
+  }
+}

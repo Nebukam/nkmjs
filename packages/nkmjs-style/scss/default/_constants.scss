@@ -1,0 +1,16 @@
+
+/* High-level UI Flags */
+
+$INFOS: '.infos';
+$WARNING: '.warning';
+$ERROR: '.error';
+$READY: '.ready';
+$DIRTY: '.dirty';
+$LOADING: '.loading';
+$PROCESSING: '.processing';
+$WAITING: '.waiting';
+$ACTIVE: '.active';
+$CTA: '.cta';
+
+$FLAVORS: $INFOS, $WARNING, $ERROR;
+$FLAVORS_EX: $INFOS, $WARNING, $ERROR, $READY, $DIRTY, $LOADING, $PROCESSING, $WAITING, $ACTIVE, $CTA;

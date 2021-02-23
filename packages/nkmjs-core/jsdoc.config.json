@@ -1,0 +1,62 @@
+{
+  "opts": {
+    "template": "./assets/docs/",
+    "destination": "./docs/",
+    "tutorials": "./assets/docs/static/pages/",
+    "sort": false,
+    "recurse":true
+  },
+  "source": {
+    "include": [
+      "../nkmjs-actions/lib/",
+      "../nkmjs-app-core/lib/",
+      "../nkmjs-collections/lib/",
+      "../nkmjs-common/lib/",
+      "../nkmjs-data-core/lib/",
+      "../nkmjs-dialog/lib/",
+      "../nkmjs-documents/lib/",
+      "../nkmjs-electron-core/lib/",
+      "../nkmjs-environment/lib/",
+      "../nkmjs-io-core/lib/",
+      "../nkmjs-io-electron/lib/",
+      "../nkmjs-services/lib/",   
+      "../nkmjs-style/lib/",
+      "../nkmjs-ui-core/lib/",
+      "../nkmjs-ui-inputs/lib/",
+      "../nkmjs-ui-workspace/lib/",
+      "../nkmjs-utils/lib/"
+    ],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+  "plugins": [
+    "./assets/docs/custom-tag.js",
+    "plugins/markdown"
+  ],
+  "markdown": [
+    "groupdescription"
+  ],
+  "nkmdash": {
+    "static": true,
+    "sort": false,
+    "search": true,
+    "collapse": true,
+    "typedefs": false,
+    "removeQuotes": "none",
+    "scripts": [],
+    "menu": {
+      "Github repo": {
+        "href": "https://github.com/Nebukam/nkmjs-core",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "repository"
+      }
+    }
+  },
+  "templates": {
+    "default": {
+      "useLongnameInNav": true,
+      "outputSourceFiles": false
+    }
+  }
+}
