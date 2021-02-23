@@ -3,6 +3,7 @@
   "version": "0.0.4",
   "description": "NKMjs / KISS Data Ecosystem",
   "main": "index.js",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Nebukam/kiss-data-ecosystem.git"
@@ -23,5 +24,6 @@
     "@nkmjs/dialog": "^0.0.4",
     "@nkmjs/style": "^0.0.4",
     "@nkmjs/utils": "^0.0.4"
-  }
+  },
+  "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }

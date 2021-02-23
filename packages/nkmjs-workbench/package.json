@@ -4,6 +4,7 @@
   "description": "NKMjs Framework Tests",
   "main": "index.js",
   "repository": "git+https://github.com/Nebukam/nkmjs-tests.git",
+  "private": true,
   "scripts": {
     "nkmjs-start": "nkmjs-task start",
     "nkmjs-init": "nkmjs-task init",
@@ -43,5 +44,6 @@
   },
   "devDependencies": {
     "electron": "^11.1.1"
-  }
+  },
+  "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }

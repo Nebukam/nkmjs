@@ -4,6 +4,7 @@
     "repository": "TBD",
     "license": "TBD",
     "version": "0.0.4",
+    "private": true,
     "scripts": {
         "nkmjs-start": "nkmjs-task start clean",
         "nkmjs-bundle": "nkmjs-task bundle",
@@ -11,5 +12,6 @@
     },
     "devDependencies": {
         "@nkmjs/core": "^0.0.5"
-    }
+    },
+    "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }
