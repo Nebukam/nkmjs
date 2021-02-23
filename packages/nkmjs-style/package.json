@@ -5,7 +5,7 @@
   "browser": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Nebukam/nkmjs-style.git"
+    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-style"
   },
   "scripts": {
     "test": "node test.js"

@@ -1,0 +1,31 @@
+<?js
+    var data = obj;
+    var self = this;
+    var inherited = data.augment ? true : false;
+?>
+<div class="signal-box<?js= inherited ? ' inherited' : '' ?>">
+
+    <?js if(inherited){ ?>
+        <h4 class="inherited signal">
+    <?js }else{ ?>
+        <h4 class="signal">
+    <?js } ?>
+
+    <?js= self.tplSignal(data.displayName) ?>        
+    </h4>
+    <?js if(inherited){ ?>
+        <dl class="details">
+        <dt class="inherited-from">Inherited From:</dt>
+        <dd class="inherited-from"><ul class="dummy"><li>
+            <?js= self.linkto(data.augment, self.tplTxt(data.augment)) ?>
+        </li></ul></dd>
+        </dl>
+    <?js } ?>
+        <?js if(!inherited){ ?>
+        <p><?js= data.description ?></p>
+        <?js if (data.typedef) { ?>
+            <?js= self.partial('signal-properties.tmpl', data.typedef) ?>
+        <?js } } ?>
+</div>
+
+

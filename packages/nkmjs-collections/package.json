@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Nebukam/nkmjs-collections.git"
+    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-collections"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

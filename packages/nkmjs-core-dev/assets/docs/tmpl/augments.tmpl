@@ -1,0 +1,11 @@
+<?js
+    var data = obj;
+    var self = this;
+?>
+
+<?js if (data.augments && data.augments.length) { ?>
+    <ul><?js data.augments.forEach(function(a) { ?>
+        <li><?js= self.linkto(a, self.tplTxt(a)) ?></li>
+    <?js }) ?></ul>
+<?js } ?>
+

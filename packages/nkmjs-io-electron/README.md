@@ -13,4 +13,4 @@
 
 
 
-[logo]: https://github.com/Nebukam/nkmjs-io-electron/blob/main/bin/nkmjs-io-electron-logo.png?raw=true "nkmjs-logo"
+[logo]: https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-io-electron/bin/nkm-io-electron-logo.png "nkmjs-logo"

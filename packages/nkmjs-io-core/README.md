@@ -13,4 +13,4 @@
 
 
 
-[logo]: https://github.com/Nebukam/nkmjs-io-core/blob/main/bin/nkmjs-io-core-logo.png?raw=true "nkmjs-logo"
+[logo]: https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-io-core/bin/nkm-io-core-logo.png "nkmjs-logo"

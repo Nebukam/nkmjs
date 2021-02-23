@@ -1,0 +1,55 @@
+<?js
+var data = obj;
+var self = this;
+if(data.discreet && (data.inherited ||(data.override && !data.meaningfulOverride))){ return; }
+?>
+
+<div class="<?js= `item-body${ data.inherited ? ' inherited' : '' }${ data.overrides ? ' override' : '' }${ data.discreet ? ' discreet' : ''}` ?>">
+
+<h4 class="name" id="<?js= id ?>"><?js= data.attribs + name + (data.signature ? data.signature : '') ?></h4>
+
+<?js if (data.summary) { ?>
+<p class="summary"><?js= summary ?></p>
+<?js } ?>
+
+<?js= this.partial('details.tmpl', data) ?>
+
+<?js if ((!data.overrides && !data.inherits) || (data.overrides && data.meaningfulOverride)){ ?>
+
+<?js if (data.description) { ?>
+<div class="description usertext">
+    <?js= data.description ?>
+</div>
+<?js } ?>
+
+<?js if (false) //data.type && data.type.names) 
+{?>
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            <?js= self.partial('type.tmpl', data.type.names) ?>
+        </li>
+    </ul>
+<?js } ?>
+
+<?js if (data.fires && fires.length) { ?>
+    <h5>Fires:</h5>
+    <ul><?js fires.forEach(function(f) { ?>
+        <li><?js= self.linkto(f) ?></li>
+    <?js }); ?></ul>
+<?js } ?>
+
+<?js if (data.broadcasts && broadcasts.length) { ?>
+    <h5>Broadcasts:</h5>
+    <ul><?js broadcasts.forEach(function(f) { ?>
+        <li><?js= f.name ?> :: <?js= f.description ?></li>
+    <?js }); ?></ul>
+<?js } ?>
+
+<?js if (data.examples && examples.length) { ?>
+    <?js= this.partial('examples.tmpl', examples) ?>
+<?js } ?>
+
+<?js } ?>
+
+</div>

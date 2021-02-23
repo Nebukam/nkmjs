@@ -1,0 +1,22 @@
+{
+    "name": "my-app",
+    "verbose_name": "My App : Verbose Name",
+    "verbose_short_name": "My App",
+    "description": "My app description, lorem ipsum; dolor si amet.",
+    "default_locale": "en",
+    "homepage": "https://homepage",
+    "display": "standalone",
+    "color_theme": "#1e1e1e",
+    "app_location": "./app",
+    "assets_location": "./assets",
+    "icons": "%assets_location%/icons",
+    "style_location": "%assets_location%/style",
+    "compiled_style_location": "%app_location%/style",
+    "build_location": "./builds",
+    "cache_folders": [
+        "./style"
+    ],
+    "build_targets":[
+        { "platform":"win32", "arch":"x64" }
+    ]
+}

@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Nebukam/nkmjs-electron-core.git"
+    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-electron-core"
   },
   "scripts": {
     "test": "electron ./example-app/app.js"
