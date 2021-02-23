@@ -8,8 +8,7 @@
     "url": "git+https://github.com/Nebukam/kiss-data-ecosystem.git"
   },
   "scripts": {
-    "test": "node test.js",
-    "doc": "jsdoc -c ./.jsdoc.conf.json"
+    "test": "node test.js"
   },
   "author": {
     "name": "Timothé Lapetite",
