@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "nkmjs-start": "nkmjs-task start",
-    "nkmjs-init": "nkmjs-task init",
+    "nkmjs-package": "nkmjs-task package",
     "nkmjs-bundle": "nkmjs-task bundle"
   },
   "author": {
