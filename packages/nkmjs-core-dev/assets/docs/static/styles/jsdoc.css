@@ -355,13 +355,15 @@ h6 {
   display: block;
   position: relative;
   padding: 40px 13px 16px 50px;
-  border-radius: 5px;
+  /*border-radius: 5px;*/
   color:#999;
-  font-style: italic;
+  /*font-style: italic;*/
   background-color: #3e3e3e;
   /*font-size: 80%;*/
   line-height: 110%;
   margin:10px;
+  border-left: 3px solid;
+
 }
 
 header .tip{
@@ -403,7 +405,10 @@ p > code{
 }
 
 .tip.infos{
-  background-color: #34446b;
+  border-color: #2e456b;
+}
+.tip.infos::before{ 
+  color:#8da6ce;
 }
 .tip.infos::after{ 
   content: ""; 
@@ -411,8 +416,7 @@ p > code{
 }
 
 .tip.warning{
-  background-color: #2f2106;
-  border: 1px solid #564a00;
+  border-color: #7d6d03;
 }
 .tip.warning::before{ 
   color:#fbde2d;

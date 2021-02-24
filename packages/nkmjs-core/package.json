@@ -13,8 +13,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "bundle-core": "node ./lib/task-build-core-bundle.js",
-    "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README.md"
+    "bundle-core": "node ./lib/task-build-core-bundle.js"
   },
   "dependencies": {
     "@nkmjs/actions": "^0.0.7",
