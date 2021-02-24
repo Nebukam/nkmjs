@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/workbench",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "NKMjs Framework Tests",
   "main": "index.js",
   "repository": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-tests",
@@ -16,10 +16,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/core": "^0.0.6"
+    "@nkmjs/core": "^0.0.7"
   },
   "devDependencies": {
-    "@nkmjs/core-dev": "^0.0.1",
+    "@nkmjs/core-dev": "^0.0.2",
     "electron": "^11.1.1"
   },
   "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
