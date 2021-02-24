@@ -12,7 +12,7 @@ const __media = `@media `;
  * @augments common.helpers.Singleton
  * @memberof style
  */
-class CSS extends Singleton {
+class CSS_UTILS extends Singleton {
     constructor() { super(); }
 
     /**
@@ -63,10 +63,10 @@ class CSS extends Singleton {
         if (!U.isObject(p_properties)) { return ``; }
         if (p_id.indexOf(__media) === 0) {
             let css = ``;
-            for (let p in p_properties) { css += CSS.CSS(p, p_properties[p]); }
+            for (let p in p_properties) { css += CSS_UTILS.CSS(p, p_properties[p]); }
             return `${p_id}{${css}}`;
         } else {
-            return `${p_id}{${CSS.InlineCSS(p_properties)}}`;
+            return `${p_id}{${CSS_UTILS.InlineCSS(p_properties)}}`;
         }
     }
 
@@ -213,4 +213,4 @@ class CSS extends Singleton {
 
 }
 
-module.exports = CSS;
+module.exports = CSS_UTILS;

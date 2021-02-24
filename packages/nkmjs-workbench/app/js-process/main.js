@@ -1,4 +1,4 @@
-const { ElectronBase } = require(`@nkmjs/core/lib-electron`).electron;
+const { ElectronBase } = require(`@nkmjs/core/lib/core-electron`).electron;
 
 class MyElectronApp extends ElectronBase{
     

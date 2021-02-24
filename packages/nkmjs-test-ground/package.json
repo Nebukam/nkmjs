@@ -10,8 +10,11 @@
         "nkmjs-bundle": "nkmjs-task bundle",
         "nkmjs-package": "nkmjs-task package"
     },
-    "devDependencies": {
+    "dependencies": {
         "@nkmjs/core": "^0.0.6"
+    },
+    "devDependencies": {
+        "@nkmjs/core-dev": "^0.0.1"
     },
     "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }

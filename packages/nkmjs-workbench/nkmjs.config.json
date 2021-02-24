@@ -15,5 +15,11 @@
     "build_location": "./builds",
     "cache_folders": [
         "./style"
+    ],
+    "build_targets": [
+        {
+            "platform": "win32",
+            "arch": "x64"
+        }
     ]
 }

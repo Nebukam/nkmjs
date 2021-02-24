@@ -6,7 +6,6 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const DirRead = require(`./helpers/dir-read`);
-const { PATH } = require(`@nkmjs/utils`);
 
 /**
  * the BuildIndex script output an index.html at a specified location.

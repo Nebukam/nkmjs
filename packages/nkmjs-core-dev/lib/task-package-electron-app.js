@@ -42,17 +42,7 @@ class TaskPackageElectronApp extends ScriptBase {
         this.packager = NKMjs.InCoreModules(`electron-packager/bin/electron-packager.js`);
 
         this.packageJSON = JSON.parse(fs.readFileSync(NKMjs.InCore(`package.json`), 'utf8'));
-        this.electronVersion = this.packageJSON.devDependencies.electron;
-
-        if(!this.electronVersion){
-            this.electronVersion = this.packageJSON.dependencies.electron;
-            if(this.electronVersion){
-                console.log(`WARN : Electron should be installed as a dev dependency.`);
-            }else{
-                console.log(`ERROR : Could not find electron version.`);
-                return;
-            }
-        }
+        this.electronVersion = this.packageJSON.dependencies.electron;
 
         if (this.electronVersion[0] == `~` || this.electronVersion[0] == `^`) { this.electronVersion = this.electronVersion.substring(1); }
 

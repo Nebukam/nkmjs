@@ -1,6 +1,0 @@
-{
-    "command-list": [
-        "compile scss",
-        "run electron packager with win32 options"
-    ]
-}

@@ -8,14 +8,7 @@
   "scripts": {
     "nkmjs-start": "nkmjs-task start",
     "nkmjs-init": "nkmjs-task init",
-    "nkmjs-bundle": "nkmjs-task bundle",
-    "test": "nkmjs-task test",
-    "force-fetch-and-build-styles": "npm explore @nkmjs/scripts -- npm run task context:%INIT_CWD% task:fetch-and-build-styles replace:true append:true",
-    "build-styles": "npm explore @nkmjs/scripts -- npm run build-styles context:%INIT_CWD%",
-    "build-bundle": "npm explore @nkmjs/scripts -- npm run task context:%INIT_CWD% task:bundle-for-web",
-    "doc": "jsdoc -c ./.jsdoc.conf.json",
-    "nkmjs-init-config": "npm explore @nkmjs/scripts -- npm run nkmjs-init-config context:%INIT_CWD%",
-    "init-nkmjs": "npm explore @nkmjs/scripts -- npm run init-nkmjs context:%INIT_CWD%"
+    "nkmjs-bundle": "nkmjs-task bundle"
   },
   "author": {
     "name": "Timothé Lapetite",
@@ -23,26 +16,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^0.0.5",
-    "@nkmjs/app-core": "^0.0.5",
-    "@nkmjs/collections": "^0.0.5",
-    "@nkmjs/common": "^0.0.5",
-    "@nkmjs/core": "0.0.1",
-    "@nkmjs/data-core": "^0.0.5",
-    "@nkmjs/dialog": "^0.0.5",
-    "@nkmjs/documents": "^0.0.5",
-    "@nkmjs/electron-core": "^0.0.6",
-    "@nkmjs/environment": "^0.0.5",
-    "@nkmjs/io-core": "^0.0.5",
-    "@nkmjs/io-electron": "^0.0.5",
-    "@nkmjs/services": "^0.0.5",
-    "@nkmjs/style": "^0.0.5",
-    "@nkmjs/ui-core": "^0.0.5",
-    "@nkmjs/ui-inputs": "^0.0.5",
-    "@nkmjs/ui-workspace": "^0.0.5",
-    "@nkmjs/utils": "^0.0.5"
+    "@nkmjs/core": "^0.0.6"
   },
   "devDependencies": {
+    "@nkmjs/core-dev": "^0.0.1",
     "electron": "^11.1.1"
   },
   "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"

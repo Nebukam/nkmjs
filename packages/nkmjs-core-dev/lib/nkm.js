@@ -3,7 +3,6 @@ const chalk = require('chalk');
 
 const ARGS = require(`./helpers/argv-parser`);
 const NKMJSPackageConfig = require(`./helpers/nkmjs-package-config`);
-const { PATH } = require(`@nkmjs/utils`);
 
 
 
@@ -138,7 +137,7 @@ class NKMjs {
 
     static Short(p_path, p_prefix, p_rep = `.`, p_sanitize = false){
         let p = p_path.split(p_prefix).join(p_rep);
-        return p_sanitize ? PATH.Sanitize(p) : p;
+        return p_sanitize ? p.split('\\').join('/') : p;
     }
 
     static Sanitize(p_name){

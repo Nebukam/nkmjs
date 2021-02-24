@@ -4,7 +4,7 @@ const { U, PATH, UDOM } = require(`@nkmjs/utils`);
 const { Dictionary } = require(`@nkmjs/collections`);
 const { NFOS, DisposableObject } = require(`@nkmjs/common`);
 
-const CSS = require(`./css`);
+const CSS_UTILS = require(`./css`);
 
 const __DELIM_KVP = `|`;
 const __REF = `@`;
@@ -56,7 +56,7 @@ class Palette extends DisposableObject {
     InitFrom(p_palette) {
 
         this._fonts = JSON.parse(JSON.stringify(p_palette._fonts));
-        this._colors = CSS.Merge(this._colors, p_palette._colors);
+        this._colors = CSS_UTILS.Merge(this._colors, p_palette._colors);
         this._variables = JSON.parse(JSON.stringify(p_palette._variables));
         this._rulesets = JSON.parse(JSON.stringify(p_palette._rulesets));
         this._suffixes = JSON.parse(JSON.stringify(p_palette._suffixes));
@@ -131,7 +131,7 @@ class Palette extends DisposableObject {
      * @param {object} p_suffixes { 'kitID':{ 'suffix':{ ruleset }, 'suffix2':{ ruleset2 }, } }
      */
     AddSuffixes(p_suffixes) {
-        this._suffixes = CSS.Merge(this._suffixes, p_suffixes);
+        this._suffixes = CSS_UTILS.Merge(this._suffixes, p_suffixes);
     }
 
     /**
@@ -139,7 +139,7 @@ class Palette extends DisposableObject {
      * @param {object} p_properties { 'groupID':{ 'prop':'value' } }
      */
     AddProperties(p_properties) {
-        this._properties = CSS.Merge(this._properties, p_properties);
+        this._properties = CSS_UTILS.Merge(this._properties, p_properties);
     }
 
     /**
@@ -158,7 +158,7 @@ class Palette extends DisposableObject {
     AddSingleRuleset(p_el, p_ruleSet) {
 
         let g = this._rulesets;
-        if (p_el in g) { g[p_el] = CSS.Merge(g[p_el], p_ruleSet); }
+        if (p_el in g) { g[p_el] = CSS_UTILS.Merge(g[p_el], p_ruleSet); }
         else { g[p_el] = p_ruleSet; }
 
     }
@@ -208,7 +208,7 @@ class Palette extends DisposableObject {
             let styleString = ``;
 
             for (let el in styleObject) { this._ProcessSuffixes(el, styleObject[el], styleObject); }
-            for (let el in styleObject) { styleString += CSS.CSS(el, this._ProcessSingleRuleset(el, styleObject[el])); }
+            for (let el in styleObject) { styleString += CSS_UTILS.CSS(el, this._ProcessSingleRuleset(el, styleObject[el])); }
 
             let styleElement = UDOM.New(`style`);
             styleElement.innerText = styleString;
@@ -259,10 +259,10 @@ class Palette extends DisposableObject {
                 id = `${prefix}${k}`;
                 kitRuleset = kit[k];
                 if (id in p_parent) {
-                    p_parent[id] = CSS.Compose(p_parent[id], kitRuleset);
+                    p_parent[id] = CSS_UTILS.Compose(p_parent[id], kitRuleset);
                 }
                 else {
-                    p_parent[id] = CSS.Compose(null, kitRuleset);
+                    p_parent[id] = CSS_UTILS.Compose(null, kitRuleset);
                 }
             }
         }
@@ -296,7 +296,7 @@ class Palette extends DisposableObject {
 
         if (isObject) {
 
-            if (isGlobal) { CSS.Compose(p_ruleset, g[p_el]); }
+            if (isGlobal) { CSS_UTILS.Compose(p_ruleset, g[p_el]); }
 
             if (__REF in p_ruleset) {
                 let propGroup = p_ruleset[__REF];
@@ -304,7 +304,7 @@ class Palette extends DisposableObject {
                     let groupName = propGroup[i];
                     if (groupName === null) { continue; }
                     if (groupName in this._properties) {
-                        CSS.Compose(p_ruleset, this._properties[groupName]);
+                        CSS_UTILS.Compose(p_ruleset, this._properties[groupName]);
                     } else {
                         throw new Error(`${groupName} is not a valid property kit`);
                     }
@@ -313,7 +313,7 @@ class Palette extends DisposableObject {
             }
 
         } else if (isGlobal) {
-            p_ruleset = CSS.Compose(null, g[p_el]);
+            p_ruleset = CSS_UTILS.Compose(null, g[p_el]);
             isObject = true;
         }
         else { p_ruleset = ``; }

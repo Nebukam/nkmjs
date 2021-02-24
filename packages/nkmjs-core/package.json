@@ -2,7 +2,7 @@
   "name": "@nkmjs/core",
   "version": "0.0.6",
   "description": "NKMjs Framework Core Assembly",
-  "main": "lib.js",
+  "main": "./lib/core.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-core"
@@ -16,14 +16,7 @@
     "bundle-core": "node ./lib/task-build-core-bundle.js",
     "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README.md"
   },
-  "bin": {
-    "nkmjs-task": "./bin/cli.js"
-  },
   "dependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-syntax-class-properties": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
     "@nkmjs/actions": "^0.0.5",
     "@nkmjs/app-core": "^0.0.5",
     "@nkmjs/collections": "^0.0.5",
@@ -40,21 +33,7 @@
     "@nkmjs/ui-core": "^0.0.5",
     "@nkmjs/ui-inputs": "^0.0.5",
     "@nkmjs/ui-workspace": "^0.0.5",
-    "@nkmjs/utils": "^0.0.5",
-    "@pixi/jsdoc-template": "^2.6.0",
-    "axios": "^0.21.1",
-    "browserify": "^17.0.0",
-    "chalk": "^4.1.0",
-    "daybrush-jsdoc-template": "^1.6.0",
-    "docdash": "^1.2.0",
-    "electron": "^11.1.1",
-    "electron-packager": "^15.2.0",
-    "sass": "^1.32.5",
-    "terser": "^5.5.1"
-  },
-  "devDependencies": {
-    "jsdoc": "^3.6.6",
-    "jsdoc-to-markdown": "^6.0.1"
+    "@nkmjs/utils": "^0.0.5"
   },
   "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }
