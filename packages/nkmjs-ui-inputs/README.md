@@ -13,4 +13,4 @@
 
 
 
-[logo]: https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-ui-inputs/bin/nkm-ui-inputs-logo.png "nkmjs-logo"
+[logo]: https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-ui-inputs/bin/logo.png "nkmjs-logo"

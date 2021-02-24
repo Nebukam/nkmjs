@@ -29,4 +29,4 @@ After you do your own magic, you can then build your app using
 
 
 
-[logo]: https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core/bin/nkm-logo.png "nkmjs-logo"
+[logo]: https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core/bin/logo.png "nkmjs-logo"
