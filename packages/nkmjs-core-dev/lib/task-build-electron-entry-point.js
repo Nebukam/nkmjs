@@ -14,26 +14,27 @@ const ReplaceVars = require(`./helpers/replace-vars`);
 
 class TaskBuildElectronEntryPoint extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-electron-entry-point`);
-        if (this.__hasErrors) { return; }
+        super(`build-electron-entry-point`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT),
             replacer = new ReplaceVars({
                 htmlIndex: NKMjs.ELECTRON_HTML_INDEX,
                 js_main:`./js/main`,
                 config: ``
-            }, NKMjs.projectConfigCompiled.__packagejson),
+            }, NKMjs.projectConfigCompiled.__raw),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/js/entry-electron.js`), 'utf8'));
 
         fs.writeFileSync(electronEntry, templateContent);
-        console.log(chalk.gray(`${this.Ind()}`) + `· ` + chalk.green(`+ `) + chalk.gray(`${NKMjs.Shorten(electronEntry)}`));
+        this._logFwd(NKMjs.Shorten(electronEntry), `+`);
 
+        this.End();
 
     }
 
 }
 
-new TaskBuildElectronEntryPoint();
+module.exports = TaskBuildElectronEntryPoint;

@@ -8,12 +8,10 @@ const chalk = require('chalk');
 
 class TaskBuildForWeb extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-for-web`);
-        if (this.__hasErrors) { return; }
-
-        this._Bind(this._End);
+        super(`build-for-web`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         //this.Run(`./task-build-core-bundle`);
 
@@ -34,22 +32,22 @@ class TaskBuildForWeb extends ScriptBase {
 
         this.Run(`./task-build-bundle-html-index`);
         this.Run(`./task-build-pwa-service-worker`);
-        this.Run(`./task-build-bundle`);
-
-        // Copy relevant file in target directories
-
-        //this._End();
+        this.Run(`./task-build-bundle`, this._Bind(this._OnBundleComplete));
 
     }
 
-    _End() {
-        // Cleanup app folder
-        let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT)
-        try { fs.unlinkSync(entryPoint); } catch (e) { }
+    _OnBundleComplete() {
 
-        this.Run(`./task-build-cleanup`);
+        // Copy relevant file in target directories
+        // www-0.0.1
+        // extension-chrome-0.0.1
+        // extension-mozilla-0.0.1
+        // extension-edge-0.0.1
+        // etc
+        
+        this.End();
     }
 
 }
 
-new TaskBuildForWeb();
+module.exports = TaskBuildForWeb;

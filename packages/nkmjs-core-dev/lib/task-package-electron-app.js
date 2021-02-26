@@ -11,21 +11,21 @@ const builder = require(`electron-packager`);
 
 class TaskPackageElectronApp extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`package-electron-app`, null);
-        if (this.__hasErrors) { return; }
+        super(`package-electron-app`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         this._Bind(this.Package);
 
-        // Fetch target package config in project ( { platform:'win32', arch:'x64' } )
+        // Fetch target package config in project ( { platform:'windows', arch:'x64' } )
         this.targets = null;
         this.currentTarget = null;
 
-        if (`build_targets` in NKMjs.projectConfig) { this.targets = NKMjs.projectConfig.build_targets; }
+        if (`buildConfigs` in NKMjs.projectConfig) { this.targets = NKMjs.projectConfig.buildConfigs; }
 
         if (!this.targets) {
-            console.log(`There are no build target set in your nkmjs.config.json.\nSee https://nebukam.github.io/nkmjs/doc/config.html`);
+            this._logWarn(`There are no build target set in your nkmjs.config.json.\nSee https://nebukam.github.io/nkmjs/doc/config.html`);
             return;
         }
 
@@ -33,12 +33,14 @@ class TaskPackageElectronApp extends ScriptBase {
         this.Run(`./task-build-electron-html-index`);
         this.Run(`./task-build-electron-entry-point`);
 
+        // TODO : Edit package.json so the main points toward the electron-entry-point
+
         this.electronVersionCacheFolder = ((NKMjs.projectConfigCompiled.electronCache ? NKMjs.InProject(NKMjs.projectConfigCompiled.electronCache) : false)
             || NKMjs.InCore(`caches/electron`));
         FSUTILS.ensuredir(this.electronVersionCacheFolder);
 
         this.inputLocation = NKMjs.InProject();
-        this.outputLocation = NKMjs.InProject(NKMjs.projectConfigCompiled.build_location);
+        this.outputLocation = NKMjs.InProject(NKMjs.projectConfigCompiled.buildLocation);
         this.packager = NKMjs.InCoreModules(`electron-packager/bin/electron-packager.js`);
 
         this.packageJSON = JSON.parse(fs.readFileSync(NKMjs.InCore(`package.json`), 'utf8'));
@@ -54,7 +56,10 @@ class TaskPackageElectronApp extends ScriptBase {
 
         this.currentTarget = this.targets.shift();
 
-        if (!this.currentTarget) { return; }
+        if (!this.currentTarget) { 
+            this.End();
+            return; 
+        }
 
         this.currentTarget.zipName = `electron-v${this.electronVersion}-${this.currentTarget.platform}-${this.currentTarget.arch}.zip`;
         this.currentTarget.zipPath = path.resolve(this.electronVersionCacheFolder, this.currentTarget.zipName);
@@ -64,7 +69,7 @@ class TaskPackageElectronApp extends ScriptBase {
             fs.statSync(this.currentTarget.zipPath);
             this.Package();
         } catch (e) {
-            console.log(`Could not find ${this.currentTarget.zipName} -- Downloading it now...`);
+            this._log(`Could not find ${this.currentTarget.zipName} -- Downloading it now...`);
             require(`./helpers/download`)(this.currentTarget.zipSource, this.currentTarget.zipPath)
                 .then(this.Package)
                 .catch((p_err) => { console.log(p_err); });
@@ -96,4 +101,4 @@ class TaskPackageElectronApp extends ScriptBase {
 
 }
 
-new TaskPackageElectronApp();
+module.exports = TaskPackageElectronApp;

@@ -1,4 +1,4 @@
-'use strict'; 
+'use strict';
 
 const fs = require(`fs`);
 const path = require(`path`);
@@ -14,20 +14,22 @@ const NKMjs = require(`./nkm.js`);
 
 class TaskShrinkKeys extends ScriptBase {
 
-    constructor() {
-        super(`shrink-keys`);
-        if (this.__hasErrors) { return; }
+    constructor(p_onComplete = null) {
+        super(`shrink-keys`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         this.shrinkMap = {};// JSON.parse(fs.readFileSync(NKMjs.InCore(`configs/shrinkmap.json`), 'utf8'));
 
         let fileList = NKMjs.Get(`shrink-list`, []);
-        for(let i = 0, n = fileList.length; i < n; i++){
+        for (let i = 0, n = fileList.length; i < n; i++) {
             this._Process(fileList[i]);
         }
 
+        this.End();
+
     }
 
-    _Process( p_filePath ){
+    _Process(p_filePath) {
 
         let fileContent = fs.readFileSync(p_filePath, 'utf8');
 
@@ -36,10 +38,10 @@ class TaskShrinkKeys extends ScriptBase {
 
         for (let i = 0, n = splitA.length; i < n; i++) {
             let splitB = splitA[i].split(`")`)[0], pass = true;
-            if(fileContent.indexOf(`"${splitB}":`) === -1){ continue; } // Some imports are not mapped, skip these.
+            if (fileContent.indexOf(`"${splitB}":`) === -1) { continue; } // Some imports are not mapped, skip these.
             if (!paths.includes(splitB) && splitB.length > 1) { paths.push(splitB); } // isolate unique paths
         }
-        
+
         //paths.forEach((e) =>{ console.log(e)});
 
         for (let i = 0, n = paths.length; i < n; i++) {
@@ -50,7 +52,7 @@ class TaskShrinkKeys extends ScriptBase {
         }
 
         //let replacer = new ReplaceVars(this.constructor.replaceMap);
-        for( let key in  this.shrinkMap){
+        for (let key in this.shrinkMap) {
             fileContent = fileContent.split(key).join(this.shrinkMap[key]);
         }
 
@@ -60,4 +62,4 @@ class TaskShrinkKeys extends ScriptBase {
 
 }
 
-new TaskShrinkKeys();
+module.exports = TaskShrinkKeys;

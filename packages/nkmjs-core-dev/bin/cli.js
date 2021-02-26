@@ -11,50 +11,56 @@ class NKMCLI extends ScriptBase {
     constructor() {
 
         super(`nkmjs-task`, null, null, false);
-        if (this.__hasErrors) { return; }
+        if (this.__hasErrors) { return this.End(); }
+
+        this._Bind(this.RunNext);
 
         if (process.argv.length === 0) {
             this._PrintHelp();
             return;
         }
 
-        let scriptList = null,
-            taskId = process.argv[0];
+        this.scriptList = null;
+        let taskId = process.argv[0];
 
         if (`tasks` in NKMjs.projectConfig && taskId in NKMjs.projectConfig.tasks) {
-            scriptList = NKMjs.projectConfig.tasks[taskId];
+            this.scriptList = NKMjs.projectConfig.tasks[taskId];
         } else if (taskId in NKMjs.coreConfig.tasks) {
-            scriptList = NKMjs.coreConfig.tasks[taskId];
+            this.scriptList = NKMjs.coreConfig.tasks[taskId];
         } else {
             try {
-                this.Run(`./${taskId}`);
+                this.Run(`./${taskId}`, this.End);
             } catch (e) {
-                console.log(chalk.redBright(`⚠`) + ` '${chalk.bgRed.whiteBright(taskId)}' is not a valid task name.`);
+                this._logError(`'${taskId}' is not a valid task name.`)
+                this.End();
             }
             return;
         }
 
-        let cos = chalk.gray(`${this.Ind()}`);
-        console.log(cos + chalk.gray(`task list (${scriptList.length}) : ${scriptList}\n`));
+        this._log(`task list (${this.scriptList.length}) : ${this.scriptList}\n`);
 
-        let originalArgs = NKMjs.shortargs;
+        this.originalArgs = NKMjs.shortargs;
+        this.RunNext();
 
-        for (let i = 0, n = scriptList.length; i < n; i++) {
+    }
 
-            let scriptInfos = scriptList[i];
+    RunNext() {
+        let scriptInfos = this.scriptList.shift();
 
-            if (Array.isArray(scriptInfos)) {
-                NKMjs.shortargs = scriptInfos[1];
-                scriptInfos = scriptInfos[0];
-            } else {
-                NKMjs.shortargs = originalArgs;
-            }
-
-            this.Run(`./${scriptInfos}`);
-
+        if (!scriptInfos) {
+            this.End();
+            return;
         }
 
-        NKMjs.shortargs = originalArgs;
+        if (Array.isArray(scriptInfos)) {
+            NKMjs.shortargs = scriptInfos[1];
+            scriptInfos = scriptInfos[0];
+        } else {
+            NKMjs.shortargs = this.originalArgs;
+        }
+
+        this.Run(`./${scriptInfos}`, this.RunNext);
+
     }
 
     _PrintHelp() {

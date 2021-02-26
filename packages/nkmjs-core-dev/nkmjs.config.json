@@ -11,14 +11,21 @@
         ],
         "start": [
             "task-build-styles",
-            "task-start-electron"
+            "task-start-electron",
+            "task-cleanup"
         ],
         "bundle": [
             "task-build-styles",
-            "task-build-for-web"
+            "task-build-for-web",
+            "task-cleanup"
         ],
         "package": [
-            "task-package-electron-app"
+            "task-package-electron-app",
+            "task-cleanup"
+        ],
+        "build": [
+            "task-build-electron-app",
+            "task-cleanup"
         ],
         "fetch-styles": [
             [

@@ -14,46 +14,31 @@ const chalk = require('chalk');
  */
 class TaskStartElectron extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`start-electron`);
+        super(`start-electron`, null, null, p_onComplete);
         if (this.__hasErrors) { return; }
 
         this.Run(`./task-build-styles`);
         this.Run(`./task-build-electron-html-index`);
         this.Run(`./task-build-electron-entry-point`);
 
-
         let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT);
 
-        let cos = chalk.gray(`${this.Ind()}`);
-        console.log(cos + chalk.green(`· `) + chalk.gray.italic(`electron ${electronEntry}`));
-        //execSync(`electron ${electronEntry}`);
-        //console.log(cos + chalk.cyan(`· `) + chalk.gray(`end : ${result}`));
+        this._logFwd(chalk.gray.italic(`electron ${electronEntry}`), `·`);
 
         let ls = exec(`node ${NKMjs.InCoreModules(`electron/cli.js`)} ${electronEntry}`); //electron
         ls.stdout.on('data', function (data) { console.log(data.toString()); });
         ls.stderr.on('data', function (data) { console.log(chalk.redBright(data.toString())); });
-        ls.on('exit', this._Bind(this._End));
+        ls.on('exit', this._Bind(this._OnElectronExit));
 
     }
 
-    _End(code) {
-
-        console.log('child process exited with code ' + code.toString());
-
-        if(!(`clean` in NKMjs.shortargs)){ return; }
-
-        let indexHtml = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT),
-            indexJS = NKMjs.InApp(NKMjs.ELECTRON_HTML_INDEX);
-
-        try {
-            fs.unlinkSync(indexHtml);
-            fs.unlinkSync(indexJS);
-        } catch (e) { }
-
+    _OnElectronExit(code) {
+        this._logFwd(`electron exited with code ${code !== 0 ? chalk.yellow(code) : chalk.green(code)}`);
+        this.End();
     }
 
 }
 
-new TaskStartElectron();
+module.exports = TaskStartElectron;

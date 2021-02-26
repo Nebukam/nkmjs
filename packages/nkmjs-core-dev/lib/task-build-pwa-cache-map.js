@@ -15,14 +15,14 @@ const DirRead = require(`./helpers/dir-read`);
 
 class TaskBuildPWACacheMap extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-pwa-cache-map`);
-        if (this.__hasErrors) { return; }
+        super(`build-pwa-cache-map`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         let map = [`./`],
             externals = NKMjs.Get(`externals`, []),
-            cacheFolders = NKMjs.projectConfigCompiled.cache_folders;
+            cacheFolders = NKMjs.projectConfigCompiled.cacheDirectories;
 
         for (let i = 0, n = externals.length; i < n; i++) {
             map.push(`./${NKMjs.Sanitize(externals[i])}-min.js`);
@@ -46,10 +46,10 @@ class TaskBuildPWACacheMap extends ScriptBase {
 
         NKMjs.Set(`cache-map`, map);
 
-        //console.log(map);
+        this.End();
 
     }
 
 }
 
-new TaskBuildPWACacheMap();
+module.exports = TaskBuildPWACacheMap;

@@ -1,14 +1,14 @@
 {
     /* Required */
     "manifest_version": 2,
-    "name": "$verbose_name",
-    "short_name": "$verbose_short_name",
+    "name": "$longName",
+    "short_name": "$shortName",
     "version": "$version",
     "version_name": "$short_name $version",
     "homepage_url": "$homepage",
   
     /* Recommended */
-    "default_locale": "en",
+    "defaultLocale": "en",
     "description": "$description",
     "icons": $icons,
   
@@ -16,13 +16,13 @@
     /* Button to open a popup */
     "browser_action": { 
         "default_icon": $icons,
-          "default_title": "$verbose_name",
+          "default_title": "$longName",
           "default_popup": "index.html"
     }, 
     /* Button that is contextual to a page -- hence means specific stuffs & permissions */
     "page_action": { 
         "default_icon": $icons,
-          "default_title": "$verbose_name",
+          "default_title": "$longName",
           "default_popup": "index.html"
     },
   

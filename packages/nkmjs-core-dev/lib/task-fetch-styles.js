@@ -11,39 +11,41 @@ const ForEachModule = require("./helpers/foreach-module");
 
 class TaskFetchStyles extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`task-fetch-styles`);
-        if (this.__hasErrors) { return; }
+        super(`task-fetch-styles`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         // Fetch node_modules dir contents
         this._Bind(this._ProcessModuleContent);
 
         this._appendArray = NKMjs.shortargs.append ? [] : null;
 
-        this.rootOutput = this.Resolve(NKMjs.projectConfigCompiled.style_location);
+        this.rootOutput = this.Resolve(NKMjs.projectConfigCompiled.styleLocation);
         console.log(`output to : ${this.rootOutput}`);
         this._report = {};
         new ForEachModule(this.Resolve(`node_modules`), this._ProcessModuleContent);
         console.log(`${this.__localId} copied the following files :`);
         console.log(this._report);
         console.log(`---`);
+        
+        this.End();
 
     }
 
     _ProcessModuleContent(p_nkmConfig) {
 
-        if (!p_nkmConfig.style_location) { return; }
+        if (!p_nkmConfig.styleLocation) { return; }
 
         let count = 0,
             c,
             local;
 
-        for (let i = 0, n = p_nkmConfig.style_location.length; i < n; i++) {
+        for (let i = 0, n = p_nkmConfig.styleLocation.length; i < n; i++) {
             c = count;
             local = new Array(0);
             let dirCopy = new DirCopy(
-                path.resolve(p_nkmConfig.__modulePath, p_nkmConfig.style_location[i]),
+                path.resolve(p_nkmConfig.__modulePath, p_nkmConfig.styleLocation[i]),
                 this.rootOutput, {
                 '.scss': (p_src, p_dest, p_isDir) => { local.push(p_dest); return p_dest; },
                 '.css': (p_src, p_dest, p_isDir) => { local.push(p_dest); return p_dest; },
@@ -65,4 +67,4 @@ class TaskFetchStyles extends ScriptBase {
 
 }
 
-new TaskFetchStyles();
+module.exports = TaskFetchStyles;

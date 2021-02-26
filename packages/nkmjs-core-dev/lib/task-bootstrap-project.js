@@ -21,12 +21,12 @@ const ReplaceVars = require(`./helpers/replace-vars`);
 
 class TaskBootstrapProject extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`bootstrap-nkmjs`);
-        if (this.__hasErrors) { return; }
+        super(`bootstrap-nkmjs`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
-        console.log(`Will initialize an NKMjs Project in the following location : ${NKMjs.InProject()}`);
+        this._log(`Will initialize an NKMjs Project in the following location : ${NKMjs.InProject()}`);
 
         // Init config, skip it if found (note that this will still fill missing config arguments)
         NKMjs.args.skipConfigIfFound = true;
@@ -38,20 +38,20 @@ class TaskBootstrapProject extends ScriptBase {
         // Go through all folders that needs to be created, as well as files etc
 
         // + Build folder
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.build_location));
+        FSUTILS.ensuredir(NKMjs.InProject(initConfig.buildLocation));
 
         // + Asset folder
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.assets_location));
+        FSUTILS.ensuredir(NKMjs.InProject(initConfig.assetsLocation));
 
         // + Icon folder
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.icons));
-        // TODO : Copy default icons ONLY IF THEY DON'T ALREADY EXIST
+        FSUTILS.ensuredir(NKMjs.InProject(initConfig.iconsLocation));
+        // TODO : Copy default iconsLocation ONLY IF THEY DON'T ALREADY EXIST
 
         // + style folder
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.style_location));
+        FSUTILS.ensuredir(NKMjs.InProject(initConfig.styleLocation));
 
         // + compiled style location
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.compiled_style_location));
+        FSUTILS.ensuredir(NKMjs.InProject(initConfig.compiledStyleLocation));
 
         // + JS folders in app
         FSUTILS.ensuredir(NKMjs.InApp(`js`)); // for webapp
@@ -68,8 +68,10 @@ class TaskBootstrapProject extends ScriptBase {
         NKMjs.shortargs.append = true;
         this.Run(`./task-fetch-styles`);
 
+        this.End();
+
     }
 
 }
 
-new TaskBootstrapProject();
+module.exports = TaskBootstrapProject;

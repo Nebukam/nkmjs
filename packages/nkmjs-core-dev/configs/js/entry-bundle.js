@@ -22,7 +22,7 @@ paths[PATH.MUSIC] = '';
 paths[PATH.PICTURES] = '';
 paths[PATH.VIDEOS] = '';
 paths[PATH.LOGS] = '';
-paths[PATH.STYLE] = '%compiled_style_location%';
+paths[PATH.STYLE] = '%compiledStyleLocation%';
 
 LOG.toggle(true);
 

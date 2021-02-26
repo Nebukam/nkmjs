@@ -11,20 +11,19 @@ const sass = require('sass');
 
 class TaskBuildStyles extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`task-build-styles`);
-        if (this.__hasErrors) { return; }
+        super(`task-build-styles`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         if(NKMjs.style_built){
-            console.log(chalk.gray(`${this.Ind()}`) + chalk.green(`>> `) + `Style already built, skipping.`);
+            this._log(`Style already built, skipping.`);
             return;
         }
 
-        let inputLocation = this.Resolve(NKMjs.projectConfigCompiled.style_location),
-            outputLocation = this.Resolve(NKMjs.projectConfigCompiled.compiled_style_location),
-            compress = NKMjs.shortargs.compress ? true : false,
-            cos = chalk.gray(`${this.Ind()}`);
+        let inputLocation = this.Resolve(NKMjs.projectConfigCompiled.styleLocation),
+            outputLocation = this.Resolve(NKMjs.projectConfigCompiled.compiledStyleLocation),
+            compress = NKMjs.shortargs.compress;
 
         console.log(``);
         NKMjs.style_built = true;
@@ -49,7 +48,8 @@ class TaskBuildStyles extends ScriptBase {
                     let result = sass.renderSync(p_options);
                     if (fs.existsSync(p_dest)) { fs.unlinkSync(p_dest); }
                     fs.writeFileSync(p_dest, result.css);
-                    console.log(cos + chalk.green(`+ `) + chalk.gray.italic(NKMjs.Shorten(p_dest)));
+                    //console.log(cos + chalk.green(`+ `) + chalk.gray.italic(NKMjs.Shorten(p_dest)));
+                    this._logFwd(NKMjs.Shorten(p_dest), `+`);
                 } catch (e) {
                     console.log(e);
                 }
@@ -64,9 +64,10 @@ class TaskBuildStyles extends ScriptBase {
         });
 
         console.log(``);
+        this.End();
 
     }
 
 }
 
-new TaskBuildStyles();
+module.exports = TaskBuildStyles;

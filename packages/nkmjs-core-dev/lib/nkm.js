@@ -17,7 +17,6 @@ class NKMjs {
     static HTML_INDEX = `index.html`;
     static JS_MAIN = `main.js`;
 
-
     static Init() {
         if (this.__initialized) { return; }
         this.__initialized = true;
@@ -50,7 +49,7 @@ class NKMjs {
         this.projectConfig = new NKMJSPackageConfig(cProject, false);
         this.projectConfigCompiled = new NKMJSPackageConfig(cProject, true);
 
-        if (!this.projectConfig.__packagejson) {
+        if (!this.projectConfig.__hasNKMConfig) {
             console.log(chalk.yellow(`>> WARNING : Current project (${path.basename(cProject)}) has no nkmjs.config.json. Will be using defaults instead.`));
             this.validProject = false;
             let defaultConfigPath = path.resolve(cCore, `configs`);
@@ -65,8 +64,6 @@ class NKMjs {
 
         //console.log(`dirnameProject : ${this.dirnameProject}`);
         //console.log(`dirnameCore : ${this.dirnameCore}`);
-
-
 
     }
 
@@ -110,19 +107,19 @@ class NKMjs {
     }
 
     static InApp(...pathSegments) {
-        return this.InProject(this.projectConfigCompiled.app_location, ...pathSegments);
+        return this.InProject(this.projectConfigCompiled.srcLocation, ...pathSegments);
     }
 
     static InBuilds(...pathSegments) {
-        return this.InProject(this.projectConfigCompiled.build_location, ...pathSegments);
+        return this.InProject(this.projectConfigCompiled.buildLocation, ...pathSegments);
     }
 
     static InAssets(...pathSegments) {
-        return this.InProject(this.projectConfigCompiled.assets_location, ...pathSegments);
+        return this.InProject(this.projectConfigCompiled.assetsLocation, ...pathSegments);
     }
 
     static InStyle(...pathSegments) {
-        return this.InProject(this.projectConfigCompiled.style_location, ...pathSegments);
+        return this.InProject(this.projectConfigCompiled.styleLocation, ...pathSegments);
     }
 
     static Shorten(p_path){

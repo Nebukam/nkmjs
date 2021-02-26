@@ -7,36 +7,42 @@ const NKMJSPackageConfig = require("./helpers/nkmjs-package-config");
 const ScriptBase = require("./script-base");
 
 class ScriptRunTaskList extends ScriptBase {
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`run-task-list`, [], [`task`]);
-        if (this.__hasErrors) { return; }
+        super(`run-task-list`, [], [`task`], p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
-        let scriptList = NKMjs.projectConfig.tasks[NKMjs.shortargs.task];
+        this._Bind(this.RunNext);
 
-        let cos = chalk.gray(`${this.Ind()}`);
-        console.log(cos + chalk.gray(`task list (${scriptList.length}) : ${scriptList}\n`));
+        this.scriptList = NKMjs.projectConfig.tasks[NKMjs.shortargs.task];
+
+        this._log(`task list (${this.scriptList.length}) : ${this.scriptList}\n`);
 
         this.rootArgs = NKMjs.shortargs;
-
-        for (let i = 0, n = scriptList.length; i < n; i++) {
-
-            let scriptInfos = scriptList[i];
-
-            if (Array.isArray(scriptInfos)) {
-                NKMjs.shortargs = scriptInfos[1];
-                scriptInfos = scriptInfos[0];
-            } else {
-                NKMjs.shortargs = this.rootArgs;
-            }
-
-            this.Run(`./${scriptInfos}`);
-
-        }
-
-        // CHECK : https://stackoverflow.com/questions/38032047/how-to-execute-npm-run-command-programmatically
+        this.RunNext();
 
     }
+
+    RunNext() {
+
+        let scriptInfos = this.scriptList.shift();
+
+        if (!scriptInfos) {
+            this.End();
+            return;
+        }
+
+        if (Array.isArray(scriptInfos)) {
+            NKMjs.shortargs = scriptInfos[1];
+            scriptInfos = scriptInfos[0];
+        } else {
+            NKMjs.shortargs = this.rootArgs;
+        }
+
+        this.Run(`./${scriptInfos}`, this.RunNext);
+
+    }
+
 }
 
-new ScriptRunTaskList();
+module.exports = ScriptRunTaskList;

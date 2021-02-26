@@ -8,31 +8,23 @@ const chalk = require('chalk');
 
 class TaskBuildReplaceExternals extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-for-web`);
-        if (this.__hasErrors) { return; }
-
-        this._Bind(this._End);
+        super(`build-for-web`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
         
         this.Run(`./task-build-bundle-html-index`);
         this.Run(`./task-build-pwa-service-worker`);
-        this.Run(`./task-build-bundle`);
-
-        // Copy relevant file in target directories
-
-        //this._End();
+        this.Run(`./task-build-bundle`, this._OnBundleComplete);
 
     }
 
-    _End(){
-        // Cleanup app folder
-        let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT)
-        try{ fs.unlinkSync(entryPoint); }catch(e){ }
-
-        //this.Run(`./task-cleanup-build-location`);
+    _OnBundleComplete(){
+        // Copy relevant file in target directories
+        // uuuh this look like a copy paste
+        this.End();
     }
 
 }
 
-new TaskBuildReplaceExternals();
+module.exports = TaskBuildReplaceExternals;

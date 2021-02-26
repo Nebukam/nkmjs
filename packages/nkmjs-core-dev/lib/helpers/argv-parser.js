@@ -11,15 +11,35 @@ class ARGS {
 
             try {
 
+                // --key=value | -key=value | key=value
+
                 let split = a.split(`=`),
-                    key = split[0];
+                    key = this.Shorten(split.shift()),
+                    value = split.length ? split.join(`=`) : null;
 
-                split.shift();
-                split = split.join(`=`);
-                this[key] = split;
+                this[key] = value === null ? true : value;
 
-            } catch (e) { }
+            } catch (e) {
+
+                // --key | -key
+
+                key = this.Shorten(key);
+                this[key] = true;
+
+            }
         }
+    }
+
+    Shorten(key) {
+        // get id for argname formatted as --key or -key
+        try {
+            if (key[0] == `-`) {
+                key = key.substr(1);
+                if (key[0] == `-`) { key = key.substr(1); }
+            }
+        } catch (e) { }
+
+        return key;
     }
 
 }

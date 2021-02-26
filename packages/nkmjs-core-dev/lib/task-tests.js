@@ -15,15 +15,17 @@ const FSUTILS = require(`./helpers/fsutils`);
  */
 class TaskTest extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`nkmjs-test`);
-        if (this.__hasErrors) { return; }
+        super(`nkmjs-test`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         FSUTILS.ensuredir(path.resolve(__dirname, `./tagada/tsoin/tsoin/prout`));
+
+        this.End();
 
     }
 
 }
 
-new TaskTest();
+module.exports = TaskTest;

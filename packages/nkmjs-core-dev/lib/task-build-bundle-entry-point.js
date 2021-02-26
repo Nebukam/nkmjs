@@ -14,10 +14,10 @@ const ReplaceVars = require(`./helpers/replace-vars`);
 
 class TaskBuildBundleEntryPoint extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-bundle-entry-point`);
-        if (this.__hasErrors) { return; }
+        super(`build-bundle-entry-point`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT);
 
@@ -27,15 +27,17 @@ class TaskBuildBundleEntryPoint extends ScriptBase {
             replacer = new ReplaceVars({
                 js_main: `./js/main`,
                 config: ``
-            }, NKMjs.projectConfigCompiled.__packagejson),
+            }, NKMjs.projectConfigCompiled.__raw),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/js/entry-bundle.js`), 'utf8'));
 
         fs.writeFileSync(bundleEntry, templateContent);
-        console.log(chalk.gray(`${this.Ind()}`) + `· ` + chalk.green(`+ `) + chalk.gray(`${NKMjs.Shorten(bundleEntry)}`));
+        this._logFwd(NKMjs.Shorten(bundleEntry), `+`);
+
+        this.End();
 
     }
 
 }
 
-new TaskBuildBundleEntryPoint();
+module.exports = TaskBuildBundleEntryPoint;

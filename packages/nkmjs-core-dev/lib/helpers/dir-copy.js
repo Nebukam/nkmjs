@@ -60,7 +60,7 @@ class DirCopy {
         } else {
             if (!destStat || this._replace) { //Only copy if does not exists
 
-                let canAppend = this._appendArray ? true : false;
+                let canAppend = !!this._appendArray;
                 if (canAppend && this._canAppend) { canAppend = this._canAppend(p_dest); }
 
                 if (canAppend) {

@@ -11,7 +11,20 @@ class ScriptBase {
 
     static indent = 0;
 
-    constructor(p_localId, p_requiredLocals = null, p_requiredArgs = null, p_parseValues = true) {
+    constructor(
+        p_localId,
+        p_requiredLocals = null,
+        p_requiredArgs = null,
+        p_onCompleteFn = null) {
+
+        this.__running = true;
+        this.__onCompleteFn = p_onCompleteFn;
+
+        this._Bind(this.End);
+        this._Bind(this.Run);
+        this._Bind(this._log);
+        this._Bind(this._logError);
+        this._Bind(this._logWarn);
 
         NKMjs.Init();
 
@@ -24,18 +37,16 @@ class ScriptBase {
         try { this.localConfig = NKMjs.projectConfig[this.__localId]; }
         catch (e) { }
 
-        //console.log(chalk.gray(`- ${this.Lines()}`));
-
         if (p_requiredLocals && p_requiredLocals.length > 0) {
             if (!this.localConfig) {
-                console.log(chalk.red(`${this.Ind()}>> ERROR : ${this.__localId} is missing local config.`));
+                this._logError(`${this.__localId} is missing local config.`);
                 this.__hasErrors = true;
                 return;
             } else {
                 for (let i = 0, n = p_requiredLocals.length; i < n; i++) {
                     let key = p_requiredLocals[i];
                     if (!(key in this.localConfig)) {
-                        console.log(chalk.red(`${this.Ind()}>> ERROR : ${this.__localId} is missing required local config value : '${key}'.`));
+                        this._logError(`${this.__localId} is missing required local config value : '${key}'.`);
                         this.__hasErrors = true;
                     }
                 }
@@ -46,14 +57,14 @@ class ScriptBase {
             for (let i = 0, n = p_requiredArgs.length; i < n; i++) {
                 let key = p_requiredArgs[i];
                 if (!(key in NKMjs.shortargs)) {
-                    console.log(chalk.red(`${this.Ind()}>> ERROR : ${this.__localId} is missing required argument value : '${key}'.`));
+                    this._logError(`${this.__localId} is missing required argument value : '${key}'.`);
                     this.__hasErrors = true;
                 }
             }
         }
 
-        console.log(chalk.gray(`${this.Ind()}`) + chalk.green(`>> `) + ` ${this.__localId} ` + chalk.gray.italic(`in ${NKMjs.InProject()}`));
-        //console.log(this.localConfig);
+        this._logFwd(`${this.__localId} ` + chalk.gray.italic(`in ${NKMjs.InProject()}`));
+
     }
 
     _Bind(p_func) { return this[p_func.name] = p_func.bind(this); }
@@ -76,11 +87,43 @@ class ScriptBase {
         return offset;
     }
 
-    Run(p_path) {
+    Run(p_path, p_doneFn = null) {
+
         ScriptBase.indent = this.__indent + 1;
-        let result = require(p_path);
+
+        let _script = require(p_path),
+            instance = new _script(p_doneFn);
+
         ScriptBase.indent = this.__indent;
-        return result;
+
+        return instance;
+
+    }
+
+    End() { if (this.__onCompleteFn) { this.__onCompleteFn(); } }
+
+    //  ----> Log
+
+    _log(p_msg) {
+        console.log(chalk.gray(`${this.Ind()} ${p_msg}`));
+    }
+
+    _logFwd(p_msg, p_char = null) {
+        if (p_char === null) {
+            console.log(chalk.gray(`${this.Ind()}`) + chalk.green(`>> `) + `${p_msg}`);
+        } else {
+            //console.log(chalk.gray(`${this.Ind()}`) + `· ` + chalk.green(`${p_char} `) + chalk.gray(p_msg));
+            console.log(chalk.gray(`${this.Ind()}`) + chalk.green(`${p_char} `) + chalk.gray(p_msg));
+        }
+    }
+
+    _logError(p_msg) {        
+        console.log(chalk.gray(`${this.Ind()}`) + chalk.redBright(`⚠ ERR : `) + chalk.bgRed.whiteBright(taskId) + ` says : ` + chalk.gray(p_msg));
+        //console.log(chalk.red(`${this.Ind()}>> ERROR: `) + p_msg);
+    }
+
+    _logWarn(p_msg) {
+        console.log(chalk.yellow(`${this.Ind()}!! `) + p_msg);
     }
 
 }

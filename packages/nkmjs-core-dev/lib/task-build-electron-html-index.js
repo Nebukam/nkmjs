@@ -14,23 +14,25 @@ const ReplaceVars = require(`./helpers/replace-vars`);
 
 class TaskBuildElectronHTMLIndex extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-electron-html-index`);
-        if (this.__hasErrors) { return; }
+        super(`build-electron-html-index`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         let electronHtml = NKMjs.InApp(NKMjs.ELECTRON_HTML_INDEX),
-            replacer = new ReplaceVars(NKMjs.projectConfigCompiled.__packagejson),
+            replacer = new ReplaceVars(NKMjs.projectConfigCompiled.__raw),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index-electron.html`), 'utf8'));
 
         // Transform & replace
 
         fs.writeFileSync(electronHtml, templateContent);
-        console.log(chalk.gray(`${this.Ind()}`) + `· ` + chalk.green(`+ `) + chalk.gray(`${NKMjs.Shorten(electronHtml)}`));
+        this._logFwd(NKMjs.Shorten(electronHtml), `+`);
 
+        this.End();
+        
     }
 
 }
 
-new TaskBuildElectronHTMLIndex();
+module.exports = TaskBuildElectronHTMLIndex;

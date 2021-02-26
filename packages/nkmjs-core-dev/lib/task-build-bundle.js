@@ -20,37 +20,55 @@ const Bundler = require('./helpers/bundler');
 
 class TaskBuildBundle extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-bundle`);
-        if (this.__hasErrors) { return; }
+        super(`build-bundle`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
-        this._Bind(this._Done);
+        this._Bind(this._OnExternalBundlesComplete);
+        this._Bind(this._OnBundleComplete);
 
         this.Run(`./task-build-bundle-entry-point`);
 
-        let externals = NKMjs.Get(`externals`, []);
-        this.depCount = externals.length + 1;
+        this.externals = [...NKMjs.Get(`externals`, [])];
+        this.eIndex = 0;
 
-        if (externals.length != 0) {
-            let templateContent = fs.readFileSync(NKMjs.InCore(`configs/js/entry-external.js`), 'utf8'), content;
-            for (let i = 0, n = externals.length; i < n; i++) {
-                let extModule = externals[i],
-                    fName = NKMjs.Sanitize(extModule),
-                    rvar = new ReplaceVars({
-                        module_index: `${i}`,
-                        module_require_path: extModule
-                    }),
-                    depEntryPoint = NKMjs.InApp(`${fName}.js`);
-                fs.writeFileSync(depEntryPoint, rvar.Replace(templateContent));
-                new Bundler(extModule,
-                    depEntryPoint,
-                    NKMjs.InBuilds(`${fName}.js`),
-                    NKMjs.InBuilds(`${fName}-min.js`),
-                    this._Done,
-                    chalk.gray(`${this.Ind()}`)
-                );
-            }
+        if (this.externals.length != 0) {
+            this.templateContent = fs.readFileSync(NKMjs.InCore(`configs/js/entry-external.js`), 'utf8');
+            this.BundleNext();
+        } else {
+            this._OnExternalBundlesComplete();
+        }
+
+    }
+
+    BundleNext() {
+
+        let extModule = this.externals.shift(),
+            fName = NKMjs.Sanitize(extModule),
+            rvar = new ReplaceVars({
+                module_index: `${this.eIndex++}`,
+                module_require_path: extModule
+            }),
+            depEntryPoint = NKMjs.InApp(`${fName}.js`);
+
+        fs.writeFileSync(depEntryPoint, rvar.Replace(this.templateContent));
+
+        new Bundler(extModule,
+            depEntryPoint,
+            NKMjs.InBuilds(`${fName}.js`),
+            NKMjs.InBuilds(`${fName}-min.js`),
+            this._OnExternalBundlesComplete,
+            this
+        );
+
+    }
+
+    _OnExternalBundlesComplete(p_bundler) {
+
+        if (this.externals.length != 0) {
+            this.BundleNext();
+            return;
         }
 
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT);
@@ -58,24 +76,16 @@ class TaskBuildBundle extends ScriptBase {
             NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT),
             NKMjs.InBuilds(`${NKMjs.projectConfigCompiled.name}.js`),
             NKMjs.InBuilds(`${NKMjs.projectConfigCompiled.name}-min.js`),
-            this._Done,
-            chalk.gray(`${this.Ind()}`)
+            this._OnBundleComplete,
+            this
         );
 
-
     }
 
-    _Done(p_bundler) {
-        this.depCount--;
-        if (this.depCount <= 0) { this._End(); }
-    }
-
-    _End() {
-        //Clean up
-        console.log(`End!`);
-        //this.Run(`./task-build-cleanup`);
+    _OnBundleComplete(p_bundler) {
+        this.End();
     }
 
 }
 
-new TaskBuildBundle();
+module.exports = TaskBuildBundle;

@@ -14,27 +14,29 @@ const ReplaceVars = require(`./helpers/replace-vars`);
 
 class TaskBuildPWAServiceWorker extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-pwa-service-worker`);
-        if (this.__hasErrors) { return; }
+        super(`build-pwa-service-worker`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         this.Run(`./task-build-pwa-cache-map`);
 
         let pwaSWJS = NKMjs.InBuilds(NKMjs.PWA_SERVICE_WORKER),
             replacer = new ReplaceVars({
                 cacheURLs: `[\n    "`+NKMjs.Get(`cache-map`, []).join(`",\n    "`)+`"]`
-            }, NKMjs.projectConfigCompiled.__packagejson),
+            }, NKMjs.projectConfigCompiled.__raw),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/js/pwa-service-worker.js`), 'utf8'));
 
         // Transform & replace
 
         fs.writeFileSync(pwaSWJS, templateContent);
-        console.log(chalk.gray(`${this.Ind()}`) + `· ` + chalk.green(`+ `) + chalk.gray(`${NKMjs.Shorten(pwaSWJS)}`));
+        this._logFwd(NKMjs.Shorten(pwaSWJS), `+`);
+
+        this.End();
 
     }
 
 }
 
-new TaskBuildPWAServiceWorker();
+module.exports = TaskBuildPWAServiceWorker;

@@ -14,12 +14,10 @@ const ReplaceVars = require(`./helpers/replace-vars`);
 
 class TaskBuildBundleHTMLIndex extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-bundle-html-index`);
-        if (this.__hasErrors) { return; }
-
-
+        super(`build-bundle-html-index`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
 
         let externals = NKMjs.Get(`externals`, []),
             tagList = ``;
@@ -34,16 +32,18 @@ class TaskBuildBundleHTMLIndex extends ScriptBase {
         let htmlEntry = NKMjs.InBuilds(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars({
                 libraries: tagList
-            }, NKMjs.projectConfigCompiled.__packagejson),
+            }, NKMjs.projectConfigCompiled.__raw),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));
 
         // Transform & replace
 
         fs.writeFileSync(htmlEntry, templateContent);
-        console.log(chalk.gray(`${this.Ind()}`) + `· ` + chalk.green(`+ `) + chalk.gray(`${NKMjs.Shorten(htmlEntry)}`));
+        this._logFwd(NKMjs.Shorten(htmlEntry), `+`);
+
+        this.End();
     }
 
 }
 
-new TaskBuildBundleHTMLIndex();
+module.exports = TaskBuildBundleHTMLIndex;

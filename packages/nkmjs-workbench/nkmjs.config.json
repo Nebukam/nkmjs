@@ -1,24 +1,24 @@
 {
     "name": "nkmjs-styleguide",
-    "verbose_name": "NKMjs Styleguide",
-    "verbose_short_name": "Stylguide",
+    "longName": "NKMjs Styleguide",
+    "shortName": "Stylguide",
     "description": "My app description, lorem ipsum; dolor si amet.",
-    "default_locale": "en",
+    "defaultLocale": "en",
     "homepage": "https://homepage",
     "display": "standalone",
-    "color_theme": "#000000",
-    "app_location": "./app",
-    "assets_location": "./assets",
-    "icons": "%assets_location%/icons",
-    "style_location": "%assets_location%/style",
-    "compiled_style_location": "%app_location%/style",
-    "build_location": "./builds",
-    "cache_folders": [
+    "colorTheme": "#000000",
+    "srcLocation": "./src",
+    "assetsLocation": "./assets",
+    "iconsLocation": "%assetsLocation%/icons",
+    "styleLocation": "%srcLocation%/scss",
+    "compiledStyleLocation": "%srcLocation%/style",
+    "buildLocation": "./builds",
+    "cacheDirectories": [
         "./style"
     ],
-    "build_targets": [
+    "buildConfigs": [
         {
-            "platform": "win32",
+            "platform": "windows",
             "arch": "x64"
         }
     ]

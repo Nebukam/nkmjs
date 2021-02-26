@@ -19,10 +19,10 @@ const Bundler = require('./helpers/bundler');
 
 class TaskBuildCoreBundle extends ScriptBase {
 
-    constructor() {
+    constructor(p_onComplete = null) {
 
-        super(`build-core-bundle`);
-        if (this.__hasErrors) { return; }
+        super(`build-core-bundle`, null, null, p_onComplete);
+        if (this.__hasErrors) { return this.End(); }
         
         if(NKMjs.validProject){
             new Bundler(
@@ -30,24 +30,21 @@ class TaskBuildCoreBundle extends ScriptBase {
                 NKMjs.InCore(`nkmjs-core.js`),
                 NKMjs.InBuilds(`nkmjs-core.js`), 
                 NKMjs.InBuilds(`nkmjs-core-min.js`), 
-                this._Bind(this._End),
-                chalk.gray(`${this.Ind()}`));
+                this.End,
+                this);
         }else{
             new Bundler(
                 "@nkmjs/core",
                 NKMjs.InCore(`nkmjs-core.js`), 
                 NKMjs.InCore(`bin/nkmjs-core.js`), 
                 NKMjs.InCore(`bin/nkmjs-core-min.js`), 
-                this._Bind(this._End),
-                chalk.gray(`${this.Ind()}`));
+                this.End,
+                this);
         }
 
     }
 
-    _End(p_bundler){
-
-    }
 
 }
 
-new TaskBuildCoreBundle();
+module.exports = TaskBuildCoreBundle;
