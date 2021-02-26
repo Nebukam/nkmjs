@@ -3,7 +3,7 @@
     "description": "My app description, lorem ipsum; dolor si amet.",
     "repository": "TBD",
     "license": "TBD",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "private": true,
     "scripts": {
         "nkmjs-start": "nkmjs-task start clean",
@@ -11,10 +11,10 @@
         "nkmjs-package": "nkmjs-task package"
     },
     "dependencies": {
-        "@nkmjs/core": "^0.0.8"
+        "@nkmjs/core": "^0.0.9"
     },
     "devDependencies": {
-        "@nkmjs/core-dev": "^0.0.3"
+        "@nkmjs/core-dev": "^0.0.4"
     },
     "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }
