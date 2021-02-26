@@ -1,7 +1,7 @@
 {
   "opts": {
     "template": "./assets/docs/",
-    "destination": "./docs/",
+    "destination": "./documentation/",
     "tutorials": "./assets/docs/static/pages/",
     "sort": false,
     "recurse":true

@@ -85,13 +85,14 @@ class TaskBuildElectronApp extends ScriptBase {
                         output: NKMjs.InBuilds(`${conf.plateform}-${conf.arch}-${shared.version}`),
                         app: shared.appDirectory,
                         buildResources: shared.buildResources
-                    }
+                    },
+                    files: [
+                        `**/*`,
+                        `!package.bak.json`,
+                    ]
                 },
                 dependencies: shared.dependencies,
-                devDependencies: shared.devDependencies,
-                files: [
-                    `**/*`,
-                   ]
+                devDependencies: shared.devDependencies
             },
             builderConfig = {};
 

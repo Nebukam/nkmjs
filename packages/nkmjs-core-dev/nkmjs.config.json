@@ -20,7 +20,12 @@
             "task-cleanup"
         ],
         "package": [
-            "task-package-electron-app",
+            [
+                "task-build-electron-app",
+                {
+                    "onlypack": true
+                }
+            ],
             "task-cleanup"
         ],
         "build": [
@@ -47,7 +52,5 @@
             "task-build-styles"
         ]
     },
-    "externals":[
-        
-    ]
+    "externals": []
 }
