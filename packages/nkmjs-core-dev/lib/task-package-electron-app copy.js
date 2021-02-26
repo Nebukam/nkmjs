@@ -7,7 +7,7 @@ const ScriptBase = require("./script-base");
 const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const FSUTILS = require(`./helpers/fsutils`);
-const packageBuilder = require(`electron-packager`);
+const builder = require(`electron-packager`);
 
 class TaskPackageElectronApp extends ScriptBase {
 
@@ -17,7 +17,6 @@ class TaskPackageElectronApp extends ScriptBase {
         if (this.__hasErrors) { return this.End(); }
 
         this._Bind(this.Package);
-        this._Bind(this.PackageNext);
 
         // Fetch target package config in project ( { platform:'windows', arch:'x64' } )
         this.configs = null;
@@ -98,21 +97,9 @@ class TaskPackageElectronApp extends ScriptBase {
         command += ` --version-string.ProductName='HUMA Project Manager'`;
         command += ` --max-old-space-size=4096`;
 
-        //execSync(command);
-        
-        packageBuilder({
-            dir: this.inputLocation,
-            electronVersion: this.electronVersion,
-            overwrite: true,
-            asar: false,
-            platform:p,
-            arch: this.currentConfig.arch,
-            prune: true,
-            out: this.outputLocation,
-            appVersion: NKMjs.coreConfigCompiled.version || `0.0.1`
-        })
-        .catch((e)=>{ console.log(e); })
-        .finally(this.PackageNext);
+        execSync(command);
+
+        this.PackageNext();
 
     }
 

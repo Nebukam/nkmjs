@@ -37,7 +37,7 @@ class TaskBuildElectronApp extends ScriptBase {
         this.sharedConfig = {
             version: (NKMjs.projectConfigCompiled.__packagejson.version || `0.0.1`),
             name: NKMjs.projectConfigCompiled.name,
-            main: `${NKMjs.projectConfigCompiled.srcLocation}/js-process/${NKMjs.JS_MAIN}`,
+            main: `${NKMjs.projectConfigCompiled.srcLocation}/${NKMjs.ELECTRON_ENTRY_POINT}`,
             description: NKMjs.projectConfigCompiled.description,
             productName: NKMjs.projectConfigCompiled.longName,
             appId: `my.id`,
@@ -88,7 +88,10 @@ class TaskBuildElectronApp extends ScriptBase {
                     }
                 },
                 dependencies: shared.dependencies,
-                devDependencies: shared.devDependencies
+                devDependencies: shared.devDependencies,
+                files: [
+                    `**/*`,
+                   ]
             },
             builderConfig = {};
 

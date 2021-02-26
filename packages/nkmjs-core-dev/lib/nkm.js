@@ -10,6 +10,8 @@ class NKMjs {
 
     static ELECTRON_ENTRY_POINT = `index-electron.js`;
     static ELECTRON_HTML_INDEX = `index-electron.html`;
+    static ELECTRON_BUNDLE = `electron-bundle.js`;
+    static ELECTRON_BUNDLE_MIN = `electron-bundle-min.js`;
     static BUNDLE_ENTRY_POINT = `bundle-entry-point.js`;
     static PWA_SERVICE_WORKER = `service-worker.js`;
     static BUNDLE = `bundle.js`;

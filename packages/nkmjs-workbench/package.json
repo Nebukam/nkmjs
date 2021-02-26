@@ -1,13 +1,14 @@
 {
-  "name": "@nkmjs/workbench",
+  "name": "nkm-workbench",
   "version": "0.0.9",
-  "description": "NKMjs Framework Tests",
-  "main": "index.js",
+  "description": "NKMjs Framework Workbench",
+  "main": "./src/index-electron.js",
   "repository": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-tests",
   "private": true,
   "scripts": {
     "nkmjs-start": "nkmjs-task start",
     "nkmjs-build": "nkmjs-task build",
+    "nkmjs-package": "nkmjs-task package",
     "nkmjs-bundle": "nkmjs-task bundle"
   },
   "author": {
@@ -20,7 +21,7 @@
   },
   "devDependencies": {
     "@nkmjs/core-dev": "^0.0.5",
-    "electron": "^11.1.1"
+    "electron": "^11.3.0"
   },
   "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }
