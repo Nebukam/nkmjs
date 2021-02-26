@@ -80,7 +80,7 @@ class TaskBuildElectronApp extends ScriptBase {
                 build: {
                     productName: shared.productName,
                     appId: shared.appId,
-                    asar: false, //build-specific
+                    asar: !!conf.asar,
                     directories: {
                         output: NKMjs.InBuilds(`${conf.plateform}-${conf.arch}-${shared.version}`),
                         app: shared.appDirectory,
