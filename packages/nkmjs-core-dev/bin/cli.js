@@ -10,7 +10,7 @@ const ScriptBase = require("../lib/script-base");
 class NKMCLI extends ScriptBase {
     constructor() {
 
-        super(`nkmjs-task`, null, null, false);
+        super(`nkmjs`, null, null, false);
         if (this.__hasErrors) { return this.End(); }
 
         this._Bind(this.RunNext);

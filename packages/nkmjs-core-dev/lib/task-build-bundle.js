@@ -52,7 +52,7 @@ class TaskBuildBundle extends ScriptBase {
             }),
             depEntryPoint = NKMjs.InApp(`${fName}.js`);
 
-        fs.writeFileSync(depEntryPoint, rvar.Replace(this.templateContent));
+        NKMjs.WriteTempSync(depEntryPoint, rvar.Replace(this.templateContent));
 
         new Bundler(extModule,
             depEntryPoint,

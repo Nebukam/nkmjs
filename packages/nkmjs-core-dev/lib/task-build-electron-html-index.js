@@ -26,7 +26,7 @@ class TaskBuildElectronHTMLIndex extends ScriptBase {
 
         // Transform & replace
 
-        fs.writeFileSync(electronHtml, templateContent);
+        NKMjs.WriteTempSync(electronHtml, templateContent);
         this._logFwd(NKMjs.Shorten(electronHtml), `+`);
 
         this.End();

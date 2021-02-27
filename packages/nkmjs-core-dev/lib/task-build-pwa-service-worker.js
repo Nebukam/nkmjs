@@ -30,7 +30,7 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
 
         // Transform & replace
 
-        fs.writeFileSync(pwaSWJS, templateContent);
+        NKMjs.WriteTempSync(pwaSWJS, templateContent);
         this._logFwd(NKMjs.Shorten(pwaSWJS), `+`);
 
         this.End();

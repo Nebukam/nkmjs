@@ -101,7 +101,7 @@ class Bundler {
 
         let transformed = this._ReplaceKeys(this._ReplaceExternal(p_response.code));
 
-        fs.writeFileSync(this.outputMin, transformed);
+        NKMjs.WriteTempSync(this.outputMin, transformed);
         this.script._logFwd(`${NKMjs.Shorten(this.outputMin)}`, `+`);
 
         this.doneFn(this);

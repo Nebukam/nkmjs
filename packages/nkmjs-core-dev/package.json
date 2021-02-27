@@ -17,7 +17,7 @@
     "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README.md"
   },
   "bin": {
-    "nkmjs-task": "./bin/cli.js"
+    "nkmjs": "./bin/cli.js"
   },
   "dependencies": {
     "@babel/cli": "^7.12.10",

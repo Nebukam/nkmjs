@@ -106,8 +106,8 @@ class TaskNKMInitConfig extends ScriptBase {
         let packageJSON = NKMjs.projectConfig.__packagejson,
             needUpdate = !!packageJSON,
             wantedScripts = {
-                ['nkmjs-start']: `nkmjs-task start clean`,
-                ['nkmjs-bundle']: `nkmjs-task bundle`
+                ['nkmjs-start']: `nkmjs start clean`,
+                ['nkmjs-bundle']: `nkmjs bundle`
             };
 
         if (needUpdate) {

@@ -109,7 +109,7 @@ class ModelManager extends EcosystemPart {
 
         if (modelMeta) {
             //console.log(modelMeta);
-            itemOptions[COM_ID.PATH] = U.Default(`${modelMeta.catalogPath}/`, `${itemOptions.path}/`);
+            itemOptions[COM_ID.PATH] = `${U.Default(modelMeta.catalogPath, itemOptions.path)}/`;
             itemOptions[COM_ID.ICON] = (modelMeta[COM_ID.ICON] || itemOptions[COM_ID.ICON]);
         } else {
             //console.log(`no meta found for ${p_model}`);

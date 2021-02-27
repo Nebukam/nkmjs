@@ -28,7 +28,7 @@ class TaskBuildElectronEntryPoint extends ScriptBase {
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/js/entry-electron.js`), 'utf8'));
 
-        fs.writeFileSync(electronEntry, templateContent);
+        NKMjs.WriteTempSync(electronEntry, templateContent);
         this._logFwd(NKMjs.Shorten(electronEntry), `+`);
 
         this.End();

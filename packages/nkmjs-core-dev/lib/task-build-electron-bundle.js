@@ -47,7 +47,7 @@ class TaskBuildBundle extends ScriptBase {
 
 
     _OnBundleComplete(p_err, p_src) {
-        fs.writeFileSync(NKMjs.InApp(NKMjs.ELECTRON_BUNDLE), p_src.toString());
+        NKMjs.WriteTempSync(NKMjs.InApp(NKMjs.ELECTRON_BUNDLE), p_src.toString());
         this.End();
     }
 

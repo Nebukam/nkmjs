@@ -6,10 +6,10 @@
   "repository": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-tests",
   "private": true,
   "scripts": {
-    "nkmjs-start": "nkmjs-task start",
-    "nkmjs-build": "nkmjs-task build",
-    "nkmjs-package": "nkmjs-task package",
-    "nkmjs-bundle": "nkmjs-task bundle"
+    "nkmjs-start": "nkmjs start",
+    "nkmjs-build": "nkmjs build",
+    "nkmjs-package": "nkmjs package",
+    "nkmjs-bundle": "nkmjs bundle"
   },
   "author": {
     "name": "Timothé Lapetite",

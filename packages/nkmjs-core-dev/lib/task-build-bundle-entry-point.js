@@ -21,7 +21,7 @@ class TaskBuildBundleEntryPoint extends ScriptBase {
 
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT);
 
-        fs.writeFileSync(entryPoint, `'use strict'; const test = require('./js/main.js');`);
+        NKMjs.WriteTempSync(entryPoint, `'use strict'; const test = require('./js/main.js');`);
 
         let bundleEntry = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT),
             replacer = new ReplaceVars({
@@ -31,7 +31,7 @@ class TaskBuildBundleEntryPoint extends ScriptBase {
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/js/entry-bundle.js`), 'utf8'));
 
-        fs.writeFileSync(bundleEntry, templateContent);
+                NKMjs.WriteTempSync(bundleEntry, templateContent);
         this._logFwd(NKMjs.Shorten(bundleEntry), `+`);
 
         this.End();

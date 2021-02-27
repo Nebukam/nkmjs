@@ -1,5 +1,6 @@
 const path = require(`path`);
 const chalk = require('chalk');
+const fs = require(`fs`);
 
 const ARGS = require(`./helpers/argv-parser`);
 const NKMJSPackageConfig = require(`./helpers/nkmjs-package-config`);
@@ -29,18 +30,20 @@ class NKMjs {
             cProject = null,
             cCore = path.resolve(__dirname, `../`);
 
-            console.log(eC);
+        console.log(eC);
 
-        if(`context` in this.args){
+        if (`context` in this.args) {
             cProject = this.args.context;
-        }else{
+        } else {
             if (eC.includes(`node_modules`)) {
                 cProject = eC;
                 while (cProject.includes(`node_modules`)) { cProject = path.resolve(cProject, `../`); }
-            }else{
+            } else {
                 cProject = process.env.INIT_CWD; //path.dirname(eC);
             }
         }
+
+        this.tempFiles = [];
 
         this.dirnameProject = cProject;
         this.dirnameCore = cCore;
@@ -57,7 +60,7 @@ class NKMjs {
             let defaultConfigPath = path.resolve(cCore, `configs`);
             this.projectConfig = new NKMJSPackageConfig(defaultConfigPath, false);
             this.projectConfigCompiled = new NKMJSPackageConfig(defaultConfigPath, true);
-        }else{
+        } else {
             this.validProject = true;
         }
 
@@ -87,13 +90,19 @@ class NKMjs {
 
     static __data = {};
 
-    static Set(p_id, p_value){
+    static WriteTempSync(p_path, p_content, p_options = null) {
+        if (!this.tempFiles.includes(p_path)) { this.tempFiles.push(p_path);}
+        if(p_options === null){ fs.writeFileSync(p_path, p_content); }
+        else{ fs.writeFileSync(p_path, p_content, p_options); }
+    }
+
+    static Set(p_id, p_value) {
         this.__data[p_id] = p_value;
     }
 
-    static Get(p_id, p_fallback){
-        if(p_id in this.__data){ return this.__data[p_id]; }
-        else{ return p_fallback; }
+    static Get(p_id, p_fallback) {
+        if (p_id in this.__data) { return this.__data[p_id]; }
+        else { return p_fallback; }
     }
 
     static InCore(...pathSegments) {
@@ -124,7 +133,7 @@ class NKMjs {
         return this.InProject(this.projectConfigCompiled.styleLocation, ...pathSegments);
     }
 
-    static Shorten(p_path){
+    static Shorten(p_path) {
         p_path = this.Short(p_path, this.InCore(), `{core}`);
         p_path = this.Short(p_path, this.InApp(), `{app}`);
         p_path = this.Short(p_path, this.InBuilds(), `{builds}`);
@@ -134,12 +143,12 @@ class NKMjs {
         return p_path;
     }
 
-    static Short(p_path, p_prefix, p_rep = `.`, p_sanitize = false){
+    static Short(p_path, p_prefix, p_rep = `.`, p_sanitize = false) {
         let p = p_path.split(p_prefix).join(p_rep);
         return p_sanitize ? p.split('\\').join('/') : p;
     }
 
-    static Sanitize(p_name){
+    static Sanitize(p_name) {
         p_name = p_name.split(`@`).join(`external-`);
         p_name = p_name.split(`/`).join(`-`);
         p_name = p_name.split(`\\`).join(`-`);

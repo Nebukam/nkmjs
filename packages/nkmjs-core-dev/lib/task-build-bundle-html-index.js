@@ -38,7 +38,7 @@ class TaskBuildBundleHTMLIndex extends ScriptBase {
 
         // Transform & replace
 
-        fs.writeFileSync(htmlEntry, templateContent);
+        NKMjs.WriteTempSync(htmlEntry, templateContent);
         this._logFwd(NKMjs.Shorten(htmlEntry), `+`);
 
         this.End();
