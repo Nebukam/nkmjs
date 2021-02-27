@@ -5,6 +5,7 @@ const path = require(`path`);
 const ScriptBase = require("./script-base");
 const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
+const FSUTILS = require("./helpers/fsutils");
 
 class TaskBuildForWeb extends ScriptBase {
 
@@ -44,6 +45,20 @@ class TaskBuildForWeb extends ScriptBase {
         // extension-mozilla-0.0.1
         // extension-edge-0.0.1
         // etc
+
+        let name = (NKMjs.projectConfigCompiled.name || `unamed-app`),
+            version = (NKMjs.projectConfigCompiled.__packagejson.version || `0.0.1`),
+            dirWWW = NKMjs.InBuilds(`${name}-www-${version}`),
+            dirExtensionChrome = NKMjs.InBuilds(`${name}-chrome-${version}`),
+            dirExtensionEdge = NKMjs.InBuilds(`${name}-edge-${version}`),
+            dirExtensionMozilla = NKMjs.InBuilds(`${name}-mozilla-${version}`);
+
+        FSUTILS.ensuredir([
+            dirWWW,
+            dirExtensionChrome,
+            dirExtensionEdge,
+            dirExtensionMozilla
+        ]);
         
         this.End();
     }

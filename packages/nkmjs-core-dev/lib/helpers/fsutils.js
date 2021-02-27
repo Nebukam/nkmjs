@@ -6,9 +6,14 @@ class FSUTILS {
 
     /**
      * @description Create a directory, with all the missing directories on the way
-     * @param {string} p_path 
+     * @param {string|array} p_path 
      */
     static ensuredir(p_path) {
+
+        if(Array.isArray(p_path)){
+            for(let i = 0, n = p_path.length; i < n; i++){ this.ensuredir(p_path[i]); }
+            return;
+        }
 
         try {
             if (!fs.statSync(p_path).isDirectory()) { throw new Error(); }
