@@ -46,7 +46,7 @@
     "scripts": [],
     "menu": {
       "Github repo": {
-        "href": "https://github.com/Nebukam/nkmjs-core",
+        "href": "https://github.com/Nebukam/nkmjs",
         "target": "_blank",
         "class": "menu-item",
         "id": "repository"

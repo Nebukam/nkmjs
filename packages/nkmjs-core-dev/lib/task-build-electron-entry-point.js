@@ -10,13 +10,13 @@ class TaskBuildElectronEntryPoint extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-electron-entry-point`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-electron-entry-point`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT),
             replacer = new ReplaceVars({
                 htmlIndex: NKMjs.ELECTRON_HTML_INDEX,
-                js_main:`./js/main`,
+                js_main: `./js/main`,
                 config: ``
             }, NKMjs.projectConfigCompiled.__raw),
             templateContent = replacer.Replace(

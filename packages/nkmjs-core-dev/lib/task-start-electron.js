@@ -9,12 +9,18 @@ class TaskStartElectron extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`start-electron`, null, null, p_onComplete);
-        if (this.__hasErrors) { return; }
+        super(`start-electron`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return; }
 
-        this.Run(`./task-build-styles`);
-        this.Run(`./task-build-electron-html-index`);
-        this.Run(`./task-build-electron-entry-point`);
+        this.Run([
+            `./task-build-styles`,
+            `./task-build-electron-html-index`,
+            `./task-build-electron-entry-point`
+        ], this._Bind(this.Start));
+
+    }
+
+    Start() {
 
         let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT);
 

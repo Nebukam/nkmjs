@@ -13,8 +13,8 @@ class TaskFetchStyles extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`task-fetch-styles`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`task-fetch-styles`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         // Fetch node_modules dir contents
         this._Bind(this._ProcessModuleContent);
@@ -28,7 +28,7 @@ class TaskFetchStyles extends ScriptBase {
         console.log(`${this.__localId} copied the following files :`);
         console.log(this._report);
         console.log(`---`);
-        
+
         this.End();
 
     }

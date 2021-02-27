@@ -14,23 +14,23 @@ class TaskBuildCoreBundle extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-core-bundle`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
-        
-        if(NKMjs.validProject){
+        super(`build-core-bundle`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
+
+        if (NKMjs.validProject) {
             new Bundler(
                 "@nkmjs/core",
                 NKMjs.InCore(`nkmjs-core.js`),
-                NKMjs.InBuilds(`nkmjs-core.js`), 
-                NKMjs.InBuilds(`nkmjs-core-min.js`), 
+                NKMjs.InVersionedBuilds(`nkmjs-core.js`),
+                NKMjs.InVersionedBuilds(`nkmjs-core-min.js`),
                 this.End,
                 this);
-        }else{
+        } else {
             new Bundler(
                 "@nkmjs/core",
-                NKMjs.InCore(`nkmjs-core.js`), 
-                NKMjs.InCore(`bin/nkmjs-core.js`), 
-                NKMjs.InCore(`bin/nkmjs-core-min.js`), 
+                NKMjs.InCore(`nkmjs-core.js`),
+                NKMjs.InCore(`bin/nkmjs-core.js`),
+                NKMjs.InCore(`bin/nkmjs-core-min.js`),
                 this.End,
                 this);
         }

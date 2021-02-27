@@ -1,4 +1,4 @@
-'use strict'; 
+'use strict';
 
 const fs = require(`fs`);
 const path = require(`path`);
@@ -10,16 +10,18 @@ class TaskBuildReplaceExternals extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-for-web`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
-        
-        this.Run(`./task-build-bundle-html-index`);
-        this.Run(`./task-build-pwa-service-worker`);
-        this.Run(`./task-build-bundle`, this._OnBundleComplete);
+        super(`build-replace-externals`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
+
+        this.Run([
+            `./task-build-bundle-html-index`,
+            `./task-build-pwa-service-worker`,
+            `./task-build-bundle`
+        ], this._OnBundleComplete);
 
     }
 
-    _OnBundleComplete(){
+    _OnBundleComplete() {
         // Copy relevant file in target directories
         // uuuh this look like a copy paste
         this.End();

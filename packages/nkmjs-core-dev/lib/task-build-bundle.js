@@ -15,8 +15,8 @@ class TaskBuildBundle extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-bundle`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-bundle`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this._Bind(this._OnExternalBundlesComplete);
         this._Bind(this._OnBundleComplete);
@@ -49,8 +49,8 @@ class TaskBuildBundle extends ScriptBase {
 
         new Bundler(extModule,
             depEntryPoint,
-            NKMjs.InBuilds(`${fName}.js`),
-            NKMjs.InBuilds(`${fName}-min.js`),
+            NKMjs.InVersionedBuilds(`${fName}.js`),
+            NKMjs.InVersionedBuilds(`${fName}-min.js`),
             this._OnExternalBundlesComplete,
             this
         );
@@ -67,8 +67,8 @@ class TaskBuildBundle extends ScriptBase {
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT);
         new Bundler(NKMjs.projectConfigCompiled.name,
             NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT),
-            NKMjs.InBuilds(`${NKMjs.projectConfigCompiled.name}.js`),
-            NKMjs.InBuilds(`${NKMjs.projectConfigCompiled.name}-min.js`),
+            NKMjs.InVersionedBuilds(`${NKMjs.projectConfigCompiled.name}.js`),
+            NKMjs.InVersionedBuilds(`${NKMjs.projectConfigCompiled.name}-min.js`),
             this._OnBundleComplete,
             this
         );

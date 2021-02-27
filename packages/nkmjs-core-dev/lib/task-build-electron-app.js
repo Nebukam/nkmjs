@@ -13,8 +13,8 @@ class TaskBuildElectronApp extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-electron-app`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-electron-app`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this._Bind(this.BuildNext);
 
@@ -28,14 +28,10 @@ class TaskBuildElectronApp extends ScriptBase {
             return;
         }
 
-        this.Run(`./task-build-styles`);
-        this.Run(`./task-build-electron-html-index`);
-        this.Run(`./task-build-electron-entry-point`);
-
         fs.renameSync(NKMjs.InProject(`package.json`), NKMjs.InProject(`package.bak.json`));
 
         this.sharedConfig = {
-            version: (NKMjs.projectConfigCompiled.__packagejson.version || `0.0.1`),
+            version: NKMjs.projectVersion,
             name: NKMjs.projectConfigCompiled.name,
             main: `${NKMjs.projectConfigCompiled.srcLocation}/${NKMjs.ELECTRON_ENTRY_POINT}`,
             description: NKMjs.projectConfigCompiled.description,
@@ -46,7 +42,11 @@ class TaskBuildElectronApp extends ScriptBase {
             dependencies: (NKMjs.projectConfigCompiled.__packagejson.dependencies || {})
         };
 
-        this.BuildNext();
+        this.Run([
+            `./task-build-styles`,
+            `./task-build-electron-html-index`,
+            `./task-build-electron-entry-point`
+        ], this.BuildNext);
 
     }
 
@@ -82,7 +82,7 @@ class TaskBuildElectronApp extends ScriptBase {
                     appId: shared.appId,
                     asar: !!conf.asar,
                     directories: {
-                        output: NKMjs.InBuilds(`${conf.plateform}-${conf.arch}-${shared.version}`),
+                        output: NKMjs.InVersionedBuilds(`desktop`,`${conf.plateform}-${conf.arch}-${shared.version}`),
                         app: shared.appDirectory,
                         buildResources: shared.buildResources
                     },

@@ -13,8 +13,8 @@ class TaskBuildStyles extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`task-build-styles`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`task-build-styles`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         if(NKMjs.style_built){
             this._log(`Style already built, skipping.`);

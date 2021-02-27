@@ -9,14 +9,14 @@ class TaskBuildCleanup extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`task-cleanup`, null, null, p_onComplete);
-        if (this.__hasErrors || NKMjs.shortargs.nocleanup) { return this.End(); }
+        super(`task-cleanup`, p_onComplete);
+        if (this.__hasErrors  || this.__shouldSkip || NKMjs.shortargs.nocleanup) { return this.End(); }
 
-        while(NKMjs.tempFiles.length != 0){
+        while (NKMjs.tempFiles.length != 0) {
             let path = NKMjs.tempFiles.pop();
-            try{
+            try {
                 fs.unlinkSync(path);
-            }catch(e){
+            } catch (e) {
                 this._logError(e);
             }
         }

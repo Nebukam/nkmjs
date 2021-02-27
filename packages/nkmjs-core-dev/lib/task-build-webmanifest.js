@@ -10,8 +10,8 @@ class TaskBuildWebmanifest extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-webmanifest`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-webmanifest`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.End();
 

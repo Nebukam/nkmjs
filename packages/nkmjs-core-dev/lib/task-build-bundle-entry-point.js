@@ -10,8 +10,8 @@ class TaskBuildBundleEntryPoint extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-bundle-entry-point`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-bundle-entry-point`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT);
 
@@ -25,7 +25,7 @@ class TaskBuildBundleEntryPoint extends ScriptBase {
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/js/entry-bundle.js`), 'utf8'));
 
-                NKMjs.WriteTempSync(bundleEntry, templateContent);
+        NKMjs.WriteTempSync(bundleEntry, templateContent);
         this._logFwd(NKMjs.Shorten(bundleEntry), `+`);
 
         this.End();

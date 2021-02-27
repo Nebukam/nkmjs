@@ -11,8 +11,8 @@ class TaskBuildPWACacheMap extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-pwa-cache-map`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-pwa-cache-map`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let map = [`./`],
             externals = NKMjs.Get(`externals`, []),

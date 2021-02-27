@@ -9,8 +9,8 @@ const NKMjs = require(`./nkm.js`);
 class TaskShrinkKeys extends ScriptBase {
 
     constructor(p_onComplete = null) {
-        super(`shrink-keys`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`shrink-keys`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.shrinkMap = {};// JSON.parse(fs.readFileSync(NKMjs.InCore(`configs/shrinkmap.json`), 'utf8'));
 

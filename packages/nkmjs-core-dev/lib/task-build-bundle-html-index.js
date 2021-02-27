@@ -10,8 +10,8 @@ class TaskBuildBundleHTMLIndex extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-bundle-html-index`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-bundle-html-index`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let externals = NKMjs.Get(`externals`, []),
             tagList = ``;
@@ -23,7 +23,7 @@ class TaskBuildBundleHTMLIndex extends ScriptBase {
 
         tagList += `<script type = "text/javascript" src = "${NKMjs.projectConfigCompiled.name}-min.js" ></script>\n`;
 
-        let htmlEntry = NKMjs.InBuilds(NKMjs.HTML_INDEX),
+        let htmlEntry = NKMjs.InVersionedBuilds(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars({
                 libraries: tagList
             }, NKMjs.projectConfigCompiled.__raw),

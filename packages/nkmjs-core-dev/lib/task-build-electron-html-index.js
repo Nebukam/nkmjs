@@ -10,8 +10,8 @@ class TaskBuildElectronHTMLIndex extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-electron-html-index`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-electron-html-index`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let electronHtml = NKMjs.InApp(NKMjs.ELECTRON_HTML_INDEX),
             replacer = new ReplaceVars(NKMjs.projectConfigCompiled.__raw),
@@ -24,7 +24,7 @@ class TaskBuildElectronHTMLIndex extends ScriptBase {
         this._logFwd(NKMjs.Shorten(electronHtml), `+`);
 
         this.End();
-        
+
     }
 
 }

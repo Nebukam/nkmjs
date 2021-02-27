@@ -6,16 +6,22 @@ const ARGS = require("./helpers/argv-parser");
 const NKMJSPackageConfig = require("./helpers/nkmjs-package-config");
 const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
+const RunList = require(`./helpers/run-list`);
 
 class ScriptBase {
 
     static indent = 0;
+    static runOnce = true;
+    static __ranOnce = false;
 
     constructor(
         p_localId,
-        p_requiredLocals = null,
-        p_requiredArgs = null,
-        p_onCompleteFn = null) {
+        p_onCompleteFn = null,
+        p_options = null) {
+
+        let
+            requiredLocals = p_options ? p_options.requiredLocals : null,
+            requiredArgs = p_options ? p_options.requiredArgs : null;
 
         this.__running = true;
         this.__onCompleteFn = p_onCompleteFn;
@@ -32,19 +38,29 @@ class ScriptBase {
         this.__hasErrors = false;
         this.__indent = ScriptBase.indent;
 
+        this.__shouldSkip = false;
+        if(this.constructor.runOnce && this.constructor.__ranOnce){
+            this._log(chalk.white(`× `)+chalk.italic(`skipping ${p_localId}, it ran once already.`));
+            this.__shouldSkip = true;
+            this.__running = false;
+            return;
+        }else{
+            this.constructor.__ranOnce = true;
+        }
+
         this.localConfig = null;
 
         try { this.localConfig = NKMjs.projectConfig[this.__localId]; }
         catch (e) { }
 
-        if (p_requiredLocals && p_requiredLocals.length > 0) {
+        if (requiredLocals && requiredLocals.length > 0) {
             if (!this.localConfig) {
                 this._logError(`${this.__localId} is missing local config.`);
                 this.__hasErrors = true;
                 return;
             } else {
-                for (let i = 0, n = p_requiredLocals.length; i < n; i++) {
-                    let key = p_requiredLocals[i];
+                for (let i = 0, n = requiredLocals.length; i < n; i++) {
+                    let key = requiredLocals[i];
                     if (!(key in this.localConfig)) {
                         this._logError(`${this.__localId} is missing required local config value : '${key}'.`);
                         this.__hasErrors = true;
@@ -53,9 +69,9 @@ class ScriptBase {
             }
         }
 
-        if (p_requiredArgs && p_requiredArgs.length > 0) {
-            for (let i = 0, n = p_requiredArgs.length; i < n; i++) {
-                let key = p_requiredArgs[i];
+        if (requiredArgs && requiredArgs.length > 0) {
+            for (let i = 0, n = requiredArgs.length; i < n; i++) {
+                let key = requiredArgs[i];
                 if (!(key in NKMjs.shortargs)) {
                     this._logError(`${this.__localId} is missing required argument value : '${key}'.`);
                     this.__hasErrors = true;
@@ -63,7 +79,9 @@ class ScriptBase {
             }
         }
 
-        this._logFwd(`${this.__localId} ` + chalk.gray.italic(`in ${NKMjs.InProject()}`));
+        if (this.__indent == 0) { this._logFwd(`${this.__localId} ` + chalk.gray.italic(`in ${NKMjs.InProject()}`)); }
+        else { this._logFwd(this.__localId); }
+
 
     }
 
@@ -71,10 +89,10 @@ class ScriptBase {
 
     Resolve(p_path) { return path.resolve(NKMjs.InProject(), p_path); }
 
-    Ind() {
+    Ind(p_offset = 0, p_char = `· `) {
         let offset = ``;
-        for (let i = 0; i < this.__indent; i++) {
-            offset += `· `;
+        for (let i = 0; i < (this.__indent + p_offset); i++) {
+            offset += p_char;
         }
         return offset;
     }
@@ -87,43 +105,56 @@ class ScriptBase {
         return offset;
     }
 
-    Run(p_path, p_doneFn = null) {
+    Run(p_path, p_onCompleteFn = null) {
 
-        ScriptBase.indent = this.__indent + 1;
+        if(Array.isArray(p_path)){
 
-        let _script = require(p_path),
-            instance = new _script(p_doneFn);
+            let _scriptList = new RunList(
+                this,
+                p_path,
+                p_onCompleteFn
+            );
 
-        ScriptBase.indent = this.__indent;
+        }else{
+            
+            ScriptBase.indent = this.__indent + 1;
 
-        return instance;
+            let _script = require(p_path),
+                instance = new _script(p_onCompleteFn);
+    
+            ScriptBase.indent = this.__indent;
+
+        }
 
     }
 
-    End() { if (this.__onCompleteFn) { this.__onCompleteFn(); } }
+    End() { 
+        this.__running = false;
+        if (this.__onCompleteFn) { this.__onCompleteFn(); } 
+    }
 
     //  ----> Log
 
-    _log(p_msg) {
-        console.log(chalk.gray(`${this.Ind()} ${p_msg}`));
+    _log(p_msg, p_offset = 0) {
+        console.log(chalk.gray(`${this.Ind(p_offset)}${p_msg}`));
     }
 
-    _logFwd(p_msg, p_char = null) {
+    _logFwd(p_msg, p_char = null, p_offset = 0) {
         if (p_char === null) {
-            console.log(chalk.gray(`${this.Ind()}`) + chalk.green(`>> `) + `${p_msg}`);
+            console.log(chalk.gray(`${this.Ind(p_offset)}`) + chalk.green(`» `) + `${p_msg}`);
         } else {
             //console.log(chalk.gray(`${this.Ind()}`) + `· ` + chalk.green(`${p_char} `) + chalk.gray(p_msg));
-            console.log(chalk.gray(`${this.Ind()}`) + chalk.green(`${p_char} `) + chalk.gray(p_msg));
+            console.log(chalk.gray(`${this.Ind(p_offset)}`) + chalk.green(`${p_char} `) + chalk.gray(p_msg));
         }
     }
 
-    _logError(p_msg) {        
-        console.log(chalk.gray(`${this.Ind()}`) + chalk.redBright(`⚠ ERR : `) + chalk.bgRed.whiteBright(taskId) + ` says : ` + chalk.gray(p_msg));
+    _logError(p_msg, p_offset = 0) {
+        console.log(chalk.gray(`${this.Ind(p_offset, `--`)}`) + chalk.redBright(`⚠ ERR : `) + chalk.bgRed.whiteBright(taskId) + ` says : ` + chalk.gray(p_msg));
         //console.log(chalk.red(`${this.Ind()}>> ERROR: `) + p_msg);
     }
 
-    _logWarn(p_msg) {
-        console.log(chalk.yellow(`${this.Ind()}!! `) + p_msg);
+    _logWarn(p_msg, p_offset = 0) {
+        console.log(chalk.yellow(`${this.Ind(p_offset)}! `) + p_msg);
     }
 
 }

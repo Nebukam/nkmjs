@@ -32,7 +32,10 @@ class Bundler {
 
         // ----> Browserify
 
-        this.script._logFwd(chalk.italic(`browserify ${NKMjs.Shorten(this.entryPoint)}`), `·`);
+        this.script._logFwd(chalk.italic(`bundle ${this.moduleID}`), `·`, 1);
+
+        //this.script._logFwd(chalk.italic(`browserify ${NKMjs.Shorten(this.entryPoint)}`), `·`, 1);
+        this.script._logFwd(chalk.italic(`browserify ${this.moduleID}`), `|`, 2);
 
         this.externals = NKMjs.Get(`externals`, []);
 
@@ -53,7 +56,8 @@ class Bundler {
 
         // ----> Babel
 
-        this.script._logFwd(chalk.italic(`babel > ${NKMjs.Shorten(this.output)}`), `|`);
+        //this.script._logFwd(chalk.italic(`babel > ${NKMjs.Shorten(this.output)}`), `|`, 1);
+        this.script._logFwd(chalk.italic(`babel > ${this.moduleID}`), `|`, 2);
 
         let localBabelConfig = null,
             babelConfig = {
@@ -68,11 +72,12 @@ class Bundler {
 
         let babeled = require("@babel/core").transformSync(p_src.toString(), babelConfig);
 
-        this.script._logFwd(chalk.italic(`${NKMjs.Shorten(this.output)}`), `+`);
+        //this.script._logFwd(chalk.italic(`${NKMjs.Shorten(this.output)}`), `+`, 1);
 
         // ----> Terser / Minify
 
-        this.script._logFwd(chalk.italic(`terser > ${NKMjs.Shorten(this.outputMin)}`), `|`);
+        //this.script._logFwd(chalk.italic(`terser > ${NKMjs.Shorten(this.outputMin)}`), `|`, 1);
+        this.script._logFwd(chalk.italic(`terser > ${this.moduleID}`), `|`, 2);
 
         let localTerserConfig = null,
             terserConfig = {
@@ -99,10 +104,12 @@ class Bundler {
 
     _OnTerseryfied(p_response) {
 
+        this.script._logFwd(chalk.italic(`swap-externals > ${this.moduleID}`), `|`, 2);
+
         let transformed = this._ReplaceKeys(this._ReplaceExternal(p_response.code));
 
         NKMjs.WriteTempSync(this.outputMin, transformed);
-        this.script._logFwd(`${NKMjs.Shorten(this.outputMin)}`, `+`);
+        this.script._logFwd(`${NKMjs.Shorten(this.outputMin)}`, `+`, 2);
 
         this.doneFn(this);
 

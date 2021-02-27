@@ -17,8 +17,8 @@ class TaskBootstrapProject extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`bootstrap-nkmjs`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`bootstrap-nkmjs`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this._log(`Will initialize an NKMjs Project in the following location : ${NKMjs.InProject()}`);
 

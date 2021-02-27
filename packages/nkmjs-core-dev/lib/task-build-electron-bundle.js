@@ -11,12 +11,12 @@ const browserify = require('browserify');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const Bundler = require('./helpers/bundler');
 
-class TaskBuildBundle extends ScriptBase {
+class TaskBuildElectronBundle extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-electron-bundle`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`build-electron-bundle`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this._Bind(this._OnBundleComplete);
 
@@ -29,8 +29,8 @@ class TaskBuildBundle extends ScriptBase {
         /*
                 new Bundler(NKMjs.projectConfigCompiled.name,
                     NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT),
-                    NKMjs.InBuilds(`${NKMjs.projectConfigCompiled.name}.js`),
-                    NKMjs.InBuilds(`${NKMjs.projectConfigCompiled.name}-min.js`),
+                    NKMjs.InVersionedBuilds(`${NKMjs.projectConfigCompiled.name}.js`),
+                    NKMjs.InVersionedBuilds(`${NKMjs.projectConfigCompiled.name}-min.js`),
                     this._OnBundleComplete,
                     this
                 );
@@ -46,4 +46,4 @@ class TaskBuildBundle extends ScriptBase {
 
 }
 
-module.exports = TaskBuildBundle;
+module.exports = TaskBuildElectronBundle;

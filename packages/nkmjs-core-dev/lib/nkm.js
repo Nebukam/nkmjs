@@ -4,6 +4,7 @@ const fs = require(`fs`);
 
 const ARGS = require(`./helpers/argv-parser`);
 const NKMJSPackageConfig = require(`./helpers/nkmjs-package-config`);
+const FSUTILS = require('./helpers/fsutils');
 
 
 
@@ -67,6 +68,8 @@ class NKMjs {
         process.argv = process.argv.splice(2);
         this.shortargs = new ARGS(process.argv);
 
+        this.projectVersion = (NKMjs.projectConfigCompiled.__packagejson.version || `0.0.0`);
+
         //console.log(`dirnameProject : ${this.dirnameProject}`);
         //console.log(`dirnameCore : ${this.dirnameCore}`);
 
@@ -83,6 +86,7 @@ class NKMjs {
 
     static projectConfig = null;
     static projectConfigCompiled = null;
+    static projectVersion = `0.0.0`;
 
     static dirnameCore = null;
     static dirnameApp = null;
@@ -92,6 +96,7 @@ class NKMjs {
 
     static WriteTempSync(p_path, p_content, p_options = null) {
         if (!this.tempFiles.includes(p_path)) { this.tempFiles.push(p_path);}
+        FSUTILS.ensuredir(path.dirname(p_path));
         if(p_options === null){ fs.writeFileSync(p_path, p_content); }
         else{ fs.writeFileSync(p_path, p_content, p_options); }
     }
@@ -122,7 +127,15 @@ class NKMjs {
     }
 
     static InBuilds(...pathSegments) {
-        return this.InProject(this.projectConfigCompiled.buildLocation, ...pathSegments);
+        return this.InProject(
+            this.projectConfigCompiled.buildLocation,
+            ...pathSegments);
+    }
+
+    static InVersionedBuilds(...pathSegments) {
+        return this.InBuilds(
+            this.projectVersion,
+            ...pathSegments);
     }
 
     static InAssets(...pathSegments) {

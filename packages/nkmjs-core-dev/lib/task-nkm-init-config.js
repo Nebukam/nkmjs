@@ -11,8 +11,8 @@ class TaskNKMInitConfig extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`task-init-config`, null, null, p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`task-init-config`, p_onComplete);
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         // Check if a config already exists
 
@@ -90,7 +90,7 @@ class TaskNKMInitConfig extends ScriptBase {
             }
         ], (p_results) => {
             if (p_results.bootstrap.toUpperCase() === `Y`) { this.Run(`./task-bootstrap-project`, this.End); }
-            else{ this.End }
+            else { this.End }
         }, { bootstrap: `N` });
 
     }

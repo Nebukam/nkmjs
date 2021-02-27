@@ -18,6 +18,13 @@
     ],
     "buildConfigs": [
         {
+            "platform":"www"
+        },
+        {
+            "platform":"chrome",
+            "arch":"67"
+        },
+        {
             "platform": "windows",
             "arch": "x64"
         }

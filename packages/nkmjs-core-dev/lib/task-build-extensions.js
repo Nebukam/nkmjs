@@ -7,11 +7,11 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const FSUTILS = require("./helpers/fsutils");
 
-class TaskBuildForWeb extends ScriptBase {
+class TaskBuildExtensions extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-for-web`, p_onComplete);
+        super(`build-extensions`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         //this.Run(`./task-build-core-bundle`);
@@ -32,7 +32,6 @@ class TaskBuildForWeb extends ScriptBase {
         NKMjs.Set(`externals`, externals);
 
         this.Run([
-            `./task-build-styles`,
             `./task-build-bundle-html-index`,
             `./task-build-pwa-service-worker`,
             `./task-build-bundle`
@@ -77,4 +76,4 @@ class TaskBuildForWeb extends ScriptBase {
 
 }
 
-module.exports = TaskBuildForWeb;
+module.exports = TaskBuildExtensions;

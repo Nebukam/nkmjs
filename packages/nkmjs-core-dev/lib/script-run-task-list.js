@@ -5,41 +5,21 @@ const NKMjs = require(`./nkm.js`);
 
 const NKMJSPackageConfig = require("./helpers/nkmjs-package-config");
 const ScriptBase = require("./script-base");
+const RunList = require(`./helpers/run-list`);
 
 class ScriptRunTaskList extends ScriptBase {
+
+    static runOnce = false;
+
     constructor(p_onComplete = null) {
 
-        super(`run-task-list`, [], [`task`], p_onComplete);
-        if (this.__hasErrors) { return this.End(); }
+        super(`run-task-list`, p_onComplete, { requiredArgs: [`task`] });
+        if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        this._Bind(this.RunNext);
-
-        this.scriptList = NKMjs.projectConfig.tasks[NKMjs.shortargs.task];
-
+        let scriptList = NKMjs.projectConfig.tasks[NKMjs.shortargs.task];
         this._log(`task list (${this.scriptList.length}) : ${this.scriptList}\n`);
 
-        this.rootArgs = NKMjs.shortargs;
-        this.RunNext();
-
-    }
-
-    RunNext() {
-
-        let scriptInfos = this.scriptList.shift();
-
-        if (!scriptInfos) {
-            this.End();
-            return;
-        }
-
-        if (Array.isArray(scriptInfos)) {
-            NKMjs.shortargs = scriptInfos[1];
-            scriptInfos = scriptInfos[0];
-        } else {
-            NKMjs.shortargs = this.rootArgs;
-        }
-
-        this.Run(`./${scriptInfos}`, this.RunNext);
+        this.Run(scriptList, this.End);
 
     }
 
