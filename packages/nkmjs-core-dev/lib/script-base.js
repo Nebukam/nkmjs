@@ -21,7 +21,8 @@ class ScriptBase {
 
         let
             requiredLocals = p_options ? p_options.requiredLocals : null,
-            requiredArgs = p_options ? p_options.requiredArgs : null;
+            requiredArgs = p_options ? p_options.requiredArgs : null,
+            skipKey = p_options ? p_options.skipKey : null;
 
         this.__running = true;
         this.__onCompleteFn = p_onCompleteFn;
@@ -41,6 +42,11 @@ class ScriptBase {
         this.__shouldSkip = false;
         if(this.constructor.runOnce && this.constructor.__ranOnce){
             this._log(chalk.white(`× `)+chalk.italic(`skipping ${p_localId}, it ran once already.`));
+            this.__shouldSkip = true;
+            this.__running = false;
+            return;
+        }else if(skipKey && skipKey in NKMjs.shortargs){
+            this._log(chalk.white(`× `)+chalk.italic(`--${skipKey} » skipping ${p_localId}.`));
             this.__shouldSkip = true;
             this.__running = false;
             return;
@@ -105,6 +111,11 @@ class ScriptBase {
         return offset;
     }
 
+    /**
+     * 
+     * @param {string|array} p_path 
+     * @param {function} p_onCompleteFn 
+     */
     Run(p_path, p_onCompleteFn = null) {
 
         if(Array.isArray(p_path)){

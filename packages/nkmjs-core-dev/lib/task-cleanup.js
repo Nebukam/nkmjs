@@ -7,10 +7,12 @@ const NKMjs = require(`./nkm.js`);
 
 class TaskBuildCleanup extends ScriptBase {
 
+    static runOnce = false;
+
     constructor(p_onComplete = null) {
 
-        super(`task-cleanup`, p_onComplete);
-        if (this.__hasErrors  || this.__shouldSkip || NKMjs.shortargs.nocleanup) { return this.End(); }
+        super(`task-cleanup`, p_onComplete, { skipKey:`no-cleanup` });
+        if (this.__hasErrors  || this.__shouldSkip) { return this.End(); }
 
         while (NKMjs.tempFiles.length != 0) {
             let path = NKMjs.tempFiles.pop();

@@ -13,7 +13,7 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
         super(`build-pwa-service-worker`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        this.Run(`./task-build-pwa-cache-map`);
+        this.Run(`./task-prepare-pwa-cache-map`);
 
         let pwaSWJS = NKMjs.InVersionedBuilds(NKMjs.PWA_SERVICE_WORKER),
             replacer = new ReplaceVars({

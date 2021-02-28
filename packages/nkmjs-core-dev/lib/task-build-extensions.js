@@ -14,32 +14,14 @@ class TaskBuildExtensions extends ScriptBase {
         super(`build-extensions`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        //this.Run(`./task-build-core-bundle`);
-
-        // Check which dependencies should be externalized as per config' request
-        let externals = ["@nkmjs/core"];
-
-        if (`externals` in NKMjs.coreConfigCompiled) {
-            let exs = NKMjs.coreConfigCompiled.externals;
-            for (let i = 0, n = exs.length; i < n; i++) { externals.push(exs[i]); }
-        }
-
-        if (`externals` in NKMjs.projectConfigCompiled) {
-            let exs = NKMjs.projectConfigCompiled.externals;
-            for (let i = 0, n = exs.length; i < n; i++) { if (!externals.includes(exs[i])) { externals.push(exs[i]) }; }
-        }
-
-        NKMjs.Set(`externals`, externals);
-
         this.Run([
-            `./task-build-bundle-html-index`,
-            `./task-build-pwa-service-worker`,
-            `./task-build-bundle`
-        ], this._Bind(this._OnBundleComplete));
+            `./task-build-for-web`,
+            `./task-audit-visible-urls`
+        ], this._Bind(this._OnBundleForWebComplete));
 
     }
 
-    _OnBundleComplete() {
+    _OnBundleForWebComplete() {
 
         // Copy relevant file in target directories
         // www-0.0.1
@@ -69,9 +51,9 @@ class TaskBuildExtensions extends ScriptBase {
         ]);
 
         NKMjs.Set(`extensions-dir`, NKMjs.InVersionedBuilds(`extension`));
-
-        this.Run(`./task-package-extensions`, this.End);
         
+        this.End();
+
     }
 
 }

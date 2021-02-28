@@ -1,8 +1,8 @@
 const NKMjs = require(`../nkm.js`);
 
-class RunList{
-    
-    constructor(p_owner, p_list, p_end){
+class RunList {
+
+    constructor(p_owner, p_list, p_end) {
 
         this.RunNext = this.RunNext.bind(this);
 
@@ -31,13 +31,14 @@ class RunList{
             NKMjs.shortargs = this.originalArgs;
         }
 
-        this.__owner.Run(`./${scriptInfos}`, this.RunNext);
+        this.__owner.Run(scriptInfos, this.RunNext);
 
     }
 
-    End(){
+    End() {
         NKMjs.shortargs = this.originalArgs;
-        this.__endFn();
+        if (this.__endFn) { this.__endFn(); }
+
     }
 
 }

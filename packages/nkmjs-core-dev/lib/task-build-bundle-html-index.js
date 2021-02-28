@@ -13,20 +13,15 @@ class TaskBuildBundleHTMLIndex extends ScriptBase {
         super(`build-bundle-html-index`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        let externals = NKMjs.Get(`externals`, []),
-            tagList = ``;
-
-        for (let i = 0, n = externals.length; i < n; i++) {
-            let extModule = externals[i];
-            tagList += `<script type = "text/javascript" src = "${NKMjs.Sanitize(extModule)}-min.js" ></script>\n`;
-        }
-
-        tagList += `<script type = "text/javascript" src = "${NKMjs.projectConfigCompiled.name}-min.js" ></script>\n`;
+        this.Run([
+            `./task-prepare-html-metas.js`, // Metas, OpenGraph, Twitter
+            `./task-prepare-html-scripts.js` // 
+        ]);
 
         let htmlEntry = NKMjs.InVersionedBuilds(NKMjs.HTML_INDEX),
-            replacer = new ReplaceVars({
-                libraries: tagList
-            }, NKMjs.projectConfigCompiled.__raw),
+            replacer = new ReplaceVars(
+                NKMjs.projectConfigCompiled.__raw,
+                NKMjs.__data),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));
 

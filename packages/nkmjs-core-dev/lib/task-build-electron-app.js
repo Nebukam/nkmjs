@@ -96,7 +96,7 @@ class TaskBuildElectronApp extends ScriptBase {
             },
             builderConfig = {};
 
-        if (NKMjs.shortargs.packonly) {
+        if (NKMjs.shortargs.pack-only) {
             builderConfig.dir = true;
         }
 

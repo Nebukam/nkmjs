@@ -32,6 +32,12 @@
             "task-build-electron-app",
             "task-cleanup"
         ],
+        "build-extensions": [
+            "task-build-for-web",
+            "task-build-extensions",
+            "task-package-extensions",
+            "task-cleanup"
+        ],
         "build-all":[
             "task-build-styles",
             "task-build-for-web",

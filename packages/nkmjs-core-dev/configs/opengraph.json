@@ -1,0 +1,25 @@
+{
+    "title":{
+        "content":"%longName%",
+        "property":"og:title"
+    },
+    "description":{
+        "content":"%description%",
+        "property":"og:description"
+    },
+    "type":{
+        "content":"website",
+        "property":"og:type"
+    },
+    "url":{
+        "content":"%homepage%",
+        "property":"og:url"
+    },
+    "image":{
+        "property":"og:image"
+    },
+    "locale":{
+        "content":"%defaultLocale%",
+        "property":"og:locale"
+    }
+}

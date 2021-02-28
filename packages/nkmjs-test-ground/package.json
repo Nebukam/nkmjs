@@ -6,9 +6,7 @@
     "version": "0.0.10",
     "private": true,
     "scripts": {
-        "nkmjs-start": "nkmjs start clean",
-        "nkmjs-bundle": "nkmjs bundle",
-        "nkmjs-package": "nkmjs package"
+        "nkmjs": "nkmjs"
     },
     "dependencies": {
         "@nkmjs/core": "^0.0.11"

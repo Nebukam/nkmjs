@@ -7,11 +7,11 @@ const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const DirRead = require(`./helpers/dir-read`);
 
-class TaskBuildPWACacheMap extends ScriptBase {
+class TaskPreparePWACacheMap extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-pwa-cache-map`, p_onComplete);
+        super(`prepare-pwa-cache-map`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let map = [`./`],
@@ -46,4 +46,4 @@ class TaskBuildPWACacheMap extends ScriptBase {
 
 }
 
-module.exports = TaskBuildPWACacheMap;
+module.exports = TaskPreparePWACacheMap;

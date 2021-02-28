@@ -3,15 +3,15 @@
     "longName": "My App : Verbose Name",
     "shortName": "My App",
     "description": "My app description, lorem ipsum; dolor si amet.",
-    "defaultLocale": "en",
+    "defaultLocale": "en_US",
     "homepage": "https://homepage",
     "display": "standalone",
     "colorTheme": "#1e1e1e",
     "srcLocation": "./src",
-    "assetsLocation": "./assets",
-    "iconsLocation": "%assetsLocation%/icons",
     "styleLocation": "%srcLocation%/scss",
     "compiledStyleLocation": "%srcLocation%/style",
+    "assetsLocation": "%srcLocation%/assets",
+    "iconsLocation": "%assetsLocation%/icons",    
     "buildLocation": "./builds",
     "cacheDirectories": [
         "./style"
