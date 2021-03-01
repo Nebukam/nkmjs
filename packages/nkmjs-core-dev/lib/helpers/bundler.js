@@ -6,7 +6,6 @@ const NKMjs = require(`../nkm.js`);
 const chalk = require('chalk');
 const { minify } = require("terser");
 const browserify = require('browserify');
-const sp = require('synchronized-promise');
 
 
 /**
