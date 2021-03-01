@@ -120,7 +120,20 @@ class NKMjs {
     }
 
     static InCoreModules(...pathSegments) {
-        return path.resolve(this.dirnameCore, `node_modules`, ...pathSegments);
+        let p = path.resolve(this.dirnameCore, `node_modules`, ...pathSegments);
+        try{ fs.statSync(p); }
+        catch(e){
+            try{ 
+                // If using yarn, there's a good chance some modules have been flattened.
+                p = path.resolve(this.dirnameProject, `node_modules`, ...pathSegments);
+                fs.statSync(p);
+            }catch(e){
+                console.error(`Invalid core module lookup : ${pathSegments}, either the module isn't installed, or has been flattened in an unexpected fashion.`);
+                return path.resolve(this.dirnameCore, `node_modules`, ...pathSegments);
+            }
+
+        }
+        return p;
     }
 
     static InProject(...pathSegments) {
