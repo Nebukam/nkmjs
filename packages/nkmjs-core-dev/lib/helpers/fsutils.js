@@ -10,9 +10,9 @@ class FSUTILS {
      */
     static ensuredir(p_path) {
 
-        if(Array.isArray(p_path)){
-            for(let i = 0, n = p_path.length; i < n; i++){ this.ensuredir(p_path[i]); }
-            return;
+        if (Array.isArray(p_path)) {
+            for (let i = 0, n = p_path.length; i < n; i++) { this.ensuredir(p_path[i]); }
+            return p_path;
         }
 
         try {
@@ -36,6 +36,8 @@ class FSUTILS {
                 }
             }
         }
+
+        return p_path;
 
     }
 
@@ -62,12 +64,26 @@ class FSUTILS {
             fs.statSync(p_path);
         } catch (e) {
             this.ensuredir(path.dirname(p_path));
-            if(p_preProcess){
+            if (p_preProcess) {
                 fs.writeFileSync(p_path, p_preProcess(fs.readFileSync(p_defaultContentPath, p_encoding)), p_encoding);
-            }else{
+            } else {
                 fs.copyFileSync(p_path, p_src);
             }
         }
+    }
+
+    static rmdir(p_path) {
+        try {
+            let dirContent = fs.readdirSync(p_path);
+            for (let i = 0, n = dirContent.length; i < n; i++) {
+                let item = dirContent[i],
+                    itemPath = path.resolve(p_path, item),
+                    stats = fs.statSync(itemPath);
+                if(stats.isDirectory()){ this.rmdir(itemPath); }
+                else{ fs.unlinkSync(itemPath); }
+            }
+            fs.rmdirSync(p_path);
+        } catch (e) { }
     }
 
 }

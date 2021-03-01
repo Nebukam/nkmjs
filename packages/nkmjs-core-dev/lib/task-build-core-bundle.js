@@ -17,12 +17,13 @@ class TaskBuildCoreBundle extends ScriptBase {
         super(`build-core-bundle`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
+        // TODO : Cache build of core library to speed up the process
         if (NKMjs.validProject) {
             new Bundler(
                 "@nkmjs/core",
                 NKMjs.InCore(`nkmjs-core.js`),
-                NKMjs.InVersionedBuilds(`nkmjs-core.js`),
-                NKMjs.InVersionedBuilds(`nkmjs-core-min.js`),
+                NKMjs.InBuildRsc(`nkmjs-core.js`),
+                NKMjs.InBuildRsc(`nkmjs-core-min.js`),
                 this.End,
                 this);
         } else {

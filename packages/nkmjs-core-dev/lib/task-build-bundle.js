@@ -67,8 +67,8 @@ class TaskBuildBundle extends ScriptBase {
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT);
         new Bundler(NKMjs.projectConfigCompiled.name,
             NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT),
-            NKMjs.InVersionedBuilds(`${NKMjs.projectConfigCompiled.name}.js`),
-            NKMjs.InVersionedBuilds(`${NKMjs.projectConfigCompiled.name}-min.js`),
+            NKMjs.InBuildRsc(`${NKMjs.projectConfigCompiled.name}.js`),
+            NKMjs.InBuildRsc(`${NKMjs.projectConfigCompiled.name}-min.js`),
             this._OnBundleComplete,
             this
         );

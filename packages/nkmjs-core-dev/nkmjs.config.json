@@ -34,6 +34,7 @@
         ],
         "build-extensions": [
             "task-build-for-web",
+            "task-prepare-icons",
             "task-build-extensions",
             "task-package-extensions",
             "task-cleanup"

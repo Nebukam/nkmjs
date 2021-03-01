@@ -4,6 +4,7 @@ const fs = require(`fs`);
 const path = require(`path`);
 const ScriptBase = require("./script-base");
 const NKMjs = require(`./nkm.js`);
+const FSUTILS = require("./helpers/fsutils");
 
 class TaskBuildCleanup extends ScriptBase {
 
@@ -22,6 +23,8 @@ class TaskBuildCleanup extends ScriptBase {
                 this._logError(e);
             }
         }
+
+        FSUTILS.rmdir(NKMjs.InBuildRsc());
 
         this.End();
 

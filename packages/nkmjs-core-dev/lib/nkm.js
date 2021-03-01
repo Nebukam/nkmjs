@@ -20,6 +20,7 @@ class NKMjs {
     static BUNDLE_MIN = `bundle-min.js`;
     static HTML_INDEX = `index.html`;
     static JS_MAIN = `main.js`;
+    static GENERATED_RSC = `gen.rsc`;
 
     static Init() {
         if (this.__initialized) { return; }
@@ -101,6 +102,10 @@ class NKMjs {
         else{ fs.writeFileSync(p_path, p_content, p_options); }
     }
 
+    static RegisterTemp(p_path){
+        if (!this.tempFiles.includes(p_path)) { this.tempFiles.push(p_path);}
+    }
+
     static Set(p_id, p_value) {
         this.__data[p_id] = p_value;
     }
@@ -122,8 +127,16 @@ class NKMjs {
         return path.resolve(this.dirnameProject, ...pathSegments);
     }
 
+    static InBuildRsc(...pathSegments) {
+        return this.InProject(
+            this.GENERATED_RSC,
+            ...pathSegments);
+    }
+
     static InApp(...pathSegments) {
-        return this.InProject(this.projectConfigCompiled.srcLocation, ...pathSegments);
+        return this.InProject(
+            this.projectConfigCompiled.srcLocation, 
+            ...pathSegments);
     }
 
     static InBuilds(...pathSegments) {

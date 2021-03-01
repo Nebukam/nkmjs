@@ -160,7 +160,7 @@ class ScriptBase {
     }
 
     _logError(p_msg, p_offset = 0) {
-        console.log(chalk.gray(`${this.Ind(p_offset, `--`)}`) + chalk.redBright(`⚠ ERR : `) + chalk.bgRed.whiteBright(taskId) + ` says : ` + chalk.gray(p_msg));
+        console.log(chalk.redBright(`${this.Ind(p_offset)}× ERR : `) + chalk.gray(p_msg));
         //console.log(chalk.red(`${this.Ind()}>> ERROR: `) + p_msg);
     }
 

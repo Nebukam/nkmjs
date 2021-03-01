@@ -1,0 +1,24 @@
+{
+  "name": "nkm-workbench",
+  "version": "0.0.10",
+  "description": "NKMjs Framework Workbench",
+  "main": "./src/index-electron.js",
+  "repository": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-tests",
+  "private": true,
+  "scripts": {
+    "nkmjs": "nkmjs"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/core": "^0.0.11"
+  },
+  "devDependencies": {
+    "@nkmjs/core-dev": "^0.0.6",
+    "electron": "^11.3.0"
+  },
+  "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
+}

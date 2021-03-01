@@ -7,7 +7,7 @@
     "homepage": "https://homepage",
     "display": "standalone",
     "colorTheme": "#000000",
-    "srcLocation": "./src",
+    "srcLocation": "./app",
     "assetsLocation": "./assets",
     "iconsLocation": "%assetsLocation%/icons",
     "styleLocation": "%srcLocation%/scss",

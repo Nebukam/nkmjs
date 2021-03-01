@@ -22,7 +22,7 @@ paths[PATH.MUSIC] = '';
 paths[PATH.PICTURES] = '';
 paths[PATH.VIDEOS] = '';
 paths[PATH.LOGS] = '';
-paths[PATH.STYLE] = './src/style';
+paths[PATH.STYLE] = './app/style';
 
 LOG.toggle(true);
 

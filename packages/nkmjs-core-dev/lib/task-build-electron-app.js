@@ -19,16 +19,37 @@ class TaskBuildElectronApp extends ScriptBase {
         this._Bind(this.BuildNext);
 
         // Fetch target package config in project ( { platform:'windows', arch:'x64' } )
+        this.configIndex = 0;
+        this.validConfigCount = 0;
         this.configs = null;
+        this.validPlatforms = ["windows", "linux", "mac"];
+        this.validArch = ["x64", "ia32", "armv7l", "arm64"];
 
         if (`buildConfigs` in NKMjs.projectConfig) { this.configs = NKMjs.projectConfig.buildConfigs; }
 
         if (!this.configs) {
             this._logWarn(`There are no build target set in your nkmjs.config.json. See https://nebukam.github.io/nkmjs/doc/config.html`);
+            this.End();
             return;
         }
 
-        fs.renameSync(NKMjs.InProject(`package.json`), NKMjs.InProject(`package.bak.json`));
+        let validConfigs = [];
+        for(let i = 0, n = this.configs.length; i < n; i++){
+            let conf = this.configs[i];
+            if(this.validPlatforms.includes(conf.platform)){
+                validConfigs.push(conf);
+            }
+        }
+
+        if(validConfigs.length == 0){
+            this._logWarn(`No valid electron config found.`);
+            this.End();
+            return;
+        }
+
+        this.configs = validConfigs;
+
+        fs.copyFileSync(NKMjs.InProject(`package.json`), NKMjs.InProject(`package.bak.json`));
 
         this.sharedConfig = {
             version: NKMjs.projectVersion,
@@ -38,12 +59,13 @@ class TaskBuildElectronApp extends ScriptBase {
             productName: NKMjs.projectConfigCompiled.longName,
             appId: `my.id`,
             appDirectory: NKMjs.InProject(),
-            buildResources: NKMjs.InProject(),
+            buildResources: NKMjs.InBuildRsc(),
             dependencies: (NKMjs.projectConfigCompiled.__packagejson.dependencies || {})
         };
 
         this.Run([
             `./task-build-styles`,
+            `./task-prepare-icons`,
             `./task-build-electron-html-index`,
             `./task-build-electron-entry-point`
         ], this.BuildNext);
@@ -59,10 +81,9 @@ class TaskBuildElectronApp extends ScriptBase {
             return;
         }
 
-        //Plateform accepted values : "windows" | "linux" | "mac"
-        //Arch accepted values : "x64" | "ia32" | "armv7l" | "arm64"
+        this._log(`electron-builder » ${conf.platform}@${conf.arch}`);
 
-        conf.plateform = (conf.plateform || builder.Platform.WINDOWS);
+        conf.platform = (conf.platform || builder.Platform.WINDOWS);
         conf[(conf.arch || builder.Arch.x64)] = true;
 
         let shared = this.sharedConfig,
@@ -75,20 +96,22 @@ class TaskBuildElectronApp extends ScriptBase {
                     name: 'author_name',
                     email: 'email@email.com'
                 },
-                platform: conf.plateform,
+                platform: conf.platform,
                 [conf.arch]: true,
                 build: {
                     productName: shared.productName,
                     appId: shared.appId,
                     asar: !!conf.asar,
                     directories: {
-                        output: NKMjs.InVersionedBuilds(`desktop`,`${conf.plateform}-${conf.arch}-${shared.version}`),
+                        output: NKMjs.InVersionedBuilds(`desktop`,`${conf.platform}-${conf.arch}-${shared.version}`),
                         app: shared.appDirectory,
                         buildResources: shared.buildResources
                     },
                     files: [
-                        `**/*`,
-                        `!package.bak.json`,
+                        //`**/*`,
+                        //`!package.bak.json`,
+                        //`!${NKMjs.projectConfigCompiled.buildLocation}`,
+                        //`!${NKMjs.GENERATED_RSC}`,
                     ]
                 },
                 dependencies: shared.dependencies,
@@ -96,7 +119,7 @@ class TaskBuildElectronApp extends ScriptBase {
             },
             builderConfig = {};
 
-        if (NKMjs.shortargs.pack-only) {
+        if (NKMjs.shortargs[`pack-only`] || conf[`pack-only`]) {
             builderConfig.dir = true;
         }
 
@@ -104,12 +127,12 @@ class TaskBuildElectronApp extends ScriptBase {
 
         try {
             builder.build(builderConfig)
-                .then((arr) => { console.log(`done :${arr}`); })
                 .catch((e) => { console.log(e); })
                 .finally(this.BuildNext);
         } catch (e) {
             console.log(e);
-            this._RestorePackageJson();
+            this._logError(e);
+            this.BuildNext();
         }
 
     }

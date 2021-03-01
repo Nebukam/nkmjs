@@ -15,7 +15,7 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
 
         this.Run(`./task-prepare-pwa-cache-map`);
 
-        let pwaSWJS = NKMjs.InVersionedBuilds(NKMjs.PWA_SERVICE_WORKER),
+        let pwaSWJS = NKMjs.InBuildRsc(NKMjs.PWA_SERVICE_WORKER),
             replacer = new ReplaceVars({
                 cacheURLs: `[\n    "`+NKMjs.Get(`cache-map`, []).join(`",\n    "`)+`"]`
             }, NKMjs.projectConfigCompiled.__raw),

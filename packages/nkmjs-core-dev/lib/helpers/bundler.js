@@ -56,8 +56,8 @@ class Bundler {
 
         // ----> Babel
 
-        //this.script._logFwd(chalk.italic(`babel > ${NKMjs.Shorten(this.output)}`), `|`, 1);
-        this.script._logFwd(chalk.italic(`babel > ${this.moduleID}`), `|`, 2);
+        //this.script._logFwd(chalk.italic(`babel » ${NKMjs.Shorten(this.output)}`), `|`, 1);
+        this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 2);
 
         let localBabelConfig = null,
             babelConfig = {
@@ -76,8 +76,8 @@ class Bundler {
 
         // ----> Terser / Minify
 
-        //this.script._logFwd(chalk.italic(`terser > ${NKMjs.Shorten(this.outputMin)}`), `|`, 1);
-        this.script._logFwd(chalk.italic(`terser > ${this.moduleID}`), `|`, 2);
+        //this.script._logFwd(chalk.italic(`terser » ${NKMjs.Shorten(this.outputMin)}`), `|`, 1);
+        this.script._logFwd(chalk.italic(`terser » ${this.moduleID}`), `|`, 2);
 
         let localTerserConfig = null,
             terserConfig = {
@@ -104,7 +104,7 @@ class Bundler {
 
     _OnTerseryfied(p_response) {
 
-        this.script._logFwd(chalk.italic(`swap-externals > ${this.moduleID}`), `|`, 2);
+        this.script._logFwd(chalk.italic(`swap-externals » ${this.moduleID}`), `|`, 2);
 
         let transformed = this._ReplaceKeys(this._ReplaceExternal(p_response.code));
 
