@@ -49,8 +49,8 @@ class TaskBuildBundle extends ScriptBase {
 
         new Bundler(extModule,
             depEntryPoint,
-            NKMjs.InVersionedBuilds(`${fName}.js`),
-            NKMjs.InVersionedBuilds(`${fName}-min.js`),
+            NKMjs.InWebBuildRsc(`${fName}.js`),
+            NKMjs.InWebBuildRsc(`${fName}-min.js`),
             this._OnExternalBundlesComplete,
             this
         );
@@ -67,8 +67,8 @@ class TaskBuildBundle extends ScriptBase {
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT);
         new Bundler(NKMjs.projectConfigCompiled.name,
             NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT),
-            NKMjs.InBuildRsc(`${NKMjs.projectConfigCompiled.name}.js`),
-            NKMjs.InBuildRsc(`${NKMjs.projectConfigCompiled.name}-min.js`),
+            NKMjs.InWebBuildRsc(`${NKMjs.projectConfigCompiled.name}.js`),
+            NKMjs.InWebBuildRsc(`${NKMjs.projectConfigCompiled.name}-min.js`),
             this._OnBundleComplete,
             this
         );

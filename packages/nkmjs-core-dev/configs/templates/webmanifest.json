@@ -2,10 +2,11 @@
     "name": "%longName%",
     "short_name": "%shortName%",
     "description": "%description%",
-    "icons": "%icon-list%",
+    "icons": %icon-list%,
     "start_url": "./?utm_source=web_app_manifest",
     "display": "%display%",
     "orientation": "%orientation%",
     "theme_color": "%colorTheme%",
-    "background_color": "%colorTheme%"
+    "background_color": "%colorTheme%",
+    "lang":"%defaultLocale%"
 }

@@ -23,6 +23,7 @@ class TaskPrepareIcons extends ScriptBase {
         this._Bind(this.WrapUp);
 
         this.iconDest = FSUTILS.ensuredir(NKMjs.InBuildRsc());
+        FSUTILS.ensuredir(NKMjs.InBuildRsc(`icons`));
 
         this.requiredSizes = [16, 32, 48, 64, 72, 96, 128, 120, 180, 144, 152, 180, 192, 384, 512];
         this.tempIconList = [];

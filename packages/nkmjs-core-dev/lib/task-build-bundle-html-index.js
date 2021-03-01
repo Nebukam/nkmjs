@@ -15,10 +15,16 @@ class TaskBuildBundleHTMLIndex extends ScriptBase {
 
         this.Run([
             `./task-prepare-html-metas.js`, // Metas, OpenGraph, Twitter
-            `./task-prepare-html-scripts.js` // 
-        ]);
+            `./task-prepare-html-scripts.js`, // Scripts
+            `./task-build-webmanifest.js` // Webmanifest + legacy support tags
+        ], this._Bind(this.OnPreparationComplete));
 
-        let htmlEntry = NKMjs.InVersionedBuilds(NKMjs.HTML_INDEX),
+        
+    }
+
+    OnPreparationComplete(){
+
+        let htmlEntry = NKMjs.InWebBuildRsc(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars(
                 NKMjs.projectConfigCompiled.__raw,
                 NKMjs.__data),
@@ -31,6 +37,7 @@ class TaskBuildBundleHTMLIndex extends ScriptBase {
         this._logFwd(NKMjs.Shorten(htmlEntry), `+`);
 
         this.End();
+
     }
 
 }

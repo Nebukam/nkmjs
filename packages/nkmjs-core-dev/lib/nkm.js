@@ -20,7 +20,7 @@ class NKMjs {
     static BUNDLE_MIN = `bundle-min.js`;
     static HTML_INDEX = `index.html`;
     static JS_MAIN = `main.js`;
-    static GENERATED_RSC = `gen.rsc`;
+    static GENERATED_RSC = `.build.rsc`;
 
     static Init() {
         if (this.__initialized) { return; }
@@ -128,8 +128,14 @@ class NKMjs {
     }
 
     static InBuildRsc(...pathSegments) {
-        return this.InProject(
+        return this.InBuilds(
             this.GENERATED_RSC,
+            ...pathSegments);
+    }
+
+    static InWebBuildRsc(...pathSegments) {
+        return this.InBuildRsc(
+            `www`,
             ...pathSegments);
     }
 

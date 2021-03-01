@@ -36,6 +36,7 @@ class TaskBuildForWeb extends ScriptBase {
             `./task-build-styles`,
             `./task-build-bundle-html-index`,
             `./task-build-pwa-service-worker`,
+            `./task-build-webmanifest`,
             `./task-build-bundle`
         ], this._Bind(this._OnBundleComplete));
 

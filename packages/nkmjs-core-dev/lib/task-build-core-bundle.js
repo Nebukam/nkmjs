@@ -22,8 +22,8 @@ class TaskBuildCoreBundle extends ScriptBase {
             new Bundler(
                 "@nkmjs/core",
                 NKMjs.InCore(`nkmjs-core.js`),
-                NKMjs.InBuildRsc(`nkmjs-core.js`),
-                NKMjs.InBuildRsc(`nkmjs-core-min.js`),
+                NKMjs.InWebBuildRsc(`nkmjs-core.js`),
+                NKMjs.InWebBuildRsc(`nkmjs-core-min.js`),
                 this.End,
                 this);
         } else {

@@ -6,6 +6,7 @@
     "defaultLocale": "en_US",
     "homepage": "https://homepage",
     "display": "standalone",
+    "orientation": "portrait",
     "colorTheme": "#1e1e1e",
     "srcLocation": "./app",
     "styleLocation": "%srcLocation%/scss",

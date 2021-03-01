@@ -104,12 +104,12 @@ class TaskBuildElectronApp extends ScriptBase {
                     asar: !!conf.asar,
                     directories: {
                         output: NKMjs.InVersionedBuilds(`desktop`,`${conf.platform}-${conf.arch}-${shared.version}`),
-                        app: shared.appDirectory,
+                        //app: shared.appDirectory,
                         buildResources: shared.buildResources
                     },
                     files: [
                         //`**/*`,
-                        //`!package.bak.json`,
+                        `!package.bak.json`,
                         //`!${NKMjs.projectConfigCompiled.buildLocation}`,
                         //`!${NKMjs.GENERATED_RSC}`,
                     ]

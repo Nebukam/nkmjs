@@ -29,7 +29,15 @@ class NKMCLI extends ScriptBase {
             try {
                 this.Run(`./${taskId}`, this.End);
             } catch (e) {
-                this._logError(`'${taskId}' is not a valid task name.`)
+                this._logError(`'${taskId}' is not a valid task name.`);
+                if(NKMjs.projectConfig.tasks){
+                    this._log(`Avaialble tasks in project are :`, 1);
+                    for(let key in NKMjs.projectConfig.tasks){ this._logFwd(key, null, 2); }
+                }
+                if(NKMjs.coreConfigCompiled.tasks){
+                    this._log(`Avaialble tasks in core-dev are :`, 1);
+                    for(let key in NKMjs.coreConfig.tasks){ this._logFwd(key, null, 2); }
+                }
                 this.End();
             }
             return;

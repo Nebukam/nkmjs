@@ -20,11 +20,20 @@ class TaskBuildWebmanifest extends ScriptBase {
     OnPreparationComplete() {
 
         let iconList = NKMjs.Get(`icon-list`, []),
-            iconsArray = [];
+            iconsArray = [],
+            htmlHeader = ``;
+
+        htmlHeader += `<!-- Webmanifest -->\n`;
+        htmlHeader += `<link rel="manifest" href="manifest.webmanifest">\n`;
+
+        htmlHeader += `<!-- Fallback application metadata for legacy browsers -->\n`;
+        htmlHeader += `<meta name="application-name" content="${NKMjs.projectConfigCompiled.shortName}">\n`;
 
         for (let i = 0, n = iconList.length; i < n; i++) {
             let icon = iconList[i],
                 s = `${icon.size}x${icon.size}`;
+
+            htmlHeader += `<link rel="icon" sizes="${s}" href="icons/${s}.png"></link>\n`;
 
             iconsArray.push({
                 src: `icons/${s}.png`,
@@ -37,9 +46,11 @@ class TaskBuildWebmanifest extends ScriptBase {
             NKMjs.projectConfigCompiled.__raw,
             NKMjs.__data,
             { [`icon-list`]: JSON.stringify(iconsArray) }),
-            webmanifest = JSON.parse(replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/templates/webmanifest.json`), 'utf8')));
+            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/templates/webmanifest.json`), 'utf8')),
+            webmanifest = JSON.parse(templateContent);
 
-        NKMjs.WriteTempSync(NKMjs.InBuildRsc(`webmanifest.json`, JSON.stringify(webmanifest, null, 4)));
+        NKMjs.WriteTempSync(NKMjs.InWebBuildRsc(`manifest.webmanifest`), JSON.stringify(webmanifest, null, 4));
+        NKMjs.Set(`html-webmanifest`, htmlHeader);
 
         this.End();
     }
