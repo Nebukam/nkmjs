@@ -29,12 +29,13 @@
     "axios": "^0.21.1",
     "browserify": "^17.0.0",
     "chalk": "^4.1.0",
-    "docdash": "^1.2.0",
     "electron": "^11.3.0",
     "electron-builder": "^22.9.1",
+    "image-size": "^0.9.4",
     "jsdoc": "^3.6.6",
     "jsdoc-to-markdown": "^6.0.1",
     "sass": "^1.32.5",
+    "sharp": "^0.27.2",
     "terser": "^5.5.1"
   },
   "gitHead": "031a8fae4c3c124b3bcbe91ca40e8981b29bf7ce"
