@@ -25,6 +25,7 @@ class TaskBuildCleanup extends ScriptBase {
         }
 
         FSUTILS.rmdir(NKMjs.InBuildRsc());
+        FSUTILS.rmdir(NKMjs.InProject(NKMjs.projectConfigCompiled.compiledStyleLocation))
 
         this.End();
 

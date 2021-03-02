@@ -91,9 +91,6 @@ class NKMJSPackageConfig {
 
     }
 
-    Resolve(p_path) { return path.resolve(this.__modulePath, p_path); }
-
-
 }
 
 module.exports = NKMJSPackageConfig;

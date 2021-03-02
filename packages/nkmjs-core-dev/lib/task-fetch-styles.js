@@ -19,21 +19,23 @@ class TaskFetchStyles extends ScriptBase {
         // Fetch node_modules dir contents
         this._Bind(this._ProcessModuleContent);
 
+        this._log(`--append : ${chalk.blue(NKMjs.shortargs.append ? true : false)}`, 1);
+        this._log(`--replace : ${chalk.blue(NKMjs.shortargs.replace ? true : false)}`, 1);
+
         this._appendArray = NKMjs.shortargs.append ? [] : null;
 
-        this.rootOutput = this.Resolve(NKMjs.projectConfigCompiled.styleLocation);
-        console.log(`output to : ${this.rootOutput}`);
+        this.rootOutput = NKMjs.InProject(NKMjs.projectConfigCompiled.styleLocation);
+        this._log(`output to : ${chalk.italic(this.rootOutput)}`, 1);
         this._report = {};
-        new ForEachModule(this.Resolve(`node_modules`), this._ProcessModuleContent);
-        console.log(`${this.__localId} copied the following files :`);
+        new ForEachModule(NKMjs.InProject(`node_modules`), this._ProcessModuleContent);
+        this._log(`${this.__localId} copied the following files :`);
         console.log(this._report);
-        console.log(`---`);
 
         this.End();
 
     }
 
-    _ProcessModuleContent(p_nkmConfig) {
+    _ProcessModuleContent(p_nkmConfig, p_moduleName) {
 
         if (!p_nkmConfig.styleLocation) { return; }
 
@@ -59,7 +61,7 @@ class TaskFetchStyles extends ScriptBase {
                 for (let i = 0, n = local.length; i < n; i++) {
                     local[i] = NKMjs.Shorten(local[i]);
                 }
-                this._report[p_nkmConfig.__moduleID] = local;
+                this._report[p_moduleName] = local;
             }
         }
 

@@ -148,7 +148,7 @@ class NKMjs {
 
     static InWebBuildRsc(...pathSegments) {
         return this.InBuildRsc(
-            `www`,
+            `.web.rsc`,
             ...pathSegments);
     }
 

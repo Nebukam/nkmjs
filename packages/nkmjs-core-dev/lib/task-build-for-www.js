@@ -12,7 +12,7 @@ class TaskBuildForWeb extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-for-web`, p_onComplete);
+        super(`build-for-www`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         //this.Run(`./task-build-core-bundle`);
@@ -37,17 +37,14 @@ class TaskBuildForWeb extends ScriptBase {
             `./task-build-bundle-html-index`,
             `./task-build-pwa-service-worker`,
             `./task-build-webmanifest`,
-            `./task-build-bundle`
+            `./task-build-bundle`,
+            `./task-prepare-www-packing`,
+            `./task-package-www`
         ], this._Bind(this._OnBundleComplete));
 
     }
 
     _OnBundleComplete() {
-
-        // Copy relevant files from InApp() in target directories
-        // www-0.0.1
-        // skip compiled styles etc
-
         this.End();
     }
 

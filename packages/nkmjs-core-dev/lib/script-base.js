@@ -93,8 +93,6 @@ class ScriptBase {
 
     _Bind(p_func) { return this[p_func.name] = p_func.bind(this); }
 
-    Resolve(p_path) { return path.resolve(NKMjs.InProject(), p_path); }
-
     Ind(p_offset = 0, p_char = `· `) {
         let offset = ``;
         for (let i = 0; i < (this.__indent + p_offset); i++) {

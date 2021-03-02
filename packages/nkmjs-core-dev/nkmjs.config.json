@@ -14,12 +14,12 @@
             "task-start-electron",
             "task-cleanup"
         ],
-        "bundle": [
+        "build-www": [
             "task-build-styles",
-            "task-build-for-web",
+            "task-build-for-www",
             "task-cleanup"
         ],
-        "package": [
+        "package-electron": [
             [
                 "task-build-electron-app",
                 {
@@ -28,12 +28,12 @@
             ],
             "task-cleanup"
         ],
-        "build": [
+        "build-electron": [
             "task-build-electron-app",
             "task-cleanup"
         ],
         "build-extensions": [
-            "task-build-for-web",
+            "task-build-for-www",
             "task-prepare-icons",
             "task-build-extensions",
             "task-package-extensions",
@@ -41,7 +41,7 @@
         ],
         "build-all":[
             "task-build-styles",
-            "task-build-for-web",
+            "task-build-for-www",
             "task-build-extensions",
             "task-build-electron-app",
             "task-cleanup"

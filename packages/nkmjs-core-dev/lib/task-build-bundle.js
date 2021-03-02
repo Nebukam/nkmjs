@@ -18,19 +18,19 @@ class TaskBuildBundle extends ScriptBase {
         super(`build-bundle`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        this._Bind(this._OnExternalBundlesComplete);
+        this._Bind(this._OnExternalBundleComplete);
         this._Bind(this._OnBundleComplete);
 
         this.Run(`./task-build-bundle-entry-point`);
 
-        this.externals = [...NKMjs.Get(`externals`, [])];
+        this.externals = [...NKMjs.Get(`externals`)];
         this.eIndex = 0;
 
         if (this.externals.length != 0) {
             this.templateContent = fs.readFileSync(NKMjs.InCore(`configs/js/entry-external.js`), 'utf8');
             this.BundleNext();
         } else {
-            this._OnExternalBundlesComplete();
+            this._OnExternalBundleComplete();
         }
 
     }
@@ -43,21 +43,21 @@ class TaskBuildBundle extends ScriptBase {
                 module_index: `${this.eIndex++}`,
                 module_require_path: extModule
             }),
-            depEntryPoint = NKMjs.InApp(`${fName}.js`);
+            entryPoint = NKMjs.InApp(`${fName}.js`);
 
-        NKMjs.WriteTempSync(depEntryPoint, rvar.Replace(this.templateContent));
+        NKMjs.WriteTempSync(entryPoint, rvar.Replace(this.templateContent));
 
         new Bundler(extModule,
-            depEntryPoint,
+            entryPoint,
             NKMjs.InWebBuildRsc(`${fName}.js`),
             NKMjs.InWebBuildRsc(`${fName}-min.js`),
-            this._OnExternalBundlesComplete,
+            this._OnExternalBundleComplete,
             this
         );
 
     }
 
-    _OnExternalBundlesComplete(p_bundler) {
+    _OnExternalBundleComplete(p_bundler) {
 
         if (this.externals.length != 0) {
             this.BundleNext();
@@ -65,8 +65,9 @@ class TaskBuildBundle extends ScriptBase {
         }
 
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT);
+        
         new Bundler(NKMjs.projectConfigCompiled.name,
-            NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT),
+            entryPoint,
             NKMjs.InWebBuildRsc(`${NKMjs.projectConfigCompiled.name}.js`),
             NKMjs.InWebBuildRsc(`${NKMjs.projectConfigCompiled.name}-min.js`),
             this._OnBundleComplete,

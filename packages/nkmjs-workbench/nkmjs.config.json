@@ -6,15 +6,15 @@
     "defaultLocale": "en",
     "homepage": "https://homepage",
     "display": "standalone",
-    "colorTheme": "#000000",
-    "srcLocation": "./app",
-    "assetsLocation": "./assets",
-    "iconsLocation": "%assetsLocation%/icons",
+    "colorTheme": "#1e1e1e",
+    "srcLocation": "app",
     "styleLocation": "%srcLocation%/scss",
-    "compiledStyleLocation": "%srcLocation%/style",
-    "buildLocation": "./builds",
+    "compiledStyleLocation": "style",
+    "assetsLocation": "assets",
+    "iconsLocation": "%assetsLocation%/icons",
+    "buildLocation": "builds",
     "cacheDirectories": [
-        "./style"
+        "style"
     ],
     "buildConfigs": [
         {

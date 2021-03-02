@@ -17,6 +17,11 @@ class ARGS {
                     key = this.Shorten(split.shift()),
                     value = split.length ? split.join(`=`) : null;
 
+                if(value !== null){
+                    if(value.toUpperCase() === 'TRUE'){ value = true; }
+                    else if(value.toUpperCase() === 'FALSE'){ value = false; }
+                }
+
                 this[key] = value === null ? true : value;
 
             } catch (e) {

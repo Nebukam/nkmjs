@@ -25,6 +25,8 @@ class TaskBuildElectronApp extends ScriptBase {
         this.validPlatforms = ["windows", "linux", "mac"];
         this.validArch = ["x64", "ia32", "armv7l", "arm64"];
 
+        this._log(`--pack-only : ${chalk.blue(NKMjs.shortargs[`pack-only`] ? true : false)}`, 1);
+
         if (`buildConfigs` in NKMjs.projectConfig) { this.configs = NKMjs.projectConfig.buildConfigs; }
 
         if (!this.configs) {
@@ -34,14 +36,14 @@ class TaskBuildElectronApp extends ScriptBase {
         }
 
         let validConfigs = [];
-        for(let i = 0, n = this.configs.length; i < n; i++){
+        for (let i = 0, n = this.configs.length; i < n; i++) {
             let conf = this.configs[i];
-            if(this.validPlatforms.includes(conf.platform)){
+            if (this.validPlatforms.includes(conf.platform)) {
                 validConfigs.push(conf);
             }
         }
 
-        if(validConfigs.length == 0){
+        if (validConfigs.length == 0) {
             this._logWarn(`No valid electron config found.`);
             this.End();
             return;
@@ -50,6 +52,9 @@ class TaskBuildElectronApp extends ScriptBase {
         this.configs = validConfigs;
 
         fs.copyFileSync(NKMjs.InProject(`package.json`), NKMjs.InProject(`package.bak.json`));
+
+        // ----> Ignore files
+        let files = this.BuildIgnoreList();
 
         this.sharedConfig = {
             version: NKMjs.projectVersion,
@@ -60,7 +65,8 @@ class TaskBuildElectronApp extends ScriptBase {
             appId: `my.id`,
             appDirectory: NKMjs.InProject(),
             buildResources: NKMjs.InBuildRsc(),
-            dependencies: (NKMjs.projectConfigCompiled.__packagejson.dependencies || {})
+            dependencies: (NKMjs.projectConfigCompiled.__packagejson.dependencies || {}),
+            files: files
         };
 
         this.Run([
@@ -69,6 +75,29 @@ class TaskBuildElectronApp extends ScriptBase {
             `./task-build-electron-html-index`,
             `./task-build-electron-entry-point`
         ], this.BuildNext);
+
+    }
+
+    BuildIgnoreList() {
+
+        let appDir = NKMjs.projectConfigCompiled.srcLocation,
+            list = [
+                `!package.bak.json`,
+                `!${NKMjs.projectConfigCompiled.styleLocation}`,
+                `!${appDir}/${NKMjs.BUNDLE_ENTRY_POINT}`,
+                `!${appDir}/${NKMjs.HTML_INDEX}`
+            ],
+            externals = NKMjs.Get(`externals`);
+
+        // Add externals to the ignore list
+        if (externals && externals.length != 0) {
+            for (let i = 0, n = externals.length; i < n; i++) {
+                list.push(`!${NKMjs.projectConfigCompiled.srcLocation}/${NKMjs.Sanitize(externals[i])}`);
+                console.log(externals[i]);
+            }
+        }
+
+        return list;
 
     }
 
@@ -103,16 +132,11 @@ class TaskBuildElectronApp extends ScriptBase {
                     appId: shared.appId,
                     asar: !!conf.asar,
                     directories: {
-                        output: NKMjs.InVersionedBuilds(`desktop`,`${conf.platform}-${conf.arch}-${shared.version}`),
+                        output: NKMjs.InVersionedBuilds(`desktop`, `${conf.platform}-${conf.arch}-${shared.version}`),
                         //app: shared.appDirectory,
                         buildResources: shared.buildResources
                     },
-                    files: [
-                        //`**/*`,
-                        `!package.bak.json`,
-                        //`!${NKMjs.projectConfigCompiled.buildLocation}`,
-                        //`!${NKMjs.GENERATED_RSC}`,
-                    ]
+                    files: shared.files
                 },
                 dependencies: shared.dependencies,
                 devDependencies: shared.devDependencies

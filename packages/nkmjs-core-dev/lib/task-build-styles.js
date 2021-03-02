@@ -16,17 +16,14 @@ class TaskBuildStyles extends ScriptBase {
         super(`task-build-styles`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        if(NKMjs.style_built){
-            this._log(`Style already built, skipping.`);
-            return;
-        }
+        this._log(`--compress : ${chalk.blue(NKMjs.shortargs.compress ? true : false)}`, 1);
 
-        let inputLocation = this.Resolve(NKMjs.projectConfigCompiled.styleLocation),
-            outputLocation = this.Resolve(NKMjs.projectConfigCompiled.compiledStyleLocation),
-            compress = NKMjs.shortargs.compress;
+        let inputLocation = NKMjs.InProject(NKMjs.projectConfigCompiled.styleLocation),
+            outputLocation = NKMjs.InApp(NKMjs.projectConfigCompiled.compiledStyleLocation);
+
+        var compress = NKMjs.shortargs.compress;
 
         console.log(``);
-        NKMjs.style_built = true;
 
         new DirRead(inputLocation, outputLocation, {
             'dir': (p_src, p_dest) => { if (!fs.existsSync(p_dest)) { fs.mkdirSync(p_dest); } },
@@ -48,7 +45,6 @@ class TaskBuildStyles extends ScriptBase {
                     let result = sass.renderSync(p_options);
                     if (fs.existsSync(p_dest)) { fs.unlinkSync(p_dest); }
                     fs.writeFileSync(p_dest, result.css);
-                    //console.log(cos + chalk.green(`+ `) + chalk.gray.italic(NKMjs.Shorten(p_dest)));
                     this._logFwd(NKMjs.Shorten(p_dest), `+`);
                 } catch (e) {
                     console.log(e);

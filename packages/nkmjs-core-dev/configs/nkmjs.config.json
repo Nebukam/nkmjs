@@ -8,14 +8,14 @@
     "display": "standalone",
     "orientation": "portrait",
     "colorTheme": "#1e1e1e",
-    "srcLocation": "./app",
+    "srcLocation": "app",
     "styleLocation": "%srcLocation%/scss",
-    "compiledStyleLocation": "%srcLocation%/style",
+    "compiledStyleLocation": "style",
     "assetsLocation": "%srcLocation%/assets",
     "iconsLocation": "%assetsLocation%/icons",    
-    "buildLocation": "./builds",
+    "buildLocation": "builds",
     "cacheDirectories": [
-        "./style"
+        "style"
     ],
     "buildConfigs":[
         { "platform":"windows", "arch":"x64" }

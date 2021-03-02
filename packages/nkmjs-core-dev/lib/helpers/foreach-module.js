@@ -14,45 +14,57 @@ class ForEachModule {
      * @param {*} p_callback ( NKMJSPackageConfig )
      */
     constructor(p_module_dir, p_callback) {
-
         this._moduleRoot = p_module_dir;
+        this._seen = [];
         this.Explore(p_module_dir, p_callback);
+        //console.log(this._seen);
     }
 
-    Explore(p_module_dir, p_callback){
+    Explore(p_module_dir, p_callback) {
 
         try {
 
-            let dirContent = fs.readdirSync(p_module_dir);
-            for (let i = 0, n = dirContent.length; i < n; i++) {
-                let item = dirContent[i];
+            let contents = fs.readdirSync(p_module_dir);
+            for (let i = 0, n = contents.length; i < n; i++) {
+
+                let item = contents[i],
+                    itemDir = path.resolve(p_module_dir, item);
+
                 if (item[0] === `.`) { continue; }
-                let itemDir = path.resolve(p_module_dir, item);
-                
                 if (item[0] === `@`) {
 
-                    let namespaceContent = fs.readdirSync(itemDir);
-                    for (let s = 0, ns = namespaceContent.length; s < ns; s++) {
-                        let pkg = new NKMJSPackageConfig(path.resolve(itemDir, namespaceContent[s]));
-                        if (pkg.__isNKMFriendly) { p_callback(pkg); }
+                    let namespace = fs.readdirSync(itemDir);
 
-                        let itemModuleDir = path.resolve(itemDir, namespaceContent[s], `node_modules`);
-                        this.Explore(itemModuleDir, p_callback);
+                    for (var s = 0, ns = namespace.length; s < ns; s++) {
+
+                        let nItem = namespace[s],
+                            moduleName = `${item}/${nItem}`;
+
+                        if (!this._seen.includes(moduleName)) {
+                            this._seen.push(moduleName);
+
+                            let dirPath = path.resolve(itemDir, nItem),
+                                pkg = new NKMJSPackageConfig(dirPath);
+
+                            if (pkg.__hasNKMConfig) { p_callback(pkg, moduleName); }
+
+                            this.Explore(path.resolve(dirPath, `node_modules`), p_callback);
+                        }
                     }
 
-                } else {
-                    let pkg = new NKMJSPackageConfig(itemDir);
-                    if (!pkg.__isNKMFriendly) { p_callback(pkg); }
+                } else if (!this._seen.includes(item)) {
+                    this._seen.push(item);
 
-                    let itemModuleDir = path.resolve(itemDir, `node_modules`);
-                    this.Explore(itemModuleDir, p_callback);
+                    let pkg = new NKMJSPackageConfig(itemDir);
+                    if (!pkg.__hasNKMConfig) { p_callback(pkg, item); }
+
+                    this.Explore(path.resolve(itemDir, `node_modules`), p_callback);
+
                 }
 
             }
 
-        } catch (e) {
-            //console.log(e);
-        }
+        } catch (e) { }
 
     }
 

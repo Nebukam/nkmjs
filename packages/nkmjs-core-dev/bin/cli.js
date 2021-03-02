@@ -45,7 +45,10 @@ class NKMCLI extends ScriptBase {
 
         if (scriptList) { 
             for(var i = 0, n = scriptList.length; i < n; i++){
-                scriptList[i] = `./${scriptList[i]}`;
+                let scriptInfos = scriptList[i];
+                if(Array.isArray(scriptInfos)){ scriptInfos[0] = `./${scriptInfos[0]}`; }
+                else{ scriptInfos = `./${scriptInfos}`; }
+                scriptList[i] = scriptInfos;
             }
             this.Run(scriptList, this.End); 
         }
