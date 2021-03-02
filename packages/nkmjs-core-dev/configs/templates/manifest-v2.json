@@ -8,20 +8,20 @@
     "homepage_url": "$homepage",
   
     /* Recommended */
-    "defaultLocale": "en",
+    "lang": "en",
     "description": "$description",
-    "icons": $icons,
+    "icons": %icons%,
   
     /* Pick one (or none) */
     /* Button to open a popup */
     "browser_action": { 
-        "default_icon": $icons,
+        "default_icon": %icons%,
           "default_title": "$longName",
           "default_popup": "index.html"
     }, 
     /* Button that is contextual to a page -- hence means specific stuffs & permissions */
     "page_action": { 
-        "default_icon": $icons,
+        "default_icon": %icons%,
           "default_title": "$longName",
           "default_popup": "index.html"
     },
@@ -34,7 +34,7 @@
       /* Optional */
       "service_worker": "$service_worker"
     },
-    "commands": { see https://developer.chrome.com/docs/extensions/reference/commands/ },
+    "commands": { /* see https://developer.chrome.com/docs/extensions/reference/commands/ */ },
     "content_scripts": [{...}],
     "externally_connectable": {
         "ids": ["xxxxx", "*"],

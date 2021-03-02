@@ -14,13 +14,26 @@ class NKMjs {
     static ELECTRON_HTML_INDEX = `index-electron.html`;
     static ELECTRON_BUNDLE = `electron-bundle.js`;
     static ELECTRON_BUNDLE_MIN = `electron-bundle-min.js`;
+
     static BUNDLE_ENTRY_POINT = `bundle-entry-point.js`;
+
+    static BUNDLE_ENTRY_POINT_EXT = `index.ext.js`;
+    static BUNDLE_ENTRY_POINT_PWA = `index.pwa.js`;
+    static BUNDLE_ENTRY_POINT_WWW = `index.www.js`;
+
     static PWA_SERVICE_WORKER = `service-worker.js`;
+
     static BUNDLE = `bundle.js`;
     static BUNDLE_MIN = `bundle-min.js`;
+    static BUNDLE_DIR = `.bundles`;
+
     static HTML_INDEX = `index.html`;
     static JS_MAIN = `main.js`;
     static GENERATED_RSC = `.build.rsc`;
+
+    static CORE_CACHE_DIR = ``;
+
+    static LOCALES_DIR = `_locales`;
 
     static Init() {
         if (this.__initialized) { return; }
@@ -70,6 +83,12 @@ class NKMjs {
         this.shortargs = new ARGS(process.argv);
 
         this.projectVersion = (NKMjs.projectConfigCompiled.__packagejson.version || `0.0.0`);
+        this.CORE_CACHE_DIR = this.InCore(`caches`, `@nkmjs`);
+
+        if (this.shortargs[`invalidate-cache`]) {
+            console.log(chalk.blue.italic(`invalidating cache`));
+            try { FSUTILS.rmdir(this.CORE_CACHE_DIR); } catch (e) { }
+        }
 
         //console.log(`dirnameProject : ${this.dirnameProject}`);
         //console.log(`dirnameCore : ${this.dirnameCore}`);
@@ -96,14 +115,19 @@ class NKMjs {
     static __data = {};
 
     static WriteTempSync(p_path, p_content, p_options = null) {
-        if (!this.tempFiles.includes(p_path)) { this.tempFiles.push(p_path);}
+        if (!this.tempFiles.includes(p_path)) { this.tempFiles.push(p_path); }
         FSUTILS.ensuredir(path.dirname(p_path));
-        if(p_options === null){ fs.writeFileSync(p_path, p_content); }
-        else{ fs.writeFileSync(p_path, p_content, p_options); }
+        if (p_options === null) { fs.writeFileSync(p_path, p_content); }
+        else { fs.writeFileSync(p_path, p_content, p_options); }
     }
 
-    static RegisterTemp(p_path){
-        if (!this.tempFiles.includes(p_path)) { this.tempFiles.push(p_path);}
+    static CopyTempSync(p_src, p_dest){
+        if (!this.tempFiles.includes(p_dest)) { this.tempFiles.push(p_dest); }
+        fs.copyFileSync(p_src, p_dest);
+    }
+
+    static RegisterTemp(p_path) {
+        if (!this.tempFiles.includes(p_path)) { this.tempFiles.push(p_path); }
     }
 
     static Set(p_id, p_value) {
@@ -121,13 +145,13 @@ class NKMjs {
 
     static InCoreModules(...pathSegments) {
         let p = path.resolve(this.dirnameCore, `node_modules`, ...pathSegments);
-        try{ fs.statSync(p); }
-        catch(e){
-            try{ 
+        try { fs.statSync(p); }
+        catch (e) {
+            try {
                 // If using yarn, there's a good chance some modules have been flattened.
                 p = path.resolve(this.dirnameProject, `node_modules`, ...pathSegments);
                 fs.statSync(p);
-            }catch(e){
+            } catch (e) {
                 console.error(`Invalid core module lookup : ${pathSegments}, either the module isn't installed, or has been flattened in an unexpected fashion.`);
                 return path.resolve(this.dirnameCore, `node_modules`, ...pathSegments);
             }
@@ -146,15 +170,33 @@ class NKMjs {
             ...pathSegments);
     }
 
-    static InWebBuildRsc(...pathSegments) {
+    static InSharedWebBuildRsc(...pathSegments) {
         return this.InBuildRsc(
-            `.web.rsc`,
+            `.shared.rsc`,
+            ...pathSegments);
+    }
+
+    static InWWWBuildRsc(...pathSegments) {
+        return this.InBuildRsc(
+            `.www.rsc`,
+            ...pathSegments);
+    }
+
+    static InPWABuildRsc(...pathSegments) {
+        return this.InBuildRsc(
+            `.pwa.rsc`,
+            ...pathSegments);
+    }
+
+    static InExtBuildRsc(...pathSegments) {
+        return this.InBuildRsc(
+            `.ext.rsc`,
             ...pathSegments);
     }
 
     static InApp(...pathSegments) {
         return this.InProject(
-            this.projectConfigCompiled.srcLocation, 
+            this.projectConfigCompiled.srcLocation,
             ...pathSegments);
     }
 
@@ -185,6 +227,7 @@ class NKMjs {
         p_path = this.Short(p_path, this.InAssets(), `{assets}`);
         p_path = this.Short(p_path, this.InStyle(), `{styles}`);
         p_path = this.Short(p_path, this.InProject(), `{project}`);
+        p_path = this.Short(p_path, this.InCore(this.CORE_CACHE_DIR), `{core-cache}`);
         return p_path;
     }
 

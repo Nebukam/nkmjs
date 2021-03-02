@@ -41,7 +41,7 @@ class ScriptBase {
 
         this.__shouldSkip = false;
         if(this.constructor.runOnce && this.constructor.__ranOnce){
-            this._log(chalk.white(`× `)+chalk.italic(`skipping ${p_localId}, it ran once already.`));
+            //this._log(chalk.white(`× `)+chalk.italic(`skipping ${p_localId}, it ran once already.`));
             this.__shouldSkip = true;
             this.__running = false;
             return;

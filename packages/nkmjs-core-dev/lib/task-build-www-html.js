@@ -6,28 +6,31 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 
-class TaskBuildBundleHTMLIndex extends ScriptBase {
+class TaskBuildWWWHTML extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-bundle-html-index`, p_onComplete);
+        super(`build-www-html`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
             `./task-prepare-html-metas.js`, // Metas, OpenGraph, Twitter
             `./task-prepare-html-scripts.js`, // Scripts
-            `./task-build-webmanifest.js` // Webmanifest + legacy support tags
         ], this._Bind(this.OnPreparationComplete));
 
-        
+
     }
 
-    OnPreparationComplete(){
+    OnPreparationComplete() {
 
-        let htmlEntry = NKMjs.InWebBuildRsc(NKMjs.HTML_INDEX),
+        let htmlEntry = NKMjs.InWWWBuildRsc(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars(
                 NKMjs.projectConfigCompiled.__raw,
-                NKMjs.__data),
+                {
+                    [`html-metadata`]: NKMjs.Get(`html-metadata`, ``),
+                    [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
+                    [`html-webmanifest`]: ``
+                }),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));
 
@@ -42,4 +45,4 @@ class TaskBuildBundleHTMLIndex extends ScriptBase {
 
 }
 
-module.exports = TaskBuildBundleHTMLIndex;
+module.exports = TaskBuildWWWHTML;

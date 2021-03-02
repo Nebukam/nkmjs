@@ -5,7 +5,7 @@
  */
 
 // Use a cacheName for cache versioning
-var cacheName = '$version';
+var cacheName = '%version%';
 var cacheURLs = %cacheURLs%;
 
 // During the installation phase, you'll usually want to cache static assets.

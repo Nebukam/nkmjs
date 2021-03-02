@@ -8,5 +8,5 @@
     "orientation": "%orientation%",
     "theme_color": "%colorTheme%",
     "background_color": "%colorTheme%",
-    "lang":"%defaultLocale%"
+    "lang":"%lang%"
 }

@@ -19,7 +19,7 @@
         "property":"og:image"
     },
     "locale":{
-        "content":"%defaultLocale%",
+        "content":"%lang%",
         "property":"og:locale"
     }
 }

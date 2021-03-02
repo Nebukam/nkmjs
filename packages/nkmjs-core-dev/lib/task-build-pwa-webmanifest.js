@@ -10,7 +10,7 @@ class TaskBuildWebmanifest extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-webmanifest`, p_onComplete);
+        super(`build-pwa-webmanifest`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run(`./task-prepare-icons`, this._Bind(this.OnPreparationComplete));
@@ -19,7 +19,9 @@ class TaskBuildWebmanifest extends ScriptBase {
 
     OnPreparationComplete() {
 
-        let iconList = NKMjs.Get(`icon-list`, []),
+        let manifest = {},
+            projectInfos = NKMjs.projectConfigCompiled,
+            iconList = NKMjs.Get(`icon-list`, []),
             iconsArray = [],
             htmlHeader = ``;
 
@@ -27,7 +29,7 @@ class TaskBuildWebmanifest extends ScriptBase {
         htmlHeader += `<link rel="manifest" href="manifest.webmanifest">\n`;
 
         htmlHeader += `<!-- Fallback application metadata for legacy browsers -->\n`;
-        htmlHeader += `<meta name="application-name" content="${NKMjs.projectConfigCompiled.shortName}">\n`;
+        htmlHeader += `<meta name="application-name" content="${projectInfos.shortName}">\n`;
 
         for (let i = 0, n = iconList.length; i < n; i++) {
             let icon = iconList[i],
@@ -42,14 +44,17 @@ class TaskBuildWebmanifest extends ScriptBase {
             });
         }
 
-        let replacer = new ReplaceVars(
-            NKMjs.projectConfigCompiled.__raw,
-            NKMjs.__data,
-            { [`icon-list`]: JSON.stringify(iconsArray) }),
-            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/templates/webmanifest.json`), 'utf8')),
-            webmanifest = JSON.parse(templateContent);
+        manifest.name = projectInfos.longName;
+        manifest.short_name = projectInfos.short_name;
+        manifest.description = projectInfos.description;
+        manifest.icons = iconsArray;
+        manifest.start_url = `./?utm_source=web_app_manifest`;
+        manifest.display = projectInfos.display;
+        manifest.theme_color = projectInfos.colorTheme;
+        manifest.background_color = projectInfos.colorTheme;
+        manifest.lang = projectInfos.lang;
 
-        NKMjs.WriteTempSync(NKMjs.InWebBuildRsc(`manifest.webmanifest`), JSON.stringify(webmanifest, null, 4));
+        NKMjs.WriteTempSync(NKMjs.InPWABuildRsc(`manifest.webmanifest`), JSON.stringify(manifest, null, 4));
         NKMjs.Set(`html-webmanifest`, htmlHeader);
 
         this.End();

@@ -3,21 +3,28 @@
     "longName": "My App : Verbose Name",
     "shortName": "My App",
     "description": "My app description, lorem ipsum; dolor si amet.",
-    "defaultLocale": "en_US",
+    "lang": "en",
     "homepage": "https://homepage",
-    "display": "standalone",
-    "orientation": "portrait",
-    "colorTheme": "#1e1e1e",
-    "srcLocation": "app",
-    "styleLocation": "%srcLocation%/scss",
-    "compiledStyleLocation": "style",
-    "assetsLocation": "%srcLocation%/assets",
-    "iconsLocation": "%assetsLocation%/icons",    
-    "buildLocation": "builds",
-    "cacheDirectories": [
-        "style"
-    ],
-    "buildConfigs":[
-        { "platform":"windows", "arch":"x64" }
+    "app": {
+        "display": "standalone",
+        "orientation": "portrait",
+        "colorTheme": "#1e1e1e"
+    },
+    "directories": {
+        "srcLocation": "app",
+        "styleLocation": "%srcLocation%/scss",
+        "compiledStyleLocation": "style",
+        "assetsLocation": "assets",
+        "iconsLocation": "%assetsLocation%/icons",
+        "buildLocation": "builds",
+        "cacheDirectories": [
+            "%compiledStyleLocation%"
+        ]
+    },
+    "buildConfigs": [
+        {
+            "platform": "windows",
+            "arch": "x64"
+        }
     ]
 }

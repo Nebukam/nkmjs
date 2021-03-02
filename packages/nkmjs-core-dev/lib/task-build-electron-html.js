@@ -6,11 +6,11 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 
-class TaskBuildElectronHTMLIndex extends ScriptBase {
+class TaskBuildElectronHTML extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-electron-html-index`, p_onComplete);
+        super(`build-electron-html`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let electronHtml = NKMjs.InApp(NKMjs.ELECTRON_HTML_INDEX),
@@ -29,4 +29,4 @@ class TaskBuildElectronHTMLIndex extends ScriptBase {
 
 }
 
-module.exports = TaskBuildElectronHTMLIndex;
+module.exports = TaskBuildElectronHTML;

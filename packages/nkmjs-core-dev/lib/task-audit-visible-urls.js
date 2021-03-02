@@ -68,8 +68,11 @@ class TaskAuditVisibleURLs extends ScriptBase {
         }
 
         if (unknownPermissions.length > 0) {
+            
+            NKMjs.Set(`unknownPermissions`, unknownPermissions);
+
             this._logWarn(`found at least ${unknownPermissions.length} unreferenced domains -- you should explicitely add them to your extension' permissions :`);
-            this._log(`You can skip this check by using --noURLaudit`);
+            //this._log(`You can skip this check by using --noURLaudit`);
             for (i = 0, n = unknownPermissions.length; i < n; i++) {
                 this._log(chalk.yellow(unknownPermissions[i]), 2);
             }

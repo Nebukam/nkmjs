@@ -13,17 +13,15 @@ class TaskBuildStyles extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`task-build-styles`, p_onComplete);
+        super(`build-styles`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        this._log(`--compress : ${chalk.blue(NKMjs.shortargs.compress ? true : false)}`, 1);
+        var compress = `compress` in NKMjs.shortargs ? NKMjs.shortargs.compress : true;
+
+        this._log(`--compress : ${chalk.blue(compress)}`, 1);
 
         let inputLocation = NKMjs.InProject(NKMjs.projectConfigCompiled.styleLocation),
             outputLocation = NKMjs.InApp(NKMjs.projectConfigCompiled.compiledStyleLocation);
-
-        var compress = NKMjs.shortargs.compress;
-
-        console.log(``);
 
         new DirRead(inputLocation, outputLocation, {
             'dir': (p_src, p_dest) => { if (!fs.existsSync(p_dest)) { fs.mkdirSync(p_dest); } },
@@ -59,7 +57,6 @@ class TaskBuildStyles extends ScriptBase {
 
         });
 
-        console.log(``);
         this.End();
 
     }

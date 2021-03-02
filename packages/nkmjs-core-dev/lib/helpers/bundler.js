@@ -16,14 +16,13 @@ const browserify = require('browserify');
 
 class Bundler {
 
-    constructor(p_moduleID, p_in, p_out, p_outMin, p_doneFn, p_script) {
+    constructor(p_moduleID, p_in, p_out, p_doneFn, p_script) {
 
 
         // Create a bundle file in the build folder
         this.moduleID = p_moduleID;
         this.entryPoint = p_in;
         this.output = p_out;
-        this.outputMin = p_outMin;
         this.doneFn = p_doneFn;
         this.script = p_script;
 
@@ -32,9 +31,7 @@ class Bundler {
         // ----> Browserify
 
         this.script._logFwd(chalk.italic(`bundle ${this.moduleID}`), `·`, 1);
-
-        //this.script._logFwd(chalk.italic(`browserify ${NKMjs.Shorten(this.entryPoint)}`), `·`, 1);
-        this.script._logFwd(chalk.italic(`browserify ${this.moduleID}`), `|`, 2);
+        this.script._logFwd(chalk.italic(`browserify ${this.moduleID}`), `|`, 1);
 
         this.externals = NKMjs.Get(`externals`, []);
 
@@ -55,8 +52,7 @@ class Bundler {
 
         // ----> Babel
 
-        //this.script._logFwd(chalk.italic(`babel » ${NKMjs.Shorten(this.output)}`), `|`, 1);
-        this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 2);
+        this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
 
         let localBabelConfig = null,
             babelConfig = {
@@ -71,12 +67,9 @@ class Bundler {
 
         let babeled = require("@babel/core").transformSync(p_src.toString(), babelConfig);
 
-        //this.script._logFwd(chalk.italic(`${NKMjs.Shorten(this.output)}`), `+`, 1);
-
         // ----> Terser / Minify
 
-        //this.script._logFwd(chalk.italic(`terser » ${NKMjs.Shorten(this.outputMin)}`), `|`, 1);
-        this.script._logFwd(chalk.italic(`terser » ${this.moduleID}`), `|`, 2);
+        this.script._logFwd(chalk.italic(`terser » ${this.moduleID}`), `|`, 1);
 
         let localTerserConfig = null,
             terserConfig = {
@@ -103,12 +96,12 @@ class Bundler {
 
     _OnTerseryfied(p_response) {
 
-        this.script._logFwd(chalk.italic(`swap-externals » ${this.moduleID}`), `|`, 2);
+        this.script._logFwd(chalk.italic(`swap-externals » ${this.moduleID}`), `|`, 1);
 
         let transformed = this._ReplaceKeys(this._ReplaceExternal(p_response.code));
 
-        NKMjs.WriteTempSync(this.outputMin, transformed);
-        this.script._logFwd(`${NKMjs.Shorten(this.outputMin)}`, `+`, 2);
+        NKMjs.WriteTempSync(this.output, transformed);
+        this.script._logFwd(`${NKMjs.Shorten(this.output)}`, `+`, 1);
 
         this.doneFn(this);
 
@@ -122,7 +115,7 @@ class Bundler {
             let id = this.externals[i];
             if (id === this.moduleID) { continue; }
             p_content = p_content.split(`t("${id}")`).join(`window.nkmjs[${i}]`);
-            p_content = p_content.split(`"${id}":undefined`).join(``);
+            p_content = p_content.split(`"${id}":void 0`).join(``);
         }
 
         return p_content;

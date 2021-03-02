@@ -14,8 +14,8 @@ class TaskStartElectron extends ScriptBase {
 
         this.Run([
             `./task-build-styles`,
-            `./task-build-electron-html-index`,
-            `./task-build-electron-entry-point`
+            `./task-build-electron-html`,
+            `./task-build-electron-main`,
         ], this._Bind(this.Start));
 
     }

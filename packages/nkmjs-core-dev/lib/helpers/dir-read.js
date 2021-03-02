@@ -40,10 +40,17 @@ class DirRead {
 
         if (srcStat.isDirectory()) {
             this._callback(p_src, p_dest, true);
-            let srcContent = fs.readdirSync(p_src);
-            for (let i = 0, n = srcContent.length; i < n; i++) {
-                this._Read( path.resolve(p_src, srcContent[i]), path.resolve(p_dest, srcContent[i]) );
+            let dirContent = fs.readdirSync(p_src);
+            if (p_dest !== null) {
+                for (let i = 0, n = dirContent.length; i < n; i++) {
+                    this._Read(path.resolve(p_src, dirContent[i]), path.resolve(p_dest, dirContent[i]));
+                }
+            } else {
+                for (let i = 0, n = dirContent.length; i < n; i++) {
+                    this._Read(path.resolve(p_src, dirContent[i]), null);
+                }
             }
+
         } else {
             this._callback(p_src, p_dest, false);
         }

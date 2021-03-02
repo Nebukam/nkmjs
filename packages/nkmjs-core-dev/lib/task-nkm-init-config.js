@@ -11,7 +11,7 @@ class TaskNKMInitConfig extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`task-init-config`, p_onComplete);
+        super(`init-config`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         // Check if a config already exists

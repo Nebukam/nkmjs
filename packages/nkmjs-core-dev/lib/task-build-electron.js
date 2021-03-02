@@ -13,7 +13,7 @@ class TaskBuildElectronApp extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-electron-app`, p_onComplete);
+        super(`build-electron`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this._Bind(this.BuildNext);
@@ -72,8 +72,8 @@ class TaskBuildElectronApp extends ScriptBase {
         this.Run([
             `./task-build-styles`,
             `./task-prepare-icons`,
-            `./task-build-electron-html-index`,
-            `./task-build-electron-entry-point`
+            `./task-build-electron-html`,
+            `./task-build-electron-main`,
         ], this.BuildNext);
 
     }
@@ -85,17 +85,20 @@ class TaskBuildElectronApp extends ScriptBase {
                 `!package.bak.json`,
                 `!${NKMjs.projectConfigCompiled.styleLocation}`,
                 `!${appDir}/${NKMjs.BUNDLE_ENTRY_POINT}`,
-                `!${appDir}/${NKMjs.HTML_INDEX}`
+                `!${appDir}/${NKMjs.HTML_INDEX}`,
+                `!${appDir}/index.ext.js`,
+                `!${appDir}/index.pwa.js`,
+                `!${appDir}/index.www.js`
             ],
             externals = NKMjs.Get(`externals`);
 
         // Add externals to the ignore list
         if (externals && externals.length != 0) {
             for (let i = 0, n = externals.length; i < n; i++) {
-                list.push(`!${NKMjs.projectConfigCompiled.srcLocation}/${NKMjs.Sanitize(externals[i])}`);
-                console.log(externals[i]);
+                list.push(`!${NKMjs.projectConfigCompiled.srcLocation}/external-${NKMjs.Sanitize(externals[i])}.js`);
             }
         }
+        // Add all mains + index to the ignore list
 
         return list;
 

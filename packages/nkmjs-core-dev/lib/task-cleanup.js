@@ -12,7 +12,7 @@ class TaskBuildCleanup extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`task-cleanup`, p_onComplete, { skipKey:`no-cleanup` });
+        super(`cleanup`, p_onComplete, { skipKey:`no-cleanup` });
         if (this.__hasErrors  || this.__shouldSkip) { return this.End(); }
 
         while (NKMjs.tempFiles.length != 0) {
@@ -25,7 +25,7 @@ class TaskBuildCleanup extends ScriptBase {
         }
 
         FSUTILS.rmdir(NKMjs.InBuildRsc());
-        FSUTILS.rmdir(NKMjs.InProject(NKMjs.projectConfigCompiled.compiledStyleLocation))
+        FSUTILS.rmdir(NKMjs.InApp(NKMjs.projectConfigCompiled.compiledStyleLocation))
 
         this.End();
 

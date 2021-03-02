@@ -32,18 +32,35 @@ class NKMJSPackageConfig {
                 for (let key in data) {
                     let val = data[key];
                     if (typeof val === 'string') { keys[key] = val; }
+                    else if (Array.isArray(val)) {
+
+                    } else {
+                        // flatten object content into the config -- this is just a dangerous quickfix
+                        // DANGER
+                        // DANGER
+                        for (let k in val) {
+                            data[k] = val[k];
+                            if(typeof val[k] === 'string'){
+                                keys[k] = val[k];
+                            }
+                        }
+                        // DANGER
+                        // DANGER
+                    }
                 }
 
                 //resolve first-level references -- on keys themselves first
                 for (let key in keys) {
                     let val = keys[key];
-                    if (val.includes(`%`)) {
-                        for (let i = 0; i < 10; i++) {
-                            for (let k in keys) {
-                                val = val.split(`%${k}%`).join(keys[k]);
+                    if (typeof val === 'string') {
+                        if (val.includes(`%`)) {
+                            for (let i = 0; i < 10; i++) {
+                                for (let k in keys) {
+                                    val = val.split(`%${k}%`).join(keys[k]);
+                                }
                             }
+                            keys[key] = val;
                         }
-                        keys[key] = val;
                     }
                 }
 

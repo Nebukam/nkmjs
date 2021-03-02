@@ -3,26 +3,31 @@
     "longName": "NKMjs Styleguide",
     "shortName": "Stylguide",
     "description": "My app description, lorem ipsum; dolor si amet.",
-    "defaultLocale": "en",
+    "lang": "en",
     "homepage": "https://homepage",
-    "display": "standalone",
-    "colorTheme": "#1e1e1e",
-    "srcLocation": "app",
-    "styleLocation": "%srcLocation%/scss",
-    "compiledStyleLocation": "style",
-    "assetsLocation": "assets",
-    "iconsLocation": "%assetsLocation%/icons",
-    "buildLocation": "builds",
-    "cacheDirectories": [
-        "style"
-    ],
+    "app": {
+        "display": "standalone",
+        "orientation": "portrait",
+        "colorTheme": "#1e1e1e"
+    },
+    "directories": {
+        "srcLocation": "app",
+        "styleLocation": "%srcLocation%/scss",
+        "compiledStyleLocation": "style",
+        "assetsLocation": "assets",
+        "iconsLocation": "%assetsLocation%/icons",
+        "buildLocation": "builds",
+        "cacheDirectories": [
+            "%compiledStyleLocation%"
+        ]
+    },
     "buildConfigs": [
         {
-            "platform":"www"
+            "platform": "www"
         },
         {
-            "platform":"chrome",
-            "arch":"67"
+            "platform": "chrome",
+            "arch": "67"
         },
         {
             "platform": "windows",

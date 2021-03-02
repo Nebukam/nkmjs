@@ -3,47 +3,49 @@
         "test": [
             "task-tests"
         ],
-        "bundle-core": [
-            "task-build-core-bundle"
-        ],
         "init": [
             "task-nkmjs-init-config"
         ],
         "start": [
-            "task-build-styles",
             "task-start-electron",
             "task-cleanup"
         ],
         "build-www": [
-            "task-build-styles",
-            "task-build-for-www",
+            "task-build-www",
+            "task-cleanup"
+        ],
+        "build-pwa": [
+            "task-build-pwa",
+            "task-cleanup"
+        ],
+        "build-ext": [
+            "task-build-ext",
+            "task-cleanup"
+        ],
+        "build-all": [
+            "task-build-www",
+            "task-build-pwa",
+            "task-build-ext",
+            "task-build-electron",
+            "task-cleanup"
+        ],
+        "build-all-www": [
+            "task-build-www",
+            "task-build-pwa",
+            "task-build-ext",
+            "task-cleanup"
+        ],
+        "build-electron": [
+            "task-build-electron",
             "task-cleanup"
         ],
         "package-electron": [
             [
-                "task-build-electron-app",
+                "task-build-electron",
                 {
                     "onlypack": true
                 }
             ],
-            "task-cleanup"
-        ],
-        "build-electron": [
-            "task-build-electron-app",
-            "task-cleanup"
-        ],
-        "build-extensions": [
-            "task-build-for-www",
-            "task-prepare-icons",
-            "task-build-extensions",
-            "task-package-extensions",
-            "task-cleanup"
-        ],
-        "build-all":[
-            "task-build-styles",
-            "task-build-for-www",
-            "task-build-extensions",
-            "task-build-electron-app",
             "task-cleanup"
         ],
         "fetch-styles": [
@@ -66,5 +68,5 @@
             "task-build-styles"
         ]
     },
-    "externals": []
+    "externals": ["@nkmjs/core"]
 }

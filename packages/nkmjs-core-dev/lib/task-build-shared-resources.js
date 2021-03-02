@@ -8,14 +8,24 @@ const chalk = require('chalk');
 const FSUTILS = require("./helpers/fsutils");
 const DirCopy = require(`./helpers/dir-copy`);
 
-class TaskPrepareWWWPacking extends ScriptBase {
+class TaskBuildSharedResources extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`prepare-www-packing`, p_onComplete);
+        super(`build-shared-resources`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        let appRsc = NKMjs.InWebBuildRsc(),
+        this.Run([
+            `./task-build-styles`,
+            `./task-bundle-externals`,
+        ], this._Bind(this._OnPreparationComplete));
+
+    }
+
+    _OnPreparationComplete() {
+
+
+        let appRsc = NKMjs.InSharedWebBuildRsc(),
             caches = NKMjs.projectConfigCompiled.cacheDirectories;
 
         if (NKMjs.projectConfigCompiled.cacheDirectories) {
@@ -33,4 +43,4 @@ class TaskPrepareWWWPacking extends ScriptBase {
 
 }
 
-module.exports = TaskPrepareWWWPacking;
+module.exports = TaskBuildSharedResources;
