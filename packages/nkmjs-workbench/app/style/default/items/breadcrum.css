@@ -1,1 +1,125 @@
-:host{padding:2px}.group{border-radius:6px;background-color:transparent;border:1px solid rgba(127,127,127,.5);padding:2px}.item::before,.group::before{position:absolute;content:"";width:0;height:0;border-bottom:5px solid transparent;border-left:5px solid transparent;border-right:5px solid #d3d3d3;top:calc(50% - 4px);left:-16px}:host(.horizontal) .item{margin-left:12px;padding-left:3px}:host(.horizontal) .item::before{transform-origin:center center;transform:rotate(45deg)}:host(.horizontal) .group:first-of-type::before,:host(.horizontal) .group::after{content:none}:host(.horizontal) .group{padding-left:5px;padding-right:5px}
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* OS Theme mixins */
+/* Responsive mixins */
+/* Mobile mixins */
+/*
+@mixin if-not-touch (){
+    @media not (pointer:none), not (pointer:coarse) {
+        @content;
+    }
+}
+
+@mixin if-touch (){
+    @media (pointer:none), (pointer:coarse) {
+        @content;
+    }
+}
+*/
+/* Cosmetics */
+/* Presets */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Scrollbar mixins */
+/* Size mixins */
+/*
+    Repeats the same value for multiple properties
+*/
+/*
+    Spreads a list of value over multiple properties
+    value length & properties length must be the same
+*/
+/* Interactive states mixins */
+:host {
+  padding: 2px;
+}
+
+.group {
+  border-radius: 6px;
+  background-color: transparent;
+  border: 1px solid rgba(127, 127, 127, 0.5);
+  padding: 2px;
+}
+
+.item::before, .group::before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid transparent;
+  border-right: 5px solid lightgrey;
+  top: calc(50% - 4px);
+  left: -16px;
+}
+
+:host(.horizontal) .item {
+  margin-left: 12px;
+  padding-left: 3px;
+}
+
+:host(.horizontal) .item::before {
+  transform-origin: center center;
+  transform: rotate(45deg);
+}
+
+:host(.horizontal) .group:first-of-type::before,
+:host(.horizontal) .group::after {
+  content: none;
+}
+
+:host(.horizontal) .group {
+  padding-left: 5px;
+  padding-right: 5px;
+}

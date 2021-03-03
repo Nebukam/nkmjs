@@ -25,6 +25,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "@nkmjs/core": "^0.0.11",
+    "@nkmjs/utils": "^0.0.8",
     "adm-zip": "^0.5.3",
     "axios": "^0.21.1",
     "browserify": "^17.0.0",

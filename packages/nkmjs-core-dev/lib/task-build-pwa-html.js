@@ -14,9 +14,11 @@ class TaskBuildPWAHTML extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
-            `./task-prepare-html-metas.js`, // Metas, OpenGraph, Twitter
-            `./task-prepare-html-scripts.js`, // Scripts
-            `./task-build-pwa-webmanifest.js` // Webmanifest + legacy support tags
+            `./task-prepare-html-metas`, // Metas
+            `./task-prepare-html-socials`, // OpenGraph, Twitter, etc
+            `./task-prepare-html-scripts`, // Scripts
+            `./task-prepare-html-preloads`, // Preloads
+            `./task-build-pwa-webmanifest` // Webmanifest + legacy support tags
         ], this._Bind(this.OnPreparationComplete));
 
 
@@ -28,9 +30,11 @@ class TaskBuildPWAHTML extends ScriptBase {
             replacer = new ReplaceVars(
                 NKMjs.projectConfigCompiled.__raw,
                 {
-                    [`html-metadata`]: NKMjs.Get(`html-metadata`, ``),
+                    [`html-metas`]: NKMjs.Get(`html-metas`, ``),
+                    [`html-socials`]: NKMjs.Get(`html-socials`, ``),
+                    [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
+                    [`html-webmanifest`]: NKMjs.Get(`html-webmanifest`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
-                    [`html-webmanifest`]: NKMjs.Get(`html-webmanifest`, ``)
                 }),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));

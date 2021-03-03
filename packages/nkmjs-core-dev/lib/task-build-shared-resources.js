@@ -26,15 +26,19 @@ class TaskBuildSharedResources extends ScriptBase {
 
 
         let appRsc = NKMjs.InSharedWebBuildRsc(),
-            caches = NKMjs.projectConfigCompiled.cacheDirectories;
+            caches = [];
 
         if (NKMjs.projectConfigCompiled.cacheDirectories) {
-            for (let i = 0, n = caches.length; i < n; i++) {
-                let cacheDir = caches[i];
-                new DirCopy(NKMjs.InApp(cacheDir), path.resolve(appRsc, cacheDir), {
-                    'any': (p_src, p_dest, p_isDir) => { return p_dest; }
-                });
-            }
+            caches = [...NKMjs.projectConfigCompiled.cacheDirectories];
+        }
+        
+        caches.push(NKMjs.projectConfigCompiled.compiledStyleLocation);
+
+        for (let i = 0, n = caches.length; i < n; i++) {
+            let cacheDir = caches[i];
+            new DirCopy(NKMjs.InApp(cacheDir), path.resolve(appRsc, cacheDir), {
+                'any': (p_src, p_dest, p_isDir) => { return p_dest; }
+            });
         }
 
         this.End();

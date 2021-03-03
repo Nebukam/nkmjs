@@ -1,1 +1,318 @@
-:host{box-sizing:border-box;transition:all .05s ease;position:relative;display:flex;flex-direction:row;align-items:center;align-content:center;justify-content:center;padding:2px;border-radius:3px;background-color:rgba(0,0,0,.5);border:none;--flavor_primary_disabled:rgba(0,0,0,0.1);--flavor_secondary_disabled:rgba(0,0,0,0.1);--flavor_contrast_disabled:rgba(0,0,0,0.5);--flavor_primary_idle:rgba(50,50,50,.65);--flavor_secondary_idle:rgba(140,140,140,.5);--flavor_contrast_idle:#ccc;--flavor_primary_focused:#4c4c4c;--flavor_secondary_focused:rgba(166,166,166,.8);--flavor_contrast_focused:#e5e5e5;--flavor_primary_selected:rgba(63,63,63,.8);--flavor_secondary_selected:rgba(153,153,153,.64);--flavor_contrast_selected:#d8d8d8;--flavor_primary_selected_focused:#656565;--flavor_secondary_selected_focused:#bfbfbf;--flavor_contrast_selected_focused:#fff}:host::after{transition:all .15s ease;background-color:var(--flavor_secondary_focused)}:host(.idle){background-color:var(--flavor_primary_idle);border-color:var(--flavor_secondary_idle)}:host(.idle) .label{color:var(--flavor_contrast_idle)}:host(.focused){z-index:50;filter:drop-shadow(0px 0px 1px black);background-color:var(--flavor_primary_focused);border-color:var(--flavor_secondary_focused)}:host(.focused)::after{content:"";position:absolute;width:4px;height:4px;bottom:-2px;left:calc(50% - 2px);border-radius:10px}:host(.focused) .label{color:var(--flavor_contrast_focused)}:host(.selected){background-color:var(--flavor_primary_selected);border-color:var(--flavor_secondary_selected)}:host(.selected) .label{color:var(--flavor_contrast_selected)}:host(.selected.focused){background-color:var(--flavor_primary_selected_focused);border-color:var(--flavor_secondary_selected_focused)}:host(.selected.focused) .label{color:var(--flavor_contrast_selected_focused)}:host(.toggled)::after{content:"";position:absolute;width:calc(100% - 6px);height:4px;bottom:-2px;left:3px;border-radius:10px}:host(.size-xs.toggled)::after,:host(.size-s.toggled)::after{height:2px;bottom:-1px}:host(.disabled){opacity:.5;background-color:var(--flavor_primary_disabled);border-color:var(--flavor_secondary_disabled)}:host(.disabled) .label{color:var(--flavor_contrast_disabled)}:host(.frame){background-color:transparent;border-width:1px;border-style:solid}:host(.minimal){background-color:transparent;border:none}:host{display:flex;flex-direction:row;align-items:center;align-content:center;--margin-size:calc( var(--size) / 3 );height:var(--size);min-height:var(--size)}.icon{margin-left:var(--margin-size)}.label{margin-right:var(--margin-size)}:host(.no-label) .icon{margin-left:var(--margin-size);margin-right:var(--margin-size)}:host(.no-icon) .label{margin-left:var(--margin-size);margin-right:var(--margin-size)}:host(.size-xs) .label{--font-size:var(--font_size_xs)}
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* OS Theme mixins */
+/* Responsive mixins */
+/* Mobile mixins */
+/*
+@mixin if-not-touch (){
+    @media not (pointer:none), not (pointer:coarse) {
+        @content;
+    }
+}
+
+@mixin if-touch (){
+    @media (pointer:none), (pointer:coarse) {
+        @content;
+    }
+}
+*/
+/* Cosmetics */
+/* Presets */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Scrollbar mixins */
+/* Size mixins */
+/*
+    Repeats the same value for multiple properties
+*/
+/*
+    Spreads a list of value over multiple properties
+    value length & properties length must be the same
+*/
+/* Interactive states mixins */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* OS Theme mixins */
+/* Responsive mixins */
+/* Mobile mixins */
+/*
+@mixin if-not-touch (){
+    @media not (pointer:none), not (pointer:coarse) {
+        @content;
+    }
+}
+
+@mixin if-touch (){
+    @media (pointer:none), (pointer:coarse) {
+        @content;
+    }
+}
+*/
+/* Cosmetics */
+/* Presets */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Colors */
+/* Sizes */
+/* Font sizes */
+/* Boilerplate */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* High-level UI Flags */
+/* Generics */
+/* Interactive states */
+/* Interactive additive */
+/* Positions */
+/* Misc */
+/* Sizes */
+/* Variants */
+/* Color */
+/* Min Max Clamp */
+/* STR Replace */
+/* Scrollbar mixins */
+/* Size mixins */
+/*
+    Repeats the same value for multiple properties
+*/
+/*
+    Spreads a list of value over multiple properties
+    value length & properties length must be the same
+*/
+/* Interactive states mixins */
+/* Base CSS for all buttons */
+:host {
+  box-sizing: border-box;
+  transition: all 0.05s ease;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  --flavor_primary_disabled:rgba(0,0,0,0.1);
+  --flavor_secondary_disabled:rgba(0,0,0,0.1);
+  --flavor_contrast_disabled:rgba(0,0,0,0.5);
+  --flavor_primary_idle: rgba(50, 50, 50, 0.65);
+  --flavor_secondary_idle: rgba(140, 140, 140, 0.5);
+  --flavor_contrast_idle: #cccccc;
+  --flavor_primary_focused: #4c4c4c;
+  --flavor_secondary_focused: rgba(166, 166, 166, 0.8);
+  --flavor_contrast_focused: #e5e5e5;
+  --flavor_primary_selected: rgba(63, 63, 63, 0.8);
+  --flavor_secondary_selected: rgba(153, 153, 153, 0.64);
+  --flavor_contrast_selected: #d8d8d8;
+  --flavor_primary_selected_focused: #656565;
+  --flavor_secondary_selected_focused: #bfbfbf;
+  --flavor_contrast_selected_focused: white;
+}
+:host::after {
+  transition: all 0.15s ease;
+  background-color: var(--flavor_secondary_focused);
+}
+
+:host(.idle) {
+  background-color: var(--flavor_primary_idle);
+  border-color: var(--flavor_secondary_idle);
+}
+:host(.idle) .label {
+  color: var(--flavor_contrast_idle);
+}
+
+:host(.focused) {
+  z-index: 50;
+  filter: drop-shadow(0px 0px 1px black);
+  background-color: var(--flavor_primary_focused);
+  border-color: var(--flavor_secondary_focused);
+}
+:host(.focused)::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  bottom: -2px;
+  left: calc(50% - 2px);
+  border-radius: 10px;
+}
+:host(.focused) .label {
+  color: var(--flavor_contrast_focused);
+}
+
+:host(.selected) {
+  background-color: var(--flavor_primary_selected);
+  border-color: var(--flavor_secondary_selected);
+}
+:host(.selected) .label {
+  color: var(--flavor_contrast_selected);
+}
+
+:host(.selected.focused) {
+  background-color: var(--flavor_primary_selected_focused);
+  border-color: var(--flavor_secondary_selected_focused);
+}
+:host(.selected.focused) .label {
+  color: var(--flavor_contrast_selected_focused);
+}
+
+:host(.toggled)::after {
+  content: "";
+  position: absolute;
+  width: calc(100% - 6px);
+  height: 4px;
+  bottom: -2px;
+  left: 3px;
+  border-radius: 10px;
+}
+
+:host(.size-xs.toggled)::after, :host(.size-s.toggled)::after {
+  height: 2px;
+  bottom: -1px;
+}
+
+/* Base state : DISABLED */
+:host(.disabled) {
+  opacity: 0.5;
+  background-color: var(--flavor_primary_disabled);
+  border-color: var(--flavor_secondary_disabled);
+}
+:host(.disabled) .label {
+  color: var(--flavor_contrast_disabled);
+}
+
+/* Variants */
+:host(.frame) {
+  background-color: transparent;
+  border-width: 1px;
+  border-style: solid;
+}
+
+:host(.minimal) {
+  background-color: transparent;
+  border: none;
+}
+
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  --margin-size:calc( var(--size) / 3 );
+  height: var(--size);
+  min-height: var(--size);
+}
+
+.icon {
+  margin-left: var(--margin-size);
+}
+
+.label {
+  margin-right: var(--margin-size);
+}
+
+:host(.no-label) .icon {
+  margin-left: var(--margin-size);
+  margin-right: var(--margin-size);
+}
+
+:host(.no-icon) .label {
+  margin-left: var(--margin-size);
+  margin-right: var(--margin-size);
+}
+
+:host(.size-xs) .label {
+  --font-size:var(--font_size_xs);
+}

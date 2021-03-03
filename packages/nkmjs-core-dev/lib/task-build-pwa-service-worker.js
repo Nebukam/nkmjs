@@ -6,6 +6,7 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const DirRead = require('./helpers/dir-read');
+const MIME = require(`@nkmjs/utils`).MIME;
 
 class TaskBuildPWAServiceWorker extends ScriptBase {
 
@@ -24,28 +25,31 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
 
         let map = [`./`],
             externals = NKMjs.Get(`externals`, []),
-            cacheDirectories = NKMjs.projectConfigCompiled.cacheDirectories;
-        cacheDirectories.push(NKMjs.projectConfigCompiled.compiledStyleLocation);
+            caches = [...NKMjs.projectConfigCompiled.cacheDirectories];
+
+        caches.push(NKMjs.projectConfigCompiled.compiledStyleLocation);
 
         for (let i = 0, n = externals.length; i < n; i++) {
             map.push(`./${NKMjs.Sanitize(externals[i])}.js`);
         }
 
-        for (let i = 0, n = cacheDirectories.length; i < n; i++) {
-            let cachePath = NKMjs.InApp(cacheDirectories[i]), stat;
+        for (let i = 0, n = caches.length; i < n; i++) {
+            let cachePath = NKMjs.InApp(caches[i]), stat;
             try { stat = fs.statSync(cachePath); } catch (e) { continue; }
             if (stat.isDirectory()) {
                 new DirRead(cachePath, ``, {
-                    'any': (p_src, p_dest, p_isDir) => {
-                        map.push(NKMjs.Short(p_src + (p_isDir ? `/` : ``), NKMjs.InApp(), `.`, true));
-                    }
+                    'anyFile': (p_src) => {
+                        let mime = MIME.Get(path.extname(p_src));
+                        if(mime && mime.as !== `fetch`){ map.push(NKMjs.Short(p_src, NKMjs.InApp(), `.`, true)); }
+                    },
+                    'dir': (p_src) => { map.push(NKMjs.Short(`${p_src}/`, NKMjs.InApp(), `.`, true)); }
                 });
             } else {
                 map.push(NKMjs.Short(cachePath, NKMjs.InApp(), `.`, true));
             }
         }
 
-        // - Build & write service worker
+        // Build & write service worker
 
         let pwaSWJS = NKMjs.InPWABuildRsc(NKMjs.PWA_SERVICE_WORKER),
             replacer = new ReplaceVars({
