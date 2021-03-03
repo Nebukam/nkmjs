@@ -27,7 +27,7 @@ class TaskBuildElectronApp extends ScriptBase {
 
         this._log(`--pack-only : ${chalk.blue(NKMjs.shortargs[`pack-only`] ? true : false)}`, 1);
 
-        if (`buildConfigs` in NKMjs.projectConfig) { this.configs = NKMjs.projectConfig.buildConfigs; }
+        if (`builds` in NKMjs.projectConfig) { this.configs = NKMjs.projectConfig.builds; }
 
         if (!this.configs) {
             this._logWarn(`There are no build target set in your nkmjs.config.json. See https://nebukam.github.io/nkmjs/doc/config.html`);
@@ -58,14 +58,14 @@ class TaskBuildElectronApp extends ScriptBase {
 
         this.sharedConfig = {
             version: NKMjs.projectVersion,
-            name: NKMjs.projectConfigCompiled.name,
-            main: `${NKMjs.projectConfigCompiled.srcLocation}/${NKMjs.ELECTRON_ENTRY_POINT}`,
-            description: NKMjs.projectConfigCompiled.description,
-            productName: NKMjs.projectConfigCompiled.longName,
+            name: NKMjs.projectConfig.name,
+            main: `${NKMjs.projectConfig.dirs.app}/${NKMjs.ELECTRON_ENTRY_POINT}`,
+            description: NKMjs.projectConfig.description,
+            productName: NKMjs.projectConfig.longName,
             appId: `my.id`,
             appDirectory: NKMjs.InProject(),
             buildResources: NKMjs.InBuildRsc(),
-            dependencies: (NKMjs.projectConfigCompiled.__packagejson.dependencies || {}),
+            dependencies: (NKMjs.projectConfig.__packagejson.dependencies || {}),
             files: files
         };
 
@@ -80,24 +80,24 @@ class TaskBuildElectronApp extends ScriptBase {
 
     BuildIgnoreList() {
 
-        let appDir = NKMjs.projectConfigCompiled.srcLocation,
+        let appDir = NKMjs.projectConfig.dirs.app,
             list = [
                 `!package.bak.json`,
-                `!${NKMjs.projectConfigCompiled.styleLocation}`,
+                `!${NKMjs.projectConfig.dirs.builds}`,
+                `!${appDir}/${NKMjs.projectConfig.dirs.styleSource}`,
                 `!${appDir}/${NKMjs.BUNDLE_ENTRY_POINT}`,
                 `!${appDir}/${NKMjs.HTML_INDEX}`,
                 `!${appDir}/index.ext.js`,
                 `!${appDir}/index.pwa.js`,
                 `!${appDir}/index.www.js`
             ],
-            externals = NKMjs.Get(`externals`);
+            externals = NKMjs.Get(`externals`, []);
 
         // Add externals to the ignore list
-        if (externals && externals.length != 0) {
-            for (let i = 0, n = externals.length; i < n; i++) {
-                list.push(`!${NKMjs.projectConfigCompiled.srcLocation}/external-${NKMjs.Sanitize(externals[i])}.js`);
-            }
+        for (let i = 0, n = externals.length; i < n; i++) {
+            list.push(`!${appDir}/${NKMjs.ExternalName(externals[i])}.js`);
         }
+
         // Add all mains + index to the ignore list
 
         return list;

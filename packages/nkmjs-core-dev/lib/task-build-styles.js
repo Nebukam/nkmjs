@@ -20,8 +20,8 @@ class TaskBuildStyles extends ScriptBase {
 
         this._log(`--compress : ${chalk.blue(compress)}`, 1);
 
-        let inputLocation = NKMjs.InProject(NKMjs.projectConfigCompiled.styleLocation),
-            outputLocation = NKMjs.InApp(NKMjs.projectConfigCompiled.compiledStyleLocation);
+        let inputLocation = NKMjs.InApp(NKMjs.projectConfig.dirs.styleSource),
+            outputLocation = NKMjs.InApp(NKMjs.projectConfig.dirs.style);
 
         new DirRead(inputLocation, outputLocation, {
             'dir': (p_src, p_dest) => { if (!fs.existsSync(p_dest)) { fs.mkdirSync(p_dest); } },

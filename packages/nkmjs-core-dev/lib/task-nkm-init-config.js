@@ -60,11 +60,11 @@ class TaskNKMInitConfig extends ScriptBase {
                 validation: (val) => { if (!(/^[A-Za-z_-][A-Za-z0-9_-]*$/.test(val))) { return `Must be a valid identifier ! (/^[A-Za-z_-][A-Za-z0-9_-]*$/)` } return true; }
             },
             {
-                key: `srcLocation`,
+                key: `dirs.app`,
                 q: `Sources location`,
             },
             {
-                key: `cacheDirectories`,
+                key: `dirs.offline`,
                 q: `Offline cache data folder, comma-separated (progressive web app, paths are relative to the app folder) ?`,
                 sanitize: (a) => { return Array.isArray(a) ? a : (!a || a === ``) ? [] : a.split(`,`); }
             }

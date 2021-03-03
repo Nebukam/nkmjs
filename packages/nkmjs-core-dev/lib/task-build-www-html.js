@@ -27,14 +27,15 @@ class TaskBuildWWWHTML extends ScriptBase {
 
         let htmlEntry = NKMjs.InWWWBuildRsc(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars(
-                NKMjs.projectConfigCompiled.__raw,
+                NKMjs.projectConfig.__keys,
                 {
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-socials`]: NKMjs.Get(`html-socials`, ``),
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
                     [`html-webmanifest`]: ``,
-                }),
+                }
+                ),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));
 

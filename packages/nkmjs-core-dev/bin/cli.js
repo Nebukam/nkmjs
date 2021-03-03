@@ -34,7 +34,7 @@ class NKMCLI extends ScriptBase {
                     this._log(`Avaialble tasks in project are :`, 1);
                     for(let key in NKMjs.projectConfig.tasks){ this._logFwd(key, null, 2); }
                 }
-                if(NKMjs.coreConfigCompiled.tasks){
+                if(NKMjs.coreConfig.tasks){
                     this._log(`Avaialble tasks in core-dev are :`, 1);
                     for(let key in NKMjs.coreConfig.tasks){ this._logFwd(key, null, 2); }
                 }

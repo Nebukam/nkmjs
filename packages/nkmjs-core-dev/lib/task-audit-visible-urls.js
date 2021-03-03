@@ -58,8 +58,9 @@ class TaskAuditVisibleURLs extends ScriptBase {
             }
         }
 
-        let knownPermissions = (NKMjs.projectConfigCompiled.permissions || []),
+        let knownPermissions = (NKMjs.projectConfig.permissions || []),
             unknownPermissions = [];
+            
         for (i = 0, n = urls.length; i < n; i++) {
             let currentURL = urls[i];
             if (!knownPermissions.includes(currentURL)) {

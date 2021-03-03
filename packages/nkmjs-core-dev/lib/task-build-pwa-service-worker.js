@@ -25,12 +25,13 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
 
         let map = [`./`],
             externals = NKMjs.Get(`externals`, []),
-            caches = [...NKMjs.projectConfigCompiled.cacheDirectories];
+            caches = [...NKMjs.projectConfig.dirs.offline],
+            dirStyle = NKMjs.projectConfig.dirs.style;;
 
-        caches.push(NKMjs.projectConfigCompiled.compiledStyleLocation);
+        if (!caches.includes(dirStyle)) { caches.push(dirStyle); }
 
         for (let i = 0, n = externals.length; i < n; i++) {
-            map.push(`./${NKMjs.Sanitize(externals[i])}.js`);
+            map.push(`./${NKMjs.ExternalName(externals[i])}.js`);
         }
 
         for (let i = 0, n = caches.length; i < n; i++) {
@@ -40,7 +41,7 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
                 new DirRead(cachePath, ``, {
                     'anyFile': (p_src) => {
                         let mime = MIME.Get(path.extname(p_src));
-                        if(mime && mime.as !== `fetch`){ map.push(NKMjs.Short(p_src, NKMjs.InApp(), `.`, true)); }
+                        if (mime && mime.as !== `fetch`) { map.push(NKMjs.Short(p_src, NKMjs.InApp(), `.`, true)); }
                     },
                     'dir': (p_src) => { map.push(NKMjs.Short(`${p_src}/`, NKMjs.InApp(), `.`, true)); }
                 });
@@ -52,11 +53,13 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
         // Build & write service worker
 
         let pwaSWJS = NKMjs.InPWABuildRsc(NKMjs.PWA_SERVICE_WORKER),
-            replacer = new ReplaceVars({
-                cacheURLs: `[\n    "` + map.join(`",\n    "`) + `"]`,
-                version: NKMjs.projectVersion
-            },
-                NKMjs.projectConfigCompiled.__raw),
+            replacer = new ReplaceVars(
+                NKMjs.projectConfig.__keys,
+                {
+                    cacheURLs: `[\n    "` + map.join(`",\n    "`) + `"]`,
+                    version: NKMjs.projectVersion
+                }
+            ),
             templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/pwa-service-worker.js`), 'utf8'));
 
         // Transform & replace

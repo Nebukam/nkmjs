@@ -10,18 +10,18 @@
         "orientation": "portrait",
         "colorTheme": "#1e1e1e"
     },
-    "directories": {
-        "srcLocation": "app",
-        "styleLocation": "%srcLocation%/scss",
-        "compiledStyleLocation": "style",
-        "assetsLocation": "assets",
-        "iconsLocation": "%assetsLocation%/icons",
-        "buildLocation": "builds",
-        "cacheDirectories": [
+    "dirs": {
+        "app": "app",
+        "styleSource": "scss",
+        "style": "style",
+        "assets": "assets",
+        "icons": "%dirs.assets%/icons",
+        "builds": "builds",
+        "offline": [
             
         ]
     },
-    "buildConfigs": [
+    "builds": [
         {
             "platform": "www"
         },

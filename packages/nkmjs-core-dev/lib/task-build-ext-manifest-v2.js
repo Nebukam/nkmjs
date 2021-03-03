@@ -25,7 +25,7 @@ class TaskBuildWebmanifestV2 extends ScriptBase {
         let iconList = NKMjs.Get(`icon-list`, []),
             iconObj = {},
             manifest = {},
-            projectInfos = NKMjs.projectConfigCompiled;
+            projectInfos = NKMjs.projectConfig;
 
         for (let i = 0, n = iconList.length; i < n; i++) {
             let icon = iconList[i];

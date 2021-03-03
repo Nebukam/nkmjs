@@ -25,18 +25,21 @@ class TaskBundleMainExt extends ScriptBase {
     _OnPreparationComplete() {
 
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT_EXT),
-            replacer = new ReplaceVars({
-                js_main: `./js/main`,
-                config: ``
-            }, NKMjs.projectConfigCompiled.__raw),
+            replacer = new ReplaceVars(
+                NKMjs.projectConfig.__keys,
+                {
+                    js_main: `./js/main`,
+                    config: ``
+                }
+            ),
             templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/entry-bundle.js`), 'utf8'));
 
         NKMjs.WriteTempSync(entryPoint, templateContent);
         this._logFwd(NKMjs.Shorten(entryPoint), `+`);
 
-        new Bundler(`${NKMjs.projectConfigCompiled.name} (ext)`,
+        new Bundler(`${NKMjs.projectConfig.name} (ext)`,
             entryPoint,
-            NKMjs.InExtBuildRsc(`${NKMjs.projectConfigCompiled.name}.js`),
+            NKMjs.InExtBuildRsc(`${NKMjs.projectConfig.name}.js`),
             this.End,
             this
         );

@@ -25,7 +25,7 @@ class TaskBuildExtHTML extends ScriptBase {
 
         let htmlEntry = NKMjs.InExtBuildRsc(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars(
-                NKMjs.projectConfigCompiled.__raw,
+                NKMjs.projectConfig.__keys,
                 {
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),

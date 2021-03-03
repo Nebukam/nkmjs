@@ -1,3 +1,7 @@
 {
-    "styleLocation": [ "./scss" ]
+    "sources": {
+        "styles": [
+            "./scss"
+        ]
+    }
 }

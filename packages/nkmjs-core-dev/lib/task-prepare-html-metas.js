@@ -19,11 +19,11 @@ class TaskPrepareHTMLMetas extends ScriptBase {
         metas += `<!-- META -->\n`;
         metas += `<meta charset="utf-8" />\n`;
         metas += `<meta http-equiv="X-UA-Compatible" content="IE=edge">\n`;
-        metas += `<title>${NKMjs.projectConfigCompiled.longName}</title>\n`;
-        metas += `<meta name="description" content="${NKMjs.projectConfigCompiled.description}">\n`;
+        metas += `<title>${NKMjs.projectConfig.longName}</title>\n`;
+        metas += `<meta name="description" content="${NKMjs.projectConfig.description}">\n`;
         metas += `<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">\n`;
         metas += `<meta name="robots" content="index, follow"></meta>\n`;
-        metas += `<link rel="canonical" href="${NKMjs.projectConfigCompiled.homepage}" />\n`;
+        metas += `<link rel="canonical" href="${NKMjs.projectConfig.homepage}" />\n`;
 
         NKMjs.Set(`html-metas`, metas);
 

@@ -33,7 +33,7 @@ class TaskPrepareIcons extends ScriptBase {
 
         try {
             // Check if any icon is available
-            let iconDir = NKMjs.projectConfigCompiled.iconsLocation,
+            let iconDir = NKMjs.projectConfig.dirs.icons,
                 iconDirContent = fs.readdirSync(iconDir);
 
             for (let i = 0, n = iconDirContent.length; i < n; i++) {

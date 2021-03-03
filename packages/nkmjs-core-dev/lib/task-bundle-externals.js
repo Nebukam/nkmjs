@@ -50,7 +50,7 @@ class TaskBundleExternals extends ScriptBase {
             return;
         }
 
-        let moduleName = `${NKMjs.Sanitize(module)}.js`,
+        let moduleName = `${NKMjs.ExternalName(module)}.js`,
             replacer = new ReplaceVars({
                 module_index: `${this.eIndex++}`,
                 module_require_path: module
@@ -62,7 +62,7 @@ class TaskBundleExternals extends ScriptBase {
         // Check cache first
         try {
             fs.statSync(cachedOutput);
-            fs.copyFileSync(cachedOutput, output);
+            NKMjs.CopyTempSync(cachedOutput, output);
             this._log(`${chalk.blue(`using cached version : `)} ${NKMjs.Shorten(cachedOutput)}`, 1);
             this._logFwd(`${NKMjs.Shorten(output)}`, `+`, 2);
             this.prevBundleOutput = null;

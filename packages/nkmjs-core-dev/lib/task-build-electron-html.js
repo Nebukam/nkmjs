@@ -24,14 +24,15 @@ class TaskBuildElectronHTML extends ScriptBase {
     OnPreparationComplete() {
 
         let electronHtml = NKMjs.InApp(NKMjs.ELECTRON_HTML_INDEX),
-            replacer = new ReplaceVars({
-                [`html-metas`]: NKMjs.Get(`html-metas`, ``),
-                [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
-                [`html-socials`]: ``,
-                [`html-webmanifest`]: ``,
-                [`html-scripts`]: ``,
-            },
-                NKMjs.projectConfigCompiled.__raw),
+            replacer = new ReplaceVars(
+                NKMjs.projectConfig.__keys,
+                {
+                    [`html-metas`]: NKMjs.Get(`html-metas`, ``),
+                    [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
+                    [`html-socials`]: ``,
+                    [`html-webmanifest`]: ``,
+                    [`html-scripts`]: ``,
+                }),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index-electron.html`), 'utf8'));
 

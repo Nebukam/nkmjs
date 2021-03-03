@@ -64,17 +64,13 @@ class NKMjs {
         this.dirnameCore = cCore;
 
         this.coreConfig = new NKMJSPackageConfig(cCore, false);
-        this.coreConfigCompiled = new NKMJSPackageConfig(cCore, true);
-
         this.projectConfig = new NKMJSPackageConfig(cProject, false);
-        this.projectConfigCompiled = new NKMJSPackageConfig(cProject, true);
 
         if (!this.projectConfig.__hasNKMConfig) {
             console.log(chalk.yellow(`>> WARNING : Current project (${path.basename(cProject)}) has no nkmjs.config.json. Will be using defaults instead.`));
             this.validProject = false;
             let defaultConfigPath = path.resolve(cCore, `configs`);
             this.projectConfig = new NKMJSPackageConfig(defaultConfigPath, false);
-            this.projectConfigCompiled = new NKMJSPackageConfig(defaultConfigPath, true);
         } else {
             this.validProject = true;
         }
@@ -82,7 +78,7 @@ class NKMjs {
         process.argv = process.argv.splice(2);
         this.shortargs = new ARGS(process.argv);
 
-        this.projectVersion = (NKMjs.projectConfigCompiled.__packagejson.version || `0.0.0`);
+        this.projectVersion = (NKMjs.projectConfig.__packagejson.version || `0.0.0`);
         this.CORE_CACHE_DIR = this.InCore(`caches`, `@nkmjs`);
 
         if (this.shortargs[`invalidate-cache`]) {
@@ -93,6 +89,8 @@ class NKMjs {
         //console.log(`dirnameProject : ${this.dirnameProject}`);
         //console.log(`dirnameCore : ${this.dirnameCore}`);
 
+        console.log(this.projectConfig.__keys);
+
     }
 
     static initialized = false;
@@ -102,10 +100,7 @@ class NKMjs {
     static validProject = false;
 
     static coreConfig = null;
-    static coreConfigCompiled = null;
-
     static projectConfig = null;
-    static projectConfigCompiled = null;
     static projectVersion = `0.0.0`;
 
     static dirnameCore = null;
@@ -196,13 +191,13 @@ class NKMjs {
 
     static InApp(...pathSegments) {
         return this.InProject(
-            this.projectConfigCompiled.srcLocation,
+            this.projectConfig.dirs.app,
             ...pathSegments);
     }
 
     static InBuilds(...pathSegments) {
         return this.InProject(
-            this.projectConfigCompiled.buildLocation,
+            this.projectConfig.dirs.builds,
             ...pathSegments);
     }
 
@@ -213,11 +208,11 @@ class NKMjs {
     }
 
     static InAssets(...pathSegments) {
-        return this.InProject(this.projectConfigCompiled.assetsLocation, ...pathSegments);
+        return this.InProject(this.projectConfig.dirs.assets, ...pathSegments);
     }
 
     static InStyle(...pathSegments) {
-        return this.InProject(this.projectConfigCompiled.styleLocation, ...pathSegments);
+        return this.InProject(this.projectConfig.dirs.styleSource, ...pathSegments);
     }
 
     static Shorten(p_path) {
@@ -241,6 +236,13 @@ class NKMjs {
         p_name = p_name.split(`/`).join(`-`);
         p_name = p_name.split(`\\`).join(`-`);
         return p_name;
+    }
+
+    static ExternalName(p_name) {
+        p_name = p_name.split(`@`).join(`external-`);
+        p_name = p_name.split(`/`).join(`-`);
+        p_name = p_name.split(`\\`).join(`-`);
+        return `lib-${p_name}`;
     }
 
 }

@@ -18,21 +18,29 @@ class TaskPrepareExternals extends ScriptBase {
         super(`prepare-externals`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        let externals = [];
-        this._Push(NKMjs.coreConfigCompiled.externals, externals);
-        this._Push(NKMjs.projectConfigCompiled.externals, externals);
+        this.externals = [];
+        this.exclusions = [];
+        this._Push(NKMjs.coreConfig.externals);
+        this._Push(NKMjs.projectConfig.externals);
 
-        NKMjs.Set(`externals`, externals);
+        for (let i = 0, n = this.exclusions.length; i < n; i++) {
+            let rem = this.exclusions[i],
+                index = this.externals.indexOf(rem);
+            if (index != -1) { this.externals.splice(index, 1); }
+        }
+
+        NKMjs.Set(`externals`, this.externals);
 
         this.End();
 
     }
 
-    _Push(p_list, p_target) {
+    _Push(p_list) {
         if (!p_list) { return; }
         for (let i = 0, n = p_list.length; i < n; i++) {
             let item = p_list[i];
-            if (!p_target.includes(item)) { p_target.push(item) };
+            if (item[0] === `!`) { this.exclusions.push(item.substr(1)); }
+            else if (!this.externals.includes(item)) { this.externals.push(item) };
         }
     }
 

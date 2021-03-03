@@ -20,7 +20,7 @@ class TaskBuildWebmanifest extends ScriptBase {
     OnPreparationComplete() {
 
         let manifest = {},
-            projectInfos = NKMjs.projectConfigCompiled,
+            projectInfos = NKMjs.projectConfig,
             iconList = NKMjs.Get(`icon-list`, []),
             iconsArray = [],
             htmlHeader = ``;

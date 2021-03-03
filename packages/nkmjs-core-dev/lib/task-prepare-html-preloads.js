@@ -18,9 +18,10 @@ class TaskPrepareHTMLMeta extends ScriptBase {
         let preloads = ``,
             map = [],
             candidates = [],
-            caches = [...NKMjs.projectConfigCompiled.cacheDirectories];
+            caches = [...NKMjs.projectConfig.dirs.offline],
+            dirStyle = NKMjs.projectConfig.dirs.style;
 
-        caches.push(NKMjs.projectConfigCompiled.compiledStyleLocation);
+        if (!caches.includes(dirStyle)) { caches.push(dirStyle); }
 
         for (let i = 0, n = caches.length; i < n; i++) {
             let cachePath = NKMjs.InApp(caches[i]), stat;

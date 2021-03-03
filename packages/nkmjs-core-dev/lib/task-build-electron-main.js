@@ -22,11 +22,13 @@ class TaskBuildElectronMain extends ScriptBase {
     _OnPreparationComplete() {
 
         let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT),
-            replacer = new ReplaceVars({
-                htmlIndex: NKMjs.ELECTRON_HTML_INDEX,
-                js_main: `./js/main`,
-                config: ``
-            }, NKMjs.projectConfigCompiled.__raw),
+            replacer = new ReplaceVars(
+                NKMjs.projectConfig.__keys,
+                {
+                    htmlIndex: NKMjs.ELECTRON_HTML_INDEX,
+                    js_main: `./js/main`,
+                    config: ``
+                }),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/js/entry-electron.js`), 'utf8'));
 

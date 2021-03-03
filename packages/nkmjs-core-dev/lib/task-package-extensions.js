@@ -58,7 +58,7 @@ class TaskPackageExtensions extends ScriptBase {
             return;
         }
 
-        this.currentZipPath = `${NKMjs.projectConfigCompiled.name}-${zipInfos.browser}-${NKMjs.projectVersion}.zip`;
+        this.currentZipPath = `${NKMjs.projectConfig.name}-${zipInfos.browser}-${NKMjs.projectVersion}.zip`;
 
         new DirZip(
             zipInfos.unpacked,

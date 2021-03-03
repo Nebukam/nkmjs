@@ -28,7 +28,7 @@ class TaskBuildPWAHTML extends ScriptBase {
 
         let htmlEntry = NKMjs.InPWABuildRsc(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars(
-                NKMjs.projectConfigCompiled.__raw,
+                NKMjs.projectConfig.__keys,
                 {
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-socials`]: NKMjs.Get(`html-socials`, ``),
