@@ -30,5 +30,6 @@ LOG.toggle(true);
 ENV.instance.Start({
     paths: paths,
     argv: [],
-    renderer: require(`%js_main%`)
+    renderer: require(`%js_main%`),
+    %config%
 });

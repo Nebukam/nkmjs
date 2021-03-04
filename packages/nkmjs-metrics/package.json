@@ -1,11 +1,11 @@
 {
-  "name": "@nkmjs/actions",
-  "version": "0.0.8",
-  "description": "NKMjs Framework Actions",
+  "name": "@nkmjs/metrics",
+  "version": "0.0.1",
+  "description": "NKMjs Framework Metrics",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-actions"
+    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-metrics"
   },
   "scripts": {
     "test": "node test.js"

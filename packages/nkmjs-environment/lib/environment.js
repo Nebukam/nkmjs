@@ -258,7 +258,7 @@ class ENV extends SingletonEx {
         if (!U.isInstanceOf(p_serviceClass, ServiceBase)) {
             throw new Error(`${p_serviceClass} is not a service.`);
         }
-        p_serviceClass.instance.InitializeAndStart();
+        p_serviceClass.instance.InitializeAndStart(this);
     }
 
     //
