@@ -2,5 +2,5 @@
 
 module.exports = {
     // Generic
-    METRICS: require(`./lib/metrics`)
+    LOC: require(`./lib/localisation`),
 }

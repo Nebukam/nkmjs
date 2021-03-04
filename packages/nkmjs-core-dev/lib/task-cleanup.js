@@ -18,7 +18,9 @@ class TaskBuildCleanup extends ScriptBase {
         while (NKMjs.tempFiles.length != 0) {
             let path = NKMjs.tempFiles.pop();
             try {
-                fs.unlinkSync(path);
+                let stats = fs.statSync(path);
+                if(stats.isDirectory()){ FSUTILS.rmdir(path); }
+                else{ fs.unlinkSync(path); }
             } catch (e) {
                 this._logError(e);
             }

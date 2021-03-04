@@ -59,7 +59,27 @@ class TaskPackageExtensions extends ScriptBase {
             return;
         }
 
-        this.currentZipPath = `${NKMjs.projectConfig.name}-${zipInfos.browser}-${NKMjs.projectVersion}.zip`;
+        let zipFileName = `${NKMjs.projectConfig.name}-${zipInfos.browser}-${NKMjs.projectVersion}.zip`;
+        this.currentZipPath = path.resolve(path.dirname(zipInfos.unpacked), zipFileName);
+        try{
+            let exists = false;
+            try{
+                fs.statSync(this.currentZipPath);
+                exists = true;
+                try{
+                    fs.unlinkSync(this.currentZipPath);
+                }catch(e){
+                    throw(e);
+                }
+            }catch(e){
+                if(exists){ throw(e); }
+                // No need to remove existing zip
+            }
+        }catch(e){
+            this._logError(e.message);
+            this.ZipNext();
+            return;
+        }
 
         new DirZip(
             zipInfos.unpacked,

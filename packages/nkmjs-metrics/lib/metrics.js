@@ -22,16 +22,10 @@ class METRICS extends ServiceBase {
 
     _Init() {
         super._Init();
-        this._requests = new List();
-        if (ENV.FEATURES.isExtension) {
-            this._extIpc = new SignalBox();
-            ENV.FEATURES.runtime.onMessage.addListener(function (request, sender, response) {
-                let signal = request.signal,
-                    data = request;
-                request.respond = response;
-                RELAY.instance._extIpc.Broadcast(signal, data);
-            });
-        }
+    }
+
+    InitializeAndStart(){
+
     }
 
 }

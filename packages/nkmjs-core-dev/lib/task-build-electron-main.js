@@ -5,6 +5,7 @@ const ScriptBase = require(`./script-base`);
 const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
+const ConfigBuilder = require(`./helpers/config-builder`);
 
 class TaskBuildElectronMain extends ScriptBase {
 
@@ -27,7 +28,7 @@ class TaskBuildElectronMain extends ScriptBase {
                 {
                     htmlIndex: NKMjs.ELECTRON_HTML_INDEX,
                     js_main: `./js/main`,
-                    config: ``
+                    config: (new ConfigBuilder(ConfigBuilder.ELECTRON)).toString()
                 }),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/js/entry-electron.js`), 'utf8'));

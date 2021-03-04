@@ -6,6 +6,7 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const Bundler = require('./helpers/bundler');
+const ConfigBuilder = require('./helpers/config-builder');
 
 class TaskBundleMainWWW extends ScriptBase {
 
@@ -29,7 +30,7 @@ class TaskBundleMainWWW extends ScriptBase {
                 NKMjs.projectConfig.__keys,
                 {
                     js_main: `./js/main`,
-                    config: ``
+                    config: (new ConfigBuilder(ConfigBuilder.WWW)).toString()
                 }
             ),
             templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/entry-bundle.js`), 'utf8'));

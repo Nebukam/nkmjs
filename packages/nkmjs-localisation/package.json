@@ -1,11 +1,11 @@
 {
-    "name": "@nkmjs/metrics",
+    "name": "@nkmjs/localisation",
     "version": "0.0.1",
-    "description": "NKMjs Framework Metrics",
+    "description": "NKMjs Framework Localisation",
     "main": "index.js",
     "repository": {
       "type": "git",
-      "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-metrics"
+      "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-localisation"
     },
     "scripts": {
       "test": "node test.js"

@@ -92,6 +92,10 @@ class TaskBuildElectronApp extends ScriptBase {
             ],
             externals = NKMjs.Get(`externals`, []);
 
+        if(NKMjs.projectConfig.dirs.locales != NKMjs.LOCALES_DIR){
+            list.push(`!${appDir}/${NKMjs.projectConfig.dirs.locales}`);
+        }            
+
         // Add externals to the ignore list
         for (let i = 0, n = externals.length; i < n; i++) {
             list.push(`!${appDir}/${NKMjs.ExternalName(externals[i])}.js`);

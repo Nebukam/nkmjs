@@ -8,6 +8,7 @@ const ReplaceVars = require(`./helpers/replace-vars`);
 const DirRead = require(`./helpers/dir-read`);
 const NKMJSPackageConfig = require('./helpers/nkmjs-package-config');
 const FSUTILS = require('./helpers/fsutils');
+const DirCopy = require('./helpers/dir-copy');
 
 class TaskPrepareLocales extends ScriptBase {
 
@@ -16,10 +17,17 @@ class TaskPrepareLocales extends ScriptBase {
         super(`prepare-locales`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        // TODO : Check if a folder exists in app, named `_locales`
-        let locales = [];
+        this.Run(`./task-audit-locales`, this._Bind(this._OnAuditComplete));
+
+    }
+
+    _OnAuditComplete() {
+
+        let locales = [],
+            localesList = [];
         try {
-            let localeDir = NKMjs.InApp(NKMjs.LOCALES_DIR),
+            let localeDir = NKMjs.InApp(NKMjs.projectConfig.dirs.locales),
+                localesDest = NKMjs.InApp(NKMjs.LOCALES_DIR),
                 localesContent = fs.readdirSync(localeDir);
             for (let i = 0, n = localesContent.length; i < n; i++) {
                 let locale = localesContent[i],
@@ -30,11 +38,25 @@ class TaskPrepareLocales extends ScriptBase {
                         name: locale,
                         path: lPath
                     });
+                    localesList.push(locale);
                 }
             }
-        }catch(e){}
+
+            if (NKMjs.projectConfig.dirs.locales !== NKMjs.LOCALES_DIR) {
+                // Only create the 'right' dir if no existing already
+                FSUTILS.ensuredir(localesDest);
+                NKMjs.RegisterTemp(localesDest);
+                new DirCopy(localeDir, localesDest, {
+                    'any': (p_src, p_dest, p_isDir) => { return p_dest; }
+                });
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
 
         NKMjs.Set(`locales`, locales);
+        NKMjs.Set(`locales-list`, localesList);
 
         this.End();
     }

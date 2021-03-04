@@ -17,6 +17,7 @@ class TaskBuildSharedResources extends ScriptBase {
 
         this.Run([
             `./task-build-styles`,
+            `./task-prepare-locales`,
             `./task-bundle-externals`,
         ], this._Bind(this._OnPreparationComplete));
 
@@ -27,9 +28,15 @@ class TaskBuildSharedResources extends ScriptBase {
 
         let appRsc = NKMjs.InSharedWebBuildRsc(),
             caches = [...NKMjs.projectConfig.dirs.offline],
-            dirStyle = NKMjs.projectConfig.dirs.style;
+            dirStyle = NKMjs.projectConfig.dirs.style,
+            dirLocales = NKMjs.projectConfig.dirs.locales;
 
         if (!caches.includes(dirStyle)) { caches.push(dirStyle); }
+
+        try {
+            fs.statSync(NKMjs.InApp(NKMjs.LOCALES_DIR));
+            if (!caches.includes(NKMjs.LOCALES_DIR)) { caches.push(NKMjs.LOCALES_DIR); }
+        } catch (e) { }
 
         for (let i = 0, n = caches.length; i < n; i++) {
             let cacheDir = caches[i];

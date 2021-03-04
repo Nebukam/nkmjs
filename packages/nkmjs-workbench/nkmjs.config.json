@@ -20,6 +20,7 @@
         "assets": "assets",
         "icons": "%dirs.assets%/icons",
         "builds": "builds",
+        "locales": "_locales",
         "offline": [
             "img"
         ]

@@ -10,5 +10,5 @@ new MAIN_ELECTRON({
     dirname: __dirname,
     html: `./%htmlIndex%`,
     renderer: `%js_main%`,
-    %config%
+%config%
 });

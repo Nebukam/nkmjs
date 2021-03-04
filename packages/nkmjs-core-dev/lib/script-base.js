@@ -13,6 +13,7 @@ class ScriptBase {
     static indent = 0;
     static runOnce = true;
     static __ranOnce = false;
+    static __undefined = Symbol(`undefined`);
 
     constructor(
         p_localId,
@@ -22,6 +23,7 @@ class ScriptBase {
         let
             requiredLocals = p_options ? p_options.requiredLocals : null,
             requiredArgs = p_options ? p_options.requiredArgs : null,
+            requiredGlobals = p_options ? p_options.requiredGlobals : null,
             skipKey = p_options ? p_options.skipKey : null;
 
         this.__running = true;
@@ -40,19 +42,34 @@ class ScriptBase {
         this.__indent = ScriptBase.indent;
 
         this.__shouldSkip = false;
-        if(this.constructor.runOnce && this.constructor.__ranOnce){
+        if (this.constructor.runOnce && this.constructor.__ranOnce) {
             //this._log(chalk.white(`× `)+chalk.italic(`skipping ${p_localId}, it ran once already.`));
             this.__shouldSkip = true;
             this.__running = false;
             return;
-        }else if(skipKey && skipKey in NKMjs.shortargs){
-            this._log(chalk.white(`× `)+chalk.italic(`--${skipKey} » skipping ${p_localId}.`));
+        }
+
+        if (skipKey && skipKey in NKMjs.shortargs) {
+            this._log(chalk.white(`× `) + chalk.italic(`--${skipKey} » skipping ${p_localId}.`));
             this.__shouldSkip = true;
             this.__running = false;
             return;
-        }else{
-            this.constructor.__ranOnce = true;
         }
+
+        if (requiredGlobals) {
+            for (let i = 0, n = requiredGlobals.length; i < n; i++) {
+                let key = requiredGlobals[i],
+                    value = NKMjs.Get(key, this.__undefined); // Because null or undefined may be valid value for some scripts !
+                if (value === this.__undefined) {
+                    this._log(chalk.white(`× `) + chalk.italic(`NKMjs.${key} undefined » skipping ${p_localId}.`));
+                    this.__shouldSkip = true;
+                    this.__running = false;
+                    return;
+                }
+            }
+        }
+
+        this.constructor.__ranOnce = true;
 
         this.localConfig = null;
 
@@ -116,7 +133,7 @@ class ScriptBase {
      */
     Run(p_path, p_onCompleteFn = null) {
 
-        if(Array.isArray(p_path)){
+        if (Array.isArray(p_path)) {
 
             let _scriptList = new RunList(
                 this,
@@ -124,22 +141,22 @@ class ScriptBase {
                 p_onCompleteFn
             );
 
-        }else{
-            
+        } else {
+
             ScriptBase.indent = this.__indent + 1;
 
             let _script = require(p_path),
                 instance = new _script(p_onCompleteFn);
-    
+
             ScriptBase.indent = this.__indent;
 
         }
 
     }
 
-    End() { 
+    End() {
         this.__running = false;
-        if (this.__onCompleteFn) { this.__onCompleteFn(); } 
+        if (this.__onCompleteFn) { this.__onCompleteFn(); }
     }
 
     //  ----> Log
@@ -158,12 +175,13 @@ class ScriptBase {
     }
 
     _logError(p_msg, p_offset = 0) {
-        console.log(chalk.redBright(`${this.Ind(p_offset)}× ERR : `) + chalk.gray(p_msg));
+        console.log(chalk.red(`${this.Ind(p_offset)}× ${chalk.bgRed.white(` ${this.__localId} ERR `)} : `) + chalk.red(p_msg));
         //console.log(chalk.red(`${this.Ind()}>> ERROR: `) + p_msg);
     }
 
     _logWarn(p_msg, p_offset = 0) {
-        console.log(chalk.yellow(`${this.Ind(p_offset)}! `) + p_msg);
+        //console.log(chalk.yellow(`${this.Ind(p_offset)}! `) + p_msg);
+        console.log(chalk.yellow(`${this.Ind(p_offset)}! ${chalk.yellow(`${this.__localId}`)} : `) + p_msg);
     }
 
 }

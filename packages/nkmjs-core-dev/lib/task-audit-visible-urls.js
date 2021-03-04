@@ -11,7 +11,7 @@ class TaskAuditVisibleURLs extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`audit-visible-urls`, p_onComplete, { skipKey: `no-url-audit` });
+        super(`audit-visible-urls`, p_onComplete, { skipKey: `no-url-audit`, requiredGlobals:[`web-ext-configs`] });
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         // Check bundle for easy-to-find urls that would likely require to be put under 'permissions'
@@ -27,16 +27,18 @@ class TaskAuditVisibleURLs extends ScriptBase {
         for (let i = 0, n = candidates.length; i < n; i++) {
             let path = candidates[i];
             try {
-                let fileContent = fs.readFileSync(path, 'utf8'),
-                    results = this.Audit(fileContent);
-                for (let r = 0, nr = results.length; r < nr; r++) {
-                    let URL = results[r];
-                    if (!urls.includes(URL)) {
-                        urls.push(URL);
+                if (!fs.statSync(path).isDirectory()) {
+                    let fileContent = fs.readFileSync(path, 'utf8'),
+                        results = this.Audit(fileContent);
+                    for (let r = 0, nr = results.length; r < nr; r++) {
+                        let URL = results[r];
+                        if (!urls.includes(URL)) {
+                            urls.push(URL);
+                        }
                     }
                 }
             } catch (e) {
-                this._logWarn(`Error while reading ${NKMjs.Shorten(path)} : ${e}`, 1);
+                this._logWarn(`${NKMjs.Shorten(path)} : ${e}`, 1);
             }
         }
 
@@ -72,10 +74,10 @@ class TaskAuditVisibleURLs extends ScriptBase {
 
             NKMjs.Set(`unknownPermissions`, unknownPermissions);
 
-            this._logWarn(`found at least ${unknownPermissions.length} domains not listed under extension.hostPermissions -- you should explicitely add them to your extension' permissions :`);
+            this._logWarn(`found at least ${unknownPermissions.length} domains not listed under extension.hostPermissions :`);
             //this._log(`You can skip this check by using --noURLaudit`);
             for (i = 0, n = unknownPermissions.length; i < n; i++) {
-                this._log(chalk.yellow(unknownPermissions[i]), 2);
+                this._log(chalk.cyan(unknownPermissions[i]), 2);
             }
         }
 

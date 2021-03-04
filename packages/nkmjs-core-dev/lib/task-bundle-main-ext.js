@@ -6,6 +6,7 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const Bundler = require('./helpers/bundler');
+const ConfigBuilder = require('./helpers/config-builder');
 
 class TaskBundleMainExt extends ScriptBase {
 
@@ -27,31 +28,28 @@ class TaskBundleMainExt extends ScriptBase {
     _OnPreparationComplete() {
 
         this.configs = [...NKMjs.Get(`web-ext-configs`, [])];
-        if(!this.configs || this.configs.length == 0 ){
+        if (!this.configs || this.configs.length == 0) {
             this.End();
-        }else{
+        } else {
             this.BundleNext();
         }
 
     }
 
-    BundleNext(){
+    BundleNext() {
 
         let conf = this.configs.pop();
-        if(!conf){
+        if (!conf) {
             this.End();
             return;
         }
-
-        let confContent = ``;
-        confContent += ``;
 
         let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT_EXT),
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
                 {
                     js_main: `./js/main`,
-                    config: confContent
+                    config: (new ConfigBuilder(ConfigBuilder.EXT, conf)).toString()
                 }
             ),
             templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/entry-bundle.js`), 'utf8'));
