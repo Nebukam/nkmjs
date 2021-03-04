@@ -10,6 +10,9 @@
         "orientation": "portrait",
         "colorTheme": "#1e1e1e"
     },
+    "extension": {
+        "display": "standalone"
+    },
     "dirs": {
         "app": "app",
         "styleSource": "scss",
@@ -18,7 +21,7 @@
         "icons": "%dirs.assets%/icons",
         "builds": "builds",
         "offline": [
-            
+            "img"
         ]
     },
     "builds": [
@@ -26,8 +29,10 @@
             "platform": "www"
         },
         {
-            "platform": "chrome",
-            "arch": "67"
+            "platform": "chrome"
+        },
+        {
+            "platform": "firefox"
         },
         {
             "platform": "windows",

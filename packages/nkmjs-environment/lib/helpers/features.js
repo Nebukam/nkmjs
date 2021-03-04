@@ -23,9 +23,11 @@ class Features extends DisposableObjectEx {
         this._displayType = ENV_DISPLAY.DESKTOP;
         this._isExtension = false;
         this._isMobile = false;
+        this._isChromium = false;
         this._isTouchEnabled = false;
         this._isOnline = false;
         this._context = null;
+        this._runtime = null;
         this._hasStorageArea = false;
         this._storageArea = null;
         this._prefersColorScheme = ENV_DISPLAY.COLORSCHEME_NO_PREFERENCES;
@@ -46,20 +48,26 @@ class Features extends DisposableObjectEx {
         try {
             // Check if chromium environment extension
             this._context = chrome; // <-- Chromium
+            this._runtime = this._context.runtime;
             this._isExtension = true;
+            this._isChromium = true;
 
             if (!chrome.extension) { throw new Error(); }
 
         } catch (e) {
             try {
                 this._context = browser; // <-- Mozilla
+                this._runtime = this._context.runtime;
                 this._isExtension = true;
+                this._isChromium = false;
 
                 if (!browser.extension) { throw new Error(); }
 
             } catch (e) {
                 this._isExtension = false;
                 this._context = null;
+                this._runtime = null;
+                this._isChromium = false;
             }
         }
 
@@ -178,10 +186,24 @@ class Features extends DisposableObjectEx {
 
     /**
      * @description TODO
+     * @type {boolean}
+     * @customtag read-only
+     */
+    get isChromium() { return this._isChromium; }
+
+    /**
+     * @description TODO
      * @type {*}
      * @customtag read-only
      */
     get context() { return this._context; } // extension context, abstract chrome.xxx, browser.xxx
+
+    /**
+     * @description TODO
+     * @type {*}
+     * @customtag read-only
+     */
+    get runtime() { return this._runtime; } // extension context, abstract chrome.xxx, browser.xxx
 
     /**
      * @description TODO

@@ -1,7 +1,0 @@
-{
-    "command-list": [
-        "compile scss",
-        "generate js bundle",
-        "copy all resources folders to target build folder, including bundle"
-    ]
-}

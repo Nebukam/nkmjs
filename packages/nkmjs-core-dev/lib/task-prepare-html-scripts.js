@@ -23,11 +23,16 @@ class TaskPrepareHTMLScripts extends ScriptBase {
             scripts += `<script type = "text/javascript" src = "${NKMjs.ExternalName(extModule)}.js" ></script>\n`;
         }
 
-        
+
         scripts += `<!-- main -->\n`;
         scripts += `<script type = "text/javascript" src = "${NKMjs.projectConfig.name}.js" ></script>\n`;
 
         NKMjs.Set(`html-scripts`, scripts);
+
+        let replacer = new ReplaceVars(NKMjs.projectConfig.__keys),
+            noscript = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`, `html`, `noscript.html`), 'utf8'));
+
+        NKMjs.Set(`html-noscript`, noscript);
 
         this.End();
 

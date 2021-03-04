@@ -15,13 +15,12 @@ const ENCODING = require(`../encoding`);
  * @augments io.core.IOProcess
  * @memberof io.core.ioprocesses
  */
-class StorageIOReader extends IOProcess {
+class LocalStorageIOReader extends IOProcess {
 
     constructor() { super(); }
 
     _Init() {
         super._Init();
-        this._Bind(this._OnStorageRead);
     }
 
     Process() {
@@ -29,19 +28,12 @@ class StorageIOReader extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        ENV.FEATURES.storageArea.local.get(this._operation.fullPath, this._OnStorageRead);
-
-    }
-
-    _OnStorageRead(p_evt) {
-
-        console.log(p_evt);
-        let data = p_evt[this._operation.fullPath];
-        if (U.isVoid(data)) {
-            // Data do not exists
+        let data = localStorage.getItem(this._operation.fullPath);
+        if (!data) {
+            // Fail : data do not exists
             this._OnError(new Error(`Key '${this._operation.fullPath}' is not set.`));
         } else {
-            // Data exists
+            // Success 
             this._OnProgress(1);
             this.rsc.raw = data;
             this._OnSuccess();
@@ -49,10 +41,6 @@ class StorageIOReader extends IOProcess {
 
     }
 
-    _CleanUp() {
-        super._CleanUp();
-    }
-
 }
 
-module.exports = StorageIOReader;
+module.exports = LocalStorageIOReader;

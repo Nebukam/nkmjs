@@ -58,10 +58,11 @@ class TaskBundleExternals extends ScriptBase {
             entryPoint = NKMjs.InApp(moduleName),
             output = NKMjs.InSharedWebBuildRsc(moduleName),
             cachedOutput = path.resolve(NKMjs.CORE_CACHE_DIR, moduleName);
-
+            
         // Check cache first
         try {
             fs.statSync(cachedOutput);
+            FSUTILS.ensuredir(path.dirname(output));
             NKMjs.CopyTempSync(cachedOutput, output);
             this._log(`${chalk.blue(`using cached version : `)} ${NKMjs.Shorten(cachedOutput)}`, 1);
             this._logFwd(`${NKMjs.Shorten(output)}`, `+`, 2);

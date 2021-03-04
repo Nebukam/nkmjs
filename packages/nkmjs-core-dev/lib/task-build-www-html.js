@@ -33,6 +33,7 @@ class TaskBuildWWWHTML extends ScriptBase {
                     [`html-socials`]: NKMjs.Get(`html-socials`, ``),
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
+                    [`html-noscript`]: NKMjs.Get(`html-noscript`, ``),
                     [`html-webmanifest`]: ``,
                 }
                 ),

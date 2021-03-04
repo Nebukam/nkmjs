@@ -7,10 +7,10 @@ const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const TaskBuildWebmanifestBase = require('./task-build-ext-manifest-base');
 
-class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
+class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
 
     constructor(p_onComplete = null) {
-        super(`build-ext-manifest-v2`, [], p_onComplete);
+        super(`build-ext-manifest-v3`, [], p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
     }
 
@@ -19,11 +19,13 @@ class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
         let extensionConfig = NKMjs.projectConfig.extension,
             browser_action = {
                 default_icon: this.inconList,
-                default_title: NKMjs.projectConfig.shortName
+                default_title: projectInfos.shortName
             };
 
         if (!extensionConfig || extensionConfig.display === 'popup') {
+
             browser_action.default_popup = `index.html`;
+
         } else {
 
             let vars = {
@@ -37,22 +39,23 @@ class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
                 let conf = configs[i];
                 vars.context_api = conf.platform == `firefox` ? `browser` : `chrome`;
                 NKMjs.WriteTempSync(
-                    NKMjs.InExtBuildRsc(`.${conf.platform}`, `background.js`),
-                    replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/ext-background.js`), 'utf8'))
+                    NKMjs.InExtBuildRsc(`.${conf.platform}`, `service-worker.js`),
+                    replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/ext-service-worker.js`), 'utf8'))
                 );
             }
 
-            p_manifest.background = { scripts: [`background.js`] };
+            // Need to alter entry point to specify the app has a service-worker
 
         }
 
-        p_manifest.browser_action = browser_action;
+        p_manifest.action = browser_action;
 
     }
 
     PreparePermissions(p_manifest) {
 
         let permissions = [],
+            host_permissions = [],
             extPerm = NKMjs.projectConfig.extension.permissions,
             extHostPerm = NKMjs.projectConfig.extension.hostPermissions;
 
@@ -67,22 +70,21 @@ class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
         if (extHostPerm) {
             for (let i = 0, n = extHostPerm.length; i < n; i++) {
                 let perm = extHostPerm[i];
-                if (permissions.includes(perm)) { continue; }
-                permissions.push(extHostPerm);
+                if (host_permissions.includes(perm)) { continue; }
+                host_permissions.push(extHostPerm);
             }
         }
-
         /*
                 // Get perm from audit, if any
                 // NOTE : Actually don't, they contain every outgoing link >.<
                 let unknownPermissions = NKMjs.Get(`unknownPermissions`, []);
                 for (let i = 0, n = unknownPermissions.length; i < n; i++) {
                     let perm = unknownPermissions[i];
-                    if (!permissions.includes(perm)) { permissions.push(perm); };
+                    if (!host_permissions.includes(perm)) { host_permissions.push(perm); };
                 }
         */
-
         if (permissions.length != 0) { p_manifest.permissions = permissions; }
+        if (host_permissions.length != 0) { p_manifest.host_permissions = host_permissions; }
 
         p_manifest.optional_permissions = ['unlimitedStorage'];
 
@@ -90,4 +92,4 @@ class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
 
 }
 
-module.exports = TaskBuildWebmanifestV2;
+module.exports = TaskBuildWebmanifestV3;

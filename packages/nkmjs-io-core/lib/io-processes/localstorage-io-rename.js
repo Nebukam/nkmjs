@@ -13,7 +13,7 @@ const IOProcess = require(`../io-process`);
  * @augments io.core.IOProcess
  * @memberof io.core.ioprocesses
  */
-class StorageIORename extends IOProcess {
+class LocalStorageIORename extends IOProcess {
 
     constructor() { super(); }
 
@@ -22,10 +22,6 @@ class StorageIORename extends IOProcess {
 
         this._targetPath = null;
         this._oldPath = null;
-
-        this._Bind(this._OnRenameExistsCheck);
-        this._Bind(this._OnRenameStorageWritten);
-        this._Bind(this._OnRenameStorageOldDeleted);
 
     }
 
@@ -51,59 +47,22 @@ class StorageIORename extends IOProcess {
 
         this._oldPath = this._operation.fullPath;
 
-        ENV.FEATURES.storageArea.local.get(this._targetPath, this._OnRenameExistsCheck);
+        // Use browser sync localStorage
+        let existingData = localStorage.getItem(this._targetPath);
+        if (!existingData) {
+            // Success : data does not exists
+            localStorage.setItem(this._targetPath, localStorage.getItem(this._oldPath));
+            localStorage.removeItem(this._oldPath);
+            this._OnProgress(1);
+            this._UpdatePath(this._targetPath);
+            this._OnSuccess();
 
-    }
-
-    /**
-     * @access private
-     */
-    _OnRenameExistsCheck(p_data) {
-
-        let data = p_data[this._oldPath];
-        if (U.isVoid(data)) {
-            // Data do not exists !
-            let storage = ENV.FEATURES.storageArea, dataCopy = {};
-            dataCopy[this._targetPath] = data;
-            storage.local.set(dataCopy, this._OnRenameStorageWritten);
         } else {
-            // Data exists
+            // Fail : data already exists
             this._OnError(new Error(`Can't rename '${this._oldPath}' to '${this._targetPath}' : data is already present.`));
         }
 
     }
-
-    /**
-     * @access private
-     */
-    _OnRenameStorageWritten() {
-
-        if (!ENV.FEATURES.runtime.lastError) {
-            this._OnError(ENV.FEATURES.runtime.lastError);
-            return;
-        }
-
-        this._OnProgress(0.5);
-        storage.local.remove(this._oldPath, this._OnRenameStorageOldDeleted);
-
-    }
-
-    /**
-     * @access private
-     */
-    _OnRenameStorageOldDeleted() {
-
-        if (ENV.FEATURES.runtime.lastError) {
-            this._OnError(ENV.FEATURES.runtime.lastError);
-            return;
-        }
-
-        this._OnProgress(1);
-        this._UpdatePath(this._targetPath);
-        this._OnSuccess();
-
-    }
-
 
     _CleanUp() {
         this._targetPath = null;
@@ -113,4 +72,4 @@ class StorageIORename extends IOProcess {
 
 }
 
-module.exports = StorageIORename;
+module.exports = LocalStorageIORename;

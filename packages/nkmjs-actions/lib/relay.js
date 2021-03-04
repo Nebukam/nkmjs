@@ -6,6 +6,8 @@
 const { LOG } = require(`@nkmjs/utils`);
 const { List } = require(`@nkmjs/collections`);
 const { ServiceBase } = require(`@nkmjs/services`);
+const { ENV } = require(`@nkmjs/environment`);
+const { SignalBox } = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -39,6 +41,15 @@ class RELAY extends ServiceBase {
     _Init() {
         super._Init();
         this._requests = new List();
+        if (ENV.FEATURES.isExtension) {
+            this._extIpc = new SignalBox();
+            ENV.FEATURES.runtime.onMessage.addListener(function (request, sender, response) {
+                let signal = request.signal,
+                    data = request;
+                request.respond = response;
+                RELAY.instance._extIpc.Broadcast(signal, data);
+            });
+        }
     }
 
     /**
@@ -56,7 +67,7 @@ class RELAY extends ServiceBase {
 
         //Clear requests stack
         let list = this._requests;
-        
+
         for (let i = 0; i < list.count; i++) {
 
             let release = true,
@@ -94,7 +105,9 @@ class RELAY extends ServiceBase {
      * @param {string} p_evt 
      * @param {function} p_fn 
      */
-    _ipcOn(p_evt, p_fn) { /* Placeholder */ }
+    _ipcOn(p_evt, p_fn) { 
+        if(this._extIpc){ this._extIpc.Watch(p_evt, p_fn); }
+    }
 
     /**
      * @description TODO
@@ -109,7 +122,12 @@ class RELAY extends ServiceBase {
      * @param {string} p_evt 
      * @param {function} p_fn 
      */
-    _ipcSend(p_evt, ...args) { /* Placeholder */ }
+    _ipcSend(p_evt, ...args) {
+        if (ENV.FEATURES.isExtension) {
+            // sendMessage to background extension, if any
+            ENV.FEATURES.runtime.sendMessage(null, JSON.stringify({ signal:p_evt, args:args }));
+        }
+    }
 
     /**
      * @description TODO

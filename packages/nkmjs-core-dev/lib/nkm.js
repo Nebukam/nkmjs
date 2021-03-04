@@ -15,6 +15,9 @@ class NKMjs {
     static ELECTRON_BUNDLE = `electron-bundle.js`;
     static ELECTRON_BUNDLE_MIN = `electron-bundle-min.js`;
 
+    static EXT_POPUP_HTML_INDEX = `index-ext-popup.html`;
+    static EXT_STANDALONE_HTML_INDEX = `index.html`;
+
     static BUNDLE_ENTRY_POINT = `bundle-entry-point.js`;
 
     static BUNDLE_ENTRY_POINT_EXT = `index.ext.js`;
@@ -88,8 +91,6 @@ class NKMjs {
 
         //console.log(`dirnameProject : ${this.dirnameProject}`);
         //console.log(`dirnameCore : ${this.dirnameCore}`);
-
-        console.log(this.projectConfig.__keys);
 
     }
 

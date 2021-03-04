@@ -7,6 +7,7 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const FSUTILS = require("./helpers/fsutils");
 const DirZip = require(`./helpers/dir-zip`);
+const { createCipher } = require("crypto");
 
 class TaskPackageExtensions extends ScriptBase {
 

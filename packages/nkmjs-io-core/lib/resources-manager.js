@@ -4,6 +4,7 @@ const { U, PATH } = require(`@nkmjs/utils`);
 const { SIGNAL, POOL } = require(`@nkmjs/common`);
 const { Dictionary } = require(`@nkmjs/collections`);
 const { ServiceBase } = require(`@nkmjs/services`);
+const { ENV } = require("@nkmjs/environment");
 
 const IO_SIGNAL = require(`./io-signal`);
 const ENCODING = require(`./encoding`);
@@ -14,6 +15,7 @@ const IOQueue = require(`./io-queue`);
 const IO_TYPE = require(`./io-type`);
 const ResourceOperation = require(`./resource-operation`);
 const IOProcess = require(`./io-process`);
+
 
 /**
  * @description TODO
@@ -47,12 +49,35 @@ class RESOURCES extends ServiceBase {
             rename: ioprocesses.HTTPIORename,
             delete: ioprocesses.HTTPIODelete
         };
-        this._io[IO_TYPE.LOCAL_STORAGE] = {
-            read: ioprocesses.StorageIOReader,
-            write: ioprocesses.StorageIOWriter,
-            rename: ioprocesses.StorageIORename,
-            delete: ioprocesses.StorageIODelete
-        };
+
+        if (ENV.FEATURES.isExtension) {
+            if (ENV.FEATURES.isChromium) {
+                this._io[IO_TYPE.LOCAL_STORAGE] = {
+                    read: ioprocesses.StorageIOReader,
+                    write: ioprocesses.StorageIOWriter,
+                    rename: ioprocesses.StorageIORename,
+                    delete: ioprocesses.StorageIODelete
+                };
+            } else {
+                this._io[IO_TYPE.LOCAL_STORAGE] = {
+                    read: ioprocesses.StoragePromiseIOReader,
+                    write: ioprocesses.StoragePromiseIOWriter,
+                    rename: ioprocesses.StoragePromiseIORename,
+                    delete: ioprocesses.StoragePromiseIODelete
+                };
+            }
+        } else {
+            this._io[IO_TYPE.LOCAL_STORAGE] = {
+                read: ioprocesses.LocalStorageIOReader,
+                write: ioprocesses.LocalStorageIOWriter,
+                rename: ioprocesses.LocalStorageIORename,
+                delete: ioprocesses.LocalStorageIODelete
+            };
+        }
+
+
+
+
 
         this._IOQueue = new IOQueue();
 

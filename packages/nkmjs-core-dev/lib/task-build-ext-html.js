@@ -23,18 +23,22 @@ class TaskBuildExtHTML extends ScriptBase {
 
     OnPreparationComplete() {
 
-        let htmlEntry = NKMjs.InExtBuildRsc(NKMjs.HTML_INDEX),
+
+        let extConf = NKMjs.projectConfig.extension,
+            extIndex = (!extConf || extConf.display === 'popup') ? NKMjs.EXT_POPUP_HTML_INDEX : NKMjs.EXT_STANDALONE_HTML_INDEX,
+            htmlEntry = NKMjs.InExtBuildRsc(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
                 {
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
+                    [`html-noscript`]: NKMjs.Get(`html-noscript`, ``),
                     [`html-webmanifest`]: ``,
-                    [`html-socials`]: ``,
+                    [`html-socials`]: ``
                 }),
             templateContent = replacer.Replace(
-                fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));
+                fs.readFileSync(NKMjs.InCore(`configs/html/${extIndex}`), 'utf8'));
 
         // Transform & replace
 

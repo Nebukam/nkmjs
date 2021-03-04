@@ -58,9 +58,9 @@ class TaskAuditVisibleURLs extends ScriptBase {
             }
         }
 
-        let knownPermissions = (NKMjs.projectConfig.permissions || []),
+        let knownPermissions = (NKMjs.projectConfig.hostPermissions || []),
             unknownPermissions = [];
-            
+
         for (i = 0, n = urls.length; i < n; i++) {
             let currentURL = urls[i];
             if (!knownPermissions.includes(currentURL)) {
@@ -69,10 +69,10 @@ class TaskAuditVisibleURLs extends ScriptBase {
         }
 
         if (unknownPermissions.length > 0) {
-            
+
             NKMjs.Set(`unknownPermissions`, unknownPermissions);
 
-            this._logWarn(`found at least ${unknownPermissions.length} unreferenced domains -- you should explicitely add them to your extension' permissions :`);
+            this._logWarn(`found at least ${unknownPermissions.length} domains not listed under extension.hostPermissions -- you should explicitely add them to your extension' permissions :`);
             //this._log(`You can skip this check by using --noURLaudit`);
             for (i = 0, n = unknownPermissions.length; i < n; i++) {
                 this._log(chalk.yellow(unknownPermissions[i]), 2);

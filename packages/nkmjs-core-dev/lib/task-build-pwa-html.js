@@ -35,6 +35,7 @@ class TaskBuildPWAHTML extends ScriptBase {
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
                     [`html-webmanifest`]: NKMjs.Get(`html-webmanifest`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
+                    [`html-noscript`]: NKMjs.Get(`html-noscript`, ``),
                 }),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));

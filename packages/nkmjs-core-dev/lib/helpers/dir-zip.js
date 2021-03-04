@@ -1,5 +1,6 @@
 const AdmZip = require('adm-zip');
 const DirRead = require(`./dir-read`);
+const path = require(`path`);
 
 class DirZip {
     /**
@@ -18,7 +19,8 @@ class DirZip {
             });
 
         for (let i = 0, n = this.paths.length; i < n; i++) {
-            zip.addLocalFile(this.paths[i]);
+            let p = this.paths[i].replace(p_src, ``);
+            zip.addLocalFile(this.paths[i], path.dirname(p));
         }
 
         zip.writeZip(p_dest, p_cb);

@@ -22,8 +22,6 @@ class TaskBuildElectronApp extends ScriptBase {
         this.configIndex = 0;
         this.validConfigCount = 0;
         this.configs = null;
-        this.validPlatforms = ["windows", "linux", "mac"];
-        this.validArch = ["x64", "ia32", "armv7l", "arm64"];
 
         this._log(`--pack-only : ${chalk.blue(NKMjs.shortargs[`pack-only`] ? true : false)}`, 1);
 
@@ -35,12 +33,13 @@ class TaskBuildElectronApp extends ScriptBase {
             return;
         }
 
-        let validConfigs = [];
+        let validPlatforms = ["windows", "linux", "mac"],
+            validArch = ["x64", "ia32", "armv7l", "arm64"],
+            validConfigs = [];
+
         for (let i = 0, n = this.configs.length; i < n; i++) {
             let conf = this.configs[i];
-            if (this.validPlatforms.includes(conf.platform)) {
-                validConfigs.push(conf);
-            }
+            if (validPlatforms.includes(conf.platform)) { validConfigs.push(conf); }
         }
 
         if (validConfigs.length == 0) {

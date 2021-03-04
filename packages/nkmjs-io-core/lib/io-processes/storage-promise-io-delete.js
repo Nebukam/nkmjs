@@ -15,13 +15,14 @@ const ENCODING = require(`../encoding`);
  * @augments io.core.IOProcess
  * @memberof io.core.ioprocesses
  */
-class StorageIODelete extends IOProcess {
+class StoragePromiseIODelete extends IOProcess {
 
     constructor() { super(); }
 
     _Init() {
         super._Init();
         this._Bind(this._OnStorageRemoved);
+        this._Bind(this._OnStorageRemovedError);
     }
 
     Process() {
@@ -29,19 +30,21 @@ class StorageIODelete extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        ENV.FEATURES.storageArea.local.remove(this._operation.fullPath, this._OnStorageRemoved);
+        ENV.FEATURES.storageArea.local.remove(this._operation.fullPath)
+            .then(this._OnStorageRemoved)
+            .catch(this._OnStorageRemovedError);
 
     }
 
+    _OnStorageRemovedError(p_err) {
+        this._OnError(p_err);
+    }
+
     _OnStorageRemoved(p_evt) {
-        if(ENV.FEATURES.runtime.lastError){
-            this._OnError(ENV.FEATURES.runtime.lastError);
-            return;
-        }
         this._OnProgress(1);
         this._OnSuccess();
     }
 
 }
 
-module.exports = StorageIODelete;
+module.exports = StoragePromiseIODelete;

@@ -10,6 +10,15 @@
         "orientation": "portrait",
         "colorTheme": "#1e1e1e"
     },
+    "extension": {
+        "display": "standalone",
+        "permissions": [
+            "storage"
+        ],
+        "hostPermissions": [
+            "%homepage%"
+        ]
+    },
     "dirs": {
         "app": "app",
         "styleSource": "scss",

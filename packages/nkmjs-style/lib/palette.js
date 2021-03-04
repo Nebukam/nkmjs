@@ -187,7 +187,7 @@ class Palette extends DisposableObject {
 
             if (nfos.css) {
                 for (let i = nfos.css.length - 1; i >= 0; i--) {
-                    style.push(UDOM.New(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet` }));
+                    style.push(UDOM.New(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
                 }
             }
 

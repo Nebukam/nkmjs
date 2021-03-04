@@ -13,13 +13,14 @@ const IOProcess = require(`../io-process`);
  * @augments io.core.IOProcess
  * @memberof io.core.ioprocesses
  */
-class StorageIOWriter extends IOProcess {
+class StoragePromiseIOWriter extends IOProcess {
 
     constructor() { super(); }
 
     _Init() {
         super._Init();
         this._Bind(this._OnStorageWritten);
+        this._Bind(this._OnStorageWrittenError);
     }
 
     Process() {
@@ -27,20 +28,19 @@ class StorageIOWriter extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        ENV.FEATURES.storageArea.local.set({ [this._operation.fullPath]: this.rsc.raw }, this._OnStorageWritten);
+        ENV.FEATURES.storageArea.local.set({ [this._operation.fullPath]: this.rsc.raw })
+            .then(this._OnStorageWritten)
+            .catch(this._OnStorageWrittenError);
 
     }
 
+    _OnStorageWrittenError(p_err) {
+        this._OnError(p_err);
+    }
+
     _OnStorageWritten() {
-
-        if (ENV.FEATURES.runtime.lastError) {
-            this._OnError(ENV.FEATURES.runtime.lastError);
-            return;
-        }
-
         this._OnProgress(1);
         this._OnSuccess();
-
     }
 
     _CleanUp() {
@@ -49,4 +49,4 @@ class StorageIOWriter extends IOProcess {
 
 }
 
-module.exports = StorageIOWriter;
+module.exports = StoragePromiseIOWriter;

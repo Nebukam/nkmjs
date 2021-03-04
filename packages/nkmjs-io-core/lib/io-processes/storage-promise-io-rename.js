@@ -13,7 +13,7 @@ const IOProcess = require(`../io-process`);
  * @augments io.core.IOProcess
  * @memberof io.core.ioprocesses
  */
-class StorageIORename extends IOProcess {
+class StoragePromiseIORename extends IOProcess {
 
     constructor() { super(); }
 
@@ -24,8 +24,11 @@ class StorageIORename extends IOProcess {
         this._oldPath = null;
 
         this._Bind(this._OnRenameExistsCheck);
+        this._Bind(this._OnRenameExistsCheckError);
         this._Bind(this._OnRenameStorageWritten);
+        this._Bind(this._OnRenameStorageWrittenError);
         this._Bind(this._OnRenameStorageOldDeleted);
+        this._Bind(this._OnRenameStorageOldDeletedError);
 
     }
 
@@ -51,16 +54,25 @@ class StorageIORename extends IOProcess {
 
         this._oldPath = this._operation.fullPath;
 
-        ENV.FEATURES.storageArea.local.get(this._targetPath, this._OnRenameExistsCheck);
+        ENV.FEATURES.storageArea.local.get(this._targetPath)
+            .then(this._OnRenameExistsCheck)
+            .catch(this._OnRenameExistsCheckError);
 
     }
 
     /**
      * @access private
      */
-    _OnRenameExistsCheck(p_data) {
+    _OnRenameExistsCheckError(p_err) {
+        this._OnError(p_err);
+    }
 
-        let data = p_data[this._oldPath];
+    /**
+     * @access private
+     */
+    _OnRenameExistsCheck(p_results) {
+
+        let data = p_results[this._oldPath];
         if (U.isVoid(data)) {
             // Data do not exists !
             let storage = ENV.FEATURES.storageArea, dataCopy = {};
@@ -76,28 +88,29 @@ class StorageIORename extends IOProcess {
     /**
      * @access private
      */
+    _OnRenameStorageWrittenError(p_err) {
+        this._OnError(p_err);
+    }
+
+    /**
+     * @access private
+     */
     _OnRenameStorageWritten() {
-
-        if (!ENV.FEATURES.runtime.lastError) {
-            this._OnError(ENV.FEATURES.runtime.lastError);
-            return;
-        }
-
         this._OnProgress(0.5);
         storage.local.remove(this._oldPath, this._OnRenameStorageOldDeleted);
+    }
 
+    /**
+     * @access private
+     */
+    _OnRenameStorageOldDeletedError(p_err) {
+        this._OnError(p_err);
     }
 
     /**
      * @access private
      */
     _OnRenameStorageOldDeleted() {
-
-        if (ENV.FEATURES.runtime.lastError) {
-            this._OnError(ENV.FEATURES.runtime.lastError);
-            return;
-        }
-
         this._OnProgress(1);
         this._UpdatePath(this._targetPath);
         this._OnSuccess();
@@ -113,4 +126,4 @@ class StorageIORename extends IOProcess {
 
 }
 
-module.exports = StorageIORename;
+module.exports = StoragePromiseIORename;
