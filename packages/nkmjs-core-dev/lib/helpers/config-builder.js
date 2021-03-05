@@ -9,7 +9,7 @@ class ConfigBuilder {
 
     constructor(p_context, p_contextDetail = null) {
         let config = ``;
-        config += `\tlang:"${NKMjs.projectConfig.lang}",\n`;
+        config += `\tlang:'${NKMjs.projectConfig.lang}',\n`;
 
         let localesList = NKMjs.Get(`locales-list`, null);
         if (localesList) {
@@ -22,7 +22,7 @@ class ConfigBuilder {
                 // TODO : If manifest V3, register service-worker instead of background.js
                 break;
             case ConfigBuilder.PWA:
-                config += `\tservice_worker:${NKMjs.PWA_SERVICE_WORKER},\n`;
+                config += `\tservice_worker:'${NKMjs.PWA_SERVICE_WORKER}',\n`;
                 break;
         }
 

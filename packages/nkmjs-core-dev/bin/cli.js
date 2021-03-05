@@ -6,12 +6,15 @@ const chalk = require('chalk');
 const NKMjs = require(`../lib/nkm`);
 
 const ScriptBase = require("../lib/script-base");
+const { U } = require(`@nkmjs/utils`);
 
 class NKMCLI extends ScriptBase {
     constructor() {
 
         super(`nkmjs`, null, null, false);
         if (this.__hasErrors) { return this.End(); }
+
+        this._start = new Date();
 
         if (process.argv.length === 0) {
             this._PrintHelp();
@@ -78,6 +81,17 @@ class NKMCLI extends ScriptBase {
             console.log(key);
         }
 
+    }
+
+    End(){
+        super.End();
+        let date = new Date();
+        if(this._start){
+            let diff = U.DateDiff(date, this._start);
+            this._logFwd(`${U.Pad(date.getHours())}:${U.Pad(date.getMinutes())}:${U.Pad(date.getSeconds())} (~${Math.round(diff.totalSeconds)}s)`);
+        }else{
+            this._logFwd(`${U.Pad(date.getHours())}:${U.Pad(date.getMinutes())}:${U.Pad(date.getSeconds())}`);
+        }
     }
 
 }

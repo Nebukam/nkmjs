@@ -6,7 +6,7 @@
 
 // Use a cacheName for cache versioning
 var cacheName = '%version%';
-var cacheURLs = % cacheURLs %;
+var cacheURLs = %cacheURLs%;
 
 // During the installation phase, you'll usually want to cache static assets.
 self.addEventListener('install', function (e) {
@@ -15,8 +15,10 @@ self.addEventListener('install', function (e) {
         caches.open(cacheName)
             .then(function (cache) {
                 return cache.addAll(cacheURLs)
-                    .then(function () { self.skipWaiting(); });
+                    .then(function () { self.skipWaiting(); })
+                    .catch((e) => { console.error(e); });
             })
+            .catch((e) => { console.error(e); })
     );
 });
 

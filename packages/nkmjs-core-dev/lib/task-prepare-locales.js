@@ -52,7 +52,7 @@ class TaskPrepareLocales extends ScriptBase {
             }
 
         } catch (e) {
-            console.log(e);
+            //console.log(e);
         }
 
         NKMjs.Set(`locales`, locales);

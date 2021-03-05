@@ -116,8 +116,6 @@ class AppBase extends SingletonEx {
         // ----> At that point, the Service Manager has started.
         // Initialize and start critical services.
 
-
-
         // TODO : Move what's below somewhere else.
 
         this._mainWrapper = UI.Rent(this._mainWrapperClass);
@@ -158,7 +156,7 @@ class AppBase extends SingletonEx {
     Start() {
 
         LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
-
+        
         // Push the app wrapper to the DOM
         UDOM.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/main.css`), rel: `stylesheet` }, document.head);
         UDOM.Attach(this._mainWrapper, document.body);

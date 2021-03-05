@@ -23,7 +23,8 @@ class TaskBuildWebmanifest extends ScriptBase {
             projectInfos = NKMjs.projectConfig,
             iconList = NKMjs.Get(`icon-list`, []),
             iconsArray = [],
-            htmlHeader = ``;
+            htmlHeader = ``,
+            lastSize = `512x512`;
 
         htmlHeader += `<!-- Webmanifest -->\n`;
         htmlHeader += `<link rel="manifest" href="manifest.webmanifest">\n`;
@@ -42,17 +43,29 @@ class TaskBuildWebmanifest extends ScriptBase {
                 sizes: `${s}`,
                 type: `image/png`
             });
+
+            lastSize = s;
+
         }
 
+        // Apple touch icon should use maskable
+        htmlHeader += `<link rel="apple-touch-icon" href="icons/${lastSize}.png">`;
+
+        // TODO : Maskable icons : https://web.dev/maskable-icon-audit/?utm_source=lighthouse&utm_medium=devtools
+
         manifest.name = projectInfos.longName;
-        manifest.short_name = projectInfos.short_name;
+        manifest.short_name = projectInfos.shortName;
         manifest.description = projectInfos.description;
         manifest.icons = iconsArray;
-        manifest.start_url = `./?utm_source=web_app_manifest`;
-        manifest.display = projectInfos.display;
-        manifest.theme_color = projectInfos.colorTheme;
-        manifest.background_color = projectInfos.colorTheme;
+        manifest.start_url = `./`;
+        manifest.display = projectInfos.app.display;
+        manifest.orientation = projectInfos.app.orientation;
+        manifest.theme_color = projectInfos.app.colorTheme;
+        manifest.background_color = projectInfos.app.colorTheme;
         manifest.lang = projectInfos.lang;
+
+
+
 
         NKMjs.WriteTempSync(NKMjs.InPWABuildRsc(`manifest.webmanifest`), JSON.stringify(manifest, null, 4));
         NKMjs.Set(`html-webmanifest`, htmlHeader);

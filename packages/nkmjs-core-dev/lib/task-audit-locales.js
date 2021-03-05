@@ -21,11 +21,13 @@ class TaskAuditLocales extends ScriptBase {
         try { fs.statSync(locDir); } catch (e) {
             // No locales
             this.End();
+            return;
         }
 
         try { fs.statSync(locDirRef); } catch (e) {
             this._logWarn(`Reference locale '${NKMjs.projectConfig.lang}' does not exists.`);
             this.End();
+            return;
         }
 
         var locDirContent = fs.readdirSync(locDir),

@@ -131,9 +131,9 @@ class UTILS {
         if (UTILS.isVoid(p_value) || p_value === ``) {
             return true;
         }
-        if(UTILS.isArray(p_value)){ return p_value.length === 0; }
-        if (UTILS.isObject(p_value)) { 
-            for (let key in p_value) { return false; }            
+        if (UTILS.isArray(p_value)) { return p_value.length === 0; }
+        if (UTILS.isObject(p_value)) {
+            for (let key in p_value) { return false; }
             return true;
         }
         return false;
@@ -825,6 +825,65 @@ class UTILS {
         if (p_currentIndex === p_newIndex) { return; }
         if (p_currentIndex === -1) { throw new Error(`Item is not in array`); }
         p_array.splice(p_newIndex, 0, p_array.splice(p_currentIndex, 1)[0]);
+    }
+
+    /**
+     * Pad a number with leading 0's
+     * @param {number} p_num 
+     * @param {number} p_size 
+     */
+    static Pad(p_num, p_size = 2) {
+        p_num = p_num.toString();
+        while (p_num.length < p_size) { p_num = "0" + p_num; }
+        return p_num;
+    }
+
+    /**
+     * A - B
+     * @param {*} p_a 
+     * @param {*} p_b 
+     */
+    static DateDiff(p_a, p_b) {
+
+        let totalMs = p_a.getTime() - p_b.getTime(),
+            totalSeconds = (totalMs / 1000),
+            totalMinutes = totalSeconds / 60,
+            totalHours = totalMinutes / 60,
+            totalDays = totalHours / 24,
+            ms = totalMs % 1000,
+            seconds = ((totalMs - ms) / 1000) % 60,
+            minutes = ((totalSeconds - seconds) / 60) % 60,
+            hours = ((totalMinutes - minutes) / 60) % 60,
+            days = ((totalHours - hours) / 24),
+            result = {
+                totalMs: totalMs,
+                totalSeconds: totalSeconds,
+                totalMinutes: totalMinutes,
+                totalHours: totalHours,
+                totalDays: totalDays,
+                ms: ms < 1 ? 0 : ms,
+                seconds: seconds < 1 ? 0 : seconds,
+                minutes: minutes < 1 ? 0 : minutes,
+                hours: hours < 1 ? 0 : hours,
+                days: days < 1 ? 0 : days
+            },
+            str = ``;
+
+        if(result.days > 0){
+            str = `${result.days}d${result.hours}h${result.minutes}m${result.seconds}s${result.ms}ms`;
+        }else if(result.hours > 0){
+            str = `${result.hours}h${result.minutes}m${result.seconds}s${result.ms}ms`;
+        }else if(result.minutes > 0){
+            str = `${result.minutes}m${result.seconds}s${result.ms}ms`;
+        }else if(result.seconds > 0){
+            str = `${result.seconds}s${result.ms}ms`;
+        }else{
+            str = `${result.ms}ms`;
+        }
+
+        result.string = str;
+
+        return result;
     }
 
 }

@@ -60,7 +60,7 @@ class TaskBundleMainExt extends ScriptBase {
         new Bundler(`${NKMjs.projectConfig.name} (ext)`,
             entryPoint,
             NKMjs.InExtBuildRsc(`.${conf.platform}`, `${NKMjs.projectConfig.name}.js`),
-            this.End,
+            this.BundleNext,
             this
         );
 

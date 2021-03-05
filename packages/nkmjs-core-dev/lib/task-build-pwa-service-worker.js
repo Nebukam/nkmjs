@@ -23,7 +23,7 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
 
         // - Build cache map
 
-        let map = [`./`],
+        let map = [`./`, `./index.html`],
             externals = NKMjs.Get(`externals`, []),
             caches = [...NKMjs.projectConfig.dirs.offline],
             dirStyle = NKMjs.projectConfig.dirs.style;;
@@ -43,7 +43,7 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
                         let mime = MIME.Get(path.extname(p_src));
                         if (mime && mime.as !== `fetch`) { map.push(NKMjs.Short(p_src, NKMjs.InApp(), `.`, true)); }
                     },
-                    'dir': (p_src) => { map.push(NKMjs.Short(`${p_src}/`, NKMjs.InApp(), `.`, true)); }
+                    //'dir': (p_src) => { map.push(NKMjs.Short(`${p_src}/`, NKMjs.InApp(), `.`, true)); }
                 });
             } else {
                 map.push(NKMjs.Short(cachePath, NKMjs.InApp(), `.`, true));

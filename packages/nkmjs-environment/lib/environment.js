@@ -151,6 +151,8 @@ class ENV extends SingletonEx {
                 navigator.serviceWorker.register(swPath)
                     .then(this._Bind(this._InternalStart))
                     .catch(this._Bind(this._OnServiceWorkerRegistrationError));
+            }else{
+                this._InternalStart();    
             }
         } else {
             this._InternalStart();
@@ -182,9 +184,7 @@ class ENV extends SingletonEx {
         let appClass = U.Get(this._config, `renderer`, null);
         if (appClass) {
             LOG._(`ENV : App found (${appClass.name})`, `#33979b`, `#212121`);
-            //LOG._(`ENV : App found (${appClass.name})`, `#182000`, `#7ca500`);
-            let appObject = new appClass();
-            this._app = appObject;
+            this._app = new appClass();
         } else {
             LOG._(`ENV : App not found`, `#fff`, `#980700`);
         }
@@ -201,6 +201,7 @@ class ENV extends SingletonEx {
                 case DOM_STATE.NONE:
                 case DOM_STATE.LOADING:
                 case DOM_STATE.INTERACTIVE:
+                    if (this._features.domState == DOM_STATE.INTERACTIVE &&  this._app) { this._app.SetUp(); }
                     this._features.Watch(ENV_SIGNAL.DOMSTATE_CHANGED, this._OnDOMStateChanged, this);
                     break;
                 case DOM_STATE.COMPLETE:

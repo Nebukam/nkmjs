@@ -31,7 +31,7 @@ class TaskPrepareHTMLMeta extends ScriptBase {
                     'anyFile': (p_src) => {
                         let mime = MIME.Get(path.extname(p_src));
                         if (mime && mime.as !== `fetch`) {
-                            if (mime.as === `style`) { map.push(NKMjs.Short(p_src, NKMjs.InApp(), `.`, true)); }
+                            if (mime.as === `style` || mime.as === `script`) { map.push(NKMjs.Short(p_src, NKMjs.InApp(), `.`, true)); }
                             else { candidates.push(p_src); }
                         }
                     }
@@ -40,6 +40,15 @@ class TaskPrepareHTMLMeta extends ScriptBase {
                 map.push(NKMjs.Short(cachePath, NKMjs.InApp(), `.`, true));
             }
         }
+
+        // Preload externals
+
+        let externals = NKMjs.Get(`externals`, []);
+        for (let i = 0, n = externals.length; i < n; i++) {
+            map.push(`${NKMjs.ExternalName(externals[i])}.js`);
+        }
+
+        map.push(`${NKMjs.projectConfig.name}.js`);
 
         // Parse style files for recognizable URL candidates
 

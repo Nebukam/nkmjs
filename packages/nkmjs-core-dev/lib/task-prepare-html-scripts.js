@@ -20,12 +20,12 @@ class TaskPrepareHTMLScripts extends ScriptBase {
         scripts += `<!-- externals -->\n`;
         for (let i = 0, n = externals.length; i < n; i++) {
             let extModule = externals[i];
-            scripts += `<script type = "text/javascript" src = "${NKMjs.ExternalName(extModule)}.js" ></script>\n`;
+            scripts += `<script type = "text/javascript" src = "${NKMjs.ExternalName(extModule)}.js" defer></script>\n`;
         }
 
 
         scripts += `<!-- main -->\n`;
-        scripts += `<script type = "text/javascript" src = "${NKMjs.projectConfig.name}.js" ></script>\n`;
+        scripts += `<script type = "text/javascript" src = "${NKMjs.projectConfig.name}.js" defer></script>\n`;
 
         NKMjs.Set(`html-scripts`, scripts);
 
