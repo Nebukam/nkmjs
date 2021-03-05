@@ -15,6 +15,10 @@ class TaskPostInstall extends ScriptBase {
         super(`nkmjs-post-install`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
+        console.log(NKMjs.projectConfig);
+        console.log(NKMjs);
+        console.log(NKMjs.args);
+        console.log(process.env);
         this._logError(NKMjs.InProject());
 
         this.End();
