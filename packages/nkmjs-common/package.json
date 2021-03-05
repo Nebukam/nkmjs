@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/common",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "NKMjs Framework Common",
   "main": "index.js",
   "repository": {
@@ -16,8 +16,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "^0.0.8",
-    "@nkmjs/utils": "^0.0.8"
+    "@nkmjs/collections": "^0.1.0",
+    "@nkmjs/utils": "^0.0.9"
   },
   "gitHead": "031a8fae4c3c124b3bcbe91ca40e8981b29bf7ce"
 }

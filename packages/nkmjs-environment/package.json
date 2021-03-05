@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/environment",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "NKMjs Framework Environment / Globals",
   "main": "index.js",
   "repository": {
@@ -16,10 +16,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "^0.0.8",
-    "@nkmjs/common": "^0.0.8",
-    "@nkmjs/services": "^0.0.8",
-    "@nkmjs/utils": "^0.0.8"
+    "@nkmjs/collections": "^0.1.0",
+    "@nkmjs/common": "^0.1.0",
+    "@nkmjs/services": "^0.0.9",
+    "@nkmjs/utils": "^0.0.9"
   },
   "gitHead": "031a8fae4c3c124b3bcbe91ca40e8981b29bf7ce"
 }
