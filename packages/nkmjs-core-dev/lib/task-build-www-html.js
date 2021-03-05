@@ -18,6 +18,7 @@ class TaskBuildWWWHTML extends ScriptBase {
             `./task-prepare-html-socials`, // OpenGraph, Twitter, etc
             `./task-prepare-html-scripts`, // Scripts
             `./task-prepare-html-preloads`, // Preloads
+            `./task-prepare-html-metrics`, // Metrics
         ], this._Bind(this.OnPreparationComplete));
 
 
@@ -32,11 +33,12 @@ class TaskBuildWWWHTML extends ScriptBase {
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-socials`]: NKMjs.Get(`html-socials`, ``),
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
+                    [`html-metrics`]: NKMjs.Get(`html-metrics`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
                     [`html-noscript`]: NKMjs.Get(`html-noscript`, ``),
                     [`html-webmanifest`]: ``,
                 }
-                ),
+            ),
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));
 

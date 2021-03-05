@@ -8,9 +8,14 @@
     "app": {
         "display": "standalone",
         "orientation": "portrait",
-        "colorTheme": "#1e1e1e"
+        "colorTheme": "#1e1e1e",
+        "theme": "default"
     },
     "extension": {
+        "popup":{
+            "width":800,
+            "height":600
+        },
         "display": "standalone",
         "permissions": [
             "storage"

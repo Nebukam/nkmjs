@@ -23,7 +23,7 @@ class TaskBuildElectronApp extends ScriptBase {
         this.validConfigCount = 0;
         this.configs = null;
 
-        this._log(`--pack-only : ${chalk.blue(NKMjs.shortargs[`pack-only`] ? true : false)}`, 1);
+        this._log(`--pack-only : ${chalk.blue(NKMjs.shortargs.Has(`pack-only`) ? true : false)}`, 1);
 
         if (`builds` in NKMjs.projectConfig) { this.configs = NKMjs.projectConfig.builds; }
 
@@ -149,7 +149,7 @@ class TaskBuildElectronApp extends ScriptBase {
             },
             builderConfig = {};
 
-        if (NKMjs.shortargs[`pack-only`] || conf[`pack-only`]) {
+        if (NKMjs.shortargs.Has(`pack-only`) || conf[`pack-only`]) {
             builderConfig.dir = true;
         }
 

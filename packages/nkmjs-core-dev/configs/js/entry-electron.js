@@ -10,5 +10,6 @@ new MAIN_ELECTRON({
     dirname: __dirname,
     html: `./%htmlIndex%`,
     renderer: `%js_main%`,
+    theme: '%app.theme%',
 %config%
 });

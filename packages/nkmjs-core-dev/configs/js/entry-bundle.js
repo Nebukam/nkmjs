@@ -31,5 +31,6 @@ ENV.instance.Start({
     paths: paths,
     argv: [],
     renderer: require(`%js_main%`),
+    theme: '%app.theme%',
 %config%
 });

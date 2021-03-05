@@ -12,13 +12,13 @@ const NKMJSPackageConfig = require('./helpers/nkmjs-package-config');
 const FSUTILS = require('./helpers/fsutils');
 const pngToIco = require('png-to-ico');
 
-class TaskPrepareMaskableIcons extends ScriptBase {
+class TaskPrepareIconsMaskable extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        // See https://web.dev/maskable-icon-audit/?utm_source=lighthouse&utm_medium=devtools
+        // See https://web.dev/maskable-icon-audit/
 
-        super(`prepare-maskable-icons`, p_onComplete);
+        super(`prepare-icons-maskable`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this._Bind(this.ProcessNextIcon);
@@ -40,8 +40,12 @@ class TaskPrepareMaskableIcons extends ScriptBase {
 
             for (let i = 0, n = iconDirContent.length; i < n; i++) {
                 // for each file found, try to get its dimensions
-                let filename = iconDirContent[i];
-                let filepath = path.resolve(iconDir, filename);
+                let filename = iconDirContent[i],
+                    filepath = path.resolve(iconDir, filename);
+
+                if (path.extname(filename) != `.png`) { continue; }
+                if (!filename.includes(`-maskable`)) { continue; }
+
                 try {
                     let dimensions = sizeOf(filepath);
                     if (dimensions.width != dimensions.height) {
@@ -56,11 +60,13 @@ class TaskPrepareMaskableIcons extends ScriptBase {
 
         // Fallback to default icon
         if (foundIconList.length == 0) {
-            this._logWarn(`No valid (png) icon found, will use the default one.`, 1);
-            let filepath = NKMjs.InCore(`assets/icons/nkmjs-1024.png`),
+            this._logWarn(`No valid *-maskable.png icon found, will use the default one.`, 1);
+            this._log(chalk.yellow(`To fix this, add at least one *-maskable.png file under ${NKMjs.projectConfig.dirs.icons}.`), 1);
+            this._log(`More infos : https://web.dev/maskable-icon/`, 1);
+            let filepath = NKMjs.InBuildRsc(`icons`, `512x512.png`),
                 dimensions = sizeOf(filepath);
 
-            foundIconList.push({ size: dimensions.width, path: filepath });
+            foundIconList.push({ size: dimensions.width, path: filepath, addBackground: true });
         }
 
         // Compare existing list against requirements
@@ -71,7 +77,7 @@ class TaskPrepareMaskableIcons extends ScriptBase {
                 diff = Number.MAX_SAFE_INTEGER,
                 exactMatch = false,
                 currentIcon = null,
-                iconFilename = `${size}x${size}.png`,
+                iconFilename = `${size}x${size}-maskable.png`,
                 iconPath = path.resolve(this.iconDest, `icons`, iconFilename),
                 icon = {};
 
@@ -94,6 +100,7 @@ class TaskPrepareMaskableIcons extends ScriptBase {
             icon.exactMatch = exactMatch;
             icon.path = iconPath;
             icon.filename = iconFilename;
+            if (currentIcon.addBackground) { icon.addBackground = true; }
 
             this.iconList.push(icon);
             this.tempIconList.push({ binary: fs.readFileSync(currentIcon.path), ...icon });
@@ -114,19 +121,55 @@ class TaskPrepareMaskableIcons extends ScriptBase {
 
         if (icon.exactMatch) {
             // Just copy & rename icon.path
-            NKMjs.WriteTempSync(icon.path, icon.binary);
-            this.ProcessNextIcon();
+            if (icon.addBackground) {
+                sharp(icon.binary)
+                    .flatten({
+                        background: { r: 237, g: 30, b: 121, alpha: 1 }
+                    })
+                    .toFile(icon.path)
+                    .then(this.ProcessNextIcon)
+                    .catch((err) => {
+                        this._logError(err);
+                        this.ProcessNextIcon();
+                    });
+            } else {
+                NKMjs.WriteTempSync(icon.path, icon.binary);
+                this.ProcessNextIcon();
+            }
+
+
         } else {
             // Need editing of the closest match found, we'll use `sharp` for that.
             // https://www.npmjs.com/package/sharp
-            sharp(icon.binary)
-                .resize({ width: icon.size, height: icon.size })
-                .toFile(icon.path)
-                .then(this.ProcessNextIcon)
-                .catch((err) => {
-                    this._logError(err);
-                    this.ProcessNextIcon();
-                });
+            if (icon.addBackground) {
+                sharp(icon.binary)
+                    .resize({
+                        width: icon.size,
+                        height: icon.size
+                    })
+                    .flatten({
+                        background: { r: 237, g: 30, b: 121, alpha: 1 }
+                    })
+                    .toFile(icon.path)
+                    .then(this.ProcessNextIcon)
+                    .catch((err) => {
+                        this._logError(err);
+                        this.ProcessNextIcon();
+                    });
+            } else {
+                sharp(icon.binary)
+                    .resize({
+                        width: icon.size,
+                        height: icon.size
+                    })
+                    .toFile(icon.path)
+                    .then(this.ProcessNextIcon)
+                    .catch((err) => {
+                        this._logError(err);
+                        this.ProcessNextIcon();
+                    });
+            }
+
         }
 
     }
@@ -160,14 +203,14 @@ class TaskPrepareMaskableIcons extends ScriptBase {
     WrapUp() {
         // Take the largest size and copy it as icon.png for macOS (last size from iconList)
         let size = this.requiredSizes[this.requiredSizes.length - 1],
-            p_src = NKMjs.InBuildRsc(`icons`, `${size}x${size}.png`),
-            p_dest = NKMjs.InBuildRsc(`icon.png`);
+            p_src = NKMjs.InBuildRsc(`icons`, `${size}x${size}-maskable.png`),
+            p_dest = NKMjs.InBuildRsc(`icon-maskable.png`);
 
         fs.copyFileSync(p_src, p_dest);
-        NKMjs.Set(`icon-list`, this.iconList);
+        NKMjs.Set(`icon-list-maskable`, this.iconList);
         this.End();
     }
 
 }
 
-module.exports = TaskPrepareMaskableIcons;
+module.exports = TaskPrepareIconsMaskable;

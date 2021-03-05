@@ -98,8 +98,6 @@ class StyleguideApp extends AppBase {
             ]);
         };
 
-        console.log(this._dialogInfos);
-
     }
 
     AppReady() {

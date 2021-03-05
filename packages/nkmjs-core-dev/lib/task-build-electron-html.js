@@ -15,6 +15,7 @@ class TaskBuildElectronHTML extends ScriptBase {
 
         this.Run([
             `./task-prepare-html-metas`, // Metas
+            `./task-prepare-html-metrics`, // Metrics
             `./task-prepare-html-preloads`, // Preloads
         ], this._Bind(this.OnPreparationComplete));
 
@@ -28,7 +29,8 @@ class TaskBuildElectronHTML extends ScriptBase {
                 NKMjs.projectConfig.__keys,
                 {
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
-                    [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
+                    [`html-metrics`]: NKMjs.Get(`html-metrics`, ``),
+                    [`html-preloads`]: ``, //NKMjs.Get(`html-preloads`, ``),
                     [`html-socials`]: ``,
                     [`html-webmanifest`]: ``,
                     [`html-scripts`]: ``,

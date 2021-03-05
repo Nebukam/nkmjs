@@ -7,4 +7,5 @@ module.exports = {
     PATH: require(`./lib/path`),
     MIME: require(`./lib/mime`),
     LOG: require(`./lib/logger`),
+    Argv: require(`./lib/argv`)
 }

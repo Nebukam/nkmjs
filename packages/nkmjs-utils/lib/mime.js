@@ -48,7 +48,7 @@ class MIME {
         { ext: `.jar`, desc: `Java Archive (JAR)`, type: `application/java-archive` },
         { ext: `.jpeg`, desc: `JPEG images`, type: `image/jpeg`, as: `image` },
         { ext: `.jpg`, desc: `JPEG images`, type: `image/jpeg`, as: `image` },
-        { ext: `.js`, desc: `JavaScript`, type: `text/javascript`, as: `script` },
+        { ext: `.js`, desc: `JavaScript`, type: `application/javascript`, as: `script` },
         { ext: `.json`, desc: `JSON format`, type: `application/json` },
         { ext: `.jsonld`, desc: `JSON-LD format`, type: `application/ld+json` },
         { ext: `.mid`, desc: `Musical Instrument Digital Interface (MIDI)`, type: `audio/midi audio/x-midi`, as: `audio` },

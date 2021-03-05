@@ -22,14 +22,14 @@ class TaskPrepareIcons extends ScriptBase {
         this._Bind(this.ProcessNextIcon);
         this._Bind(this.WrapUp);
 
+        try { FSUTILS.rmdir(NKMjs.InBuildRsc(`icons`)); } catch (e) { }
         this.iconDest = FSUTILS.ensuredir(NKMjs.InBuildRsc());
         FSUTILS.ensuredir(NKMjs.InBuildRsc(`icons`));
 
         this.requiredSizes = [16, 32, 48, 64, 72, 96, 128, 120, 180, 144, 152, 180, 192, 384, 512];
         this.tempIconList = [];
         this.iconList = [];
-        let foundIconList = [],
-            iconInfos = {};
+        let foundIconList = [];
 
         try {
             // Check if any icon is available
@@ -38,14 +38,37 @@ class TaskPrepareIcons extends ScriptBase {
 
             for (let i = 0, n = iconDirContent.length; i < n; i++) {
                 // for each file found, try to get its dimensions
-                let filename = iconDirContent[i];
-                let filepath = path.resolve(iconDir, filename);
+                let filename = iconDirContent[i],
+                    filepath = path.resolve(iconDir, filename),
+                    maskable = filename.includes(`-maskable`);
+
+                if (path.extname(filename) != `.png`) { continue; }
+
                 try {
                     let dimensions = sizeOf(filepath);
                     if (dimensions.width != dimensions.height) {
                         this._logWarn(`Can't use ${filename} : it isn't square. (${dimensions.width}x${dimensions.height})`);
                     } else {
-                        foundIconList.push({ size: dimensions.width, path: filepath });
+                        let iconInfos = { size: dimensions.width, path: filepath, maskable: maskable }, skip = false;
+
+                        // Check if a same-sized icon already exists
+                        for (let i = 0, n = foundIconList.length; i < n; i++) {
+                            let otherIcon = foundIconList[i];
+                            if (otherIcon.size == iconInfos.size) {
+                                if (maskable) { 
+                                    // Current one is maskable, skip it since we have a same-sized one already
+                                    skip = true;
+                                    break;
+                                } else if (otherIcon.maskable) { 
+                                    // Override existing maskable, since we prioritize non-maskable here
+                                    skip = true;
+                                    foundIconList[i] = iconInfos;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!skip) { foundIconList.push(iconInfos); }
                     }
                 } catch (e) { }
 
@@ -54,7 +77,8 @@ class TaskPrepareIcons extends ScriptBase {
 
         // Fallback to default icon
         if (foundIconList.length == 0) {
-            this._logWarn(`No valid (png) icon found, will use the default one.`, 1);
+            this._logWarn(`No valid *.png icon found, will use the default one.`, 1);
+            this._log(chalk.yellow(`To fix this, add at least one *.png file under ${NKMjs.projectConfig.dirs.icons}.`), 1);
             let filepath = NKMjs.InCore(`assets/icons/nkmjs-1024.png`),
                 dimensions = sizeOf(filepath);
 

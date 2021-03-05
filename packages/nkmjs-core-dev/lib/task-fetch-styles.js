@@ -19,10 +19,10 @@ class TaskFetchStyles extends ScriptBase {
         // Fetch node_modules dir contents
         this._Bind(this._ProcessModuleContent);
 
-        this._log(`--append : ${chalk.blue(NKMjs.shortargs.append ? true : false)}`, 1);
-        this._log(`--replace : ${chalk.blue(NKMjs.shortargs.replace ? true : false)}`, 1);
+        this._log(`--append : ${chalk.blue(NKMjs.shortargs.Has(`append`))}`, 1);
+        this._log(`--replace : ${chalk.blue(NKMjs.shortargs.Has(`replace`))}`, 1);
 
-        this._appendArray = NKMjs.shortargs.append ? [] : null;
+        this._appendArray = NKMjs.shortargs.Has(`append`) ? [] : null;
 
         this.rootOutput = NKMjs.InApp(NKMjs.projectConfig.dirs.styleSource);
         this._log(`output to : ${chalk.italic(this.rootOutput)}`, 1);
@@ -54,7 +54,7 @@ class TaskFetchStyles extends ScriptBase {
                 '.css': (p_src, p_dest, p_isDir) => { local.push(p_dest); return p_dest; },
                 'else': (p_src, p_dest, p_isDir) => { local.push(p_dest); return p_dest; }
             },
-                NKMjs.shortargs.replace,
+                NKMjs.shortargs.Has(`replace`),
                 this._appendArray,
                 (p_dest) => { return path.extname(p_dest) === `.scss`; });
 

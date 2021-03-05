@@ -1,7 +1,7 @@
 {
-    "name": "nkmjs-styleguide",
-    "longName": "NKMjs Styleguide",
-    "shortName": "Stylguide",
+    "name": "my-app",
+    "longName": "My App : Verbose Name",
+    "shortName": "My App",
     "description": "My app description, lorem ipsum; dolor si amet.",
     "lang": "en",
     "homepage": "https://homepage",
@@ -9,10 +9,24 @@
         "display": "standalone",
         "orientation": "portrait",
         "colorTheme": "#1e1e1e",
-        "theme": "lel"
+        "theme": "default"
+    },
+    "metrics":{
+        "id":"G-BJV6GJZWN1",
+        "script":"assets/metrics.html"
     },
     "extension": {
-        "display": "standalone"
+        "popup": {
+            "width": 800,
+            "height": 600
+        },
+        "display": "standalone",
+        "permissions": [
+            "storage"
+        ],
+        "hostPermissions": [
+            "%homepage%"
+        ]
     },
     "dirs": {
         "app": "app",
@@ -21,9 +35,9 @@
         "assets": "assets",
         "icons": "%dirs.assets%/icons",
         "builds": "builds",
-        "locales": "_locales",
+        "locales": "locales",
         "offline": [
-            "img"
+            "%dirs.style%"
         ]
     },
     "builds": [

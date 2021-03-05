@@ -27,6 +27,7 @@ class ElectronBase {
      * @param {array} p_constants.argv 
      * @param {string} p_constants.dirname execution directory
      * @param {string} p_constants.html landing html page for the main app window (can also be an html string)
+     * @param {string} p_constants.theme default style theme
      * @param {object} p_constants.winOptions main window options, see https://www.electronjs.org/docs/api/browser-window#new-browserwindowoptions
      * @param {string} p_constants.renderer path to the app to boot into the html page
      * @param {string} p_constants.autoUpdateFeed autoupdate feed url, to be used with Hazel
@@ -193,7 +194,8 @@ class ElectronBase {
                     '${PATH.LOGS}':'${U.FixSlash(app.getPath('logs'))}',
                     '${PATH.STYLE}':'${stylePath}'
                 },
-                argv:${JSON.stringify(process.argv)}
+                argv:${JSON.stringify(process.argv)},
+                theme:'${(this._constants.theme || 'default')}'
                 ${this._rendererDeclaration}
             });            
         `);

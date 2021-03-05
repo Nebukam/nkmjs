@@ -50,7 +50,7 @@ class TaskAuditLocales extends ScriptBase {
 
         }
 
-        let verboseOutput = NKMjs.shortargs[`verbose-locales-audit`];
+        let verboseOutput = NKMjs.shortargs.Get(`verbose-locales-audit`);
         if (!verboseOutput) {
             this._log(`use --verbose-locales-audit for detailed report.`)
         }

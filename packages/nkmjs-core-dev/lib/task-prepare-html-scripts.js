@@ -6,6 +6,7 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const DirRead = require(`./helpers/dir-read`);
+const { MIME } = require(`@nkmjs/utils`);
 
 class TaskPrepareHTMLScripts extends ScriptBase {
 
@@ -14,18 +15,19 @@ class TaskPrepareHTMLScripts extends ScriptBase {
         super(`prepare-html-scripts`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        let scripts = ``, externals = NKMjs.Get(`externals`, []);
+        let mime = MIME.Get(`.js`),
+            scripts = ``, externals = NKMjs.Get(`externals`, []),
+            scriptData = `crossorigin="anonymous" defer="defer" type="${mime.type}"`;
 
         scripts += `<!-- SCRIPTS -->\n`;
         scripts += `<!-- externals -->\n`;
         for (let i = 0, n = externals.length; i < n; i++) {
             let extModule = externals[i];
-            scripts += `<script type = "text/javascript" src = "${NKMjs.ExternalName(extModule)}.js" defer></script>\n`;
+            scripts += `<script ${scriptData} src="${NKMjs.ExternalName(extModule)}.js"></script>\n`;
         }
 
-
         scripts += `<!-- main -->\n`;
-        scripts += `<script type = "text/javascript" src = "${NKMjs.projectConfig.name}.js" defer></script>\n`;
+        scripts += `<script ${scriptData} src="${NKMjs.projectConfig.name}.js"></script>\n`;
 
         NKMjs.Set(`html-scripts`, scripts);
 

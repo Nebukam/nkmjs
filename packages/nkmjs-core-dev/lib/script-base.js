@@ -2,7 +2,6 @@
 
 const fs = require(`fs`);
 const path = require(`path`);
-const ARGS = require("./helpers/argv-parser");
 const NKMJSPackageConfig = require("./helpers/nkmjs-package-config");
 const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
@@ -24,6 +23,8 @@ class ScriptBase {
             requiredLocals = p_options ? p_options.requiredLocals : null,
             requiredArgs = p_options ? p_options.requiredArgs : null,
             requiredGlobals = p_options ? p_options.requiredGlobals : null,
+            requiredKeys = p_options ? p_options.requiredKeys : null,
+            requiredConfigs = p_options ? p_options.requiredConfigs : null,
             skipKey = p_options ? p_options.skipKey : null;
 
         this.__running = true;
@@ -49,7 +50,7 @@ class ScriptBase {
             return;
         }
 
-        if (skipKey && skipKey in NKMjs.shortargs) {
+        if (skipKey && NKMjs.shortargs.Has(skipKey)) {
             this._log(chalk.white(`× `) + chalk.italic(`--${skipKey} » skipping ${p_localId}.`));
             this.__shouldSkip = true;
             this.__running = false;
@@ -62,6 +63,28 @@ class ScriptBase {
                     value = NKMjs.Get(key, this.__undefined); // Because null or undefined may be valid value for some scripts !
                 if (value === this.__undefined) {
                     this._log(chalk.white(`× `) + chalk.italic(`NKMjs.${key} undefined » skipping ${p_localId}.`));
+                    this.__shouldSkip = true;
+                    this.__running = false;
+                    return;
+                }
+            }
+        }
+
+        if (requiredKeys) {
+            for (let i = 0, n = requiredKeys.length; i < n; i++) {
+                if (!NKMjs.projectConfig.__keys.hasOwnProperty(requiredKeys[i])) {
+                    this._log(chalk.white(`× `) + chalk.italic(`NKMjs.${requiredKeys[i]} not set » skipping ${p_localId}.`));
+                    this.__shouldSkip = true;
+                    this.__running = false;
+                    return;
+                }
+            }
+        }
+
+        if (requiredConfigs) {
+            for (let i = 0, n = requiredConfigs.length; i < n; i++) {
+                if (!NKMjs.projectConfig.hasOwnProperty(requiredConfigs[i])) {
+                    this._log(chalk.white(`× `) + chalk.italic(`${requiredConfigs[i]} config missing » skipping ${p_localId}.`));
                     this.__shouldSkip = true;
                     this.__running = false;
                     return;
@@ -95,7 +118,7 @@ class ScriptBase {
         if (requiredArgs && requiredArgs.length > 0) {
             for (let i = 0, n = requiredArgs.length; i < n; i++) {
                 let key = requiredArgs[i];
-                if (!(key in NKMjs.shortargs)) {
+                if (!NKMjs.shortargs.Has(key)) {
                     this._logError(`${this.__localId} is missing required argument value : '${key}'.`);
                     this.__hasErrors = true;
                 }

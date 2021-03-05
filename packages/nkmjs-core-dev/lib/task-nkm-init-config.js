@@ -5,7 +5,6 @@ const path = require(`path`);
 const NKMjs = require(`./nkm.js`);
 const ScriptBase = require(`./script-base`);
 const UserInput = require(`./helpers/user-input`);
-const ARGS = require("./helpers/argv-parser");
 
 class TaskNKMInitConfig extends ScriptBase {
 

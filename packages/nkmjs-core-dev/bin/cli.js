@@ -88,9 +88,9 @@ class NKMCLI extends ScriptBase {
         let date = new Date();
         if(this._start){
             let diff = U.DateDiff(date, this._start);
-            this._logFwd(`${U.Pad(date.getHours())}:${U.Pad(date.getMinutes())}:${U.Pad(date.getSeconds())} (~${Math.round(diff.totalSeconds)}s)`);
+            this._logFwd(`${U.Pad(date.getHours())}:${U.Pad(date.getMinutes())}:${U.Pad(date.getSeconds())} (~${Math.round(diff.totalSeconds)}s)`, `✔`);
         }else{
-            this._logFwd(`${U.Pad(date.getHours())}:${U.Pad(date.getMinutes())}:${U.Pad(date.getSeconds())}`);
+            this._logFwd(`${U.Pad(date.getHours())}:${U.Pad(date.getMinutes())}:${U.Pad(date.getSeconds())}`, `✔`);
         }
     }
 

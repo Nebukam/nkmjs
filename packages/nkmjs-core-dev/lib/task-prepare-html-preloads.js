@@ -29,9 +29,11 @@ class TaskPrepareHTMLMeta extends ScriptBase {
             if (stat.isDirectory()) {
                 new DirRead(cachePath, ``, {
                     'anyFile': (p_src) => {
-                        let mime = MIME.Get(path.extname(p_src));
+                        let mime = MIME.Get(path.extname(p_src)),
+                            shortURL = NKMjs.Short(p_src, NKMjs.InApp(), `.`, true);;
                         if (mime && mime.as !== `fetch`) {
-                            if (mime.as === `style` || mime.as === `script`) { map.push(NKMjs.Short(p_src, NKMjs.InApp(), `.`, true)); }
+                            if (mime.as === `style`) { map.push(shortURL); }
+                            else if (mime.as === `script`) { map.push(shortURL); }
                             else { candidates.push(p_src); }
                         }
                     }

@@ -13,7 +13,10 @@ class TaskBuildWebmanifest extends ScriptBase {
         super(`build-pwa-webmanifest`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        this.Run(`./task-prepare-icons`, this._Bind(this.OnPreparationComplete));
+        this.Run([
+            `./task-prepare-icons`,
+            `./task-prepare-icons-maskable`
+        ], this._Bind(this.OnPreparationComplete));
 
     }
 
@@ -22,6 +25,7 @@ class TaskBuildWebmanifest extends ScriptBase {
         let manifest = {},
             projectInfos = NKMjs.projectConfig,
             iconList = NKMjs.Get(`icon-list`, []),
+            maskableIconList = NKMjs.Get(`icon-list-maskable`, []),
             iconsArray = [],
             htmlHeader = ``,
             lastSize = `512x512`;
@@ -32,16 +36,35 @@ class TaskBuildWebmanifest extends ScriptBase {
         htmlHeader += `<!-- Fallback application metadata for legacy browsers -->\n`;
         htmlHeader += `<meta name="application-name" content="${projectInfos.shortName}">\n`;
 
+        // any-purpose icons
         for (let i = 0, n = iconList.length; i < n; i++) {
             let icon = iconList[i],
                 s = `${icon.size}x${icon.size}`;
 
-            htmlHeader += `<link rel="icon" sizes="${s}" href="icons/${s}.png"></link>\n`;
+            // Don't link big pngs.
+            if(icon.size <= 128){ htmlHeader += `<link rel="icon" sizes="${s}" href="icons/${s}.png"></link>\n`; }
 
             iconsArray.push({
                 src: `icons/${s}.png`,
                 sizes: `${s}`,
-                type: `image/png`
+                type: `image/png`,
+                purpose: `any`
+            });
+
+            lastSize = s;
+
+        }
+
+        // maskable icons
+        for (let i = 0, n = maskableIconList.length; i < n; i++) {
+            let icon = maskableIconList[i],
+                s = `${icon.size}x${icon.size}`;
+
+            iconsArray.push({
+                src: `icons/${s}-maskable.png`,
+                sizes: `${s}`,
+                type: `image/png`,
+                purpose: `maskable`
             });
 
             lastSize = s;
@@ -49,7 +72,7 @@ class TaskBuildWebmanifest extends ScriptBase {
         }
 
         // Apple touch icon should use maskable
-        htmlHeader += `<link rel="apple-touch-icon" href="icons/${lastSize}.png">`;
+        htmlHeader += `<link rel="apple-touch-icon" href="icons/${lastSize}-maskable.png">`;
 
         // TODO : Maskable icons : https://web.dev/maskable-icon-audit/?utm_source=lighthouse&utm_medium=devtools
 

@@ -15,8 +15,9 @@ class TaskBuildExtHTML extends ScriptBase {
 
         this.Run([
             `./task-prepare-html-metas`, // Metas
-            `./task-prepare-html-scripts`,
+            `./task-prepare-html-scripts`, // Scripts
             `./task-prepare-html-preloads`, // Preloads
+            `./task-prepare-html-metrics`, // Metrics
         ], this._Bind(this.OnPreparationComplete));
 
     }
@@ -32,6 +33,7 @@ class TaskBuildExtHTML extends ScriptBase {
                 {
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
+                    [`html-metrics`]: NKMjs.Get(`html-metrics`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
                     [`html-noscript`]: NKMjs.Get(`html-noscript`, ``),
                     [`html-webmanifest`]: ``,

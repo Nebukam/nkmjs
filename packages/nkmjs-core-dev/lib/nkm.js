@@ -2,7 +2,7 @@ const path = require(`path`);
 const chalk = require('chalk');
 const fs = require(`fs`);
 
-const ARGS = require(`./helpers/argv-parser`);
+const { Argv } = require(`@nkmjs/utils`);
 const NKMJSPackageConfig = require(`./helpers/nkmjs-package-config`);
 const FSUTILS = require('./helpers/fsutils');
 
@@ -42,7 +42,7 @@ class NKMjs {
         if (this.__initialized) { return; }
         this.__initialized = true;
 
-        this.args = new ARGS(process.argv);
+        this.args = new Argv(process.argv);
 
         let eC = process.env.INIT_CWD, //process.argv[1],
             cProject = null,
@@ -50,7 +50,7 @@ class NKMjs {
 
         console.log(eC);
 
-        if (`context` in this.args) {
+        if (this.args.Has(`context`)) {
             cProject = this.args.context;
         } else {
             if (eC.includes(`node_modules`)) {
@@ -79,7 +79,7 @@ class NKMjs {
         }
 
         process.argv = process.argv.splice(2);
-        this.shortargs = new ARGS(process.argv);
+        this.shortargs = new Argv(process.argv);
 
         this.projectVersion = (NKMjs.projectConfig.__packagejson.version || `0.0.0`);
         this.CORE_CACHE_DIR = this.InCore(`caches`, `@nkmjs`);

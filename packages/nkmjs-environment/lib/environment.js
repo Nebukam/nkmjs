@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const { U, PATH, LOG } = require(`@nkmjs/utils`);
+const { U, PATH, LOG, Argv } = require(`@nkmjs/utils`);
 const { List } = require(`@nkmjs/collections`);
 const { SingletonEx, CallList } = require(`@nkmjs/common`);
 const { ServicesManager, ServiceBase } = require(`@nkmjs/services`);
@@ -35,6 +35,13 @@ class ENV extends SingletonEx {
      * @customtag read-only
      */
     static get APP() { return this.instance._app; }
+
+    /**
+     * @description TODO
+     * @type {utils.Argv}
+     * @customtag read-only
+     */
+    static get ARGV() { return this.instance._config.argv; }
 
     /**
      * @description TODO
@@ -142,7 +149,22 @@ class ENV extends SingletonEx {
         LOG._(`ENV : START`, `#33979b`, `#212121`);
         ENV.instance._features.List();
 
+        if (ENV.instance._features.isBrowser) {
+            if (!p_config.argv) {
+                // Feed URL params to argv
+                var argvs = new Argv();
+                let searchParams = new URLSearchParams(window.location.search);
+                searchParams.forEach((p_val, p_key) => { argvs[p_key] = p_val });
+                p_config.argv = argvs;
+            } else {
+                p_config.argv = new Argv(p_config.argv);
+            }
+        } else {
+            p_config.argv = new Argv(p_config.argv);
+        }
+
         this._config = p_config;
+        console.log(this._config);
 
         // Register the service worker if available.
         let swPath = U.Get(this._config, `service_worker`, false);
@@ -151,8 +173,8 @@ class ENV extends SingletonEx {
                 navigator.serviceWorker.register(swPath)
                     .then(this._Bind(this._InternalStart))
                     .catch(this._Bind(this._OnServiceWorkerRegistrationError));
-            }else{
-                this._InternalStart();    
+            } else {
+                this._InternalStart();
             }
         } else {
             this._InternalStart();
@@ -201,7 +223,7 @@ class ENV extends SingletonEx {
                 case DOM_STATE.NONE:
                 case DOM_STATE.LOADING:
                 case DOM_STATE.INTERACTIVE:
-                    if (this._features.domState == DOM_STATE.INTERACTIVE &&  this._app) { this._app.SetUp(); }
+                    if (this._features.domState == DOM_STATE.INTERACTIVE && this._app) { this._app.SetUp(); }
                     this._features.Watch(ENV_SIGNAL.DOMSTATE_CHANGED, this._OnDOMStateChanged, this);
                     break;
                 case DOM_STATE.COMPLETE:

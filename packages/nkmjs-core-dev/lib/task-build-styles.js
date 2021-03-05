@@ -16,7 +16,7 @@ class TaskBuildStyles extends ScriptBase {
         super(`build-styles`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        var compress = `compress` in NKMjs.shortargs ? NKMjs.shortargs.compress : true;
+        var compress = NKMjs.shortargs.Get(`compress`, true);
 
         this._log(`--compress : ${chalk.blue(compress)}`, 1);
 
