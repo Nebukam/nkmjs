@@ -15,7 +15,7 @@
   "scripts": {
     "bundle-core": "node ./lib/task-build-core-bundle.js",
     "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README-jsdoc.md",
-    "postinstall": "nkmjs post-install"
+    "postinstall": "node ./lib/script-post-install.js"
   },
   "bin": {
     "nkmjs": "./bin/cli.js"
