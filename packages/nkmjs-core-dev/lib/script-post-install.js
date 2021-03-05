@@ -37,4 +37,4 @@ class TaskPostInstall extends ScriptBase {
 
 }
 
-module.exports = TaskPostInstall;
+new TaskPostInstall();
