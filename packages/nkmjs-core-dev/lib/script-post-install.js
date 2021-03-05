@@ -15,12 +15,22 @@ class TaskPostInstall extends ScriptBase {
         super(`nkmjs-post-install`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        console.log(NKMjs.projectConfig);
-        console.log(NKMjs);
-        console.log(NKMjs.args);
-        console.log(process.env);
-        this._logError(NKMjs.InProject());
+        try{
+            let p = path.resolve(process.env.INIT_CWD, `package.json`),
+            pkgJson = JSON.parse(fs.readFileSync(p, 'utf8')),
+            scripts = pkgJson.scripts;
+            
+            if(!scripts){ 
+                scripts = {};
+                pkgJson.scripts = scripts;
+            }
 
+            scripts.nkmjs = `nkmjs`;
+            fs.writeFileSync(JSON.stringify(p, null, 4));
+        }catch(e){
+            console.log(e);
+        }
+        
         this.End();
 
     }
