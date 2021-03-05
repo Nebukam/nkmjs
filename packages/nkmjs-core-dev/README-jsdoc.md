@@ -1,37 +1,34 @@
 ![preview](https://img.shields.io/badge/-alpha-3ec188.svg)
 ![version](https://img.shields.io/badge/dynamic/json?color=ed1e79&label=version&query=version&url=https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core-dev/package.json)
 ![in development](https://img.shields.io/badge/license-MIT-black.svg)
-[![doc_progress](https://img.shields.io/badge/dynamic/json?color=282725&label=doc&query=documentation_progress&url=https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core-dev/metadata.json)](https://nebukam.github.io/nkmjs/documentation/)
+![doc_progress](https://img.shields.io/badge/dynamic/json?color=282725&label=documentation%20coverage&query=documentation_progress&url=https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core-dev/main/metadata.json)
 
 ![NKMjs][logo]
 
 ## **INSTALL**
 
-First, install [Node.js](https://nodejs.org/en/), then a package manager. While Node.js comes bundled with [npm](http://npmjs.com/) it is **strongly** recommended to use [Yarn](https://yarnpkg.com/), and **required when targeting Electron**.  
+First, install [Node.js](https://nodejs.org/en/), then [Yarn](https://yarnpkg.com/). _While Node.js ships with NPM, Yarn is mandatory for NKMjs_  
 Open a command prompt in the folder where you want to quickstart a project; then do :
 
-```
-yarn add @nkmjs/core
+
+<pre class="prettyprint" data-title="Install nkmjs using npm"><code>npm install @nkmjs/core
+npm install @nkmjs/core-dev --save-dev</code></pre>
+or using Yarn
+<pre class="prettyprint" data-title="Install nkmjs using npm"><code>yarn add @nkmjs/core
 yarn add @nkmjs/core-dev --dev</code></pre>
-```
+
 
 ## **QUICKSTART**
 
 In order to initialize your project for NKMjs, use the bootstrap wizard :
-```
-npm run nkmjs bootstrap
-```
+<pre class="prettyprint" data-title="Bootstraping"><code>npm run nkmjs bootstrap</code></pre>
   
   
 You can now start your app (in electron) by doing :
-```
-npm run nkmjs start
-```
+<pre class="prettyprint" data-title="Launch electron app"><code>npm run nkmjs start</code></pre>
 
 After you do your own magic, you can then build your app using :
-```
-npm run nkmjs build
-```
+<pre class="prettyprint" data-title="Build app"><code>npm run nkmjs build</code></pre>
 Note that if you want to distribute an Electron build, it is **mandatory** to use [Yarn](https://yarnpkg.com/) to manage your dependencies instead of npm.
 
 ## **MORE INFOS**

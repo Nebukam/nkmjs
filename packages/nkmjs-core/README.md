@@ -1,32 +1,34 @@
 ![preview](https://img.shields.io/badge/-alpha-3ec188.svg)
 ![version](https://img.shields.io/badge/dynamic/json?color=ed1e79&label=version&query=version&url=https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core/package.json)
 ![in development](https://img.shields.io/badge/license-MIT-black.svg)
-![doc_progress](https://img.shields.io/badge/dynamic/json?color=282725&label=documentation%20coverage&query=documentation_progress&url=https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core-dev/metadata.json)
+[![doc_progress](https://img.shields.io/badge/dynamic/json?color=282725&label=doc&query=documentation_progress&url=https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core-dev/metadata.json)](https://nebukam.github.io/nkmjs/documentation/)
 
 ![NKMjs][logo]
 
 ## **INSTALL & QUICKSTART**
+Check out the [NKMjs root](https://github.com/Nebukam/nkmjs/) readme to get started.
 
-First, install [Node.js](https://nodejs.org/en/), it ships with [npm](https://www.npmjs.com/).  
-Open a command prompt in the folder where you want to quickstart a project; then do :
+## **FEATURES & MODULES**
+NKMjs is a plain javascript framework aimed at making web-based application & tool developement quick & easy. It supports a number of features out-of-the-box and is painless to extend.  
+_While not written in typescript, NKMjs is strongly object-oriented (if this sounds counter-intuitive, it's because it is.)_
 
-<pre class="prettyprint" data-title="Install nkmjs-core"><code>npm install @nkmjs/core --save-dev</code></pre>
+- @nkmjs[/ui-core]()  
+A fully fledged component based UI system. Extend abstract & robust components to easily add your own functionalities.
 
-If no config exists for nkmjs, the wizard will quickly take you through some basic configuration.
-You can now start your app (in electron) by doing :
+- @nkmjs[/ui-workspace]()  
+An abstract workspace library to manage editors, multiple documents etc.
 
-<pre class="prettyprint" data-title="Launch nkmjs-core"><code>npm run start</code></pre>
+- @nkmjs[/actions]()  
+Manage actions, commands, history (undo/redo), seperated from their UI implementation.
 
-After you do your own magic, you can then build your app using
+- @nkmjs[/localisation]()  
+Localisation is handled at a very low level in the library, making it a breeze to internationalize your app.
 
-<pre class="prettyprint" data-title="Build nkmjs-core app"><code>npm run build</code></pre>
+- @nkmjs[/io-core]()  
+Store data easily no matter the platform you're building on. _Web & PWA uses localStorage, extensions uses storageArea, electron uses the client's file system._
 
-
-
-
-
-
-
+- @nkmjs[/metrics]()  
+Push metrics on your platform of choice through a unified interface. _only supports google analytics at the moment_
 
 
 [logo]: https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-core/bin/logo.png "nkmjs-logo"

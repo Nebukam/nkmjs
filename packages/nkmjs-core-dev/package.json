@@ -14,7 +14,7 @@
   "license": "MIT",
   "scripts": {
     "bundle-core": "node ./lib/task-build-core-bundle.js",
-    "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README.md"
+    "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README-jsdoc.md"
   },
   "bin": {
     "nkmjs": "./bin/cli.js"

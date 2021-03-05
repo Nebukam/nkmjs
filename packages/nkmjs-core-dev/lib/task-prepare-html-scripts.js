@@ -17,7 +17,7 @@ class TaskPrepareHTMLScripts extends ScriptBase {
 
         let mime = MIME.Get(`.js`),
             scripts = ``, externals = NKMjs.Get(`externals`, []),
-            scriptData = `crossorigin="anonymous" defer="defer" type="${mime.type}"`;
+            scriptData = `defer="defer" type="${mime.type}"`; // crossorigin="anonymous" prevent local testing
 
         scripts += `<!-- SCRIPTS -->\n`;
         scripts += `<!-- externals -->\n`;
