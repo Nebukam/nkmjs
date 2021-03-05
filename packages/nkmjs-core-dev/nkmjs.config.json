@@ -66,6 +66,9 @@
                 }
             ],
             "task-build-styles"
+        ],
+        "post-install": [
+            "task-post-install"
         ]
     },
     "externals": ["@nkmjs/core"]
