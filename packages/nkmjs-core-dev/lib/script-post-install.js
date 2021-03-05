@@ -19,7 +19,7 @@ try{
     }
 
     scripts.nkmjs = `nkmjs`;
-    fs.writeFileSync(JSON.stringify(p, null, 4));
+    fs.writeFileSync(p, JSON.stringify(pkgJson, null, 4));
 }catch(e){
     console.log(e);
 }
