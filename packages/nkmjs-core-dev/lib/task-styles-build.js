@@ -13,17 +13,28 @@ class TaskBuildStyles extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`build-styles`, p_onComplete);
+        super(`styles-build`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
+
+        this.inputLocation = NKMjs.InApp(NKMjs.projectConfig.dirs.styleSource);
+        this.outputLocation = NKMjs.InApp(NKMjs.projectConfig.dirs.style);
+
+        try { fs.statSync(this.inputLocation); }
+        catch (e) { 
+            NKMjs.shortargs.replace = true;
+            NKMjs.shortargs.append = true;
+            this.Run(`./task-styles-fetch`, this._Bind(this.Build)); 
+        }
+
+    }
+
+    Build() {
 
         var compress = NKMjs.shortargs.Get(`compress`, true);
 
         this._log(`--compress : ${chalk.blue(compress)}`, 1);
 
-        let inputLocation = NKMjs.InApp(NKMjs.projectConfig.dirs.styleSource),
-            outputLocation = NKMjs.InApp(NKMjs.projectConfig.dirs.style);
-
-        new DirRead(inputLocation, outputLocation, {
+        new DirRead(this.inputLocation, this.outputLocation, {
             'dir': (p_src, p_dest) => { if (!fs.existsSync(p_dest)) { fs.mkdirSync(p_dest); } },
             '.scss': (p_src, p_dest) => {
 

@@ -50,7 +50,7 @@
         ],
         "fetch-styles": [
             [
-                "task-fetch-styles",
+                "task-styles-fetch",
                 {
                     "replace": true,
                     "append": true
@@ -59,13 +59,13 @@
         ],
         "fetch-and-build-styles": [
             [
-                "task-fetch-styles",
+                "task-styles-fetch",
                 {
                     "replace": true,
                     "append": true
                 }
             ],
-            "task-build-styles"
+            "task-styles-build"
         ],
         "post-install": [
             "task-post-install"

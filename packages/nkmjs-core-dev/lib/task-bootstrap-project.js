@@ -60,7 +60,7 @@ class TaskBootstrapProject extends ScriptBase {
         // Fetch styles
         NKMjs.shortargs.replace = true;
         NKMjs.shortargs.append = true;
-        this.Run(`./task-fetch-styles`);
+        this.Run(`./task-styles-fetch`);
 
         this.End();
 

@@ -13,7 +13,7 @@ class TaskFetchStyles extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`fetch-styles`, p_onComplete);
+        super(`styles-fetch`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         // Fetch node_modules dir contents

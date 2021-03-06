@@ -16,7 +16,7 @@ class TaskBuildSharedResources extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
-            `./task-build-styles`,
+            `./task-styles-build`,
             `./task-prepare-locales`,
             `./task-bundle-externals`,
         ], this._Bind(this._OnPreparationComplete));

@@ -69,7 +69,7 @@ class TaskBuildElectronApp extends ScriptBase {
         };
 
         this.Run([
-            `./task-build-styles`,
+            `./task-styles-build`,
             `./task-prepare-icons`,
             `./task-build-electron-html`,
             `./task-build-electron-main`,

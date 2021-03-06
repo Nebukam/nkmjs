@@ -16,7 +16,7 @@ class TaskBundleMainWWW extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
-            `./task-build-styles`,
+            `./task-styles-build`,
             `./task-bundle-externals`,
             `./task-prepare-locales`,
         ], this._Bind(this._OnPreparationComplete));

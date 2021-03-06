@@ -18,7 +18,7 @@ class TaskBundleMainExt extends ScriptBase {
         this._Bind(this.BundleNext);
 
         this.Run([
-            `./task-build-styles`,
+            `./task-styles-build`,
             `./task-bundle-externals`,
             `./task-prepare-locales`,
         ], this._Bind(this._OnPreparationComplete));
