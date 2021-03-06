@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/kiss-data-ecosystem",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "NKMjs / KISS Data Ecosystem",
   "main": "index.js",
   "private": true,
@@ -22,7 +22,7 @@
     "@nkmjs/common": "^0.1.0",
     "@nkmjs/data-core": "^0.0.9",
     "@nkmjs/dialog": "^0.0.9",
-    "@nkmjs/style": "^0.0.10",
+    "@nkmjs/style": "^0.0.11",
     "@nkmjs/utils": "^0.0.9"
   },
   "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"

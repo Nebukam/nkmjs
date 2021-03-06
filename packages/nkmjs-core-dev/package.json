@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/core-dev",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "NKMjs Framework Core Dev Tools",
   "main": "lib.js",
   "repository": {
@@ -25,7 +25,7 @@
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
-    "@nkmjs/core": "^0.1.0",
+    "@nkmjs/core": "^0.1.1",
     "@nkmjs/utils": "^0.0.9",
     "adm-zip": "^0.5.3",
     "axios": "^0.21.1",
