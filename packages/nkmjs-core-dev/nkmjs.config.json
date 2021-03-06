@@ -3,8 +3,8 @@
         "test": [
             "task-tests"
         ],
-        "init": [
-            "task-nkmjs-init-config"
+        "bootstrap": [
+            "task-bootstrap-project"
         ],
         "start": [
             "task-start-electron",

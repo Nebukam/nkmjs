@@ -29,7 +29,7 @@ class TaskBundleMainWWW extends ScriptBase {
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
                 {
-                    js_main: `./js/main`,
+                    js_main: `./${NKMjs.projectConfig.dirs.src}/main`,
                     config: (new ConfigBuilder(ConfigBuilder.WWW)).toString()
                 }
             ),

@@ -53,7 +53,6 @@ try {
     nkmJson.homepage = (nkmJson.homepage || `https://www.${pkgJson.name}.com`);
     nkmJson.app = (nkmJson.app || defaultNkmJson.app);
     nkmJson.extension = (nkmJson.extension || defaultNkmJson.extension);
-    nkmJson.dirs = (nkmJson.dirs || defaultNkmJson.dirs);
     nkmJson.builds = (nkmJson.builds || defaultNkmJson.builds);
 
     fs.writeFileSync(nkmConfigPath, JSON.stringify(nkmJson, null, 4));

@@ -52,9 +52,11 @@ class Bundler {
 
         // ----> Babel
 
+
         this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
 
-        let localBabelConfig = null,
+        let code = p_src.toString(),
+            localBabelConfig = null,
             babelConfig = {
                 compact: true,
                 comments: false,
@@ -65,7 +67,7 @@ class Bundler {
         try { localBabelConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`babel.config.json`))); }
         catch (e) { }
 
-        let babeled = require("@babel/core").transformSync(p_src.toString(), babelConfig);
+        let babeled = require("@babel/core").transformSync(code, babelConfig);
 
         // ----> Terser / Minify
 

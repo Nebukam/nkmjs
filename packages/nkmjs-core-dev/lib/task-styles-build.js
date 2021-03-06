@@ -19,7 +19,10 @@ class TaskBuildStyles extends ScriptBase {
         this.inputLocation = NKMjs.InApp(NKMjs.projectConfig.dirs.styleSource);
         this.outputLocation = NKMjs.InApp(NKMjs.projectConfig.dirs.style);
 
-        try { fs.statSync(this.inputLocation); }
+        try { 
+            fs.statSync(this.inputLocation); 
+            this.Build();
+        }
         catch (e) { 
             NKMjs.shortargs.replace = true;
             NKMjs.shortargs.append = true;

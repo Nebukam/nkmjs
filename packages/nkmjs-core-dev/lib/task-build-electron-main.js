@@ -27,7 +27,7 @@ class TaskBuildElectronMain extends ScriptBase {
                 NKMjs.projectConfig.__keys,
                 {
                     htmlIndex: NKMjs.ELECTRON_HTML_INDEX,
-                    js_main: `./js/main`,
+                    js_main: `./${NKMjs.projectConfig.dirs.src}/main`,
                     config: (new ConfigBuilder(ConfigBuilder.ELECTRON)).toString()
                 }),
             templateContent = replacer.Replace(

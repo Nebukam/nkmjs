@@ -26,41 +26,67 @@ class TaskBootstrapProject extends ScriptBase {
         NKMjs.args.skipConfigIfFound = true;
         this.Run(`./task-nkmjs-init-config`);
 
-        let initConfig = new NKMJSPackageConfig(NKMjs.InProject(), true),
-            replacer = new ReplaceVars(initConfig);
+        let conf = NKMjs.projectConfig,
+            replacer = new ReplaceVars(conf);
 
         // Go through all folders that needs to be created, as well as files etc
 
+        // Basic directories
+
         // + Build folder
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.buildLocation));
-
+        FSUTILS.ensuredir(NKMjs.InProject(conf.dirs.build));
         // + Asset folder
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.assetsLocation));
-
+        FSUTILS.ensuredir(NKMjs.InProject(conf.dirs.assets));
         // + Icon folder
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.iconsLocation));
-        // TODO : Copy default iconsLocation ONLY IF THEY DON'T ALREADY EXIST
+        FSUTILS.ensuredir(NKMjs.InProject(conf.dirs.icons));
+        // + source style location
+        FSUTILS.ensuredir(NKMjs.InProject(conf.dirs.styleSource));
 
-        // + style folder
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.styleLocation));
-
-        // + compiled style location
-        FSUTILS.ensuredir(NKMjs.InProject(initConfig.compiledStyleLocation));
-
-        // + JS folders in app
-        FSUTILS.ensuredir(NKMjs.InApp(`js`)); // for webapp
-        FSUTILS.ensuredir(NKMjs.InApp(`js-process`)); // for electron
+        // + JS folders in under
+        let srcDir = FSUTILS.ensuredir(NKMjs.InApp(conf.dirs[`src`])), // for app
+            srcElectronDir = FSUTILS.ensuredir(NKMjs.InApp(`js-process`)), // for electron
+            srcNodeDir = FSUTILS.ensuredir(NKMjs.InApp(`js-process`)); // for server-side node
 
         // + JS app main.js, ONLY IF THEY DON'T ALREADY EXIST
-        // js/main.js
-        FSUTILS.ensurefile(NKMjs.InApp(`js/${NKMjs.JS_MAIN}`), NKMjs.InCore(`configs/js/main-js.js`), replacer.Replace);
-        // js-process/main.js
-        FSUTILS.ensurefile(NKMjs.InApp(`js-process/${NKMjs.JS_MAIN}`), NKMjs.InCore(`configs/js/main-js-process.js`), replacer.Replace);
+        // src/main.js
+        FSUTILS.ensurefile(
+            path.resolve(srcDir, NKMjs.JS_MAIN),
+            NKMjs.InCore(`configs/js/main-js.js`),
+            replacer.Replace);
+
+        // src-electron/main.js
+        FSUTILS.ensurefile(
+            path.resolve(srcElectronDir, NKMjs.JS_MAIN),
+            NKMjs.InCore(`configs/js/main-js-process.js`),
+            replacer.Replace);
+
+        // src-node/main.js
+        FSUTILS.ensurefile(
+            path.resolve(srcNodeDir, NKMjs.JS_MAIN),
+            NKMjs.InCore(`configs/js/main-js-node.js`),
+            replacer.Replace);
 
         // Fetch styles
-        NKMjs.shortargs.replace = true;
+        NKMjs.shortargs.replace = false; // DON'T REPLACE EXISTING FILES
         NKMjs.shortargs.append = true;
-        this.Run(`./task-styles-fetch`);
+        this.Run(`./task-styles-fetch`, this._Bind(this._OnStylesFetched));
+
+    }
+
+    _OnStylesFetched() {
+
+        // TODO : Create gitignore if does not exists, and if it does, append the build location to it.
+        let gitIgnoreContent = ``,
+            output = NKMjs.InProject(`.gitignore`);
+
+        try { gitIgnoreContent = fs.readFileSync(output, 'utf8'); }
+        catch (e) { gitIgnoreContent = fs.readFileSync(NKMjs.InCore(`configs`, `gitignore.txt`), 'utf8'); }
+
+        if (!gitIgnoreContent.includes(`# NKMjs`)) {
+            gitIgnoreContent += `# NKMjs\n`;
+            gitIgnoreContent += `${NKMjs.projectConfig.dirs.builds}`;
+            fs.writeFileSync(output);
+        }
 
         this.End();
 

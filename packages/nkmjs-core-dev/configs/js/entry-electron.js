@@ -4,7 +4,7 @@
  * If you want to customize this file behavior & contents, do so using the nkmjs.config.json.
  */
 
-const MAIN_ELECTRON = require(`./js-process/main`);
+const MAIN_ELECTRON = require(`./%dirs.src-electron%/main`);
 
 new MAIN_ELECTRON({
     dirname: __dirname,

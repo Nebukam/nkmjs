@@ -26,6 +26,9 @@
     },
     "dirs": {
         "app": "app",
+        "src": "js",
+        "src-electron":"js-electron",
+        "src-node":"js-node",
         "styleSource": "src-style",
         "style": "style",
         "assets": "assets",

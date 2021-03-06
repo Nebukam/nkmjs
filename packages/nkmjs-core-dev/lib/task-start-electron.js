@@ -22,11 +22,24 @@ class TaskStartElectron extends ScriptBase {
 
     Start() {
 
-        let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT);
+        let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT),
+        args = ``;
 
         this._logFwd(chalk.gray.italic(`electron ${electronEntry}`), `·`);
 
-        let ls = exec(`node ${NKMjs.InCoreModules(`electron/cli.js`)} ${electronEntry}`); //electron
+
+        for(var key in NKMjs.shortargs){
+            let value = NKMjs.shortargs[key];
+            if(value === true){
+                args += ` --${key}`;
+            }else if(value === false){
+                args += ` --${key}=FALSE`;
+            }else{
+                args += ` --${key}=${value}`;
+            }            
+        }
+
+        let ls = exec(`node ${NKMjs.InCoreModules(`electron/cli.js`)} ${electronEntry}${args}`); //electron
         ls.stdout.on('data', function (data) { console.log(data.toString()); });
         ls.stderr.on('data', function (data) { console.log(chalk.redBright(data.toString())); });
         ls.on('exit', this._Bind(this._OnElectronExit));

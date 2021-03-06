@@ -9,22 +9,10 @@
         "display": "standalone",
         "orientation": "portrait",
         "colorTheme": "#1e1e1e",
-        "theme": "lel"
+        "theme": "default"
     },
     "extension": {
         "display": "standalone"
-    },
-    "dirs": {
-        "app": "app",
-        "styleSource": "src-style",
-        "style": "style",
-        "assets": "assets",
-        "icons": "%dirs.assets%/icons",
-        "builds": "builds",
-        "locales": "_locales",
-        "offline": [
-            "img"
-        ]
     },
     "builds": [
         {
