@@ -20,11 +20,7 @@ class TaskBootstrapProject extends ScriptBase {
         super(`bootstrap-nkmjs`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        this._log(`Will initialize an NKMjs Project in the following location : ${NKMjs.InProject()}`);
-
-        // Init config, skip it if found (note that this will still fill missing config arguments)
-        NKMjs.args.skipConfigIfFound = true;
-        this.Run(`./task-nkmjs-init-config`);
+        this._log(`Will bootstrap an NKMjs Project in the following location : ${NKMjs.InProject()}`);
 
         let conf = NKMjs.projectConfig,
             replacer = new ReplaceVars(conf);
@@ -44,8 +40,8 @@ class TaskBootstrapProject extends ScriptBase {
 
         // + JS folders in under
         let srcDir = FSUTILS.ensuredir(NKMjs.InApp(conf.dirs[`src`])), // for app
-            srcElectronDir = FSUTILS.ensuredir(NKMjs.InApp(`js-process`)), // for electron
-            srcNodeDir = FSUTILS.ensuredir(NKMjs.InApp(`js-process`)); // for server-side node
+            srcElectronDir = FSUTILS.ensuredir(NKMjs.InApp(conf.dirs[`src-electron`])), // for electron
+            srcNodeDir = FSUTILS.ensuredir(NKMjs.InApp(conf.dirs[`src-node`])); // for server-side node
 
         // + JS app main.js, ONLY IF THEY DON'T ALREADY EXIST
         // src/main.js
