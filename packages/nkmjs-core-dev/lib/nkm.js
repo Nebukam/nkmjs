@@ -81,7 +81,7 @@ class NKMjs {
         process.argv = process.argv.splice(2);
         this.shortargs = new Argv(process.argv);
 
-        this.projectVersion = (NKMjs.projectConfig.__packagejson.version || `0.0.0`);
+        this.projectVersion = ((NKMjs.projectConfig.__packagejson ? NKMjs.projectConfig.__packagejson.version : false ) || `0.0.0`);
         this.CORE_CACHE_DIR = this.InCore(`caches`, `@nkmjs`);
 
         if (this.shortargs[`invalidate-cache`]) {

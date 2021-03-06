@@ -26,7 +26,7 @@
     },
     "dirs": {
         "app": "app",
-        "styleSource": "scss",
+        "styleSource": "src-style",
         "style": "style",
         "assets": "assets",
         "icons": "%dirs.assets%/icons",
