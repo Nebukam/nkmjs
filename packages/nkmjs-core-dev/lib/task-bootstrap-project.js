@@ -47,19 +47,19 @@ class TaskBootstrapProject extends ScriptBase {
         // src/main.js
         FSUTILS.ensurefile(
             path.resolve(srcDir, NKMjs.JS_MAIN),
-            NKMjs.InCore(`configs/js/main-js.js`),
+            NKMjs.InCore(`configs`,`js`,`main-js.js`),
             replacer.Replace);
 
         // src-electron/main.js
         FSUTILS.ensurefile(
             path.resolve(srcElectronDir, NKMjs.JS_MAIN),
-            NKMjs.InCore(`configs/js/main-js-process.js`),
+            NKMjs.InCore(`configs`,`js`,`main-js-process.js`),
             replacer.Replace);
 
         // src-node/main.js
         FSUTILS.ensurefile(
             path.resolve(srcNodeDir, NKMjs.JS_MAIN),
-            NKMjs.InCore(`configs/js/main-js-node.js`),
+            NKMjs.InCore(`configs`,`js`,`main-js-node.js`),
             replacer.Replace);
 
         // Fetch styles

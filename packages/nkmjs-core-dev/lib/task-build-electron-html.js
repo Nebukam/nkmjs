@@ -36,7 +36,7 @@ class TaskBuildElectronHTML extends ScriptBase {
                     [`html-scripts`]: ``,
                 }),
             templateContent = replacer.Replace(
-                fs.readFileSync(NKMjs.InCore(`configs/html/index-electron.html`), 'utf8'));
+                fs.readFileSync(NKMjs.InCore(`configs`,`html`,`index-electron.html`), 'utf8'));
 
         // Transform & replace
 

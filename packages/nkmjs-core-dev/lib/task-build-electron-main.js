@@ -31,7 +31,7 @@ class TaskBuildElectronMain extends ScriptBase {
                     config: (new ConfigBuilder(ConfigBuilder.ELECTRON)).toString()
                 }),
             templateContent = replacer.Replace(
-                fs.readFileSync(NKMjs.InCore(`configs/js/entry-electron.js`), 'utf8'));
+                fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-electron.js`), 'utf8'));
 
         // TODO : Need to do locales discovery at runtime too
         // since an electron build offers the opportunity to support additional locales on the fly.

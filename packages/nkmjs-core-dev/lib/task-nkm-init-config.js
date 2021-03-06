@@ -15,7 +15,7 @@ class TaskNKMInitConfig extends ScriptBase {
 
         // Check if a config already exists
 
-        let defaults = JSON.parse(fs.readFileSync(NKMjs.InCore(`configs/nkmjs.config.json`), 'utf8'));
+        let defaults = JSON.parse(fs.readFileSync(NKMjs.InCore(`configs`,`nkmjs.config.json`), 'utf8'));
 
         if (NKMjs.projectConfig.__hasNKMConfig) {
 

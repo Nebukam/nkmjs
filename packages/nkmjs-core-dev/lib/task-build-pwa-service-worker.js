@@ -60,7 +60,7 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
                     version: NKMjs.projectVersion
                 }
             ),
-            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/pwa-service-worker.js`), 'utf8'));
+            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`pwa-service-worker.js`), 'utf8'));
 
         // Transform & replace
 

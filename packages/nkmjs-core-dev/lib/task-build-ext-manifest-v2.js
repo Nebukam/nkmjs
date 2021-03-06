@@ -38,7 +38,7 @@ class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
                 vars.context_api = conf.platform == `firefox` ? `browser` : `chrome`;
                 NKMjs.WriteTempSync(
                     NKMjs.InExtBuildRsc(`.${conf.platform}`, `background.js`),
-                    replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/ext-background.js`), 'utf8'))
+                    replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`ext-background.js`), 'utf8'))
                 );
             }
 

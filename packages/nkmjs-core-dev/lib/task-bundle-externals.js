@@ -22,7 +22,7 @@ class TaskBundleExternals extends ScriptBase {
         this._Bind(this.BundleNext);
 
         this.eIndex = 0;
-        this.templateContent = fs.readFileSync(NKMjs.InCore(`configs/js/entry-external.js`), 'utf8');
+        this.templateContent = fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-external.js`), 'utf8');
 
         this.Run(`./task-prepare-externals`, this._Bind(this._OnPreparationComplete));
 

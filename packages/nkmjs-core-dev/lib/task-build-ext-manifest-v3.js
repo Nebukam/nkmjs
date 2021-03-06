@@ -40,7 +40,7 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
                 vars.context_api = conf.platform == `firefox` ? `browser` : `chrome`;
                 NKMjs.WriteTempSync(
                     NKMjs.InExtBuildRsc(`.${conf.platform}`, `service-worker.js`),
-                    replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs/js/ext-service-worker.js`), 'utf8'))
+                    replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`ext-service-worker.js`), 'utf8'))
                 );
             }
 

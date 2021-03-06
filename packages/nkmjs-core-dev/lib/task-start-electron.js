@@ -39,7 +39,7 @@ class TaskStartElectron extends ScriptBase {
             }            
         }
 
-        let ls = exec(`node ${NKMjs.InCoreModules(`electron/cli.js`)} ${electronEntry}${args}`); //electron
+        let ls = exec(`node ${NKMjs.InCoreModules(`electron`,`cli.js`)} ${electronEntry}${args}`); //electron
         ls.stdout.on('data', function (data) { console.log(data.toString()); });
         ls.stderr.on('data', function (data) { console.log(chalk.redBright(data.toString())); });
         ls.on('exit', this._Bind(this._OnElectronExit));

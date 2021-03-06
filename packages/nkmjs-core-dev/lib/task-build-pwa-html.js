@@ -40,7 +40,7 @@ class TaskBuildPWAHTML extends ScriptBase {
                     [`html-noscript`]: NKMjs.Get(`html-noscript`, ``),
                 }),
             templateContent = replacer.Replace(
-                fs.readFileSync(NKMjs.InCore(`configs/html/index.html`), 'utf8'));
+                fs.readFileSync(NKMjs.InCore(`configs`,`html`,`index.html`), 'utf8'));
 
         // Transform & replace
 

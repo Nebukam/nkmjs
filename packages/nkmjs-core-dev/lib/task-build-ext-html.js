@@ -40,7 +40,7 @@ class TaskBuildExtHTML extends ScriptBase {
                     [`html-socials`]: ``
                 }),
             templateContent = replacer.Replace(
-                fs.readFileSync(NKMjs.InCore(`configs/html/${extIndex}`), 'utf8'));
+                fs.readFileSync(NKMjs.InCore(`configs`,`html`,`${extIndex}`), 'utf8'));
 
         // Transform & replace
 
