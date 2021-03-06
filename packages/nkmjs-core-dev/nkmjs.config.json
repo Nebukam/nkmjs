@@ -43,7 +43,7 @@
             [
                 "task-build-electron",
                 {
-                    "onlypack": true
+                    "pack-only": true
                 }
             ],
             "task-cleanup"

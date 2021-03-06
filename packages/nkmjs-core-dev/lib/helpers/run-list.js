@@ -1,4 +1,5 @@
 const NKMjs = require(`../nkm.js`);
+const { Argv } = require(`@nkmjs/utils`);
 
 class RunList {
 
@@ -25,7 +26,7 @@ class RunList {
         }
 
         if (Array.isArray(scriptInfos)) {
-            NKMjs.shortargs = scriptInfos[1];
+            NKMjs.shortargs = new Argv(scriptInfos[1]);
             scriptInfos = scriptInfos[0];
         } else {
             NKMjs.shortargs = this.originalArgs;
