@@ -20,7 +20,7 @@ class TaskFetchStyles extends ScriptBase {
         this._Bind(this._ProcessModuleContent);
 
         this._log(`--append : ${chalk.blue(NKMjs.shortargs.Has(`append`))}`, 1);
-        this._log(`--replace : ${chalk.blue(NKMjs.shortargs.Has(`replace`))}`, 1);
+        this._log(`--replace : ${chalk.blue(NKMjs.shortargs.Get(`replace`, false))}`, 1);
 
         this._appendArray = NKMjs.shortargs.Has(`append`) ? [] : null;
 
@@ -54,7 +54,7 @@ class TaskFetchStyles extends ScriptBase {
                 '.css': (p_src, p_dest, p_isDir) => { local.push(p_dest); return p_dest; },
                 'else': (p_src, p_dest, p_isDir) => { local.push(p_dest); return p_dest; }
             },
-                NKMjs.shortargs.Has(`replace`),
+                NKMjs.shortargs.Get(`replace`, false),
                 this._appendArray,
                 (p_dest) => { return path.extname(p_dest) === `.scss`; });
 

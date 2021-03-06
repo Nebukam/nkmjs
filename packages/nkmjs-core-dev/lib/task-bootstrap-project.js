@@ -30,7 +30,7 @@ class TaskBootstrapProject extends ScriptBase {
         // Basic directories
 
         // + Build folder
-        FSUTILS.ensuredir(NKMjs.InProject(conf.dirs.build));
+        FSUTILS.ensuredir(NKMjs.InProject(conf.dirs.builds));
         // + Asset folder
         FSUTILS.ensuredir(NKMjs.InProject(conf.dirs.assets));
         // + Icon folder
@@ -79,9 +79,10 @@ class TaskBootstrapProject extends ScriptBase {
         catch (e) { gitIgnoreContent = fs.readFileSync(NKMjs.InCore(`configs`, `gitignore.txt`), 'utf8'); }
 
         if (!gitIgnoreContent.includes(`# NKMjs`)) {
+            gitIgnoreContent += `\n`;
             gitIgnoreContent += `# NKMjs\n`;
             gitIgnoreContent += `${NKMjs.projectConfig.dirs.builds}`;
-            fs.writeFileSync(output);
+            fs.writeFileSync(output, gitIgnoreContent);
         }
 
         this.End();
