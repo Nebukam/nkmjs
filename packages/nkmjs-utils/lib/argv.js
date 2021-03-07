@@ -30,7 +30,7 @@ class Argv {
             }
         }
         else if (typeof p_args === 'object') {
-            for (var key in p_args) { this[key] = p_args.value; }
+            for (var key in p_args) { this[key] = p_args[key]; }
         }
 
     }

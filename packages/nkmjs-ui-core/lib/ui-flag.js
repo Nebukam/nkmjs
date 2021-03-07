@@ -259,6 +259,80 @@ class UI_FLAG {
         this.BOTTOM_RIGHT
     ];
 
+    /**
+     * @description TODO
+     * @type {array}
+     * @customtag read-only
+     * @group Position
+     */
+    static placementSimplified = [
+        this.LEFT,
+        this.RIGHT,
+        this.TOP,
+        this.BOTTOM
+    ];
+
+    /**
+     * @description Returns the placement directly opposite to the one provided
+     * @param {string} p_placement 
+     * @param {boolean} [p_simplify] if set to true 
+     * @param {boolean} [p_verticalFirst] if set to true 
+     * @returns {string} Opposite placement
+     * @group Position
+     */
+    static Opposite(p_placement, p_simplify = true, p_verticalFirst = true) {
+        if (p_simplify) { p_placement = this.SimplifyPlacement(p_placement, p_verticalFirst); }
+        switch (p_placement) {
+            case this.LEFT: return this.RIGHT; break;
+            case this.RIGHT: return this.LEFT; break;
+            case this.TOP: return this.BOTTOM; break;
+            case this.BOTTOM: return this.TOP; break;
+            case this.TOP_LEFT: return this.BOTTOM_RIGHT; break;
+            case this.TOP_RIGHT: return this.BOTTOM_LEFT; break;
+            case this.BOTTOM_LEFT: return this.TOP_RIGHT; break;
+            case this.BOTTOM_RIGHT: return this.TOP_LEFT; break;
+        }
+        return p_placement;
+    }
+
+    /**
+     * @description TODO
+     * @param {string} p_placement
+     * @param {boolean} [p_verticalFirst] If true, uses top/down value for corner placement, otherwise left/right.
+     * @group Position 
+     */
+    static SimplifyPlacement(p_placement, p_verticalFirst = true) {
+        switch (p_placement) {
+            case this.TOP_LEFT: return p_verticalFirst ? this.TOP : this.LEFT; break;
+            case this.TOP_RIGHT: return p_verticalFirst ? this.TOP : this.RIGHT; break;
+            case this.BOTTOM_LEFT: return p_verticalFirst ? this.BOTTOM : this.LEFT; break;
+            case this.BOTTOM_RIGHT: return p_verticalFirst ? this.BOTTOM : this.RIGHT; break;
+        }
+        return p_placement;
+    }
+
+    /**
+     * @description Returns the orientation matching the placement
+     * @param {string} p_placement 
+     * @param {boolean} [p_verticalFirst] If true, uses top/down value for corner placement, otherwise left/right.
+     * Use `null` to get HORIZONTAL_AND_VERTICAL for corner placements.
+     * @returns {string} Opposite placement
+     * @group Position
+     */
+    static Orientation(p_placement, p_verticalFirst = true) {
+        switch (p_placement) {
+            case this.LEFT: return this.HORIZONTAL; break;
+            case this.RIGHT: return this.HORIZONTAL; break;
+            case this.TOP: return this.VERTICAL; break;
+            case this.BOTTOM: return this.VERTICAL; break;
+            case this.TOP_LEFT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
+            case this.TOP_RIGHT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
+            case this.BOTTOM_LEFT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
+            case this.BOTTOM_RIGHT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
+        }
+        return p_placement;
+    }
+
     // Misc
 
     /**

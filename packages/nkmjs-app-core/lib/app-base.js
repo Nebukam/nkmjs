@@ -5,6 +5,9 @@
  *      - on fail : create preference file
  *      - on success : read preference file
  *          - load and deploy base kit dependencies
+ * 
+ * TODO : In electron, notify the main process when the URL is changing, so the app can be reloaded
+ * in the state in was in, and re-open where things were left off.
  */
 'use strict';
 

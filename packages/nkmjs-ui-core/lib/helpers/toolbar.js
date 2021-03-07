@@ -132,6 +132,15 @@ class Toolbar extends OrientableWidget {
 
     // ----> Handle management
 
+    _OnPlacementChanged(p_newValue, p_oldValue) {
+        super._OnPlacementChanged(p_newValue, p_oldValue);
+        // Update items placement based on this nav placement
+        for(let i = 0, n = this._handles.length; i < n; i++){
+            let handle = this._handles[i];
+            if (`placement` in handle) { handle.placement = p_newValue; }
+        }
+    }
+
     /**
      * @description TODO
      * @param {object} p_options 
@@ -168,8 +177,10 @@ class Toolbar extends OrientableWidget {
         }
 
         handle.flags.Set(this._orientation, true);
-
+        if (`placement` in handle) { handle.placement = this._placement.currentFlag; }
+        
         this._handles.push(handle);
+
         return handle;
 
     }

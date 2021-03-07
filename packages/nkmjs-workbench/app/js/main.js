@@ -156,7 +156,13 @@ class StyleguideApp extends AppBase {
                 ], fn: this._Bind(this._PopInTag)
             },
             { cl: DialogBox, fn: this._Bind(this._FillDialog) },
-            { cl: Drawer, fn: this._Bind(this._FillDrawer) },
+            { cl: Drawer, 
+                variants:[
+                    { orientation: UI_FLAG.HORIZONTAL, navPlacement: UI_FLAG.TOP },
+                    { orientation: UI_FLAG.HORIZONTAL, navPlacement: UI_FLAG.BOTTOM },
+                    { orientation: UI_FLAG.VERTICAL, navPlacement: UI_FLAG.LEFT },
+                    { orientation: UI_FLAG.VERTICAL, navPlacement: UI_FLAG.RIGHT },
+                ],fn: this._Bind(this._FillDrawer) },
             { cl: TreeItem, fn: this._Bind(this._FillTreeItem) },
         ]);
 

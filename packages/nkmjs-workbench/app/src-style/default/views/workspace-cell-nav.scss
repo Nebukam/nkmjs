@@ -37,3 +37,31 @@ $spacing: 0px;
     }
 
 }
+
+:host(#{$VERTICAL}){ 
+    
+    & .group{
+
+        margin-right: $spacing * 2;
+        padding-right: $spacing;
+
+        &::before, &::after{
+            left:-($spacing - 1px);
+        }
+
+    }    
+
+    & .item + .group {
+        margin-left: $spacing;
+        padding-left: $spacing;
+    }
+
+    & .item {
+        margin-bottom: $spacing;
+    }
+
+    & .group + .item:last-child{
+        margin-left: $spacing - 1px;
+    }
+
+}

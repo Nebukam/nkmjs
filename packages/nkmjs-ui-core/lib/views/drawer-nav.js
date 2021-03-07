@@ -50,7 +50,6 @@ class DrawerNav extends Toolbar {
         this._footer = null;
         this._toolbar = null;
 
-
     }
 
     /**
@@ -142,6 +141,12 @@ class DrawerNav extends Toolbar {
     _OnOrientationChanged(p_newValue, p_oldValue) {
         super._OnOrientationChanged(p_newValue, p_oldValue);
         this._orientation.Apply(`orientation`, this._handles);
+    }
+
+    _OnPlacementChanged(p_newValue, p_oldValue) {
+        super._OnPlacementChanged(p_newValue, p_oldValue);
+        // Update items placement based on this nav placement
+        this._toolbar.placement = p_newValue;
     }
 
     // ----> Catalog Items handling

@@ -25,6 +25,7 @@ class OrientableWidget extends Widget {
     // ----> Init
 
     /**
+     * @access protected
      * @description TODO
      * @type {string}
      */
@@ -48,12 +49,12 @@ class OrientableWidget extends Widget {
         this._orientation.Set(this.constructor.__default_orientation);
     }
 
-    // ----> Orientation
+    // ----> Placement & Orientation
 
     /**
      * @description TODO
      * @type {string}
-     * @group Orientation
+     * @group Placement & Orientation
      */
     get orientation() { return this._orientation; }
     set orientation(p_value) { this._orientation.Set(p_value); }
@@ -64,7 +65,7 @@ class OrientableWidget extends Widget {
      * @param {string} p_newValue 
      * @param {string} p_oldValue
      * @customtag override-me
-     * @group Orientation
+     * @group Placement & Orientation
      */
     _OnOrientationChanged(p_newValue, p_oldValue) {
         if (this._isHorizontalScrollEnabled) {
@@ -80,7 +81,7 @@ class OrientableWidget extends Widget {
      * @description TODO
      * @param {Event} p_evt 
      * @customtag override-me
-     * @group Orientation
+     * @group Placement & Orientation
      */
     _HorizontalScroll(p_evt) {
         if(!UDOM.OverflowsX(this._wrapper)){ return; }

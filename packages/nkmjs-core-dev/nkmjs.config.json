@@ -10,6 +10,17 @@
             "task-start-electron",
             "task-cleanup"
         ],
+        "start-debug": [
+            [
+                "task-styles-fetch",
+                {
+                    "replace": true,
+                    "append": true
+                }
+            ],
+            "task-start-electron",
+            "task-cleanup"
+        ],
         "build-www": [
             "task-build-www",
             "task-cleanup"

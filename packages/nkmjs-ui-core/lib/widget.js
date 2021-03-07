@@ -29,6 +29,13 @@ class Widget extends DisplayObjectContainer {
 
     static __default_iState = UI_FLAG.IDLE;
 
+    /**
+     * @access protected
+     * @description TODO
+     * @type {string}
+     */
+    static __default_placement = null;
+
     // ----> Init
 
     _Init() {
@@ -60,6 +67,10 @@ class Widget extends DisplayObjectContainer {
             UI_FLAG.ACTIVATED,
             UI_FLAG.SELECTED);
 
+        this._placement = new FlagEnum(UI_FLAG.placement);
+        this._placement.Add(this);
+        this._placement.onFlagChanged.Add(this._Bind(this._OnPlacementChanged));
+
         this._istateEnum = new FlagEnum(UI_FLAG.istates);
         this._istateEnum.Add(this);
 
@@ -71,6 +82,7 @@ class Widget extends DisplayObjectContainer {
     _PostInit() {
         super._PostInit();
         this._istateEnum.Set(this.constructor.__default_iState);
+        this._placement.Set(this.constructor.__default_placement);
     }
 
     _OnPaintChange() {
@@ -78,9 +90,37 @@ class Widget extends DisplayObjectContainer {
         this._interactions.enabled = this._isPainted;
     }
 
+    // ----> Placement & Orientation
+
+    /**
+     * @description This property is controlled by the widget's parent and
+     * inform the widget on how it is positioned within its container :  
+     * TOP means the widget is at the top of its container  
+     * BOTTOM means the widget is at the bottom of its container  
+     * LEFT means the widget is at the left of its container  
+     * RIGHT means the widget is at the right of its container
+     * @type {string}
+     * @group Placement & Orientation
+     */
+     get placement() { return this._placement; }
+     set placement(p_value) { this._placement.Set(p_value); }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {string} p_newValue 
+     * @param {string} p_oldValue
+     * @customtag override-me
+     * @group Placement & Orientation
+     */
+    _OnPlacementChanged(p_newValue, p_oldValue) { }
+
+    // ----> Selections
+
     /**
      * @description TODO
      * @type {boolean}
+     * @group Selection
      */
     get notifiesSelectionStack() { return this._notifiesSelectionStack; }
     set notifiesSelectionStack(p_value) { this._notifiesSelectionStack = p_value; }
@@ -88,6 +128,7 @@ class Widget extends DisplayObjectContainer {
     /**
      * @description TODO
      * @type {string}
+     * @group Selection
      */
     set htitle(p_value) { this.setAttribute(`title`, p_value); }
     get htitle() { this.getAttribute(`title`); }
@@ -426,6 +467,7 @@ class Widget extends DisplayObjectContainer {
     _CleanUp() {
 
         this._istateEnum.Set(this.constructor.__default_iState);
+        this._placement.Set(this.constructor.__default_placement);
 
         if (this._selectionStack) { this._selectionStack.Clear(); }
 

@@ -3,6 +3,7 @@
 @import '../_mixins';
 
 :host {
+    box-sizing: border-box;
     padding: 2px;
 }
 

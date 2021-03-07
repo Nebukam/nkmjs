@@ -13,7 +13,6 @@
     padding-left:12px;
     padding-right:12px;
 
-    border-right: 1px solid var(#{$varname_workspace_bg});
     max-width: calc(var(--size_xl) * 2);
 
     & .icon{
@@ -37,16 +36,60 @@
 
 }
 
+$hint_size: 4px;
+
 :host::before{
     content:"";
     position: absolute;
     box-sizing: border-box;
-    top:0;
-    left: 0;
-    width:100%;
-    height:4px;
     background-color: var(--flavor_primary_idle);
 }
+
+// ----> Horizontal placement
+// [    ][    ][    ]
+
+:host(#{$TOP}), :host(#{$BOTTOM}){
+    border-right: 1px solid var(#{$varname_workspace_bg});
+}
+
+:host::before, :host(#{$TOP})::before, :host(#{$BOTTOM})::before{
+    left: 0;
+    width:100%;
+    height:$hint_size;
+}
+
+:host::before, :host(#{$TOP})::before{
+    top:0;    
+}
+
+:host(#{$BOTTOM})::before{
+    top:0;
+}
+
+// ----> Vertical placement
+// [    ]
+// [    ]
+// [    ]
+
+:host(#{$LEFT}), :host(#{$RIGHT}){
+    border-bottom: 1px solid var(#{$varname_workspace_bg});
+}
+
+:host(#{$LEFT})::before, :host(#{$RIGHT})::before{
+    top:0;
+    width:$hint_size;
+    height:100%;
+}
+
+:host(#{$LEFT})::before{
+    left: 0;    
+}
+
+:host(#{$RIGHT})::before{
+    left: 0;
+}
+
+// ----> States
 
 :host(#{$FOCUSED}){
     
