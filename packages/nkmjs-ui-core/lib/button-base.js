@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const { U, UDOM } = require(`@nkmjs/utils`);
 const { NFOS, SIGNAL, Observer, OptionsHandler } = require(`@nkmjs/common`);
 const { Request } = require(`@nkmjs/actions`);
 const { Command } = require("@nkmjs/actions");
@@ -48,6 +48,8 @@ class ButtonBase extends Widget {
 
     _Init() {
         super._Init();
+
+        this._Bind(this._OnRippleAnimationEnd);
 
         this._alwaysDisplayCommand = (this._alwaysDisplayCommand || false);
 
@@ -102,7 +104,7 @@ class ButtonBase extends Widget {
      * @group Styling
      */
     get size() { return this._sizeEnum.currentFlag; }
-    
+
     /**
      * @description TODO
      * @type {string}
@@ -195,6 +197,34 @@ class ButtonBase extends Widget {
         this.focusArea = this;
     }
 
+    CreateRipple() {
+
+        if (!this._rippleWrapper) {
+            this._rippleWrapper = UDOM.New('div', { class: `ripple-wrapper` });
+            UDOM.AttachFirst(this._rippleWrapper, this._wrapper, false);
+        }
+
+        let rect = UDOM.Rect(this._rippleWrapper),
+            ripple = UDOM.New('span', {}, this._rippleWrapper),
+            w = rect.width,
+            h = rect.height,
+            diameter = Math.max(w, h),
+            radius = diameter / 2;
+
+        ripple.style.width = ripple.style.height = `${diameter}px`;
+        ripple.style.left = `${this._interactions._position.x - (rect.x + radius)}px`;
+        ripple.style.top = `${this._interactions._position.y - (rect.y + radius)}px`;
+        ripple.classList.add(`ripple`);
+        ripple.addEventListener('animationend', this._OnRippleAnimationEnd);
+
+    }
+
+    _OnRippleAnimationEnd(p_evt) {
+        let ripple = p_evt.target;
+        ripple.removeEventListener('animationend', this._OnRippleAnimationEnd);
+        UDOM.Detach(ripple);
+    }
+
     // ----> Options handling
 
     /**
@@ -285,6 +315,8 @@ class ButtonBase extends Widget {
     Activate(p_evt) {
 
         if (!super.Activate(p_evt)) { return false; }
+
+        this.CreateRipple();
 
         // ----> Command
 
@@ -390,6 +422,11 @@ class ButtonBase extends Widget {
     }
 
     _CleanUp() {
+
+        if(this._rippleWrapper){
+            UDOM.Detach(this._rippleWrapper);
+            this._rippleWrapper = null;
+        }
 
         this.htitle = ``;
 

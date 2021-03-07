@@ -5,11 +5,13 @@
 
 /* Base CSS for all buttons */
 
+$btnBorderRadius: 3px;
+
 :host{
 
     box-sizing: border-box;
 
-    transition: all 0.05s ease;
+    transition: all 0.15s ease;
 
     position: relative;    
 
@@ -21,7 +23,7 @@
 
     padding: 2px;
 
-    border-radius: 3px;
+    border-radius: $btnBorderRadius;
 
     background-color:rgba(0,0,0,0.5);
     border: none;
@@ -44,7 +46,7 @@
 
 }
 
-// ----> STATES
+// ----> States
 
 :host(#{$IDLE}){
     //opacity:1;
@@ -66,16 +68,6 @@ $th: 4px;
 
     background-color: var(--flavor_primary_focused);
     border-color: var(--flavor_secondary_focused);
-
-    &::after{
-        content:"";
-        position: absolute;
-        width: $th;
-        height:$th;
-        bottom: -$th/2;
-        left:calc(50% - #{$th/2});
-        border-radius: 10px;
-    }
 
     & .label{
         color: var(--flavor_contrast_focused);
@@ -105,21 +97,80 @@ $th: 4px;
 
 }
 
+// ----> Toggled state :: after
+// visual marker
+
+:host(#{$FOCUSED})::after,
 :host(#{$TOGGLED})::after{
     content:"";
     position: absolute;
-    width: calc(100% - 6px);
+    width: $th;
     height:$th;
-    bottom: -$th/2;
-    left:3px;
     border-radius: 10px;
+
+    top: auto;
+    bottom: -$th/2; // Default state ~= top
 }
 
-:host(#{$SIZE_XS+$TOGGLED})::after, :host(#{$SIZE_S+$TOGGLED})::after{
+// ----> Horizontal placement
+// [  .  ][  '  ]
+
+:host(#{$TOP})::after{
+    top: auto;
+    bottom: -$th/2;
+}
+
+:host(#{$BOTTOM})::after{
+    top: -$th/2;
+    bottom: auto;
+}
+
+:host(#{$FOCUSED})::after,
+:host(#{$FOCUSED}#{$TOP})::after,
+:host(#{$FOCUSED}#{$BOTTOM})::after{
+    left:calc(50% - #{$th/2});
+}
+
+:host(#{$TOGGLED})::after,
+:host(#{$TOGGLED}#{$TOP})::after, 
+:host(#{$TOGGLED}#{$BOTTOM})::after{
+    left:3px;
+    width: calc(100% - 6px);
+}
+
+
+// ----> Vertical placement
+
+:host(#{$LEFT})::after{
+    left:auto;
+    right: -$th/2;
+}
+
+:host(#{$RIGHT})::after{
+    left: -$th/2;
+    right:auto;
+}
+
+:host(#{$FOCUSED}#{$LEFT})::after,
+:host(#{$FOCUSED}#{$RIGHT})::after{
+    bottom:calc(50% - #{$th/2});
+}
+
+:host(#{$TOGGLED}#{$LEFT})::after, 
+:host(#{$TOGGLED}#{$RIGHT})::after{
+    bottom:3px;
+    width: $th;
+    height: calc(100% - 6px);
+}
+
+// ----> Vertical placement
+/*
+:host(#{$SIZE_XS+$TOGGLED})::after, 
+:host(#{$SIZE_S+$TOGGLED})::after{
     height:2px;
     bottom: -1px;
 }
-
+*/
 /* Base state : DISABLED */
 
 :host(#{$DISABLED}){
@@ -144,4 +195,35 @@ $th: 4px;
 :host(#{$MINIMAL}){
     background-color: transparent;
     border:none;
+}
+
+// ----> RIPPLE
+
+.ripple-wrapper{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    border-radius: $btnBorderRadius;
+    overflow: hidden;
+    opacity: 0.2;
+    z-index: -100;
+}
+
+.ripple-wrapper .ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 600ms linear;
+    //background-color: transparent;
+    background-color: #fff;
+    //background: radial-gradient(var(--flavor_secondary_focused), rgba(0,0,0,0));
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(6);
+        opacity: 0;
+    }
 }

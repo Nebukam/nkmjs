@@ -243,7 +243,11 @@ class UI_FLAG {
     static BOTTOM_RIGHT = `${this.BOTTOM} ${this.RIGHT}`;
 
     /**
-     * @description TODO
+     * @description Contains the following values :  
+     * * {@link ui.core.UI_FLAG.LEFT}
+     * * {@link ui.core.UI_FLAG.RIGHT}
+     * * {@link ui.core.UI_FLAG.TOP}
+     * * {@link ui.core.UI_FLAG.BOTTOM}
      * @type {array}
      * @customtag read-only
      * @group Position
@@ -291,8 +295,8 @@ class UI_FLAG {
             case this.TOP_RIGHT: return this.BOTTOM_LEFT; break;
             case this.BOTTOM_LEFT: return this.TOP_RIGHT; break;
             case this.BOTTOM_RIGHT: return this.TOP_LEFT; break;
+            default: return null; break;
         }
-        return p_placement;
     }
 
     /**
@@ -330,7 +334,7 @@ class UI_FLAG {
             case this.BOTTOM_LEFT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
             case this.BOTTOM_RIGHT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
         }
-        return p_placement;
+        return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL;
     }
 
     // Misc

@@ -379,8 +379,14 @@ class Drawer extends View {
         let oldValue = this._currentHandle;
         this._currentHandle = p_value;
 
-        if (oldValue) { oldValue.Select(false); }
-        if (this._currentHandle) { this._currentHandle.Select(true); }
+        if (oldValue) { 
+            oldValue.Select(false); 
+            oldValue._flags.Set(UI_FLAG.TOGGLED, false);
+        }
+        if (this._currentHandle) { 
+            this._currentHandle.Select(true);
+            this._currentHandle._flags.Set(UI_FLAG.TOGGLED, true);
+        }
 
         this._OnCurrentHandleChanged(oldValue);
 

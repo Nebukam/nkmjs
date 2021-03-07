@@ -62,13 +62,13 @@ class UTILS_DOM {
      * Note that if the element provided is not a child of the target parent, it will be removed from its previous parent.
      * @param {Node} p_element The element to be appended or moved
      * @param {Node} p_parent Parent node to append or move the element into
-     * @param {boolean} [p_firstChild] If true, attach before the firstChild, otherwise attach before the firstChildElement
+     * @param {boolean} [p_firstChild] If true, attach before the firstChild, otherwise attach before the firstElementChild
      */
     static AttachFirst(p_element, p_parent, p_firstChild = true) {
         if (p_firstChild && p_parent.firstChild) {
             p_parent.insertBefore(p_element, p_parent.firstChild);
-        } else if (!p_firstChild && p_parent.firstChildElement) {
-            p_parent.insertBefore(p_element, p_parent.firstChildElement);
+        } else if (!p_firstChild && p_parent.firstElementChild) {
+            p_parent.insertBefore(p_element, p_parent.firstElementChild);
         } else {
             p_parent.appendChild(p_element);
         }
@@ -126,8 +126,8 @@ class UTILS_DOM {
                     p_node.parentNode.appendChild(p_node);
                 }
             } else {
-                if (p_node.parentNode.firstChildElement) {
-                    p_node.parentNode.insertBefore(p_node.parentNode.firstChildElement);
+                if (p_node.parentNode.firstElementChild) {
+                    p_node.parentNode.insertBefore(p_node.parentNode.firstElementChild);
                 } else if (p_node.parentNode.firstChild) {
                     p_node.parentNode.insertBefore(p_node.parentNode.firstChild);
                 } else {

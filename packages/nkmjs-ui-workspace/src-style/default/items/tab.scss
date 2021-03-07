@@ -3,6 +3,8 @@
 @import '../_functions';
 @import '../_mixins';
 
+$hint_size: 4px;
+
 :host {
 
     transition: all 0.0s ease;
@@ -34,15 +36,13 @@
         @include ellipsis(true);
     }
 
-}
+    &::before{
+        content:"";
+        position: absolute;
+        box-sizing: border-box;
+        background-color: var(--flavor_primary_idle);
+    }
 
-$hint_size: 4px;
-
-:host::before{
-    content:"";
-    position: absolute;
-    box-sizing: border-box;
-    background-color: var(--flavor_primary_idle);
 }
 
 // ----> Horizontal placement
@@ -59,11 +59,13 @@ $hint_size: 4px;
 }
 
 :host::before, :host(#{$TOP})::before{
-    top:0;    
+    top:0; 
+    bottom:auto;   
 }
 
 :host(#{$BOTTOM})::before{
-    top:0;
+    top:auto;
+    bottom:0;
 }
 
 // ----> Vertical placement
@@ -82,11 +84,13 @@ $hint_size: 4px;
 }
 
 :host(#{$LEFT})::before{
-    left: 0;    
+    left: 0;  
+    right: auto;  
 }
 
 :host(#{$RIGHT})::before{
-    left: 0;
+    left: auto;  
+    right: 0;
 }
 
 // ----> States

@@ -26,6 +26,7 @@ class ExtMouse extends ExtBase {
         this._hooks = {};
         this._using = {};
         this._buttons = {};
+        this._position = { x:0, y:0 };
 
         this._isMouseOver = false;
         this._isAnyBtnDown = false;
@@ -162,6 +163,9 @@ class ExtMouse extends ExtBase {
     _mDown(p_evt) {
 
         MOUSE.instance.StartUsing(this._using);
+
+        this._position.x = p_evt.clientX;
+        this._position.y = p_evt.clientY;
 
         this._isAnyBtnDown = true;
 
