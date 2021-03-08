@@ -9,6 +9,8 @@ module.exports = {
     dialog : require(`@nkmjs/dialog`),
     document : require(`@nkmjs/documents`),
     env : require(`@nkmjs/environment`),
+    localisation : require(`@nkmjs/localisation`),
+    metrics : require(`@nkmjs/metrics`),
     io : require(`@nkmjs/io-core`),
     services : require(`@nkmjs/services`),
     style : require(`@nkmjs/style`),

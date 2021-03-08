@@ -16,15 +16,14 @@ const { SIGNAL, TIME, SingletonEx, POOL } = require(`@nkmjs/common`);
 const { ENV, ENV_SIGNAL } = require(`@nkmjs/environment`);
 const { ACTION_REQUEST, RELAY, CommandBox } = require(`@nkmjs/actions`);
 const { RESOURCES } = require(`@nkmjs/io-core`);
+const { STYLE } = require(`@nkmjs/style`);
 const { UI, LayerContainer } = require(`@nkmjs/ui-core`);
-const { DIALOG } = require(`@nkmjs/dialog`);
 const { Metadata } = require(`@nkmjs/data-core`);
-const { DialogHandler } = require(`@nkmjs/ui-workspace`)
+const { DIALOG, DialogHandler, AutoUpdateDialogBox } = require(`@nkmjs/dialog`)
 
-const { AutoUpdateDialogBox } = require(`./dialogs`);
 const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);
-const { STYLE } = require(`@nkmjs/style`);
+
 
 /*
 
@@ -158,6 +157,11 @@ class AppBase extends SingletonEx {
      * Called by once the environment when the DOM
      * readyState === complete, after SetUp has been called.
      */
+    _InternalStart(){
+        if(ENV.ARGV.Has(`no-start`)){ return; }
+        this.Start();
+    }
+
     Start() {
 
         LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);

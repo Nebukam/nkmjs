@@ -42,7 +42,7 @@ class CatalogViewBuilder extends CatalogWatcher {
         if (!view) {
 
             let viewType = p_item.GetOption(`viewType`, null);
-            if (!viewType) { throw new Error(`Drawer's item has neither a view or a viewType set.`); }
+            if (!viewType) { throw new Error(`Shelf's item has neither a view or a viewType set.`); }
             if (!U.isInstanceOf(viewType, View)) { throw new Error(`viewType (${viewType.name}) is not of type View`); }
 
             view = UI.Rent(viewType);

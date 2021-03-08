@@ -4,7 +4,7 @@ const { U } = require(`@nkmjs/utils`);
 const { ENV } = require('@nkmjs/environment');
 const { CSS } = require(`@nkmjs/style`);
 const { UI } = require(`@nkmjs/ui-core`);
-const { DialogBox } = require(`@nkmjs/ui-workspace`);
+const { DialogBox } = require(`@nkmjs/dialog`);
 
 const APP_MESSAGES = require(`../app-messages.js`);
 

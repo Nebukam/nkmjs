@@ -13,22 +13,15 @@ module.exports = {
 
     WORKSPACE_CONTEXT: require(`./lib/workspace-context`),
 
-    // Dialogs
-
-    DialogBox: require(`./lib/dialogs/dialog-box`),
-    DialogInput: require(`./lib/dialogs/dialog-input`),
-    DialogLayer: require(`./lib/dialogs/dialog-layer`),
-    DialogHandler: require(`./lib/dialogs/dialog-handler`),
-
-    // Drawers
+    // Shelfs
 
     // Editors
 
     Editor: require(`./lib/editor`),
         EditorEx: require(`./lib/editors/editor-ex`),
         EditorSlate: require(`./lib/editors/editor-slate`),
-        EditorDrawerNav: require(`./lib/editors/editor-drawer-nav`),
-        EditorDrawer: require(`./lib/editors/editor-drawer`),
+        EditorShelfNav: require(`./lib/editors/editor-shelf-nav`),
+        EditorShelf: require(`./lib/editors/editor-shelf`),
 
     // Helpers
 

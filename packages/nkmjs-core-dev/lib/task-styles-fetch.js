@@ -27,9 +27,12 @@ class TaskFetchStyles extends ScriptBase {
         this.rootOutput = NKMjs.InApp(NKMjs.projectConfig.dirs.styleSource);
         this._log(`output to : ${chalk.italic(this.rootOutput)}`, 1);
         this._report = {};
-        new ForEachModule(NKMjs.InProject(`node_modules`), this._ProcessModuleContent);
+        new ForEachModule(NKMjs.InProject(`node_modules`), this._ProcessModuleContent, ['@nkmjs/style']);
         this._log(`${this.__localId} copied the following files :`);
         console.log(this._report);
+
+        // TODO : Go over all scss files to find @use directive
+        // and hoist them
 
         this.End();
 

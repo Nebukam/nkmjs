@@ -27,6 +27,8 @@
     "@nkmjs/environment": "^0.1.0",
     "@nkmjs/io-core": "^0.1.0",
     "@nkmjs/io-electron": "^0.0.9",
+    "@nkmjs/localisation": "^0.0.2",
+    "@nkmjs/metrics": "^0.0.2",
     "@nkmjs/services": "^0.0.9",
     "@nkmjs/style": "^0.0.11",
     "@nkmjs/ui-core": "^0.0.11",

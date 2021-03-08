@@ -1,0 +1,27 @@
+{
+    "name": "nkmjs",
+    "longName": "nkmjs Verbose App Name",
+    "shortName": "nkmjs App",
+    "description": "App description",
+    "homepage": "https://www.nkmjs.com",
+    "app": {
+        "display": "standalone",
+        "orientation": "portrait",
+        "colorTheme": "#1e1e1e",
+        "theme": "default"
+    },
+    "extension": {
+        "popup": {
+            "width": 800,
+            "height": 600
+        },
+        "display": "standalone",
+        "permissions": [
+            "storage"
+        ],
+        "hostPermissions": [
+            "%homepage%"
+        ]
+    },
+    "builds": []
+}

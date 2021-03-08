@@ -6,9 +6,10 @@ const { POOL, COMMON_FLAG } = require("@nkmjs/core").common;
 const { DialogInfos } = require("@nkmjs/core").dialog;
 
 const { InputBase } = require("@nkmjs/core").inputs;
-const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, DialogBox, DialogHandler, DialogInput, Editor, EditorEx } = require("@nkmjs/core").workspace;
+const { DialogBox, DialogHandler } = require("@nkmjs/core").dialog;
+const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = require("@nkmjs/core").workspace;
 const { ID, DataBlock, Catalog, CatalogItem } = require("@nkmjs/core").data;
-const { UI, Layer, ButtonBase, UI_FLAG, Toolbar, View, PopIn, Drawer, TreeItem, DrawerNav } = require("@nkmjs/core").ui;
+const { UI, Layer, ButtonBase, UI_FLAG, Toolbar, View, PopIn, Shelf, TreeItem, ShelfNav } = require("@nkmjs/core").ui;
 
 const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
@@ -29,7 +30,7 @@ class StyleguideApp extends AppBase {
         ];
 
         this._ignore = [
-            AutoUpdateDialogBox, UIItem, UIItemListLayer, Group, BreadcrumbItem, DialogHandler, DialogInput, TestWidget
+            AutoUpdateDialogBox, UIItem, UIItemListLayer, Group, BreadcrumbItem, DialogHandler, TestWidget
         ]
 
         this._buttonConfigs = [
@@ -86,9 +87,9 @@ class StyleguideApp extends AppBase {
             { name: `item 3` },
         ]);
 
-        this._drawerCatalog = () => {
+        this._shelfCatalog = () => {
             return Catalog.CreateFrom({
-                name: `Drawer Catalog`
+                name: `Shelf Catalog`
             }, [
                 { name: `View`, viewType: View, data: this._fakeData[0] },
                 { name: `Editor`, viewType: Editor, data: this._fakeData[1] },
@@ -140,7 +141,7 @@ class StyleguideApp extends AppBase {
                 ]
             },
             {
-                cl: Toolbar, not: [WorkspaceCellNav, DrawerNav],
+                cl: Toolbar, not: [WorkspaceCellNav, ShelfNav],
                 variants: [
                     { size: UI_FLAG.SIZE_XS },
                     { size: UI_FLAG.SIZE_S },
@@ -156,13 +157,13 @@ class StyleguideApp extends AppBase {
                 ], fn: this._Bind(this._PopInTag)
             },
             { cl: DialogBox, fn: this._Bind(this._FillDialog) },
-            { cl: Drawer, 
+            { cl: Shelf, 
                 variants:[
                     { orientation: UI_FLAG.HORIZONTAL, navPlacement: UI_FLAG.TOP },
                     { orientation: UI_FLAG.HORIZONTAL, navPlacement: UI_FLAG.BOTTOM },
                     { orientation: UI_FLAG.VERTICAL, navPlacement: UI_FLAG.LEFT },
                     { orientation: UI_FLAG.VERTICAL, navPlacement: UI_FLAG.RIGHT },
-                ],fn: this._Bind(this._FillDrawer) },
+                ],fn: this._Bind(this._FillShelf) },
             { cl: TreeItem, fn: this._Bind(this._FillTreeItem) },
         ]);
 
@@ -179,7 +180,7 @@ class StyleguideApp extends AppBase {
     // ----
 
     _FillToolbar(p_toolbar) {
-        if (U.isInstanceOf(p_toolbar, DrawerNav)) { return; }
+        if (U.isInstanceOf(p_toolbar, ShelfNav)) { return; }
         for (let i = 0, n = this._buttonConfigs.length; i < n; i++) {
             p_toolbar.CreateHandle(this._buttonConfigs[i]);
         }
@@ -189,9 +190,9 @@ class StyleguideApp extends AppBase {
         p_dialogBox.data = this._dialogInfos;
     }
 
-    _FillDrawer(p_drawer) {
-        p_drawer.catalog = this._drawerCatalog();
-        this._Stretch(p_drawer);
+    _FillShelf(p_shelf) {
+        p_shelf.catalog = this._shelfCatalog();
+        this._Stretch(p_shelf);
     }
 
     _FillTreeItem(p_citem) {

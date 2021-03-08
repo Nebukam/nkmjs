@@ -9,14 +9,14 @@ const { UI_ID, UI, UI_FLAG, View, DOMTemplate, TPLHeaderBodyFooter } = require(`
 const InspectorShell = require(`../inspectors/inspector-shell`);
 const HistoryInspectorShell = require(`../inspectors/history-inspector-shell`);
 
-const EditorDrawer = require(`./editor-drawer`);
+const EditorShelf = require(`./editor-shelf`);
 const Editor = require(`../editor`);
 const StatusBar = require(`../items/status-bar`);
 
 class EditorEx extends Editor {
     constructor() { super(); }
 
-    static __default_drawerClass = EditorDrawer;
+    static __default_shelfClass = EditorShelf;
     static __default_inspectorShellClass = InspectorShell;
     static __default_historyInspectorClass = HistoryInspectorShell;
     static __default_viewportClass = View;
@@ -25,9 +25,9 @@ class EditorEx extends Editor {
 
         super._Init();
 
-        this._drawerCatalog = new Catalog(false);
+        this._shelfCatalog = new Catalog(false);
 
-        this._drawer = null;
+        this._shelf = null;
         this._inspectorShell = null;
         this._historyInspector = null;
         this._viewport = null;
@@ -45,8 +45,8 @@ class EditorEx extends Editor {
 
         super._PostInit();
         let confs = new Array(0);
-        this._InitDrawerCatalog(confs);
-        this._drawer.catalog = this._drawerCatalog;
+        this._InitShelfCatalog(confs);
+        this._shelf.catalog = this._shelfCatalog;
 
         let conf = null;
         let item = null;
@@ -56,12 +56,12 @@ class EditorEx extends Editor {
         for (let i = 0, n = confs.length; i < n; i++) {
 
             conf = confs[i];
-            item = this._drawerCatalog.Register(conf);
+            item = this._shelfCatalog.Register(conf);
 
             view = item.GetOption('view', null);
             assign = U.Get(conf, `assign`, null);
 
-            console.log(`${assign} >> ${view}`);
+            //console.log(`${assign} >> ${view}`);
 
             if (view && assign) {
                 this[assign] = view;
@@ -71,7 +71,7 @@ class EditorEx extends Editor {
 
     }
 
-    _InitDrawerCatalog(p_configList) {
+    _InitShelfCatalog(p_configList) {
         p_configList.push(
             {
                 [UI_ID.NAME]: `Inspector`,
@@ -127,7 +127,7 @@ class EditorEx extends Editor {
                 display: `flex`,
                 flex: `1 1 auto`,
             },
-            '.drawer': {
+            '.shelf': {
                 position: `relative`,
                 display: `flex`,
                 flex: `0 0 auto`,
@@ -143,13 +143,13 @@ class EditorEx extends Editor {
 
         DOMTemplate.Render(TPLHeaderBodyFooter, this, { [UI_ID.OWNER]: this });
 
-        this._drawer = this.Add(this.constructor.__default_drawerClass, `drawer`, this._body);
+        this._shelf = this.Add(this.constructor.__default_shelfClass, `shelf`, this._body);
         this._viewport = this.Add(this.constructor.__default_viewportClass, `viewport`, this._body);
 
         this._inspectorShell = this.Add(this.constructor.__default_inspectorShellClass, `inspector`, this._body);
         this._inspectorShell.orientation = UI_FLAG.HORIZONTAL;
 
-        this._drawer.orientation = UI_FLAG.HORIZONTAL;
+        this._shelf.orientation = UI_FLAG.HORIZONTAL;
 
     }
 

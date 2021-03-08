@@ -166,6 +166,10 @@ class ENV extends SingletonEx {
         this._config = p_config;
         console.log(this._config);
 
+        if(p_config.argv.Has(`offline`)){
+            this._features._isOnline = false;
+        }
+
         // Register the service worker if available.
         let swPath = U.Get(this._config, `service_worker`, false);
         if (swPath !== false) {
@@ -265,7 +269,7 @@ class ENV extends SingletonEx {
         if (this._running) { return; }
         this._running = true;
 
-        if (this._app) { this._app.Start(); }
+        if (this._app) { this._app._InternalStart(); }
 
         this._onStart.Notify(this).Clear();
         this._Broadcast(ENV_SIGNAL.START, this);

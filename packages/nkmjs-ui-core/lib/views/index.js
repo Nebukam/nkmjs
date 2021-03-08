@@ -3,9 +3,13 @@
 module.exports = {
 
     View: require(`./view`),
+    
     Layer: require(`./layer`),
     LayerContainer: require(`./layer-container`),
 
-    Drawer: require(`./drawer`),
-    DrawerNav: require(`./drawer-nav`),
+    ShelfNav: require(`./shelf-nav`),
+    Shelf: require(`./shelf`),
+
+    Overlay: require(`./overlay`),
+    OverlayHandler: require(`./overlay-handler`),
 }

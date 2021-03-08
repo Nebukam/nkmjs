@@ -16,18 +16,18 @@ const Toolbar = require(`../helpers/toolbar`);
 const TPLHeaderBodyFooter = require(`../templates/tpl-header-body-footer`);
 
 /**
- * DrawerNav is a glorified toolbar designed to work with a Drawer, 
+ * ShelfNav is a glorified toolbar designed to work with a Shelf, 
  * handleling which view should be displayed.
  * @hideconstructor
  * @class
  * @augments ui.core.helpers.Toolbar
  * @memberof ui.core.views
  */
-class DrawerNav extends Toolbar {
+class ShelfNav extends Toolbar {
     constructor() { super(); }
 
     static __NFO__ = NFOS.Ext({
-        css: [`@/views/drawer-nav.css`]
+        css: [`@/views/shelf-nav.css`]
     }, Toolbar, ['css']);
 
     static HANDLE_ACTIVATED = Symbol(`handleActivated`);
@@ -161,9 +161,9 @@ class DrawerNav extends Toolbar {
     }
 
     /**
-     * @description Requests a handle from the drawer. Creates one if none already exists for the item
+     * @description Requests a handle from the shelf. Creates one if none already exists for the item
      * provided
-     * @param {*} p_item item -- typically a CatalogItem, in the context of a Drawer.
+     * @param {*} p_item item -- typically a CatalogItem, in the context of a Shelf.
      * @param {*} p_index index at which the handle should be created. Not that if the handle already exists, it will not be moved.
      * @returns {*} The handle associated to the item
      */
@@ -209,7 +209,7 @@ class DrawerNav extends Toolbar {
      * @param {*} p_handle 
      */
     _OnHandleActivated(p_handle) {
-        this._Broadcast(DrawerNav.HANDLE_ACTIVATED, this, p_handle, this._optionsMap.Get(p_handle));
+        this._Broadcast(ShelfNav.HANDLE_ACTIVATED, this, p_handle, this._optionsMap.Get(p_handle));
     }
 
     // ----> Pooling
@@ -222,5 +222,5 @@ class DrawerNav extends Toolbar {
 
 }
 
-module.exports = DrawerNav;
-UI.Register('nkmjs-drawer-nav', DrawerNav);
+module.exports = ShelfNav;
+UI.Register('nkmjs-shelf-nav', ShelfNav);

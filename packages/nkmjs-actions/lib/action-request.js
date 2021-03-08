@@ -86,6 +86,13 @@ class ACTION_REQUEST {
      */
     static DIALOG = 'dialog';
 
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
+     static OVERLAY = 'overlay';
+
 }
 
 module.exports = ACTION_REQUEST;

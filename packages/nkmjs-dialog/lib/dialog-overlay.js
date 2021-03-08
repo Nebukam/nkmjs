@@ -2,21 +2,17 @@
 
 const { U, UDOM } = require(`@nkmjs/utils`);
 const { CSS } = require(`@nkmjs/style`);
-const { UI, Layer } = require(`@nkmjs/ui-core`);
-const { DialogInfos } = require(`@nkmjs/dialog`);
+const { UI, Overlay } = require(`@nkmjs/ui-core`);
 
+const DialogInfos = require(`./dialog-infos`);
 const DialogBox = require(`./dialog-box.js`);
 
-
-class DialogLayer extends Layer {
+class DialogOverlay extends Overlay {
     constructor() { super(); }
 
     _Init() {
         super._Init();
-
-        this._background = null;
         this._msgBox = null;
-
     }
 
     // ----> DOM
@@ -31,11 +27,6 @@ class DialogLayer extends Layer {
                 'justify-content': `center`,
             },
             '.bg': {
-                position: `absolute`,
-                top: `0px`,
-                left: `0px`,
-                width: `100%`,
-                height: `100%`,
                 'background-color': `rgba(23,23,23,0.3)`,
                 'backdrop-filter': `blur(5px)`,
             },
@@ -46,12 +37,10 @@ class DialogLayer extends Layer {
         }, super._Style());
     }
 
-    _Render() {
-        this._background = UDOM.New(`div`, { class: `bg` }, this._host);
-    }
-
     _OnDataChanged(p_oldData) {
+
         super._OnDataChanged(p_oldData);
+
         //TODO : Check if DialogInfos has a preferred dialogBox class set
         if (this._msgBox) {
             this._msgBox.Release();
@@ -74,5 +63,5 @@ class DialogLayer extends Layer {
 
 }
 
-module.exports = DialogLayer;
-UI.Register('nkmjs-dialog-view', DialogLayer);
+module.exports = DialogOverlay;
+UI.Register('nkmjs-dialog-view', DialogOverlay);

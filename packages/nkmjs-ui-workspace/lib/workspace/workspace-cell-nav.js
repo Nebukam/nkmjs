@@ -2,16 +2,16 @@
 
 const { U } = require(`@nkmjs/utils`);
 const { NFOS } = require(`@nkmjs/common`);
-const { UI_ID, UI, DrawerNav } = require(`@nkmjs/ui-core`);
+const { UI_ID, UI, ShelfNav } = require(`@nkmjs/ui-core`);
 
 const Tab = require(`../items/tab`);
 
-class WorkspaceCellNav extends DrawerNav {
+class WorkspaceCellNav extends ShelfNav {
     constructor() { super(); }
 
     static __NFO__ = NFOS.Ext({
         css: [`@/views/workspace-cell-nav.css`]
-    }, DrawerNav, ['css']);
+    }, ShelfNav, ['css']);
 
     // ----> Init
 

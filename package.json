@@ -1,7 +1,10 @@
 {
-  "name": "nkmjs",
-  "private": true,
-  "devDependencies": {
-    "lerna": "^3.22.1"
-  }
+    "name": "nkmjs",
+    "private": true,
+    "devDependencies": {
+        "lerna": "^3.22.1"
+    },
+    "scripts": {
+        "nkmjs": "nkmjs"
+    }
 }

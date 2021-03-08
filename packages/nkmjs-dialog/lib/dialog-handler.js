@@ -2,14 +2,16 @@
 
 const { U } = require(`@nkmjs/utils`);
 const { Dictionary } = require(`@nkmjs/collections`);
-const { UI, LayerContainer } = require(`@nkmjs/ui-core`);
+const { UI, OverlayHandler } = require(`@nkmjs/ui-core`);
 const { ACTION_REQUEST } = require(`@nkmjs/actions`);
-const { DIALOG_SIGNAL, DialogInfos } = require(`@nkmjs/dialog`);
-
-const DialogLayer = require(`./dialog-layer.js`);
 const { CSS } = require("@nkmjs/style");
 
-class DialogHandler extends LayerContainer {
+const DialogLayer = require(`./dialog-overlay.js`);
+const DIALOG_SIGNAL = require(`./dialog-signal`);
+const DialogInfos = require(`./dialog-infos`);
+
+
+class DialogHandler extends OverlayHandler {
     constructor() { super(); }
 
     _Init() {

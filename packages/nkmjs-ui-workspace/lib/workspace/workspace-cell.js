@@ -3,16 +3,16 @@
 const { U } = require(`@nkmjs/utils`);
 const { NFOS } = require(`@nkmjs/common`);
 const { Catalog, CatalogItem } = require(`@nkmjs/data-core`);
-const { UI, UI_FLAG, Drawer } = require(`@nkmjs/ui-core`);
+const { UI, UI_FLAG, Shelf } = require(`@nkmjs/ui-core`);
 
 const WorkspaceCellNav = require(`./workspace-cell-nav`);
 
-class WorkspaceCell extends Drawer {
+class WorkspaceCell extends Shelf {
     constructor() { super(); }
 
     static __NFO__ = NFOS.Ext({
         css: [`@/views/workspace-cell.css`]
-    }, Drawer, ['css']);
+    }, Shelf, ['css']);
 
     // ----> Init
 

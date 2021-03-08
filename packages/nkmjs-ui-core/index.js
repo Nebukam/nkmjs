@@ -51,8 +51,10 @@ module.exports = {
     View: require(`./lib/views/view`),
     Layer: require(`./lib/views/layer`),
     LayerContainer: require(`./lib/views/layer-container`),
-    DrawerNav: require(`./lib/views/drawer-nav`),
-    Drawer: require(`./lib/views/drawer`),
+    ShelfNav: require(`./lib/views/shelf-nav`),
+    Shelf: require(`./lib/views/shelf`),
+    Overlay: require(`./lib/views/overlay`),
+    OverlayHandler: require(`./lib/views/overlay-handler`),
 
     // Manipulators
 

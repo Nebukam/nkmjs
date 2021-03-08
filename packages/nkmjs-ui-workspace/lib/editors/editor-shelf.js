@@ -2,16 +2,16 @@
 
 const { U } = require(`@nkmjs/utils`);
 const { CSS } = require(`@nkmjs/style`);
-const { UI, Widget, Drawer } = require(`@nkmjs/ui-core`);
+const { UI, Widget, Shelf } = require(`@nkmjs/ui-core`);
 
-const EditorDrawerNav = require(`./editor-drawer-nav`);
+const EditorShelfNav = require(`./editor-shelf-nav`);
 
-class EditorDrawer extends Drawer {
+class EditorShelf extends Shelf {
     constructor() { super(); }
 
     _Init() {
         super._Init();
-        this._navClass = EditorDrawerNav;
+        this._navClass = EditorShelfNav;
     }
 
     _PostInit() {
@@ -35,5 +35,5 @@ class EditorDrawer extends Drawer {
 
 }
 
-module.exports = EditorDrawer;
-UI.Register('nkmjs-editor-drawer', EditorDrawer);
+module.exports = EditorShelf;
+UI.Register('nkmjs-editor-shelf', EditorShelf);

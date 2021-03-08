@@ -6,7 +6,8 @@ const { NFOS, OptionsHandler } = require(`@nkmjs/common`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
 const { UI, UI_SIGNAL, Widget, TextManipulator, ImageManipulator, Frame, Toolbar, ButtonEx, UI_FLAG } = require(`@nkmjs/ui-core`);
 const { INPUT_SIGNAL, InputBase, InputFormHandler } = require(`@nkmjs/ui-inputs`);
-const { DialogInfos } = require(`@nkmjs/dialog`);
+
+const DialogInfos = require(`./dialog-infos`);
 
 class DialogBox extends Widget {
     constructor() { super(); }
@@ -126,7 +127,7 @@ class DialogBox extends Widget {
     set icon(p_icon) { this._icon.Set(p_icon); }
 
     set message(p_message) {
-        if(!this._messageElement){
+        if (!this._messageElement) {
             this._messageElement = UDOM.New(`span`, { class: `item message` }, this._body);
         }
         this._messageElement.innerHTML = p_message;
