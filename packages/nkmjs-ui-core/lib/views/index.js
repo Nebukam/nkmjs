@@ -10,6 +10,6 @@ module.exports = {
     ShelfNav: require(`./shelf-nav`),
     Shelf: require(`./shelf`),
 
-    Overlay: require(`./overlay`),
-    OverlayHandler: require(`./overlay-handler`),
+    Drawer: require(`./drawer`)
+
 }

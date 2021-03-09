@@ -4,10 +4,8 @@ const { U, UDOM } = require(`@nkmjs/utils`);
 const { Dictionary, List } = require(`@nkmjs/collections`);
 const { NFOS, OptionsHandler } = require(`@nkmjs/common`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const { UI, UI_SIGNAL, Widget, TextManipulator, ImageManipulator, Frame, Toolbar, ButtonEx, UI_FLAG } = require(`@nkmjs/ui-core`);
+const { UI, UI_SIGNAL, Widget, TextManipulator, ImageManipulator, Frame, Toolbar, ButtonEx, UI_FLAG, OverlayOptions } = require(`@nkmjs/ui-core`);
 const { INPUT_SIGNAL, InputBase, InputFormHandler } = require(`@nkmjs/ui-inputs`);
-
-const DialogInfos = require(`./dialog-infos`);
 
 class DialogBox extends Widget {
     constructor() { super(); }
@@ -44,11 +42,11 @@ class DialogBox extends Widget {
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler.Hook(`_title`, `title`, `!!! MISSING TITLE !!!`);
-        this._optionsHandler.Hook(`_icon`, `icon`, null);
-        this._optionsHandler.Hook(`_message`, `message`, null);
-        this._optionsHandler.Hook(`_actions`, this._Bind(this.SetActions), null);
-        this._optionsHandler.Hook(`_content`, this._Bind(this.SetContent));
+        this._optionsHandler.Hook(`title`, null, `!!! MISSING TITLE !!!`);
+        this._optionsHandler.Hook(`icon`);
+        this._optionsHandler.Hook(`message`);
+        this._optionsHandler.Hook(`actions`, this._Bind(this.SetActions), null);
+        this._optionsHandler.Hook(`content`, this._Bind(this.SetContent));
 
         this._Bind(this._Close);
         this._Bind(this._Submit);
@@ -110,9 +108,7 @@ class DialogBox extends Widget {
     }
 
     _OnOptionsWillUpdate(p_options) {
-        if (!U.isInstanceOf(p_options, DialogInfos)) {
-            throw new Error(`DialogLayer expect data of type DialogInfos, got ${p_options.constructor.name} instead.`);
-        }
+        
     }
 
     _OnOptionsUpdated(p_options) {
@@ -138,7 +134,8 @@ class DialogBox extends Widget {
      * 
      * @param {array} p_actions 
      */
-    SetActions(p_actions) {
+    SetActions(p_actions = null) {
+        console.log(`SetActions : ${typeof p_actions}`);
         if (p_actions) {
             // Create handles as specified
             for (let i = 0, n = p_actions.length; i < n; i++) {
@@ -200,7 +197,7 @@ class DialogBox extends Widget {
     _OnDataUpdated(p_data) {
 
         this._Clear();
-        this._optionsHandler.Process(this, p_data);
+        this._optionsHandler.Process(this, p_data.options);
 
         /* DATA FORMAT
 

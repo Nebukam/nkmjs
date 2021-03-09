@@ -12,12 +12,12 @@
 'use strict';
 
 const { U, UDOM, PATH, LOG } = require(`@nkmjs/utils`);
-const { SIGNAL, TIME, SingletonEx, POOL } = require(`@nkmjs/common`);
+const { SIGNAL, TIME, SingletonEx, POOL, COM_ID } = require(`@nkmjs/common`);
 const { ENV, ENV_SIGNAL } = require(`@nkmjs/environment`);
 const { ACTION_REQUEST, RELAY, CommandBox } = require(`@nkmjs/actions`);
 const { RESOURCES } = require(`@nkmjs/io-core`);
 const { STYLE } = require(`@nkmjs/style`);
-const { UI, LayerContainer } = require(`@nkmjs/ui-core`);
+const { UI, OverlayHandler, LayerContainer } = require(`@nkmjs/ui-core`);
 const { Metadata } = require(`@nkmjs/data-core`);
 const { DIALOG, DialogHandler, AutoUpdateDialogBox } = require(`@nkmjs/dialog`)
 
@@ -57,8 +57,8 @@ class AppBase extends SingletonEx {
 
         this._layers = null;
 
-        this._dialogHandlerClass = DialogHandler;
-        this._dialogHandler = null;
+        this._overlayHandlerClass = DialogHandler;
+        this._overlayHandler = null;
 
         this._commands = new CommandBox();
 
@@ -138,10 +138,7 @@ class AppBase extends SingletonEx {
             }
         }
 
-        this._dialogHandler = this._mainWrapper.Add(this._dialogHandlerClass);
-
-        // Watch to dialog events as soon as we are ready to handle them
-        RELAY.Watch(ACTION_REQUEST.DIALOG, this._HandleDialogRequest, this);
+        this._overlayHandler = this._mainWrapper.Add(this._overlayHandlerClass);
 
     }
 
@@ -159,7 +156,7 @@ class AppBase extends SingletonEx {
      */
     _InternalStart(){
         if(ENV.ARGV.Has(`no-start`)){ return; }
-        this.Start();
+        setTimeout(this._Bind(this.Start), 1000);
     }
 
     Start() {
@@ -207,7 +204,7 @@ class AppBase extends SingletonEx {
     }
 
     _HandleDialogRequest(p_request) {
-        this._dialogHandler.HandleDialogRequest(p_request);
+        this._overlayHandler.HandleOverlayRequest(p_request);
     }
 
     _OnEditRequest(p_request) {

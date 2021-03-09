@@ -1,18 +1,16 @@
 'use strict';
-
 const { U, UDOM } = require(`@nkmjs/utils`);
 const { CSS } = require(`@nkmjs/style`);
-const { UI, Overlay } = require(`@nkmjs/ui-core`);
 
-const DialogBox = require(`./dialog-box.js`);
+const UI = require(`../ui`);
+const Overlay = require(`./overlay`);
 
-class DialogOverlay extends Overlay {
+class DrawerOverlay extends Overlay {
     constructor() { super(); }
-
-    static __default_overlayContentClass = DialogBox;
 
     _Init() {
         super._Init();
+        this._drawer = null;
     }
 
     // ----> DOM
@@ -30,14 +28,16 @@ class DialogOverlay extends Overlay {
                 'background-color': `rgba(23,23,23,0.3)`,
                 'backdrop-filter': `blur(5px)`,
             },
-            '.content': {
+            '.drawer': {
                 flex: `1 1 auto`,
                 'max-width': `500px`,
             }
         }, super._Style());
     }
 
+    // TODO : Instanciate & place the overlay content...
+
 }
 
-module.exports = DialogOverlay;
-UI.Register('nkmjs-dialog-overlay', DialogOverlay);
+module.exports = DrawerOverlay;
+UI.Register('nkmjs-drawer-overlay', DrawerOverlay);

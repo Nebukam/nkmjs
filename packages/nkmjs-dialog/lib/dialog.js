@@ -5,11 +5,10 @@
 
 const { U } = require(`@nkmjs/utils`);
 const { List, Dictionary } = require(`@nkmjs/collections`);
-const { POOL } = require(`@nkmjs/common`);
+const { POOL, SIGNAL } = require(`@nkmjs/common`);
 const { ServiceBase } = require(`@nkmjs/services`);
 const { ACTION_REQUEST, Request } = require(`@nkmjs/actions`);
-
-const DialogInfos = require(`./dialog-infos`);
+const { OverlayOptions } = require("@nkmjs/ui-core");
 
 /**
  * @description TODO
@@ -53,24 +52,24 @@ class DIALOG extends ServiceBase {
      */
     _Push(p_options) {
 
-        let dialogInfos = null;
+        let dialogOptions = null;
 
-        if (!U.isInstanceOf(p_options, DialogInfos)) {
-            dialogInfos = POOL.Rent(DialogInfos);
-            dialogInfos.options = p_options;
-            this._ownedDialogData.Set(dialogInfos, true);
+        if (!U.isInstanceOf(p_options, OverlayOptions)) {
+            dialogOptions = POOL.Rent(OverlayOptions);
+            dialogOptions.options = p_options;
+            this._ownedDialogData.Set(dialogOptions, true);
         } else {
-            dialogInfos = p_options;
+            dialogOptions = p_options;
         }
 
-        if (dialogInfos.origin) {
+        if (dialogOptions.origin) {
             //TODO : Allow to push additional popup if they are emitted from the current one
             //and when closed, retrieve the "previous" one.
             //i.e store a LIFO stack of dialogs [A <-> B <-> C]
         }
 
-        if (!this._dialogs.Add(dialogInfos)) {
-            throw Error(`DialogInfos already exists in stack. Are you trying to push the same dialogInfo multiple times ?`);
+        if (!this._dialogs.Add(dialogOptions)) {
+            throw Error(`OverlayOptions already exists in stack. Are you trying to push the same dialogInfo multiple times ?`);
         }
 
         if (this._started) {
@@ -78,7 +77,7 @@ class DIALOG extends ServiceBase {
             this._ProcessNext();
         }
 
-        return dialogInfos;
+        return dialogOptions;
     }
 
     /**
@@ -97,10 +96,10 @@ class DIALOG extends ServiceBase {
         }
 
         this._inDialog = true;
-        next.Watch(DialogInfos.CONSUMED, this._OnDialogConsumed, this);
+        next.Watch(SIGNAL.CONSUMED, this._OnDialogConsumed, this);
 
         Request.Emit(ACTION_REQUEST.DIALOG,
-            { data: next },
+            { options: next },
             this,
             this._OnRequestSuccess,
             this._OnRequestFail);
@@ -108,7 +107,7 @@ class DIALOG extends ServiceBase {
     }
 
     _OnRequestFail(p_request) {
-        let dialog = p_request.options.infos;
+        let dialog = p_request.options;
         throw new Error(`Unhandled dialog : ${dialog}`);
     }
 
@@ -118,14 +117,14 @@ class DIALOG extends ServiceBase {
 
     _OnDialogConsumed(p_dialog) {
 
-        let dialogInfos = p_dialog.data;
+        let dialogOptions = p_dialog.options;
 
         this._dialogs.Remove(p_dialog);
         p_dialog.Release();
 
-        if (this._ownedDialogData.Get(dialogInfos)) {
-            this._ownedDialogData.Remove(dialogInfos);
-            dialogInfos.Release();
+        if (this._ownedDialogData.Get(dialogOptions)) {
+            this._ownedDialogData.Remove(dialogOptions);
+            dialogOptions.Release();
         }
 
         this._inDialog = false;

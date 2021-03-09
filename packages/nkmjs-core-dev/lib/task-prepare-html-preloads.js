@@ -16,6 +16,7 @@ class TaskPrepareHTMLMeta extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let preloads = ``,
+            electron_preloads = ``,
             map = [],
             candidates = [],
             caches = [...NKMjs.projectConfig.dirs.offline],
@@ -69,16 +70,22 @@ class TaskPrepareHTMLMeta extends ScriptBase {
         // Write preload tags
 
         preloads += `<!-- PRELOADS -->\n`;
+        electron_preloads += `<!-- PRELOADS -->\n`;
         for (let i = 0, n = map.length; i < n; i++) {
             let item = map[i],
                 mime = MIME.Get(path.extname(item));
 
-            if (mime) { preloads += `<link rel="preload" href="${item}" as="${mime.as}" type="${mime.type}">\n`; }
+            if (mime) {
+                if (mime.as === `style`) { electron_preloads += `<link rel="stylesheet" href="${item}">\n`; }
+                preloads += `<link rel="preload" href="${item}" as="${mime.as}" type="${mime.type}">\n`;
+
+            }
             else { preloads += `<link rel="preload" href="${item}">\n`; }
 
         }
 
         NKMjs.Set(`html-preloads`, preloads);
+        NKMjs.Set(`html-electron-preloads`, electron_preloads);
 
         this.End();
     }

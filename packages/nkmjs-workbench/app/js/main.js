@@ -3,13 +3,13 @@
 const { U } = require(`@nkmjs/core`).utils;
 const { AppBase, AutoUpdateDialogBox } = require(`@nkmjs/core`).app;
 const { POOL, COMMON_FLAG } = require("@nkmjs/core").common;
-const { DialogInfos } = require("@nkmjs/core").dialog;
+const { DIALOG } = require("@nkmjs/core").dialog;
 
 const { InputBase } = require("@nkmjs/core").inputs;
 const { DialogBox, DialogHandler } = require("@nkmjs/core").dialog;
 const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = require("@nkmjs/core").workspace;
 const { ID, DataBlock, Catalog, CatalogItem } = require("@nkmjs/core").data;
-const { UI, Layer, ButtonBase, UI_FLAG, Toolbar, View, PopIn, Shelf, TreeItem, ShelfNav } = require("@nkmjs/core").ui;
+const { UI, Layer, ButtonBase, UI_FLAG, Toolbar, View, PopIn, Shelf, TreeItem, ShelfNav, OverlayOptions } = require("@nkmjs/core").ui;
 
 const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
@@ -41,7 +41,7 @@ class StyleguideApp extends AppBase {
             { htitle: `htitle E text`, icon: '_', trigger: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.WARNING }
         ];
 
-        this._dialogInfos = POOL.Rent(DialogInfos);
+        this._dialogInfos = POOL.Rent(OverlayOptions);
         this._dialogInfos.options = {
             title: `Title`,
             message: `This is a message !`,
@@ -175,7 +175,24 @@ class StyleguideApp extends AppBase {
             this._mainContainer.Handle(cl, key);
         }
 
+        // Dialog push
+        this._Dialog();
+
+        // Generate overlay request
+        this._Overlay();
+
     }
+
+    _Dialog(){
+        DIALOG.Push({
+            title:`Welcome to the NKMjs Workbench`
+        });
+    }
+
+    _Overlay(){
+
+    }
+
 
     // ----
 

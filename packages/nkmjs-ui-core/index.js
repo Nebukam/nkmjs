@@ -5,6 +5,7 @@ module.exports = {
     UI_SIGNAL: require(`./lib/ui-signal`),
     UI_FLAG: require(`./lib/ui-flag`),
     UI_ID: require(`./lib/ui-id`),
+    UI_REQUEST: require(`./lib/ui-request`),
 
     UI: require(`./lib/ui`),
 
@@ -17,9 +18,9 @@ module.exports = {
     DisplayObjectContainer: require(`./lib/display-object-container`),
 
     Widget: require(`./lib/widget`),
-    OrientableWidget: require(`./lib/widget-orientable`),   
-    CatalogWidget: require(`./lib/widget-catalog`), 
-    
+    OrientableWidget: require(`./lib/widget-orientable`),
+    CatalogWidget: require(`./lib/widget-catalog`),
+
     // namespaces
     buttons: require(`./lib/buttons`),
     extensions: require(`./lib/extensions`),
@@ -28,6 +29,7 @@ module.exports = {
     templates: require(`./lib/templates`),
     tree: require(`./lib/tree`),
     views: require(`./lib/views`),
+    overlays: require(`./lib/overlays`),
 
     // Helpers
 
@@ -53,8 +55,13 @@ module.exports = {
     LayerContainer: require(`./lib/views/layer-container`),
     ShelfNav: require(`./lib/views/shelf-nav`),
     Shelf: require(`./lib/views/shelf`),
-    Overlay: require(`./lib/views/overlay`),
-    OverlayHandler: require(`./lib/views/overlay-handler`),
+
+    // Overlays
+
+    OverlayOptions: require(`./lib/overlays/overlay-options`),
+    Overlay: require(`./lib/overlays/overlay`),
+    OverlayHandler: require(`./lib/overlays/overlay-handler`),
+    OVERLAY_CONTEXT: require(`./lib/overlays/overlay-context`),
 
     // Manipulators
 
@@ -81,7 +88,7 @@ module.exports = {
     ButtonDragHandle: require(`./lib/buttons/button-drag-handle`),
 
     // Templates
- 
+
     DOMTemplate: require(`./lib/dom-template`),
 
     TPLFacadeLabel: require(`./lib/templates/tpl-facade-label`),
@@ -92,6 +99,6 @@ module.exports = {
     TPLFacadeExpandLabel: require(`./lib/templates/tpl-facade-expand-label`),
     TPLFacadeExpandTitle: require(`./lib/templates/tpl-facade-expand-title`),
 
-
-
 }
+
+require(`@nkmjs/common`).BINDINGS.Expand(require(`./bindings`));

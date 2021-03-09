@@ -17,82 +17,153 @@ class SIGNAL{
 
     /**
      * @description Commonly used by disposable objects to signal they are about to be released.
+     * @type {symbol}
      * @customtag read-only
+     * @group Pooling
      */
     static RELEASING = Symbol(`releasing`);
     /**
      * @description Commonly used by disposable objects to signal they have been released.
+     * @type {symbol}
      * @customtag read-only
+     * @group Pooling
      */
     static RELEASED = Symbol(`released`);
 
     /**
      * @description Commonly used by an object to signal it has been updated.
+     * @type {symbol}
      * @customtag read-only
+     * @group Updates
      */
     static UPDATED = Symbol(`updated`);
     
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Updates
      */
     static RENAMING = Symbol(`renaming`);
 
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Generic
      */
     static RENAMED = Symbol(`renamed`);
 
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Generic
      */
     static STATE_CHANGING = Symbol(`stateChanging`);
 
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Generic
      */
     static STATE_CHANGED = Symbol(`stateChanged`);
 
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Generic
      */
     static STARTED = Symbol(`started`);
 
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Generic
      */
     static STOPPED = Symbol(`stopped`);
 
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Generic
      */
     static PROGRESS = Symbol(`progress`);
 
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Generic
      */
     static COMPLETE = Symbol(`complete`);
 
     /**
      * @description TODO
+     * @type {symbol}
      * @customtag read-only
+     * @group Generic
      */
     static FAIL = Symbol(`fail`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Generic
+     */
     static CANCELED = Symbol(`canceled`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Generic
+     */
     static READY = Symbol(`ready`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Generic
+     */
     static TICK = Symbol(`tick`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Generic
+     */
+     static CONSUMED = Symbol(`consumed`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Item Management
+     */
     static ITEM_ADDED = Symbol(`itemAdded`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Item Management
+     */
     static ITEM_REMOVED = Symbol(`itemRemoved`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Item Management
+     */
     static ITEM_UPDATED = Symbol(`itemUpdated`);
 
 }

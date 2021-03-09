@@ -93,7 +93,7 @@ class List {
      */
     RemoveAt(p_index) {
         if (p_index < 0 || p_index >= this._array.length) { return false; }
-        return this._array.splice(p_index, 1);
+        return this._array.splice(p_index, 1)[0];
     }
 
     /**
@@ -112,6 +112,73 @@ class List {
             return p_item;
         }
         this._array.splice(p_index, 0, p_item);
+        return p_item;
+    }
+
+    /**
+     * @description TODO
+     * @param {*} p_item 
+     * @param {*} p_index 
+     * @returns {*} 
+     */
+    Move(p_item, p_index) {
+        if (isVoid(p_item)) { return false; }
+        let index = this._array.indexOf(p_item);
+        if (index == -1) { return false; }
+        this._array.splice(index, 1);
+        if (p_index >= this._array.length) { this._array.push(p_item); }
+        else { this._array.splice(p_index, 0, p_item); }
+        return p_item;
+    }
+
+    MoveBefore(p_item, p_beforeItem) {
+        if (isVoid(p_item) || isVoid(p_beforeItem)) { return false; }
+        let index = this._array.indexOf(p_item),
+            indexBefore = this._array.indexOf(p_beforeItem);
+        if (index == -1 || indexBefore == -1) { return false; }
+        if (index < indexBefore) { indexBefore--; }
+        this._array.splice(index, 1);
+        this._array.splice(indexBefore, 0, p_item);
+        return p_item;
+    }
+
+    MoveAfter(p_item, p_afterItem) {
+        if (isVoid(p_item) || isVoid(p_afterItem)) { return false; }
+        let index = this._array.indexOf(p_item),
+            indexAfter = this._array.indexOf(p_afterItem);
+        if (index == -1 || indexAfter == -1) { return false; }
+        this._array.splice(index, 1);
+        indexAfter = index < indexAfter ? indexAfter : indexAfter + 1;
+        if (indexAfter >= this._array.length) { this._array.push(p_item); }
+        else { this._array.splice(indexAfter, 0, p_item); }
+        return p_item;
+    }
+
+    /**
+     * @description TODO
+     * @param {*} p_item 
+     * @returns {*}
+     */
+    ToStart(p_item) {
+        if (isVoid(p_item)) { return false; }
+        let index = this._array.indexOf(p_item);
+        if (index == -1) { return false; }
+        this._array.splice(index, 1);
+        this._array.unshift(p_item);
+        return p_item;
+    }
+
+    /**
+     * @description TODO
+     * @param {*} p_item 
+     * @returns {*}
+     */
+    ToEnd(p_item) {
+        if (isVoid(p_item)) { return false; }
+        let index = this._array.indexOf(p_item);
+        if (index == -1) { return false; }
+        this._array.splice(index, 0);
+        this._array.push(p_item);
         return p_item;
     }
 

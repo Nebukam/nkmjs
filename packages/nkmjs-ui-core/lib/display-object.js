@@ -158,7 +158,10 @@ class DisplayObject extends DisposableHTMLElement {
      * @description TODO
      * @group Hierarchy
      */
-    BringToFront() { UDOM.ToFront(this); }
+    BringToFront() { 
+        UDOM.ToFront(this); 
+        if(this._parent){ this._parent._displayList.ToEnd(this); }
+    }
 
     // ----> Hierarchy
 

@@ -1,6 +1,7 @@
 'use strict';
 
 const { U, UDOM } = require(`@nkmjs/utils`);
+const { List } = require("@nkmjs/collections");
 
 const UI = require(`./ui`);
 const UI_SIGNAL = require(`./ui-signal`);
@@ -50,7 +51,7 @@ class DisplayObjectContainer extends DisplayObject {
 
     _Init() {
         super._Init();
-        this._displayList = new Array(0);
+        this._displayList = new List(0);
     }
 
     _PostInit() {
@@ -66,7 +67,7 @@ class DisplayObjectContainer extends DisplayObject {
      * @type {number}
      * @group Child Management
      */
-    get count() { return this._displayList.length; }
+    get count() { return this._displayList.count; }
 
     /**
      * @description <div class="tip warning" data-title="Important">This property is exposed for iteration purposes only.
@@ -74,7 +75,7 @@ class DisplayObjectContainer extends DisplayObject {
      * 
      * The DisplayObjectContainer' display list.
      * @customtag read-only
-     * @type {array}
+     * @type {collections.List}
      * @group Child Management
      */
     get displayList(){ return this._displayList; }
@@ -112,7 +113,7 @@ class DisplayObjectContainer extends DisplayObject {
      */
     Add(p_displayObject, p_cssClass = null, p_container = null, p_index = -1) {
 
-        if (p_index >= this._displayList.length || p_index < 0) { p_index = -1; }
+        if (p_index >= this._displayList.count || p_index < 0) { p_index = -1; }
 
         if (U.isFunc(p_displayObject) && U.isInstanceOf(p_displayObject, DisplayObject)) {
             p_displayObject = UI.Rent(p_displayObject);
@@ -120,7 +121,7 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (!p_displayObject) { throw new Error(`Cannot Add an empty display object.`); }
 
-        if (this._displayList.includes(p_displayObject)) {
+        if (this._displayList.Contains(p_displayObject)) {
             if (p_index === -1) { return p_displayObject; }
             this.Move(p_displayObject, p_index);
             return p_displayObject;
@@ -134,16 +135,16 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (p_index === -1) {
 
-            this._displayList.push(p_displayObject);
-            p_index = this._displayList.length - 1;
+            this._displayList.Add(p_displayObject);
+            p_index = this._displayList.count - 1;
 
             try { p_container.appendChild(p_displayObject); } catch (err) {
                 throw err;
             }
         }
         else {
-            this._displayList.splice(p_index, 0, p_displayObject);
-            p_container.insertBefore(p_displayObject, this._displayList[p_index]);
+            this._displayList.Insert(p_displayObject, p_index);
+            p_container.insertBefore(p_displayObject, this._displayList.At(p_index));
         }
 
         p_displayObject.parent = this;
@@ -172,7 +173,7 @@ class DisplayObjectContainer extends DisplayObject {
      * @group Child Management
      */
     Move(p_displayObject, p_index) {
-        if (!this._displayList.includes(p_displayObject)) {
+        if (!this._displayList.Contains(p_displayObject)) {
             throw new Error(`Provided display object is not a child of this container.`);
         }
         //TODO : Implement Move
@@ -186,7 +187,7 @@ class DisplayObjectContainer extends DisplayObject {
      * @group Child Management
      */
     Remove(p_displayObject) {
-        let index = this._displayList.indexOf(p_displayObject);
+        let index = this._displayList.IndexOf(p_displayObject);
         if (index === -1) { return p_displayObject; }
         return this.RemoveAt(index);
     }
@@ -199,11 +200,9 @@ class DisplayObjectContainer extends DisplayObject {
      */
     RemoveAt(p_index) {
 
-        if (p_index < 0 || p_index >= this._displayList.length) { return null; }
+        if (p_index < 0 || p_index >= this._displayList.count) { return null; }
 
-        let removedDisplayObject = this._displayList[p_index];
-
-        this._displayList.splice(p_index, 1);
+        let removedDisplayObject = this._displayList.RemoveAt(p_index);
 
         if (removedDisplayObject.parent === this) {
             removedDisplayObject.parent = null;

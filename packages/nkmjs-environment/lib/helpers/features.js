@@ -100,6 +100,10 @@ class Features extends DisposableObjectEx {
             window.addEventListener('online', this._Bind(this._OnEnvironmentOnline));
             window.addEventListener('offline', this._Bind(this._OnEnvironmentOffline));
 
+            let navData = window.performance.getEntriesByType("navigation");
+            if (navData.length > 0 && navData[0].loadEventEnd > 0){ this._OnWindowLoaded(); }
+            else { window.addEventListener('load', this._Bind(this._OnWindowLoaded)); }
+
             this._isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
             this._isTouchEnabled = (('ontouchstart' in window) ||
@@ -131,6 +135,10 @@ class Features extends DisposableObjectEx {
         } catch (e) {
             this._isBrowser = false;
         }
+    }
+
+    _OnWindowLoaded(p_evt){
+        
     }
 
     // ----> Properties
@@ -394,7 +402,6 @@ class Features extends DisposableObjectEx {
     //
 
     _OnEnvironmentOnline(p_evt){
-        console.warn(`online yo`);
         if(this._isOnline){ return; }
         this._isOnline = true;
         this._Broadcast(ENV_SIGNAL.ONLINE);

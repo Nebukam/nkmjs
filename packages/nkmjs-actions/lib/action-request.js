@@ -1,98 +1,19 @@
 'use strict';
 
-/**
- * @description TODO
- * @class
- * @hideconstructor
- * @memberof actions
- */
-class ACTION_REQUEST {
-    constructor() { }
+const { CSYMBOL } = require(`@nkmjs/common`);
 
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static EXIT = 'exit';
+module.exports = {
 
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static EDIT = 'edit';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static PREVIEW = 'preview';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static OPEN = 'open';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static CLOSE = 'close';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static CREATE = 'create';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static SAVE = 'save';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static DELETE = 'delete';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static RENAME = 'rename';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static APPLY = 'apply';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-    static DIALOG = 'dialog';
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */
-     static OVERLAY = 'overlay';
+    EXIT: class EXIT extends CSYMBOL { constructor() { } },
+    EDIT: class EDIT extends CSYMBOL { constructor() { } },
+    PREVIEW: class PREVIEW extends CSYMBOL { constructor() { } },
+    OPEN: class OPEN extends CSYMBOL { constructor() { } },
+    CLOSE: class CLOSE extends CSYMBOL { constructor() { } },
+    CREATE: class CREATE extends CSYMBOL { constructor() { } },
+    SAVE: class SAVE extends CSYMBOL { constructor() { } },
+    DELETE: class DELETE extends CSYMBOL { constructor() { } },
+    RENAME: class RENAME extends CSYMBOL { constructor() { } },
+    APPLY: class APPLY extends CSYMBOL { constructor() { } },
+    DIALOG: class DIALOG extends CSYMBOL { constructor() { } },
 
 }
-
-module.exports = ACTION_REQUEST;

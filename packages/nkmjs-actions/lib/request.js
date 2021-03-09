@@ -33,7 +33,7 @@ class Request extends com.pool.DisposableObject {
         p_timeout = 0,
         p_requestClass = Request,
         p_global = true) {
-        let request = POOL.Rent(p_requestClass);
+        let request = com.POOL.Rent(p_requestClass);
         request.requestType = p_requestType;
         request.emitter = p_emitter;
 

@@ -65,6 +65,7 @@ class UTILS_DOM {
      * @param {boolean} [p_firstChild] If true, attach before the firstChild, otherwise attach before the firstElementChild
      */
     static AttachFirst(p_element, p_parent, p_firstChild = true) {
+
         if (p_firstChild && p_parent.firstChild) {
             p_parent.insertBefore(p_element, p_parent.firstChild);
         } else if (!p_firstChild && p_parent.firstElementChild) {
@@ -92,22 +93,21 @@ class UTILS_DOM {
      */
     static ToFront(p_node, p_frontOfNode = false) {
         if (!UTILS.isVoid(p_node.parentNode)) {
+            p_node.parentNode.appendChild(p_node);
+            return;
             if (p_frontOfNode) {
-                if (p_node.parentNode.lastChild) {
-                    p_node.parentNode.insertAfter(p_node.parentNode.lastChild);
+                let nodeList = p_node.parentNode.childNodes,
+                    index = nodeList.indexOf(p_frontOfNode);
+                if (nodeList) {
+                    //Need to insertBefore the node after the specified fronOfNode
+                    p_node.parentNode.insertAfter(p_node, p_node.parentNode.lastChild);
                 } else {
                     p_node.parentNode.appendChild(p_node);
                 }
             } else {
-                if (p_node.parentNode.lastChildElement) {
-                    p_node.parentNode.insertAfter(p_node.parentNode.lastChildElement);
-                } else if (p_node.parentNode.lastChild) {
-                    p_node.parentNode.insertAfter(p_node.parentNode.lastChild);
-                } else {
-                    p_node.parentNode.appendChild(p_node);
-                }
+                p_node.parentNode.appendChild(p_node);
             }
-        }else{
+        } else {
             throw new Error(`Node has no parent.`);
         }
     }
@@ -121,20 +121,20 @@ class UTILS_DOM {
         if (!UTILS.isVoid(p_node.parentNode)) {
             if (p_backOfNode) {
                 if (p_node.parentNode.firstChild) {
-                    p_node.parentNode.insertBefore(p_node.parentNode.firstChild);
+                    p_node.parentNode.insertBefore(p_node, p_node.parentNode.firstChild);
                 } else {
                     p_node.parentNode.appendChild(p_node);
                 }
             } else {
                 if (p_node.parentNode.firstElementChild) {
-                    p_node.parentNode.insertBefore(p_node.parentNode.firstElementChild);
+                    p_node.parentNode.insertBefore(p_node, p_node.parentNode.firstElementChild);
                 } else if (p_node.parentNode.firstChild) {
-                    p_node.parentNode.insertBefore(p_node.parentNode.firstChild);
+                    p_node.parentNode.insertBefore(p_node, p_node.parentNode.firstChild);
                 } else {
                     p_node.parentNode.appendChild(p_node);
                 }
             }
-        }else{
+        } else {
             throw new Error(`Node has no parent.`);
         }
     }
