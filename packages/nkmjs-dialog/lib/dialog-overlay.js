@@ -1,13 +1,19 @@
 'use strict';
 
 const { U, UDOM } = require(`@nkmjs/utils`);
+const { NFOS } = require(`@nkmjs/common`);
 const { CSS } = require(`@nkmjs/style`);
 const { UI, Overlay } = require(`@nkmjs/ui-core`);
+
 
 const DialogBox = require(`./dialog-box.js`);
 
 class DialogOverlay extends Overlay {
     constructor() { super(); }
+
+    static __NFO__ = NFOS.Ext({
+        css: [`@/dialogs/dialog-overlay.css`]
+    }, Overlay, ['css']);
 
     static __default_overlayContentClass = DialogBox;
 
@@ -25,10 +31,6 @@ class DialogOverlay extends Overlay {
                 'align-content': `center`,
                 'align-items': `center`,
                 'justify-content': `center`,
-            },
-            '.bg': {
-                'background-color': `rgba(23,23,23,0.3)`,
-                'backdrop-filter': `blur(5px)`,
             },
             '.content': {
                 flex: `1 1 auto`,

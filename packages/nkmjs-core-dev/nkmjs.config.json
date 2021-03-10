@@ -18,7 +18,12 @@
                     "append": true
                 }
             ],
-            "task-start-electron",
+            [
+                "task-start-electron",
+                {
+                    "rebuild-styles": true
+                }
+            ],
             "task-cleanup"
         ],
         "build-www": [
@@ -82,5 +87,7 @@
             "task-post-install"
         ]
     },
-    "externals": ["@nkmjs/core"]
+    "externals": [
+        "@nkmjs/core"
+    ]
 }

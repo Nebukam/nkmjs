@@ -32,7 +32,7 @@ class CatalogWidget extends Widget {
         this._dataObserver.Hook(CATALOG_SIGNAL.ITEM_DATA_CHANGED, this._OnItemDataChanged, this);
         this._itemData = null;
 
-        this._flavorEnum = new FlagEnum(UI_FLAG.flavors);
+        this._flavorEnum = new FlagEnum(UI_FLAG.flavors, true);
         this._flavorEnum.Add(this);
 
         this._interactions.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));

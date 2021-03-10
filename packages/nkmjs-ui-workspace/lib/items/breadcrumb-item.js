@@ -2,9 +2,9 @@ const { U, PATH } = require(`@nkmjs/utils`);
 const { NFOS } = require(`@nkmjs/common`);
 const { DataBlock, CatalogItem } = require(`@nkmjs/data-core`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const { UI_ID, UI, UI_FLAG, ButtonBase, DOMTemplate, TPLFacadeLabel } = require(`@nkmjs/ui-core`);
-
-
+const uicore = require(`@nkmjs/ui-core`);
+const { UI_ID, UI, UI_FLAG, ButtonBase, DOMTemplate } = uicore;
+const { TPLFacadeLabel } = uicore.templates;
 
 class BreadcrumbItem extends ButtonBase {
     constructor() { super(); }

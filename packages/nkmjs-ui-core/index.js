@@ -63,6 +63,11 @@ module.exports = {
     OverlayHandler: require(`./lib/overlays/overlay-handler`),
     OVERLAY_CONTEXT: require(`./lib/overlays/overlay-context`),
 
+    // Drawers
+
+    Drawer: require(`./lib/drawers/drawer`),
+    DrawerOverlay: require(`./lib/drawers/drawer-overlay`),
+
     // Manipulators
 
     BaseManipulator: require(`./lib/manipulators/manipulator-base`),
@@ -89,15 +94,7 @@ module.exports = {
 
     // Templates
 
-    DOMTemplate: require(`./lib/dom-template`),
-
-    TPLFacadeLabel: require(`./lib/templates/tpl-facade-label`),
-    TPLFacadeTitles: require(`./lib/templates/tpl-facade-titles`),
-    TPLHeaderBodyFooter: require(`./lib/templates/tpl-header-body-footer`),
-    TPLBodyExpand: require(`./lib/templates/tpl-body-expand`),
-    TPLBodyHeaderTitles: require(`./lib/templates/tpl-body-header-titles`),
-    TPLFacadeExpandLabel: require(`./lib/templates/tpl-facade-expand-label`),
-    TPLFacadeExpandTitle: require(`./lib/templates/tpl-facade-expand-title`),
+    DOMTemplate: require(`./lib/dom-template`)
 
 }
 

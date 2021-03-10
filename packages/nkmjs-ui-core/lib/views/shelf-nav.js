@@ -13,7 +13,7 @@ const UI_FLAG = require(`../ui-flag`);
 const DOMTemplate = require(`../dom-template`);
 const Toolbar = require(`../helpers/toolbar`);
 
-const TPLHeaderBodyFooter = require(`../templates/tpl-header-body-footer`);
+const { TPLHeaderBodyFooter } = require(`../templates`);
 
 /**
  * ShelfNav is a glorified toolbar designed to work with a Shelf, 

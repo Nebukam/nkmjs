@@ -54,6 +54,12 @@ class PopIn extends DisplayObjectContainer {
      */
     static MODE_FLOAT_OUTSIDE = `mode-float-outside`; // Float at a given place outside a container
 
+    static modes = [
+        this.MODE_ANCHOR,
+        this.MODE_FLOAT_INSIDE,
+        this.MODE_FLOAT_OUTSIDE
+    ];
+
     /**
      * @description TODO
      * @type {object}
@@ -126,6 +132,8 @@ class PopIn extends DisplayObjectContainer {
      */
     static CENTER = { x:0, y:0 };
 
+
+
     /**
      * @description TODO
      * @param {object} p_options
@@ -151,7 +159,7 @@ class PopIn extends DisplayObjectContainer {
         this._placementEnum = new FlagEnum(UI_FLAG.placements);
         this._placementEnum.Add(this);
 
-        this._modeEnum = new FlagEnum(PopIn.MODE_ANCHOR, PopIn.MODE_FLOAT_INSIDE, PopIn.MODE_FLOAT_OUTSIDE);
+        this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
 
         this._optionsHandler = new OptionsHandler(this._Bind(this._OnOptionsProcessed));

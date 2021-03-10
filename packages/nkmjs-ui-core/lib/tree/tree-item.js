@@ -11,7 +11,7 @@ const MOUSE = require("../mouse");
 const DOMTemplate = require(`../dom-template`);
 const Toolbar = require(`../helpers/toolbar`);
 
-const TPLFacadeLabel = require("../templates/tpl-facade-label");
+const { TPLFacadeLabel } = require("../templates");
 const CatalogWidget = require("../widget-catalog");
 
 

@@ -1,12 +1,15 @@
 const { U, UDOM } = require(`@nkmjs/utils`);
 const { CSS } = require(`@nkmjs/style`);
+const { NFOS } = require(`@nkmjs/common`);
 const { BINDINGS, SIGNAL, OptionsHandler } = require(`@nkmjs/common`);
 
 const UI = require(`../ui`);
+const UI_FLAG = require(`../ui-flag`);
 const Layer = require(`../views/layer`);
 
 const OVERLAY_CONTEXT = require("./overlay-context");
 const OverlayOptions = require(`./overlay-options`);
+const ExtAnimController = require(`../extensions/ext-anim-controller`);
 
 
 
@@ -16,34 +19,30 @@ const OverlayOptions = require(`./overlay-options`);
 class Overlay extends Layer {
     constructor() { super(); }
 
+    static __NFO__ = NFOS.Ext({
+        css: [`@/views/overlay.css`]
+    }, Layer, ['css']);
+
     static __default_overlayContentClass = null;
+    static __default_contentPlacement = null;
 
     _Init() {
         super._Init();
         this._background = null;
         this._content = null;
+        this._contentPlacement = null;
 
         this._dataObserver.Hook(SIGNAL.CONSUMED, this._Bind(this._OnDataConsumed));
+        this._transitions = new ExtAnimController();
 
         this._options = null;
         this._optionsHandler = new OptionsHandler(this._Bind(this._OnOptionsProcessed), this._Bind(this._OnOptionsWillUpdate));
-        this._optionsHandler.Hook(`placement`, `contentPlacement`);
+        this._optionsHandler.Hook(`orientation`);
+        this._optionsHandler.Hook(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement);
         this._optionsHandler.Hook(`flavor`, `contentFlavor`);
     }
 
     // ----> DOM
-
-    _Style() {
-        return CSS.Extends({
-            '.bg': {
-                'position': `absolute`, // TODO : Update with blocking overlay css preset
-                'top': `0px`,
-                'left': `0px`,
-                'width': `100%`,
-                'height': `100%`
-            }
-        }, super._Style());
-    }
 
     // ----> Options
 
@@ -62,11 +61,41 @@ class Overlay extends Layer {
      */
     _OnOptionsWillUpdate(p_options) {
         if (!p_options) { return; }
+        console.log(p_options);
         // At that point, this._overlayContent exists and is initialized
     }
 
-    set contentPlacement(p_value) { if (`placement` in this._content) { this._content.placement = p_value; } }
-    set contentFlavor(p_value) { if (`flavor` in this._content) { this._content.flavor = p_value; } }
+    /**
+     * @description TODO
+     * @type {string}
+     */
+    set contentPlacement(p_value) {
+
+        if (this._contentPlacement) {
+            this.classList.remove(`content-${this._contentPlacement}`);
+        }
+
+        let simplified = UI_FLAG.SimplifyPlacement(
+            p_value,
+            this._orientation.currentFlag == UI_FLAG.VERTICAL ? true : false);
+
+        if (simplified) {
+            this._contentPlacement = simplified;
+            this.classList.add(`content-${this._contentPlacement}`);
+        }
+
+        if (`placement` in this._content) {
+            this._content.placement = simplified;
+        }
+    }
+
+    /**
+     * @description TODO
+     * @type {string}
+     */
+    set contentFlavor(p_value) {
+        if (`flavor` in this._content) { this._content.flavor = p_value; }
+    }
 
     /**
      * @access protected
@@ -106,19 +135,41 @@ class Overlay extends Layer {
         }
 
         this._content = this.Add(contentClass, 'content');
-        this._content.data = this._data;
+        this._content.data = this._ExtractData(this._data);
 
         // Feed data as options once the content is ready
-        this.options = this._data;
+        this.options = this._data.options;
 
     }
 
+    /**
+     * @access protected
+     * @description TODO
+     * @param {ui.core.overlays.OverlayOptions} p_overlayOptions 
+     * @returns 
+     * @customtag override-me
+     */
+    _ExtractData(p_overlayOptions) {
+        return p_overlayOptions;
+    }
+
+    DisplayGranted(){
+        super.DisplayGranted();
+        this.classList.add(UI_FLAG.SHOWN);
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {ui.core.overlays.OverlayOptions} p_data 
+     */
     _OnDataConsumed(p_data) {
 
     }
 
-    _Render() {
-        this._background = UDOM.New(`div`, { class: `bg` }, this._host);
+    _CleanUp(){
+        this.classList.remove(UI_FLAG.SHOWN);
+        super._CleanUp();
     }
 
 }

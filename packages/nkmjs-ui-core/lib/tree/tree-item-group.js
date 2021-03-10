@@ -10,7 +10,7 @@ const ExtExpand = require(`../extensions/ext-expand`);
 
 const CatalogBuilder = require(`../helpers/catalog-builder`);
 const TreeItem = require(`./tree-item`);
-const TPLBodyExpand = require(`../templates/tpl-body-expand`);
+const { TPLBodyExpand } = require(`../templates`);
 
 /**
  * @description TODO

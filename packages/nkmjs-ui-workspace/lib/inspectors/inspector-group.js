@@ -1,5 +1,7 @@
 const { U, UDOM } = require(`@nkmjs/utils`);
-const { UI_ID, UI, UI_SIGNAL, ExtExpand, Toolbar, ToolButton, DOMTemplate, TPLHeaderBodyFooter, ExtMouse, UI_FLAG, MOUSE, TPLFacadeExpandTitle } = require(`@nkmjs/ui-core`);
+const uicore = require(`@nkmjs/ui-core`);
+const { UI_ID, UI, UI_SIGNAL, ExtExpand, Toolbar, ToolButton, DOMTemplate, ExtMouse, UI_FLAG, MOUSE } = uicore;
+const { TPLHeaderBodyFooter, TPLFacadeExpandTitle } = uicore.templates;
 
 const InspectorItem = require(`./inspector-item`);
 

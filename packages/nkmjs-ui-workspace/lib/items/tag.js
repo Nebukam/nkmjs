@@ -16,10 +16,10 @@ class Tag extends Widget {
     _Init() {
         super._Init();
 
-        this._sizeEnum = new FlagEnum(UI_FLAG.sizes);
+        this._sizeEnum = new FlagEnum(UI_FLAG.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(UI_FLAG.flavorsExtended);
+        this._flavorEnum = new FlagEnum(UI_FLAG.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
     }

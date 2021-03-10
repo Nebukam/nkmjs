@@ -17,9 +17,10 @@ const UI_FLAG = require("../ui-flag");
  * @memberof ui.core.helpers
  */
 class FlagEnum {
-    constructor(p_enum = null) {
+    constructor(p_enum = null, p_staticEnum = false) {
         this._elements = new Array(0);
         this._managed = new Array(0);
+        this._isStaticEnum = p_staticEnum;
         this._enum = p_enum ? p_enum :new Array(0);
         this._currentFlag = null;
 
@@ -47,6 +48,7 @@ class FlagEnum {
      * @param  {...string} values 
      */
     AddEnum(...values) {
+        if(this._isStaticEnum){ throw new Error(`FlagEnum is using a static enum.`); }
         if (values.length === 1 && U.isArray(values[0])) { values = values[0]; }
         for (let i = 0, n = values.length; i < n; i++) {
             if (!this._enum.includes(values[i])) { this._enum.push(values[i]); }
@@ -58,6 +60,7 @@ class FlagEnum {
      * @param  {...string} values 
      */
     RemoveEnum(...values) {
+        if(this._isStaticEnum){ throw new Error(`FlagEnum is using a static enum.`); }
         if (values.length === 1 && U.isArray(values[0])) { values = values[0]; }
         let index;
         for (let i = 0, n = values.length; i < n; i++) {

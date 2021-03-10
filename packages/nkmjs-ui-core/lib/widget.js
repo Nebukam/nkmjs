@@ -67,11 +67,11 @@ class Widget extends DisplayObjectContainer {
             UI_FLAG.ACTIVATED,
             UI_FLAG.SELECTED);
 
-        this._placement = new FlagEnum(UI_FLAG.placement);
+        this._placement = new FlagEnum(UI_FLAG.placement, true);
         this._placement.Add(this);
         this._placement.onFlagChanged.Add(this._Bind(this._OnPlacementChanged));
 
-        this._istateEnum = new FlagEnum(UI_FLAG.istates);
+        this._istateEnum = new FlagEnum(UI_FLAG.istates, true);
         this._istateEnum.Add(this);
 
         this.default_SelectOnActivation = (this.default_SelectOnActivation || false);

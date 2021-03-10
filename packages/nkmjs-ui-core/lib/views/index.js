@@ -10,6 +10,4 @@ module.exports = {
     ShelfNav: require(`./shelf-nav`),
     Shelf: require(`./shelf`),
 
-    Drawer: require(`./drawer`)
-
 }

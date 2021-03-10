@@ -36,7 +36,7 @@ class OrientableWidget extends Widget {
         super._Init();
         this._isHorizontalScrollEnabled = false;
 
-        this._orientation = new FlagEnum(UI_FLAG.orientations);
+        this._orientation = new FlagEnum(UI_FLAG.orientations, true);
         this._orientation.Add(this);
         this._orientation.onFlagChanged.Add(this._Bind(this._OnOrientationChanged));
 

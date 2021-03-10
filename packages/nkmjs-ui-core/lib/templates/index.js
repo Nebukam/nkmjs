@@ -9,5 +9,7 @@ module.exports = {
     TPLFacadeLabel: require(`./tpl-facade-label`),
     TPLFacadeTitles: require(`./tpl-facade-titles`),
     TPLHeaderBodyFooter: require(`./tpl-header-body-footer`),
-
+    TPLFacadeLabelClose: require(`./tpl-facade-label-close`),
+    TPLFacadeTitleClose: require(`./tpl-facade-title-close`),
+    
 }

@@ -1,0 +1,30 @@
+@import '../_constants';
+@import '../_variables';
+@import '../_functions';
+@import '../_mixins';
+
+:host{
+    --blur_strenght: 0; 
+    backdrop-filter: blur(var(--blur_strenght));
+    transition: backdrop-filter 0.25s linear;
+}
+
+:host(#{$SHOWN}){
+    --blur_strenght: 5px;
+}
+
+:host .content{
+    transform: scale(1.5) rotate(5deg);
+    opacity:0;
+}
+
+:host(#{$SHOWN}) .content{
+    animation: scaleIn 150ms ease-out forwards;
+}
+
+@keyframes scaleIn {
+    to {
+        transform: scale(1) rotate(0);
+        opacity:1;
+    }
+}

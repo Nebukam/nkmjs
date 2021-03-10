@@ -28,7 +28,7 @@ class BaseManipulator {
         this._isVisible = true;
 
         if (p_sizeControl) {
-            this._sizeFlags = new FlagEnum(UI_FLAG.sizes);
+            this._sizeFlags = new FlagEnum(UI_FLAG.sizes, true);
         } else { this._sizeFlags = null; }
 
     }

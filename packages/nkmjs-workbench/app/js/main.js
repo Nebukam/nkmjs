@@ -1,19 +1,20 @@
 'use strict';
 
-const { U } = require(`@nkmjs/core`).utils;
-const { AppBase, AutoUpdateDialogBox } = require(`@nkmjs/core`).app;
-const { POOL, COMMON_FLAG } = require("@nkmjs/core").common;
-const { DIALOG } = require("@nkmjs/core").dialog;
-
-const { InputBase } = require("@nkmjs/core").inputs;
-const { DialogBox, DialogHandler } = require("@nkmjs/core").dialog;
-const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = require("@nkmjs/core").workspace;
-const { ID, DataBlock, Catalog, CatalogItem } = require("@nkmjs/core").data;
-const { UI, Layer, ButtonBase, UI_FLAG, Toolbar, View, PopIn, Shelf, TreeItem, ShelfNav, OverlayOptions } = require("@nkmjs/core").ui;
+const NKMjs = require(`@nkmjs/core`); 
+const { U } = NKMjs.utils;
+const { AppBase, AutoUpdateDialogBox } = NKMjs.app;
+const { Request } = NKMjs.actions;
+const { POOL, COMMON_FLAG } = NKMjs.common;
+const { DIALOG, DialogBox, DialogHandler } = NKMjs.dialog;
+const { InputBase } = NKMjs.inputs;
+const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = NKMjs.workspace;
+const { ID, DataBlock, Catalog, CatalogItem } = NKMjs.data;
+const { UI, Layer, ButtonBase, UI_FLAG, Toolbar, View, PopIn, Shelf, TreeItem, ShelfNav, OverlayOptions } = NKMjs.ui;
 
 const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
 const TestWidget = require(`./test-widget`);
+const { UI_REQUEST } = require("../../../nkmjs-app-core/node_modules/@nkmjs/ui-core");
 
 
 
@@ -176,11 +177,10 @@ class StyleguideApp extends AppBase {
         }
 
         // Dialog push
-        this._Dialog();
+        setTimeout(this._Bind(this._Dialog), 500);
 
         // Generate overlay request
-        this._Overlay();
-
+        setTimeout(this._Bind(this._Overlay), 1000);
     }
 
     _Dialog(){
@@ -190,7 +190,11 @@ class StyleguideApp extends AppBase {
     }
 
     _Overlay(){
-
+        Request.Emit(UI_REQUEST.DRAWER,{
+            title:`My drawer, bruh`,
+            orientation:UI_FLAG.VERTICAL,
+            placement:UI_FLAG.BOTTOM
+        });
     }
 
 

@@ -344,6 +344,13 @@ class UI_FLAG {
      * @type {string}
      * @customtag read-only
      */
+    static SHOWN = `shown`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
     static NO_ICON = `no-icon`;
 
     /**
@@ -495,6 +502,47 @@ class UI_FLAG {
         this.FRAME
     ];
 
+    // Animation
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Animation
+     */
+    static A_START = `start`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Animation
+     */
+    static A_END = `end`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Animation
+     */
+    static A_ITERATION = `iteration`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Animation
+     */
+    static A_CANCEL = `cancel`;
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Animation
+    */
+    static A_ANY_END = `any-end`;
 
 }
 

@@ -32,6 +32,7 @@ class Toolbar extends OrientableWidget {
 
     static get FLAG_STRETCH() { return _flag_STRETCH; }
     static get FLAG_STRETCH_SAME() { return _flag_STRETCH_SAME; }
+    static __stretchENUMs = [_flag_STRETCH, _flag_STRETCH_SAME];
 
     // ----> Init
     
@@ -51,10 +52,10 @@ class Toolbar extends OrientableWidget {
             Toolbar.FLAG_STRETCH,
             Toolbar.FLAG_STRETCH_SAME);
 
-        this._stretchEnum = new FlagEnum([_flag_STRETCH, _flag_STRETCH_SAME]);
+        this._stretchEnum = new FlagEnum(this.constructor.__stretchENUMs, true);
         this._stretchEnum.Add(this);
 
-        this._sizeEnum = new FlagEnum(UI_FLAG.sizes);
+        this._sizeEnum = new FlagEnum(UI_FLAG.sizes, true);
         this._sizeEnum.Add(this);
         this._sizeEnum.onFlagChanged.Add(this._Bind(this._OnSizeChanged));
 

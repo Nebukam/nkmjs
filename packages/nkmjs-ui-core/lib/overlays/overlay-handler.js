@@ -11,6 +11,7 @@ const LayerContainer = require(`../views/layer-container`);
 const OVERLAY_CONTEXT = require("./overlay-context");
 const OverlayOptions = require("./overlay-options");
 const Overlay = require("./overlay");
+const { POOL } = require("@nkmjs/common/lib/pool");
 
 
 /**
@@ -49,10 +50,14 @@ class OverlayHandler extends LayerContainer {
 
     HandleOverlayRequest(p_request) {
 
-        let overlayOptions = p_request.GetOption(`options`, null);
+        let overlayOptions = p_request.options;
 
-        if (!overlayOptions || !U.isInstanceOf(overlayOptions, OverlayOptions)) {
-            throw new Error(`Cannot build overlay without valid OverlayOptions.`);
+        if (!overlayOptions) { throw new Error(`Cannot build overlay without valid options.`); }
+
+        if (!U.isInstanceOf(overlayOptions, OverlayOptions)) {
+            let oOptions = POOL.Rent(OverlayOptions);
+            oOptions.options = overlayOptions;
+            overlayOptions = oOptions;
         }
 
         overlayOptions.request = p_request;

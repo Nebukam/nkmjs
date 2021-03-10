@@ -34,10 +34,10 @@ class BaseInput extends Widget {
 
         this._inputId = ``;
 
-        this._sizeEnum = new FlagEnum(UI_FLAG.sizes);
+        this._sizeEnum = new FlagEnum(UI_FLAG.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(UI_FLAG.flavors);
+        this._flavorEnum = new FlagEnum(UI_FLAG.flavors, true);
         this._flavorEnum.Add(this);
 
     }

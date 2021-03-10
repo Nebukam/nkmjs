@@ -38,14 +38,14 @@ class ResourceOperation extends DisposableObjectEx {
      * @type {io.core.IOType}
      * @customtag read-only
      */
-    get ioType(){ return this._ioType; }
+    get ioType() { return this._ioType; }
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    get fullPath(){ return this._fullPath; }
+    get fullPath() { return this._fullPath; }
 
     _Reset() {
         this._rsc = null; // Ressource
@@ -125,7 +125,14 @@ class ResourceOperation extends DisposableObjectEx {
     OnStart() {
         this._rsc._state.currentState = this._states.start;
         this._rsc._Broadcast(this._states.start.evt, this._rsc);
-        if (this._states.start.fn) { this._states.start.fn(); }
+        if (this._states.start.fn) {
+            try {
+                this._states.start.fn();
+            } catch (e) {
+                this.OnError(e);
+                return;
+            }
+        }
     }
 
     /**
@@ -146,7 +153,14 @@ class ResourceOperation extends DisposableObjectEx {
      * @param {*} p_progress 
      */
     OnProgress(p_progress) {
-        if (this._states.progress.fn) { this._states.progress.fn(); }
+        if (this._states.progress.fn) {
+            try {
+                this._states.progress.fn();
+            } catch (e) {
+                this.OnError(e);
+                return;
+            }
+        }
         this._rsc._state.currentState = this._states.progress.state;
         this._rsc._Broadcast(this._states.progress.evt, this._rsc, p_progress);
     }
@@ -155,7 +169,14 @@ class ResourceOperation extends DisposableObjectEx {
      * @description TODO
      */
     OnSuccess() {
-        if (this._states.success.fn) { this._states.success.fn(); }
+        if (this._states.success.fn) {
+            try {
+                this._states.success.fn();
+            } catch (e) {
+                this.OnError(e);
+                return;
+            }
+        }
         this._rsc._state.currentState = this._states.success.state;
         this._callbacks.OnSuccess(this._rsc).Clear();
         this._rsc._Broadcast(this._states.success.evt, this._rsc);

@@ -84,7 +84,7 @@ class ElectronBase {
         ipcMain.on(APP_MESSAGES.DO_RELOAD_APP, this._OnRequestReload);
 
     }
-
+    
     /**
      * @access protected
      * @description Bind the given function to this object and returns it.
@@ -104,7 +104,7 @@ class ElectronBase {
     _CreateMainWindow() {
 
         // Create main window
-        console.log(`ELECTRON-APP >> Create main window`);
+        console.log(`Create main window`);
 
         let winOptions = {
             id: WINDOWS.ID_MAIN,
@@ -156,7 +156,7 @@ class ElectronBase {
      */
     _Boot() {
 
-        console.log(`ELECTRON-APP >> Boot app`);
+        console.log(`Boot app`);
 
         // Compute style path
         let stylePath = this._constants.style ?  this._constants.style : `style`;
@@ -203,7 +203,12 @@ class ElectronBase {
         
     }
 
-    _OnRequestReload() { this._mainWindow.reload(); }
+
+    _OnRequestReload() {
+        console.log(`RELOAD_REQUEST`);
+        this._mainWindow.reload(); 
+        this._mainWindow.webContents.session.clearCache();
+    }
 
 
     // ----> Auto update handling

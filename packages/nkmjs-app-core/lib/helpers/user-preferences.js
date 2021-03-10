@@ -62,7 +62,7 @@ class UserPreferences extends DisposableObjectEx {
         this._Then();
     }
 
-    _OnDocumentLoadError() {
+    _OnDocumentLoadError(e) {
         this.Init();
     }
 

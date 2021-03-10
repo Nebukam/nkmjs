@@ -36,7 +36,7 @@ const FlagBox = require("./helpers/flag-box");
 class DisplayObject extends DisposableHTMLElement {
     constructor() { super(); }
 
-    
+
 
     // ----> Init
 
@@ -85,10 +85,10 @@ class DisplayObject extends DisposableHTMLElement {
      */
     get order() { return this._order; }
     set order(p_value) {
-        if(this._order === p_value){ return; }
+        if (this._order === p_value) { return; }
         this._order = p_value;
-        if(p_value === null){ this.style.removeProperty(`--order`); }
-        else{ this.style.setProperty(`--order`, p_value); }
+        if (p_value === null) { this.style.removeProperty(`--order`); }
+        else { this.style.setProperty(`--order`, p_value); }
     }
 
     /**
@@ -158,9 +158,9 @@ class DisplayObject extends DisposableHTMLElement {
      * @description TODO
      * @group Hierarchy
      */
-    BringToFront() { 
-        UDOM.ToFront(this); 
-        if(this._parent){ this._parent._displayList.ToEnd(this); }
+    BringToFront() {
+        UDOM.ToFront(this);
+        if (this._parent) { this._parent._displayList.ToEnd(this); }
     }
 
     // ----> Hierarchy
@@ -227,9 +227,15 @@ class DisplayObject extends DisposableHTMLElement {
     // ----> Request Handling
 
     /**
-     * @access private
+     * @access protected
      */
-    _EmitLocalRequest(p_requestType, p_options = null, p_onSuccess = null, p_onFail = null, p_timeout = 0, p_requestClass = Request) {
+    _EmitLocalRequest(
+        p_requestType,
+        p_options = null,
+        p_onSuccess = null,
+        p_onFail = null,
+        p_timeout = 0,
+        p_requestClass = Request) {
         this._HandleLocalRequest(Request.Emit(
             p_requestType,
             p_options,
@@ -239,6 +245,27 @@ class DisplayObject extends DisposableHTMLElement {
             p_timeout,
             p_requestClass,
             false));
+    }
+
+    /**
+     * @access protected
+     */
+    _EmitGlobalRequest(
+        p_requestType,
+        p_options = null,
+        p_onSuccess = null,
+        p_onFail = null,
+        p_timeout = 0,
+        p_requestClass = Request) {
+        Request.Emit(
+            p_requestType,
+            p_options,
+            this,
+            p_onSuccess,
+            p_onFail,
+            p_timeout,
+            p_requestClass,
+            true);
     }
 
     /**
@@ -304,7 +331,7 @@ class DisplayObject extends DisposableHTMLElement {
     get dirty() { return this._isTransformDirty; }
 
 
-    _DirtyTransform(){
+    _DirtyTransform() {
         if (this._isTransformDirty) { return; }
         this._isTransformDirty = true;
         UI.AddDirty(this);

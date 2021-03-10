@@ -67,7 +67,7 @@ class Shelf extends View {
 
         this._flags.Add(this, UI_FLAG.FIXED_SIZE);
 
-        this._navPlacement = new FlagEnum(UI_FLAG.placement);
+        this._navPlacement = new FlagEnum(UI_FLAG.placement, true);
         this._navPlacement.Add(this);
         this._navPlacement.onFlagChanged.Add(this._Bind(this._OnNavPlacementChanged));
 

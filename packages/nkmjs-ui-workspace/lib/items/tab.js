@@ -7,7 +7,7 @@ const { CSS } = require(`@nkmjs/style`);
 const { DATA_SIGNAL, DataObserver, CATALOG_SIGNAL } = require(`@nkmjs/data-core`);
 const { UI_ID, UI, MOUSE, UI_SIGNAL, Widget, DOMTemplate, ExtMouse, UI_FLAG, FlagEnum, ImageManipulator, TextManipulator, CatalogWidget } = require(`@nkmjs/ui-core`);
 
-const TPLFacadeTab = require(`../templates/tpl-facade-tab`);
+const { TPLFacadeTab } = require(`../templates`);
 
 class Tab extends CatalogWidget {
     constructor() { super(); }

@@ -4,7 +4,9 @@ const { U, UDOM } = require(`@nkmjs/utils`);
 const { COMMON_FLAG } = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 const { Catalog } = require(`@nkmjs/data-core`);
-const { UI_ID, UI, UI_FLAG, View, DOMTemplate, TPLHeaderBodyFooter } = require(`@nkmjs/ui-core`);
+const uicore = require(`@nkmjs/ui-core`);
+const { UI_ID, UI, UI_FLAG, View, DOMTemplate } = uicore;
+const { TPLHeaderBodyFooter } = uicore.templates;
 
 const InspectorShell = require(`../inspectors/inspector-shell`);
 const HistoryInspectorShell = require(`../inspectors/history-inspector-shell`);

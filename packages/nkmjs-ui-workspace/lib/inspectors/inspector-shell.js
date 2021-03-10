@@ -10,7 +10,9 @@
 const { U } = require(`@nkmjs/utils`);
 const { NFOS, BINDINGS } = require(`@nkmjs/common`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const { UI_ID, UI, UI_FLAG, View, DOMTemplate, TPLBodyHeaderTitles } = require(`@nkmjs/ui-core`);
+const uicore = require(`@nkmjs/ui-core`);
+const { UI_ID, UI, UI_FLAG, View, DOMTemplate } = uicore;
+const { TPLBodyHeaderTitles } = uicore.templates;
 
 const WORKSPACE_CONTEXT = require(`../workspace-context`);
 

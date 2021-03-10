@@ -26,7 +26,7 @@ class UIItem extends DisplayObjectContainer {
         return CSS.Extends({
             ':host': {
                 transition: 'all 0.10s ease',
-                opacity: 0,
+                //opacity: 0,
                 margin: `5px`,
                 padding: `5px`,
                 border: `1px solid #ffffff10`,
@@ -63,7 +63,7 @@ class UIItem extends DisplayObjectContainer {
     }
 
     _OnPaintChange(p_value) {
-        this.style.opacity = this._isPainted ? 1 : 0;
+        //this.style.opacity = this._isPainted ? 1 : 0;
     }
 
     _Render() {

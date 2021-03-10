@@ -63,13 +63,13 @@ class ButtonBase extends Widget {
 
         this._flags.Add(this, UI_FLAG.TOGGLED);
 
-        this._sizeEnum = new FlagEnum(UI_FLAG.sizes);
+        this._sizeEnum = new FlagEnum(UI_FLAG.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(UI_FLAG.flavors);
+        this._flavorEnum = new FlagEnum(UI_FLAG.flavors, true);
         this._flavorEnum.Add(this);
 
-        this._variantEnum = new FlagEnum(UI_FLAG.variants);
+        this._variantEnum = new FlagEnum(UI_FLAG.variants, true);
         this._variantEnum.Add(this);
 
         this._optionsHandler = new OptionsHandler(null, this._Bind(this._OnOptionsWillUpdate));
