@@ -24,12 +24,30 @@
         background-color:%app.colorTheme%;
         overflow: hidden;
     }
+
+    #__loading__ 
+    {
+        padding:0;
+        margin:0;
+        position:absolute;
+        width:100%;
+        height:100%;
+        z-index:99999;
+    }
+
+    @keyframes __loading__fadeOut 
+    {
+        to {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
 </style>
 
 </head>
 
 <body>
-<!-- SHOULD INCLUDE HARD-CODED LOADING STUFF FOR PWA -->
+<div id="__loading__">%html-loading%</div>
 %html-scripts%
 %html-noscript%
 </body>

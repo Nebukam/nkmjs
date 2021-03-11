@@ -40,6 +40,8 @@ class AppBase extends SingletonEx {
 
     constructor() { super(); }
 
+    static __loading_cssAnimationOut = `__loading__fadeOut`;
+
     _Init() {
 
         super._Init();
@@ -70,6 +72,11 @@ class AppBase extends SingletonEx {
 
 
         ENV.FEATURES.Watch(ENV_SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
+
+        let loadingDiv = document.getElementById(`__loading__`);
+        if(loadingDiv && ENV.ARGV.Has(`no-loading`)){
+            UDOM.Detach(loadingDiv);
+        }
 
     }
 
@@ -194,6 +201,16 @@ class AppBase extends SingletonEx {
         this.AppReady();
 
         LOG._(`${this._APPID} : READY`, `#030107`, `#339a6e`);
+
+        // Loading container
+
+        let loadingDiv = document.getElementById(`__loading__`);
+        if(loadingDiv){ 
+            loadingDiv.addEventListener(`animationend`, (p_evt) =>{
+                UDOM.Detach(p_evt.target);
+            });
+            loadingDiv.style.animation = `${this.constructor.__loading_cssAnimationOut} 150ms 500ms ease-in`;
+        }
 
     }
 

@@ -9,7 +9,8 @@
         "display": "standalone",
         "orientation": "portrait",
         "colorTheme": "#1e1e1e",
-        "theme": "default"
+        "theme": "default",
+        "loading": "%dirs.app%/loading.html"
     },
     "extension": {
         "display": "standalone"

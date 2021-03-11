@@ -25,6 +25,7 @@ class Widget extends DisplayObjectContainer {
 
     static __NFO__ = { css: [`@/common.css`] }
 
+    static __fouc_hidden = true;
     static __usePaintCallback = true;
 
     static __default_iState = UI_FLAG.IDLE;

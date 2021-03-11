@@ -14,6 +14,7 @@ class TaskBuildPWAHTML extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
+            `./task-prepare-html-loading`, // Loading
             `./task-prepare-html-metas`, // Metas
             `./task-prepare-html-socials`, // OpenGraph, Twitter, etc
             `./task-prepare-html-scripts`, // Scripts
@@ -31,6 +32,7 @@ class TaskBuildPWAHTML extends ScriptBase {
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
                 {
+                    [`html-loading`]: NKMjs.Get(`html-loading`, ``),
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-socials`]: NKMjs.Get(`html-socials`, ``),
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),

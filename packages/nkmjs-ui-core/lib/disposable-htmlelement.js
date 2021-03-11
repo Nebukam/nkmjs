@@ -53,8 +53,11 @@ let uinc = 0;
  */
 class DisposableHTMLElement extends HTMLElement {
 
+    static __fouc_hidden = false;
+
     constructor() {
         super();
+        if(this.constructor.__fouc_hidden){ this.style.visibility = `hidden`; }
         this._Init();
         this._PostInit();
     }

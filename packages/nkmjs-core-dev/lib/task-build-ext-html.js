@@ -14,6 +14,7 @@ class TaskBuildExtHTML extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
+            `./task-prepare-html-loading`, // Loading
             `./task-prepare-html-metas`, // Metas
             `./task-prepare-html-scripts`, // Scripts
             `./task-prepare-html-preloads`, // Preloads
@@ -31,6 +32,7 @@ class TaskBuildExtHTML extends ScriptBase {
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
                 {
+                    [`html-loading`]: NKMjs.Get(`html-loading`, ``),
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-preloads`]: NKMjs.Get(`html-preloads`, ``),
                     [`html-metrics`]: NKMjs.Get(`html-metrics`, ``),
