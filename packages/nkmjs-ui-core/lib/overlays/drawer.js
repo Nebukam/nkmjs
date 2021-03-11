@@ -13,11 +13,12 @@ const UI_FLAG = require(`../ui-flag`);
 const View = require(`../views/view`);
 const CatalogViewBuilder = require("../helpers/catalog-view-builder");
 const FlagEnum = require(`../helpers/flag-enum`);
-const { OverlayOptions } = require("../overlays");
 const DOMTemplate = require(`../dom-template`);
 const { ExtMouse } = require("../extensions");
 const MOUSE = require("../mouse");
 const templates = require(`../templates`);
+
+const OverlayOptions = require("./overlay-options");
 
 /**
  * @description TODO

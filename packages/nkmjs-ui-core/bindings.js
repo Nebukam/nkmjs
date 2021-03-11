@@ -1,9 +1,8 @@
 'use strict';
 
 const { BindingKit } = require(`@nkmjs/common`);
-const { OVERLAY_CONTEXT, OverlayOptions, Overlay } = require(`./lib/overlays`);
+const { OVERLAY_CONTEXT, OverlayOptions, Overlay, Drawer, DrawerOverlay } = require(`./lib/overlays`);
 const { UI_REQUEST } = require(".");
-const { Drawer, DrawerOverlay } = require("./lib/drawers");
 
 class Bindings extends BindingKit {
     constructor() { super(); }
@@ -12,14 +11,14 @@ class Bindings extends BindingKit {
 
         this.Add(
             {
-                context: OVERLAY_CONTEXT.DEFAULT_OVERLAY,
+                context: OVERLAY_CONTEXT.OVERLAY,
                 kvps: [
                     { key: UI_REQUEST.OVERLAY, binding: Overlay },
                     { key: UI_REQUEST.DRAWER, binding: DrawerOverlay }
                 ]
             },
             {
-                context: OVERLAY_CONTEXT.DEFAULT_CONTENT,
+                context: OVERLAY_CONTEXT.CONTENT,
                 kvps: [
                     { key: UI_REQUEST.DRAWER, binding: Drawer }
                 ]

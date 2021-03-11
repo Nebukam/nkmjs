@@ -3,20 +3,28 @@
 const { CSYMBOL } = require(`@nkmjs/common`);
 
 /**
- * OVERLAY_LAYER Context
+ * DEFAULT_OVERLAY Context
  * @class
  * @memberof data.core.serialization
  */
-class DEFAULT_OVERLAY extends CSYMBOL{ constructor() { super(); } }
+class OVERLAY extends CSYMBOL{ constructor() { super(); } }
 
 /**
- * OVERLAY_CONTENT Context
+ * DEFAULT_CONTENT Context
  * @class
  * @memberof data.core.serialization
  */
-class DEFAULT_CONTENT extends CSYMBOL{ constructor() { super(); } }
+class CONTENT extends CSYMBOL{ constructor() { super(); } }
+
+/**
+ * DEFAULT_DRAWER Context
+ * @class
+ * @memberof data.core.serialization
+ */
+ class DRAWER extends CSYMBOL{ constructor() { super(); } }
 
 module.exports = {
-    DEFAULT_OVERLAY:DEFAULT_OVERLAY,
-    DEFAULT_CONTENT:DEFAULT_CONTENT
+    OVERLAY:OVERLAY,
+    CONTENT:CONTENT,
+    DRAWER:DRAWER,
 };

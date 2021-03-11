@@ -57,7 +57,6 @@ class DisposableHTMLElement extends HTMLElement {
 
     constructor() {
         super();
-        if(this.constructor.__fouc_hidden){ this.style.visibility = `hidden`; }
         this._Init();
         this._PostInit();
     }

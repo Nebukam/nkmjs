@@ -14,6 +14,7 @@ class TaskBuildExtHTML extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
+            `./task-prepare-all-icons`, // Icons
             `./task-prepare-html-loading`, // Loading
             `./task-prepare-html-metas`, // Metas
             `./task-prepare-html-scripts`, // Scripts
@@ -38,7 +39,7 @@ class TaskBuildExtHTML extends ScriptBase {
                     [`html-metrics`]: NKMjs.Get(`html-metrics`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
                     [`html-noscript`]: NKMjs.Get(`html-noscript`, ``),
-                    [`html-webmanifest`]: ``,
+                    [`html-webmanifest`]: NKMjs.Get(`html-icons`, ``), // Icons only
                     [`html-socials`]: ``
                 }),
             templateContent = replacer.Replace(

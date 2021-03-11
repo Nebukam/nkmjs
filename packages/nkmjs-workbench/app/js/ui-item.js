@@ -25,7 +25,6 @@ class UIItem extends DisplayObjectContainer {
     _Style() {
         return CSS.Extends({
             ':host': {
-                transition: 'all 0.10s ease',
                 //opacity: 0,
                 margin: `5px`,
                 padding: `5px`,

@@ -73,7 +73,7 @@ class OverlayHandler extends LayerContainer {
         this.visible = true;
 
         let fallbackOverlayClass = BINDINGS.Get(
-            OVERLAY_CONTEXT.DEFAULT_OVERLAY,
+            OVERLAY_CONTEXT.OVERLAY,
             p_request.requestType,
             this.constructor.__default_overlayClass);
 

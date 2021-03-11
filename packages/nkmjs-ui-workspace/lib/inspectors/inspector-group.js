@@ -78,7 +78,6 @@ class InspectorGroup extends InspectorItem {
                 flex: `0 1 auto`,
             },
             '.toolbar': {
-                transition: `all 0.3s ease`,
                 flex: `0 0 auto`,
                 opacity: 0,
             },

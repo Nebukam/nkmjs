@@ -221,9 +221,12 @@ class ButtonBase extends Widget {
 
     _OnRippleAnimationEnd(p_evt) {
         let ripple = p_evt.target;
-        console.log(p_evt);
         ripple.removeEventListener('animationend', this._OnRippleAnimationEnd);
         UDOM.Detach(ripple);
+        if(!this._rippleWrapper.hasChildNodes()){
+            UDOM.Detach(this._rippleWrapper);
+            this._rippleWrapper = null;
+        }
     }
 
     // ----> Options handling
@@ -424,7 +427,7 @@ class ButtonBase extends Widget {
 
     _CleanUp() {
 
-        if(this._rippleWrapper){
+        if (this._rippleWrapper) {
             UDOM.Detach(this._rippleWrapper);
             this._rippleWrapper = null;
         }

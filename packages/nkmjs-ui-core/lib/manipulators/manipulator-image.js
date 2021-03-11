@@ -34,7 +34,7 @@ class ImageManipulator extends BaseManipulator {
     _Update(p_element, p_value) {
 
         if (U.isVoid(p_value)) {
-            p_element.style.removeProperty(`backgroundImage`);
+            this._ApplyPath(p_element, false);
             return false;
         } else {
 
@@ -50,12 +50,20 @@ class ImageManipulator extends BaseManipulator {
 
             path = PATH.FULL(path);
 
-            p_element.style.backgroundImage = `url(${path})`;
+            this._ApplyPath(p_element, path);
 
             return true;
 
         }
 
+    }
+
+    _ApplyPath(p_element, p_path = false){
+        if(!p_path){
+            p_element.style.removeProperty(`backgroundImage`);
+        }else{
+            p_element.style.backgroundImage = `url(${p_path})`;
+        }
     }
 
 }

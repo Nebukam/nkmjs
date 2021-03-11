@@ -196,7 +196,10 @@ class Request extends com.pool.DisposableObject {
     }
 
     toString() {
-        return `!${this.constructor.name}:${this._requestType},${this._emitter}`;
+        let type = `toString` in this._requestType ? this._requestType.toString() : this._requestType,
+            from = this._emitter ? this._emitter.constructor.name : `---`;
+            
+        return `${type} (from '${from}')`;
     }
 
 }

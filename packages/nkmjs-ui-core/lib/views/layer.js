@@ -27,10 +27,12 @@ class Layer extends View {
     set layerSiblingsCount(p_value) { this._layerSiblingsCount = p_value; }
 
     get layerIndex() { return this._layerIndex; }
-    set layerIndex(p_value) { this._layerIndex = p_value; }
+    set layerIndex(p_value) { 
+        this._layerIndex = p_value; 
+        this.style.setProperty(`--layer-depth`, p_value);
+    }
 
     get isBackLayer() { return this._layerIndex == 0; }
-
     get isFrontLayer() { return this._layerIndex == this._layerSiblingsCount - 1; }
 
     // ----> DOM
@@ -47,8 +49,8 @@ class Layer extends View {
     // ----> Pooling
 
     _CleanUp() {
-        this._layerIndex = 0;
-        this._layerSiblingsCount = 0;
+        this.layerIndex = 0;
+        this.layerSiblingsCount = 0;
         super._CleanUp();
     }
 

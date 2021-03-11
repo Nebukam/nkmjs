@@ -32,7 +32,7 @@ class TaskBuildElectronHTML extends ScriptBase {
                     [`html-loading`]: NKMjs.Get(`html-loading`, ``),
                     [`html-metas`]: NKMjs.Get(`html-metas`, ``),
                     [`html-metrics`]: NKMjs.Get(`html-metrics`, ``),
-                    [`html-preloads`]: ``, //NKMjs.Get(`html-electron-preloads`, ``),
+                    [`html-preloads`]: NKMjs.Get(`html-electron-preloads`, ``),
                     [`html-socials`]: ``,
                     [`html-webmanifest`]: ``,
                     [`html-scripts`]: ``,

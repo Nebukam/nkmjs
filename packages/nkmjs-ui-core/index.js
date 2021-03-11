@@ -61,12 +61,11 @@ module.exports = {
     OverlayOptions: require(`./lib/overlays/overlay-options`),
     Overlay: require(`./lib/overlays/overlay`),
     OverlayHandler: require(`./lib/overlays/overlay-handler`),
+    Drawer: require(`./lib/overlays/drawer`),
+    DrawerOverlay: require(`./lib/overlays/drawer-overlay`),
+
     OVERLAY_CONTEXT: require(`./lib/overlays/overlay-context`),
 
-    // Drawers
-
-    Drawer: require(`./lib/drawers/drawer`),
-    DrawerOverlay: require(`./lib/drawers/drawer-overlay`),
 
     // Manipulators
 

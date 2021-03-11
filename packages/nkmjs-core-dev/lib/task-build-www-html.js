@@ -14,6 +14,7 @@ class TaskBuildWWWHTML extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
+            `./task-prepare-all-icons`, // Icons
             `./task-prepare-html-loading`, // Loading
             `./task-prepare-html-metas`, // Metas
             `./task-prepare-html-socials`, // OpenGraph, Twitter, etc
@@ -27,6 +28,8 @@ class TaskBuildWWWHTML extends ScriptBase {
 
     OnPreparationComplete() {
 
+        let htmlIcons = `<link rel="icon" sizes="128x128" href="icons/128x128.png"></link>`;
+
         let htmlEntry = NKMjs.InWWWBuildRsc(NKMjs.HTML_INDEX),
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
@@ -38,7 +41,7 @@ class TaskBuildWWWHTML extends ScriptBase {
                     [`html-metrics`]: NKMjs.Get(`html-metrics`, ``),
                     [`html-scripts`]: NKMjs.Get(`html-scripts`, ``),
                     [`html-noscript`]: NKMjs.Get(`html-noscript`, ``),
-                    [`html-webmanifest`]: ``,
+                    [`html-webmanifest`]: NKMjs.Get(`html-icons`, ``), //only icons
                 }
             ),
             templateContent = replacer.Replace(

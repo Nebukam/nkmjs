@@ -30,7 +30,6 @@ class Frame extends DisplayObject {
     _Style() {
         return {
             ':host': {
-                transition: `all 0.15s ease`,
                 position: `relative`,
                 'min-width': 0,
                 '@': ['cover']

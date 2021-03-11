@@ -29,6 +29,7 @@ class Overlay extends Layer {
 
     static __default_overlayContentClass = null;
     static __default_contentPlacement = null;
+    static __content_context = OVERLAY_CONTEXT.CONTENT;
 
     _Init() {
         super._Init();
@@ -47,7 +48,7 @@ class Overlay extends Layer {
         this._optionsHandler.Hook(`orientation`);
         this._optionsHandler.Hook(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement);
         this._optionsHandler.Hook(`flavor`, `contentFlavor`);
-        
+
     }
 
     // ----> DOM
@@ -57,26 +58,26 @@ class Overlay extends Layer {
         // when an overlay is created for the first time
         super._OnPaintChange();
         if (this._isPainted) {
-            if(this._isFirstPaint){
+            if (this._isFirstPaint) {
                 this._bg.style.setProperty(`--__click_offset`, `0%`);
-            }   
+            }
         }
     }
 
-    _Style(){
+    _Style() {
         return CSS.Extends({
-            '.bg':{
+            '.bg': {
                 '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box
-                '--__click_offset':'-100%',
-                'transform':'translateX(var(--__click_offset))',
-                'transition':'transform 0s linear'
+                '--__click_offset': '-100%',
+                'transform': 'translateX(var(--__click_offset))',
+                'transition': 'transform 0s linear'
             }
         }, super._Style());
     }
 
-    _Render(){
+    _Render() {
         super._Render();
-        this._bg = UDOM.New(`div`, {class:`bg`}, this);
+        this._bg = UDOM.New(`div`, { class: `bg` }, this);
         this._closeBg.element = this._bg;
     }
 
@@ -158,23 +159,51 @@ class Overlay extends Layer {
             throw new Error(`Overlay expect data of type OverlayOptions, got ${this._data.constructor.name} instead.`);
         }
 
-        let fallbackContentClass = BINDINGS.Get(
-            OVERLAY_CONTEXT.DEFAULT_CONTENT,
-            this._data.request.requestType,
-            this.constructor.__default_overlayContentClass);
-
-        let contentClass = this._data.GetOption(`contentClass`, fallbackContentClass);
+        let contentData = this._ExtractData(this._data),
+            contentClass = this._FindContentClass(this._data, contentData);
 
         if (!contentClass) {
             throw new Error(`Invalid overlay contentClass : ${contentClass}`);
         }
 
         this._content = this.Add(contentClass, 'content');
-        this._content.data = this._ExtractData(this._data);
+        this._content.data = contentData;
 
         // Feed data as options once the content is ready
         this.options = this._data.options;
 
+    }
+
+    _FindContentClass(p_overlayData, p_contentData) {
+
+        let contentClass = p_overlayData.GetOption(`contentClass`, null);
+
+        // In case there is no user-defined content class
+        // look for a default one
+        if (!contentClass) {
+
+            // First, check if any content is bound to the requestType
+            contentClass = BINDINGS.Get(
+                OVERLAY_CONTEXT.CONTENT,
+                p_overlayData.request.requestType,
+                null);
+
+            // Fall back to contentData association if any
+            if (p_contentData && !contentClass) {
+                contentClass = BINDINGS.Get(
+                    OVERLAY_CONTEXT.CONTENT,
+                    p_contentData,
+                    null);
+            }
+
+            // Fall back to static default
+            if (!contentClass) {
+                contentClass = this.constructor.__default_overlayContentClass;
+            }
+        }
+
+        // Override with any user-defined contentClass.
+        return contentClass;
     }
 
     /**
@@ -188,12 +217,11 @@ class Overlay extends Layer {
         return p_overlayOptions;
     }
 
-    _CloseRequest(){
-        console.log(`close request in overlay`);
-        this._content._CloseRequest();
+    _CloseRequest() {
+        if (`_CloseRequest` in this._content) { this._content._CloseRequest(); }
     }
 
-    DisplayGranted(){
+    DisplayGranted() {
         super.DisplayGranted();
         this.classList.add(UI_FLAG.SHOWN);
     }
@@ -207,7 +235,7 @@ class Overlay extends Layer {
 
     }
 
-    _CleanUp(){
+    _CleanUp() {
         this.classList.remove(UI_FLAG.SHOWN);
         super._CleanUp();
     }

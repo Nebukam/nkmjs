@@ -15,7 +15,6 @@
 
 :host{
     order: var(--order);
-    visibility: visible !important;
 }
 
 @include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) 
@@ -69,6 +68,18 @@ using ($index, $val){
         margin:0;
     }
 
+}
+
+img.icon{
+
+    &#main{
+        fill: var(--flavor_contrast) !important;
+    }
+
+    &#accent{
+        fill: var(--flavor_color) !important;
+    }
+    
 }
 
 div.icon{

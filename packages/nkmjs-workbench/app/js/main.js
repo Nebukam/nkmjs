@@ -179,7 +179,7 @@ class StyleguideApp extends AppBase {
         }
 
         // Dialog push
-        setTimeout(this._Dialog, 500);
+        //setTimeout(this._Dialog, 500);
 
         // Generate overlay request
         //setTimeout(this._Bind(this._Overlay), 1000);
@@ -191,7 +191,8 @@ class StyleguideApp extends AppBase {
             actions:[
                 { label:`Open Drawer`, trigger:{ fn:this._Overlay, thisArg:this } },
                 { label:`Close` }
-            ]
+            ],
+            origin:this
         });
     }
 
@@ -211,7 +212,7 @@ class StyleguideApp extends AppBase {
 
         opts.title = `Drawer Title`;
 
-        Request.Emit(UI_REQUEST.DRAWER, opts);
+        Request.Emit(UI_REQUEST.DRAWER, opts, this);
     }
 
 

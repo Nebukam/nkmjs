@@ -14,8 +14,7 @@ class TaskBuildWebmanifest extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.Run([
-            `./task-prepare-icons`,
-            `./task-prepare-icons-maskable`
+            `./task-prepare-all-icons`
         ], this._Bind(this.OnPreparationComplete));
 
     }
@@ -27,8 +26,7 @@ class TaskBuildWebmanifest extends ScriptBase {
             iconList = NKMjs.Get(`icon-list`, []),
             maskableIconList = NKMjs.Get(`icon-list-maskable`, []),
             iconsArray = [],
-            htmlHeader = ``,
-            lastSize = `512x512`;
+            htmlHeader = ``;
 
         htmlHeader += `<!-- Webmanifest -->\n`;
         htmlHeader += `<link rel="manifest" href="manifest.webmanifest">\n`;
@@ -36,13 +34,12 @@ class TaskBuildWebmanifest extends ScriptBase {
         htmlHeader += `<!-- Fallback application metadata for legacy browsers -->\n`;
         htmlHeader += `<meta name="application-name" content="${projectInfos.shortName}">\n`;
 
+        htmlHeader += NKMjs.Get(`html-icon-pwa`, ``);
+
         // any-purpose icons
         for (let i = 0, n = iconList.length; i < n; i++) {
             let icon = iconList[i],
                 s = `${icon.size}x${icon.size}`;
-
-            // Don't link big pngs.
-            if(icon.size <= 128){ htmlHeader += `<link rel="icon" sizes="${s}" href="icons/${s}.png"></link>\n`; }
 
             iconsArray.push({
                 src: `icons/${s}.png`,
@@ -50,8 +47,6 @@ class TaskBuildWebmanifest extends ScriptBase {
                 type: `image/png`,
                 purpose: `any`
             });
-
-            lastSize = s;
 
         }
 
@@ -67,12 +62,7 @@ class TaskBuildWebmanifest extends ScriptBase {
                 purpose: `maskable`
             });
 
-            lastSize = s;
-
         }
-
-        // Apple touch icon should use maskable
-        htmlHeader += `<link rel="apple-touch-icon" href="icons/${lastSize}-maskable.png">`;
 
         // TODO : Maskable icons : https://web.dev/maskable-icon-audit/?utm_source=lighthouse&utm_medium=devtools
 

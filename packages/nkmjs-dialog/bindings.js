@@ -16,13 +16,13 @@ class Bindings extends BindingKit {
 
         this.Add(
             {
-                context: OVERLAY_CONTEXT.DEFAULT_OVERLAY,
+                context: OVERLAY_CONTEXT.OVERLAY,
                 kvps: [
                     { key: ACTION_REQUEST.DIALOG, binding: DialogOverlay }
                 ]
             },
             {
-                context: OVERLAY_CONTEXT.DEFAULT_CONTENT,
+                context: OVERLAY_CONTEXT.CONTENT,
                 kvps: [
                     { key: ACTION_REQUEST.DIALOG, binding: DialogBox }
                 ]

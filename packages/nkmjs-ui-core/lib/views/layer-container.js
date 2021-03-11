@@ -9,6 +9,8 @@ const UI = require(`../ui`);
 const UI_SIGNAL = require(`../ui-signal`);
 const Layer = require(`./layer`);
 
+const __className_topLayer = `layer-top`;
+const __className_subLayer = `layer-covered`;
 
 /**
  * @description TODO
@@ -48,20 +50,24 @@ class LayerContainer extends Layer {
 
     _OnChildAdded(p_displayObject, p_index) {
         super._OnChildAdded(p_displayObject, p_index);
-        if (U.isInstanceOf(p_displayObject, Layer)) {
-            this._layerList.Add(p_displayObject);
-            p_displayObject.classList.add(this._layerClassName);
-            p_displayObject.Watch(UI_SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
+        let layer = U.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
+        if (layer) {
+            this._layerList.Add(layer);
+            layer.classList.add(this._layerClassName);
+            layer.Watch(UI_SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }
     }
 
     _OnChildRemoved(p_displayObject, p_index) {
         super._OnChildRemoved(p_displayObject, p_index);
-        if (U.isInstanceOf(p_displayObject, Layer)) {
-            this._layerList.Remove(p_displayObject);
-            p_displayObject.classList.remove(this._layerClassName);
-            p_displayObject.Unwatch(UI_SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
+        let layer = U.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
+        if (layer) {
+            this._layerList.Remove(layer);
+            layer.classList.remove(this._layerClassName);
+            layer.classList.remove(__className_topLayer);
+            layer.classList.remove(__className_subLayer);
+            layer.Unwatch(UI_SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }
     }
@@ -84,9 +90,16 @@ class LayerContainer extends Layer {
             lastLayer = layer;
             layer.layerSiblingsCount = layerCount;
             layer.layerIndex = index++;
-        }
 
-        if (lastLayer) { lastLayer.DisplayGranted(); }
+            if (i == (layerCount - 1)) { // last layer
+                layer.classList.remove(__className_subLayer);
+                layer.classList.add(__className_topLayer);
+                layer.DisplayGranted();
+            } else {
+                layer.classList.remove(__className_subLayer);
+                layer.classList.add(__className_topLayer);
+            }
+        }
 
         return lastLayer;
 

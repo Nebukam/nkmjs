@@ -4,7 +4,7 @@ const { NFOS } = require(`@nkmjs/common`);
 const { CSS } = require(`@nkmjs/style`);
 
 const UI = require(`../ui`);
-const Overlay = require(`../overlays/overlay`);
+const Overlay = require(`./overlay`);
 const UI_FLAG = require(`../ui-flag`);
 
 class DrawerOverlay extends Overlay {

@@ -73,9 +73,9 @@ class AppBase extends SingletonEx {
 
         ENV.FEATURES.Watch(ENV_SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
 
-        let loadingDiv = document.getElementById(`__loading__`);
-        if(loadingDiv && ENV.ARGV.Has(`no-loading`)){
-            UDOM.Detach(loadingDiv);
+        this._loadingOverlay = document.getElementById(`__loading__`);
+        if (this._loadingOverlay && ENV.ARGV.Has(`no-loading`)) {
+            UDOM.Detach(this._loadingOverlay);
         }
 
     }
@@ -161,8 +161,8 @@ class AppBase extends SingletonEx {
      * Called by once the environment when the DOM
      * readyState === complete, after SetUp has been called.
      */
-    _InternalStart(){
-        if(ENV.ARGV.Has(`no-start`)){ return; }
+    _InternalStart() {
+        if (ENV.ARGV.Has(`no-start`)) { return; }
         setTimeout(this._Bind(this.Start), 1000);
     }
 
@@ -204,12 +204,19 @@ class AppBase extends SingletonEx {
 
         // Loading container
 
-        let loadingDiv = document.getElementById(`__loading__`);
-        if(loadingDiv){ 
-            loadingDiv.addEventListener(`animationend`, (p_evt) =>{
+        if (this._loadingOverlay) {
+            
+            this._loadingOverlay.addEventListener(`animationend`, (p_evt) => {
                 UDOM.Detach(p_evt.target);
             });
-            loadingDiv.style.animation = `${this.constructor.__loading_cssAnimationOut} 150ms 500ms ease-in`;
+            
+            let delay = `50ms`,
+                duration = `250ms`,
+                transition = `cubic-bezier(0.885, 0.025, 0.960, 0.030)`,
+                name = this.constructor.__loading_cssAnimationOut;
+
+            this._loadingOverlay.style.animation = `${name} ${delay} ${duration} ${transition}`;
+            
         }
 
     }

@@ -19,6 +19,7 @@ class TaskBuildWWW extends ScriptBase {
         this._Bind(this.Entry);
 
         this.Run([
+            `./task-prepare-all-icons`,
             `./task-build-shared-resources`,
             `./task-bundle-main-www`,
             `./task-build-www-html`,
@@ -36,6 +37,7 @@ class TaskBuildWWW extends ScriptBase {
         
         new DirCopy(NKMjs.InSharedWebBuildRsc(), output, { 'any': this.Entry });
         new DirCopy(NKMjs.InWWWBuildRsc(), output, { 'any': this.Entry });
+        new DirCopy(NKMjs.InBuildRsc(`icons`), path.resolve(output, `icons`), { 'any': this.Entry });
 
         this.End();
     }
