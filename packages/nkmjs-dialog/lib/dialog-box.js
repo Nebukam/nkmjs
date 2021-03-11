@@ -135,7 +135,6 @@ class DialogBox extends Widget {
      * @param {array} p_actions 
      */
     SetActions(p_actions = null) {
-        console.log(`SetActions : ${typeof p_actions}`);
         if (p_actions) {
             // Create handles as specified
             for (let i = 0, n = p_actions.length; i < n; i++) {

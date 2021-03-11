@@ -75,7 +75,10 @@
             #{nth($col_flavors_ex_varnames, $i + 1)}: nth($col_flavors_ex, $i + 1);
         }
     }
-}/*
+}
+
+@include scrollbar("", 4px);
+@include scrollbar(":host", 4px);/*
 
     MAIN.SCSS
     CSS Variable declarations.

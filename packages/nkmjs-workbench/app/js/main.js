@@ -9,12 +9,11 @@ const { DIALOG, DialogBox, DialogHandler } = NKMjs.dialog;
 const { InputBase } = NKMjs.inputs;
 const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = NKMjs.workspace;
 const { ID, DataBlock, Catalog, CatalogItem } = NKMjs.data;
-const { UI, Layer, ButtonBase, UI_FLAG, Toolbar, View, PopIn, Shelf, TreeItem, ShelfNav, OverlayOptions } = NKMjs.ui;
+const { UI, Layer, ButtonBase, UI_FLAG, UI_REQUEST, Toolbar, View, PopIn, Shelf, TreeItem, ShelfNav, OverlayOptions } = NKMjs.ui;
 
 const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
 const TestWidget = require(`./test-widget`);
-const { UI_REQUEST } = require("../../../nkmjs-app-core/node_modules/@nkmjs/ui-core");
 
 
 
@@ -26,6 +25,9 @@ class StyleguideApp extends AppBase {
         super._Init();
         this._mainContainer = null;
 
+        this._Bind(this._Dialog);
+        this._Bind(this._Overlay);
+
         this._layers = [
             { id: `_mainContainer`, cl: UIItemListLayer }
         ];
@@ -35,10 +37,10 @@ class StyleguideApp extends AppBase {
         ]
 
         this._buttonConfigs = [
-            { htitle: `htitle A text`, label: 'Label A', trigger: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, variant: UI_FLAG.FRAME },
+            { htitle: `htitle A text`, label: 'Overlay', trigger: { fn: this._Overlay }, variant: UI_FLAG.FRAME },
             { htitle: `htitle B text`, group: 'A', label: 'Label B', toggle: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, flavor: COMMON_FLAG.WARNING },
             { htitle: `htitle C text`, group: 'A', icon: '_', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF } },
-            { htitle: `htitle D text`, label: 'Label D', trigger: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, flavor: UI_FLAG.CTA },
+            { htitle: `htitle D text`, label: 'Popup', trigger: { fn: this._Dialog }, flavor: UI_FLAG.CTA },
             { htitle: `htitle E text`, icon: '_', trigger: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.WARNING }
         ];
 
@@ -177,24 +179,39 @@ class StyleguideApp extends AppBase {
         }
 
         // Dialog push
-        setTimeout(this._Bind(this._Dialog), 500);
+        setTimeout(this._Dialog, 500);
 
         // Generate overlay request
-        setTimeout(this._Bind(this._Overlay), 1000);
+        //setTimeout(this._Bind(this._Overlay), 1000);
     }
 
     _Dialog(){
         DIALOG.Push({
-            title:`Welcome to the NKMjs Workbench`
+            title:`Welcome to the NKMjs Workbench`,
+            actions:[
+                { label:`Open Drawer`, trigger:{ fn:this._Overlay, thisArg:this } },
+                { label:`Close` }
+            ]
         });
     }
 
     _Overlay(){
-        Request.Emit(UI_REQUEST.DRAWER,{
-            title:`My drawer, bruh`,
-            orientation:UI_FLAG.VERTICAL,
-            placement:UI_FLAG.BOTTOM
-        });
+
+        if(!this._drawerOptions){
+            this._drawerOptions = [
+                { orientation:UI_FLAG.VERTICAL, placement:UI_FLAG.BOTTOM },
+                { orientation:UI_FLAG.HORIZONTAL, placement:UI_FLAG.LEFT },
+                { orientation:UI_FLAG.VERTICAL, placement:UI_FLAG.TOP },
+                { orientation:UI_FLAG.HORIZONTAL, placement:UI_FLAG.RIGHT }
+            ];
+        }
+
+        let opts = this._drawerOptions.pop();
+        if(this._drawerOptions.length == 0 ){this._drawerOptions = null;}
+
+        opts.title = `Drawer Title`;
+
+        Request.Emit(UI_REQUEST.DRAWER, opts);
     }
 
 

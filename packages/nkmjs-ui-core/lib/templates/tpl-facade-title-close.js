@@ -29,9 +29,9 @@ class TPLFacadeLabelClose extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(UDOM.New(`span`, { class: UI_ID.ICON }), __icon);
+        this._Add(UDOM.New(`div`, { class: UI_ID.ICON }), __icon);
         this._Add(UDOM.New(`span`, { class: UI_ID.TITLE }), __title);
-        this._Add(UDOM.New(`span`, { class: `${UI_ID.ICON} close` }), __closeIcon);
+        this._Add(UDOM.New(`div`, { class: `${UI_ID.ICON} close` }), __closeIcon);
     }
 
     Render(p_host, p_options = null) {

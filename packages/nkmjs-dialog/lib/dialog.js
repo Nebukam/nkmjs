@@ -99,7 +99,7 @@ class DIALOG extends ServiceBase {
         next.Watch(SIGNAL.CONSUMED, this._OnDialogConsumed, this);
 
         Request.Emit(ACTION_REQUEST.DIALOG,
-            { options: next },
+            next,
             this,
             this._OnRequestSuccess,
             this._OnRequestFail);

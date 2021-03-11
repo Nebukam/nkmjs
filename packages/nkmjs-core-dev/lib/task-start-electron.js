@@ -22,24 +22,24 @@ class TaskStartElectron extends ScriptBase {
 
     Start() {
 
-        let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT),
-            args = ``;
+            let electronEntry = NKMjs.InApp(NKMjs.ELECTRON_ENTRY_POINT),
+                args = ``;
 
-        this._logFwd(chalk.gray.italic(`electron ${electronEntry}`), `·`);
+            this._logFwd(chalk.gray.italic(`electron ${electronEntry}`), `·`);
 
 
-        for (var key in NKMjs.shortargs) {
-            let value = NKMjs.shortargs[key];
-            if (value === true) {
-                args += ` --${key}`;
-            } else if (value === false) {
-                args += ` --${key}=FALSE`;
-            } else {
-                args += ` --${key}=${value}`;
+            for (var key in NKMjs.shortargs) {
+                let value = NKMjs.shortargs[key];
+                if (value === true) {
+                    args += ` --${key}`;
+                } else if (value === false) {
+                    args += ` --${key}=FALSE`;
+                } else {
+                    args += ` --${key}=${value}`;
+                }
             }
-        }
 
-        this.nodeElectron = exec(`node ${NKMjs.InCoreModules(`electron`, `cli.js`)} ${electronEntry}${args}`); //electron
+            this.nodeElectron = exec(`node ${NKMjs.InCoreModules(`electron`, `cli.js`)} ${electronEntry}${args}`); //electron
         this.nodeElectron.stdout.on('data', this._Bind(this._OnElectronStdout));
         this.nodeElectron.stderr.on('data', function (data) { console.log(chalk.redBright(data.toString())); });
         this.nodeElectron.on('exit', this._Bind(this._OnElectronExit));
@@ -60,6 +60,7 @@ class TaskStartElectron extends ScriptBase {
                 fetchScript.runOnce = false;
                 NKMjs.shortargs.replace = true;
                 NKMjs.shortargs.append = true;
+                NKMjs.shortargs.compress = false;
                 this.Run([fetchScriptPath, buildScriptPath]);
             }
             //this.nodeElectron.stdin.setEncoding('utf-8');

@@ -92,7 +92,6 @@ class DefaultStylesheet extends PaletteBuilder{
                 },
                 '(.focused)': {
                     'cursor': `pointer`,
-                    'z-index': 99999,
                     filter: `drop-shadow(0px 2px 5px rgba(0,0,0,1))`,
                 },
                 '(.selected)': {

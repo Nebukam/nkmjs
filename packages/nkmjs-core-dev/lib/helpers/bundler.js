@@ -51,7 +51,9 @@ class Bundler {
     _OnBrowserifyied(p_err, p_src) {
 
         // ----> Babel
-
+        if(p_err){
+            console.log(p_err);
+        }
 
         this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
 

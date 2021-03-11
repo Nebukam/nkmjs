@@ -11,44 +11,40 @@
 @import './_mixins';
 @import './_variables';
 @import './_fonts';
-
 @import './_typography';
-
-.row-break{
+.row-break {
     flex-basis: 100%;
     height: 0;
     width: 0%;
 }
 
-.column-break{
+.column-break {
     flex-basis: 100%;
     height: 0%;
     width: 0;
 }
 
 // ----> Host presets
-
 // Sizes
-
-@include for-each-host-selector('', $SIZES, '', '', $size_varnames)
-using ($index, $val){ 
+@include for-each-host-selector('', $SIZES, '', '', $size_varnames) using ($index, $val) {
     --size:var(#{$val});
 }
 
 // Flavors
-
-@include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) 
-using ($index, $val){
+@include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) using ($index, $val) {
     --flavor_color: var(#{$val});
     --flavor_contrast:var(#{$val+'_contrast'});
 }
 
 // ----> Remove costly filters on (presumably) mobile
 @media (hover: none) and (pointer: coarse) {
-    *{
-        filter:none;
+    * {
+        filter: none;
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
     }
 }
+
+@include scrollbar("", 4px);
+@include scrollbar(":host", 4px);

@@ -221,6 +221,7 @@ class ButtonBase extends Widget {
 
     _OnRippleAnimationEnd(p_evt) {
         let ripple = p_evt.target;
+        console.log(p_evt);
         ripple.removeEventListener('animationend', this._OnRippleAnimationEnd);
         UDOM.Detach(ripple);
     }

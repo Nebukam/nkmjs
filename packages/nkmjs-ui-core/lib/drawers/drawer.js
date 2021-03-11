@@ -17,6 +17,7 @@ const { OverlayOptions } = require("../overlays");
 const DOMTemplate = require(`../dom-template`);
 const { ExtMouse } = require("../extensions");
 const MOUSE = require("../mouse");
+const templates = require(`../templates`);
 
 /**
  * @description TODO
@@ -35,7 +36,7 @@ class Drawer extends View {
     // ----> Init
 
     static __default_orientation = UI_FLAG.VERTICAL;
-    static __default_facadeTPL = require(`../templates`).TPLFacadeTitleClose;
+    static __default_facadeTPL = templates.TPLFacadeTitleClose;
 
     _Init() {
         super._Init();
@@ -56,8 +57,17 @@ class Drawer extends View {
 
     _Style() {
         return CSS.Extends({
-            ':host': { 
-
+            ':host': {
+                'display': `grid`,
+                'grid-template-rows': 'max-content auto'
+            },
+            '.header':{
+                'grid-row': '1'
+            },
+            '.body':{
+                'grid-row': '2'
+            },
+            '.icon.close':{
             }
         }, super._Style());
     }
@@ -90,12 +100,20 @@ class Drawer extends View {
     set closeIcon(p_value) { this._closeIcon.Set(p_value); }
 
     _Render() {
-        super._Render();
-        DOMTemplate.Render(this.constructor.__default_facadeTPL, this, {
+
+        this._header = UDOM.New(`div`, {class:`header`}, this);
+        this._body = UDOM.New(`div`, {class:`body`}, this);
+
+        DOMTemplate.Render(this.constructor.__default_facadeTPL, this._header, {
             [UI_ID.OWNER]: this,
             [UI_ID.TITLE]:{ [UI_ID.CSS_CL]:`${FONT_FLAG.MEDIUM}` },
             closeIcon: { htitle: `Close` }
         });
+
+        this._closeIcon.element.style[`--size`] = `var(--size_m)`;
+        this._closeBtn.element = this._closeIcon.element;
+
+        this._wrapper = this._body;
     }
 
     // ----> DATA
@@ -115,7 +133,10 @@ class Drawer extends View {
 
     _CloseRequest() {
         if (!this._isActivable) { return; }
-        this._Broadcast(UI_SIGNAL.CLOSE_REQUESTED, this);
+        if(this._data){
+            this._data.Consume();
+        }
+        //this._Broadcast(UI_SIGNAL.CLOSE_REQUESTED, this);
     }
 
     // ----> Pooling

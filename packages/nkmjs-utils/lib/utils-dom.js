@@ -93,7 +93,9 @@ class UTILS_DOM {
      */
     static ToFront(p_node, p_frontOfNode = false) {
         if (!UTILS.isVoid(p_node.parentNode)) {
-            p_node.parentNode.appendChild(p_node);
+            if(p_node.parentNode.lastChild != p_node){
+                p_node.parentNode.appendChild(p_node);
+            }
             return;
             if (p_frontOfNode) {
                 let nodeList = p_node.parentNode.childNodes,

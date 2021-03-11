@@ -85,7 +85,7 @@ class LayerContainer extends Layer {
             layer.layerSiblingsCount = layerCount;
             layer.layerIndex = index++;
         }
-console.log(lastLayer);
+
         if (lastLayer) { lastLayer.DisplayGranted(); }
 
         return lastLayer;

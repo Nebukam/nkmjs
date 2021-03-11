@@ -10,6 +10,8 @@ const Layer = require(`../views/layer`);
 const OVERLAY_CONTEXT = require("./overlay-context");
 const OverlayOptions = require(`./overlay-options`);
 const ExtAnimController = require(`../extensions/ext-anim-controller`);
+const { ExtMouse } = require("../extensions");
+const MOUSE = require("../mouse");
 
 
 
@@ -18,6 +20,8 @@ const ExtAnimController = require(`../extensions/ext-anim-controller`);
  */
 class Overlay extends Layer {
     constructor() { super(); }
+
+    static __usePaintCallback = true;
 
     static __NFO__ = NFOS.Ext({
         css: [`@/views/overlay.css`]
@@ -35,14 +39,46 @@ class Overlay extends Layer {
         this._dataObserver.Hook(SIGNAL.CONSUMED, this._Bind(this._OnDataConsumed));
         this._transitions = new ExtAnimController();
 
+        this._closeBg = this._interactions.Add(ExtMouse);
+        this._closeBg.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._Bind(this._CloseRequest));
+
         this._options = null;
         this._optionsHandler = new OptionsHandler(this._Bind(this._OnOptionsProcessed), this._Bind(this._OnOptionsWillUpdate));
         this._optionsHandler.Hook(`orientation`);
         this._optionsHandler.Hook(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement);
         this._optionsHandler.Hook(`flavor`, `contentFlavor`);
+        
     }
 
     // ----> DOM
+
+    _OnPaintChange() {
+        // This is to make sure the background slides in and recieve mouse events
+        // when an overlay is created for the first time
+        super._OnPaintChange();
+        if (this._isPainted) {
+            if(this._isFirstPaint){
+                this._bg.style.setProperty(`--__click_offset`, `0%`);
+            }   
+        }
+    }
+
+    _Style(){
+        return CSS.Extends({
+            '.bg':{
+                '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box
+                '--__click_offset':'-100%',
+                'transform':'translateX(var(--__click_offset))',
+                'transition':'transform 0s linear'
+            }
+        }, super._Style());
+    }
+
+    _Render(){
+        super._Render();
+        this._bg = UDOM.New(`div`, {class:`bg`}, this);
+        this._closeBg.element = this._bg;
+    }
 
     // ----> Options
 
@@ -61,7 +97,6 @@ class Overlay extends Layer {
      */
     _OnOptionsWillUpdate(p_options) {
         if (!p_options) { return; }
-        console.log(p_options);
         // At that point, this._overlayContent exists and is initialized
     }
 
@@ -151,6 +186,11 @@ class Overlay extends Layer {
      */
     _ExtractData(p_overlayOptions) {
         return p_overlayOptions;
+    }
+
+    _CloseRequest(){
+        console.log(`close request in overlay`);
+        this._content._CloseRequest();
     }
 
     DisplayGranted(){

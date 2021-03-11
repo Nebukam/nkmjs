@@ -3,35 +3,34 @@
 @import '../_functions';
 @import '../_mixins';
 
-$scale: 1.1;
-$rotate: 5deg;
-
 :host .content{
     @include drop-shadow(0,0,20px, rgba(0,0,0,0.5));
 }
 
 :host(.content-left) .content{
-    transform: translateX(-100%) scale($scale) rotate($rotate);
+    transform: translateX(-100%);
 }
 
 :host(.content-right) .content{
-    transform: translateX(100%) scale($scale) rotate($rotate);
+    transform: translateX(100%);
 }
 
 :host(.content-top) .content{
-    transform: translateY(-100%) scale($scale) rotate($rotate);
+    transform: translateY(-100%);
 }
 
 :host(.content-bottom) .content{
-    transform: translateY(100%) scale($scale) rotate($rotate);
+    transform: translateY(100%);
 }
 
 :host(#{$SHOWN}) .content{
     animation: slideIn 150ms ease-out forwards;
+
+    @keyframes slideIn {
+        to {
+            transform: translateX(0%) translateY(0%);
+        }
+    }
+    
 }
 
-@keyframes slideIn {
-    to {
-        transform: translateX(0%) translateY(0%) scale(1) rotate(0deg);
-    }
-}

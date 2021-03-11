@@ -132,6 +132,8 @@ class ExtMouse extends ExtBase {
 
     _mOver(p_evt) {
 
+        if(this._isMouseOver){ return; }
+
         this._isMouseOver = true;
 
         this._element.addEventListener(`mousedown`, this._mDown);
@@ -146,6 +148,8 @@ class ExtMouse extends ExtBase {
     }
 
     _mOut(p_evt) {
+
+        if(!this._isMouseOver){ return; }
 
         this._isMouseOver = false;
 

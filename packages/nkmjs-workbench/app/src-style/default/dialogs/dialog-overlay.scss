@@ -7,24 +7,33 @@
     --blur_strenght: 0; 
     backdrop-filter: blur(var(--blur_strenght));
     transition: backdrop-filter 0.25s linear;
+
+    & .content{
+        @include drop-shadow(0,50px,20px, rgba(0,0,0,0));
+        transform: perspective(800px) scale(1.2) rotateX(20deg);
+        opacity:0;
+    }
+    
+
 }
 
 :host(#{$SHOWN}){
+
     --blur_strenght: 5px;
-}
 
-:host .content{
-    transform: scale(1.5) rotate(5deg);
-    opacity:0;
-}
+    & .content{
+        
+        animation: scaleIn 150ms ease-in-out forwards;
 
-:host(#{$SHOWN}) .content{
-    animation: scaleIn 150ms ease-out forwards;
-}
+        @keyframes scaleIn {
+            to {
+                @include drop-shadow(0,0,5px, rgba(0,0,0,1));
+                transform: perspective(800px) scale(1) rotateX(0deg);
+                opacity:1;
+            }
+        }
 
-@keyframes scaleIn {
-    to {
-        transform: scale(1) rotate(0);
-        opacity:1;
     }
+    
 }
+
