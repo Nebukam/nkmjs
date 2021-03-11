@@ -51,8 +51,10 @@ class Bundler {
     _OnBrowserifyied(p_err, p_src) {
 
         // ----> Babel
-        if(p_err){
-            console.log(p_err);
+        if (p_err) {
+            this.script._logErr(p_err);
+            this.doneFn(this);
+            return;
         }
 
         this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
@@ -66,8 +68,7 @@ class Bundler {
                 plugins: [NKMjs.InCoreModules('@babel/plugin-proposal-class-properties')]
             };
 
-        try { localBabelConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`babel.config.json`))); }
-        catch (e) { }
+        try { localBabelConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`babel.config.json`))); } catch (e) {}
 
         let babeled = require("@babel/core").transformSync(code, babelConfig);
 
@@ -91,8 +92,7 @@ class Bundler {
                 },
             };
 
-        try { localTerserConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`terser.config.json`))); }
-        catch (e) { }
+        try { localTerserConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`terser.config.json`))); } catch (e) {}
 
         minify(babeled.code, terserConfig).then(this._OnTerseryfied.bind(this));
 
@@ -128,11 +128,13 @@ class Bundler {
 
     _ReplaceKeys(p_content) {
 
-        let requireStart = p_content.split(`t("`), paths = [];
+        let requireStart = p_content.split(`t("`),
+            paths = [];
         requireStart.shift();
 
         for (let i = 0, n = requireStart.length; i < n; i++) {
-            let requirePath = requireStart[i].split(`")`)[0], pass = true;
+            let requirePath = requireStart[i].split(`")`)[0],
+                pass = true;
             if (p_content.indexOf(`"${requirePath}":`) === -1) { continue; } // Some imports are not mapped, skip these.
             if (!paths.includes(requirePath) && requirePath.length > 1) { paths.push(requirePath); } // isolate unique paths
         }
