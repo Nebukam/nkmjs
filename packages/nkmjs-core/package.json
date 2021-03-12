@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "NKMjs Framework Core Assembly",
   "main": "./lib/core.js",
   "repository": {
@@ -16,25 +16,25 @@
     "bundle-core": "node ./lib/task-build-core-bundle.js"
   },
   "dependencies": {
-    "@nkmjs/actions": "^0.0.9",
-    "@nkmjs/app-core": "^0.1.1",
-    "@nkmjs/collections": "^0.1.0",
-    "@nkmjs/common": "^0.1.0",
-    "@nkmjs/data-core": "^0.0.9",
-    "@nkmjs/dialog": "^0.0.9",
-    "@nkmjs/documents": "^0.0.9",
-    "@nkmjs/electron-core": "^0.0.13",
-    "@nkmjs/environment": "^0.1.0",
-    "@nkmjs/io-core": "^0.1.0",
-    "@nkmjs/io-electron": "^0.0.9",
-    "@nkmjs/localisation": "^0.0.2",
-    "@nkmjs/metrics": "^0.0.2",
-    "@nkmjs/services": "^0.0.9",
-    "@nkmjs/style": "^0.0.11",
-    "@nkmjs/ui-core": "^0.0.11",
-    "@nkmjs/ui-inputs": "^0.0.11",
-    "@nkmjs/ui-workspace": "^0.0.11",
-    "@nkmjs/utils": "^0.0.9"
+    "@nkmjs/actions": "^0.0.10",
+    "@nkmjs/app-core": "^0.1.2",
+    "@nkmjs/collections": "^0.1.1",
+    "@nkmjs/common": "^0.1.1",
+    "@nkmjs/data-core": "^0.0.10",
+    "@nkmjs/dialog": "^0.0.10",
+    "@nkmjs/documents": "^0.0.10",
+    "@nkmjs/electron-core": "^0.0.14",
+    "@nkmjs/environment": "^0.1.1",
+    "@nkmjs/io-core": "^0.1.1",
+    "@nkmjs/io-electron": "^0.0.10",
+    "@nkmjs/localisation": "^0.0.3",
+    "@nkmjs/metrics": "^0.0.3",
+    "@nkmjs/services": "^0.0.10",
+    "@nkmjs/style": "^0.0.12",
+    "@nkmjs/ui-core": "^0.0.12",
+    "@nkmjs/ui-inputs": "^0.0.12",
+    "@nkmjs/ui-workspace": "^0.0.12",
+    "@nkmjs/utils": "^0.0.10"
   },
   "gitHead": "031a8fae4c3c124b3bcbe91ca40e8981b29bf7ce"
 }
