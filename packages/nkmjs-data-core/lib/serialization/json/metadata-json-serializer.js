@@ -1,4 +1,4 @@
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const Metadata = require(`../../data/metadata`);
 const BaseSerializer = require(`../serializer-base`);
 
@@ -26,7 +26,7 @@ class MetadataJSONSerializer extends BaseSerializer {
     static Deserialize(p_serial, p_data = null, p_options = null) {
         if (!p_serial) { throw new Error(`Cannot unpack null data.`); }
         if (!p_data) { throw new Error(`Cannot unpack metadata with a null target`); }
-        U.SetOverwrite(p_data._data, p_serial);
+        u.tils.SetOverwrite(p_data._data, p_serial);
         return p_data;
     }
 

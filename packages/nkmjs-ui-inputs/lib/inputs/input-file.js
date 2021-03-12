@@ -1,8 +1,8 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { COM_ID } = require(`@nkmjs/common`);
-const { RELAY } = require(`@nkmjs/actions`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
+const actions = require("@nkmjs/actions");
 const { ENV } = require(`@nkmjs/environment`);
 const { CSS } = require('@nkmjs/style');
 const { UI, ToolButton, UI_FLAG } = require(`@nkmjs/ui-core`);
@@ -72,15 +72,15 @@ class InputFile extends InputPath {
         if (ENV.FEATURES.isNodeEnabled) {
             this._picker = this.Add(ToolButton, `input-btn`);
             this._picker.options = {
-                [COM_ID.ICON]: `%ICON%/icon_more.svg`,
+                [com.COM_ID.ICON]: `%ICON%/icon_more.svg`,
                 trigger: { fn: this._Pick, thisArg: this },
-                variant:UI_FLAG.FRAME
+                variant: UI_FLAG.FRAME
             };
 
             this._sizeEnum.Add(this._picker);
 
         } else {
-            this._picker = UDOM.New(`input`, { class: 'input-btn', type: 'file' }, this._host);
+            this._picker = u.dom.New(`input`, { class: 'input-btn', type: 'file' }, this._host);
             this._picker.addEventListener(`change`, this._onPickerChange);
         }
 
@@ -92,7 +92,7 @@ class InputFile extends InputPath {
 
     _Pick() {
         if (ENV.FEATURES.isNodeEnabled) {
-            RELAY.ShowOpenDialog({
+            actions.RELAY.ShowOpenDialog({
                 defaultPath: this._currentValue ? this._currentValue : ``,
                 properties: [this._openType]
             }).then(this._Picked);

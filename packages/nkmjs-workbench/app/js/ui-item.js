@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM, PATH } = require(`@nkmjs/core`).utils;
-const { UI, TextManipulator, DisplayObjectContainer } = require("@nkmjs/core").ui;
+const u = require(`@nkmjs/core`).utils;
+const { UI, manipulators, DisplayObjectContainer } = require("@nkmjs/core").ui;
 const { CSS } = require("@nkmjs/core").style;
 
 class UIItem extends DisplayObjectContainer {
@@ -66,9 +66,9 @@ class UIItem extends DisplayObjectContainer {
     }
 
     _Render() {
-        this._label = new TextManipulator(UDOM.New(`p`, { class: `label` }, this));
-        this._wrapper = UDOM.New(`div`, { class: `item-wrapper` }, this);
-        this._errorTf = new TextManipulator(UDOM.New(`p`, { class: `error` }, this));
+        this._label = new manipulators.Text(u.dom.New(`p`, { class: `label` }, this));
+        this._wrapper = u.dom.New(`div`, { class: `item-wrapper` }, this);
+        this._errorTf = new manipulators.Text(u.dom.New(`p`, { class: `error` }, this));
     }
 
     Display(p_id, p_class, p_variant) {
@@ -90,9 +90,9 @@ class UIItem extends DisplayObjectContainer {
                 }
             }
 
-            if (`title` in this._sample) { this._sample.title = U.CamelSplit(`${p_class.name}Title`); }
-            if (`subtitle` in this._sample) { this._sample.subtitle = U.CamelSplit(`${p_class.name}Subtitle`); }
-            if (`label` in this._sample) { this._sample.label = U.CamelSplit(`${p_class.name}Label`); }
+            if (`title` in this._sample) { this._sample.title = u.tils.CamelSplit(`${p_class.name}Title`); }
+            if (`subtitle` in this._sample) { this._sample.subtitle = u.tils.CamelSplit(`${p_class.name}Subtitle`); }
+            if (`label` in this._sample) { this._sample.label = u.tils.CamelSplit(`${p_class.name}Label`); }
 
         } catch (e) {
             this._errorTf.Set(e.message);

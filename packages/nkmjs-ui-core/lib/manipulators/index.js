@@ -2,9 +2,10 @@
 
 module.exports = {
 
-    BaseManipulator: require(`./manipulator-base`),
+    Manipulator: require(`./manipulator`),
     
-    ImageManipulator: require(`./manipulator-image`),
-    TextManipulator: require(`./manipulator-text`),
+    Image: require(`./manipulator-image`),
+    Icon: require(`./manipulator-icon`),
+    Text: require(`./manipulator-text`),
     
 }

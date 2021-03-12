@@ -1,4 +1,4 @@
-const { UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const DisplayObjectContainer = require(`../display-object-container`);
 const UI = require(`../ui`);
@@ -15,7 +15,7 @@ class DebugFill extends DisplayObjectContainer{
 
     _Render(){
         super._Render();
-        let p = UDOM.New(`p`);
+        let p = u.dom.New(`p`);
         p.innerText = mediumParagraph;
     }
 

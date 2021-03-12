@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { Observer } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const ECOSYSTEM_EVENT = require(`../../ecosystem-event`);
 const FIELD_EVENT = require(`./field-event`);
@@ -20,7 +20,7 @@ class FieldSettingsProxy extends FieldSettings {
         this._referenceField = null;
         this._isFresh = false;
 
-        this._refObserver = new Observer();
+        this._refObserver = new com.signals.Observer();
         this._refObserver.Hook(ECOSYSTEM_EVENT.BASE_CHANGED, this._OnRefBaseChanged, this);
         this._refObserver.Hook(FIELD_EVENT.FIELD_CLASS_CHANGED, this._OnRefClassChanged, this);
 
@@ -31,7 +31,7 @@ class FieldSettingsProxy extends FieldSettings {
         this._referenceField = p_value;
         if (p_value) {
             this.fieldIndex = p_value.fieldIndex;
-            if (!U.isSame(this._metadata._data, p_value._metadata._data)) {
+            if (!u.tils.isSame(this._metadata._data, p_value._metadata._data)) {
                 this._metadata.Clone(p_value._metadata);
             }
         }
@@ -71,7 +71,7 @@ class FieldSettingsProxy extends FieldSettings {
         if (this._id.name != ref.id.name) { return false; }
         if (this._base != ref.base) { return false; }
         if (this._fieldClass != ref.fieldClass) { return false; }
-        if (!U.isSame(this._settings, ref.settings)) { return false; }
+        if (!u.tils.isSame(this._settings, ref.settings)) { return false; }
         return true;
     }
 

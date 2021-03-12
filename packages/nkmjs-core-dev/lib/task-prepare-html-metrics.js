@@ -6,7 +6,6 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const DirRead = require(`./helpers/dir-read`);
-const { U } = require(`@nkmjs/utils`);
 
 class TaskPrepareHTMLMetrics extends ScriptBase {
 

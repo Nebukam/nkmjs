@@ -1,38 +1,38 @@
 const assert = require('assert');
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL, COM_ID } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const { Catalog } = require(`./lib/catalog`);
 const { DataBlock } = require('./lib/data');
 
-let someData = POOL.Rent(DataBlock);
+let someData = com.pool.POOL.Rent(DataBlock);
 someData.Release();
-let newData = POOL.Rent(DataBlock);
+let newData = com.pool.POOL.Rent(DataBlock);
 assert.ok(someData === newData);
 someData = newData;
 
 let catalogName = `Test Catalog`;
 let catalog = Catalog.CreateFrom({
-    [COM_ID.NAME]: catalogName,
-    [COM_ID.ICON]: `%ICONS%/some_icon.svg`,
-    [COM_ID.CMD_PRIMARY]: null,
-    [COM_ID.CMD_SECONDARY]: null,
-    [COM_ID.CMD_LIST]: null
+    [com.COM_ID.NAME]: catalogName,
+    [com.COM_ID.ICON]: `%ICONS%/some_icon.svg`,
+    [com.COM_ID.CMD_PRIMARY]: null,
+    [com.COM_ID.CMD_SECONDARY]: null,
+    [com.COM_ID.CMD_LIST]: null
 });
 
-assert.ok(!U.isVoid(catalog));
-assert.ok(catalog.GetOption(COM_ID.NAME) === catalogName);
+assert.ok(!u.tils.isVoid(catalog));
+assert.ok(catalog.GetOption(com.COM_ID.NAME) === catalogName);
 
 let itemName = `Test Item`;
 let cItem = catalog.Register({
-    [COM_ID.NAME]: itemName
+    [com.COM_ID.NAME]: itemName
 });
 
-assert.ok(!U.isVoid(cItem));
-assert.ok(cItem.GetOption(COM_ID.NAME) === itemName);
+assert.ok(!u.tils.isVoid(cItem));
+assert.ok(cItem.GetOption(com.COM_ID.NAME) === itemName);
 assert.ok(catalog.At(0) === cItem);
-assert.ok(U.isVoid(catalog.Add(cItem)));
+assert.ok(u.tils.isVoid(catalog.Add(cItem)));
 //assert.ok(catalog.Resolve(`Test Item`) === cItem); //Not implemented  yet
 
 cItem.Release();
@@ -57,7 +57,7 @@ let serial = JSONSerializer.Serialize(someData);
 let deserialized = JSONSerializer.Deserialize(serial);
 
 assert(deserialized != someData); // Not the same data
-assert(U.isInstanceOf(deserialized, someData)); // Same object type (apparently)
+assert(u.tils.isInstanceOf(deserialized, someData)); // Same object type (apparently)
 for (let n in metas) { assert(deserialized.metadata.Get(n) === metas[n]); } // Meta have been copied correctly
 
 let changedValue = 12654684;

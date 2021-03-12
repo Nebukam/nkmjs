@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, PATH, MIME } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 const IOProcess = require(`../io-process`);
 const BLOBResource = require(`../resources/resource-blob`);
 
@@ -31,9 +30,9 @@ class HTTPIOWriter extends IOProcess {
         try {
 
             let a = HTTPIOWriter.dlLink;
-            a.download = `${PATH.name(this._operation.fullPath)}${ext}`;
+            a.download = `${u.PATH.name(this._operation.fullPath)}${ext}`;
             a.href = window.URL.createObjectURL(
-                U.isInstanceOf(this.rsc.content, Blob) ? this.rsc.content
+                u.tils.isInstanceOf(this.rsc.content, Blob) ? this.rsc.content
                     : new Blob([this.rsc.content], { type: `${this.rsc.mime ? this.rsc.mime.type : `text/plain`}` }));
 
             a.click(); //hack much

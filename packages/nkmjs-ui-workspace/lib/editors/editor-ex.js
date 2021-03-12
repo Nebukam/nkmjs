@@ -1,6 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { COMMON_FLAG } = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 const { Catalog } = require(`@nkmjs/data-core`);
@@ -61,7 +61,7 @@ class EditorEx extends Editor {
             item = this._shelfCatalog.Register(conf);
 
             view = item.GetOption('view', null);
-            assign = U.Get(conf, `assign`, null);
+            assign = u.tils.Get(conf, `assign`, null);
 
             //console.log(`${assign} >> ${view}`);
 

@@ -1,13 +1,12 @@
 'use strict';
 
-const { UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
-const INPUT = require(`../input`);
-const MOUSE = require("../mouse");
 const UI = require(`../ui`);
 const UI_FLAG = require(`../ui-flag`);
 const UI_SIGNAL = require(`../ui-signal`);
-const ExtBase = require("./ext-base");
+
+const Extension = require("./extension");
 
 let _activeTarget = null;
 
@@ -15,10 +14,10 @@ let _activeTarget = null;
  * @description TODO
  * @class
  * @hideconstructor
- * @augments ui.core.extensions.ExtBase
+ * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
-class ExtDrop extends ExtBase {
+class DropExtension extends Extension {
     constructor() { super(); }
 
     // ----> Init
@@ -250,12 +249,12 @@ class ExtDrop extends ExtBase {
 
         if (p_toggle) {
             //Becomes the main drop target        
-            ExtDrop.ACTIVE_TARGET = this;
+            DropExtension.ACTIVE_TARGET = this;
             this._target.addEventListener(`drop`, this._mDrop);
             UI.instance.Unwatch(UI_SIGNAL.DRAG_ENDED, this._dragEnd, this);
         } else {
             //Stops being the main drop target
-            if (ExtDrop.ACTIVE_TARGET === this) { ExtDrop.ACTIVE_TARGET = null; }
+            if (DropExtension.ACTIVE_TARGET === this) { DropExtension.ACTIVE_TARGET = null; }
             this._target.removeEventListener(`drop`, this._mDrop);
             UI.instance.Watch(UI_SIGNAL.DRAG_ENDED, this._dragEnd, this);
         }
@@ -285,13 +284,13 @@ class ExtDrop extends ExtBase {
 
     _ShowHint() {
         if (this._feedbackHost) {
-            if (this._hintElement) { UDOM.Attach(this._hintElement, this._feedbackHost); }
-            else { this._hintElement = UDOM.New(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
+            if (this._hintElement) { u.dom.Attach(this._hintElement, this._feedbackHost); }
+            else { this._hintElement = u.dom.New(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
         }
     }
 
     _HideHint() {
-        if (this._hintElement) { UDOM.Detach(this._hintElement); }
+        if (this._hintElement) { u.dom.Detach(this._hintElement); }
     }
 
     // ----> Check
@@ -321,4 +320,4 @@ class ExtDrop extends ExtBase {
 
 }
 
-module.exports = ExtDrop;
+module.exports = DropExtension;

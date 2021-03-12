@@ -1,6 +1,6 @@
 'use strict';
 
-const { Action } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 /**
  * @description TODO
@@ -9,7 +9,7 @@ const { Action } = require(`@nkmjs/actions`);
  * @augments actions.Action
  * @memberof data.core.actions
  */
-class ActionRenameID extends Action {
+class ActionRenameID extends actions.Action {
     constructor() { super(); }
 
     // ----> Can merge ?

@@ -1,6 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { NFOS } = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 
@@ -8,7 +8,7 @@ const UI_FLAG = require(`../ui-flag`);
 const UI_ID = require(`../ui-id`);
 const UI = require(`../ui.js`);
 const ButtonBase = require(`../button-base`);
-const ImageManipulator = require("../manipulators/manipulator-image");
+const { Icon: IconManipulator } = require("../manipulators");
 
 /**
  * @description A tool button is a simple button with an icon.
@@ -42,7 +42,7 @@ class ToolButton extends ButtonBase {
     
     /**
      * @description TODO
-     * @type {ui.core.manipulators.ImageManipulator}
+     * @type {ui.core.manipulators.IconManipulator}
      * @customtag read-only
      */
     get icon() { return this._icon; }
@@ -56,7 +56,7 @@ class ToolButton extends ButtonBase {
 
     _Render() {
         super._Render();
-        this._icon = new ImageManipulator(UDOM.New(`span`, { class: UI_ID.ICON }, this._host), false);
+        this._icon = new IconManipulator(u.dom.New(`img`, { class: UI_ID.ICON }, this._host), false);
     }
 
     _PostRender(){

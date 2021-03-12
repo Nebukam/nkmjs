@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
 const { UI, Overlay } = require(`@nkmjs/ui-core`);
 
@@ -11,7 +10,7 @@ const DialogBox = require(`./dialog-box.js`);
 class DialogOverlay extends Overlay {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/dialogs/dialog-overlay.css`]
     }, Overlay, ['css']);
 

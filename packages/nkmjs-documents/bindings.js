@@ -1,12 +1,12 @@
 'use strict';
 
-const { BindingKit } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { Metadata } = require(`@nkmjs/data-core`);
 
 const DOCUMENT_CONTEXT = require(`./lib/document-context`);
 const { MetaDocument } = require(`./lib/documents`);
 
-class Bindings extends BindingKit{
+class Bindings extends com.helpers.BindingKit{
     constructor(){super();}
     _Init(){ super._Init();
 

@@ -1,10 +1,11 @@
 'use strict';
 
 module.exports = {
-    ExtBase: require(`./ext-base`),
-    ExtDrag: require(`./ext-drag`),
-    ExtDrop: require(`./ext-drop`),
-    ExtExpand: require(`./ext-expand`),
-    ExtMouse: require(`./ext-mouse`),
-    ExtMouseMove: require(`./ext-mouse-move`),
+    Extension: require(`./extension`),
+    AnimController: require(`./ext-anim-controller`),
+    Drag: require(`./ext-drag`),
+    Drop: require(`./ext-drop`),
+    Expand: require(`./ext-expand`),
+    Mouse: require(`./ext-mouse`),
+    MouseMove: require(`./ext-mouse-move`),
 }

@@ -1,18 +1,17 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { NFOS, SIGNAL, COMMON_FLAG } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { ENV } = require(`@nkmjs/environment`);
 const { CSS } = require(`@nkmjs/style`);
 const { DATA_SIGNAL, DataObserver, CATALOG_SIGNAL } = require(`@nkmjs/data-core`);
-const { UI_ID, UI, MOUSE, UI_SIGNAL, Widget, DOMTemplate, ExtMouse, UI_FLAG, FlagEnum, ImageManipulator, TextManipulator, CatalogWidget } = require(`@nkmjs/ui-core`);
+const { UI_ID, UI, MOUSE, UI_SIGNAL, Widget, DOMTemplate, UI_FLAG, FlagEnum, CatalogWidget, manipulators, extensions } = require(`@nkmjs/ui-core`);
 
 const { TPLFacadeTab } = require(`../templates`);
 
 class Tab extends CatalogWidget {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/items/tab.css`]
     }, Widget, ['css']);
 
@@ -24,7 +23,7 @@ class Tab extends CatalogWidget {
 
         this._Bind(this._CloseRequest);
 
-        this._closeBtn = this._interactions.Add(ExtMouse);
+        this._closeBtn = this._interactions.Add(extensions.Mouse);
         this._closeBtn.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._CloseRequest);
         this._interactions.Hook(MOUSE.BTN_MIDDLE, MOUSE.RELEASE, this._CloseRequest);
 
@@ -119,7 +118,7 @@ class Tab extends CatalogWidget {
 
     _UpdateInfos() {
         if (this._itemData) {
-            this._flavorEnum.Set(this._itemData.isDirty ? COMMON_FLAG.WARNING : null);
+            this._flavorEnum.Set(this._itemData.isDirty ? com.COMMON_FLAG.WARNING : null);
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
             if (!this._icon.Set(this._itemData)) { this._icon.Set(this._data.options); }
         } else {

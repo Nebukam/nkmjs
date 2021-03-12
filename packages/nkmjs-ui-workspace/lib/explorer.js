@@ -1,6 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { UI, View } = require(`@nkmjs/ui-core`);
 
 class Explorer extends View{
@@ -76,9 +76,9 @@ class Explorer extends View{
     }
 
     _Render(){
-        this._header = UDOM.New(`div`, {class:`header group`}, this._host);
-        this._body = UDOM.New(`div`, {class:`body group`}, this._host);
-        this._footer = UDOM.New(`div`, {class:`footer group`}, this._host);
+        this._header = u.dom.New(`div`, {class:`header group`}, this._host);
+        this._body = u.dom.New(`div`, {class:`body group`}, this._host);
+        this._footer = u.dom.New(`div`, {class:`footer group`}, this._host);
         this._wrapper = this._body;
     }
 

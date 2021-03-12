@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { COMMON_FLAG } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 const { CSS } = require("@nkmjs/style");
 const { UI } = require(`@nkmjs/ui-core`);
 
@@ -20,7 +19,7 @@ class InputText extends InputField {
     // ----> DOM
 
     _Render() {
-        this._inputField = UDOM.New(`input`, { class: 'field', type: 'search' }, this._host);
+        this._inputField = u.dom.New(`input`, { class: 'field', type: 'search' }, this._host);
     }
 
 }

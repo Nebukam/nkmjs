@@ -1,4 +1,4 @@
-const { RELAY, ACTION_REQUEST } = require("@nkmjs/actions");
+const actions = require("@nkmjs/actions");
 const { UI, OverlayHandler, UI_REQUEST } = require(`@nkmjs/ui-core`);
 
 class DialogHandler extends OverlayHandler {
@@ -7,11 +7,11 @@ class DialogHandler extends OverlayHandler {
     _Init() {
         
         super._Init();
-        this._RegisterLocalRequestHandler(ACTION_REQUEST.DIALOG, this.HandleOverlayRequest);
+        this._RegisterLocalRequestHandler(actions.ACTION_REQUEST.DIALOG, this.HandleOverlayRequest);
 
-        RELAY.Watch(UI_REQUEST.OVERLAY, this.HandleOverlayRequest, this);
-        RELAY.Watch(UI_REQUEST.DRAWER, this.HandleOverlayRequest, this);
-        RELAY.Watch(ACTION_REQUEST.DIALOG, this.HandleOverlayRequest, this);
+        actions.RELAY.Watch(UI_REQUEST.OVERLAY, this.HandleOverlayRequest, this);
+        actions.RELAY.Watch(UI_REQUEST.DRAWER, this.HandleOverlayRequest, this);
+        actions.RELAY.Watch(actions.ACTION_REQUEST.DIALOG, this.HandleOverlayRequest, this);
         
     }
 

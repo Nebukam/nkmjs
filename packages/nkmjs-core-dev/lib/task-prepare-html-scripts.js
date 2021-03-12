@@ -6,7 +6,7 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const DirRead = require(`./helpers/dir-read`);
-const { MIME } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 class TaskPrepareHTMLScripts extends ScriptBase {
 
@@ -15,7 +15,7 @@ class TaskPrepareHTMLScripts extends ScriptBase {
         super(`prepare-html-scripts`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
-        let mime = MIME.Get(`.js`),
+        let mime = u.MIME.Get(`.js`),
             scripts = ``, externals = NKMjs.Get(`externals`, []),
             scriptData = `defer="defer" type="${mime.type}"`; // crossorigin="anonymous" prevent local testing
 

@@ -1,4 +1,4 @@
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { UI } = require(`@nkmjs/ui-core`);
 const { DATA_SIGNAL } = require(`@nkmjs/data-core`);
 
@@ -8,8 +8,8 @@ class InspectorItem extends Control{
     constructor(){super();}
 
     _Init(){
-        this._ignoreMetaStyle = U.Default(this._ignoreMetaStyle, false);
-        this.default_SelectOnActivation = U.Default(this.default_SelectOnActivation, true);
+        this._ignoreMetaStyle = u.tils.Default(this._ignoreMetaStyle, false);
+        this.default_SelectOnActivation = u.tils.Default(this.default_SelectOnActivation, true);
         super._Init();
 
         if(!this._ignoreMetaStyle){
@@ -33,7 +33,7 @@ class InspectorItem extends Control{
     }    
 
     _UpdateMetaPresentation(){
-        let color = U.HexToRGBAString(
+        let color = u.tils.HexToRGBAString(
             this._data.metadata.Get(`presentation.color`, `#000000`), 
             this._data.metadata.Get(`presentation.weight`, 0.1));
         this.style['box-shadow'] = `inset 1px 0px 0px ${color}`;

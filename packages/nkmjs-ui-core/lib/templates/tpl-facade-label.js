@@ -1,11 +1,10 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const UI_ID = require(`../ui-id`);
 const DOMTemplate = require(`../dom-template`);
-const ImageManipulator = require(`../manipulators/manipulator-image`);
-const TextManipulator = require(`../manipulators/manipulator-text`);
+const manipulators = require(`../manipulators`);
 
 const __icon = `_${UI_ID.ICON}`;
 const __label = `_${UI_ID.LABEL}`;
@@ -27,16 +26,16 @@ class TPLFacadeLabel extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(UDOM.New(`span`, { class: UI_ID.ICON }), __icon);
-        this._Add(UDOM.New(`span`, { class: UI_ID.LABEL }), __label);
+        this._Add(u.dom.New(`span`, { class: UI_ID.ICON }), __icon);
+        this._Add(u.dom.New(`span`, { class: UI_ID.LABEL }), __label);
     }
 
     Render(p_host, p_options = null) {
         let owner = super.Render(p_host, p_options),
-            iconOpts = U.Get(p_options, UI_ID.ICON, null),
-            labelOpts = U.Get(p_options, UI_ID.LABEL, null),
-            icon = owner[__icon] = new ImageManipulator(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
-            label = owner[__label] = new TextManipulator(owner[__label], labelOpts && `autoHide` in labelOpts ? labelOpts.autoHide : false);
+            iconOpts = u.tils.Get(p_options, UI_ID.ICON, null),
+            labelOpts = u.tils.Get(p_options, UI_ID.LABEL, null),
+            icon = owner[__icon] = new manipulators.Image(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
+            label = owner[__label] = new manipulators.Text(owner[__label], labelOpts && `autoHide` in labelOpts ? labelOpts.autoHide : false);
 
         if (iconOpts) { 
             icon.Set(iconOpts); 

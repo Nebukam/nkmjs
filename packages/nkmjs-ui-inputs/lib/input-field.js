@@ -1,6 +1,6 @@
 //implement this : https://javascript.info/events-change-input
 
-const { U, UDOM, C, PATH } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { NFOS, COMMON_FLAG } = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 const { UI, INPUT, KEYBOARD } = require(`@nkmjs/ui-core`);
@@ -54,7 +54,7 @@ class InputField extends InputBase {
     }
 
     _Render() {
-        this._inputField = UDOM.New(`input`, { class: 'field' }, this._host); //, type:'search'
+        this._inputField = u.dom.New(`input`, { class: 'field' }, this._host); //, type:'search'
     }
 
     set placeholderValue(p_value) {

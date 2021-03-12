@@ -1,7 +1,7 @@
 'use strict';
 
 const { List } = require(`@nkmjs/collections`);
-const { TIME, SingletonEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -10,7 +10,7 @@ const { TIME, SingletonEx } = require(`@nkmjs/common`);
  * @augments common.helpers.SingletonEx
  * @memberof services
  */
-class ServicesManager extends SingletonEx{
+class ServicesManager extends com.helpers.SingletonEx{
     constructor() {super();}
 
     _Init()

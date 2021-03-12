@@ -1,8 +1,8 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
-const { NFOS, POOL, SIGNAL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { CatalogItem, Catalog, CatalogHandler } = require(`@nkmjs/data-core`);
 const { UI, UI_SIGNAL, View } = require(`@nkmjs/ui-core`);
 
@@ -11,7 +11,7 @@ const WorkspaceCell = require(`./workspace-cell`);
 class Workspace extends View {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace.css`]
     }, View, ['css']);
 
@@ -24,8 +24,8 @@ class Workspace extends View {
         this._cells = new List();
 
         this._catalogHandler = new CatalogHandler();
-        this._catalogHandler.Watch(SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-        this._catalogHandler.Watch(SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+        this._catalogHandler.Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
+        this._catalogHandler.Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
     }
 
@@ -59,7 +59,7 @@ class Workspace extends View {
 
     _OnCatalogItemAdded(p_handler, p_item) {
 
-        if (!U.isInstanceOf(p_item, Catalog)) {
+        if (!u.tils.isInstanceOf(p_item, Catalog)) {
             throw new Error(`non-catalog item added to workspace catalog : ${p_item}.`);
         }
 
@@ -69,7 +69,7 @@ class Workspace extends View {
         p_handler.Set(p_item, cell);
 
         if (p_item.data) {
-            p_item.data.Watch(SIGNAL.RELEASED, this._OnItemDataReleased, this);
+            p_item.data.Watch(com.SIGNAL.RELEASED, this._OnItemDataReleased, this);
         }
         //TODO : Listen to the data in case of release
         //if the data is released, then close associated catalog items
@@ -97,7 +97,7 @@ class Workspace extends View {
 
     _OnCatalogItemRemoved(p_handler, p_item, p_binding) {
 
-        if (p_item.data) { p_item.data.Unwatch(SIGNAL.RELEASED, this._OnItemDataReleased, this); }
+        if (p_item.data) { p_item.data.Unwatch(com.SIGNAL.RELEASED, this._OnItemDataReleased, this); }
 
         if (p_binding) {
             this._OnCellRemoved(p_item, p_binding);
@@ -126,7 +126,7 @@ class Workspace extends View {
         let localCatalog = this._FetchCatalog();
 
 
-        if (U.isInstanceOf(p_item, CatalogItem)) {
+        if (u.tils.isInstanceOf(p_item, CatalogItem)) {
             // Attempting to host an existing catalog item.
             localCatalog.Add(p_item);
             return;
@@ -139,7 +139,7 @@ class Workspace extends View {
             
         for (let i = 0, n = dataHolders.length; i < n; i++) {
             let view = dataHolders[i].GetOption(`viewType`, null);
-            if (view && U.isInstanceOf(view, viewType)) {
+            if (view && u.tils.isInstanceOf(view, viewType)) {
                 view.RequestDisplay();
                 return;
             }
@@ -160,7 +160,7 @@ class Workspace extends View {
 
         if (!localCatalog) {
             // No local catalog exists for this workspace. Create one.
-            let wCat = POOL.Rent(Catalog);
+            let wCat = com.pool.POOL.Rent(Catalog);
             localCatalog = wCat.GetOrCreateCatalog({ name: 'RootCell' });
             this.catalog = wCat;
         } else {
@@ -171,7 +171,7 @@ class Workspace extends View {
             let i = 0;
             while (cat === null || i < n) {
                 cat = localCatalog.At(i);
-                if (!U.isInstanceOf(cat, Catalog)) { cat = null; } // Get rid of non-catalog items
+                if (!u.tils.isInstanceOf(cat, Catalog)) { cat = null; } // Get rid of non-catalog items
                 i++;
             }
             if (!cat) {

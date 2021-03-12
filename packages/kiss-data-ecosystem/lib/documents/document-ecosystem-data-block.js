@@ -1,6 +1,6 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const { JSONResource } = require(`@nkmjs/data-core`);
 const { Document } = require(`@nkmjs/documents`);
@@ -12,7 +12,7 @@ class DataBlockDocument extends Document {
 
 
     static get _NFO_() {
-        return U.SetMissing({
+        return u.tils.SetMissing({
             resourceType: JSONResource,
             serializer: SERIALIZER_JSON
         }, Document.__NFO__);
@@ -42,7 +42,7 @@ class DataBlockDocument extends Document {
     _Pack() {
         let serializer = BINDINGS.Get(
             SERIALIZATION_CONTEXT.SERIALIZER,
-            NFOS.Get(this).serializationContext);
+            com.NFOS.Get(this).serializationContext);
 
         if (!serializer) { throw new Error(`Could not find main serializer for ${this._serializationType.name}`); }
         return serializer.Serialize(this._data);
@@ -53,13 +53,13 @@ class DataBlockDocument extends Document {
     _Unpack(p_pack) {
         let serializer = BINDINGS.Get(
             SERIALIZATION_CONTEXT.SERIALIZER,
-            NFOS.Get(this).serializationContext);
+            com.NFOS.Get(this).serializationContext);
 
         if (!serializer) { throw new Error(`Could not find main de-serializer for ${this._serializationType.name}`); }
         let id = this._data ? this._data.id ? this._data.id.name : null : null;
         this._data = serializer.Deserialize(p_pack, this._data, {
             ecosystem: this._ecosystem,
-            id: id ? id : PATH.name(this._path)
+            id: id ? id : u.PATH.name(this._path)
         });
 
         this._data.ClearDirty();

@@ -1,12 +1,8 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
 const { ENV } = require(`@nkmjs/environment`);
-const axios = require('axios');
 
 const IOProcess = require(`../io-process`);
-const ENCODING = require(`../encoding`);
 
 /**
  * @description TODO

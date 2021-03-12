@@ -1,6 +1,6 @@
 'use strict';
 
-const { DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { BrowserWindow } = require("electron");
 
 /**
@@ -10,7 +10,7 @@ const { BrowserWindow } = require("electron");
  * @augments common.pool.DisposableObjectEx
  * @memberof electron.core
  */
-class WindowWrapper extends DisposableObjectEx {
+class WindowWrapper extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {

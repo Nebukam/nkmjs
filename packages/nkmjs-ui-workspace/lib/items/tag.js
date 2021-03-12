@@ -1,15 +1,15 @@
 'use strict';
 
-const { NFOS } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { FONT_FLAG } = require("@nkmjs/style");
-const { UI, UI_FLAG, FlagEnum, Widget, TextManipulator, UI_ID } = require(`@nkmjs/ui-core`);
-const { UDOM } = require("@nkmjs/utils");
+const { UI, UI_FLAG, FlagEnum, Widget, manipulators, UI_ID } = require(`@nkmjs/ui-core`);
 
 
 class Tag extends Widget {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/items/tag.css`]
     }, Widget, ['css']);
 
@@ -36,7 +36,7 @@ class Tag extends Widget {
     set label(p_value) { this._label.Set(p_value); }
 
     _Render() {
-        this._label = new TextManipulator(UDOM.New(`span`, { class: `${UI_ID.LABEL} ${FONT_FLAG.TAG}` }, this), false);
+        this._label = new manipulators.Text(u.dom.New(`span`, { class: `${UI_ID.LABEL} ${FONT_FLAG.TAG}` }, this), false);
     }
 
 }

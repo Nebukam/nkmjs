@@ -1,12 +1,10 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 const { ENV } = require(`@nkmjs/environment`);
 const axios = require('axios');
 
 const IOProcess = require(`../io-process`);
-const ENCODING = require(`../encoding`);
 
 /**
  * @description TODO
@@ -44,7 +42,7 @@ class StoragePromiseIOReader extends IOProcess {
 
         console.log(p_results);
         let data = p_results[this._operation.fullPath];
-        if (U.isVoid(data)) {
+        if (u.tils.isVoid(data)) {
             // Data do not exists
             this._OnError(new Error(`Key '${this._operation.fullPath}' is not set.`));
         } else {

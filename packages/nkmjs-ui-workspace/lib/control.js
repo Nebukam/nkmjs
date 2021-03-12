@@ -1,11 +1,11 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
 const { DATA_SIGNAL, DataBlock, MetadataObserver } = require(`@nkmjs/data-core`);
 const { UI, OrientableWidget } = require(`@nkmjs/ui-core`);
-const { CommandAction } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const Editor = require(`./editor`);
 
@@ -17,7 +17,7 @@ class Control extends OrientableWidget{
         this._metadataObserver = new MetadataObserver();
 
         this._dataObserver.Hook(DATA_SIGNAL.DIRTY, this._OnDataDirty, this);
-        this._dataObserver.Hook(SIGNAL.UPDATED, this._OnDataUpdated, this);
+        this._dataObserver.Hook(com.SIGNAL.UPDATED, this._OnDataUpdated, this);
     }
 
     get context(){ return this._context; }
@@ -35,7 +35,7 @@ class Control extends OrientableWidget{
     get editor(){
         let p = this._parent;
         while(p != null){
-            if(U.isInstanceOf(p, Editor)){return p;}
+            if(u.tils.isInstanceOf(p, Editor)){return p;}
             p = p._parent;
         }
         return null;
@@ -56,7 +56,7 @@ class Control extends OrientableWidget{
 
     _OnDataChanged(p_oldValue){
         super._OnDataChanged(p_oldValue);
-        if(U.isInstanceOf(this._data, DataBlock)){ this._metadataObserver.target = this._data.metadata; }
+        if(u.tils.isInstanceOf(this._data, DataBlock)){ this._metadataObserver.target = this._data.metadata; }
         else{ this._metadataObserver.target = null; }
     }
 
@@ -70,7 +70,7 @@ class Control extends OrientableWidget{
     }
 
     _Do(p_actionClass, p_operation){
-        CommandAction.Do(this, p_actionClass, p_operation);
+        actions.CommandAction.Do(this, p_actionClass, p_operation);
     }
 
 }

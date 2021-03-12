@@ -1,7 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 
@@ -17,7 +16,7 @@ const TreeItemGroup = require(`./tree-item-group`);
 class TreeRoot extends TreeItemGroup {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/tree/tree-root.css`]
     }, TreeItemGroup, ['css']);
 

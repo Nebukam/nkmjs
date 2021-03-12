@@ -1,10 +1,9 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
-const { UI, TextManipulator } = require(`@nkmjs/ui-core`);
-
+const { UI, manipulators } = require(`@nkmjs/ui-core`);
 const InputField = require(`../input-field`);
 
 
@@ -13,7 +12,7 @@ const _flag_CHECKED = `checked`;
 class InputBoolean extends InputField {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/boolean.css`]
     }, InputField, ['css']);
 
@@ -38,10 +37,10 @@ class InputBoolean extends InputField {
 
     _Render() {
 
-        this._label = new TextManipulator(UDOM.New(`span`, { class: `label` }, this._host));
-        let body = UDOM.New(`div`, { class: `body` }, this._host);
-        this._handle = UDOM.New(`div`, { class: `handle` }, body);
-        this._inputField = UDOM.New(`input`, { class: 'field', type: 'checkbox' }, this._host);
+        this._label = new manipulators.Text(u.dom.New(`span`, { class: `label` }, this._host));
+        let body = u.dom.New(`div`, { class: `body` }, this._host);
+        this._handle = u.dom.New(`div`, { class: `handle` }, body);
+        this._inputField = u.dom.New(`input`, { class: 'field', type: 'checkbox' }, this._host);
     }
 
     _GrabValue() {

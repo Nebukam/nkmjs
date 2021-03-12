@@ -1,5 +1,5 @@
-const { U } = require(`@nkmjs/utils`);
-const { COM_ID, SIGNAL, COMMON_FLAG, DisposableObjectEx, OptionsHandler } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -8,13 +8,13 @@ const { COM_ID, SIGNAL, COMMON_FLAG, DisposableObjectEx, OptionsHandler } = requ
  * @augments common.pool.DisposableObjectEx
  * @memberof dialog
  */
-class OverlayOptions extends DisposableObjectEx {
+class OverlayOptions extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {
         super._Init();
 
-        this._optionsHandler = new OptionsHandler();
+        this._optionsHandler = new com.helpers.OptionsHandler();
         this._optionsHandler.Hook(`overlayClass`, `_overlayClass`);
         this._optionsHandler.Hook(`contentClass`, `_contentClass`);
         this._optionsHandler.Hook(`origin`, `_origin`);
@@ -46,7 +46,7 @@ class OverlayOptions extends DisposableObjectEx {
          //TODO : Add support for custom popup content request
          // = when displaying popup, callback to some function providing both dialog & dialog info
  
-         this._Broadcast(SIGNAL.UPDATED, this);
+         this._Broadcast(com.SIGNAL.UPDATED, this);
  
      }
 
@@ -80,7 +80,7 @@ class OverlayOptions extends DisposableObjectEx {
      * @param {*} [p_fallback] 
      */
     GetOption(p_id, p_fallback) {
-        return U.Get(this._options, p_id, p_fallback);
+        return u.tils.Get(this._options, p_id, p_fallback);
     }
 
     /**
@@ -90,7 +90,7 @@ class OverlayOptions extends DisposableObjectEx {
     Consume() {
         if (this._consumed) { return; }
         this._consumed = true;
-        this._Broadcast(SIGNAL.CONSUMED, this);
+        this._Broadcast(com.SIGNAL.CONSUMED, this);
     }
 
     _CleanUp() {

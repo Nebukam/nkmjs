@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { ACTION_REQUEST, Request } = require(`@nkmjs/actions`);
+const u = require("@nkmjs/utils");
+const actions = require("@nkmjs/actions");
 const DataManipulationCommand = require(`../../commands/command-data`);
 
 class EntrySave extends DataManipulationCommand {
@@ -19,9 +19,9 @@ class EntrySave extends DataManipulationCommand {
         };
 
         console.log(`Stringifyied and packed ${this._context} =`);
-        console.log(JSON.stringify(this._context.Pack(), U.JSONStripEmpty, '  '));
+        console.log(JSON.stringify(this._context.Pack(), u.tils.JSONStripEmpty, '  '));
 
-        Request.Emit(ACTION_REQUEST.SAVE,
+        actions.Request.Emit(actions.ACTION_REQUEST.SAVE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

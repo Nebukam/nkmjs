@@ -1,34 +1,34 @@
 'use strict';
 
-const { CSYMBOL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 /**
  * SERIALIZER Context
  * @class
  * @memberof data.core.serialization
  */
-class SERIALIZER extends CSYMBOL{ constructor() { super(); } }
+class SERIALIZER extends com.helpers.CSYMBOL{ constructor() { super(); } }
 
 /**
  * SERIALIZER Context
  * @class
  * @memberof data.core.serialization
  */
-class NONE extends CSYMBOL{ constructor() { super(); } }
+class NONE extends com.helpers.CSYMBOL{ constructor() { super(); } }
 
 /**
  * SERIALIZER Context
  * @class
  * @memberof data.core.serialization
  */
-class TEXT extends CSYMBOL{ constructor() { super(); } }
+class TEXT extends com.helpers.CSYMBOL{ constructor() { super(); } }
 
 /**
  * JSON Context
  * @class
  * @memberof data.core.serialization
  */
-class JSON extends CSYMBOL{ constructor() { super(); }
+class JSON extends com.helpers.CSYMBOL{ constructor() { super(); }
     /**
      * @description Expected JSON Keyword in serialized JSON data
      * @type {string}

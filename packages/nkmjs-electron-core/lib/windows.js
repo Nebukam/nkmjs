@@ -3,8 +3,8 @@ const path = require(`path`);
 const url = require(`url`);
 const fs = require(`fs`);
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL, SingletonEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { List, Dictionary } = require(`@nkmjs/collections`);
 const APP_MESSAGES = require(`@nkmjs/app-core/lib/app-messages`);
 
@@ -17,7 +17,7 @@ const WindowWrapper = require(`./helpers/window-wrapper`);
  * @augments common.helpers.SingletonEx
  * @memberof electron.core
  */
-class WINDOWS extends SingletonEx {
+class WINDOWS extends com.helpers.SingletonEx {
 
     constructor() { super(); }
 
@@ -74,14 +74,14 @@ class WINDOWS extends SingletonEx {
      */
     CreateWindow(p_options, p_parent = null) {
 
-        let winID = U.Get(p_options, `id`, `unidentified_window`),
+        let winID = u.tils.Get(p_options, `id`, `unidentified_window`),
             wrapper = this._mapIDToWrapper.Get(winID);
 
         console.log(`WINDOWS >> CreateWindow ${winID}`);
 
         if (!wrapper) {
 
-            let webPreferences = U.Get(p_options, `webPreferences`, {
+            let webPreferences = u.tils.Get(p_options, `webPreferences`, {
                 nodeIntegration: true,
                 experimentalFeatures: true,
                 webSecurity: false,
@@ -114,7 +114,7 @@ class WINDOWS extends SingletonEx {
 
             if (winOptions.id === WINDOWS.ID_MAIN) { this._mainWindow = newWindow; }
 
-            wrapper = POOL.Rent(WindowWrapper);
+            wrapper = com.pool.POOL.Rent(WindowWrapper);
             wrapper.initOptions = winOptions;
             wrapper.window = newWindow;
 
@@ -133,8 +133,8 @@ class WINDOWS extends SingletonEx {
 
             let loadOptions = {
                 pathname: ppath,
-                protocol: U.Get(p_options, `protocol`, `file:`),
-                slashes: U.Get(p_options, `slashes`, true)
+                protocol: u.tils.Get(p_options, `protocol`, `file:`),
+                slashes: u.tils.Get(p_options, `slashes`, true)
             }
 
             if (p_options.onDomReady) {
@@ -145,7 +145,7 @@ class WINDOWS extends SingletonEx {
             wrapper.window.loadURL(url.format(loadOptions));
         }
 
-        if (U.Get(p_options, `show`, true)) { wrapper.window.show(); }
+        if (u.tils.Get(p_options, `show`, true)) { wrapper.window.show(); }
 
         return wrapper;
 
@@ -254,14 +254,14 @@ class WINDOWS extends SingletonEx {
 
         if (!wrapper) { return; }
 
-        const pdfPath = U.Get(p_data, `outputPath`, path.join(__dirname, '/print.pdf'));
+        const pdfPath = u.tils.Get(p_data, `outputPath`, path.join(__dirname, '/print.pdf'));
         wrapper.window.webContents.printToPDF(
             {
-                marginsType: U.Get(p_data, `marginsType`, 1),
-                pageSize: U.Get(p_data, `pageSize`, `Letter`),
-                printBackground: U.Get(p_data, `printBackground`, true),
-                printSelectionOnly: U.Get(p_data, `printSelectionOnly`, false),
-                landscape: U.Get(p_data, `landscape`, false)
+                marginsType: u.tils.Get(p_data, `marginsType`, 1),
+                pageSize: u.tils.Get(p_data, `pageSize`, `Letter`),
+                printBackground: u.tils.Get(p_data, `printBackground`, true),
+                printSelectionOnly: u.tils.Get(p_data, `printSelectionOnly`, false),
+                landscape: u.tils.Get(p_data, `landscape`, false)
             },
             function (error, data) {
                 if (error) { this._SendError(error); return; }

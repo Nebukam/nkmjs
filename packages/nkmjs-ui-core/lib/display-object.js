@@ -1,9 +1,9 @@
 'use strict';
 
-const { U, UDOM, PATH } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary, List, DictionaryList } = require(`@nkmjs/collections`);
-const { RELAY, Request } = require(`@nkmjs/actions`);
-const { SignalBox, NFOS } = require(`@nkmjs/common`);
+const actions = require("@nkmjs/actions");
+const com = require("@nkmjs/common");
 const { STYLE, CSS } = require(`@nkmjs/style`);
 
 const UI = require(`./ui`);
@@ -134,7 +134,7 @@ class DisplayObject extends DisposableHTMLElement {
 
         this._styles = STYLE.Get(this.constructor, this._Bind(this._Style), p_invalidateCache);
         for (let i = 0, n = this._styles.length; i < n; i++) {
-            UDOM.Attach(this._styles[i].cloneNode(true), this._host);
+            u.dom.Attach(this._styles[i].cloneNode(true), this._host);
         }
     }
 
@@ -159,7 +159,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @group Hierarchy
      */
     BringToFront() {
-        UDOM.ToFront(this);
+        u.dom.ToFront(this);
         if (this._parent) { this._parent._displayList.ToEnd(this); }
     }
 
@@ -235,8 +235,8 @@ class DisplayObject extends DisposableHTMLElement {
         p_onSuccess = null,
         p_onFail = null,
         p_timeout = 0,
-        p_requestClass = Request) {
-        this._HandleLocalRequest(Request.Emit(
+        p_requestClass = actions.Request) {
+        this._HandleLocalRequest(actions.Request.Emit(
             p_requestType,
             p_options,
             this,
@@ -256,8 +256,8 @@ class DisplayObject extends DisposableHTMLElement {
         p_onSuccess = null,
         p_onFail = null,
         p_timeout = 0,
-        p_requestClass = Request) {
-        Request.Emit(
+        p_requestClass = actions.Request) {
+        actions.Request.Emit(
             p_requestType,
             p_options,
             this,
@@ -277,7 +277,7 @@ class DisplayObject extends DisposableHTMLElement {
         }
 
         if (this._parent) { this._parent._HandleLocalRequest(p_request); }
-        else { RELAY.HandleRequest(p_request); }
+        else { actions.RELAY.HandleRequest(p_request); }
     }
 
     /**
@@ -287,7 +287,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @param {function} p_fn 
      */
     _RegisterLocalRequestHandler(p_requestType, p_fn) {
-        if (!this._requestSignalBox) { this._requestSignalBox = new SignalBox(); }
+        if (!this._requestSignalBox) { this._requestSignalBox = new com.signals.SignalBox(); }
         this._requestSignalBox.Add(p_requestType, p_fn, this);
     }
 
@@ -344,7 +344,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set x(p_value) { if (this._transforms.x != p_value) { this._transforms.x = p_value; this._DirtyTransform(); } }
-    get x() { return U.Get(this._transforms, 'x', 0); }
+    get x() { return u.tils.Get(this._transforms, 'x', 0); }
 
     /**
      * @description Will set transform.translateY
@@ -353,7 +353,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set y(p_value) { if (this._transforms.y != p_value) { this._transforms.y = p_value; this._DirtyTransform(); } }
-    get y() { return U.Get(this._transforms, 'y', 0); }
+    get y() { return u.tils.Get(this._transforms, 'y', 0); }
 
     /**
      * @description Will set transform.translateZ
@@ -362,7 +362,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set z(p_value) { if (this._transforms.z != p_value) { this._transforms.z = p_value; this._DirtyTransform(); } }
-    get z() { return U.Get(this._transforms, 'z', 0); }
+    get z() { return u.tils.Get(this._transforms, 'z', 0); }
 
     /**
      * @description Will set transform.rotation
@@ -371,7 +371,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set rotation(p_value) { if (this._transforms.rotation != p_value) { this._transforms.rotation = p_value; this._DirtyTransform(); } }
-    get rotation() { return U.Get(this._transforms, 'rotation', 0); }
+    get rotation() { return u.tils.Get(this._transforms, 'rotation', 0); }
 
     /**
      * @description Will set transform.rotationX
@@ -380,7 +380,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set rotationX(p_value) { if (this._transforms.rotationX != p_value) { this._transforms.rotationX = p_value; this._DirtyTransform(); } }
-    get rotationX() { return U.Get(this._transforms, 'rotationX', 0); }
+    get rotationX() { return u.tils.Get(this._transforms, 'rotationX', 0); }
 
     /**
      * @description Will set transform.rotationX
@@ -389,7 +389,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set rotationY(p_value) { if (this._transforms.rotationY != p_value) { this._transforms.rotationY = p_value; this._DirtyTransform(); } }
-    get rotationY() { return U.Get(this._transforms, 'rotationY', 0); }
+    get rotationY() { return u.tils.Get(this._transforms, 'rotationY', 0); }
 
     /**
      * @description Will set transform.rotationX
@@ -398,7 +398,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set rotationZ(p_value) { if (this._transforms.rotationZ != p_value) { this._transforms.rotationZ = p_value; this._DirtyTransform(); } }
-    get rotationZ() { return U.Get(this._transforms, 'rotationZ', 0); }
+    get rotationZ() { return u.tils.Get(this._transforms, 'rotationZ', 0); }
 
     /**
      * @description Will set transform.scale
@@ -407,7 +407,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set scale(p_value) { if (this._transforms.scale != p_value) { this._transforms.scale = p_value; this._DirtyTransform(); } }
-    get scale() { return U.Get(this._transforms, 'scale', 0); }
+    get scale() { return u.tils.Get(this._transforms, 'scale', 0); }
 
     /**
      * @description Will set transform.scaleX
@@ -416,7 +416,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set scaleX(p_value) { if (this._transforms.scaleX != p_value) { this._transforms.scaleX = p_value; this._DirtyTransform(); } }
-    get scaleX() { return U.Get(this._transforms, 'scaleX', 0); }
+    get scaleX() { return u.tils.Get(this._transforms, 'scaleX', 0); }
 
     /**
      * @description Will set transform.scaleY
@@ -425,7 +425,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set scaleY(p_value) { if (this._transforms.scaleY != p_value) { this._transforms.scaleY = p_value; this._DirtyTransform(); } }
-    get scaleY() { return U.Get(this._transforms, 'scaleY', 0); }
+    get scaleY() { return u.tils.Get(this._transforms, 'scaleY', 0); }
 
     /**
      * @description Will set transform.scaleZ
@@ -434,7 +434,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @discreet
      */
     set scaleZ(p_value) { if (this._transforms.scaleZ != p_value) { this._transforms.scaleZ = p_value; this._DirtyTransform(); } }
-    get scaleZ() { return U.Get(this._transforms, 'scaleZ', 0); }
+    get scaleZ() { return u.tils.Get(this._transforms, 'scaleZ', 0); }
 
     /**
      * @description Apply all transformations immediately. Note that this function is otherwise called at the end of the frame.
@@ -453,21 +453,21 @@ class DisplayObject extends DisposableHTMLElement {
 
         //TODO : Optimize this
 
-        let rr = U.Get(t, 'rotation', 0),
-            rx = U.Get(t, 'rotationX', 0),
-            ry = U.Get(t, 'rotationY', 0),
-            rz = U.Get(t, 'rotationZ', 0),
+        let rr = u.tils.Get(t, 'rotation', 0),
+            rx = u.tils.Get(t, 'rotationX', 0),
+            ry = u.tils.Get(t, 'rotationY', 0),
+            rz = u.tils.Get(t, 'rotationZ', 0),
             r = `${rr === 0 ? `` : `rotate(${rr}deg)`}${rx === 0 ? `` : `rotateX(${rx}deg)`}${ry === 0 ? `` : `rotateX(${ry}deg)`}${rz === 0 ? `` : `rotateZ(${rz}deg)`}`,
 
-            tx = U.Get(t, 'x', 0),
-            ty = U.Get(t, 'y', 0),
-            tz = U.Get(t, 'z', 0),
+            tx = u.tils.Get(t, 'x', 0),
+            ty = u.tils.Get(t, 'y', 0),
+            tz = u.tils.Get(t, 'z', 0),
             tt = `${tx === 0 ? `` : `translateX(${tx}px)`}${ty === 0 ? `` : `translateY(${ty}px)`}${tz === 0 ? `` : `translateZ(${tz}px)`}`,
 
-            ss = U.Get(t, 'scale', 1),
-            sx = U.Get(t, 'scaleX', 1),
-            sy = U.Get(t, 'scaleY', 1),
-            sz = U.Get(t, 'scaleZ', 1),
+            ss = u.tils.Get(t, 'scale', 1),
+            sx = u.tils.Get(t, 'scaleX', 1),
+            sy = u.tils.Get(t, 'scaleY', 1),
+            sz = u.tils.Get(t, 'scaleZ', 1),
             s = `${ss === 1 ? `` : `scale(${ss},${ss})`}${sx === 1 ? `` : `scaleX(${sx})`}${sy === 1 ? `` : `scaleX(${sy})`}${sz === 1 ? `` : `scaleZ(${sz})`}`;
 
         this.style.transform = `${tt}${r}${s}`;
@@ -489,21 +489,21 @@ class DisplayObject extends DisposableHTMLElement {
      * @group Transforms
      * @discreet
      */
-    set width(p_value) { this.style.width = U.isEmpty(p_value) ? `` : `${p_value}px`; }
+    set width(p_value) { this.style.width = u.tils.isEmpty(p_value) ? `` : `${p_value}px`; }
 
     /**
      * @group Transforms
      * @discreet
      */
-    set height(p_value) { this.style.height = U.isEmpty(p_value) ? `` : `${p_value}px`; }
+    set height(p_value) { this.style.height = u.tils.isEmpty(p_value) ? `` : `${p_value}px`; }
 
     set sizeRel(p_value) {
         this.widthRel = p_value;
         this.heightRel = p_value;
     }
 
-    set widthRel(p_value) { this.style.width = U.isEmpty(p_value) ? `` : `${p_value}%`; }
-    set heightRel(p_value) { this.style.height = U.isEmpty(p_value) ? `` : `${p_value}%`; }
+    set widthRel(p_value) { this.style.width = u.tils.isEmpty(p_value) ? `` : `${p_value}%`; }
+    set heightRel(p_value) { this.style.height = u.tils.isEmpty(p_value) ? `` : `${p_value}%`; }
 
     // ----> Pooling
 
@@ -520,7 +520,7 @@ class DisplayObject extends DisposableHTMLElement {
         super._CleanUp();
 
         //Workaround shadow dom leaving webcomponents floating around.
-        UDOM.Detach(this);
+        u.dom.Detach(this);
         //UI.GRAVEYARD.appendChild(this);
 
     }

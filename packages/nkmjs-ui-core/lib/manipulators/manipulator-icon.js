@@ -1,8 +1,5 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-
-const UI_ID = require(`../ui-id`);
 const ImageManipulator = require(`./manipulator-image`);
 
 /**

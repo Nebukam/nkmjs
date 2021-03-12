@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { COMMON_FLAG } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { STYLE } = require(`@nkmjs/style`);
 const { DIALOG } = require(`@nkmjs/dialog`);
 
@@ -93,7 +93,7 @@ class ModelApply extends DataManipulationCommand {
 
         for (let i = 0; i < proxyFieldList.length; i++) {
             let field = proxyFieldList[i];
-            if (U.isInstanceOf(field, FieldSettingsProxy)) {
+            if (u.tils.isInstanceOf(field, FieldSettingsProxy)) {
                 if (field.isDeletePlanned) {
                     this._toBeDeleted.push(field); //Field is to be delete
                 } else {
@@ -123,7 +123,7 @@ class ModelApply extends DataManipulationCommand {
             return;
         }
 
-        let conf = { color: COMMON_FLAG.WARNING, strong: true },
+        let conf = { color: com.COMMON_FLAG.WARNING, strong: true },
             str0 = STYLE.TF(`No way back`, conf),
             str1 = STYLE.TF(`${models.length} models`, conf),
             str2 = STYLE.TF(`${eCount} entries`, conf),
@@ -169,7 +169,7 @@ class ModelApply extends DataManipulationCommand {
         for (let i = 0, n = this._toBeAdded.length; i < n; i++) {
             let pfs = this._toBeAdded[i],
                 ofs = Model.CreateField(original, pfs.fieldClass, pfs.id.name,
-                    { settings: U.Clone(pfs.settings), metadata: pfs.metadata });
+                    { settings: u.tils.Clone(pfs.settings), metadata: pfs.metadata });
             pfs.referenceField = ofs;
             ofsList.pop(); //New field added at the end of the list
             ofsList.splice(pfs.fieldIndex, 0, ofs);
@@ -180,7 +180,7 @@ class ModelApply extends DataManipulationCommand {
         let fIndex = -1;
         for (let i = 0, n = pfsList.length; i < n; i++) {
             let pfs = pfsList[i];
-            U.Move(ofsList, ofsList.indexOf(pfs.referenceField), pfs.fieldIndex);
+            u.tils.Move(ofsList, ofsList.indexOf(pfs.referenceField), pfs.fieldIndex);
         }
 
         // 3 - Remove fields
@@ -209,8 +209,8 @@ class ModelApply extends DataManipulationCommand {
             }
             //Update settings
             //note : it is important to update settings after renaming, as override may have occured
-            if (!U.Same(pfs.settings, ofs.settings)) {
-                ofs._settings = U.Clone(pfs.settings);
+            if (!u.tils.Same(pfs.settings, ofs.settings)) {
+                ofs._settings = u.tils.Clone(pfs.settings);
             }
         }
 
@@ -230,7 +230,7 @@ class ModelApply extends DataManipulationCommand {
     _ValidateID() {
         let id = this._proxy.id.name;
 
-        if (!U.ValidIdentifier(id)) {
+        if (!u.tils.ValidIdentifier(id)) {
             // Invalid identifier
             return false;
         }

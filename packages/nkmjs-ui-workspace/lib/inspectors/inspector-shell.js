@@ -7,8 +7,7 @@
  */
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { NFOS, BINDINGS } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
 const uicore = require(`@nkmjs/ui-core`);
 const { UI_ID, UI, UI_FLAG, View, DOMTemplate } = uicore;
@@ -26,7 +25,7 @@ const WORKSPACE_CONTEXT = require(`../workspace-context`);
 class InspectorShell extends View {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/views/inspector-shell.css`]
     }, View, ['css']);
 
@@ -138,7 +137,7 @@ class InspectorShell extends View {
         this._title.Set(this._data.id);
 
         let ctr = this._data.constructor,
-            nfos = NFOS.Get(this._data);
+            nfos = com.NFOS.Get(this._data);
 
         if (nfos) {
             this._subtitle.Set(nfos);
@@ -148,7 +147,7 @@ class InspectorShell extends View {
             this._icon.Set(null); //TODO : Swap for a '?' icon
         }
 
-        let cl = BINDINGS.Get(WORKSPACE_CONTEXT.DEFAULT_INSPECTOR, ctr);
+        let cl = com.BINDINGS.Get(WORKSPACE_CONTEXT.DEFAULT_INSPECTOR, ctr);
 
         if (!cl) { return; }
 

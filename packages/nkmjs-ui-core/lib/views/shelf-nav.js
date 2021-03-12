@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
 const { Dictionary } = require("@nkmjs/collections");
 
@@ -26,7 +25,7 @@ const { TPLHeaderBodyFooter } = require(`../templates`);
 class ShelfNav extends Toolbar {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/views/shelf-nav.css`]
     }, Toolbar, ['css']);
 

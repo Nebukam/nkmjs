@@ -1,11 +1,11 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { DisposableObjectEx, SIGNAL, DelayedCall } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { Metadata, DATA_SIGNAL } = require(`@nkmjs/data-core`);
 const { DOCUMENTS } = require(`@nkmjs/documents`);
 
-class UserPreferences extends DisposableObjectEx {
+class UserPreferences extends com.pool.DisposableObjectEx {
 
     constructor() { super(); }
 
@@ -23,7 +23,7 @@ class UserPreferences extends DisposableObjectEx {
         this._Bind(this._OnDocumentSaveSuccess);
         this._Bind(this._OnDocumentSaveError);
 
-        this._delayedSave = new DelayedCall(this._Bind(this.Save));
+        this._delayedSave = new com.time.DelayedCall(this._Bind(this.Save));
 
     }
 
@@ -42,7 +42,7 @@ class UserPreferences extends DisposableObjectEx {
         this._waitForThen = true;
 
         this._document = DOCUMENTS.Get({
-            path: `${PATH.USER_DATA}/${p_name}.json`,
+            path: `${u.PATH.USER_DATA}/${p_name}.json`,
             data: Metadata
         });
 
@@ -67,7 +67,7 @@ class UserPreferences extends DisposableObjectEx {
     }
 
     Init() {
-        if (this._defaults) { U.SetMissing(this._document.currentData._data, this._defaults); }
+        if (this._defaults) { u.tils.SetMissing(this._document.currentData._data, this._defaults); }
         this._initFn(this._document.currentData);
         this._document.Dirty();
     }

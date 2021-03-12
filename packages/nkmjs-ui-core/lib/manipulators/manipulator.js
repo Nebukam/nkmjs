@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const UI_FLAG = require(`../ui-flag`);
 const FlagEnum = require("../helpers/flag-enum");
@@ -13,7 +13,7 @@ const UI = require("../ui");
  * @class
  * @memberof ui.core.manipulators
  */
-class BaseManipulator {
+class Manipulator {
 
     /**
      * @description TODO
@@ -97,16 +97,16 @@ class BaseManipulator {
         let result = this._Update(this._element, p_value);
 
         let oldContent = this._content;
-        if (oldContent && U.isInstanceOf(oldContent, DisposableObjectEx)) {
-            oldContent.Unwatch(SIGNAL.UPDATED, this._OnContentUpdate, this);
-            oldContent.Unwatch(SIGNAL.RENAMED, this._OnContentUpdate, this);
-            oldContent.Unwatch(SIGNAL.RELEASED, this._OnContentReleased, this);
+        if (oldContent && u.tils.isInstanceOf(oldContent, com.pool.DisposableObjectEx)) {
+            oldContent.Unwatch(com.SIGNAL.UPDATED, this._OnContentUpdate, this);
+            oldContent.Unwatch(com.SIGNAL.RENAMED, this._OnContentUpdate, this);
+            oldContent.Unwatch(com.SIGNAL.RELEASED, this._OnContentReleased, this);
         }
-        if (p_value && U.isInstanceOf(this._content, DisposableObjectEx)) {
+        if (p_value && u.tils.isInstanceOf(this._content, com.pool.DisposableObjectEx)) {
             this._content = p_value;
-            this._content.Watch(SIGNAL.UPDATED, this._OnContentUpdate, this);
-            this._content.Watch(SIGNAL.RENAMED, this._OnContentUpdate, this);
-            this._content.Watch(SIGNAL.RELEASED, this._OnContentReleased, this);
+            this._content.Watch(com.SIGNAL.UPDATED, this._OnContentUpdate, this);
+            this._content.Watch(com.SIGNAL.RENAMED, this._OnContentUpdate, this);
+            this._content.Watch(com.SIGNAL.RELEASED, this._OnContentReleased, this);
         } else {
             this._content = null;
         }
@@ -123,7 +123,7 @@ class BaseManipulator {
     }
 
     _Toggle(p_toggle) {
-        
+
         if (this._isVisible != p_toggle && this._autoHide) {
             this._isVisible = p_toggle;
             if (!p_toggle) { this._element.style.setProperty(`display`, `none`); }
@@ -138,4 +138,4 @@ class BaseManipulator {
 
 }
 
-module.exports = BaseManipulator;
+module.exports = Manipulator;

@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const ActionGroup = require(`./action-group`);
 
@@ -101,7 +101,7 @@ class ActionStack {
         if (!this._isEnabled) { return null; }
 
         if (this._groupingActive) {
-            if (!this._group) { this._group = this._Register(POOL.Rent(ActionGroup)); }
+            if (!this._group) { this._group = this._Register(com.pool.POOL.Rent(ActionGroup)); }
         }
 
         // Check if last action can be updated instead of creating a new one.
@@ -113,7 +113,7 @@ class ActionStack {
         }
 
         if (p_actionClass.mergeable) {
-            if (U.isInstanceOf(lastAction, p_actionClass)) {
+            if (u.tils.isInstanceOf(lastAction, p_actionClass)) {
                 if (lastAction.CanMerge(p_operation)) {
                     //Merge if mergeable & can merge current options
                     return lastAction.Do(p_operation, true);;
@@ -122,9 +122,9 @@ class ActionStack {
         }
 
         if (this._group) {
-            return this._group._Register(POOL.Rent(p_actionClass).Do(p_operation, false));
+            return this._group._Register(com.pool.POOL.Rent(p_actionClass).Do(p_operation, false));
         } else {
-            return this._Register(POOL.Rent(p_actionClass).Do(p_operation, false));
+            return this._Register(com.pool.POOL.Rent(p_actionClass).Do(p_operation, false));
         }
 
     }

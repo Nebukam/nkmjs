@@ -1,6 +1,6 @@
 'use strict';
 
-const { StateBase } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -9,7 +9,7 @@ const { StateBase } = require(`@nkmjs/common`);
  * @augments common.helpers.StateBase
  * @memberof services
  */
-class SERVICE_STATE extends StateBase {
+class SERVICE_STATE extends com.helpers.StateBase {
     constructor() { super(); }
 
     /**

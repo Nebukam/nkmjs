@@ -11,10 +11,10 @@
  */
 'use strict';
 
-const { U, UDOM, PATH, LOG } = require(`@nkmjs/utils`);
-const { SIGNAL, TIME, SingletonEx, POOL, COM_ID } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { ENV, ENV_SIGNAL } = require(`@nkmjs/environment`);
-const { ACTION_REQUEST, RELAY, CommandBox } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 const { RESOURCES } = require(`@nkmjs/io-core`);
 const { STYLE } = require(`@nkmjs/style`);
 const { UI, OverlayHandler, LayerContainer } = require(`@nkmjs/ui-core`);
@@ -36,7 +36,7 @@ const UserPreferences = require(`./helpers/user-preferences`);
 
 */
 
-class AppBase extends SingletonEx {
+class AppBase extends com.helpers.SingletonEx {
 
     constructor() { super(); }
 
@@ -51,7 +51,7 @@ class AppBase extends SingletonEx {
         this._darkPaletteBuilder = null;
         this._lightPaletteBuilder = null;
 
-        this._userPreferences = POOL.Rent(UserPreferences);
+        this._userPreferences = com.pool.POOL.Rent(UserPreferences);
         this._defaultUserPreferences = {};
 
         this._mainWrapperClass = LayerContainer;
@@ -62,7 +62,7 @@ class AppBase extends SingletonEx {
         this._overlayHandlerClass = DialogHandler;
         this._overlayHandler = null;
 
-        this._commands = new CommandBox();
+        this._commands = new actions.CommandBox();
 
         this._ipcBindings = [
             { evt: APP_MESSAGES.NODE_MESSAGE, fn: this._Bind(this._onNodeMessage) },
@@ -75,7 +75,7 @@ class AppBase extends SingletonEx {
 
         this._loadingOverlay = document.getElementById(`__loading__`);
         if (this._loadingOverlay && ENV.ARGV.Has(`no-loading`)) {
-            UDOM.Detach(this._loadingOverlay);
+            u.dom.Detach(this._loadingOverlay);
         }
 
     }
@@ -87,7 +87,7 @@ class AppBase extends SingletonEx {
         super._PostInit();
 
         ENV.instance.RegisterServices(
-            RELAY,
+            actions.RELAY,
             RESOURCES,
             DIALOG
         );
@@ -96,7 +96,7 @@ class AppBase extends SingletonEx {
             throw new Error(`No app wrapper constructor defined.`);
         }
 
-        if (!U.isInstanceOf(this._mainWrapperClass, LayerContainer)) {
+        if (!u.tils.isInstanceOf(this._mainWrapperClass, LayerContainer)) {
             throw new Error(`App wrapper constructor (${this._mainWrapperClass.name}) must implement LayerContainer.`);
         }
 
@@ -118,7 +118,7 @@ class AppBase extends SingletonEx {
      */
     SetUp() {
 
-        LOG._(`${this._APPID} : SETUP`, `#339a6e`, `#212121`);
+        u.LOG._(`${this._APPID} : SETUP`, `#339a6e`, `#212121`);
 
         if (ENV.FEATURES.isNodeEnabled) { this._RegisterIPCBindings(); }
 
@@ -133,8 +133,8 @@ class AppBase extends SingletonEx {
         this._mainWrapper.setAttribute(`id`, `app`);
 
         // Insert main.css in ShadowDom so all subsequent elements benefit from it
-        UDOM.AttachFirst(
-            UDOM.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/main.css`), rel: `stylesheet` })
+        u.dom.AttachFirst(
+            u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/main.css`), rel: `stylesheet` })
             , this._mainWrapper._host);
 
         if (this._layers) {
@@ -153,7 +153,7 @@ class AppBase extends SingletonEx {
         let binding;
         for (let i = 0, n = this._ipcBindings.length; i < n; i++) {
             binding = this._ipcBindings[i];
-            RELAY.ipcOn(binding.evt, binding.fn);
+            actions.RELAY.ipcOn(binding.evt, binding.fn);
         }
     }
 
@@ -168,11 +168,11 @@ class AppBase extends SingletonEx {
 
     Start() {
 
-        LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
+        u.LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
 
         // Push the app wrapper to the DOM
-        UDOM.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/main.css`), rel: `stylesheet` }, document.head);
-        UDOM.Attach(this._mainWrapper, document.body);
+        u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/main.css`), rel: `stylesheet` }, document.head);
+        u.dom.Attach(this._mainWrapper, document.body);
 
         this._userPreferences.Load(
             `${this._APPID}Preferences`,
@@ -187,7 +187,7 @@ class AppBase extends SingletonEx {
 
     _OnAppReadyInternal(p_data) {
 
-        RELAY.instance.Watch(ACTION_REQUEST.EDIT, this._OnEditRequest, this);
+        actions.RELAY.instance.Watch(actions.ACTION_REQUEST.EDIT, this._OnEditRequest, this);
 
         // Load base kits... ?
         //this._LoadBaseKits();
@@ -200,14 +200,14 @@ class AppBase extends SingletonEx {
 
         this.AppReady();
 
-        LOG._(`${this._APPID} : READY`, `#030107`, `#339a6e`);
+        u.LOG._(`${this._APPID} : READY`, `#030107`, `#339a6e`);
 
         // Loading container
 
         if (this._loadingOverlay) {
             
             this._loadingOverlay.addEventListener(`animationend`, (p_evt) => {
-                UDOM.Detach(p_evt.target);
+                u.dom.Detach(p_evt.target);
             });
             
             let delay = `50ms`,
@@ -244,7 +244,7 @@ class AppBase extends SingletonEx {
 
     // ---->
 
-    ReloadApp() { RELAY.ipcSend(APP_MESSAGES.DO_RELOAD_APP); }
+    ReloadApp() { actions.RELAY.ipcSend(APP_MESSAGES.DO_RELOAD_APP); }
 
     /**
      * 
@@ -260,27 +260,27 @@ class AppBase extends SingletonEx {
      * @param {string} p_options.icon 
      * @param {string} p_options.backgroundColor 
      */
-    OpenWindow(p_options) { RELAY.ipcSend(APP_MESSAGES.DO_OPEN_WINDOW, p_options); }
+    OpenWindow(p_options) { actions.RELAY.ipcSend(APP_MESSAGES.DO_OPEN_WINDOW, p_options); }
 
     /**
      * 
      * @param {*} p_options 
      * @param {string} p_options.id
      */
-    CloseWindow(p_options) { RELAY.ipcSend(APP_MESSAGES.DO_CLOSE_WINDOW, p_options); }
+    CloseWindow(p_options) { actions.RELAY.ipcSend(APP_MESSAGES.DO_CLOSE_WINDOW, p_options); }
 
-    Print(p_options) { RELAY.ipcSend(APP_MESSAGES.DO_PRINT_WINDOW, p_options); }
+    Print(p_options) { actions.RELAY.ipcSend(APP_MESSAGES.DO_PRINT_WINDOW, p_options); }
 
-    LoadAndPrint(p_options) { RELAY.ipcSend(APP_MESSAGES.DO_OPEN_AND_PRINT_WINDOW, p_options); }
+    LoadAndPrint(p_options) { actions.RELAY.ipcSend(APP_MESSAGES.DO_OPEN_AND_PRINT_WINDOW, p_options); }
 
     // ----> ELECTRON Message handling (error/warning/messages)
 
     _onNodeError(p_evt, p_content) {
         console.error(p_content.error);
         DIALOG.Push({
-            [COM_ID.TITLE]: p_content.message,
-            [COM_ID.ICON]: `% ICON % /icon_error.svg`,
-            [COM_ID.MESSAGE]: `${p_content.error.message}`,
+            [com.COM_ID.TITLE]: p_content.message,
+            [com.COM_ID.ICON]: `% ICON % /icon_error.svg`,
+            [com.COM_ID.MESSAGE]: `${p_content.error.message}`,
             actions: [
                 { text: `Close` },
             ]
@@ -290,9 +290,9 @@ class AppBase extends SingletonEx {
     _onNodeWarning(p_evt, p_content) {
         console.warning(p_content.message);
         DIALOG.Push({
-            [COM_ID.TITLE]: `Attention !`,
-            [COM_ID.ICON]: `%ICON%/icon_warning.svg`,
-            [COM_ID.MESSAGE]: `${p_content.message}`,
+            [com.COM_ID.TITLE]: `Attention !`,
+            [com.COM_ID.ICON]: `%ICON%/icon_warning.svg`,
+            [com.COM_ID.MESSAGE]: `${p_content.message}`,
             actions: [
                 { text: `Close` },
             ]

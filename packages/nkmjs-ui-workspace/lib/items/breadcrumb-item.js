@@ -1,5 +1,6 @@
-const { U, PATH } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+'use strict';
+
+const com = require("@nkmjs/common");
 const { DataBlock, CatalogItem } = require(`@nkmjs/data-core`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
 const uicore = require(`@nkmjs/ui-core`);
@@ -9,7 +10,7 @@ const { TPLFacadeLabel } = uicore.templates;
 class BreadcrumbItem extends ButtonBase {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/items/breadcrum-item.css`]
     }, ButtonBase, ['css']);
 

@@ -47,4 +47,4 @@ module.exports = {
 
 }
 
-require(`@nkmjs/common`).BINDINGS.Expand(require(`./bindings`));
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

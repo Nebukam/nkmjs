@@ -1,8 +1,8 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
-const { SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const DATA_SIGNAL = require(`../data-signal`);
 const DataBlock = require(`./data-block`);
@@ -15,7 +15,7 @@ const Repertoire = require(`./repertoire`);
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core
  */
-class DataFactory extends DisposableObjectEx {
+class DataFactory extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {
@@ -45,7 +45,7 @@ class DataFactory extends DisposableObjectEx {
      * @type {function}
      */
     set itemClass(p_value) {
-        if (!U.isInstanceOf(p_value, DataBlock)) { throw new Error(`itemClass must inherit DataBlock`); }
+        if (!u.tils.isInstanceOf(p_value, DataBlock)) { throw new Error(`itemClass must inherit DataBlock`); }
         this._itemClass = p_value;
     }
     get itemClass() { return this._itemClass; }
@@ -80,19 +80,19 @@ class DataFactory extends DisposableObjectEx {
 
         let cl = this._itemClass;
 
-        if (!U.isVoid(p_class)) {
-            if (!U.isInstanceOf(p_class, cl)) {
+        if (!u.tils.isVoid(p_class)) {
+            if (!u.tils.isInstanceOf(p_class, cl)) {
                 throw new Error(`CreateTemp custom constructor (${p_class}) does not extends factory constructor (${this._itemClass.name})`);
             } else { cl = p_class; }
         }
 
-        if (U.isVoid(cl)) { throw new Error(`Cannot create temp item with no itemClass set.`); }
+        if (u.tils.isVoid(cl)) { throw new Error(`Cannot create temp item with no itemClass set.`); }
 
-        let newItem = POOL.Rent(cl);
+        let newItem = com.pool.POOL.Rent(cl);
         newItem._isTemp = true;
         this._tempItemList.Add(newItem);
 
-        newItem.Watch(SIGNAL.RELEASED, this._OnItemReleased, this);
+        newItem.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         return newItem;
 

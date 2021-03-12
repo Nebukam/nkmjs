@@ -1,11 +1,8 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
-
 const UI = require(`../ui`);
 const UI_FLAG = require(`../ui-flag`);
-const { ImageManipulator } = require("../manipulators");
+const manipulators = require("../manipulators");
 const DisplayObject = require("../display-object");
 
 /**
@@ -51,7 +48,7 @@ class Frame extends DisplayObject {
     }
 
     _Render() {
-        this._imgManipulator = new ImageManipulator(this, false);
+        this._imgManipulator = new manipulators.Image(this, false);
     }
 
     /**

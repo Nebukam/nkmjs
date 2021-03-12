@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS, SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CatalogItem } = require(`@nkmjs/data-core`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
 
@@ -14,7 +14,7 @@ const View = require(`../views/view`);
 const CatalogViewBuilder = require("../helpers/catalog-view-builder");
 const FlagEnum = require(`../helpers/flag-enum`);
 const DOMTemplate = require(`../dom-template`);
-const { ExtMouse } = require("../extensions");
+const extensions = require("../extensions");
 const MOUSE = require("../mouse");
 const templates = require(`../templates`);
 
@@ -30,7 +30,7 @@ const OverlayOptions = require("./overlay-options");
 class Drawer extends View {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/views/drawer.css`]
     }, View, ['css']);
 
@@ -44,7 +44,7 @@ class Drawer extends View {
 
         this._Bind(this._CloseRequest);
 
-        this._closeBtn = this._interactions.Add(ExtMouse);
+        this._closeBtn = this._interactions.Add(extensions.Mouse);
         this._closeBtn.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._CloseRequest);
 
     }
@@ -74,7 +74,7 @@ class Drawer extends View {
     }
 
     /**
-     * @returns {ImageManipulator}
+     * @returns {IconManipulator}
      */
     get icon() { return this._icon; }
     /**
@@ -92,7 +92,7 @@ class Drawer extends View {
     set title(p_value) { this._title.Set(p_value); }
 
     /**
-     * @returns {ImageManipulator}
+     * @returns {IconManipulator}
      */
     get closeIcon() { return this._closeIcon; }
     /**
@@ -102,8 +102,8 @@ class Drawer extends View {
 
     _Render() {
 
-        this._header = UDOM.New(`div`, {class:`header`}, this);
-        this._body = UDOM.New(`div`, {class:`body`}, this);
+        this._header = u.dom.New(`div`, {class:`header`}, this);
+        this._body = u.dom.New(`div`, {class:`body`}, this);
 
         DOMTemplate.Render(this.constructor.__default_facadeTPL, this._header, {
             [UI_ID.OWNER]: this,
@@ -120,7 +120,7 @@ class Drawer extends View {
     // ----> DATA
 
     _PreprocessData(p_data) {
-        if (U.isInstanceOf(p_data, OverlayOptions)) {
+        if (u.tils.isInstanceOf(p_data, OverlayOptions)) {
             let p_options = p_data.options;
             this._icon.Set(p_options);
             this._title.Set(p_options);

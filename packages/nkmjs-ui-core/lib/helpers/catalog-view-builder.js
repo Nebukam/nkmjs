@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CatalogItem, Catalog, CatalogWatcher } = require(`@nkmjs/data-core`);
 
 const UI = require(`../ui`);
@@ -43,13 +43,13 @@ class CatalogViewBuilder extends CatalogWatcher {
 
             let viewType = p_item.GetOption(`viewType`, null);
             if (!viewType) { throw new Error(`Shelf's item has neither a view or a viewType set.`); }
-            if (!U.isInstanceOf(viewType, View)) { throw new Error(`viewType (${viewType.name}) is not of type View`); }
+            if (!u.tils.isInstanceOf(viewType, View)) { throw new Error(`viewType (${viewType.name}) is not of type View`); }
 
             view = UI.Rent(viewType);
             p_item.SetOption(UI_ID.VIEW, view);
 
         } else {
-            if (!U.isInstanceOf(view, View)) { throw new Error(`view is not of type View.`); }
+            if (!u.tils.isInstanceOf(view, View)) { throw new Error(`view is not of type View.`); }
         }
 
         this._map.set(p_item, view);
@@ -58,7 +58,7 @@ class CatalogViewBuilder extends CatalogWatcher {
         if (p_item.data) { view.data = p_item.data; }
         else { view.data = p_item; }
 
-        this._Broadcast(SIGNAL.ITEM_ADDED, this, p_item, view);
+        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, view);
         return true;
 
     }
@@ -75,7 +75,7 @@ class CatalogViewBuilder extends CatalogWatcher {
         if (mappedView === false) { return false; }
 
         this._reverseMap.delete(mappedView);
-        this._Broadcast(SIGNAL.ITEM_REMOVED, this, p_item, mappedView);
+        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedView);
         mappedView.Release();
 
         return mappedView;

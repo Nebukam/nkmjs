@@ -1,7 +1,7 @@
 'use strict';
 
 const DATA_SIGNAL = require(`../data-signal`);
-const { DisposableObjectEx, Observer } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const _add_ = `ADD`;
 const _rem_ = `REM`;
@@ -15,14 +15,14 @@ const _mpd_ = `IPD`;
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core.helpers
  */
-class MetadataObserver extends DisposableObjectEx {
+class MetadataObserver extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     // ----> Init
 
     _Init() {
         super._Init();
-        this._observer = new Observer();
+        this._observer = new com.signals.Observer();
         this._observer.Hook(DATA_SIGNAL.META_ADDED, this._OnMetaAdded, this);
         this._observer.Hook(DATA_SIGNAL.META_REMOVED, this._OnMetaRemoved, this);
         this._observer.Hook(DATA_SIGNAL.META_UPDATED, this._OnMetaUpdated, this);

@@ -1,6 +1,6 @@
 'use strict';
 
-const { COMMON_FLAG } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const COLOR = require("./colors/color");
 const PaletteBuilder = require("./palette-builder");
 
@@ -18,15 +18,15 @@ class DefaultStylesheet extends PaletteBuilder{
 
         let defaultColors = {};
 
-        defaultColors[COMMON_FLAG.INFOS] = COLOR.RGBA(102, 175, 204);
-        defaultColors[COMMON_FLAG.WARNING] = COLOR.RGBA(255, 206, 0);
-        defaultColors[COMMON_FLAG.ERROR] = COLOR.RGBA(226, 5, 0);
-        defaultColors[COMMON_FLAG.READY] = COLOR.RGBA(120, 164, 0);
-        defaultColors[COMMON_FLAG.DIRTY] = COLOR.RGBA(164, 100, 0);
-        defaultColors[COMMON_FLAG.LOADING] = COLOR.RGBA(102, 119, 204);
-        defaultColors[COMMON_FLAG.PROCESSING] = COLOR.RGBA(102, 119, 204);
-        defaultColors[COMMON_FLAG.WAITING] = COLOR.RGBA(102, 119, 204);
-        defaultColors[COMMON_FLAG.ACTIVE] = COLOR.RGBA(62, 193, 136);
+        defaultColors[com.COMMON_FLAG.INFOS] = COLOR.RGBA(102, 175, 204);
+        defaultColors[com.COMMON_FLAG.WARNING] = COLOR.RGBA(255, 206, 0);
+        defaultColors[com.COMMON_FLAG.ERROR] = COLOR.RGBA(226, 5, 0);
+        defaultColors[com.COMMON_FLAG.READY] = COLOR.RGBA(120, 164, 0);
+        defaultColors[com.COMMON_FLAG.DIRTY] = COLOR.RGBA(164, 100, 0);
+        defaultColors[com.COMMON_FLAG.LOADING] = COLOR.RGBA(102, 119, 204);
+        defaultColors[com.COMMON_FLAG.PROCESSING] = COLOR.RGBA(102, 119, 204);
+        defaultColors[com.COMMON_FLAG.WAITING] = COLOR.RGBA(102, 119, 204);
+        defaultColors[com.COMMON_FLAG.ACTIVE] = COLOR.RGBA(62, 193, 136);
 
         palette.AddColors(defaultColors);
 

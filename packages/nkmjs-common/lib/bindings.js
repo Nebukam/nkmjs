@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { DictionaryList, KDictionary, Dictionary } = require(`@nkmjs/collections`);
 
 const SingletonEx = require(`./helpers/singleton-ex`);
@@ -53,7 +53,7 @@ class BINDINGS extends SingletonEx {
      * BINDINGS.Expand(require(`./my-module-bindings`));
      */
     static Expand(p_bindings) {
-        if (U.isFunc(p_bindings)) { p_bindings = new p_bindings(); }
+        if (u.tils.isFunc(p_bindings)) { p_bindings = new p_bindings(); }
         p_bindings.Deploy();
     }
 
@@ -97,7 +97,7 @@ class BINDINGS extends SingletonEx {
         let uid = this._classReverseLookup.Get(p_class);
 
         if (!uid) {
-            uid = U.Get(NFOS.Get(p_class), COM_ID.uid, null);
+            uid = u.tils.Get(NFOS.Get(p_class), COM_ID.uid, null);
             if (!uid) { throw new Error(`No valid NFO found for ${p_class}`); }
             this._SetClass(uid, p_class);
         }
@@ -157,8 +157,8 @@ class BINDINGS extends SingletonEx {
      * BINDINGS.Get(Kitchen, Ustensil) == Fork
      */
     static Get(p_context, p_key, p_fallback = null, p_broad = true) {
-        p_key = U.isFunc(p_key) ? p_key : p_key.constructor;
-        if (!U.isFunc(p_key)) { throw new Error(`p_key must be a constructor or have an accessible constructor.`); }
+        p_key = u.tils.isFunc(p_key) ? p_key : p_key.constructor;
+        if (!u.tils.isFunc(p_key)) { throw new Error(`p_key must be a constructor or have an accessible constructor.`); }
         let result = this.instance._Get(p_context, p_key, p_broad);
         if (!result) { return p_fallback; }
         return result;
@@ -191,8 +191,8 @@ class BINDINGS extends SingletonEx {
                 for (let i = 0, n = keyList.length; i < n; i++) {
                     let otherKey = keyList[i];
                     distance = this._distanceMap.Get(p_key, otherKey);
-                    if (U.isVoid(distance)) {
-                        distance = U.InheritanceDistance(p_key, otherKey);
+                    if (u.tils.isVoid(distance)) {
+                        distance = u.tils.InheritanceDistance(p_key, otherKey);
                         this._distanceMap.Set(p_key, otherKey, distance);
                     }
                     if (distance === -1) { continue; }

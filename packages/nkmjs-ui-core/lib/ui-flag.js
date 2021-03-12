@@ -1,6 +1,6 @@
 'use strict';
 
-const com = require(`@nkmjs/common`); //{ COMMON_FLAG }
+const com = require("@nkmjs/common"); //{ COMMON_FLAG }
 
 /**
  * @description TODO

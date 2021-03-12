@@ -1,5 +1,6 @@
-const { U } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+'use strict';
+
+const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
 const { UI, Toolbar } = require(`@nkmjs/ui-core`);
 
@@ -8,7 +9,7 @@ const BreadcrumbItem = require(`./breadcrumb-item`);
 class Breadcrumb extends Toolbar{
     constructor(){super();}
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/items/breadcrum.css`]
     }, Toolbar, ['css']);
 

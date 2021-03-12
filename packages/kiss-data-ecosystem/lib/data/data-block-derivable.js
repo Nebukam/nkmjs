@@ -1,6 +1,6 @@
 'use strict';
 
-const { SIGNAL, Observer } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const ECOSYSTEM_EVENT = require(`../ecosystem-event`);
 const DataBlockEx = require(`./data-block-ex`);
@@ -11,9 +11,9 @@ class DerivableDataBlock extends DataBlockEx {
     _Init() {
         super._Init();
         this._base = null;
-        this._baseObserver = new Observer();
-        this._baseObserver.Hook(SIGNAL.RELEASED, this._OnBaseReleased, this);
-        this._baseObserver.Hook(SIGNAL.UPDATED, this._OnBaseUpdated, this);
+        this._baseObserver = new com.signals.Observer();
+        this._baseObserver.Hook(com.SIGNAL.RELEASED, this._OnBaseReleased, this);
+        this._baseObserver.Hook(com.SIGNAL.UPDATED, this._OnBaseUpdated, this);
     }
 
     get base() { return this._base; }

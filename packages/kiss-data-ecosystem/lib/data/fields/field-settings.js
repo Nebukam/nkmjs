@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const URI = require(`../../uri`);
 const FIELD_EVENT = require(`../fields/field-event`);
@@ -32,7 +32,7 @@ class FieldSettings extends DerivableDataBlock {
     _BuildDerivation(p_base) {
         if (this._fieldClass != p_base.fieldClass) {
             this.fieldClass = p_base.fieldClass;
-            this.settings = U.Clone(p_base.settings);
+            this.settings = u.tils.Clone(p_base.settings);
         }
     }
 
@@ -60,7 +60,7 @@ class FieldSettings extends DerivableDataBlock {
         }
 
         if (p_value) {
-            this._fieldInstance = POOL.Rent(p_value);
+            this._fieldInstance = com.pool.POOL.Rent(p_value);
             this._fieldInstance.settings = this._settings;
         }
 
@@ -90,7 +90,7 @@ class FieldSettings extends DerivableDataBlock {
         this.fieldClass = null;
         this._fieldIndex = -1;
         this._model = null;
-        this._settings = U.Clear(this._settings, true);
+        this._settings = u.tils.Clear(this._settings, true);
         super._CleanUp();
     }
 

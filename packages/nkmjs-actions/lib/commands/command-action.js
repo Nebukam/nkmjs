@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const COMMAND_SIGNAL = require(`./command-signal`);
 const Command = require(`./command`);
@@ -74,10 +74,10 @@ class CommandAction extends Command {
                 //Look in parenting stack in case no editor is found
                 //stop at first editor or last ?
                 //assume first for now.
-                let editorClass = POOL.GetClass(`Editor`),
+                let editorClass = com.pool.POOL.GetClass(`Editor`),
                     p = this._emitter;
                 while (!editor && p) {
-                    if (U.isInstanceOf(p, editorClass)) { editor = p; }
+                    if (u.tils.isInstanceOf(p, editorClass)) { editor = p; }
                     p = p.parent;
                 }
             }
@@ -88,7 +88,7 @@ class CommandAction extends Command {
             editor.Do(this._actionClass, this._context);
         } else {
             //If no editor found, create action, execute it then release it immediately.
-            POOL.Rent(this._actionClass)
+            com.pool.POOL.Rent(this._actionClass)
                 .Do(this._context, false)
                 .Release();
         }

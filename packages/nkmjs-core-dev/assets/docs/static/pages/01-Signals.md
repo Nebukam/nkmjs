@@ -9,7 +9,7 @@ To quote Robert Penner :
 * Event string constants are no longer needed.
 * Signals are inspired by C# events and signals/slots in Qt.
 
-Some of that logic is wrapped around inside the {@link common.SignalBox} to streamline Watching/Broadcasting, so the syntax leans toward something more familiar like the usual event system; but in essence, it's an OOP version of the regular JS' Event system.
+Some of that logic is wrapped around inside the {@link common.signals.SignalBox} to streamline Watching/Broadcasting, so the syntax leans toward something more familiar like the usual event system; but in essence, it's an OOP version of the regular JS' Event system.
 
 <div class="tip warning" data-title="Attention !">
 One major difference with the regular JavaScript' event system is that Signals don't have a bubble mechanic, and cannot be interrupted using methods such as `preventDefault`.

@@ -1,14 +1,15 @@
 'use strict';
 
-const { UDOM } = require("@nkmjs/utils");
-const { SIGNAL, Observer, DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 const INPUT = require(`../input`);
 const UI_FLAG = require(`../ui-flag`);
 const UI_SIGNAL = require(`../ui-signal`);
-const ExtBase = require("./ext-base");
 const MOUSE = require("../mouse");
+
+const Extension = require("./extension");
 
 
 let _dragDataContent = new Array(0);
@@ -17,10 +18,10 @@ let _dragDataContent = new Array(0);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments ui.core.extensions.ExtBase
+ * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
-class ExtDrag extends ExtBase {
+class DragExtension extends Extension {
     constructor() { super(); }
 
     // ----> Init
@@ -35,10 +36,10 @@ class ExtDrag extends ExtBase {
         this._feedbackHost = null;
         this._grabDataCallback = null;
 
-        this._ownerObserver = new Observer();
+        this._ownerObserver = new com.signals.Observer();
         this._ownerObserver.Hook(UI_SIGNAL.DRAG_STARTED, this._OnOwnerDragStarted, this);
         this._ownerObserver.Hook(UI_SIGNAL.DRAG_ENDED, this._OnOwnerDragEnded, this);
-        this._ownerObserver.Hook(SIGNAL.RELEASED, this._OnOwnerReleased, this);
+        this._ownerObserver.Hook(com.SIGNAL.RELEASED, this._OnOwnerReleased, this);
 
         this._Bind(this._mUp);
         this._Bind(this._mDown);
@@ -205,13 +206,13 @@ class ExtDrag extends ExtBase {
 
     _ShowHint() {
         if (this._feedbackHost) {
-            if (this._hintElement) { UDOM.Attach(this._hintElement, this._feedbackHost); }
-            else { this._hintElement = UDOM.New(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
+            if (this._hintElement) { u.dom.Attach(this._hintElement, this._feedbackHost); }
+            else { this._hintElement = u.dom.New(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
         }
     }
 
     _HideHint() {
-        if (this._hintElement) { UDOM.Detach(this._hintElement); }
+        if (this._hintElement) { u.dom.Detach(this._hintElement); }
     }
 
     // ----> Pooling
@@ -229,4 +230,4 @@ class ExtDrag extends ExtBase {
 
 }
 
-module.exports = ExtDrag;
+module.exports = DragExtension;

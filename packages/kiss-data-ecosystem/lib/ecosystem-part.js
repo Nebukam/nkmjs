@@ -1,26 +1,20 @@
 'use strict';
 
-//const U = require(`../util`);
-//const POOL = require(`../collections/pool`);
-//const List = require(`../collections/list`);
-//const DisposableObjectEx = require(`../collections/disposable-object-ex`);
-//const Catalog = require(`../collections/catalog`);
-
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
-const { POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { Catalog } = require(`@nkmjs/data-core`);
-const { CommandBox } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const EcosystemCommand = require(`./data/commands/command-ecosystem`);
 
-class EcosystemPart extends DisposableObjectEx {
+class EcosystemPart extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {
         super._Init();
 
-        this._commands = new CommandBox();
+        this._commands = new actions.CommandBox();
 
         this._ecosystem = null;
         this._catalog = new Catalog();
@@ -75,7 +69,7 @@ class EcosystemPart extends DisposableObjectEx {
         let list = this._commands.list;
         for (let i = 0; i < list.count; i++) {
             let cmd = list.At(i);
-            if (U.isInstanceOf(cmd, EcosystemCommand)) { cmd.ecosystem = this._ecosystem; }
+            if (u.tils.isInstanceOf(cmd, EcosystemCommand)) { cmd.ecosystem = this._ecosystem; }
         }
     }
 

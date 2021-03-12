@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS, COMMON_FLAG } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 const { UI } = require(`@nkmjs/ui-core`);
 
@@ -10,7 +10,7 @@ const InputField = require(`../input-field`);
 class InputTextarea extends InputField {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/expandable.css`]
     }, InputField, ['css']);
 
@@ -23,7 +23,7 @@ class InputTextarea extends InputField {
     // ----> DOM
 
     _Render() {
-        this._inputField = UDOM.New(`textarea`, { class: 'field', rows: 3 }, this._host);
+        this._inputField = u.dom.New(`textarea`, { class: 'field', rows: 3 }, this._host);
     }
     expandable
 }

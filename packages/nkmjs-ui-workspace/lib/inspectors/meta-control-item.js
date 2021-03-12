@@ -1,5 +1,5 @@
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { UI_ID, UI, TextManipulator } = require(`@nkmjs/ui-core`);
+const u = require("@nkmjs/utils");
+const { UI_ID, UI, manipulators } = require(`@nkmjs/ui-core`);
 const { Metadata, ActionMetadataSet } = require(`@nkmjs/data-core`);
 const { INPUT_SIGNAL, InputField } = require(`@nkmjs/ui-inputs`);
 
@@ -28,7 +28,7 @@ class MetaControlItem extends InspectorItem{
     // ----> DOM
 
     _Style(){
-        return U.Merge(super._Style(), {
+        return u.tils.Merge(super._Style(), {
             ':host':{
                 margin:`5px`,
                 padding:`6px`,
@@ -50,7 +50,7 @@ class MetaControlItem extends InspectorItem{
 
     _Render(){
         super._Render();
-        this._label = new TextManipulator(UDOM.New(`span`, { class: UI_ID.LABEL }, this._host));
+        this._label = new manipulators.Text(u.dom.New(`span`, { class: UI_ID.LABEL }, this._host));
     }
 
     get metaPath(){return this._metaPath;}
@@ -74,10 +74,10 @@ class MetaControlItem extends InspectorItem{
 
         if(!this._data){ return; }
 
-        let mData = U.isInstanceOf(this._data, Metadata) ? this._data : this._data.metadata;
+        let mData = u.tils.isInstanceOf(this._data, Metadata) ? this._data : this._data.metadata;
         let obj = mData.Get(this._metaPath, null);
         
-        if(U.Void(obj)){ return; }
+        if(u.tils.Void(obj)){ return; }
 
         this._input = this.Add(this._inputClass, `control`);
         this._OnInputCreated(this._input);
@@ -92,7 +92,7 @@ class MetaControlItem extends InspectorItem{
 
     _OnInputValueCommited(p_input, p_changedValue){
 
-        let mData = U.isInstanceOf(this._data, Metadata) ? this._data : this._data.metadata;
+        let mData = u.tils.isInstanceOf(this._data, Metadata) ? this._data : this._data.metadata;
         let mPath = this._metaPath;
 
         this._Do( ActionMetadataSet, {

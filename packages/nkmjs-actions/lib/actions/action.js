@@ -1,6 +1,6 @@
 'use strict';
 
-const { DisposableObject } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -9,7 +9,7 @@ const { DisposableObject } = require(`@nkmjs/common`);
  * @augments common.pool.DisposableObject
  * @memberof actions
  */
-class Action extends DisposableObject {
+class Action extends com.pool.DisposableObject {
     constructor() { super(); }
 
     static get mergeable() { return false; }

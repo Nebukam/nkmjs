@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = {
-    actions : require(`@nkmjs/actions`),
+    actions : require("@nkmjs/actions"),
     app : require(`@nkmjs/app-core`),
     collections : require(`@nkmjs/collections`),
-    common : require(`@nkmjs/common`),
+    common : require("@nkmjs/common"),
     data : require(`@nkmjs/data-core`),
     dialog : require(`@nkmjs/dialog`),
     document : require(`@nkmjs/documents`),
@@ -17,5 +17,5 @@ module.exports = {
     ui : require(`@nkmjs/ui-core`),
     inputs : require(`@nkmjs/ui-inputs`),
     workspace : require(`@nkmjs/ui-workspace`),
-    utils : require(`@nkmjs/utils`),
+    utils : require("@nkmjs/utils"),
 }

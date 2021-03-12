@@ -1,8 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, COMMON_FLAG, Observer } = require(`@nkmjs/common`);
-const { ActionStack, Command } = require(`@nkmjs/actions`);
+const com = require("@nkmjs/common");
+const actions = require("@nkmjs/actions");
 const { DATA_SIGNAL } = require(`@nkmjs/data-core`);
 const { UI, MOUSE, View } = require(`@nkmjs/ui-core`);
 
@@ -22,16 +21,16 @@ class Editor extends View{
         super._Init();
 
         //TODO : Find a way to invalidate action stacks // <--- WTF ?
-        this._actionStack = new ActionStack();
+        this._actionStack = new actions.ActionStack();
 
         this._dataObserver.Hook(DATA_SIGNAL.DIRTY, this._OnDataDirty, this);
         this._dataObserver.Hook(DATA_SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
 
         this._inspectedData = null;
-        this._inspectedObserver = new Observer();
-        this._inspectedObserver.Hook(SIGNAL.RELEASED, this._OnInspectedDataReleased, this);
+        this._inspectedObserver = new com.signals.Observer();
+        this._inspectedObserver.Hook(com.SIGNAL.RELEASED, this._OnInspectedDataReleased, this);
 
-        this._flags.Add(this, COMMON_FLAG.WARNING);
+        this._flags.Add(this, com.COMMON_FLAG.WARNING);
 
         this._Bind(this.Inspect);
 

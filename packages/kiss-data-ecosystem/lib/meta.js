@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 let _METAS = new Map();
 let _TEMPLATES = new Map();
@@ -11,7 +11,7 @@ class META {
 
     static ETA(p_obj) {
 
-        if (U.isVoid(p_obj)) { return null; }
+        if (u.tils.isVoid(p_obj)) { return null; }
 
         // We can be provided with either a constructor or an object.
 
@@ -22,21 +22,21 @@ class META {
             // Prioritize object's own _NFO_ if any/non-null
             if (`_NFO_` in p_obj) {
                 let localNFO = null;
-                if (U.isFunc(p_obj._NFO_)) { localNFO = p_obj._NFO_(); }
+                if (u.tils.isFunc(p_obj._NFO_)) { localNFO = p_obj._NFO_(); }
                 else { localNFO = p_obj._NFO_; }
-                if (!U.isVoid(localNFO)) { return localNFO; }
+                if (!u.tils.isVoid(localNFO)) { return localNFO; }
             }
 
             cstr = p_obj.constructor;
 
-        } else if (U.isFunc(p_obj)) { //Need to get the prototype
+        } else if (u.tils.isFunc(p_obj)) { //Need to get the prototype
             cstr = p_obj.prototype.constructor;
         }
 
         // Check if cstr has an _NFO_ property
         if (`_NFO_` in cstr) {
             let result = _METAS.get(cstr);
-            if (!U.isVoid(result)) { return result; }
+            if (!u.tils.isVoid(result)) { return result; }
 
             // Register new NFO
             result = cstr._NFO_;
@@ -59,9 +59,9 @@ class META {
 
         let cstr = null;
 
-        if (U.isFunc(p_obj)) {
+        if (u.tils.isFunc(p_obj)) {
             cstr = p_obj.prototype.constructor;
-        } else if (U.isObject(p_obj)) {
+        } else if (u.tils.isObject(p_obj)) {
             cstr = p_obj.constructor;
         }
 
@@ -72,9 +72,9 @@ class META {
 
         let ctnr = null;
 
-        if (U.isFunc(p_obj)) {
+        if (u.tils.isFunc(p_obj)) {
             ctnr = p_obj.prototype.constructor;
-        } else if (U.isObject(p_obj)) {
+        } else if (u.tils.isObject(p_obj)) {
             ctnr = p_obj.constructor;
         }
 

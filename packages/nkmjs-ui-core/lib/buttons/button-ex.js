@@ -1,14 +1,14 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CSS, FONT_FLAG } = require("@nkmjs/style");
 
 const UI_FLAG = require(`../ui-flag`);
 const UI_ID = require(`../ui-id`);
 const UI = require(`../ui.js`);
 const ButtonBase = require(`../button-base`);
-const { TextManipulator, ImageManipulator } = require("../manipulators");
+const manipulators = require("../manipulators");
 
 /**
  * @description A ButtonEx is a basic button implementation with an icon & a label.
@@ -20,7 +20,7 @@ const { TextManipulator, ImageManipulator } = require("../manipulators");
 class ButtonEx extends ButtonBase {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/button-ex.css`]
     }, ButtonBase, ['css']);
 
@@ -47,7 +47,7 @@ class ButtonEx extends ButtonBase {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.ImageManipulator}
+     * @type {ui.core.manipulators.IconManipulator}
      * @customtag read-only
      */
     get icon() { return this._icon; }
@@ -61,7 +61,7 @@ class ButtonEx extends ButtonBase {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.ImageManipulator}
+     * @type {ui.core.manipulators.IconManipulator}
      * @customtag read-only
      */
     get label() { return this._label; }
@@ -76,8 +76,8 @@ class ButtonEx extends ButtonBase {
     _Render() {
         super._Render();
 
-        this._icon = new ImageManipulator(UDOM.New(`span`, { class: UI_ID.ICON }, this._host));
-        this._label = new TextManipulator(UDOM.New(`span`, { class: UI_ID.LABEL }, this._host));
+        this._icon = new manipulators.Icon(u.dom.New(`img`, { class: UI_ID.ICON }, this._host));
+        this._label = new manipulators.Text(u.dom.New(`span`, { class: UI_ID.LABEL }, this._host));
 
     }
 

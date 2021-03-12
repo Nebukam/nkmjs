@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL, Observer, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { List } = require(`@nkmjs/collections`);
 
 /**
@@ -11,7 +10,7 @@ const { List } = require(`@nkmjs/collections`);
  * @augments common.pool.DisposableObjectEx
  * @memberof io.core
  */
-class IOQueue extends DisposableObjectEx {
+class IOQueue extends com.pool.DisposableObjectEx {
 
 
     constructor() { super(); }
@@ -22,9 +21,9 @@ class IOQueue extends DisposableObjectEx {
         this._currentItem = null;
         this._running = false;
 
-        this._itemObserver = new Observer();
-        this._itemObserver.Hook(SIGNAL.FAIL, this._OnCurrentRscProcessingFailed, this);
-        this._itemObserver.Hook(SIGNAL.COMPLETE, this._OnCurrentRscProcessingComplete, this);
+        this._itemObserver = new com.signals.Observer();
+        this._itemObserver.Hook(com.SIGNAL.FAIL, this._OnCurrentRscProcessingFailed, this);
+        this._itemObserver.Hook(com.SIGNAL.COMPLETE, this._OnCurrentRscProcessingComplete, this);
 
     }
 
@@ -90,7 +89,7 @@ class IOQueue extends DisposableObjectEx {
             return;
         }
 
-        this._currentItem.Watch(SIGNAL.COMPLETE, this._OnCurrentItemComplete, this);
+        this._currentItem.Watch(com.SIGNAL.COMPLETE, this._OnCurrentItemComplete, this);
         if (this._currentItem.Validate()) { this._currentItem.Process(); }
 
     }

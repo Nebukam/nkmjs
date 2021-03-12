@@ -1,4 +1,4 @@
-const { BINDINGS } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const DataBlock = require(`../../data/data-block`);
 const SERIALIZATION_CONTEXT = require(`../serialization-context`);
@@ -45,7 +45,7 @@ class DataBlockJSONSerializer extends BaseSerializer {
 
         let metadata = p_data[__metaID];
 
-        let serializer = BINDINGS.Get(
+        let serializer = com.BINDINGS.Get(
             SERIALIZATION_CONTEXT.JSON,
             metadata);
 
@@ -70,7 +70,7 @@ class DataBlockJSONSerializer extends BaseSerializer {
         if (!p_data) { throw new Error(`Cannot unpack to null target.`); }
 
         let metadata = p_data.metadata,
-            serializer = BINDINGS.Get(
+            serializer = com.BINDINGS.Get(
                 SERIALIZATION_CONTEXT.JSON,
                 metadata);
 

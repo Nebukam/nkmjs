@@ -6,8 +6,6 @@
 
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { COMMON_FLAG } = require(`@nkmjs/common`);
 const { UI } = require(`@nkmjs/ui-core`);
 
 const InputBase = require(`../input-base`);

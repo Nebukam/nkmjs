@@ -1,6 +1,6 @@
 'use strict';
 
-const { ACTION_REQUEST, Request } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 const DataManipulationCommand = require(`../../commands/command-data`);
 
 class EntryDelete extends DataManipulationCommand {
@@ -17,7 +17,7 @@ class EntryDelete extends DataManipulationCommand {
             data: this._context
         };
 
-        Request.Emit(ACTION_REQUEST.DELETE,
+        actions.Request.Emit(actions.ACTION_REQUEST.DELETE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { POOL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { IOProcess } = require(`@nkmjs/io-core`);
 const PathDelete = require(`../helpers/path-delete`);
 
@@ -29,7 +28,7 @@ class FSIODelete extends IOProcess {
 
     _OnStatRead(p_err, p_stats) {
         if (p_err) { return this._OnError(p_err); }
-        POOL.Rent(PathDelete).Do(this._operation.fullPath, null, p_stats, this._OnPathDeleted);
+        com.pool.POOL.Rent(PathDelete).Do(this._operation.fullPath, null, p_stats, this._OnPathDeleted);
     }
 
     _OnPathDeleted(p_err) {

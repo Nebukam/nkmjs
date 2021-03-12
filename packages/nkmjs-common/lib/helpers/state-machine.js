@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const SIGNAL = require(`../signal`);
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 const SignalBox = require(`../signals/signal-box`);
@@ -25,7 +25,7 @@ class StateMachine extends DisposableObjectEx {
      * @type {DisposableObjectEx}
      */
     set owner(p_value) {
-        if (U.isVoid(p_value)) { p_value = this; }
+        if (u.tils.isVoid(p_value)) { p_value = this; }
         this._owner = p_value;
     }
     get owner() { return this._owner; }

@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS, SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CatalogItem } = require(`@nkmjs/data-core`);
 
 const UI_ID = require(`../ui-id`);
@@ -24,7 +24,7 @@ const ShelfNav = require(`./shelf-nav`);
 class Shelf extends View {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/views/shelf.css`]
     }, View, ['css']);
 
@@ -57,8 +57,8 @@ class Shelf extends View {
         this._placeholderView = null;
 
         this._catalogViewBuilder = new CatalogViewBuilder();
-        this._catalogViewBuilder.Watch(SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-        this._catalogViewBuilder.Watch(SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+        this._catalogViewBuilder.Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
+        this._catalogViewBuilder.Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
         this._navClass = ShelfNav;
         this._nav = null;
@@ -309,7 +309,7 @@ class Shelf extends View {
      */
     _OnHandleActivated(p_nav, p_handle) {
         let view = this._catalogViewBuilder.Get(p_handle.data);
-        if (!U.isInstanceOf(view, View)) { return; }
+        if (!u.tils.isInstanceOf(view, View)) { return; }
 
         if (this._isCollapsable) {
             if (this._currentView === view) {
@@ -451,7 +451,7 @@ class Shelf extends View {
 
     _CleanUp() {
         // Move the nav back in if it has been taken out
-        if (this._nav.parentElement != this._host) { UDOM.AttachFirst(this._nav, this._host, false); }
+        if (this._nav.parentElement != this._host) { u.dom.AttachFirst(this._nav, this._host, false); }
         this._catalogViewBuilder.catalog = null;
         this.classList.remove(`nav-end`);
         this.classList.remove(`nav-start`);

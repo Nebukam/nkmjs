@@ -1,6 +1,6 @@
 'use strict';
 
-const { POOL, DisposableObject } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const fs = require(`fs`);
 const path = require(`path`);
 
@@ -8,7 +8,7 @@ const path = require(`path`);
  * Delete a file or directory.
  * In case of a directory, recursively deletes everything inside.
  */
-class PathDelete extends DisposableObject {
+class PathDelete extends com.pool.DisposableObject {
     constructor() { super(); }
 
     _Init() {
@@ -99,7 +99,7 @@ class PathDelete extends DisposableObject {
 
         let pathDelete = null;
         for (let i = 0; i < n; i++) {
-            POOL.Rent(PathDelete).Do(path.join(this._basePath, p_fileList[i]), this);
+            com.pool.POOL.Rent(PathDelete).Do(path.join(this._basePath, p_fileList[i]), this);
         }
     }
 

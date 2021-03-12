@@ -1,7 +1,7 @@
 
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const __NFO__ = `__NFO__`;
 
@@ -35,10 +35,10 @@ class NFOS {
      */
     static Get(p_obj, p_fallback = null) {
 
-        if (U.isObject(p_obj)) {
+        if (u.tils.isObject(p_obj)) {
             if (__NFO__ in p_obj) { return p_obj[__NFO__]; }
             else if (__NFO__ in p_obj.constructor) { return p_obj.constructor[__NFO__]; }
-        } else if (U.isFunc(p_obj) && __NFO__ in p_obj) {
+        } else if (u.tils.isFunc(p_obj) && __NFO__ in p_obj) {
             return p_obj[__NFO__];
         }
 
@@ -88,22 +88,22 @@ class NFOS {
         for (let key in source) {
             let sourceValue = source[key];
             if (!(p_baseObject.hasOwnProperty(key))) {
-                if (U.isArray(sourceValue)) {
+                if (u.tils.isArray(sourceValue)) {
                     p_baseObject[key] = [...sourceValue];
-                } else if (U.isObject()) {
+                } else if (u.tils.isObject()) {
                     p_baseObject[key] = this.Ext({}, sourceValue);
                 } else {
                     p_baseObject[key] = sourceValue;
                 }
             } else {
                 let baseValue = p_baseObject[key];
-                if (U.isArray(baseValue)) {
-                    if (U.isArray(sourceValue) && p_merge && p_merge.includes(key)) {
+                if (u.tils.isArray(baseValue)) {
+                    if (u.tils.isArray(sourceValue) && p_merge && p_merge.includes(key)) {
                         for (let i = 0, n = sourceValue.length; i < n; i++) {
                             if (!baseValue.includes(sourceValue[i])) { baseValue.push(sourceValue[i]); }
                         }
                     }
-                } else if (U.isObject(baseValue) && UTILS.isObject(sourceValue)) {
+                } else if (u.tils.isObject(baseValue) && UTILS.isObject(sourceValue)) {
                     this.Ext(baseValue, sourceValue, p_merge);
                 } else {
                     // Ignore

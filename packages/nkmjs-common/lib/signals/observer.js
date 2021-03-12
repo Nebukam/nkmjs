@@ -1,6 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 
 /**

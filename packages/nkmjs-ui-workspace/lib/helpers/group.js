@@ -1,4 +1,4 @@
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
 const { UI, OrientableWidget } = require(`@nkmjs/ui-core`);
 
@@ -59,9 +59,9 @@ class Group extends OrientableWidget {
     }
 
     _Render() {
-        this._header = UDOM.New(`div`, { class: `header` }, this._host);
-        this._wrapper = UDOM.New(`div`, { class: `body` }, this._host);
-        this._footer = UDOM.New(`div`, { class: `footer` }, this._host);
+        this._header = u.dom.New(`div`, { class: `header` }, this._host);
+        this._wrapper = u.dom.New(`div`, { class: `body` }, this._host);
+        this._footer = u.dom.New(`div`, { class: `footer` }, this._host);
     }
 
     _GetOrCreateGroup(p_key, p_flags = null, p_class = null) {

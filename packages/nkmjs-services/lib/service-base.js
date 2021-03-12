@@ -1,7 +1,7 @@
 'use strict';
 
-const { LOG } = require(`@nkmjs/utils`);
-const { SingletonEx, DelayedCall } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const ServicesManager = require(`./services-manager`);
 
 /**
@@ -11,7 +11,7 @@ const ServicesManager = require(`./services-manager`);
  * @augments common.helpers.SingletonEx
  * @memberof services
  */
-class ServiceBase extends SingletonEx {
+class ServiceBase extends com.helpers.SingletonEx {
     constructor() { super(); }
 
     _Init() {
@@ -19,7 +19,7 @@ class ServiceBase extends SingletonEx {
         this._initialized = false;
         this._started = false;
         this._running = false;
-        this._tick = new DelayedCall(this._Bind(this._Tick));
+        this._tick = new com.time.DelayedCall(this._Bind(this._Tick));
     }
 
     /**
@@ -64,7 +64,7 @@ class ServiceBase extends SingletonEx {
         }
         if (this._started) { return false; }
         this._started = true;
-        LOG._(`STARTED :· ${this.constructor.name}`, `#add800`, `#2e3a00`);
+        u.LOG._(`STARTED :· ${this.constructor.name}`, `#add800`, `#2e3a00`);
         return true;
     }
 
@@ -74,7 +74,7 @@ class ServiceBase extends SingletonEx {
     Stop() {
         if (!this._started) { return; }
         this._started = false;
-        LOG._(`STOPPED :: ${this.constructor.name}`, `#ef8700`, `#492900`);
+        u.LOG._(`STOPPED :: ${this.constructor.name}`, `#ef8700`, `#492900`);
     }
 
     /**

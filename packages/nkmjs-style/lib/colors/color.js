@@ -1,6 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
 const HSLA = require("./hsla");
 const RGBA = require("./rgba");
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const { COM_ID, SIGNAL, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const DATA_SIGNAL = require(`../data-signal`);
 const Metadata = require(`./metadata`);
@@ -13,11 +13,11 @@ const ID = require(`../id/id`);
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core
  */
-class DataBlock extends DisposableObjectEx {
+class DataBlock extends com.pool.DisposableObjectEx {
     
     static __NFO__ = {
-        [COM_ID.ICON]: `%ICON%/icon_data_block.svg`,
-        [COM_ID.UID]: `@nkmjs/data-core:data-block`
+        [com.COM_ID.ICON]: `%ICON%/icon_data_block.svg`,
+        [com.COM_ID.UID]: `@nkmjs/data-core:data-block`
     };
 
     constructor() { super(); }
@@ -94,8 +94,8 @@ class DataBlock extends DisposableObjectEx {
         if (this._id === p_value) { return; }
         let oldId = this._id;
         this._id = p_value;
-        if (oldId) { oldId.Unwatch(SIGNAL.RENAMED, this.Dirty, this); }
-        if (p_value) { p_value.Watch(SIGNAL.RENAMED, this.Dirty, this); }
+        if (oldId) { oldId.Unwatch(com.SIGNAL.RENAMED, this.Dirty, this); }
+        if (p_value) { p_value.Watch(com.SIGNAL.RENAMED, this.Dirty, this); }
     }
     
     /**
@@ -117,7 +117,7 @@ class DataBlock extends DisposableObjectEx {
      */
     CommitUpdate() {
         this.Dirty();
-        this._Broadcast(SIGNAL.UPDATED, this);
+        this._Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     /**

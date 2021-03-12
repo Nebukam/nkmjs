@@ -1,8 +1,8 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { IOProcess } = require(`@nkmjs/io-core`);
-const { POOL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const path = require(`path`);
 const fs = require(`fs`);
 
@@ -31,9 +31,9 @@ class FSIOWriter extends IOProcess {
         this._OnProgress(0);
 
         let dirPath = this._operation.fullPath;
-        if (!this.rsc.isDir) { dirPath = PATH.dir(dirPath); }
+        if (!this.rsc.isDir) { dirPath = u.PATH.dir(dirPath); }
 
-        POOL.Rent(PathCreate).Do(dirPath, this._OnPathCreated);
+        com.pool.POOL.Rent(PathCreate).Do(dirPath, this._OnPathCreated);
 
     }
 

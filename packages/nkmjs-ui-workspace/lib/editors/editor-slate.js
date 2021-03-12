@@ -1,6 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
 const { UI } = require(`@nkmjs/ui-core`);
 
 const EditorEx = require(`./editor-ex`);

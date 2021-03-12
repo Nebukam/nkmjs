@@ -1,10 +1,10 @@
 'use strict';
 
-const { Action } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const Model = require(`../../model`);
 
-class ActionModelOverrideField extends Action {
+class ActionModelOverrideField extends actions.Action {
     constructor() { super(); }
 
     static get mergeable() { return false; }

@@ -1,9 +1,9 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { CSS } = require("@nkmjs/style");
 const { List } = require("@nkmjs/collections");
-const { DelayedCall } = require("@nkmjs/common");
+const { time } = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 const UI_SIGNAL = require(`../ui-signal`);
@@ -27,7 +27,7 @@ class LayerContainer extends Layer {
     _Init() {
         this._layerClassName = `layer`;
         super._Init();
-        this._updateDepths = new DelayedCall(this._Bind(this._UpdateLayerDepth));
+        this._updateDepths = new time.DelayedCall(this._Bind(this._UpdateLayerDepth));
         this._layerList = new List(0);
     }
 
@@ -50,7 +50,7 @@ class LayerContainer extends Layer {
 
     _OnChildAdded(p_displayObject, p_index) {
         super._OnChildAdded(p_displayObject, p_index);
-        let layer = U.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
+        let layer = u.tils.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Add(layer);
             layer.classList.add(this._layerClassName);
@@ -61,7 +61,7 @@ class LayerContainer extends Layer {
 
     _OnChildRemoved(p_displayObject, p_index) {
         super._OnChildRemoved(p_displayObject, p_index);
-        let layer = U.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
+        let layer = u.tils.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Remove(layer);
             layer.classList.remove(this._layerClassName);

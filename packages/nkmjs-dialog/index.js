@@ -7,4 +7,4 @@ module.exports = {
     DialogHandler: require(`./lib/dialog-handler`)
 }
 
-require(`@nkmjs/common`).BINDINGS.Expand(require(`./bindings`));
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

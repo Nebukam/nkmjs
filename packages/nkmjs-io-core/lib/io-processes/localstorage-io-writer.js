@@ -1,9 +1,5 @@
 'use strict';
 
-const { U, PATH, MIME } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
-const { ENV } = require(`@nkmjs/environment`);
-
 const IOProcess = require(`../io-process`);
 
 /**

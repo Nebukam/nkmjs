@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS, COMMON_FLAG } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
 
 const UI = require(`../ui`);
@@ -28,7 +28,7 @@ class TreeItem extends CatalogWidget {
         this.depth = 0;
     }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/tree/tree-item.css`]
     }, CatalogWidget, ['css']);
 
@@ -36,7 +36,7 @@ class TreeItem extends CatalogWidget {
 
     _Init() {
 
-        this.default_SelectOnActivation = U.Default(this.default_SelectOnActivation, true);
+        this.default_SelectOnActivation = u.tils.Default(this.default_SelectOnActivation, true);
 
         super._Init();
 
@@ -125,7 +125,7 @@ class TreeItem extends CatalogWidget {
     _UpdateInfos() {
 
         if (this._itemData) {
-            this._flavorEnum.Set(this._itemData.isDirty ? COMMON_FLAG.WARNING : null);
+            this._flavorEnum.Set(this._itemData.isDirty ? com.COMMON_FLAG.WARNING : null);
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
             if (!this._icon.Set(this._itemData)) { this._icon.Set(this._data.options); }
         } else {

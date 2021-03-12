@@ -1,19 +1,19 @@
 'use strict';
 
-const { CSYMBOL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 module.exports = {
 
-    EXIT: class EXIT extends CSYMBOL { constructor() { } },
-    EDIT: class EDIT extends CSYMBOL { constructor() { } },
-    PREVIEW: class PREVIEW extends CSYMBOL { constructor() { } },
-    OPEN: class OPEN extends CSYMBOL { constructor() { } },
-    CLOSE: class CLOSE extends CSYMBOL { constructor() { } },
-    CREATE: class CREATE extends CSYMBOL { constructor() { } },
-    SAVE: class SAVE extends CSYMBOL { constructor() { } },
-    DELETE: class DELETE extends CSYMBOL { constructor() { } },
-    RENAME: class RENAME extends CSYMBOL { constructor() { } },
-    APPLY: class APPLY extends CSYMBOL { constructor() { } },
-    DIALOG: class DIALOG extends CSYMBOL { constructor() { } },
+    EXIT: class EXIT extends com.helpers.CSYMBOL { constructor() { } },
+    EDIT: class EDIT extends com.helpers.CSYMBOL { constructor() { } },
+    PREVIEW: class PREVIEW extends com.helpers.CSYMBOL { constructor() { } },
+    OPEN: class OPEN extends com.helpers.CSYMBOL { constructor() { } },
+    CLOSE: class CLOSE extends com.helpers.CSYMBOL { constructor() { } },
+    CREATE: class CREATE extends com.helpers.CSYMBOL { constructor() { } },
+    SAVE: class SAVE extends com.helpers.CSYMBOL { constructor() { } },
+    DELETE: class DELETE extends com.helpers.CSYMBOL { constructor() { } },
+    RENAME: class RENAME extends com.helpers.CSYMBOL { constructor() { } },
+    APPLY: class APPLY extends com.helpers.CSYMBOL { constructor() { } },
+    DIALOG: class DIALOG extends com.helpers.CSYMBOL { constructor() { } },
 
 }

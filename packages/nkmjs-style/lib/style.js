@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { Singleton, POOL, COMMON_FLAG } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const ColorBase = require("./colors/color-base");
 const COLOR = require("./colors/color");
@@ -29,14 +29,14 @@ const DefaultStylesheet = require(`./default-stylesheet`);
  * @augments common.helpers.Singleton
  * @memberof style
  */
-class STYLE extends Singleton {
+class STYLE extends com.helpers.Singleton {
     constructor() { super(); }
 
     _Init() {
 
         super._Init();
 
-        this._defaultPalette = POOL.Rent(Palette);
+        this._defaultPalette = com.pool.POOL.Rent(Palette);
         this._defaultPalette._STYLE = this;
         this._current = this._defaultPalette;
         this._headerStyle = null;
@@ -79,7 +79,7 @@ class STYLE extends Singleton {
      * @returns {style.Palette} new Palette
      */
     static CreatePalette(p_initWithDefaults = true, p_makeCurrent = true) {
-        let newPalette = POOL.Rent(Palette);
+        let newPalette = com.pool.POOL.Rent(Palette);
         newPalette._STYLE = this;
         if (p_initWithDefaults) { newPalette.InitFrom(this.instance.defaultPalette); }
         if (p_makeCurrent) { this.instance.current = newPalette; }
@@ -113,10 +113,10 @@ class STYLE extends Singleton {
             this.instance.current.PrintCSSLink(cssKey, document.head);
         }
 
-        if (U.isVoid(this._headerStyle)) {
+        if (u.tils.isVoid(this._headerStyle)) {
             this._headerStyle = document.createElement('style');
             this._headerStyle.innerText = css;
-            UDOM.Attach(this._headerStyle, document.head);
+            u.dom.Attach(this._headerStyle, document.head);
         } else {
             this._headerStyle.innerText = css;
         }
@@ -155,7 +155,7 @@ class STYLE extends Singleton {
             css = ` style='${CSS.InlineCSS(this.instance.current._ProcessSingleRuleset(``, p_format.style))}' `;
         } else if (p_format.color) {
             let color = p_format.color;
-            if (U.isString(color)) { if (color in this.instance.current._colors) { color = this.instance.current._colors[color]; } }
+            if (u.tils.isString(color)) { if (color in this.instance.current._colors) { color = this.instance.current._colors[color]; } }
             css = ` style='color:${color};' `;
         }
 

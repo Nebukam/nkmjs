@@ -1,8 +1,8 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary, List } = require(`@nkmjs/collections`);
-const { SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const ID = require(`./id`);
 
@@ -13,7 +13,7 @@ const ID = require(`./id`);
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core
  */
-class IDDispenser extends DisposableObjectEx {
+class IDDispenser extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {
@@ -47,8 +47,8 @@ class IDDispenser extends DisposableObjectEx {
      * @returns {boolean} True if the Dispenser contains the given ID, otherwise false.
      */
     Contains(p_id) {
-        if (U.isString(p_id)) { return this._idMap.Contains(p_id); }
-        else if (U.isInstanceOf(p_id, ID)) { return this._idList.Contains(p_id); }
+        if (u.tils.isString(p_id)) { return this._idMap.Contains(p_id); }
+        else if (u.tils.isInstanceOf(p_id, ID)) { return this._idList.Contains(p_id); }
         throw new Error(`p_id must be either string or ID.`);
     }
 
@@ -70,14 +70,14 @@ class IDDispenser extends DisposableObjectEx {
 
         if (!this.IsAvailable(p_string)) { throw new Error(`ID ${p_string} is not available.`); }
 
-        let newID = POOL.Rent(ID);
+        let newID = com.pool.POOL.Rent(ID);
         newID.name = p_string;
         this._idMap.Set(p_string, newID);
         this._idList.Add(newID);
 
-        newID.Watch(SIGNAL.RENAMING, this._OnIDRenaming, this);
-        newID.Watch(SIGNAL.RENAMED, this._OnIDRenamed, this);
-        newID.Watch(SIGNAL.RELEASED, this._OnIDReleased, this);
+        newID.Watch(com.SIGNAL.RENAMING, this._OnIDRenaming, this);
+        newID.Watch(com.SIGNAL.RENAMED, this._OnIDRenamed, this);
+        newID.Watch(com.SIGNAL.RELEASED, this._OnIDReleased, this);
 
         return newID;
 

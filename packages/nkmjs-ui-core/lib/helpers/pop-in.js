@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require("@nkmjs/utils");
-const { TIME, SIGNAL, OptionsHandler } = require("@nkmjs/common");
+const u = require("@nkmjs/utils");
+const { time, SIGNAL, helpers } = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 const UI_FLAG = require(`../ui-flag`);
@@ -162,7 +162,7 @@ class PopIn extends DisplayObjectContainer {
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
 
-        this._optionsHandler = new OptionsHandler(this._Bind(this._OnOptionsProcessed));
+        this._optionsHandler = new helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed));
         this._optionsHandler.Hook(`mode`);
         this._optionsHandler.Hook(`context`, null, document.body);
         this._optionsHandler.Hook(`anchor`);
@@ -233,7 +233,7 @@ class PopIn extends DisplayObjectContainer {
             return; 
         }
 
-        this._ownsContent = U.isFunc(p_value);
+        this._ownsContent = u.tils.isFunc(p_value);
 
         this._content = this.Add(p_value, `content`);
         this._content.Watch(UI_SIGNAL.CLOSE_REQUESTED, () => { this.Release(); });
@@ -247,9 +247,9 @@ class PopIn extends DisplayObjectContainer {
     get context() { return this._context; }
     set context(p_value) {
         if (this._context === p_value) { return; }
-        if (this._context) { UDOM.Detach(this); }
+        if (this._context) { u.dom.Detach(this); }
         this._context = p_value;
-        if (this._context) { UDOM.Attach(this, this._context); }
+        if (this._context) { u.dom.Attach(this, this._context); }
     }
 
     /**
@@ -260,8 +260,8 @@ class PopIn extends DisplayObjectContainer {
     set anchor(p_value) {
         if (this._anchor === p_value) { return; }
         this._anchor = p_value;
-        if(this._anchor){ TIME.Watch(SIGNAL.TICK, this._UpdateAnchoredPosition); }
-        else{ TIME.Unwatch(SIGNAL.TICK, this._UpdateAnchoredPosition); }
+        if(this._anchor){ time.TIME.Watch(SIGNAL.TICK, this._UpdateAnchoredPosition); }
+        else{ time.TIME.Unwatch(SIGNAL.TICK, this._UpdateAnchoredPosition); }
     }
 
     /**
@@ -312,7 +312,7 @@ class PopIn extends DisplayObjectContainer {
      */
     _UpdateAnchoredPosition(){
         
-        let rect = UDOM.Rect(this._anchor, this.parentElement),
+        let rect = u.dom.Rect(this._anchor, this.parentElement),
         centerX = rect.x + rect.width * 0.5,
         centerY = rect.y + rect.height * 0.5,
         x = centerX + rect.width * this._placement.x,

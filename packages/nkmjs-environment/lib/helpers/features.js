@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, LOG } = require(`@nkmjs/utils`);
-const { DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const ENV_DISPLAY = require(`../env-display`);
 const DOM_STATE = require(`../dom-state`);
@@ -13,7 +13,7 @@ const ENV_SIGNAL = require(`../env-signal`);
  * @hideconstructor
  * @memberof environment.helpers
  */
-class Features extends DisposableObjectEx {
+class Features extends com.pool.DisposableObjectEx {
     constructor() {
 
         super();
@@ -75,14 +75,14 @@ class Features extends DisposableObjectEx {
 
         try {
             this._storageArea = chrome.storage; // <-- Chromium
-            this._hasStorageArea = !U.isVoid(this._storageArea);
+            this._hasStorageArea = !u.tils.isVoid(this._storageArea);
 
             if (!this._hasStorageArea) { throw new Error(); }
 
         } catch (e) {
             try {
                 this._storageArea = browser.storage; // <-- Mozilla
-                this._hasStorageArea = !U.isVoid(this._storageArea);
+                this._hasStorageArea = !u.tils.isVoid(this._storageArea);
             } catch (e) {
                 this._storageArea = null;
                 this._hasStorageArea = false;
@@ -128,7 +128,7 @@ class Features extends DisposableObjectEx {
 
             try {
                 let xhr = new XMLHttpRequest();
-                if (U.isVoid(xhr.withCredentials)) { this._isCORSEnabled = false; }
+                if (u.tils.isVoid(xhr.withCredentials)) { this._isCORSEnabled = false; }
                 else { this._isCORSEnabled = true; }
             } catch (e) { this._isCORSEnabled = false; console.warn(e); }
 
@@ -241,7 +241,7 @@ class Features extends DisposableObjectEx {
         let oldState = this._domState;
         this._domState = p_value;
 
-        LOG._U(`domState`, this._domState, oldState, `#f7d801`);
+        u.LOG._U(`domState`, this._domState, oldState, `#f7d801`);
 
         switch (this._domState) {
             case DOM_STATE.LOADING:
@@ -337,7 +337,7 @@ class Features extends DisposableObjectEx {
         let oldMode = this._displayMode;
         this._displayMode = p_value;
 
-        LOG._U(`displayMode`, this._displayMode, oldMode, `#f7d801`);
+        u.LOG._U(`displayMode`, this._displayMode, oldMode, `#f7d801`);
 
         this._Broadcast(ENV_SIGNAL.DISPLAY_MODE_CHANGED, this._displayMode, oldMode);
 
@@ -359,7 +359,7 @@ class Features extends DisposableObjectEx {
         let oldValue = this._prefersColorScheme;
         this._prefersColorScheme = p_value;
 
-        LOG._U(`prefersColorScheme`, this._prefersColorScheme, oldValue, `#f7d801`);
+        u.LOG._U(`prefersColorScheme`, this._prefersColorScheme, oldValue, `#f7d801`);
 
         this._Broadcast(ENV_SIGNAL.COLOR_SCHEME_CHANGED, this._prefersColorScheme, oldValue);
 
@@ -382,7 +382,7 @@ class Features extends DisposableObjectEx {
         let oldMode = this._displayType;
         this._displayType = p_value;
 
-        LOG._U(`device`, this._displayType, oldMode, `#f7d801`);
+        u.LOG._U(`device`, this._displayType, oldMode, `#f7d801`);
 
         this._Broadcast(ENV_SIGNAL.DISPLAY_TYPE_CHANGED, this._displayType, oldMode);
 
@@ -417,16 +417,16 @@ class Features extends DisposableObjectEx {
 
     List() {
         let g = `✔`, b = `🞫`, gt = `889000`, bt = `d86100`, bg = `#171717`;
-        LOG._(`${this._isBrowser ? g : b} isBrowser`, `#${this._isBrowser ? gt : bt}`, bg);
-        LOG._(`${this._isMobile ? g : b} isMobile`, `#${this._isMobile ? gt : bt}`, bg);
-        LOG._(`${this._isExtension ? g : b} isExtension`, `#${this._isExtension ? gt : bt}`, bg);
-        LOG._(`${this._isTouchEnabled ? g : b} isToucheEnabled`, `#${this._isTouchEnabled ? gt : bt}`, bg);
-        LOG._(`${this._hasStorageArea ? g : b} hasStorageArea`, `#${this._hasStorageArea ? gt : bt}`, bg);
-        LOG._(`${this._isCORSEnabled ? g : b} isCORSEnabled`, `#${this._isCORSEnabled ? gt : bt}`, bg);
-        LOG._(`▢ displayMode : ${this._displayMode}`, `#889000`, bg);
-        LOG._(`◐ prefersColorScheme : ${this._prefersColorScheme}`, `#889000`, bg);
-        LOG._(`⎚ displayType : ${this._displayType}`, `#889000`, bg);
-        LOG._(`${this._isNodeEnabled ? g : b} isNodeEnabled`, `#${this._isNodeEnabled ? '182000' : 'fff'}`, `#${this._isNodeEnabled ? '7ca500' : '980700'}`);
+        u.LOG._(`${this._isBrowser ? g : b} isBrowser`, `#${this._isBrowser ? gt : bt}`, bg);
+        u.LOG._(`${this._isMobile ? g : b} isMobile`, `#${this._isMobile ? gt : bt}`, bg);
+        u.LOG._(`${this._isExtension ? g : b} isExtension`, `#${this._isExtension ? gt : bt}`, bg);
+        u.LOG._(`${this._isTouchEnabled ? g : b} isToucheEnabled`, `#${this._isTouchEnabled ? gt : bt}`, bg);
+        u.LOG._(`${this._hasStorageArea ? g : b} hasStorageArea`, `#${this._hasStorageArea ? gt : bt}`, bg);
+        u.LOG._(`${this._isCORSEnabled ? g : b} isCORSEnabled`, `#${this._isCORSEnabled ? gt : bt}`, bg);
+        u.LOG._(`▢ displayMode : ${this._displayMode}`, `#889000`, bg);
+        u.LOG._(`◐ prefersColorScheme : ${this._prefersColorScheme}`, `#889000`, bg);
+        u.LOG._(`⎚ displayType : ${this._displayType}`, `#889000`, bg);
+        u.LOG._(`${this._isNodeEnabled ? g : b} isNodeEnabled`, `#${this._isNodeEnabled ? '182000' : 'fff'}`, `#${this._isNodeEnabled ? '7ca500' : '980700'}`);
     }
 
 }

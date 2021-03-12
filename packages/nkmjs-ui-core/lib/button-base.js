@@ -1,9 +1,8 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS, SIGNAL, Observer, OptionsHandler } = require(`@nkmjs/common`);
-const { Request } = require(`@nkmjs/actions`);
-const { Command } = require("@nkmjs/actions");
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
+const actions = require("@nkmjs/actions");
 
 const UI = require(`./ui`);
 const UI_SIGNAL = require(`./ui-signal`);
@@ -21,7 +20,7 @@ const FlagEnum = require("./helpers/flag-enum");
 class ButtonBase extends Widget {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/shared.css`]
     }, Widget, ['css']);
 
@@ -58,8 +57,8 @@ class ButtonBase extends Widget {
         this._isCommandContext = true;
         this._isToggled = false;
 
-        this._commandObserver = new Observer();
-        this._commandObserver.Hook(SIGNAL.UPDATED, this._OnCommandUpdated, this);
+        this._commandObserver = new com.signals.Observer();
+        this._commandObserver.Hook(com.SIGNAL.UPDATED, this._OnCommandUpdated, this);
 
         this._flags.Add(this, UI_FLAG.TOGGLED);
 
@@ -72,7 +71,7 @@ class ButtonBase extends Widget {
         this._variantEnum = new FlagEnum(UI_FLAG.variants, true);
         this._variantEnum.Add(this);
 
-        this._optionsHandler = new OptionsHandler(null, this._Bind(this._OnOptionsWillUpdate));
+        this._optionsHandler = new com.helpers.OptionsHandler(null, this._Bind(this._OnOptionsWillUpdate));
         this._optionsHandler.Hook(`data`);
         this._optionsHandler.Hook(`htitle`);
         this._optionsHandler.Hook(`trigger`);
@@ -200,12 +199,12 @@ class ButtonBase extends Widget {
     CreateRipple() {
 
         if (!this._rippleWrapper) {
-            this._rippleWrapper = UDOM.New('div', { class: `ripple-wrapper` });
-            UDOM.AttachFirst(this._rippleWrapper, this._wrapper, false);
+            this._rippleWrapper = u.dom.New('div', { class: `ripple-wrapper` });
+            u.dom.AttachFirst(this._rippleWrapper, this._wrapper, false);
         }
 
-        let rect = UDOM.Rect(this._rippleWrapper),
-            ripple = UDOM.New('span', {}, this._rippleWrapper),
+        let rect = u.dom.Rect(this._rippleWrapper),
+            ripple = u.dom.New('span', {}, this._rippleWrapper),
             w = rect.width,
             h = rect.height,
             diameter = Math.max(w, h),
@@ -222,9 +221,9 @@ class ButtonBase extends Widget {
     _OnRippleAnimationEnd(p_evt) {
         let ripple = p_evt.target;
         ripple.removeEventListener('animationend', this._OnRippleAnimationEnd);
-        UDOM.Detach(ripple);
+        u.dom.Detach(ripple);
         if(!this._rippleWrapper.hasChildNodes()){
-            UDOM.Detach(this._rippleWrapper);
+            u.dom.Detach(this._rippleWrapper);
             this._rippleWrapper = null;
         }
     }
@@ -252,7 +251,7 @@ class ButtonBase extends Widget {
      */
     _OnOptionsWillUpdate(p_options) {
         if (!p_options) { return; }
-        p_options.htitle = U.Get(p_options, `htitle`, (p_options.label || ``));
+        p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
     }
 
     /**
@@ -333,7 +332,7 @@ class ButtonBase extends Widget {
         // ----> Trigger
 
         if (this._trigger) {
-            let thisArg = U.Get(this._trigger, `thisArg`, null);
+            let thisArg = u.tils.Get(this._trigger, `thisArg`, null);
             if (this._trigger.argArray) { this._trigger.fn.call(thisArg, ...this._trigger.argArray); }
             else if (this._trigger.arg) {
                 if (this._trigger.arg === UI_FLAG.SELF) { this._trigger.fn.call(thisArg, this); }
@@ -355,7 +354,7 @@ class ButtonBase extends Widget {
                 this._isToggled = true;
                 this._flags.Set(UI_FLAG.TOGGLED, true);
 
-                let thisArg = U.Get(this._toggle, `thisArg`, null);
+                let thisArg = u.tils.Get(this._toggle, `thisArg`, null);
                 if (this._toggle.argArray) { this._toggle.fn.call(thisArg, ...this._toggle.argArray); }
                 else if (this._toggle.arg) {
                     if (this._toggle.arg === UI_FLAG.SELF) { this._toggle.fn.call(thisArg, this); }
@@ -371,13 +370,13 @@ class ButtonBase extends Widget {
         if (this._request) {
             if (!this._request.type) { throw new Error(`Cannot generate request of type 'null'`); }
 
-            let requestEmitter = U.Get(this._request, `emitter`, this),
-                options = U.Get(this._request, `options`);
+            let requestEmitter = u.tils.Get(this._request, `emitter`, this),
+                options = u.tils.Get(this._request, `options`);
 
             // Override options value if a proxy has been set
-            let proxy = U.Get(this._request, `proxy`, null);
+            let proxy = u.tils.Get(this._request, `proxy`, null);
             if (proxy) {
-                let thisArg = U.Get(proxy, `thisArg`, null);
+                let thisArg = u.tils.Get(proxy, `thisArg`, null);
                 if (proxy.argArray) { options = proxy.fn.apply(thisArg, proxy.argArray); }
                 else if (proxy.arg) { options = proxy.fn.call(thisArg, proxy.arg); }
                 else { options = proxy.fn.call(thisArg); }
@@ -386,10 +385,10 @@ class ButtonBase extends Widget {
             requestEmitter._EmitLocalRequest(
                 opts.type,
                 options,
-                U.Get(this._request, `onSuccess`, null),
-                U.Get(this._request, `onFail`, null),
-                U.Get(this._request, `timeout`, 0),
-                U.Get(this._request, `cl`, Request)
+                u.tils.Get(this._request, `onSuccess`, null),
+                u.tils.Get(this._request, `onFail`, null),
+                u.tils.Get(this._request, `timeout`, 0),
+                u.tils.Get(this._request, `cl`, actions.Request)
             );
         }
 
@@ -411,7 +410,7 @@ class ButtonBase extends Widget {
 
         if (this._toggle) {
             if (this._toggle.fnOff) {
-                let thisArg = U.Get(this._toggle, `thisArg`, null);
+                let thisArg = u.tils.Get(this._toggle, `thisArg`, null);
                 if (this._toggle.argArray) { this._toggle.fnOff.call(thisArg, ...this._toggle.argArray); }
                 else if (this._toggle.arg) {
                     if (this._toggle.arg === UI_FLAG.SELF) { this._toggle.fnOff.call(thisArg, this); }
@@ -428,7 +427,7 @@ class ButtonBase extends Widget {
     _CleanUp() {
 
         if (this._rippleWrapper) {
-            UDOM.Detach(this._rippleWrapper);
+            u.dom.Detach(this._rippleWrapper);
             this._rippleWrapper = null;
         }
 

@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 
 const Resource = require(`../resource`);
 const RESPONSE_TYPE = require(`../response-type`);
@@ -25,9 +24,9 @@ class TextResource extends Resource {
 
     _Decode() {
 
-        if (U.isString(this._raw)) {
+        if (u.tils.isString(this._raw)) {
             return this._raw;
-        } else if (U.isArrayBuffer(this._raw)) {
+        } else if (u.tils.isArrayBuffer(this._raw)) {
             let decoder = new TextDecoder(this._encoding);
             return decoder.decode(ArrayBuffer.isView(this._raw) ? this._raw : new DataView(this._raw, 0));
         }
@@ -36,7 +35,7 @@ class TextResource extends Resource {
             // Fallback to Blob, wrapped in try{} in case this code is
             // executed in Node
             let fileReader = new FileReaderSync();
-            if (U.isInstanceOf(this._raw, Blob)) {
+            if (u.tils.isInstanceOf(this._raw, Blob)) {
                 return fileReader.readAsString(this._raw, this._encoding);
             } else {
                 return ``;

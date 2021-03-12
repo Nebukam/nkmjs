@@ -2,7 +2,7 @@
 'use strict';
 
 const { Dictionary } = require(`@nkmjs/collections`);
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 /**
  * @description TODO
@@ -34,9 +34,9 @@ class StateBase {
      * @returns {StateBase} Requested state
      */
     static GetOrCreate(p_stateId, p_data = null) {
-        if (U.isVoid(this._stateMap)) { this._stateMap = new Dictionary(); }
+        if (u.tils.isVoid(this._stateMap)) { this._stateMap = new Dictionary(); }
         let state = this._stateMap.Get(p_stateId);
-        if (U.isVoid(state)) {
+        if (u.tils.isVoid(state)) {
             state = new this();
             state._id = p_stateId;
             state._data = p_data;

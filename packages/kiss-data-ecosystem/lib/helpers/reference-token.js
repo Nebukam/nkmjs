@@ -1,8 +1,8 @@
 'use strict';
 
-const { DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
-class ReferenceToken extends DisposableObjectEx {
+class ReferenceToken extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {

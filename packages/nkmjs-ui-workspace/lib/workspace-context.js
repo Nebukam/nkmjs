@@ -1,16 +1,16 @@
 'use strict';
 
-const { CSYMBOL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 /**
  * Using Class as key in order to support @nkmjs-common BINDINGS
  */
 
-class EDITOR extends CSYMBOL { constructor() { super(); } }
+class EDITOR extends com.helpers.CSYMBOL { constructor() { super(); } }
 class DEFAULT_EDITOR extends EDITOR { constructor() { super(); } }
-class INSPECTOR extends CSYMBOL { constructor() { super(); } }
+class INSPECTOR extends com.helpers.CSYMBOL { constructor() { super(); } }
 class DEFAULT_INSPECTOR extends INSPECTOR { constructor() { super(); } }
-class EDITOR_IN_PLACE extends CSYMBOL { constructor() { super(); } }
+class EDITOR_IN_PLACE extends com.helpers.CSYMBOL { constructor() { super(); } }
 
 module.exports = {
     EDITOR: EDITOR,

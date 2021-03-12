@@ -3,11 +3,11 @@
  */
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List, Dictionary } = require(`@nkmjs/collections`);
-const { POOL, SIGNAL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { ServiceBase } = require(`@nkmjs/services`);
-const { ACTION_REQUEST, Request } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 const { OverlayOptions } = require("@nkmjs/ui-core");
 
 /**
@@ -54,8 +54,8 @@ class DIALOG extends ServiceBase {
 
         let dialogOptions = null;
 
-        if (!U.isInstanceOf(p_options, OverlayOptions)) {
-            dialogOptions = POOL.Rent(OverlayOptions);
+        if (!u.tils.isInstanceOf(p_options, OverlayOptions)) {
+            dialogOptions = com.pool.POOL.Rent(OverlayOptions);
             dialogOptions.options = p_options;
             this._ownedDialogData.Set(dialogOptions, true);
         } else {
@@ -96,9 +96,9 @@ class DIALOG extends ServiceBase {
         }
 
         this._inDialog = true;
-        next.Watch(SIGNAL.CONSUMED, this._OnDialogConsumed, this);
+        next.Watch(com.SIGNAL.CONSUMED, this._OnDialogConsumed, this);
 
-        Request.Emit(ACTION_REQUEST.DIALOG,
+        actions.Request.Emit(actions.ACTION_REQUEST.DIALOG,
             next,
             this,
             this._OnRequestSuccess,

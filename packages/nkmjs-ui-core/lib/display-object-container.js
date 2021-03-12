@@ -1,6 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List } = require("@nkmjs/collections");
 
 const UI = require(`./ui`);
@@ -115,7 +115,7 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (p_index >= this._displayList.count || p_index < 0) { p_index = -1; }
 
-        if (U.isFunc(p_displayObject) && U.isInstanceOf(p_displayObject, DisplayObject)) {
+        if (u.tils.isFunc(p_displayObject) && u.tils.isInstanceOf(p_displayObject, DisplayObject)) {
             p_displayObject = UI.Rent(p_displayObject);
         }
 
@@ -129,7 +129,7 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (!p_container || p_container === this) {
             p_container = this._wrapper;
-        } else if (U.isInstanceOf(p_container, DisplayObjectContainer)) {
+        } else if (u.tils.isInstanceOf(p_container, DisplayObjectContainer)) {
             p_container = p_container.wrapper;
         }
 
@@ -206,7 +206,7 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (removedDisplayObject.parent === this) {
             removedDisplayObject.parent = null;
-            UDOM.Detach(removedDisplayObject);
+            u.dom.Detach(removedDisplayObject);
         }
 
         this._OnChildRemoved(removedDisplayObject, p_index);

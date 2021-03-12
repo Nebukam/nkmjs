@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const EcosystemCommand = require(`./command-ecosystem`);
 
 class DataManipulationCommand extends EcosystemCommand {
@@ -10,12 +10,12 @@ class DataManipulationCommand extends EcosystemCommand {
 
         if (!p_context) { return null; }
         let dClass = this._dataClass;
-        if (U.isInstanceOf(p_context, dClass)) { return p_context; }
+        if (u.tils.isInstanceOf(p_context, dClass)) { return p_context; }
         let cData = p_context.data;
         if (cData) {
-            if (U.isInstanceOf(cData, dClass)) {
+            if (u.tils.isInstanceOf(cData, dClass)) {
                 return cData;
-            } else if (U.isInstanceOf(cData.data, dClass)) {
+            } else if (u.tils.isInstanceOf(cData.data, dClass)) {
                 return cData.data;//In case the actual data item is a wrapper.
             }
         }

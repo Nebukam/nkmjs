@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const FilterFieldValue = require(`./filter-field-value`);
 
@@ -18,7 +18,7 @@ class FilterFieldValueType extends FilterFieldValue {
     // ----> Checks
 
     Check(p_obj) {
-        if (U.isInstanceOf(this._FetchValue(p_obj), this._checkValue)) { this._Accept(p_obj); }
+        if (u.tils.isInstanceOf(this._FetchValue(p_obj), this._checkValue)) { this._Accept(p_obj); }
         else { this._Deny(p_obj); }
     }
 

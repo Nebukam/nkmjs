@@ -1,9 +1,9 @@
 const assert = require('assert');
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const { TIME } = require(`./lib/time`);
-const { SignalBroadcaster, SignalBox, Observer } = require(`./lib/signals`);
+const signals = require(`./lib/signals`);
 const { POOL } = require('./lib/pool');
 
 function testFn(){ console.log(`nextTick fn called.`); }
@@ -16,8 +16,8 @@ TIME.NEXT_TICK = testFn;
 function signalFn( arg ){ console.log(`signalFn got : ${arg}`); }
 function signalFn2( arg1, arg2 ){ console.log(`signalFn2 got : ${arg1} + ${arg2}`); }
 
-let singleSignal = POOL.Rent(SignalBroadcaster);
-assert.ok(!U.isVoid(singleSignal));
+let singleSignal = POOL.Rent(signals.SignalBroadcaster);
+assert.ok(!u.tils.isVoid(singleSignal));
 
 singleSignal.Add(signalFn);
 assert.ok(singleSignal._slots.count === 1);
@@ -41,7 +41,7 @@ singleSignal.Broadcast(`Test 3`, `Second Arg`);
 singleSignal.Release();
 singleSignal.Broadcast(`SHOULD NOT DISPLAY`);
 
-let secondSingleSignal = POOL.Rent(SignalBroadcaster);
+let secondSingleSignal = POOL.Rent(signals.SignalBroadcaster);
 assert.ok(singleSignal === secondSingleSignal);
 
 // Rudimentary SignalBroadcaster box test
@@ -52,8 +52,8 @@ function signalBoxFnB( arg1, arg2 ){ console.log(`signalBoxFnB got : ${arg1} + $
 let EVT_TEST_A = Symbol('test-event-a');
 let EVT_TEST_B = Symbol('test-event-b');
 
-let sBox = POOL.Rent(SignalBox);
-assert.ok(!U.isVoid(sBox));
+let sBox = POOL.Rent(signals.SignalBox);
+assert.ok(!u.tils.isVoid(sBox));
 
 sBox.Add(EVT_TEST_A, signalBoxFnA);
 sBox.Add(EVT_TEST_B, signalBoxFnB);

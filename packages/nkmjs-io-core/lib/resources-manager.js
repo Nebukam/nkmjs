@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL, POOL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { Dictionary } = require(`@nkmjs/collections`);
 const { ServiceBase } = require(`@nkmjs/services`);
 const { ENV } = require("@nkmjs/environment");
@@ -128,7 +128,7 @@ class RESOURCES extends ServiceBase {
      * @param {string} p_path 
      * @returns {io.core.Resource|*}
      */
-    _TryGet(p_path) { return this._resources.Get(PATH.SHORT(p_path)); }
+    _TryGet(p_path) { return this._resources.Get(u.PATH.SHORT(p_path)); }
 
     /**
      * @access private
@@ -143,26 +143,26 @@ class RESOURCES extends ServiceBase {
 
         //Rule of thumb : resources are mapped using SHRINKED path.
 
-        let shortPath = PATH.SHORT(p_path),
+        let shortPath = u.PATH.SHORT(p_path),
             rsc = this._resources.Get(shortPath);
 
         if (rsc) {
-            if (rscClass && !U.isInstanceOf(rsc, rscClass)) {
+            if (rscClass && !u.tils.isInstanceOf(rsc, rscClass)) {
                 throw new Error(`Attempting to get an existing resource (${rsc.constructor.name}) with a mismatching type(${rscClass.name})`);
             }
             return rsc;
         }
 
-        let rscClass = U.Get(p_options, `cl`, null),
+        let rscClass = u.tils.Get(p_options, `cl`, null),
             stats = null,
-            fullPath = PATH.FULL(p_path);
+            fullPath = u.PATH.FULL(p_path);
 
         try { stats = this._GetStats(fullPath); } catch (err) { stats = null; }
 
         if (!stats) {
             if (!rscClass) { rscClass = Resource; }
         } else if (stats.isDirectory()) {
-            if (rscClass && !U.isInstanceOf(rscClass, Directory)) {
+            if (rscClass && !u.tils.isInstanceOf(rscClass, Directory)) {
                 throw new Error(`Directory cannot be assigned Resource constructor (${rscClass.name})`);
             }
             if (!rscClass) { rscClass = Directory; }
@@ -170,7 +170,7 @@ class RESOURCES extends ServiceBase {
             if (!rscClass) { rscClass = Resource; }
         }
 
-        rsc = POOL.Rent(rscClass);
+        rsc = com.pool.POOL.Rent(rscClass);
 
         /*
         if(rsc.isDir){
@@ -181,8 +181,8 @@ class RESOURCES extends ServiceBase {
         */
 
         rsc.path = shortPath;
-        rsc.encoding = U.Get(p_options, `encoding`, ENCODING.UTF8);
-        rsc.type = U.Get(p_options, `type`, RESPONSE_TYPE.TEXT);
+        rsc.encoding = u.tils.Get(p_options, `encoding`, ENCODING.UTF8);
+        rsc.type = u.tils.Get(p_options, `type`, RESPONSE_TYPE.TEXT);
         rsc.stats = stats;
         rsc.exists = stats != null;
 
@@ -208,10 +208,10 @@ class RESOURCES extends ServiceBase {
             p_rsc._requestRsc = this._RequestRsc;
         }
 
-        p_rsc.Watch(SIGNAL.RELEASED, this._OnRscReleased, this);
+        p_rsc.Watch(com.SIGNAL.RELEASED, this._OnRscReleased, this);
         this._resources.Set(p_rsc.path, p_rsc);
 
-        let dirPath = PATH.dir(p_rsc.path),
+        let dirPath = u.PATH.dir(p_rsc.path),
             dirRsc = this._resources.Get(dirPath);
 
         if (dirRsc && dirRsc != p_rsc) { dirRsc.Add(p_rsc); }
@@ -229,7 +229,7 @@ class RESOURCES extends ServiceBase {
      * @returns {string}
      */
     _IOID(p_ioId, p_operation) {
-        if (U.isEmpty(p_ioId) || !(p_ioId in this._io)) { return IO_TYPE.DEFAULT; }
+        if (u.tils.isEmpty(p_ioId) || !(p_ioId in this._io)) { return IO_TYPE.DEFAULT; }
         return p_ioId;
     }
 
@@ -238,7 +238,7 @@ class RESOURCES extends ServiceBase {
      * @param {io.core.ResourceOperation} p_operation 
      */
     _RequestRead(p_operation) {
-        let ioProcess = POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].read);
+        let ioProcess = com.pool.POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].read);
         ioProcess.operation = p_operation;
         this._PushIOProcess(ioProcess);
     }
@@ -248,7 +248,7 @@ class RESOURCES extends ServiceBase {
      * @param {io.core.ResourceOperation} p_operation 
      */
     _RequestWrite(p_operation) {
-        let ioProcess = POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].write);
+        let ioProcess = com.pool.POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].write);
         ioProcess.operation = p_operation;
         this._PushIOProcess(ioProcess);
     }
@@ -258,7 +258,7 @@ class RESOURCES extends ServiceBase {
      * @param {io.core.ResourceOperation} p_operation 
      */
     _RequestDelete(p_operation) {
-        let ioProcess = POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].delete);
+        let ioProcess = com.pool.POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].delete);
         ioProcess.operation = p_operation;
         this._PushIOProcess(ioProcess);
     }
@@ -269,7 +269,7 @@ class RESOURCES extends ServiceBase {
      * @param {string} p_newPath 
      */
     _RequestRename(p_operation, p_newPath) {
-        let ioProcess = POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].rename);
+        let ioProcess = com.pool.POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].rename);
         ioProcess.operation = p_operation;
         ioProcess.targetPath = p_newPath;
         this._PushIOProcess(ioProcess);
@@ -298,7 +298,7 @@ class RESOURCES extends ServiceBase {
         //Check if target directory is loaded
         //and add the item if necessary
 
-        let dirPath = PATH.dir(newPath),
+        let dirPath = u.PATH.dir(newPath),
             dir = this._resources.Get(dirPath);
 
         if (dir) {

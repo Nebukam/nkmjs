@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL, DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -10,7 +10,7 @@ const { SIGNAL, DisposableObjectEx } = require(`@nkmjs/common`);
  * @augments common.pool.DisposableObjectEx
  * @memberof io.core
  */
-class IOProcess extends DisposableObjectEx {
+class IOProcess extends com.pool.DisposableObjectEx {
 
     constructor() { super(); }
 
@@ -55,7 +55,7 @@ class IOProcess extends DisposableObjectEx {
      */
     Validate() {
         
-        if (U.isEmpty(this._operation.rsc.path)) {
+        if (u.tils.isEmpty(this._operation.rsc.path)) {
             this._OnError(new Error(`Resource path is empty.`));
             return false;
         }
@@ -90,7 +90,7 @@ class IOProcess extends DisposableObjectEx {
 
     _OnComplete() {
         this._running = false;
-        this._Broadcast(SIGNAL.COMPLETE, this);
+        this._Broadcast(com.SIGNAL.COMPLETE, this);
         this.Release();
     }
 

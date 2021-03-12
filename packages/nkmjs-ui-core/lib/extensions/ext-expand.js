@@ -1,21 +1,21 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 
 const UI_FLAG = require(`../ui-flag`);
 const UI_SIGNAL = require(`../ui-signal`);
 const DisplayObject = require("../display-object");
-const ExtBase = require("./ext-base");
+
+const Extension = require("./extension");
 
 /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments ui.core.extensions.ExtBase
+ * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
-class ExtExpand extends ExtBase {
+class ExpandExtension extends Extension {
     constructor() { super(); }
 
     // ----> Init
@@ -57,11 +57,11 @@ class ExtExpand extends ExtBase {
         if (this._isEnabled) {
 
             if (oldValue) {
-                if (U.isInstanceOf(oldValue, DisplayObject)) { oldValue.Unwatch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+                if (u.tils.isInstanceOf(oldValue, DisplayObject)) { oldValue.Unwatch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
                 else { oldValue.removeEventListener(`click`, this._mClick); }
             }
             if (p_value) {
-                if (U.isInstanceOf(p_value, DisplayObject)) { p_value.Watch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+                if (u.tils.isInstanceOf(p_value, DisplayObject)) { p_value.Watch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
                 else { p_value.addEventListener(`click`, this._mClick); }
             }
 
@@ -105,7 +105,7 @@ class ExtExpand extends ExtBase {
     Enable() {
         if (!super.Enable()) { return false; }
         if (this._activator) {
-            if (U.isInstanceOf(this._activator, DisplayObject)) { this._activator.Watch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+            if (u.tils.isInstanceOf(this._activator, DisplayObject)) { this._activator.Watch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
             else { this._activator.addEventListener(`click`, this._mClick); }
         }
         return true;
@@ -117,7 +117,7 @@ class ExtExpand extends ExtBase {
     Disable() {
         if (!super.Disable()) { return false; }
         if (this._activator) {
-            if (U.isInstanceOf(this._activator, DisplayObject)) { this._activator.Unwatch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+            if (u.tils.isInstanceOf(this._activator, DisplayObject)) { this._activator.Unwatch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
             else { this._activator.removeEventListener(`click`, this._mClick); }
         }
         return true;
@@ -181,4 +181,4 @@ class ExtExpand extends ExtBase {
 
 }
 
-module.exports = ExtExpand;
+module.exports = ExpandExtension;

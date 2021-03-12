@@ -8,10 +8,10 @@
  */
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { DATA_SIGNAL, DataBlock, Catalog } = require(`@nkmjs/data-core`);
-const { CommandBox } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const URI = require(`./uri`);
 const { FieldManager, ModelManager, EntryManager } = require(`./parts`);
@@ -25,22 +25,22 @@ class Ecosystem extends DataBlock {
 
         super._Init();
 
-        this._commands = new CommandBox(this._Bind(this._OnCmdRegister));
+        this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister));
         this._dependencies = {}; //Kits are registered here
 
-        let fields = POOL.Rent(FieldManager);
+        let fields = com.pool.POOL.Rent(FieldManager);
         fields.ecosystem = this;
         fields.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
         fields.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
         this._fields = fields;
 
-        let models = POOL.Rent(ModelManager);
+        let models = com.pool.POOL.Rent(ModelManager);
         models.ecosystem = this;
         models.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this);
         models.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
         this._models = models;
 
-        let entries = POOL.Rent(EntryManager);
+        let entries = com.pool.POOL.Rent(EntryManager);
         entries.ecosystem = this;
         entries.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
         entries.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
@@ -121,7 +121,7 @@ class Ecosystem extends DataBlock {
     // ---->
 
     _OnCmdRegister(p_cmd) {
-        if (U.isInstanceOf(p_cmd, EcosystemCommand)) { p_cmd.ecosystem = this; }
+        if (u.tils.isInstanceOf(p_cmd, EcosystemCommand)) { p_cmd.ecosystem = this; }
     }
 
     // ---->

@@ -1,7 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { ENV } = require(`@nkmjs/environment`);
 const { SERIALIZATION_CONTEXT } = require(`@nkmjs/data-core`);
 const { IO_TYPE, JSONResource } = require(`@nkmjs/io-core`);
@@ -20,7 +19,7 @@ const Document = require(`../document`);
 class MetaDocument extends Document{
     constructor(){super();}
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         resource: JSONResource,
         serializationContext: SERIALIZATION_CONTEXT.JSON
         }, Document.__NFO__);

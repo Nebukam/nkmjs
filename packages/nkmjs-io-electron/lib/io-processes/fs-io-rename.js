@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 const { IOProcess } = require(`@nkmjs/io-core`);
 
 const fs = require(`fs`);
@@ -23,14 +22,14 @@ class FSIORename extends IOProcess {
 
     }
 
-    set targetPath(p_value) { this._targetPath = PATH.FULL(p_value); }
+    set targetPath(p_value) { this._targetPath = u.PATH.FULL(p_value); }
     get targetPath() { return this._targetPath; }
 
     Validate() {
 
         if (!super.Validate()) { return false; }
 
-        let existing = this._resources.Get(PATH.SHORT(this._targetPath));
+        let existing = this._resources.Get(u.PATH.SHORT(this._targetPath));
         if (existing && existing != this.rsc) {
             this._OnError(new Error(`Cannot rename resource from '${this.rsc.path}' to '${this._targetPath}' : destination already exists`));
             return false;

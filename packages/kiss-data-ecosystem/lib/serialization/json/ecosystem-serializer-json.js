@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL, BINDINGS } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { Serializer, SERIALIZATION_CONTEXT } = require(`@nkmjs/data-core`);
 
 const Model = require(`../../data/model`);
@@ -23,7 +23,7 @@ class EcosystemJSONSerializer extends Serializer {
     static Serialize(p_target, p_options = null) {
 
         //Find suitable JSON Object serializer depending on target type.
-        let serializer = BINDINGS.Get(
+        let serializer = com.BINDINGS.Get(
             SERIALIZATION_CONTEXT.JSON,
             p_target.constructor,
             null);
@@ -39,11 +39,11 @@ class EcosystemJSONSerializer extends Serializer {
 
         let type = nfos.type;
 
-        if (U.isInstanceOf(p_target, Model)) {
+        if (u.tils.isInstanceOf(p_target, Model)) {
             type = type_model;
-        } else if (U.isInstanceOf(p_target, DataEntry)) {
+        } else if (u.tils.isInstanceOf(p_target, DataEntry)) {
             type = type_entry;
-        } else if (U.isInstanceOf(p_target, FieldSettings)) {
+        } else if (u.tils.isInstanceOf(p_target, FieldSettings)) {
             type = type_field;
         } else {
             type = type_default;
@@ -81,7 +81,7 @@ class EcosystemJSONSerializer extends Serializer {
             let type = nfos.type,
                 instanceOf = nfos.instanceOf;
 
-            cl = POOL.GetClass(instanceOf);
+            cl = com.pool.POOL.GetClass(instanceOf);
 
             if (!cl) {
                 throw new Error(`No constructor is registered with id = ${cl}`);
@@ -112,12 +112,12 @@ class EcosystemJSONSerializer extends Serializer {
                 }
 
             } else {
-                p_data = POOL.Rent(cl);
+                p_data = com.pool.POOL.Rent(cl);
             }
 
         }
 
-        let serializer = BINDINGS.Get(
+        let serializer = com.BINDINGS.Get(
             SERIALIZATION_CONTEXT.JSON,
             cl,
             null);

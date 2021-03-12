@@ -8,8 +8,8 @@
 
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, POOL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const COMMAND_SIGNAL = require(`./command-signal`);
 const Command = require(`./Command`);
@@ -32,12 +32,12 @@ class CommandFn extends Command {
      */
     static RentFn(p_options) {
 
-        let fn = U.Get(p_options, `fn`, null);
+        let fn = u.tils.Get(p_options, `fn`, null);
         if (!fn) {
             throw new Error(`Cannot create CommandFn with empty function`);
         }
 
-        let cmd = POOL.Rent(CommandFn);
+        let cmd = com.pool.POOL.Rent(CommandFn);
         cmd.options = p_options;
 
         return cmd;
@@ -78,15 +78,15 @@ class CommandFn extends Command {
 
         this._options = p_value;
 
-        this.fn = U.Get(p_value, `fn`, null);
+        this.fn = u.tils.Get(p_value, `fn`, null);
         if (!this._fn) {
             throw new Error(`CommandFn options have no function defined.`);
         }
 
-        this.thisArg = U.Get(p_value, `thisArg`, null);
-        this.name = U.Get(p_value, `name`, U.CamelSplit(this._fn.name));
-        this.icon = U.Get(p_value, `icon`, `%ICON%/icon_cmd.svg`);
-        this.order = U.Get(p_value, `order`, 0);
+        this.thisArg = u.tils.Get(p_value, `thisArg`, null);
+        this.name = u.tils.Get(p_value, `name`, u.tils.CamelSplit(this._fn.name));
+        this.icon = u.tils.Get(p_value, `icon`, `%ICON%/icon_cmd.svg`);
+        this.order = u.tils.Get(p_value, `order`, 0);
 
     }
 

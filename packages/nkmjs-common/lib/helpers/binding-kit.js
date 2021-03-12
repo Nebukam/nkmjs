@@ -1,7 +1,7 @@
 'use strict';
 
 const { Dictionary } = require(`@nkmjs/collections`);
-const { U, LOG } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const NFOS = require(`../nfos`);
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
@@ -144,10 +144,10 @@ class BindingKit extends DisposableObjectEx {
 
                 if (true) {
                     // TODO : REMOVE, FOR DEV ONLY
-                    let cName = U.isFunc(context) ? context.name : context,
-                        kName = U.isFunc(kvp.key) ? kvp.key.name : kvp.key,
-                        vName = U.isFunc(kvp.binding) ? kvp.binding.name : kvp.binding;
-                    LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
+                    let cName = u.tils.isFunc(context) ? context.name : context,
+                        kName = u.tils.isFunc(kvp.key) ? kvp.key.name : kvp.key,
+                        vName = u.tils.isFunc(kvp.binding) ? kvp.binding.name : kvp.binding;
+                        u.LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
                 }
 
             }
@@ -156,12 +156,12 @@ class BindingKit extends DisposableObjectEx {
         for (let i = 0, n = this._CLASSES.length; i < n; i++) {
 
             let cl = this._CLASSES[i],
-                uid = U.Get(NFOS.Get(cl), `uid`, null);
+                uid = u.tils.Get(NFOS.Get(cl), `uid`, null);
 
             if (!uid) { throw new Error(`No valid NFO found for ${this._CLASSES[i]}`); }
             this._classDict.Set(cl, uid);
             b._SetClass(uid, cl);
-            LOG._(`⧉ ${uid} ⤞ ${cl.name}`, `#7f7f7f`);
+            u.LOG._(`⧉ ${uid} ⤞ ${cl.name}`, `#7f7f7f`);
         }
 
         this._deployed = true;

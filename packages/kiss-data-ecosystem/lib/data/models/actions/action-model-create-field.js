@@ -1,11 +1,11 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { Action } = require(`@nkmjs/actions`);
+const u = require("@nkmjs/utils");
+const actions = require("@nkmjs/actions");
 
 const Model = require(`../../model`);
 
-class ActionModelCreateField extends Action {
+class ActionModelCreateField extends actions.Action {
     constructor() { super(); }
 
     static get mergeable() { return false; }
@@ -17,7 +17,7 @@ class ActionModelCreateField extends Action {
         let op = p_operation,
             target = op.target,
             descriptor = op.descriptor,
-            fieldID = `${descriptor.fieldClass.name}${U.unsafeUID}`;
+            fieldID = `${descriptor.fieldClass.name}${u.tils.unsafeUID}`;
 
         op.id = fieldID;
 

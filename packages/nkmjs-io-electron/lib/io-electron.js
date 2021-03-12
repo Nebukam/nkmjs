@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { RESOURCES, IO_TYPE } = require(`@nkmjs/io-core`);
 const fs = require(`fs`);
 
@@ -40,7 +40,7 @@ class IOElectron {
     }
 
     _IOID(p_ioId, p_operation) {
-        if (U.isEmpty(p_ioId) || !(p_ioId in this._io)) {
+        if (u.tils.isEmpty(p_ioId) || !(p_ioId in this._io)) {
             try{
                 let url = new URL(p_operation.fullPath);
                 return IO_TYPE.REMOTE;

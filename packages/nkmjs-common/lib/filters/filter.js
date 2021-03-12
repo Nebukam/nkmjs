@@ -1,8 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-
-const OptionObject = require(`../helpers/options-object`);
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 
 /**

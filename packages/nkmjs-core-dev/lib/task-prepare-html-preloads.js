@@ -6,7 +6,7 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const DirRead = require(`./helpers/dir-read`);
-const MIME = require(`@nkmjs/utils`).MIME;
+const MIME = require("@nkmjs/utils").MIME;
 
 class TaskPrepareHTMLMeta extends ScriptBase {
 

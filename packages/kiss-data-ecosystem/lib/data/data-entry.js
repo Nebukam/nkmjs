@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u= require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
 
 const URI = require(`../uri`);
@@ -144,9 +144,9 @@ class DataEntry extends DataBlockEx {
 
         this._fieldMap.Clear();
 
-        this._fieldData = U.Clear(this._fieldData, true);
-        this._roamingFieldData = U.Clear(this._roamingFieldData, true);
-        this._metadata = U.Clear(this._metadata, true);
+        this._fieldData = u.tils.Clear(this._fieldData, true);
+        this._roamingFieldData = u.tils.Clear(this._roamingFieldData, true);
+        this._metadata = u.tils.Clear(this._metadata, true);
 
         super._CleanUp();
     }

@@ -1,7 +1,7 @@
 'use strict';
 
 const { List } = require(`@nkmjs/collections`);
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 /**
  * A CallList is a very simple helper class that stores a list of functions
@@ -32,7 +32,7 @@ class CallList {
      * @example calllist.Add(foo).Add(bar);
      */
     Add(p_fn) {
-        if (!U.isFunc(p_fn)) { throw new Error(`p_fn is not a Function.`); }
+        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a Function.`); }
         this._list.Add(p_fn);
         return this;
     }

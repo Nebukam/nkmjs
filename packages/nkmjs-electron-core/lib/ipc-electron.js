@@ -1,6 +1,6 @@
 'use strict';
 
-const { RELAY } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 const { ipcRenderer, remote } = require('electron');
 //const { dialog } = require('electron').remote;
 
@@ -15,9 +15,9 @@ class IPCElectron {
     constructor() { }
 
     Deploy() {
-        RELAY.instance._ipcOn = this._ipcOn.bind(RELAY.instance);
-        RELAY.instance._ipcSend = this._ipcSend.bind(RELAY.instance);
-        RELAY.instance._ShowOpenDialog = this._remoteShowOpenDialog.bind(RELAY.instance);
+        actions.RELAY.instance._ipcOn = this._ipcOn.bind(actions.RELAY.instance);
+        actions.RELAY.instance._ipcSend = this._ipcSend.bind(actions.RELAY.instance);
+        actions.RELAY.instance._ShowOpenDialog = this._remoteShowOpenDialog.bind(actions.RELAY.instance);
     }
 
     _ipcOn(p_evt, p_fn) {

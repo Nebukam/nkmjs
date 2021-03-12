@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const POOL = require("../pool/pool");
 const Filter = require(`./filter`);
 
@@ -27,7 +27,7 @@ class FilterBox extends Filter {
      */
     Add( p_filter, p_filterOptions = null ){
 
-        if(U.isFunc(p_filter)){
+        if(u.tils.isFunc(p_filter)){
             p_filter = POOL.Rent(p_filter);
             if(p_filterOptions){
                 for(let key in p_filterOptions){ p_filter[key] = p_filterOptions[key]; }

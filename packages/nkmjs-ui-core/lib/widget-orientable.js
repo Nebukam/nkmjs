@@ -1,10 +1,11 @@
 'use strict';
 
-const UI = require(`./ui`);
+const u = require("@nkmjs/utils");
+
 const UI_FLAG = require(`./ui-flag`);
 const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
-const { UDOM } = require("@nkmjs/utils");
+
 
 /**
  * @description TODO
@@ -84,7 +85,7 @@ class OrientableWidget extends Widget {
      * @group Placement & Orientation
      */
     _HorizontalScroll(p_evt) {
-        if(!UDOM.OverflowsX(this._wrapper)){ return; }
+        if(!u.dom.OverflowsX(this._wrapper)){ return; }
         let delta = Math.sign(p_evt.deltaY);
         this._wrapper.scrollBy({ 
             top: 0, // could be negative value

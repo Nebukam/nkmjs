@@ -1,7 +1,6 @@
 'use strict'
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 /**
  * @description A Catalog selection is a catalog which item belong to other catalogs.
@@ -11,7 +10,7 @@ const { SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core.catalog
  */
-class CatalogSearch extends DisposableObjectEx {
+class CatalogSearch extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {

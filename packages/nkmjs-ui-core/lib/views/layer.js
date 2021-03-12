@@ -1,7 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-
 const UI = require(`../ui`);
 const View = require(`./view`);
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const { Dictionary } = require(`@nkmjs/collections`);
-const com = require(`@nkmjs/common`); //{ SingletonEx, DelayedCall }
+const com = require("@nkmjs/common");
 const UI_SIGNAL = require(`./ui-signal`);
 
 

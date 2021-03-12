@@ -66,23 +66,6 @@ module.exports = {
 
     OVERLAY_CONTEXT: require(`./lib/overlays/overlay-context`),
 
-
-    // Manipulators
-
-    BaseManipulator: require(`./lib/manipulators/manipulator-base`),
-
-    ImageManipulator: require(`./lib/manipulators/manipulator-image`),
-    TextManipulator: require(`./lib/manipulators/manipulator-text`),
-
-    // Extension
-
-    ExtBase: require(`./lib/extensions/ext-base`),
-    ExtDrag: require(`./lib/extensions/ext-drag`),
-    ExtDrop: require(`./lib/extensions/ext-drop`),
-    ExtExpand: require(`./lib/extensions/ext-expand`),
-    ExtMouse: require(`./lib/extensions/ext-mouse`),
-    ExtMouseMove: require(`./lib/extensions/ext-mouse-move`),
-
     // Buttons
 
     ButtonBase: require(`./lib/button-base`),
@@ -97,4 +80,4 @@ module.exports = {
 
 }
 
-require(`@nkmjs/common`).BINDINGS.Expand(require(`./bindings`));
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

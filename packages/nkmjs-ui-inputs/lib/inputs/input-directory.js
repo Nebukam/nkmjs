@@ -1,6 +1,5 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
 const { UI } = require(`@nkmjs/ui-core`);
 
 const InputFile = require(`./input-file`);

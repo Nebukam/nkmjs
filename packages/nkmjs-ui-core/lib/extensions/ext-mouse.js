@@ -4,16 +4,16 @@ const UI = require(`../ui`);
 const MOUSE = require(`../mouse`);
 const UI_SIGNAL = require(`../ui-signal`);
 
-const ExtBase = require(`./ext-base`);
+const Extension = require(`./extension`);
 
 /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments ui.core.extensions.ExtBase
+ * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
-class ExtMouse extends ExtBase {
+class MouseExtension extends Extension {
 
     /**
      * 
@@ -302,4 +302,4 @@ class ExtMouse extends ExtBase {
 
 }
 
-module.exports = ExtMouse;
+module.exports = MouseExtension;

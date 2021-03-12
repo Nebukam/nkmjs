@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, POOL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { DATA_SIGNAL, Metadata, Repertoire } = require(`@nkmjs/data-core`);
 
 const DerivableDataBlock = require(`./data-block-derivable`);
@@ -16,15 +16,15 @@ class Model extends DerivableDataBlock {
 
     static CreateField(p_model, p_fieldClass, p_id, p_options = null) {
 
-        let fieldSettings = POOL.Rent(U.Get(p_options, `cl`, FieldSettings));
+        let fieldSettings = com.pool.POOL.Rent(u.tils.Get(p_options, `cl`, FieldSettings));
         fieldSettings.fieldClass = p_fieldClass;
-        fieldSettings.instance = POOL.Rent(p_fieldClass);
+        fieldSettings.instance = com.pool.POOL.Rent(p_fieldClass);
 
-        let settings = U.Get(p_options, `settings`, null);
+        let settings = u.tils.Get(p_options, `settings`, null);
         if (settings) { fieldSettings.settings = settings; }
-        let metadata = U.Get(p_options, `metadata`, null);
+        let metadata = u.tils.Get(p_options, `metadata`, null);
         if (metadata) {
-            if (U.isInstanceOf(metadata, Metadata)) {
+            if (u.tils.isInstanceOf(metadata, Metadata)) {
                 fieldSettings.metadata.Clone(metadata);
             } else {
                 fieldSettings.metadata._data = metadata;
@@ -60,7 +60,7 @@ class Model extends DerivableDataBlock {
         this._fieldRep = new Repertoire();
         this._fieldRep.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
         this._fieldRep.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
-        this._fieldRep.Watch(SIGNAL.RENAMED, this._OnFieldRenamed, this);
+        this._fieldRep.Watch(com.SIGNAL.RENAMED, this._OnFieldRenamed, this);
 
         this._baseObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnBaseFieldAdded, this);
         this._baseObserver.Hook(FIELD_EVENT.FIELD_REMOVED, this._OnBaseFieldRemoved, this);

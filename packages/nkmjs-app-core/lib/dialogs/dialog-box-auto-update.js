@@ -1,8 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { ENV } = require('@nkmjs/environment');
-const { CSS } = require(`@nkmjs/style`);
 const { UI } = require(`@nkmjs/ui-core`);
 const { DialogBox } = require(`@nkmjs/dialog`);
 

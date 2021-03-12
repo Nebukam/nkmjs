@@ -1,8 +1,8 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
-const { SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { ID, IDDispenser } = require(`../id`);
 
 const DATA_SIGNAL = require(`../data-signal`);
@@ -15,7 +15,7 @@ const DataBlock = require(`./data-block`);
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core
  */
-class Repertoire extends DisposableObjectEx {
+class Repertoire extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {
@@ -97,8 +97,8 @@ class Repertoire extends DisposableObjectEx {
 
         let newID = this._idDispenser.Create(p_stringID);
 
-        newID.Watch(SIGNAL.RELEASED, this._OnIDReleased, this);
-        newID.Watch(SIGNAL.RENAMED, this._OnIDRenamed, this);
+        newID.Watch(com.SIGNAL.RELEASED, this._OnIDReleased, this);
+        newID.Watch(com.SIGNAL.RENAMED, this._OnIDRenamed, this);
 
         return newID;
 
@@ -111,7 +111,7 @@ class Repertoire extends DisposableObjectEx {
      * @param {string} p_oldName 
      */
     _OnIDRenamed(p_id, p_oldName) {
-        this._Broadcast(SIGNAL.RENAMED, p_id, p_oldName);
+        this._Broadcast(com.SIGNAL.RENAMED, p_id, p_oldName);
     }
 
     /**
@@ -135,20 +135,20 @@ class Repertoire extends DisposableObjectEx {
      */
     Register(p_item, p_id = null) {
 
-        if (U.isVoid(p_item)) { throw new Error(`Cannot register a null item.`); }
-        if (!U.isInstanceOf(p_item, DataBlock)) { throw new Error(`Cannot register a non-DataBlock item.`); }
-        if (!U.isVoid(p_item.id)) { throw new Error(`Cannot register an item with an ID already set.`); }
+        if (u.tils.isVoid(p_item)) { throw new Error(`Cannot register a null item.`); }
+        if (!u.tils.isInstanceOf(p_item, DataBlock)) { throw new Error(`Cannot register a non-DataBlock item.`); }
+        if (!u.tils.isVoid(p_item.id)) { throw new Error(`Cannot register an item with an ID already set.`); }
         if (this._itemList.Contains(p_item)) { throw new Error(`Cannot re-register an item.`); }
 
         let itemID = null;
 
-        if (U.isVoid(p_id)) {
+        if (u.tils.isVoid(p_id)) {
             //No ID provided. Create a random one.
-            itemID = this.ReserveID(U.unsafeUID);
+            itemID = this.ReserveID(u.tils.unsafeUID);
         } else {
             //An ID has been provided.
             let itemID = p_id;
-            if (U.isInstanceOf(p_id, ID)) {
+            if (u.tils.isInstanceOf(p_id, ID)) {
                 //ID is an object of type ID.
                 if (this._idDispenser.GetID(p_id.name) === p_id) {
                     //ID appear to be owned by this repertoire.
@@ -161,10 +161,10 @@ class Repertoire extends DisposableObjectEx {
                 itemID = p_id;
             } else {
                 //ID is a string. (Or should be)
-                if (!U.isString(p_id)) { throw new Error(`Cannot register an item with an ID that isn't an ID object nor a string.`); }
-                if (U.isEmpty(p_id)) { throw new Error(`Cannot use empty string as ID. Use null or undefined instead to generate a random one.`); }
+                if (!u.tils.isString(p_id)) { throw new Error(`Cannot register an item with an ID that isn't an ID object nor a string.`); }
+                if (u.tils.isEmpty(p_id)) { throw new Error(`Cannot use empty string as ID. Use null or undefined instead to generate a random one.`); }
                 let existingID = this._idDispenser.Get(p_id);
-                if (!U.isVoid(existingID)) {
+                if (!u.tils.isVoid(existingID)) {
                     //An ID has already been created with this string
                     if (this._itemMap.Contains(existingID)) {
                         throw new Error(`ID(${p_id}) already in use.`);
@@ -194,7 +194,7 @@ class Repertoire extends DisposableObjectEx {
      * @param {data.core.DataBlock} p_item 
      */
     _OnItemRegistered(p_item) {
-        p_item.Watch(SIGNAL.RELEASED, this._OnItemReleased, this);
+        p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
     }
 
     /**
@@ -203,12 +203,12 @@ class Repertoire extends DisposableObjectEx {
      */
     Unregister(p_item) {
 
-        if (U.isVoid(p_item)) { throw new Error(`Cannot unregister a null item.`); }
+        if (u.tils.isVoid(p_item)) { throw new Error(`Cannot unregister a null item.`); }
 
         let itemID = p_item.id;
 
-        if (U.isVoid(itemID)) { throw new Error(`Cannot unregister a item with no ID.`); }
-        if (U.isVoid(this._itemList.Remove(p_item))) { throw new Error(`Cannot unregister an item that is not in the repertoire.`); }
+        if (u.tils.isVoid(itemID)) { throw new Error(`Cannot unregister a item with no ID.`); }
+        if (u.tils.isVoid(this._itemList.Remove(p_item))) { throw new Error(`Cannot unregister an item that is not in the repertoire.`); }
 
         this._itemMap.Remove(itemID);
         this._OnItemUnregistered(p_item);
@@ -226,7 +226,7 @@ class Repertoire extends DisposableObjectEx {
      * @param {data.core.DataBlock} p_item 
      */
     _OnItemUnregistered(p_item) {
-        p_item.Unwatch(SIGNAL.RELEASED, this._OnItemReleased, this);
+        p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
     }
 
     /**
@@ -245,12 +245,12 @@ class Repertoire extends DisposableObjectEx {
      */
     Get(p_id) {
 
-        if (U.isVoid(p_id)) { throw new Error(`p_id cannot be null or undefined`); }
-        if (U.isString(p_id)) {
+        if (u.tils.isVoid(p_id)) { throw new Error(`p_id cannot be null or undefined`); }
+        if (u.tils.isString(p_id)) {
             let id = this._idDispenser.Get(p_id);
-            if (U.isVoid(id)) { return null; }
+            if (u.tils.isVoid(id)) { return null; }
         }
-        else if (U.isInstanceOf(p_id, ID)) { }
+        else if (u.tils.isInstanceOf(p_id, ID)) { }
         else { throw new Error(`p_id must be either of type string or ID.`); }
 
         return this._itemMap.Get(p_id);

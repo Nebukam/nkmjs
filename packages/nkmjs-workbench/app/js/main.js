@@ -1,10 +1,10 @@
 'use strict';
 
 const NKMjs = require(`@nkmjs/core`); 
-const { U } = NKMjs.utils;
+const u = NKMjs.utils;
 const { AppBase, AutoUpdateDialogBox } = NKMjs.app;
 const { Request } = NKMjs.actions;
-const { POOL, COMMON_FLAG } = NKMjs.common;
+const { pool, COMMON_FLAG } = NKMjs.common;
 const { DIALOG, DialogBox, DialogHandler } = NKMjs.dialog;
 const { InputBase } = NKMjs.inputs;
 const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = NKMjs.workspace;
@@ -44,7 +44,7 @@ class StyleguideApp extends AppBase {
             { htitle: `htitle E text`, icon: '_', trigger: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.WARNING }
         ];
 
-        this._dialogInfos = POOL.Rent(OverlayOptions);
+        this._dialogInfos = pool.POOL.Rent(OverlayOptions);
         this._dialogInfos.options = {
             title: `Title`,
             message: `This is a message !`,
@@ -53,7 +53,7 @@ class StyleguideApp extends AppBase {
         };
 
         let newData = (p_id, p_dirty = false) => {
-            let data = POOL.Rent(DataBlock);
+            let data = pool.POOL.Rent(DataBlock);
             data.id = ID.New(p_id);
             if (p_dirty) { data.Dirty(); }
             return data;
@@ -219,7 +219,7 @@ class StyleguideApp extends AppBase {
     // ----
 
     _FillToolbar(p_toolbar) {
-        if (U.isInstanceOf(p_toolbar, ShelfNav)) { return; }
+        if (u.tils.isInstanceOf(p_toolbar, ShelfNav)) { return; }
         for (let i = 0, n = this._buttonConfigs.length; i < n; i++) {
             p_toolbar.CreateHandle(this._buttonConfigs[i]);
         }

@@ -3,7 +3,7 @@ const path = require(`path`);
 const url = require(`url`);
 const fs = require(`fs`);
 
-const { U, PATH } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List, Dictionary } = require(`@nkmjs/collections`);
 
 const APP_MESSAGES = require(`@nkmjs/app-core/lib/app-messages`);
@@ -11,7 +11,7 @@ const WINDOWS = require(`./windows`);
 
 let DEV_MODE = true;
 
-const com = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -179,20 +179,20 @@ class ElectronBase {
 
             ENV.instance.Start({
                 paths:{
-                    exe:'${U.FixSlash(app.getPath('exe'))}',
-                    '${PATH.APP}':'${U.FixSlash(app.getAppPath())}',
-                    '${PATH.HOME}':'${U.FixSlash(app.getPath('home'))}',
-                    '${PATH.APP_DATA}':'${U.FixSlash(app.getPath('appData'))}',
-                    '${PATH.USER_DATA}':'${U.FixSlash(app.getPath('userData'))}',
-                    '${PATH.TEMP}':'${U.FixSlash(app.getPath('temp'))}',
-                    '${PATH.DESKTOP}':'${U.FixSlash(app.getPath('desktop'))}',
-                    '${PATH.DOCUMENTS}':'${U.FixSlash(app.getPath('documents'))}',
-                    '${PATH.DOWNLOADS}':'${U.FixSlash(app.getPath('downloads'))}',
-                    '${PATH.MUSIC}':'${U.FixSlash(app.getPath('music'))}',
-                    '${PATH.PICTURES}':'${U.FixSlash(app.getPath('pictures'))}',
-                    '${PATH.VIDEOS}':'${U.FixSlash(app.getPath('videos'))}',
-                    '${PATH.LOGS}':'${U.FixSlash(app.getPath('logs'))}',
-                    '${PATH.STYLE}':'${stylePath}'
+                    exe:'${u.tils.FixSlash(app.getPath('exe'))}',
+                    '${u.PATH.APP}':'${u.tils.FixSlash(app.getAppPath())}',
+                    '${u.PATH.HOME}':'${u.tils.FixSlash(app.getPath('home'))}',
+                    '${u.PATH.APP_DATA}':'${u.tils.FixSlash(app.getPath('appData'))}',
+                    '${u.PATH.USER_DATA}':'${u.tils.FixSlash(app.getPath('userData'))}',
+                    '${u.PATH.TEMP}':'${u.tils.FixSlash(app.getPath('temp'))}',
+                    '${u.PATH.DESKTOP}':'${u.tils.FixSlash(app.getPath('desktop'))}',
+                    '${u.PATH.DOCUMENTS}':'${u.tils.FixSlash(app.getPath('documents'))}',
+                    '${u.PATH.DOWNLOADS}':'${u.tils.FixSlash(app.getPath('downloads'))}',
+                    '${u.PATH.MUSIC}':'${u.tils.FixSlash(app.getPath('music'))}',
+                    '${u.PATH.PICTURES}':'${u.tils.FixSlash(app.getPath('pictures'))}',
+                    '${u.PATH.VIDEOS}':'${u.tils.FixSlash(app.getPath('videos'))}',
+                    '${u.PATH.LOGS}':'${u.tils.FixSlash(app.getPath('logs'))}',
+                    '${u.PATH.STYLE}':'${stylePath}'
                 },
                 argv:${JSON.stringify(process.argv)},
                 theme:'${(this._constants.theme || 'default')}'
@@ -217,7 +217,7 @@ class ElectronBase {
 
         console.log(`_OnRequestCheckForUpdates`);
 
-        if (U.Empty(this._autoUpdateFeed)) {
+        if (u.tils.Empty(this._autoUpdateFeed)) {
             console.log(`   => No server.`);
             this._mainWindow.webContents.send(APP_MESSAGES.AU_CHECK_REQUEST_HANDLED, APP_MESSAGES.AU_NO_SERVER);
         } else {

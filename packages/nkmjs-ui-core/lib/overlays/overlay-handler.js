@@ -1,7 +1,6 @@
 const { Dictionary, List } = require("@nkmjs/collections");
-const { U } = require(`@nkmjs/utils`);
-const { ACTION_REQUEST } = require(`@nkmjs/actions`);
-const { BINDINGS, SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
 
 const UI = require(`../ui`);
@@ -11,7 +10,7 @@ const LayerContainer = require(`../views/layer-container`);
 const OVERLAY_CONTEXT = require("./overlay-context");
 const OverlayOptions = require("./overlay-options");
 const Overlay = require("./overlay");
-const { POOL } = require("@nkmjs/common/lib/pool");
+const { pool } = require("@nkmjs/common");
 
 
 /**
@@ -54,8 +53,8 @@ class OverlayHandler extends LayerContainer {
 
         if (!overlayOptions) { throw new Error(`Cannot build overlay without valid options.`); }
 
-        if (!U.isInstanceOf(overlayOptions, OverlayOptions)) {
-            let oOptions = POOL.Rent(OverlayOptions);
+        if (!u.tils.isInstanceOf(overlayOptions, OverlayOptions)) {
+            let oOptions = pool.POOL.Rent(OverlayOptions);
             oOptions.options = overlayOptions;
             overlayOptions = oOptions;
         }
@@ -72,16 +71,16 @@ class OverlayHandler extends LayerContainer {
         this.BringToFront();
         this.visible = true;
 
-        let fallbackOverlayClass = BINDINGS.Get(
+        let fallbackOverlayClass = com.BINDINGS.Get(
             OVERLAY_CONTEXT.OVERLAY,
             p_request.requestType,
             this.constructor.__default_overlayClass);
 
-        let overlayClass = U.Get(overlayOptions, `overlayClass`, fallbackOverlayClass),
+        let overlayClass = u.tils.Get(overlayOptions, `overlayClass`, fallbackOverlayClass),
             newOverlay = this.Add(overlayClass, `overlay`);
 
         this._overlayMap.Set(overlayOptions, newOverlay);
-        overlayOptions.Watch(SIGNAL.CONSUMED, this._OnOverlayOptionsConsumed);
+        overlayOptions.Watch(com.SIGNAL.CONSUMED, this._OnOverlayOptionsConsumed);
         newOverlay.data = overlayOptions;
 
         p_request.HandleSuccess(this);

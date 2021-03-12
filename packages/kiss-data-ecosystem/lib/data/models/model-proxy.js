@@ -1,8 +1,8 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
-const { Observer } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { ID } = require(`@nkmjs/data-core`);
 
 const Model = require(`../model`);
@@ -22,7 +22,7 @@ class ModelProxy extends Model {
         this._id = new ID();
         this._proxyMap = new Dictionary();
 
-        this._refObserver = new Observer();
+        this._refObserver = new com.signals.Observer();
         this._refObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnRefModelFieldAdded, this);
         this._refObserver.Hook(FIELD_EVENT.FIELD_REMOVED, this._OnRefModelFieldRemoved, this);
 
@@ -92,7 +92,7 @@ class ModelProxy extends Model {
             p_fieldSettings.id.name,
             {
                 cl: FieldSettingsProxy,
-                settings: U.Clone(p_fieldSettings.settings),
+                settings: u.tils.Clone(p_fieldSettings.settings),
                 metadata: p_fieldSettings.metadata
             });
 

@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { BINDINGS, SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { CatalogItem, Catalog, CatalogWatcher } = require(`@nkmjs/data-core`);
 
 /**
@@ -44,20 +44,20 @@ class CatalogBuilder extends CatalogWatcher {
 
         let mappedObject = null;
 
-        if (U.isInstanceOf(p_item, Catalog)) {
+        if (u.tils.isInstanceOf(p_item, Catalog)) {
             mappedObject = this._owner.Add(
-                BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
+                com.BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
                 `item group`, this._host);
         } else {
             mappedObject = this._owner.Add(
-                BINDINGS.Get(this._owner, p_item, this._defaultItemClass),
+                com.BINDINGS.Get(this._owner, p_item, this._defaultItemClass),
                 `item`, this._host);
         }
 
         this._map.set(p_item, mappedObject);
         mappedObject.data = p_item;
 
-        this._Broadcast(SIGNAL.ITEM_ADDED, this, p_item, mappedObject);
+        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, mappedObject);
 
         return true;
 
@@ -74,7 +74,7 @@ class CatalogBuilder extends CatalogWatcher {
         let mappedObject = super._OnCatalogItemRemoved(p_catalog, p_item);
         if (mappedObject === false) { return false; }
 
-        this._Broadcast(SIGNAL.ITEM_REMOVED, this, p_item, mappedObject);
+        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedObject);
         if (mappedObject) { mappedObject.Release(); }
 
         return mappedObject;

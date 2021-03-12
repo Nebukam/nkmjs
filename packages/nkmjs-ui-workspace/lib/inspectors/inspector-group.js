@@ -1,7 +1,5 @@
-const { U, UDOM } = require(`@nkmjs/utils`);
-const uicore = require(`@nkmjs/ui-core`);
-const { UI_ID, UI, UI_SIGNAL, ExtExpand, Toolbar, ToolButton, DOMTemplate, ExtMouse, UI_FLAG, MOUSE } = uicore;
-const { TPLHeaderBodyFooter, TPLFacadeExpandTitle } = uicore.templates;
+const u = require("@nkmjs/utils");
+const { UI_ID, UI, UI_SIGNAL, Toolbar, ToolButton, DOMTemplate, UI_FLAG, MOUSE, templates, extensions } = require(`@nkmjs/ui-core`);
 
 const InspectorItem = require(`./inspector-item`);
 
@@ -11,13 +9,13 @@ class InspectorGroup extends InspectorItem {
     _Init() {
         super._Init();
 
-        this._extExpand = new ExtExpand();
+        this._extExpand = new extensions.Expand();
         this._extExpand._isExpanded = false;
         this._extExpand.Watch(UI_SIGNAL.EXPANDED, this._Expand, this);
         this._extExpand.Watch(UI_SIGNAL.COLLAPSED, this._Collapse, this);
 
         this._header = null;
-        this._expandOnHeaderAltActivation = U.Default(this._expandOnHeaderAltActivation, true);
+        this._expandOnHeaderAltActivation = u.tils.Default(this._expandOnHeaderAltActivation, true);
 
         this._useGroupExpand = false;
 
@@ -51,7 +49,7 @@ class InspectorGroup extends InspectorItem {
     get footer() { return this._footer; }
 
     _Style() {
-        return U.Merge(super._Style(), {
+        return u.tils.Merge(super._Style(), {
             ':host': {
                 //TODO : Implement orientation in styling
                 position: `relative`,
@@ -107,8 +105,8 @@ class InspectorGroup extends InspectorItem {
 
     _Render() {
 
-        DOMTemplate.Render(TPLHeaderBodyFooter, this, { [UI_ID.OWNER]: this });
-        DOMTemplate.Render(TPLFacadeExpandTitle, this._header, {
+        DOMTemplate.Render(templates.TPLHeaderBodyFooter, this, { [UI_ID.OWNER]: this });
+        DOMTemplate.Render(templates.TPLFacadeExpandTitle, this._header, {
             [UI_ID.OWNER]: this,
             expandIcon: { url: `%ICON%/icon_expand_arrow.svg`, htitle: `Expand` }
         });

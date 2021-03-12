@@ -1,6 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/core`).utils;
+const u = require(`@nkmjs/core`).utils;
 const { UI, Layer, UI_FLAG } = require("@nkmjs/core").ui;
 const { CSS } = require("@nkmjs/core").style;
 
@@ -41,7 +41,7 @@ class UIItemListLayer extends Layer {
 
     _Render() {
 
-        this._itemContainer = UDOM.New(`div`, { class: `list-ctnr` }, this);
+        this._itemContainer = u.dom.New(`div`, { class: `list-ctnr` }, this);
 
     }
 
@@ -61,7 +61,7 @@ class UIItemListLayer extends Layer {
 
         for (let i = 0, n = this._variants.length; i < n; i++) {
             let v = this._variants[i];
-            if (U.isInstanceOf(p_class, v.cl) && (!v.not || !v.not.includes(p_class))) {
+            if (u.tils.isInstanceOf(p_class, v.cl) && (!v.not || !v.not.includes(p_class))) {
                 variants = v.variants;
                 callback = v.fn;
             }

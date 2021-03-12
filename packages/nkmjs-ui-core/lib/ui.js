@@ -1,8 +1,8 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List, Dictionary, DictionaryList } = require(`@nkmjs/collections`);
-const { SingletonEx, DelayedCall } = require(`@nkmjs/common`); 
+const com = require("@nkmjs/common"); 
 
 const UI_SIGNAL = require(`./ui-signal`);
 const DisposableHTMLElement = require(`./disposable-htmlelement`);
@@ -14,7 +14,7 @@ const DisposableHTMLElement = require(`./disposable-htmlelement`);
  * @augments common.helpers.SingletonEx
  * @memberof ui.core
  */
-class UI extends SingletonEx {
+class UI extends com.helpers.SingletonEx {
     constructor() { super(); }
 
     _Init() {
@@ -27,7 +27,7 @@ class UI extends SingletonEx {
         this._dirtyElements = new List(0);
 
         this._Bind(this._Return);
-        this._delayedUpdate = new DelayedCall(this._Bind(this._UpdateDirty));
+        this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._UpdateDirty));
 
     }
 
@@ -50,7 +50,7 @@ class UI extends SingletonEx {
      */
     _Register(p_id, p_class, p_extends = `div`) {
 
-        if (!U.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
+        if (!u.tils.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
         console.log(p_id);
         this._uiTypes.Set(p_class, p_id);
         customElements.define(p_id, p_class);//, { extends: p_extends });
@@ -79,8 +79,8 @@ class UI extends SingletonEx {
      */
     _Return(p_displayObject) {
 
-        if (!U.isObject(p_displayObject)
-            || !U.isInstanceOf(p_displayObject, DisposableHTMLElement)) {
+        if (!u.tils.isObject(p_displayObject)
+            || !u.tils.isInstanceOf(p_displayObject, DisposableHTMLElement)) {
             throw new Error(`Return used with invalid object : ${p_displayObject}`);
         }
 

@@ -1,8 +1,6 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
-const { ENV } = require(`@nkmjs/environment`);
+const u = require("@nkmjs/utils");
 
 const IOProcess = require(`../io-process`);
 
@@ -31,7 +29,7 @@ class LocalStorageIORename extends IOProcess {
     Validate() {
         if (!super.Validate()) { return false; }
 
-        let existing = this._resources.Get(PATH.SHORT(this._targetPath));
+        let existing = this._resources.Get(u.PATH.SHORT(this._targetPath));
         if (existing && existing != this.rsc) {
             this._OnError(new Error(`Cannot rename resource from '${this._operation.fullPath}' to '${this._targetPath}' : destination already exists`));
             return false;

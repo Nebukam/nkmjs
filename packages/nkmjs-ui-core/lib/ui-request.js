@@ -1,8 +1,8 @@
 'use strict';
 
-const { CSYMBOL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 module.exports = {
-    OVERLAY: class OVERLAY extends CSYMBOL { constructor() { } },
-    DRAWER: class DRAWER extends CSYMBOL { constructor() { } },
+    OVERLAY: class OVERLAY extends com.helpers.CSYMBOL { constructor() { } },
+    DRAWER: class DRAWER extends com.helpers.CSYMBOL { constructor() { } },
 };

@@ -1,9 +1,9 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const UI_ID = require(`../ui-id`);
-const BaseManipulator = require(`./manipulator-base`);
+const BaseManipulator = require(`./manipulator`);
 
 /**
  * @description TODO
@@ -33,22 +33,22 @@ class ImageManipulator extends BaseManipulator {
      */
     _Update(p_element, p_value) {
 
-        if (U.isVoid(p_value)) {
+        if (u.tils.isVoid(p_value)) {
             this._ApplyPath(p_element, false);
             return false;
         } else {
 
             let path = ``;
 
-            if (U.isString(p_value)) { path = p_value; }
+            if (u.tils.isString(p_value)) { path = p_value; }
             else if (UI_ID.ICON in p_value) { path = p_value[UI_ID.ICON]; }
             else if (UI_ID.PATH in p_value) { path = p_value[UI_ID.PATH]; }
             else if (`img` in p_value) { path = p_value.img; }
             else if (`objectURL` in p_value) { path = p_value.objectURL; }
 
-            if (path === `` || !U.isString(path)) { return false; }
+            if (path === `` || !u.tils.isString(path)) { return false; }
 
-            path = PATH.FULL(path);
+            path = u.PATH.FULL(path);
 
             this._ApplyPath(p_element, path);
 

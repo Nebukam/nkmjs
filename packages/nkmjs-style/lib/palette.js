@@ -1,8 +1,8 @@
 'use strict';
 
-const { U, PATH, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
-const { NFOS, DisposableObject } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const CSS_UTILS = require(`./css`);
 
@@ -27,7 +27,7 @@ const __REF = `@`;
  * @augments common.pool.DisposableObject
  * @memberof style
  */
-class Palette extends DisposableObject {
+class Palette extends com.pool.DisposableObject {
     constructor() { super(); }
 
     _Init() {
@@ -83,8 +83,8 @@ class Palette extends DisposableObject {
      */
     GetCSSLink(p_key) {
         if (p_key in this._externalCSSMap) { p_key = this._externalCSSMap[p_key]; }
-        if (p_key[0] === __REF) { p_key = `${PATH.FULL(PATH.STYLE)}/${this._themeId}${p_key.substring(1)}`; }
-        else { p_key = PATH.FULL(p_key); }
+        if (p_key[0] === __REF) { p_key = `${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}${p_key.substring(1)}`; }
+        else { p_key = u.PATH.FULL(p_key); }
         return p_key;
     }
 
@@ -94,7 +94,7 @@ class Palette extends DisposableObject {
      * @param {*} p_family 
      * @param {*} p_url 
      */
-    AddFontFace(p_family, p_url) { this._fonts[p_family] = PATH.FULL(p_url); }
+    AddFontFace(p_family, p_url) { this._fonts[p_family] = u.PATH.FULL(p_url); }
 
     /**
      * @description TODO
@@ -176,18 +176,18 @@ class Palette extends DisposableObject {
 
         let style = this._cache.Get(p_class);
 
-        if (!U.isVoid(style) && !p_invalidateCache) { return style; }
+        if (!u.tils.isVoid(style) && !p_invalidateCache) { return style; }
 
         if (style) { style.length = 0; }
         else { style = new Array(0); }
 
         // Check if the class __NFO__ has any specific css imports
-        let nfos = NFOS.Get(p_class);
+        let nfos = com.NFOS.Get(p_class);
         if (nfos) {
 
             if (nfos.css) {
                 for (let i = nfos.css.length - 1; i >= 0; i--) {
-                    style.push(UDOM.New(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
+                    style.push(u.dom.New(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
                 }
             }
 
@@ -200,9 +200,9 @@ class Palette extends DisposableObject {
 
         let styleObject = p_generator();
 
-        if (!U.isEmpty(styleObject)) {
+        if (!u.tils.isEmpty(styleObject)) {
 
-            if (!U.isObject(styleObject)) { throw new Error(`Generator must return an object.`); }
+            if (!u.tils.isObject(styleObject)) { throw new Error(`Generator must return an object.`); }
 
             //Replace KVPs before appending globals, for performance reasons
             let styleString = ``;
@@ -210,7 +210,7 @@ class Palette extends DisposableObject {
             for (let el in styleObject) { this._ProcessSuffixes(el, styleObject[el], styleObject); }
             for (let el in styleObject) { styleString += CSS_UTILS.CSS(el, this._ProcessSingleRuleset(el, styleObject[el])); }
 
-            let styleElement = UDOM.New(`style`);
+            let styleElement = u.dom.New(`style`);
             styleElement.innerText = styleString;
             style.push(styleElement);
 
@@ -235,9 +235,9 @@ class Palette extends DisposableObject {
 
         let refCandidate = p_el[0] === __REF;
 
-        if (!U.isArray(p_ruleset)) {
+        if (!u.tils.isArray(p_ruleset)) {
 
-            if (refCandidate && U.isObject(p_ruleset)) {
+            if (refCandidate && u.tils.isObject(p_ruleset)) {
                 if (p_el.indexOf(`@media`) === 0
                     || p_el.indexOf(`@supports`) === 0) {
                     //media query or supports query
@@ -247,7 +247,7 @@ class Palette extends DisposableObject {
 
             return;
         }
-        if (!refCandidate || !U.isArray(p_ruleset)) { return; }
+        if (!refCandidate || !u.tils.isArray(p_ruleset)) { return; }
 
         let prefix = p_el.substr(1, p_el.length - 1);
 
@@ -278,7 +278,7 @@ class Palette extends DisposableObject {
      */
     _ProcessSingleRuleset(p_el, p_ruleset) {
 
-        let isObject = U.isObject(p_ruleset);
+        let isObject = u.tils.isObject(p_ruleset);
 
         if (p_el[0] === __REF && isObject) {
 
@@ -321,7 +321,7 @@ class Palette extends DisposableObject {
         if (isObject) {
             for (let r in p_ruleset) {
                 let rule = p_ruleset[r];
-                if (U.isString(rule) && rule.includes(__DELIM_KVP)) { p_ruleset[r] = this._ReplaceVars(rule); }
+                if (u.tils.isString(rule) && rule.includes(__DELIM_KVP)) { p_ruleset[r] = this._ReplaceVars(rule); }
             }
         }
 

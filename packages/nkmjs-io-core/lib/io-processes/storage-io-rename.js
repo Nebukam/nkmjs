@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 const { ENV } = require(`@nkmjs/environment`);
 
 const IOProcess = require(`../io-process`);
@@ -35,7 +34,7 @@ class StorageIORename extends IOProcess {
     Validate() {
         if (!super.Validate()) { return false; }
 
-        let existing = this._resources.Get(PATH.SHORT(this._targetPath));
+        let existing = this._resources.Get(u.PATH.SHORT(this._targetPath));
         if (existing && existing != this.rsc) {
             this._OnError(new Error(`Cannot rename resource from '${this._operation.fullPath}' to '${this._targetPath}' : destination already exists`));
             return false;
@@ -61,7 +60,7 @@ class StorageIORename extends IOProcess {
     _OnRenameExistsCheck(p_data) {
 
         let data = p_data[this._oldPath];
-        if (U.isVoid(data)) {
+        if (u.tils.isVoid(data)) {
             // Data do not exists !
             let storage = ENV.FEATURES.storageArea, dataCopy = {};
             dataCopy[this._targetPath] = data;

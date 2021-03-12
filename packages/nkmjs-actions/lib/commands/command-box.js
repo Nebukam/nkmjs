@@ -1,7 +1,7 @@
 'use strict';
 
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List, Dictionary } = require(`@nkmjs/collections`);
 
 const Command = require(`./command`);

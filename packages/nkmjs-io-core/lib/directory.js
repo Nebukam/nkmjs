@@ -1,7 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { List } = require(`@nkmjs/collections`);
 
 const Resource = require(`./resource`);
@@ -59,7 +58,7 @@ class Directory extends Resource {
 
         if (added) {
             //console.log(`${this._path} += ${p_rsc._path}`);
-            p_rsc.Watch(SIGNAL.RELEASED, this._OnRscReleased, this);
+            p_rsc.Watch(com.SIGNAL.RELEASED, this._OnRscReleased, this);
             p_rsc.directory = this;
         }
 
@@ -77,7 +76,7 @@ class Directory extends Resource {
 
         if (removed) {
             if (p_rsc.directory === this) { p_rsc.directory = null; }
-            p_rsc.Unwatch(SIGNAL.RELEASED, this._OnRscReleased, this);
+            p_rsc.Unwatch(com.SIGNAL.RELEASED, this._OnRscReleased, this);
         }
     }
 

@@ -1,6 +1,5 @@
 'use strict';
 
-const { ACTION_REQUEST, Request } = require(`@nkmjs/actions`);
 const { JSONSerializer } = require(`@nkmjs/data-core`);
 
 const DataManipulationCommand = require(`../../commands/command-data`);

@@ -1,10 +1,9 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const SIGNAL = require(`../signal`);
-const SingletonEx = require(`../helpers/singleton-ex`);
-const CallList = require(`../helpers/call-list`);
+const helpers = require(`../helpers`);
 
 /**
  * A ticker singleton that allow for easy manipulation of time & frame.
@@ -12,7 +11,7 @@ const CallList = require(`../helpers/call-list`);
  * @class
  * @memberof common.time
  */
-class TIME extends SingletonEx {
+class TIME extends helpers.SingletonEx {
     constructor() { super(); }
 
     /**
@@ -29,8 +28,8 @@ class TIME extends SingletonEx {
         this._deltaTime = 0;
         this._timeScale = 1;
 
-        this._clA = new CallList();
-        this._clB = new CallList();
+        this._clA = new helpers.CallList();
+        this._clB = new helpers.CallList();
 
         this._nextTick = this._clA;
         this._nextTickScheduled = false;
@@ -68,7 +67,7 @@ class TIME extends SingletonEx {
      * @param {function} p_fn 
      */
     NextTickAdd(p_fn) {
-        if (!U.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
+        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
         this._nextTick.Add(p_fn);
         this._ScheduleNextTick();
     }
@@ -78,7 +77,7 @@ class TIME extends SingletonEx {
      * @param {function} p_fn 
      */
     NextTickRemove(p_fn) {
-        if (!U.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
+        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
         this._nextTick.Remove(p_fn);
     }
 

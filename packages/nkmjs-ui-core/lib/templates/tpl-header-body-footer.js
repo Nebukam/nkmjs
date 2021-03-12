@@ -1,6 +1,6 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const UI_ID = require(`../ui-id`);
 const DOMTemplate = require(`../dom-template`);
@@ -23,9 +23,9 @@ class TPLHeaderBodyFooter extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(UDOM.New(`div`, { class: UI_ID.HEADER }), __header);
-        this._Add(UDOM.New(`div`, { class: UI_ID.BODY }), __body);
-        this._Add(UDOM.New(`div`, { class: UI_ID.FOOTER }), __footer);
+        this._Add(u.dom.New(`div`, { class: UI_ID.HEADER }), __header);
+        this._Add(u.dom.New(`div`, { class: UI_ID.BODY }), __body);
+        this._Add(u.dom.New(`div`, { class: UI_ID.FOOTER }), __footer);
     }
 
 }

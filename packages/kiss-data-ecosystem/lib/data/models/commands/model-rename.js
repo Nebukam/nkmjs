@@ -1,6 +1,6 @@
 'use strict';
 
-const { ACTION_REQUEST, Request } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const DataManipulationCommand = require(`../../commands/command-data`);
 
@@ -18,7 +18,7 @@ class ModelRename extends DataManipulationCommand {
             data: null
         };
 
-        Request.Emit(ACTION_REQUEST.RENAME,
+        actions.Request.Emit(actions.ACTION_REQUEST.RENAME,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

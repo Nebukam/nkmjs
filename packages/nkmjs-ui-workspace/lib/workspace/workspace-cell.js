@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { Catalog, CatalogItem } = require(`@nkmjs/data-core`);
 const { UI, UI_FLAG, Shelf } = require(`@nkmjs/ui-core`);
 
@@ -10,7 +10,7 @@ const WorkspaceCellNav = require(`./workspace-cell-nav`);
 class WorkspaceCell extends Shelf {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace-cell.css`]
     }, Shelf, ['css']);
 
@@ -32,9 +32,9 @@ class WorkspaceCell extends Shelf {
      */
     _OnCatalogItemAdded(p_handler, p_item, p_mappedView) {
 
-        if (!U.isInstanceOf(p_item, CatalogItem)) {
+        if (!u.tils.isInstanceOf(p_item, CatalogItem)) {
             throw new Error(`non-catalog item added to workspace cell catalog.`);
-        } else if (U.isInstanceOf(p_item, Catalog)) {
+        } else if (u.tils.isInstanceOf(p_item, Catalog)) {
             throw new Error(`Full catalog item added to workspace cell catalog.`);
         }
 

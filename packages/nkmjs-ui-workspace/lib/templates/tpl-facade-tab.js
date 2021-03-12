@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { UI_ID, DOMTemplate, ImageManipulator, TextManipulator } = require(`@nkmjs/ui-core`);
+const u = require("@nkmjs/utils");
+const { UI_ID, DOMTemplate, manipulators } = require(`@nkmjs/ui-core`);
 
 const __closeIcon = `_closeIcon`;
 const __icon = `_${UI_ID.ICON}`;
@@ -27,19 +27,19 @@ class TPLFacadeTab extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(UDOM.New(`span`, { class: UI_ID.ICON }), __icon);
-        this._Add(UDOM.New(`span`, { class: UI_ID.LABEL }), __label);
-        this._Add(UDOM.New(`span`, { class: `${UI_ID.ICON} close` }), __closeIcon);
+        this._Add(u.dom.New(`span`, { class: UI_ID.ICON }), __icon);
+        this._Add(u.dom.New(`span`, { class: UI_ID.LABEL }), __label);
+        this._Add(u.dom.New(`span`, { class: `${UI_ID.ICON} close` }), __closeIcon);
     }
 
     Render(p_host, p_options = null) {
         let owner = super.Render(p_host, p_options),
-            iconOpts = U.Get(p_options, UI_ID.ICON, null),
-            labelOpts = U.Get(p_options, UI_ID.TITLE, null),
-            closeIconOpts = U.Get(p_options, `closeIcon`, null),
-            icon = owner[__icon] = new ImageManipulator(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
-            label = owner[__label] = new TextManipulator(owner[__label], labelOpts && `autoHide` in labelOpts ? labelOpts.autoHide : false),
-            closeIcon = owner[__closeIcon] = new ImageManipulator(owner[__closeIcon], closeIconOpts && `autoHide` in closeIconOpts ? closeIconOpts.autoHide : false);
+            iconOpts = u.tils.Get(p_options, UI_ID.ICON, null),
+            labelOpts = u.tils.Get(p_options, UI_ID.TITLE, null),
+            closeIconOpts = u.tils.Get(p_options, `closeIcon`, null),
+            icon = owner[__icon] = new manipulators.Image(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
+            label = owner[__label] = new manipulators.Text(owner[__label], labelOpts && `autoHide` in labelOpts ? labelOpts.autoHide : false),
+            closeIcon = owner[__closeIcon] = new manipulators.Image(owner[__closeIcon], closeIconOpts && `autoHide` in closeIconOpts ? closeIconOpts.autoHide : false);
 
         if (iconOpts) {
             icon.Set(iconOpts);

@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const TIME = require(`./time`);
 
 /**
@@ -47,7 +47,7 @@ class DelayedCall {
      * @description Schedule this DelayedCall's callback to be called on TIME.NEXT_TICK
      */
     Schedule() {
-        if (this._scheduled || U.isVoid(this._callback)) { return; }
+        if (this._scheduled || u.tils.isVoid(this._callback)) { return; }
         this._scheduled = true;
         TIME.instance.NextTickAdd(this._Call);
     }
@@ -56,7 +56,7 @@ class DelayedCall {
      * @description Cancel the delayed call, if it was scheduled.
      */
     Cancel() {
-        if (this._scheduled && !U.isVoid(this._callback)) {
+        if (this._scheduled && !u.tils.isVoid(this._callback)) {
             TIME.instance.NextTickRemove(this._Call);
             this._elapsed = 0;
         }

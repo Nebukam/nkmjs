@@ -1,6 +1,6 @@
 'use strict';
 
-const { SIGNAL, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { List } = require(`@nkmjs/collections`);
 
 const UI_SIGNAL = require(`../ui-signal`);
@@ -13,7 +13,7 @@ const INPUT = require(`../input`);
  * @augments common.pool.DisposableObjectEx
  * @memberof ui.core.helpers
  */
-class WidgetSelection extends DisposableObjectEx {
+class WidgetSelection extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     // ----> Init
@@ -65,10 +65,10 @@ class WidgetSelection extends DisposableObjectEx {
         p_item.Watch(UI_SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this);
         p_item.Watch(UI_SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this);
 
-        p_item.Watch(SIGNAL.RELEASED, this._OnItemReleased, this);
+        p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         p_item.Select(true);
-        this._Broadcast(SIGNAL.ITEM_ADDED, p_item);
+        this._Broadcast(com.SIGNAL.ITEM_ADDED, p_item);
 
         return true;
 
@@ -86,9 +86,9 @@ class WidgetSelection extends DisposableObjectEx {
             p_item.Unwatch(UI_SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this);
             p_item.Unwatch(UI_SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this);
 
-            p_item.Unwatch(SIGNAL.RELEASED, this._OnItemReleased, this);
+            p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
-            this._Broadcast(SIGNAL.ITEM_REMOVED, p_item);
+            this._Broadcast(com.SIGNAL.ITEM_REMOVED, p_item);
         }
     }
 

@@ -1,9 +1,9 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const HSLA = require("@nkmjs/style/lib/colors/hsla");
 const RGBA = require("@nkmjs/style/lib/colors/rgba");
-const BaseManipulator = require("./manipulator-base");
+const BaseManipulator = require("./manipulator");
 
 /**
  * @description TODO
@@ -101,14 +101,14 @@ class TextManipulator extends BaseManipulator {
      */
     _Update(p_element, p_value) {
 
-        if (U.isVoid(p_value)) {
+        if (u.tils.isVoid(p_value)) {
             p_element.innerHTML = ``;
             return false;
         } else {
 
             let text = ``;
 
-            if (U.isString(p_value)) { text = p_value; }
+            if (u.tils.isString(p_value)) { text = p_value; }
             else if (`name` in p_value) { text = p_value.name; }
             else if (`title` in p_value) { text = p_value.title }
             else if (`objectURL` in p_value) { text = p_value.objectURL; }

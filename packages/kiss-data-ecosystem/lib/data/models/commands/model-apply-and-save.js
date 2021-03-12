@@ -1,11 +1,11 @@
 'use strict';
 
-const { CommandChain } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const ModelApply = require(`./model-apply`);
 const ModelSave = require(`./model-save`);
 
-class ModelApplyAndSave extends CommandChain {
+class ModelApplyAndSave extends actions.CommandChain {
     constructor() { super(); }
 
     set proxy(p_value) { this._cmdApply.proxy = p_value; }

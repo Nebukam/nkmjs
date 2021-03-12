@@ -1,8 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { Dictionary } = require(`@nkmjs/collections`);
-const { SIGNAL, DisposableObjectEx, Observer } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const CATALOG_SIGNAL = require(`./catalog-signal`);
 const CatalogItem = require(`./catalog-item`);
@@ -39,7 +37,7 @@ class CatalogHandler extends CatalogWatcher {
 
         if (!super._OnCatalogItemAdded(p_catalog, p_item)) { return false; }
 
-        this._Broadcast(SIGNAL.ITEM_ADDED, this, p_item, null);
+        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, null);
 
         return true;
     }
@@ -55,7 +53,7 @@ class CatalogHandler extends CatalogWatcher {
         let mappedObject = super._OnCatalogItemRemoved(p_catalog, p_item);
         if (mappedObject === false) { return false; }
 
-        this._Broadcast(SIGNAL.ITEM_REMOVED, this, p_item, mappedObject);
+        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedObject);
         return mappedObject;
         
     }

@@ -1,4 +1,4 @@
-const { POOL, NFOS, BINDINGS } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const DataBlock = require(`../data/data-block`);
 
 const BaseSerializer = require(`./serializer-base`);
@@ -37,7 +37,7 @@ class JSONSerializer extends BaseSerializer {
     static Serialize(p_data, p_options = null) {
 
         // Retrieve serializer
-        let serializer = BINDINGS.Get(
+        let serializer = com.BINDINGS.Get(
             SERIALIZATION_CONTEXT.JSON,
             p_data.constructor,
             null);
@@ -64,7 +64,7 @@ class JSONSerializer extends BaseSerializer {
             metas = serial[JSON.META_KEY];
         }
 
-        metas[JSON.CLASS] = BINDINGS.GetClassKey(p_data.constructor);
+        metas[JSON.CLASS] = com.BINDINGS.GetClassKey(p_data.constructor);
 
         return serial;
 
@@ -88,10 +88,10 @@ class JSONSerializer extends BaseSerializer {
             let metas = p_serial[JSON.META_KEY];
             if (!metas) { throw new Error(`Cannot unserialize without nfos`); }
 
-            targetClass = BINDINGS.GetClass(metas[JSON.CLASS]);
+            targetClass = com.BINDINGS.GetClass(metas[JSON.CLASS]);
             if (!targetClass) { throw new Error(`Could not find constructor ${metas.instanceOf}`); }
 
-            p_data = POOL.Rent(targetClass);
+            p_data = com.POOL.Rent(targetClass);
         }
 
         let dataWrapper = null;
@@ -99,7 +99,7 @@ class JSONSerializer extends BaseSerializer {
         else { dataWrapper = p_serial[JSON.DATA_KEY]; }
 
         // Retrieve serializer
-        let serializer = BINDINGS.Get(
+        let serializer = com.BINDINGS.Get(
             SERIALIZATION_CONTEXT.JSON,
             targetClass,
             null);

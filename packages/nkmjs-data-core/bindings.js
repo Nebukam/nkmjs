@@ -1,12 +1,12 @@
 'use strict';
 
-const { BindingKit } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const { Metadata, DataBlock } = require(`./lib/data`);
 const { TEXTSerializer, JSONSerializer, SERIALIZATION_CONTEXT } = require(`./lib/serialization`);
 const { MetadataJSONSerializer, DataBlockJSONSerializer } = require(`./lib/serialization/json`);
 
-class Bindings extends BindingKit{
+class Bindings extends com.helpers.BindingKit{
     constructor(){super();}
     _Init(){ super._Init();
 

@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL, DisposableObject } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const fs = require(`fs`);
 const path = require(`path`);
 
@@ -10,7 +10,7 @@ const path = require(`path`);
  * Input path is assumed to be a directory, not a file.
  * path/to/something
  */
-class PathCreate extends DisposableObject {
+class PathCreate extends com.pool.DisposableObject {
     constructor() { super(); }
 
     _Init() {
@@ -36,11 +36,11 @@ class PathCreate extends DisposableObject {
         this._endCallback = p_endCallback;
 
         this._pathArray = new Array(0);
-        this._splitPath = p_basePath.split(U.DELIM_DIR);
+        this._splitPath = p_basePath.split(u.tils.DELIM_DIR);
 
         if (this._splitPath.length <= 1) { return this._OnEnd(new Error(`Invalid path : ${p_basePath}`)); }
 
-        if (U.isEmpty(this._splitPath[this._splitPath.length - 1])) { this._splitPath.pop(); }
+        if (u.tils.isEmpty(this._splitPath[this._splitPath.length - 1])) { this._splitPath.pop(); }
 
         fs.stat(path.resolve(...this._splitPath), this._OnNextStatsRead);
 
@@ -52,10 +52,10 @@ class PathCreate extends DisposableObject {
 
             if (p_err.code != 'ENOENT') { return this._OnEnd(p_err); }
 
-            this._pathArray.push(path.resolve(...this._splitPath)); // this._splitPath.join(U.DELIM_DIR);
+            this._pathArray.push(path.resolve(...this._splitPath)); // this._splitPath.join(u.tils.DELIM_DIR);
 
             this._splitPath.pop();
-            let parentPath = path.resolve(...this._splitPath); //this._splitPath.join(U.DELIM_DIR);
+            let parentPath = path.resolve(...this._splitPath); //this._splitPath.join(u.tils.DELIM_DIR);
 
             fs.stat(parentPath, this._OnNextStatsRead);
 

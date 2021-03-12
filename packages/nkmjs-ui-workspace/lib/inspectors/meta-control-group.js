@@ -1,6 +1,6 @@
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
-const { BINDINGS, COM_ID } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { UI } = require(`@nkmjs/ui-core`);
 
 const InspectorGroup = require(`./inspector-group`);
@@ -36,7 +36,7 @@ class MetaControlGroup extends InspectorGroup {
     // ----> DOM
 
     _Style() {
-        return U.Merge(super._Style(), {
+        return u.tils.Merge(super._Style(), {
             ':host': {
                 margin: `5px`
             },
@@ -87,18 +87,18 @@ class MetaControlGroup extends InspectorGroup {
         super._BuildContent();
 
         let mData = this._data.metadata;
-        let obj = U.Empty(this._metaPath) ? mData._data : mData.Get(this._metaPath, null);
+        let obj = u.tils.Empty(this._metaPath) ? mData._data : mData.Get(this._metaPath, null);
 
         if (obj) {
-            if (U.isObject(obj)) {
+            if (u.tils.isObject(obj)) {
                 for (let member in obj) {
 
-                    let mPath = U.Empty(this._metaPath) ? `${member}` : `${this._metaPath}.${member}`,
+                    let mPath = u.tils.Empty(this._metaPath) ? `${member}` : `${this._metaPath}.${member}`,
                         value = obj[member],
-                        ctrlClass = BINDINGS.Get(
-                            `${COM_ID.METAPREFIX}${mPath}`,
+                        ctrlClass = com.BINDINGS.Get(
+                            `${com.COM_ID.METAPREFIX}${mPath}`,
                             this._data.constructor,
-                            U.isObject(value) ? MetaControlGroup : MetaControlItem),
+                            u.tils.isObject(value) ? MetaControlGroup : MetaControlItem),
                         ctrl = this.Add(ctrlClass, `group`);
 
                     //if(!ctrl){continue;}

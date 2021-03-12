@@ -7,8 +7,7 @@
  */
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 const { UI } = require(`@nkmjs/ui-core`);
 
 const Control = require(`./control`);
@@ -22,7 +21,7 @@ class Inspector extends Control {
     }
 
     _Style() {
-        return U.Merge(super._Style(), {
+        return u.tils.Merge(super._Style(), {
             ':host': {
                 position: `relative`,
                 display: `flex`,
@@ -56,7 +55,7 @@ class Inspector extends Control {
             inspector.data = this._data;
         }
 
-        if (!this._data && !U.Void(this._context)) {
+        if (!this._data && !u.tils.Void(this._context)) {
             // --> Why ?
             this.data = this._context;
         }

@@ -1,6 +1,6 @@
 'use strict';
 
-const { ACTION_REQUEST, Request } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const DataManipulationCommand = require(`../../commands/command-data`);
 
@@ -20,7 +20,7 @@ class ModelCreateEntry extends DataManipulationCommand {
                 data: tempEntry
             };
 
-        Request.Emit(ACTION_REQUEST.CREATE,
+        actions.Request.Emit(actions.ACTION_REQUEST.CREATE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

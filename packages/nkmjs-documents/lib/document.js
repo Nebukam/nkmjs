@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { COM_ID, NFOS, BINDINGS, SIGNAL, DisposableObjectEx, Observer, Callbacks } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { SERIALIZATION_CONTEXT, DATA_SIGNAL } = require(`@nkmjs/data-core`);
 const { IO_SIGNAL, ENCODING, RESOURCES, Resource, IO_TYPE } = require(`@nkmjs/io-core`);
 
@@ -13,12 +13,12 @@ const { IO_SIGNAL, ENCODING, RESOURCES, Resource, IO_TYPE } = require(`@nkmjs/io
  * @augments common.pool.DisposableObjectEx
  * @memberof documents
  */
-class Document extends DisposableObjectEx {
+class Document extends com.pool.DisposableObjectEx {
 
     constructor() { super(); }
 
     static __NFO__ = {
-        [COM_ID.ICON]: `%ICON%/icon_document.svg`,
+        [com.COM_ID.ICON]: `%ICON%/icon_document.svg`,
         resource: Resource,
         encoding: ENCODING.UTF8,
         serializationContext: SERIALIZATION_CONTEXT.NONE,
@@ -32,15 +32,15 @@ class Document extends DisposableObjectEx {
         this._currentPath = null;
         this._currentRsc = null;
 
-        this._callbacks = new Callbacks();
+        this._callbacks = new com.helpers.Callbacks();
 
-        this._resourceObserver = new Observer();
-        this._resourceObserver.Hook(SIGNAL.RELEASED, this._OnRscReleased, this);
+        this._resourceObserver = new com.signals.Observer();
+        this._resourceObserver.Hook(com.SIGNAL.RELEASED, this._OnRscReleased, this);
         this._resourceObserver.Hook(IO_SIGNAL.READ_COMPLETE, this._OnReadComplete, this);
         this._resourceObserver.Hook(IO_SIGNAL.WRITE_START, this._OnWriteStart, this);
 
-        this._dataObserver = new Observer();
-        this._dataObserver.Hook(SIGNAL.RELEASED, this._OnDataReleased, this);
+        this._dataObserver = new com.signals.Observer();
+        this._dataObserver.Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this);
         this._dataObserver.Hook(DATA_SIGNAL.DIRTY, this._OnDataDirty, this);
         this._dataObserver.Hook(DATA_SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
 
@@ -64,13 +64,13 @@ class Document extends DisposableObjectEx {
     get currentPath() { }
     set currentPath(p_value) {
 
-        p_value = PATH.SHORT(p_value);
+        p_value = u.PATH.SHORT(p_value);
 
         if (this._currentPath === p_value) { return; }
 
         this._currentPath = p_value;
 
-        if (!U.isEmpty(p_value) && this._currentRsc) {
+        if (!u.tils.isEmpty(p_value) && this._currentRsc) {
             if (this._currentRsc.path != p_value) {
                 // Current resource doesn't have the provided path : unlink it.
                 // Document will fetch the correct resource when required.
@@ -158,7 +158,7 @@ class Document extends DisposableObjectEx {
 
         if (!this._currentRsc) {
             // No resource currently set, fetch it.
-            if (U.isEmpty(this._currentPath)) { throw new Error(`Empty path.`); }
+            if (u.tils.isEmpty(this._currentPath)) { throw new Error(`Empty path.`); }
             this.currentRsc = RESOURCES.Get(this._currentPath, p_options);
         }
 
@@ -184,14 +184,14 @@ class Document extends DisposableObjectEx {
      */
     Load(p_options = null) {
 
-        let nfo = NFOS.Get(this),
+        let nfo = com.NFOS.Get(this),
             rsc = this._GetRsc(
-                U.Get(p_options, `path`, null),
+                u.tils.Get(p_options, `path`, null),
                 { cl: nfo.resource, encoding: nfo.encoding });
 
         if (!rsc) { throw new Error(`No resource set.`); }
         if (rsc.Read({
-            io: U.Get(p_options, `io`, nfo.defaultIOType),
+            io: u.tils.Get(p_options, `io`, nfo.defaultIOType),
             error: this._OnLoadError
         })) {
             //Plug events
@@ -230,9 +230,9 @@ class Document extends DisposableObjectEx {
         // If data already exists, attempt to unserialize into existing data.
         // Otherwise, create a new data !
         // SomeSerializer.Read( p_rsc.content )
-        let serializer = BINDINGS.Get(
+        let serializer = com.BINDINGS.Get(
             SERIALIZATION_CONTEXT.SERIALIZER,
-            NFOS.Get(this).serializationContext),
+            com.NFOS.Get(this).serializationContext),
 
             data = serializer.Deserialize(p_content, p_data, null); //TODO : A way to provide deserialization options
 
@@ -252,14 +252,14 @@ class Document extends DisposableObjectEx {
 
         if (!this._currentData) { throw new Error(`No data.`); }
 
-        let nfo = NFOS.Get(this),
+        let nfo = com.NFOS.Get(this),
             rsc = this._GetRsc(
-                U.Get(p_options, `path`, null),
+                u.tils.Get(p_options, `path`, null),
                 { cl: nfo.resource, encoding: nfo.encoding });
 
         if (!rsc) { throw new Error(`No resource set.`); }
         if (rsc.Write({
-            io: U.Get(p_options, `io`, nfo.defaultIOType),
+            io: u.tils.Get(p_options, `io`, nfo.defaultIOType),
             error: this._OnSaveError,
             success: this._OnSaveSuccess
         })) {
@@ -292,9 +292,9 @@ class Document extends DisposableObjectEx {
      */
     _Pack(p_data) {
         //Pack document data into serializable data
-        let serializer = BINDINGS.Get(
+        let serializer = com.BINDINGS.Get(
             SERIALIZATION_CONTEXT.SERIALIZER,
-            NFOS.Get(this).serializationContext);
+            com.NFOS.Get(this).serializationContext);
 
         return serializer.Serialize(p_data, null);
     }

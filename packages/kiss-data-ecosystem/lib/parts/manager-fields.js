@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
 const { DATA_SIGNAL, DataFactory } = require(`@nkmjs/data-core`);
 
@@ -31,7 +31,7 @@ class FieldManager extends EcosystemPart {
 
     Register(p_fieldClass) {
 
-        if (!U.isInstanceOf(p_fieldClass, Field)) {
+        if (!u.tils.isInstanceOf(p_fieldClass, Field)) {
             throw new Error("Attempting to register a non-field constructor.");
         }
 
@@ -52,7 +52,7 @@ class FieldManager extends EcosystemPart {
                 [COM_ID.PATH]: fieldMETA.catalogPath,
                 [COM_ID.DATA]: fieldItem,
                 [COM_ID.ICON]: (fieldMETA.icon || `%ICON%/icon_field.svg`),
-                [COM_ID.NAME]: U.CamelSplit(p_fieldClass.name)
+                [COM_ID.NAME]: u.tils.CamelSplit(p_fieldClass.name)
             }
         );
 

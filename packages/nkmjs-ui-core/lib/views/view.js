@@ -1,8 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { List } = require(`@nkmjs/collections`);
-const { CommandBox } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const UI = require(`../ui`);
 const UI_SIGNAL = require(`../ui-signal`);
@@ -24,7 +22,7 @@ class View extends OrientableWidget {
 
     _Init() {
         super._Init();
-        this._commands = new CommandBox(this._Bind(this._OnCmdRegister));
+        this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister));
     }
 
     /**

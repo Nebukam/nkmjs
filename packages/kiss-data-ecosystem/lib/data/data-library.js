@@ -12,7 +12,7 @@
  */
 'use strict';
 
-const { Observer } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { DATA_SIGNAL, DataFactory } = require(`@nkmjs/data-core`);
 
 const ECOSYSTEM_CONSTANTS = require(`../ecosystem-constants`);
@@ -27,7 +27,7 @@ class DataLibrary extends DataFactory {
         this._model = null;
         this._itemClass = DataEntry;
 
-        this._modelObserver = new Observer();
+        this._modelObserver = new com.signals.Observer();
         this._modelObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnModelFieldAdded, this);
         this._modelObserver.Hook(FIELD_EVENT.FIELD_REMOVED, this._OnModelFieldRemoved, this);
         this._modelObserver.Hook(FIELD_EVENT.FIELD_UPDATED, this._OnModelFieldUpdated, this);

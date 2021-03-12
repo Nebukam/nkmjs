@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL, DisposableObjectEx, SignalBox, Callbacks } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -10,12 +10,12 @@ const { SIGNAL, DisposableObjectEx, SignalBox, Callbacks } = require(`@nkmjs/com
  * @augments common.pool.DisposableObjectEx
  * @memberof io.core
  */
-class ResourceOperation extends DisposableObjectEx {
+class ResourceOperation extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {
         super._Init();
-        this._callbacks = new Callbacks();
+        this._callbacks = new com.helpers.Callbacks();
         this._originalState = null;
         this._ioType = null;
         this._cancelled = false;
@@ -28,7 +28,7 @@ class ResourceOperation extends DisposableObjectEx {
      * @type {io.core.Resource}
      */
     set rsc(p_value) {
-        if (U.isVoid(p_value)) { p_value = this; }
+        if (u.tils.isVoid(p_value)) { p_value = this; }
         this._rsc = p_value;
     }
     get rsc() { return this._rsc; }
@@ -99,8 +99,8 @@ class ResourceOperation extends DisposableObjectEx {
     Prepare(p_rsc, p_fn, p_states, p_options = null, args = []) {
         this._cancelled = false;
         this._rsc = p_rsc;
-        this._fullPath = PATH.FULL(p_rsc.path);
-        this._ioType = U.Get(p_options, `io`, null);
+        this._fullPath = u.PATH.FULL(p_rsc.path);
+        this._ioType = u.tils.Get(p_options, `io`, null);
         this._callbacks.Add(p_options);
         this._states = p_states;
         this._originalState = this._rsc._state.currentState;

@@ -1,7 +1,6 @@
 'use strict';
 
-const { U, PATH } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
 
 const TextResource = require(`./resource-text`);
 const RESPONSE_TYPE = require(`../response-type`);
@@ -20,7 +19,7 @@ class JSONResource extends TextResource {
     static defaultType = RESPONSE_TYPE.JSON;
 
     _Encode() {
-        return U.isObject(this._content) ? JSON.stringify(this._content, null, `     `) : `{}`;
+        return u.tils.isObject(this._content) ? JSON.stringify(this._content, null, `     `) : `{}`;
     }
 
     _Decode() {

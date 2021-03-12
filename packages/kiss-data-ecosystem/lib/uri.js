@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const _delim_model = ':';
 const _delim_field = '.';
@@ -51,7 +51,7 @@ class URI {
             entryId = entrySplit.join(URI.DELIM_MODEL);
         } entrySplit.length = 0;
 
-        if (!U.isEmpty(p_uri)) { modelId = p_uri; }
+        if (!u.tils.isEmpty(p_uri)) { modelId = p_uri; }
 
         if (modelId) {
             // modelId

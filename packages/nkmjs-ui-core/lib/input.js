@@ -1,7 +1,7 @@
 'use strict';
 
 const { Dictionary } = require(`@nkmjs/collections`);
-const com = require(`@nkmjs/common`); //{ SingletonEx }
+const com = require("@nkmjs/common"); //{ SingletonEx }
 const MOUSE = require("./mouse");
 const UI = require("./ui");
 

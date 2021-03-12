@@ -1,7 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, Observer } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const UI = require(`./ui`);
 const UI_SIGNAL = require(`./ui-signal`);
@@ -11,7 +10,8 @@ const MOUSE = require(`./mouse`);
 const DisplayObjectContainer = require(`./display-object-container`);
 const WidgetSelection = require(`./helpers/widget-selection`);
 const FlagEnum = require(`./helpers/flag-enum`);
-const ExtMouse = require(`./extensions/ext-mouse`);
+
+const extensions = require(`./extensions`);
 
 /**
  * @description TODO
@@ -55,14 +55,14 @@ class Widget extends DisplayObjectContainer {
 
         this._isActivable = true;
 
-        this._interactions = new ExtMouse();
+        this._interactions = new extensions.Mouse();
         this._interactions.focusFn = this._Bind(this.Focus);
         this._interactions.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._Bind(this.Activate));
 
         this._focusArea = null;
 
-        this._dataObserver = new Observer();
-        this._dataObserver.Hook(SIGNAL.UPDATED, this._OnDataUpdated, this);
+        this._dataObserver = new com.signals.Observer();
+        this._dataObserver.Hook(com.SIGNAL.UPDATED, this._OnDataUpdated, this);
 
         this._flags.Add(this,
             UI_FLAG.ACTIVATED,
@@ -167,8 +167,8 @@ class Widget extends DisplayObjectContainer {
         if (this._selectionStack) { return; }
 
         let sStack = new WidgetSelection();
-        sStack.Watch(SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this);
-        sStack.Watch(SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
+        sStack.Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this);
+        sStack.Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
 
         this._selectionStack = sStack;
     }

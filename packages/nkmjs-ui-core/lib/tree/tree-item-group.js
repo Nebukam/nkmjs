@@ -1,16 +1,16 @@
 'use strict';
 
-const { NFOS, SIGNAL, POOL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 const UI_ID = require(`../ui-id`);
 const UI_SIGNAL = require(`../ui-signal`);
 
-const ExtExpand = require(`../extensions/ext-expand`);
+const extensions = require(`../extensions`);
 
 const CatalogBuilder = require(`../helpers/catalog-builder`);
 const TreeItem = require(`./tree-item`);
-const { TPLBodyExpand } = require(`../templates`);
+const templates = require(`../templates`);
 
 /**
  * @description TODO
@@ -22,7 +22,7 @@ const { TPLBodyExpand } = require(`../templates`);
 class TreeItemGroup extends TreeItem {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/tree/tree-group.css`]
     }, TreeItem, ['css']);
 
@@ -32,9 +32,9 @@ class TreeItemGroup extends TreeItem {
 
         super._Init();
 
-        this._tplClass = TPLBodyExpand;
+        this._tplClass = templates.TPLBodyExpand;
 
-        this._extExpand = this._interactions.Add(ExtExpand);
+        this._extExpand = this._interactions.Add(extensions.Expand);
         this._extExpand._toggled = false;
 
         this._extExpand.Watch(UI_SIGNAL.EXPANDED, this._Expand, this);
@@ -65,13 +65,13 @@ class TreeItemGroup extends TreeItem {
     }
 
     _SetupBuilder() {
-        this._builder = POOL.Rent(CatalogBuilder);
+        this._builder = com.pool.POOL.Rent(CatalogBuilder);
         this._builder.owner = this;
         this._builder.host = this._body;
         this._builder._defaultItemClass = TreeItem;
         this._builder._defaultGroupClass = TreeItemGroup;
-        this._builder.Watch(SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this);
-        this._builder.Watch(SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
+        this._builder.Watch(com.SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this);
+        this._builder.Watch(com.SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
     }
 
     // ----> DOM
@@ -151,7 +151,7 @@ class TreeItemGroup extends TreeItem {
      */
     AltActivate(p_evt) {
         if (this._toolbar && this._toolbar.focused) { return; }
-        if(!super.AltActivate(p_evt)){return false;}
+        if (!super.AltActivate(p_evt)) { return false; }
         this._extExpand.Toggle();
     }
 
@@ -184,7 +184,7 @@ class TreeItemGroup extends TreeItem {
         this._builder.catalog = this._data;
 
         if (this._data) {
-            if (this._extExpand.isExpanded) { 
+            if (this._extExpand.isExpanded) {
                 this._data.expanded = true;
             }
         } else {

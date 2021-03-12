@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, PATH, MIME } = require(`@nkmjs/utils`);
-const { SIGNAL, POOL, DisposableObjectEx, StateMachine, DisposableObject, Callbacks } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const IO_SIGNAL = require(`./io-signal.js`);
 const RESSOURCE_STATE = require(`./resource-state`);
@@ -15,7 +15,7 @@ const RESPONSE_TYPE = require(`./response-type.js`);
  * @augments common.pool.DisposableObjectEx
  * @memberof io.core
  */
-class Resource extends DisposableObjectEx {
+class Resource extends com.pool.DisposableObjectEx {
 
     constructor() { super(); }
 
@@ -53,7 +53,7 @@ class Resource extends DisposableObjectEx {
         this._deserializeFn = null;
         this._serializeFn = null;
 
-        this._state = new StateMachine();
+        this._state = new com.helpers.StateMachine();
         this._state.currentState = RESSOURCE_STATE.NONE;
         this._state.owner = this;
 
@@ -206,10 +206,10 @@ class Resource extends DisposableObjectEx {
     }
 
     _UpdatePathInfos() {
-        try { this._name = PATH.name(new URL(PATH.FULL(this._path)).pathname); }
-        catch (err) { this._name = PATH.name(this._path); }
+        try { this._name = u.PATH.name(new URL(u.PATH.FULL(this._path)).pathname); }
+        catch (err) { this._name = u.PATH.name(this._path); }
 
-        if (!this._mime) { this._mime = MIME.Get(PATH.ext(this._path)); }
+        if (!this._mime) { this._mime = u.MIME.Get(u.PATH.ext(this._path)); }
     }
 
     /**
@@ -242,7 +242,7 @@ class Resource extends DisposableObjectEx {
             return false;
         }
 
-        this._operation = POOL.Rent(ResourceOperation);
+        this._operation = com.pool.POOL.Rent(ResourceOperation);
         this._operation.Prepare(this, p_fn, p_states, p_options, args);
         return true;
 
@@ -373,7 +373,7 @@ class Resource extends DisposableObjectEx {
     }
 
     _OnDeleteSuccess() {
-        if (U.isInstanceOf(this._content, DisposableObject)) { this._content.Release(); } // this might be dangerous
+        if (u.tils.isInstanceOf(this._content, com.pool.DisposableObject)) { this._content.Release(); } // this might be dangerous
         this._content = null;
         this._raw = null;
         this._loaded = false;

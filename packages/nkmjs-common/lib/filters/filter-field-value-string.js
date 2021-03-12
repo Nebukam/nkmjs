@@ -1,7 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-
 const FilterFieldValue = require(`./filter-field-value`);
 
 /**

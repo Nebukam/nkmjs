@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { COM_ID, Observer } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const DataBlock = require(`../data/data-block`);
 
@@ -12,7 +12,7 @@ const DataBlock = require(`../data/data-block`);
  * @augments common.signals.Observer
  * @memberof data.core.helpers
  */
-class DataObserver extends Observer {
+class DataObserver extends com.signals.Observer {
     constructor() { super(); }
 
     /**
@@ -37,8 +37,8 @@ class DataObserver extends Observer {
     Unobserve(p_target) { return super.Unobserve(this._ExtractNestedData(p_target)); }
 
     _ExtractNestedData(p_value) {
-        if (p_value && !U.isInstanceOf(p_value, DataBlock)) {
-            if (U.isInstanceOf(p_value[COM_ID.DATA], DataBlock)) { p_value = p_value[COM_ID.DATA]; }
+        if (p_value && !u.tils.isInstanceOf(p_value, DataBlock)) {
+            if (u.tils.isInstanceOf(p_value[com.COM_ID.DATA], DataBlock)) { p_value = p_value[com.COM_ID.DATA]; }
             else { p_value = null; }
         }
         return p_value;

@@ -1,8 +1,8 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { ID } = require(`@nkmjs/data-core`);
-const { ACTION_REQUEST, Request } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
 const DataManipulationCommand = require(`../../commands/command-data`);
 
@@ -19,11 +19,11 @@ class ModelCreate extends DataManipulationCommand {
 
         let tempModel = this._ecosystem.models.CreateTemp(),
             tempID = new ID(),
-            name = `NewModel${U.unsafeUID}`;
+            name = `NewModel${u.tils.unsafeUID}`;
 
         //Make sure we don't push a duplicate id
         while (this._ecosystem.models.Get(name)) {
-            name = `NewModel${U.unsafeUID}`;
+            name = `NewModel${u.tils.unsafeUID}`;
         }
 
         tempID.name = name;
@@ -34,7 +34,7 @@ class ModelCreate extends DataManipulationCommand {
             data: tempModel
         };
 
-        Request.Emit(ACTION_REQUEST.CREATE,
+        actions.Request.Emit(actions.ACTION_REQUEST.CREATE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

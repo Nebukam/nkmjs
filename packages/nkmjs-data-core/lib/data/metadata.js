@@ -1,8 +1,8 @@
 
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { COM_ID, SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const DATA_SIGNAL = require(`../data-signal`);
 
 /**
@@ -12,11 +12,11 @@ const DATA_SIGNAL = require(`../data-signal`);
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core
  */
-class Metadata extends DisposableObjectEx {
+class Metadata extends com.pool.DisposableObjectEx {
 
     static __NFO__ = {
-        [COM_ID.ICON]: `%ICON%/icon_data_block.svg`,
-        [COM_ID.UID]: `@nkmjs/data-core:metadata`
+        [com.COM_ID.ICON]: `%ICON%/icon_data_block.svg`,
+        [com.COM_ID.UID]: `@nkmjs/data-core:metadata`
     };
 
     constructor() {
@@ -31,8 +31,8 @@ class Metadata extends DisposableObjectEx {
      * @param {data.core.Metadata} p_metadata 
      */
     static Copy(p_metadata) {
-        let newMetadata = POOL.Rent(Metadata);
-        newMetadata._data = U.Clone(p_metadata._data);
+        let newMetadata = pool.POOL.Rent(Metadata);
+        newMetadata._data = u.tils.Clone(p_metadata._data);
         return newMetadata;
     }
 
@@ -102,7 +102,7 @@ class Metadata extends DisposableObjectEx {
             if (i === countMinusOne) {
                 let existingValue = lastElement[id];
 
-                if (U.isVoid(existingValue)) { created = true; }
+                if (u.tils.isVoid(existingValue)) { created = true; }
                 if (existingValue === p_value) {
                     return p_value;
                 }
@@ -114,7 +114,7 @@ class Metadata extends DisposableObjectEx {
             } else {
                 element = lastElement[id];
 
-                if (U.isVoid(element)) {
+                if (u.tils.isVoid(element)) {
                     element = {};
                     lastElement[id] = element;
                 }
@@ -131,11 +131,11 @@ class Metadata extends DisposableObjectEx {
 
             n -= 1;
             for (let p = 0; p < n; p++) {
-                this._Broadcast(DATA_SIGNAL.META_MID_UPDATE, this, U.Join(path, '.', 0, p));
+                this._Broadcast(DATA_SIGNAL.META_MID_UPDATE, this, u.tils.Join(path, '.', 0, p));
             }
 
             this._Broadcast(DATA_SIGNAL.META_UPDATED, this, p_path, lastElement, previousValue);
-            this._Broadcast(SIGNAL.UPDATED, this);
+            this._Broadcast(com.SIGNAL.UPDATED, this);
             this.Dirty();
         }
 
@@ -154,15 +154,15 @@ class Metadata extends DisposableObjectEx {
 
         if (Array.isArray(p_path)) {
             path = p_path;
-        } else if (U.isString(p_path)) {
+        } else if (u.tils.isString(p_path)) {
             path = p_path.split('.');
         } else { throw new Error(`Path ${p_path} is invalid.`); }
 
         let element = null;
 
-        if (U.isVoid(p_fallback)) {
+        if (u.tils.isVoid(p_fallback)) {
             element = this._data;
-            while (!U.isVoid(element) && path.length != 0) {
+            while (!u.tils.isVoid(element) && path.length != 0) {
                 element = element[path.shift()];
             }
             path.length = 0;
@@ -172,7 +172,7 @@ class Metadata extends DisposableObjectEx {
             let lastElement = element;
             while (path.length != 0) {
                 element = lastElement[path.shift()];
-                if (U.isVoid(element)) {
+                if (u.tils.isVoid(element)) {
                     path.length = 0;
                     this._signals.silent = true;
                     element = this.Set(p_path, p_fallback);
@@ -190,7 +190,7 @@ class Metadata extends DisposableObjectEx {
      * @description TODO
      */
     Clear() {
-        this._data = U.DeepClear(this._data, true);
+        this._data = u.tils.DeepClear(this._data, true);
     }
 
     /**
@@ -200,10 +200,10 @@ class Metadata extends DisposableObjectEx {
      */
     Clone(p_source = null, p_silent = true) {
         if (p_source) {
-            if (U.isInstanceOf(p_source, Metadata)) {
-                this._data = U.Clone(p_source._data);
-            } else if (U.isObject(p_source)) {
-                this._data = U.Clone(p_source);
+            if (u.tils.isInstanceOf(p_source, Metadata)) {
+                this._data = u.tils.Clone(p_source._data);
+            } else if (u.tils.isObject(p_source)) {
+                this._data = u.tils.Clone(p_source);
             } else {
                 return;
             }

@@ -1,8 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { BINDINGS, SIGNAL, POOL, COM_ID } = require(`@nkmjs/common`);
-const { DelayedCall } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const CATALOG_SIGNAL = require(`./catalog-signal`);
 const CATALOG_SORTING = require(`./catalog-sorting`);
@@ -66,7 +65,7 @@ class Catalog extends CatalogItem {
 
             for (let i = 0, n = pathSplit.length; i < n; i++) {
                 let current = pathSplit.shift();
-                if (!U.isEmpty(current)) {
+                if (!u.tils.isEmpty(current)) {
                     pathArray.push(current);
                 } else if (i === n - 1) {
                     isDir = true;
@@ -99,7 +98,7 @@ class Catalog extends CatalogItem {
     static CreateFrom(p_rootOptions, p_content = null, p_parent = null) {
         if (!p_content && !p_rootOptions) { throw new Error(`Cannot create Catalog from null options nor struct.`); }
 
-        let catalog = POOL.Rent(this.GetItemClass(p_rootOptions, true));
+        let catalog = com.pool.POOL.Rent(this.GetItemClass(p_rootOptions, true));
         catalog.options = p_rootOptions;
 
         if (p_parent) { catalog.parent = p_parent; }
@@ -131,12 +130,12 @@ class Catalog extends CatalogItem {
 
         let itemClass = null;
 
-        if (U.isObject(p_itemOptions)) {
-            let data = U.Get(p_itemOptions, `data`, null);
-            if (data) { itemClass = BINDINGS.Get(Catalog, data, null); }
+        if (u.tils.isObject(p_itemOptions)) {
+            let data = u.tils.Get(p_itemOptions, `data`, null);
+            if (data) { itemClass = com.BINDINGS.Get(Catalog, data, null); }
 
             if (!itemClass) {
-                if (p_forceCatalog || U.isArray(U.Get(p_itemOptions, `content`, null))) { itemClass = this.__default_catalogClass; }
+                if (p_forceCatalog || u.tils.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = this.__default_catalogClass; }
                 else { itemClass = this.__default_itemClass; }
             }
         } else {
@@ -162,7 +161,7 @@ class Catalog extends CatalogItem {
         this._sortPending = false;
         this._autoSort = true;
         this._defaultSortFunc = null;
-        this._delayedSort = new DelayedCall(this._Bind(this.Sort));
+        this._delayedSort = new com.time.DelayedCall(this._Bind(this.Sort));
 
     }
 
@@ -204,7 +203,7 @@ class Catalog extends CatalogItem {
      * @param {object} p_options 
      */
     _OnOptionsWillUpdate(p_options) {
-        this.autoSort = U.Get(p_options, `autoSort`, this._parent ? this._parent.autoSort : this._autoSort);
+        this.autoSort = u.tils.Get(p_options, `autoSort`, this._parent ? this._parent.autoSort : this._autoSort);
     }
 
     /**
@@ -261,20 +260,20 @@ class Catalog extends CatalogItem {
      */
     GetOrCreateCatalog(p_options) {
 
-        let catalogName = U.isString(p_options) ? p_options : p_options[COM_ID.NAME];
+        let catalogName = u.tils.isString(p_options) ? p_options : p_options[com.COM_ID.NAME];
 
         let list = this._items,
             catalog = null;
 
         for (let i = 0, n = list.length; i < n; i++) {
             catalog = list[i];
-            if (U.isInstanceOf(catalog, Catalog) && catalog.name === catalogName) { return catalog; }
+            if (u.tils.isInstanceOf(catalog, Catalog) && catalog.name === catalogName) { return catalog; }
         }
 
-        catalog = POOL.Rent(Catalog.GetItemClass(p_options, true));
-        catalog.options = U.Ensure(U.isObject(p_options) ? p_options : {}, {
-            [COM_ID.NAME]: catalogName,
-            [COM_ID.ICON]: `%ICON%/icon_directory.svg`
+        catalog = com.pool.POOL.Rent(Catalog.GetItemClass(p_options, true));
+        catalog.options = u.tils.Ensure(u.tils.isObject(p_options) ? p_options : {}, {
+            [com.COM_ID.NAME]: catalogName,
+            [com.COM_ID.ICON]: `%ICON%/icon_directory.svg`
         });
 
         return this.Add(catalog);
@@ -294,10 +293,10 @@ class Catalog extends CatalogItem {
 
         //If no valid path is provided, simply create and return a new CatalogItem
         if (!pathInfos.valid || !pathInfos.path) {
-            let item = POOL.Rent(Catalog.GetItemClass(p_itemInfos));
-            item.options = U.EnsureMultiple(p_itemInfos, {
-                [COM_ID.NAME]: pathInfos.name,
-                [COM_ID.icon]: `%ICON%/icon_document.svg`
+            let item = com.pool.POOL.Rent(Catalog.GetItemClass(p_itemInfos));
+            item.options = u.tils.EnsureMultiple(p_itemInfos, {
+                [com.COM_ID.NAME]: pathInfos.name,
+                [com.COM_ID.icon]: `%ICON%/icon_document.svg`
             });
             return this.Add(item);
         }
@@ -314,16 +313,16 @@ class Catalog extends CatalogItem {
         }
 
         if (pathInfos.isDir) {
-            catalog.options = U.EnsureMultiple(p_itemInfos, {
-                [COM_ID.NAME]: pathInfos.name,
-                [COM_ID.icon]: `%ICON%/icon_directory.svg`
+            catalog.options = u.tils.EnsureMultiple(p_itemInfos, {
+                [com.COM_ID.NAME]: pathInfos.name,
+                [com.COM_ID.icon]: `%ICON%/icon_directory.svg`
             });
             return catalog;
         } else {
-            let item = POOL.Rent(Catalog.GetItemClass(p_itemInfos));
-            item.options = U.EnsureMultiple(p_itemInfos, {
-                [COM_ID.NAME]: pathInfos.name,
-                [COM_ID.icon]: `%ICON%/icon_document.svg`
+            let item = com.pool.POOL.Rent(Catalog.GetItemClass(p_itemInfos));
+            item.options = u.tils.EnsureMultiple(p_itemInfos, {
+                [com.COM_ID.NAME]: pathInfos.name,
+                [com.COM_ID.icon]: `%ICON%/icon_document.svg`
             });
             return catalog.Add(item);
         }
@@ -337,7 +336,7 @@ class Catalog extends CatalogItem {
      */
     Add(p_item) {
 
-        if (!U.isInstanceOf(p_item, CatalogItem)) { throw new Error(`Cannot Add a non-CatalogItem (${p_item}) to Catalog.`); }
+        if (!u.tils.isInstanceOf(p_item, CatalogItem)) { throw new Error(`Cannot Add a non-CatalogItem (${p_item}) to Catalog.`); }
 
         if (this._items.includes(p_item)) { return null; }
 
@@ -360,13 +359,13 @@ class Catalog extends CatalogItem {
         p_item.rootCatalog = this._rootCatalog;
         p_item.rootDistance = this._rootDistance + 1;
 
-        p_item.Watch(SIGNAL.RELEASED, this._OnItemReleased, this);
+        p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         if (this._rootCatalog) {
             this._rootCatalog._Broadcast(CATALOG_SIGNAL.ROOT_ITEM_ADDED, this._rootCatalog, p_item);
         }
 
-        this._Broadcast(SIGNAL.ITEM_ADDED, this, p_item);
+        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item);
 
         if (this._autoSort) { this._delayedSort.Schedule(); }
 
@@ -386,7 +385,7 @@ class Catalog extends CatalogItem {
      * @param {data.core.CatalogItem} p_item 
      */
     Remove(p_item) {
-        if (!U.isInstanceOf(p_item, CatalogItem)) { return; }
+        if (!u.tils.isInstanceOf(p_item, CatalogItem)) { return; }
 
         let index = this._items.indexOf(p_item);
         if (index === -1) { return; }
@@ -401,13 +400,13 @@ class Catalog extends CatalogItem {
      * @param {data.core.CatalogItem} p_item 
      */
     _OnItemRemoved(p_item) {
-        this._Broadcast(SIGNAL.ITEM_REMOVED, this, p_item);
+        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item);
 
         if (this._rootCatalog) {
             this._rootCatalog._Broadcast(CATALOG_SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item);
         }
 
-        p_item.Unwatch(SIGNAL.RELEASED, this._OnItemReleased, this);
+        p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         if (p_item.parent === this) {
             p_item.parent = null;
@@ -443,7 +442,7 @@ class Catalog extends CatalogItem {
                     p_results.push(item);
                 }
             }
-            if (U.isInstanceOf(item, Catalog)) {
+            if (u.tils.isInstanceOf(item, Catalog)) {
                 item.FindDataHolders(p_data, p_results);
             }
         }
@@ -462,7 +461,7 @@ class Catalog extends CatalogItem {
         for (let i = 0, n = this._items.length; i < n; i++) {
             let item = this._items[i];
             if (item.data === p_data) { return item; }
-            if (U.isInstanceOf(item, Catalog)) {
+            if (u.tils.isInstanceOf(item, Catalog)) {
                 item = item.FindDataHolders(p_data);
                 if (item) { return item; }
             }
@@ -598,7 +597,7 @@ class Catalog extends CatalogItem {
     StructToString(p_string = null, p_depth = null) {
 
         if (!p_string) { p_string = ''; }
-        if (U.isVoid(p_depth)) { p_depth = -1; }
+        if (u.tils.isVoid(p_depth)) { p_depth = -1; }
         p_depth++;
 
         let s = `\t`,
@@ -610,7 +609,7 @@ class Catalog extends CatalogItem {
 
         for (let i = 0, n = this._items.length; i < n; i++) {
             let item = this._items[i];
-            if (U.isInstanceOf(item, Catalog)) {
+            if (u.tils.isInstanceOf(item, Catalog)) {
                 p_string = item.StructToString(p_string, p_depth);
             } else {
                 p_string += `${spaces}${s}· ${item.name}\n`;

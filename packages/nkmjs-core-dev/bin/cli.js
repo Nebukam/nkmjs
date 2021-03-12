@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const NKMjs = require(`../lib/nkm`);
 
 const ScriptBase = require("../lib/script-base");
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 class NKMCLI extends ScriptBase {
     constructor() {
@@ -87,10 +87,10 @@ class NKMCLI extends ScriptBase {
         super.End();
         let date = new Date();
         if(this._start){
-            let diff = U.DateDiff(date, this._start);
-            this._logFwd(`${U.Pad(date.getHours())}:${U.Pad(date.getMinutes())}:${U.Pad(date.getSeconds())} (~${Math.round(diff.totalSeconds)}s)`, `✔`);
+            let diff = u.tils.DateDiff(date, this._start);
+            this._logFwd(`${u.tils.Pad(date.getHours())}:${u.tils.Pad(date.getMinutes())}:${u.tils.Pad(date.getSeconds())} (~${Math.round(diff.totalSeconds)}s)`, `✔`);
         }else{
-            this._logFwd(`${U.Pad(date.getHours())}:${U.Pad(date.getMinutes())}:${U.Pad(date.getSeconds())}`, `✔`);
+            this._logFwd(`${u.tils.Pad(date.getHours())}:${u.tils.Pad(date.getMinutes())}:${u.tils.Pad(date.getSeconds())}`, `✔`);
         }
     }
 

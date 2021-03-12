@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { BINDINGS, POOL, SingletonEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { DataBlock } = require(`@nkmjs/data-core`);
 
 const DOCUMENT_CONTEXT = require(`./document-context`);
@@ -13,7 +13,7 @@ const DOCUMENT_CONTEXT = require(`./document-context`);
  * @augments common.helper.SingletonEx
  * @memberof documents
  */
-class DOCUMENTS extends SingletonEx {
+class DOCUMENTS extends com.helpers.SingletonEx {
 
     constructor() { super(); }
 
@@ -43,18 +43,18 @@ class DOCUMENTS extends SingletonEx {
 
         let document, data, path;
         // First, check if data is set. If so, it should drive the type of document (if not set)
-        data = U.Get(p_options, `data`, null);
-        document = U.Get(p_options, `document`, null);
-        path = U.Get(p_options, `path`, null);
+        data = u.tils.Get(p_options, `data`, null);
+        document = u.tils.Get(p_options, `document`, null);
+        path = u.tils.Get(p_options, `path`, null);
 
-        if (data && !document) { document = BINDINGS.Get(DOCUMENT_CONTEXT.DOCUMENT, data, null); }
+        if (data && !document) { document = com.BINDINGS.Get(DOCUMENT_CONTEXT.DOCUMENT, data, null); }
         if (!document) { throw new Error(`Not enough options set to create a new document.`); }
 
-        document = POOL.Rent(document);
+        document = com.pool.POOL.Rent(document);
         if (path) { document.currentPath = path; }
 
         if (data) {
-            if (U.isFunc(data)) { data = POOL.Rent(data); }
+            if (u.tils.isFunc(data)) { data = com.pool.POOL.Rent(data); }
             document.currentData = data;
         }
 

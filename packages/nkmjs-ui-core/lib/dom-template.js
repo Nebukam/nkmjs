@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require("@nkmjs/utils");
-const { COM_ID } = require("@nkmjs/common");
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -68,7 +68,7 @@ class DOMTemplate {
 
         if (`_wrapper` in p_host) { p_host = p_host._wrapper; }
 
-        let owner = U.Get(p_options, COM_ID.OWNER, this);
+        let owner = u.tils.Get(p_options, com.COM_ID.OWNER, this);
         if (!owner) { owner = this; }
 
         let tpl = this.constructor.__HTMLtemplate;

@@ -1,7 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { NFOS } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { UI_ID, UI, ShelfNav } = require(`@nkmjs/ui-core`);
 
 const Tab = require(`../items/tab`);
@@ -9,7 +8,7 @@ const Tab = require(`../items/tab`);
 class WorkspaceCellNav extends ShelfNav {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace-cell-nav.css`]
     }, ShelfNav, ['css']);
 

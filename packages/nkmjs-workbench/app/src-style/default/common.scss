@@ -117,6 +117,10 @@ using ($index, $val){
         margin:0;
     }
 
+}
+
+img.icon{
+
     &#main{
         fill: var(--flavor_contrast) !important;
     }
@@ -124,7 +128,7 @@ using ($index, $val){
     &#accent{
         fill: var(--flavor_color) !important;
     }
-
+    
 }
 
 div.icon{

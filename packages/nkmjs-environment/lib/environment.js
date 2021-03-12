@@ -3,9 +3,9 @@
  */
 'use strict';
 
-const { U, PATH, LOG, Argv } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
-const { SingletonEx, CallList } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { ServicesManager, ServiceBase } = require(`@nkmjs/services`);
 
 const ENV_SIGNAL = require(`./env-signal`);
@@ -18,7 +18,7 @@ const DOM_STATE = require(`./dom-state`);
  * @hideconstructor
  * @memberof environment
  */
-class ENV extends SingletonEx {
+class ENV extends com.helpers.SingletonEx {
 
     constructor() { super(); }
 
@@ -79,7 +79,7 @@ class ENV extends SingletonEx {
 
         this._Bind(this._BootService);
 
-        this._onStart = new CallList();
+        this._onStart = new com.helpers.CallList();
 
     }
 
@@ -146,21 +146,21 @@ class ENV extends SingletonEx {
         if (this._started) { throw new Error(`Cannot ENV.Start more than once.`); }
         this._started = true;
 
-        LOG._(`ENV : START`, `#33979b`, `#212121`);
+        u.LOG._(`ENV : START`, `#33979b`, `#212121`);
         ENV.instance._features.List();
 
         if (ENV.instance._features.isBrowser) {
             if (!p_config.argv) {
                 // Feed URL params to argv
-                var argvs = new Argv();
+                var argvs = new u.Argv();
                 let searchParams = new URLSearchParams(window.location.search);
                 searchParams.forEach((p_val, p_key) => { argvs[p_key] = p_val });
                 p_config.argv = argvs;
             } else {
-                p_config.argv = new Argv(p_config.argv);
+                p_config.argv = new u.Argv(p_config.argv);
             }
         } else {
-            p_config.argv = new Argv(p_config.argv);
+            p_config.argv = new u.Argv(p_config.argv);
         }
 
         this._config = p_config;
@@ -171,7 +171,7 @@ class ENV extends SingletonEx {
         }
 
         // Register the service worker if available.
-        let swPath = U.Get(this._config, `service_worker`, false);
+        let swPath = u.tils.Get(this._config, `service_worker`, false);
         if (swPath !== false) {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register(swPath)
@@ -201,18 +201,18 @@ class ENV extends SingletonEx {
     _InternalStart() {
 
         let paths = this._config.paths;
-        if (paths) { for (let member in paths) { PATH.SET(member, paths[member]); } }
+        if (paths) { for (let member in paths) { u.PATH.SET(member, paths[member]); } }
 
-        PATH.SET(`%ICON%`, `img/icons`);
-        PATH.SET(`%PATTERN%`, `img/patterns`);
+        u.PATH.SET(`%ICON%`, `img/icons`);
+        u.PATH.SET(`%PATTERN%`, `img/patterns`);
 
         // Initialize app, if any.
-        let appClass = U.Get(this._config, `renderer`, null);
+        let appClass = u.tils.Get(this._config, `renderer`, null);
         if (appClass) {
-            LOG._(`ENV : App found (${appClass.name})`, `#33979b`, `#212121`);
+            u.LOG._(`ENV : App found (${appClass.name})`, `#33979b`, `#212121`);
             this._app = new appClass();
         } else {
-            LOG._(`ENV : App not found`, `#fff`, `#980700`);
+            u.LOG._(`ENV : App not found`, `#fff`, `#980700`);
         }
 
 
@@ -282,7 +282,7 @@ class ENV extends SingletonEx {
      * @param {services.ServiceBase} p_serviceClass 
      */
     _BootService(p_serviceClass) {
-        if (!U.isInstanceOf(p_serviceClass, ServiceBase)) {
+        if (!u.tils.isInstanceOf(p_serviceClass, ServiceBase)) {
             throw new Error(`${p_serviceClass} is not a service.`);
         }
         p_serviceClass.instance.InitializeAndStart(this);

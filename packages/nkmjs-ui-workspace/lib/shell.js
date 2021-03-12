@@ -1,6 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
 const { UI, LayerContainer } = require(`@nkmjs/ui-core`);
 
 class Shell extends LayerContainer{

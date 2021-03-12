@@ -8,8 +8,8 @@
 
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, Observer } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const COMMAND_SIGNAL = require(`./command-signal`);
 const Command = require(`./command`);
@@ -31,7 +31,7 @@ class CommandChain extends Command {
 
         this._nodes = new Array(0);
         this._currentIndex = 0;
-        this._cmdObserver = new Observer();
+        this._cmdObserver = new com.signals.Observer();
 
         this._cmdObserver.Hook(COMMAND_SIGNAL.START, this._NodeStart, this);
         this._cmdObserver.Hook(COMMAND_SIGNAL.END, this._NodeEnd, this);
@@ -157,7 +157,7 @@ class CommandChain extends Command {
         if (this._running) { return; }
         this._running = true;
         this._Broadcast(COMMAND_SIGNAL.START, this);
-        this._Broadcast(SIGNAL.UPDATED, this);
+        this._Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     /**
@@ -200,7 +200,7 @@ class CommandChain extends Command {
     _End() {
         this._running = false;
         this._Broadcast(COMMAND_SIGNAL.END, this);
-        this._Broadcast(SIGNAL.UPDATED, this);
+        this._Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     // ----> Pooling

@@ -1,8 +1,8 @@
 'use strict';
 
-const { Command } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
-class EcosystemCommand extends Command {
+class EcosystemCommand extends actions.Command {
     constructor() { super(); }
 
     _Init() {

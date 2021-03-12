@@ -3,11 +3,11 @@
  */
 'use strict';
 
-const { LOG } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
 const { ServiceBase } = require(`@nkmjs/services`);
 const { ENV } = require(`@nkmjs/environment`);
-const { SignalBox } = require("@nkmjs/common");
+const { signals } = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -23,7 +23,7 @@ class RELAY extends ServiceBase {
      * @param {*} p_request 
      */
     static HandleRequest(p_request) {
-        LOG._(`⚡ ${p_request}`, 'color: #bebebe');
+        u.LOG._(`⚡ ${p_request}`, 'color: #bebebe');
         this.instance.HandleRequest(p_request);
     }
 
@@ -42,7 +42,7 @@ class RELAY extends ServiceBase {
         super._Init();
         this._requests = new List();
         if (ENV.FEATURES.isExtension) {
-            this._extIpc = new SignalBox();
+            this._extIpc = new signals.SignalBox();
             ENV.FEATURES.runtime.onMessage.addListener(function (request, sender, response) {
                 let signal = request.signal,
                     data = request;

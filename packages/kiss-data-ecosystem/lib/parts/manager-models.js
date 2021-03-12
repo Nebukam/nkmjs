@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
 const { DATA_SIGNAL, DataFactory } = require(`@nkmjs/data-core`);
 
@@ -100,7 +100,7 @@ class ModelManager extends EcosystemPart {
             [COM_ID.NAME]: p_model.id.name,
             [COM_ID.DATA]: p_model,
             [COM_ID.PATH]: `${p_model.constructor.name}s/${p_model.id.name}/`,
-            [COM_ID.ICON]: U.isInstanceOf(p_model, SystemModel) ? `%ICON%/icon_lock.svg` : `%ICON%/icon_model.svg`,
+            [COM_ID.ICON]: u.tils.isInstanceOf(p_model, SystemModel) ? `%ICON%/icon_lock.svg` : `%ICON%/icon_model.svg`,
             [COM_ID.CMD_SECONDARY]: this._cmdModelEdit,
             [COM_ID.CMD_LIST]: [this._cmdModelCreateChild, this._cmdModelCreateEntry] //this._cmdModelDuplicate
         }
@@ -109,7 +109,7 @@ class ModelManager extends EcosystemPart {
 
         if (modelMeta) {
             //console.log(modelMeta);
-            itemOptions[COM_ID.PATH] = `${U.Default(modelMeta.catalogPath, itemOptions.path)}/`;
+            itemOptions[COM_ID.PATH] = `${u.tils.Default(modelMeta.catalogPath, itemOptions.path)}/`;
             itemOptions[COM_ID.ICON] = (modelMeta[COM_ID.ICON] || itemOptions[COM_ID.ICON]);
         } else {
             //console.log(`no meta found for ${p_model}`);

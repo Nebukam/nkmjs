@@ -1,7 +1,7 @@
 'use strict';
 
-const { SIGNAL, SignalBox } = require(`@nkmjs/common`);
-const { UDOM } = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
+const u = require("@nkmjs/utils");
 const UI_SIGNAL = require(`./ui-signal`);
 
 let uinc = 0;
@@ -67,7 +67,7 @@ class DisposableHTMLElement extends HTMLElement {
         this._returnFn = null;
         this._releasing = false;
         this._releasePrevented = false;
-        this._signals = new SignalBox();
+        this._signals = new com.signals.SignalBox();
         this._released = false;
         this._isPainted = false;
         this._isFirstPaint = true;
@@ -175,9 +175,9 @@ class DisposableHTMLElement extends HTMLElement {
      * @returns {ui.core.DisposableHTMLElement}
      * @group Broadcasting
      * @example var foo = someFunction;
-     * object.Watch(SIGNAL.RELEASED, foo);
-     * @example object.Watch(SIGNAL.RELEASED, foo, this);
-     * @example object.Watch(SIGNAL.RELEASED, (obj)=>{ ... }));
+     * object.Watch(com.SIGNAL.RELEASED, foo);
+     * @example object.Watch(com.SIGNAL.RELEASED, foo, this);
+     * @example object.Watch(com.SIGNAL.RELEASED, (obj)=>{ ... }));
      */
     Watch(p_signal, p_fn, p_listener = null) { 
         this._signals.Add(p_signal, p_fn, p_listener); 
@@ -242,7 +242,7 @@ class DisposableHTMLElement extends HTMLElement {
         if (this._releasing) { return; }
         this._releasing = true;
 
-        this._Broadcast(SIGNAL.RELEASING, this);
+        this._Broadcast(com.SIGNAL.RELEASING, this);
 
         if (this._releasePrevented) {
             this._releasing = false;
@@ -251,10 +251,10 @@ class DisposableHTMLElement extends HTMLElement {
         }
 
         this._released = true;
-        this._Broadcast(SIGNAL.RELEASED, this);
+        this._Broadcast(com.SIGNAL.RELEASED, this);
         this._CleanUp();
 
-        UDOM.Detach(this);
+        u.dom.Detach(this);
 
         if (this._returnFn != undefined) { this._returnFn(this); }
         this._releasing = false;

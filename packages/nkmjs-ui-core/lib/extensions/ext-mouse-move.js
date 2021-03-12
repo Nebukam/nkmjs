@@ -1,22 +1,15 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, DisposableObjectEx } = require(`@nkmjs/common`);
-
-const UI_FLAG = require(`../ui-flag`);
-const FlagEnum = require("../helpers/flag-enum");
-
-const INPUT = require(`../input`);
-const ExtBase = require("./ext-base");
+const Extension = require("./extension");
 
  /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments ui.core.extensions.ExtBase
+ * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
-class ExtMouseMove extends ExtBase {
+class MouseMoveExtension extends Extension {
 
     /**
      * 
@@ -175,4 +168,4 @@ class ExtMouseMove extends ExtBase {
 
 }
 
-module.exports = ExtMouseMove;
+module.exports = MouseMoveExtension;

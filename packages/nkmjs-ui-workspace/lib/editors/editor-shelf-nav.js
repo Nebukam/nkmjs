@@ -1,6 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
 const { CSS } = require(`@nkmjs/style`);
 const { UI, Widget, ShelfNav } = require(`@nkmjs/ui-core`);
 

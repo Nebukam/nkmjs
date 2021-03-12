@@ -1,8 +1,8 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary, List } = require(`@nkmjs/collections`);
-const { SIGNAL, POOL } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { DATA_SIGNAL, ID } = require(`@nkmjs/data-core`);
 
 const EcosystemPart = require(`../ecosystem-part`);
@@ -61,7 +61,7 @@ class EntryManager extends EcosystemPart {
             throw new Error(`A library already exists with that model ID : ${id}`);
         }
 
-        let newLibrary = POOL.Rent(DataLibrary);
+        let newLibrary = com.pool.POOL.Rent(DataLibrary);
         newLibrary.model = p_model;
 
         newLibrary.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
@@ -105,9 +105,9 @@ class EntryManager extends EcosystemPart {
 
         let id = null;
 
-        if (U.isInstanceOf(p_key, ID)) {
+        if (u.tils.isInstanceOf(p_key, ID)) {
             id = p_key;
-        } else if (U.isInstanceOf(p_key, Model)) {
+        } else if (u.tils.isInstanceOf(p_key, Model)) {
             id = p_key.id;
         } else {
             throw new Error(`Argument Error`);
@@ -129,7 +129,7 @@ class EntryManager extends EcosystemPart {
 
         if (!p_key) { throw new Error(`Argument Error : Null model reference`); }
 
-        if (U.isString(p_key)) {
+        if (u.tils.isString(p_key)) {
             p_key = this._ecosystem.models.Get(p_key);
         }
 
@@ -146,7 +146,7 @@ class EntryManager extends EcosystemPart {
         let model = p_from,
             base = null;
 
-        if (U.isInstanceOf(p_from, DataEntry)) {
+        if (u.tils.isInstanceOf(p_from, DataEntry)) {
             model = p_from.model;
             base = p_from;
         }
@@ -232,7 +232,7 @@ class EntryManager extends EcosystemPart {
         if (cItem) {
             if (!p_options) { p_options = cItem.options; }
             entryMap.Remove(cItem.options.data);
-            cItem.Unwatch(SIGNAL.RELEASED, this._OnCatalogEntryRelease, this);
+            cItem.Unwatch(com.SIGNAL.RELEASED, this._OnCatalogEntryRelease, this);
             cItem.Release();
         }
 
@@ -249,11 +249,11 @@ class EntryManager extends EcosystemPart {
         }
 
         let path = p_entry.metadata.Get(_meta_catalogPath);
-        if (U.isEmpty(path)) { path = this._DefaultsCatalogPath(p_entry); }
+        if (u.tils.isEmpty(path)) { path = this._DefaultsCatalogPath(p_entry); }
         p_options.path = `${path}/${name}`;
 
         cItem = this._ecosystem._catalog.Register(p_options);
-        cItem.Watch(SIGNAL.RELEASED, this._OnCatalogEntryRelease, this);
+        cItem.Watch(com.SIGNAL.RELEASED, this._OnCatalogEntryRelease, this);
 
         entryMap.Set(p_entry, cItem);
         return cItem;

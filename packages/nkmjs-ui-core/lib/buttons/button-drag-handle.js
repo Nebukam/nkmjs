@@ -1,6 +1,5 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
 const { NFOS } = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 

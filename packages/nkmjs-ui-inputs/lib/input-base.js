@@ -3,8 +3,8 @@
  * They don't know what they are manipulating, or why.
  */
 
-const { U } = require(`@nkmjs/utils`);
-const { NFOS, COMMON_FLAG } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { UI, UI_FLAG, Widget, FlagEnum } = require(`@nkmjs/ui-core`);
 
 const INPUT_SIGNAL = require(`./input-signal`);
@@ -12,7 +12,7 @@ const INPUT_SIGNAL = require(`./input-signal`);
 class BaseInput extends Widget {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/shared.css`]
     }, Widget, ['css']);
 
@@ -191,7 +191,7 @@ class BaseInput extends Widget {
      */
     AddSanitization(p_fn, p_thisArg = null) {
         let item = null;
-        if (U.isObject(p_fn)) { item = p_fn; }
+        if (u.tils.isObject(p_fn)) { item = p_fn; }
         else { item = { fn: p_fn, thisArg: p_thisArg }; }
         this._externalSanitizationStack.push(item);
     }
@@ -203,7 +203,7 @@ class BaseInput extends Widget {
      */
     AddValidation(p_fn, p_thisArg = null) {
         let item = null;
-        if (U.isObject(p_fn)) { item = p_fn; }
+        if (u.tils.isObject(p_fn)) { item = p_fn; }
         else { item = { fn: p_fn, thisArg: p_thisArg }; }
         this._externalValidationStack.push(item);
     }
@@ -213,7 +213,7 @@ class BaseInput extends Widget {
      * @param {*} p_err 
      */
     _PushError(p_err) {
-        if (U.isString(p_err)) { p_err = { type: COMMON_FLAG.ERROR, message: p_err }; }
+        if (u.tils.isString(p_err)) { p_err = { type: com.COMMON_FLAG.ERROR, message: p_err }; }
 
         if (this._inputErrors.includes(p_err)) { return; }
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const { SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -9,7 +9,7 @@ const { SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core
  */
-class ID extends DisposableObjectEx {
+class ID extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     // ----> Static methods
@@ -19,7 +19,7 @@ class ID extends DisposableObjectEx {
      * @param {data.core.ID} p_id 
      */
     static New(p_id){
-        let newID = POOL.Rent(ID);
+        let newID = com.pool.POOL.Rent(ID);
         newID.name = p_id;
         return newID;
     }
@@ -47,7 +47,7 @@ class ID extends DisposableObjectEx {
 
         if (this._name === p_value) { return; }
 
-        this._Broadcast(SIGNAL.RENAMING, this, p_value);
+        this._Broadcast(com.SIGNAL.RENAMING, this, p_value);
 
         if (this._renamingPrevented) {
             this._renamingPrevented = false;
@@ -59,7 +59,7 @@ class ID extends DisposableObjectEx {
 
         this._renamingPrevented = false;
 
-        this._Broadcast(SIGNAL.RENAMED, this, oldName);
+        this._Broadcast(com.SIGNAL.RENAMED, this, oldName);
 
     }
     get name() { return this._name; }

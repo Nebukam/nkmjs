@@ -1,5 +1,5 @@
-const { U } = require("@nkmjs/utils");
-const { COMMON_FLAG } = require(`@nkmjs/common`);
+
+const com = require("@nkmjs/common");
 const { STYLE, COLOR, RGBA } = require(".");
 
 let palette = STYLE.CreatePalette();
@@ -111,7 +111,7 @@ console.log(`hsla = ${someHSLColor.hsla}`);
 
 console.log(STYLE.TF(`this is test`, {
     strong: true,
-    color: COMMON_FLAG.WARNING,
+    color: com.COMMON_FLAG.WARNING,
     style: {
         'hum': 0,
         '@': [`A`]

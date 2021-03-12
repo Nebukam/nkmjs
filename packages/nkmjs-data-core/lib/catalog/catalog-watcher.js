@@ -1,8 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { Dictionary } = require(`@nkmjs/collections`);
-const { BINDINGS, SIGNAL, Observer, DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const CATALOG_SIGNAL = require(`./catalog-signal`);
 const Catalog = require(`../catalog/catalog`);
@@ -16,7 +14,7 @@ const CatalogItem = require("./catalog-item");
  * @augments common.pool.DisposableObjectEx
  * @memberof data.core.catalog
  */
-class CatalogWatcher extends DisposableObjectEx {
+class CatalogWatcher extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {
@@ -31,9 +29,9 @@ class CatalogWatcher extends DisposableObjectEx {
         this._isEnabled = true;
         this._isDeepWatchEnabled = false;
 
-        this._catalogObserver = new Observer();
-        this._catalogObserver.Hook(SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-        this._catalogObserver.Hook(SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+        this._catalogObserver = new com.signals.Observer();
+        this._catalogObserver.Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
+        this._catalogObserver.Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
         this._catalogObserver.Hook(CATALOG_SIGNAL.SORTED, this._OnCatalogSorted, this);
 
         // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
@@ -135,8 +133,8 @@ class CatalogWatcher extends DisposableObjectEx {
         if (this._isDeepWatchEnabled) {
 
             // Unkook regular signals
-            this._catalogObserver.Unhook(SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-            this._catalogObserver.Unhook(SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+            this._catalogObserver.Unhook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
+            this._catalogObserver.Unhook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
             this._catalogObserver.Unhook(CATALOG_SIGNAL.SORTED, this._OnCatalogSorted, this);
 
             // Hook root signals
@@ -155,8 +153,8 @@ class CatalogWatcher extends DisposableObjectEx {
             this._catalogObserver.Unhook(CATALOG_SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
             // Hook regular signals
-            this._catalogObserver.Hook(SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-            this._catalogObserver.Hook(SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+            this._catalogObserver.Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
+            this._catalogObserver.Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
             this._catalogObserver.Hook(CATALOG_SIGNAL.SORTED, this._OnCatalogSorted, this);
 
             if (this._isEnabled && this._catalog) {

@@ -1,7 +1,7 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
-const { NFOS, SIGNAL } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { Dictionary } = require(`@nkmjs/collections`);
 
 const UI = require(`../ui.js`);
@@ -26,7 +26,7 @@ const _flag_STRETCH_SAME = `stretch-same`;
 class Toolbar extends OrientableWidget {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/helpers/toolbar.css`]
     }, OrientableWidget, ['css']);
 
@@ -151,8 +151,8 @@ class Toolbar extends OrientableWidget {
 
         let cl = (p_class || p_options.cl || this._defaultButtonClass),
             handle,
-            group = U.Get(p_options, `group`, null),
-            toggle = group ? U.Get(p_options, `toggle`, null) : null;
+            group = u.tils.Get(p_options, `group`, null),
+            toggle = group ? u.tils.Get(p_options, `toggle`, null) : null;
 
         if (group) {
 
@@ -170,9 +170,9 @@ class Toolbar extends OrientableWidget {
         }
 
         this._optionsMap.Set(handle, p_options);
-        handle.Watch(SIGNAL.RELEASED, this._OnHandleReleased, this);
+        handle.Watch(com.SIGNAL.RELEASED, this._OnHandleReleased, this);
 
-        if (U.isInstanceOf(handle, ButtonBase)) {
+        if (u.tils.isInstanceOf(handle, ButtonBase)) {
             handle.options = p_options;
             handle.size = this._sizeEnum.currentFlag;
         }
@@ -197,7 +197,7 @@ class Toolbar extends OrientableWidget {
         if (!p_create) { return null; }
 
         let group = {
-            element: UDOM.New(`span`, { class: `group` }, this),
+            element: u.dom.New(`span`, { class: `group` }, this),
             handles: []
         };
 
@@ -257,7 +257,7 @@ class Toolbar extends OrientableWidget {
     _OnHandleReleased(p_handle) {
 
         let options = this._optionsMap.Get(p_handle),
-            groupId = U.Get(options, `group`, null);
+            groupId = u.tils.Get(options, `group`, null);
 
         if (groupId) {
 
@@ -266,7 +266,7 @@ class Toolbar extends OrientableWidget {
 
             //Delete if empty
             if (group.handles.length === 0) {
-                UDOM.Detach(group.element);
+                u.dom.Detach(group.element);
                 group.element = null;
                 group.handles.length = 0;
                 delete this._groups[groupId];

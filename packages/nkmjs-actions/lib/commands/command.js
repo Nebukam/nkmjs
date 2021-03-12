@@ -8,8 +8,8 @@
 
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL, POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const COMMAND_SIGNAL = require(`./command-signal`);
 
@@ -20,7 +20,7 @@ const COMMAND_SIGNAL = require(`./command-signal`);
  * @augments common.pool.DisposableObjectEx
  * @memberof actions
  */
-class Command extends DisposableObjectEx {
+class Command extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     // ----> Static members
@@ -32,9 +32,9 @@ class Command extends DisposableObjectEx {
      * @param {string} [p_icon] 
      */
     static Rent(p_class, p_name = null, p_icon = null) {
-        let cmd = POOL.Rent(p_class);
-        cmd.name = U.isEmpty(p_name) ? U.CamelSplit(p_class.name) : p_name;
-        cmd.icon = U.isEmpty(p_icon) ? `%ICON%/icon_cmd.svg` : p_icon;
+        let cmd = com.pool.POOL.Rent(p_class);
+        cmd.name = u.tils.isEmpty(p_name) ? u.tils.CamelSplit(p_class.name) : p_name;
+        cmd.icon = u.tils.isEmpty(p_icon) ? `%ICON%/icon_cmd.svg` : p_icon;
         return cmd;
     }
 
@@ -43,7 +43,7 @@ class Command extends DisposableObjectEx {
     _Init() {
         super._Init();
         this._icon = ``;
-        this._name = U.CamelSplit(this.constructor.name);
+        this._name = u.tils.CamelSplit(this.constructor.name);
         this._isEnabled = true;
         this._context = null;
         this._emitter = null;
@@ -89,10 +89,10 @@ class Command extends DisposableObjectEx {
         let oldEmitter = this._emitter;
         this._emitter = p_value;
         if (oldEmitter) {
-            oldEmitter.Unwatch(SIGNAL.RELEASED, this._OnEmitterReleased, this);
+            oldEmitter.Unwatch(com.SIGNAL.RELEASED, this._OnEmitterReleased, this);
         }
         if (p_value) {
-            p_value.Watch(SIGNAL.RELEASED, this._OnEmitterReleased, this);
+            p_value.Watch(com.SIGNAL.RELEASED, this._OnEmitterReleased, this);
         }
     }
 
@@ -130,7 +130,7 @@ class Command extends DisposableObjectEx {
     Enable() {
         if (this._isEnabled) { return false; }
         this._isEnabled = true;
-        this._Broadcast(SIGNAL.UPDATED, this);
+        this._Broadcast(com.SIGNAL.UPDATED, this);
         return true;
     }
 
@@ -140,7 +140,7 @@ class Command extends DisposableObjectEx {
     Disable() {
         if (!this._isEnabled) { return false; }
         this._isEnabled = false;
-        this._Broadcast(SIGNAL.UPDATED, this);
+        this._Broadcast(com.SIGNAL.UPDATED, this);
         return true;
     }
 
@@ -223,7 +223,7 @@ class Command extends DisposableObjectEx {
         if (this._running) { return; }
         this._running = true;
         this._Broadcast(COMMAND_SIGNAL.START, this);
-        this._Broadcast(SIGNAL.UPDATED, this);
+        this._Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     /**
@@ -270,7 +270,7 @@ class Command extends DisposableObjectEx {
     _End() {
         this._running = false;
         this._Broadcast(COMMAND_SIGNAL.END, this);
-        this._Broadcast(SIGNAL.UPDATED, this);
+        this._Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     // ----> Pooling

@@ -1,7 +1,7 @@
 'use strict';
 
-const { U } = require("@nkmjs/utils");
-const { DisposableObjectEx, POOL } = require("@nkmjs/common");
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -10,7 +10,7 @@ const { DisposableObjectEx, POOL } = require("@nkmjs/common");
  * @augments common.pool.DisposableObjectEx
  * @memberof ui.core.extensions
  */
-class ExtBase extends DisposableObjectEx {
+class Extension extends com.pool.DisposableObjectEx {
 
     constructor() {
         super();
@@ -25,7 +25,7 @@ class ExtBase extends DisposableObjectEx {
     Add(p_ext) {
         if (!this._childExtensions) { this._childExtensions = new Array(0); }
         if (this._childExtensions.includes(p_ext)) { return p_ext; }
-        if(U.isFunc(p_ext)){ p_ext = POOL.Rent(p_ext); }
+        if(u.tils.isFunc(p_ext)){ p_ext = com.pool.POOL.Rent(p_ext); }
         this._childExtensions.push(p_ext);
         p_ext.enabled = this._isEnabled;
         return p_ext;
@@ -100,4 +100,4 @@ class ExtBase extends DisposableObjectEx {
 
 }
 
-module.exports = ExtBase;
+module.exports = Extension;

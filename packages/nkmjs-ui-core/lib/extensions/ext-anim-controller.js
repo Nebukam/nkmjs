@@ -1,14 +1,8 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { SIGNAL } = require(`@nkmjs/common`);
-const { CatalogItem, Catalog, CatalogWatcher } = require(`@nkmjs/data-core`);
+const UI_FLAG = require(`../ui-flag`);
 
-const UI = require(`../ui`);
-const UI_ID = require(`../ui-id`);
-const View = require(`../views/view`);
-const { ExtBase } = require(".");
-const { UI_FLAG } = require("../../../nkmjs-app-core/node_modules/@nkmjs/ui-core");
+const Extension = require(`./extension`);
 
 /**
  * a CSSAnimationController is used to trigger animations
@@ -26,7 +20,7 @@ const { UI_FLAG } = require("../../../nkmjs-app-core/node_modules/@nkmjs/ui-core
  * @augments data.core.catalog.CatalogWatcher
  * @memberof ui.core.helpers
  */
-class ExtAnimController extends ExtBase {
+class AnimControllerExtension extends Extension {
 
     constructor(p_element = null) {
 
@@ -227,4 +221,4 @@ class ExtAnimController extends ExtBase {
 
 }
 
-module.exports = ExtAnimController;
+module.exports = AnimControllerExtension;

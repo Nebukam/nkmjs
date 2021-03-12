@@ -1,12 +1,12 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
-const { POOL, DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const ECOSYSTEM_CONSTANTS = require(`../../ecosystem-constants`);
 const Model = require(`../model`);
 
-class ModelMockup extends DisposableObjectEx {
+class ModelMockup extends com.pool.DisposableObjectEx {
 
 
     /**
@@ -93,7 +93,7 @@ class ModelMockup extends DisposableObjectEx {
 
             } else {
 
-                if (U.isInstanceOf(existingField.fieldClass, mockField.cl)) {
+                if (u.tils.isInstanceOf(existingField.fieldClass, mockField.cl)) {
                     //Field exists, type matches.
                     if (mockField.settings) {
                         existingField.Unpack(mockField.settings);
@@ -143,7 +143,7 @@ class ModelMockup extends DisposableObjectEx {
     set NFO(p_value) {
         this._NFO = p_value;
         if (p_value) {
-            let cPath = U.Get(p_value, `catalogPath`, null);
+            let cPath = u.tils.Get(p_value, `catalogPath`, null);
             if (!cPath || cPath === ECOSYSTEM_CONSTANTS.DEFAULT) {
                 p_value.catalogPath = `${this._modelClass.name}s/${this._id}/`;
                 /*
@@ -194,7 +194,7 @@ class ModelMockup extends DisposableObjectEx {
     Has(p_fieldId) { return this._mockup.hasOwnProperty(p_fieldId); }
 
     Add(p_fieldId, p_fieldClass, p_fieldSettings = null) {
-        if (U.isEmpty(p_fieldId)) { throw new Error(`Cannot add a field with an empty ID.`); }
+        if (u.tils.isEmpty(p_fieldId)) { throw new Error(`Cannot add a field with an empty ID.`); }
         if (!p_fieldClass) { throw new Error(`Cannot add a field with an empty type.`); }
         let mockup = this._mockup;
         if (mockup.hasOwnProperty(p_fieldId)) {
@@ -228,7 +228,7 @@ class ModelMockup extends DisposableObjectEx {
             let existingField = p_model.Get(member);
             if (!existingField) { return false; }//Field missing
             let mockField = mockup[member];
-            if (!U.isInstanceOf(existingField.fieldClass, mockField.cl)) { return false; } //Field type mismatch
+            if (!u.tils.isInstanceOf(existingField.fieldClass, mockField.cl)) { return false; } //Field type mismatch
             if (!p_inspectSettings) { continue; }
             throw new Error(`settings inspection not implemented yet`);
         }
@@ -249,7 +249,7 @@ class ModelMockup extends DisposableObjectEx {
         for (let member in mockup) {
             let existingField = p_model.Get(member);
             if (!existingField) { return false; }//Field missing
-            if (!U.isInstanceOf(existingField.fieldClass, mockup[member].cl)) { return false; } //Field type mismatch
+            if (!u.tils.isInstanceOf(existingField.fieldClass, mockup[member].cl)) { return false; } //Field type mismatch
         }
 
         return true;

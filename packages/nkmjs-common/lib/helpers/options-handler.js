@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { DictionaryList } = require(`@nkmjs/collections`);
 
 
@@ -120,7 +120,7 @@ class OptionsHandler {
                     continue;
                 }
 
-                if (U.isString(fn)) { // Consider string property setters
+                if (u.tils.isString(fn)) { // Consider string property setters
                     p_target[fn] = value;
                 } else {
                     fn(value, p_altOptions);
@@ -153,7 +153,7 @@ class OptionsHandler {
 
         for (let i = 0, n = callList.count; i < n; i++) {
             let fn = callList.At(i);
-            if (U.isString(fn)) { // Consider string property setters
+            if (u.tils.isString(fn)) { // Consider string property setters
                 p_target[fn] = p_optionValue;
             } else {
                 fn(p_optionValue, p_others);

@@ -1,8 +1,8 @@
 'use strict';
 
-const { Action } = require(`@nkmjs/actions`);
+const actions = require("@nkmjs/actions");
 
-class ActionModelDeleteField extends Action {
+class ActionModelDeleteField extends actions.Action {
     constructor() { super(); }
 
     static get mergeable() { return false; }

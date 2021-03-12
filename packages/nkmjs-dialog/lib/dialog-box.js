@@ -1,16 +1,16 @@
 'use strict';
 
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { Dictionary, List } = require(`@nkmjs/collections`);
-const { NFOS, OptionsHandler } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const { UI, UI_SIGNAL, Widget, TextManipulator, ImageManipulator, Frame, Toolbar, ButtonEx, UI_FLAG, OverlayOptions } = require(`@nkmjs/ui-core`);
+const { UI, UI_SIGNAL, Widget, manipulators, Frame, Toolbar, ButtonEx, UI_FLAG, OverlayOptions } = require(`@nkmjs/ui-core`);
 const { INPUT_SIGNAL, InputBase, InputFormHandler } = require(`@nkmjs/ui-inputs`);
 
 class DialogBox extends Widget {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/dialogs/dialog-box.css`]
     }, Widget, ['css']);
 
@@ -38,7 +38,7 @@ class DialogBox extends Widget {
         this._toolbarDefaultButtonClass = ButtonEx;
         this._toolbar = null;
 
-        this._optionsHandler = new OptionsHandler(
+        this._optionsHandler = new com.helpers.OptionsHandler(
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
@@ -92,17 +92,17 @@ class DialogBox extends Widget {
 
     _Render() {
 
-        this._icon = new ImageManipulator(UDOM.New('div', { class: `icon` }, this._host), false, true);
+        this._icon = new manipulators.Icon(u.dom.New('img', { class: `icon` }, this._host), false, true);
 
-        this._header = UDOM.New(`div`, { class: `group header` }, this._host);
-        this._body = UDOM.New(`div`, { class: `group body` }, this._host);
-        this._footer = UDOM.New(`div`, { class: `group footer` }, this._host);
+        this._header = u.dom.New(`div`, { class: `group header` }, this._host);
+        this._body = u.dom.New(`div`, { class: `group body` }, this._host);
+        this._footer = u.dom.New(`div`, { class: `group footer` }, this._host);
 
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._footer);
         this._toolbar._defaultButtonClass = this._toolbarDefaultButtonClass;
         this._toolbar.size = UI_FLAG.SIZE_M;
 
-        this._title = new TextManipulator(UDOM.New(`span`, { class: `title ${FONT_FLAG.MEDIUM}` }, this._header), false);
+        this._title = new manipulators.Text(u.dom.New(`span`, { class: `title ${FONT_FLAG.MEDIUM}` }, this._header), false);
         this._messageElement = null;
 
     }
@@ -124,7 +124,7 @@ class DialogBox extends Widget {
 
     set message(p_message) {
         if (!this._messageElement) {
-            this._messageElement = UDOM.New(`span`, { class: `item message` }, this._body);
+            this._messageElement = u.dom.New(`span`, { class: `item message` }, this._body);
         }
         this._messageElement.innerHTML = p_message;
         this._contents.push(this._messageElement);
@@ -139,7 +139,7 @@ class DialogBox extends Widget {
             // Create handles as specified
             for (let i = 0, n = p_actions.length; i < n; i++) {
                 let opts = p_actions[i];
-                this.CreateHandle(opts, U.Get(opts, `cl`, null));
+                this.CreateHandle(opts, u.tils.Get(opts, `cl`, null));
             }
         } else {
             // Create a default handle
@@ -169,7 +169,7 @@ class DialogBox extends Widget {
 
             let item = this.Add(itemClass, `item`, this._body);
 
-            if (U.isInstanceOf(itemClass, InputBase)) {
+            if (u.tils.isInstanceOf(itemClass, InputBase)) {
 
                 item.inputId = itemNfos.inputId;
 
@@ -257,7 +257,7 @@ class DialogBox extends Widget {
         let handle = this._toolbar.CreateHandle(p_options, p_class);
         this._handles.push(handle);
 
-        if (U.Get(p_options, `submit`, false)) {
+        if (u.tils.Get(p_options, `submit`, false)) {
             //TODO : Need to add a generic 'triggered' activation  signal
             //to close the dialog box. Otherwise, close by default.
             this._submitMap.Set(handle, p_options.submit);
@@ -265,7 +265,7 @@ class DialogBox extends Widget {
             handle.Watch(UI_SIGNAL.TRIGGERED, this._Submit);
         }
 
-        if (U.Get(p_options, `close`, true)) {
+        if (u.tils.Get(p_options, `close`, true)) {
             //TODO : Need to add a generic 'triggered' activation signal
             //to close the dialog box. Otherwise, close by default.
             handle.Watch(UI_SIGNAL.TRIGGERED, this._Close);
@@ -306,7 +306,7 @@ class DialogBox extends Widget {
         for (let i = 0, n = this._contents.length; i < n; i++) {
             let item = this._contents[i];
             if (`Release` in item) { this._contents[i].Release(); }
-            else { UDOM.Remove(item); }
+            else { u.dom.Remove(item); }
         }
 
         this._hasInput = false;

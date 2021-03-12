@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 const OptionsHandler = require(`./options-handler`);
@@ -101,7 +101,7 @@ class OptionsObject extends DisposableObjectEx {
     }
 
     _CleanUp() {
-        this._options = {};//U.DeepClear(this._options, true); //Circular bs going on
+        this._options = {};//u.tils.DeepClear(this._options, true); //Circular bs going on
         super._CleanUp();
     }
 

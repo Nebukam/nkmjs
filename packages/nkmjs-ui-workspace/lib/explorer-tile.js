@@ -1,6 +1,6 @@
 'use strict';
 
-const { U } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { UI } = require(`@nkmjs/ui-core`);
 
 const Explorer = require(`./explorer`);
@@ -12,7 +12,7 @@ class TileExplorer extends Explorer{
 
     _Style(){
 
-        return U.Merge(super._Style(),{
+        return u.tils.Merge(super._Style(),{
             '.body':{
                 display:`flex`,
                 'flex-flow':`row wrap`,

@@ -1,11 +1,11 @@
 'use strict';
 
-const { DisposableObjectEx } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const _val_default = Symbol(`default`);
 const _val_inherit = Symbol(`inherit`);
 
-class Field extends DisposableObjectEx {
+class Field extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     static get DEFAULT() { return _val_default; }

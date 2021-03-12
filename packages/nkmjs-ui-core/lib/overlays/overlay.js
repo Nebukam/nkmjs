@@ -1,19 +1,15 @@
-const { U, UDOM } = require(`@nkmjs/utils`);
+const u = require("@nkmjs/utils");
 const { CSS } = require(`@nkmjs/style`);
-const { NFOS } = require(`@nkmjs/common`);
-const { BINDINGS, SIGNAL, OptionsHandler } = require(`@nkmjs/common`);
+const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 const UI_FLAG = require(`../ui-flag`);
 const Layer = require(`../views/layer`);
 
-const OVERLAY_CONTEXT = require("./overlay-context");
+const OVERLAY_CONTEXT = require(`./overlay-context`);
 const OverlayOptions = require(`./overlay-options`);
-const ExtAnimController = require(`../extensions/ext-anim-controller`);
-const { ExtMouse } = require("../extensions");
+const extensions = require(`../extensions`);
 const MOUSE = require("../mouse");
-
-
 
 /**
  * @description TODO
@@ -23,7 +19,7 @@ class Overlay extends Layer {
 
     static __usePaintCallback = true;
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/views/overlay.css`]
     }, Layer, ['css']);
 
@@ -32,19 +28,21 @@ class Overlay extends Layer {
     static __content_context = OVERLAY_CONTEXT.CONTENT;
 
     _Init() {
+
         super._Init();
+        
         this._background = null;
         this._content = null;
         this._contentPlacement = null;
 
-        this._dataObserver.Hook(SIGNAL.CONSUMED, this._Bind(this._OnDataConsumed));
-        this._transitions = new ExtAnimController();
+        this._dataObserver.Hook(com.SIGNAL.CONSUMED, this._Bind(this._OnDataConsumed));
+        this._transitions = new extensions.AnimController();
 
-        this._closeBg = this._interactions.Add(ExtMouse);
+        this._closeBg = this._interactions.Add(extensions.Mouse);
         this._closeBg.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._Bind(this._CloseRequest));
 
         this._options = null;
-        this._optionsHandler = new OptionsHandler(this._Bind(this._OnOptionsProcessed), this._Bind(this._OnOptionsWillUpdate));
+        this._optionsHandler = new com.helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed), this._Bind(this._OnOptionsWillUpdate));
         this._optionsHandler.Hook(`orientation`);
         this._optionsHandler.Hook(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement);
         this._optionsHandler.Hook(`flavor`, `contentFlavor`);
@@ -77,7 +75,7 @@ class Overlay extends Layer {
 
     _Render() {
         super._Render();
-        this._bg = UDOM.New(`div`, { class: `bg` }, this);
+        this._bg = u.dom.New(`div`, { class: `bg` }, this);
         this._closeBg.element = this._bg;
     }
 
@@ -155,7 +153,7 @@ class Overlay extends Layer {
 
         if (!this._data) { return; }
 
-        if (!U.isInstanceOf(this._data, OverlayOptions)) {
+        if (!u.tils.isInstanceOf(this._data, OverlayOptions)) {
             throw new Error(`Overlay expect data of type OverlayOptions, got ${this._data.constructor.name} instead.`);
         }
 
@@ -183,14 +181,14 @@ class Overlay extends Layer {
         if (!contentClass) {
 
             // First, check if any content is bound to the requestType
-            contentClass = BINDINGS.Get(
+            contentClass = com.BINDINGS.Get(
                 OVERLAY_CONTEXT.CONTENT,
                 p_overlayData.request.requestType,
                 null);
 
             // Fall back to contentData association if any
             if (p_contentData && !contentClass) {
-                contentClass = BINDINGS.Get(
+                contentClass = com.BINDINGS.Get(
                     OVERLAY_CONTEXT.CONTENT,
                     p_contentData,
                     null);

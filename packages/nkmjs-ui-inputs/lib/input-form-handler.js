@@ -2,14 +2,14 @@
  * For manipulating a group of input as a single input.
  * Abstract handler.
  */
-const { U } = require(`@nkmjs/utils`);
-const { DisposableObjectEx } = require(`@nkmjs/common`);
+const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const { Dictionary, List } = require(`@nkmjs/collections`);
 
 const INPUT_SIGNAL = require(`./input-signal`);
 const InputBase = require(`./input-base`);
 
-class InputFormHandler extends DisposableObjectEx {
+class InputFormHandler extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     _Init() {
@@ -26,7 +26,7 @@ class InputFormHandler extends DisposableObjectEx {
 
     Register(p_input) {
 
-        if (!U.isInstanceOf(p_input, InputBase)) {
+        if (!u.tils.isInstanceOf(p_input, InputBase)) {
             throw new Error(`InputFormHandler cannot register non-input items.`);
         }
 
