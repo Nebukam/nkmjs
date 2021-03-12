@@ -11,7 +11,7 @@ const MOUSE = require("../mouse");
 const DOMTemplate = require(`../dom-template`);
 const Toolbar = require(`../helpers/toolbar`);
 
-const { TPLFacadeLabel } = require("../templates");
+const templates = require(`../templates`);
 const CatalogWidget = require("../widget-catalog");
 
 
@@ -42,7 +42,7 @@ class TreeItem extends CatalogWidget {
 
         this._notifiesSelectionStack = true;
 
-        this._tplClass = TPLFacadeLabel;
+        this._tplClass = templates.FacadeLabel;
         this._toolbarClass = Toolbar;
         this._toolbar = null;
         this._toolbarCtnr = null;
@@ -67,7 +67,7 @@ class TreeItem extends CatalogWidget {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.ImageManipulator}
+     * @type {ui.core.manipulators.Icon}
      * @customtag read-only
      */
     get icon() { return this._icon; }
@@ -81,7 +81,7 @@ class TreeItem extends CatalogWidget {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.ImageManipulator}
+     * @type {ui.core.manipulators.Icon}
      * @customtag read-only
      */
     get label() { return this._label; }

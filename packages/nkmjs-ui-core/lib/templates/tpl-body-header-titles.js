@@ -40,7 +40,7 @@ class TPLBodyHeaderTitles extends DOMTemplate {
     static _CreateTemplate() {
         super._CreateTemplate();
         this._Add(u.dom.New(`div`, { class: UI_ID.HEADER }), __header);
-        this._Add(u.dom.New(`span`, { class: UI_ID.ICON }), __icon, __header);
+        this._Add(u.dom.New(`img`, { class: UI_ID.ICON }), __icon, __header);
         this._Add(u.dom.New(`span`, { class: `titles` }), __titles, __header);
         this._Add(u.dom.New(`span`, { class: UI_ID.TITLE }), __title, __titles);
         this._Add(u.dom.New(`span`, { class: UI_ID.SUBTITLE }), __subtitle, __titles);

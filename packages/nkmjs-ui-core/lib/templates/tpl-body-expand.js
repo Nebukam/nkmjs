@@ -20,7 +20,7 @@ class TPLBodyExpand extends DOMTemplate {
         super._CreateTemplate();
         this._Add(u.dom.New(`div`, { class: UI_ID.HEADER }), __header);
         this._Add(u.dom.New(`span`, { class: `${UI_ID.ICON} expand` }), __expandIcon, __header);
-        this._Add(u.dom.New(`span`, { class: UI_ID.ICON }), __icon, __header);
+        this._Add(u.dom.New(`img`, { class: UI_ID.ICON }), __icon, __header);
         this._Add(u.dom.New(`span`, { class: UI_ID.LABEL }), __label, __header);
         this._Add(u.dom.New(`div`, { class: UI_ID.BODY }), __body);
     }

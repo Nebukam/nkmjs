@@ -105,8 +105,8 @@ class InspectorGroup extends InspectorItem {
 
     _Render() {
 
-        DOMTemplate.Render(templates.TPLHeaderBodyFooter, this, { [UI_ID.OWNER]: this });
-        DOMTemplate.Render(templates.TPLFacadeExpandTitle, this._header, {
+        DOMTemplate.Render(templates.HeaderBodyFooter, this, { [UI_ID.OWNER]: this });
+        DOMTemplate.Render(templates.FacadeExpandTitle, this._header, {
             [UI_ID.OWNER]: this,
             expandIcon: { url: `%ICON%/icon_expand_arrow.svg`, htitle: `Expand` }
         });

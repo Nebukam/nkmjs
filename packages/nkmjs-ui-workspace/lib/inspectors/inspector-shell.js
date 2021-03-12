@@ -9,9 +9,7 @@
 
 const com = require("@nkmjs/common");
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const uicore = require(`@nkmjs/ui-core`);
-const { UI_ID, UI, UI_FLAG, View, DOMTemplate } = uicore;
-const { TPLBodyHeaderTitles } = uicore.templates;
+const { UI_ID, UI, UI_FLAG, View, DOMTemplate, templates } = require(`@nkmjs/ui-core`);
 
 const WORKSPACE_CONTEXT = require(`../workspace-context`);
 
@@ -109,7 +107,7 @@ class InspectorShell extends View {
     }
 
     _Render() {
-        DOMTemplate.Render(TPLBodyHeaderTitles, this, { 
+        DOMTemplate.Render(templates.BodyHeaderTitles, this, { 
             [UI_ID.OWNER]: this,
             [UI_ID.ICON]:{ [UI_ID.CSS_CL]:UI_FLAG.SIZE_S },
             [UI_ID.SUBTITLE]:{ [UI_ID.CSS_CL]:FONT_FLAG.SMALL }

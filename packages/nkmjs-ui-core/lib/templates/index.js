@@ -2,14 +2,14 @@
 
 module.exports = {
 
-    TPLBodyExpand: require(`./tpl-body-expand`),
-    TPLBodyHeaderTitles: require(`./tpl-body-header-titles`),
-    TPLFacadeExpandLabel: require(`./tpl-facade-expand-label`),
-    TPLFacadeExpandTitle: require(`./tpl-facade-expand-title`),
-    TPLFacadeLabel: require(`./tpl-facade-label`),
-    TPLFacadeTitles: require(`./tpl-facade-titles`),
-    TPLHeaderBodyFooter: require(`./tpl-header-body-footer`),
-    TPLFacadeLabelClose: require(`./tpl-facade-label-close`),
-    TPLFacadeTitleClose: require(`./tpl-facade-title-close`),
+    BodyExpand: require(`./tpl-body-expand`),
+    BodyHeaderTitles: require(`./tpl-body-header-titles`),
+    FacadeExpandLabel: require(`./tpl-facade-expand-label`),
+    FacadeExpandTitle: require(`./tpl-facade-expand-title`),
+    FacadeLabel: require(`./tpl-facade-label`),
+    FacadeTitles: require(`./tpl-facade-titles`),
+    HeaderBodyFooter: require(`./tpl-header-body-footer`),
+    FacadeLabelClose: require(`./tpl-facade-label-close`),
+    FacadeTitleClose: require(`./tpl-facade-title-close`),
     
 }

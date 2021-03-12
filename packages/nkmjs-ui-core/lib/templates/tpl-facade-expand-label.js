@@ -31,8 +31,8 @@ class TPLFacadeExpandLabel extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.New(`span`, { class: `${UI_ID.ICON} expand` }), __expandIcon);
-        this._Add(u.dom.New(`span`, { class: UI_ID.ICON }), __icon);
+        this._Add(u.dom.New(`img`, { class: `${UI_ID.ICON} expand` }), __expandIcon);
+        this._Add(u.dom.New(`img`, { class: UI_ID.ICON }), __icon);
         this._Add(u.dom.New(`span`, { class: UI_ID.LABEL }), __label);
     }
 

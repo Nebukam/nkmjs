@@ -4,9 +4,7 @@ const u = require("@nkmjs/utils");
 const { COMMON_FLAG } = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 const { Catalog } = require(`@nkmjs/data-core`);
-const uicore = require(`@nkmjs/ui-core`);
-const { UI_ID, UI, UI_FLAG, View, DOMTemplate } = uicore;
-const { TPLHeaderBodyFooter } = uicore.templates;
+const { UI_ID, UI, UI_FLAG, View, DOMTemplate, templates } = require(`@nkmjs/ui-core`);
 
 const InspectorShell = require(`../inspectors/inspector-shell`);
 const HistoryInspectorShell = require(`../inspectors/history-inspector-shell`);
@@ -143,7 +141,7 @@ class EditorEx extends Editor {
 
     _Render() {
 
-        DOMTemplate.Render(TPLHeaderBodyFooter, this, { [UI_ID.OWNER]: this });
+        DOMTemplate.Render(templates.HeaderBodyFooter, this, { [UI_ID.OWNER]: this });
 
         this._shelf = this.Add(this.constructor.__default_shelfClass, `shelf`, this._body);
         this._viewport = this.Add(this.constructor.__default_viewportClass, `viewport`, this._body);

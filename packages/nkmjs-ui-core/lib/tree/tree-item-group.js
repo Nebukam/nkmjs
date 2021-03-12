@@ -32,7 +32,7 @@ class TreeItemGroup extends TreeItem {
 
         super._Init();
 
-        this._tplClass = templates.TPLBodyExpand;
+        this._tplClass = templates.BodyExpand;
 
         this._extExpand = this._interactions.Add(extensions.Expand);
         this._extExpand._toggled = false;

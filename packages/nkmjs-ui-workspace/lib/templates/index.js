@@ -2,6 +2,6 @@
 
 module.exports = {
 
-    TPLFacadeTab: require(`./tpl-facade-tab`),
+    FacadeTab: require(`./tpl-facade-tab`),
     
 }

@@ -24,6 +24,8 @@ class IconManipulator extends ImageManipulator {
     }
 
     _ApplyPath(p_element, p_path = false){
+        p_element.src = `style/default/icons/icon.svg`;
+        return;
         if(!p_path){
             p_element.src = ``;
         }else{

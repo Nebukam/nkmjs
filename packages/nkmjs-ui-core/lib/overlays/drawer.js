@@ -37,7 +37,7 @@ class Drawer extends View {
     // ----> Init
 
     static __default_orientation = UI_FLAG.VERTICAL;
-    static __default_facadeTPL = templates.TPLFacadeTitleClose;
+    static __default_facadeTPL = templates.FacadeTitleClose;
 
     _Init() {
         super._Init();

@@ -6,7 +6,7 @@ const { CSS } = require(`@nkmjs/style`);
 const { DATA_SIGNAL, DataObserver, CATALOG_SIGNAL } = require(`@nkmjs/data-core`);
 const { UI_ID, UI, MOUSE, UI_SIGNAL, Widget, DOMTemplate, UI_FLAG, FlagEnum, CatalogWidget, manipulators, extensions } = require(`@nkmjs/ui-core`);
 
-const { TPLFacadeTab } = require(`../templates`);
+const templates = require(`../templates`);
 
 class Tab extends CatalogWidget {
     constructor() { super(); }
@@ -32,7 +32,7 @@ class Tab extends CatalogWidget {
     // ----> DOM
 
     /**
-     * @returns {ImageManipulator}
+     * @returns {ui.core.manipulators.Icon}
      */
     get icon() { return this._icon; }
     /**
@@ -41,7 +41,7 @@ class Tab extends CatalogWidget {
     set icon(p_value) { this._icon.Set(p_value); }
 
     /**
-     * @returns {TextManipulator}
+     * @returns {ui.core.manipulators.Text}
      */
     get label() { return this._label; }
     /**
@@ -50,7 +50,7 @@ class Tab extends CatalogWidget {
     set label(p_value) { this._label.Set(p_value); }
 
     /**
-     * @returns {ImageManipulator}
+     * @returns {ui.core.manipulators.Icon}
      */
     get closeIcon() { return this._closeIcon; }
     /**
@@ -75,7 +75,7 @@ class Tab extends CatalogWidget {
     }
 
     _Render() {
-        DOMTemplate.Render(TPLFacadeTab, this, {
+        DOMTemplate.Render(templates.FacadeTab, this, {
             [UI_ID.OWNER]: this,
             closeIcon: { htitle: `Close` }
         });

@@ -12,7 +12,7 @@ const UI_FLAG = require(`../ui-flag`);
 const DOMTemplate = require(`../dom-template`);
 const Toolbar = require(`../helpers/toolbar`);
 
-const { TPLHeaderBodyFooter } = require(`../templates`);
+const templates = require(`../templates`);
 
 /**
  * ShelfNav is a glorified toolbar designed to work with a Shelf, 
@@ -118,7 +118,7 @@ class ShelfNav extends Toolbar {
     }
 
     _Render() {
-        DOMTemplate.Render(TPLHeaderBodyFooter, this, { [UI_ID.OWNER]: this });
+        DOMTemplate.Render(templates.HeaderBodyFooter, this, { [UI_ID.OWNER]: this });
         this._toolbar = this.Add(Toolbar, `toolbar`, this._footer);
 
         this._orientation.AddManaged(this._toolbar._orientation);

@@ -3,9 +3,7 @@
 const com = require("@nkmjs/common");
 const { DataBlock, CatalogItem } = require(`@nkmjs/data-core`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const uicore = require(`@nkmjs/ui-core`);
-const { UI_ID, UI, UI_FLAG, ButtonBase, DOMTemplate } = uicore;
-const { TPLFacadeLabel } = uicore.templates;
+const { UI_ID, UI, UI_FLAG, ButtonBase, DOMTemplate, templates } = require(`@nkmjs/ui-core`);
 
 class BreadcrumbItem extends ButtonBase {
     constructor() { super(); }
@@ -34,7 +32,7 @@ class BreadcrumbItem extends ButtonBase {
     set label(p_value) { this._flags.Set(UI_FLAG.NO_LABEL, !this._label.Set(p_value)); }
 
     _Render() {
-        DOMTemplate.Render(TPLFacadeLabel, this, {
+        DOMTemplate.Render(templates.FacadeLabel, this, {
             [UI_ID.OWNER]: this,
             [UI_ID.LABEL]: { [UI_ID.CSS_CL]: FONT_FLAG.REGULAR }
         });

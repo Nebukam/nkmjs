@@ -31,7 +31,7 @@ class TPLFacadeTitles extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.New(`span`, { class: UI_ID.ICON }), __icon);
+        this._Add(u.dom.New(`img`, { class: UI_ID.ICON }), __icon);
         this._Add(u.dom.New(`span`, { class: UI_ID.TITLE }), __title);
         this._Add(u.dom.New(`span`, { class: UI_ID.SUBTITLE }), __subtitle);
     }
