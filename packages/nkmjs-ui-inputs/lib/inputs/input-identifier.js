@@ -50,7 +50,7 @@ class InputIdentifier extends InputField {
 
     _Render() {
         this._inputField = u.dom.New(`input`, { class: 'field', type: 'search' });
-        this._label = new manipulators.Image(u.dom.New(`p`, { class: 'error' }, this));
+        this._label = new manipulators.Text(u.dom.New(`p`, { class: 'error' }, this));
     }
 
     _OnInputErrors() {

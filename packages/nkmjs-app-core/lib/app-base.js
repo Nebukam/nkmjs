@@ -163,7 +163,8 @@ class AppBase extends com.helpers.SingletonEx {
      */
     _InternalStart() {
         if (ENV.ARGV.Has(`no-start`)) { return; }
-        setTimeout(this._Bind(this.Start), 1000);
+        this.Start();
+        //setTimeout(this._Bind(this.Start), 1000);
     }
 
     Start() {

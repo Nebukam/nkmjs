@@ -25,6 +25,9 @@
             "platform": "www"
         },
         {
+            "platform": "pwa"
+        },
+        {
             "platform": "chrome"
         },
         {

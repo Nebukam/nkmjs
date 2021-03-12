@@ -10,6 +10,10 @@
             "task-start-electron",
             "task-cleanup"
         ],
+        "build": [
+            "task-build",
+            "task-cleanup"
+        ],
         "start-debug": [
             [
                 "task-styles-fetch",

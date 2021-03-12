@@ -1,17 +1,14 @@
 'use strict';
 
-const u = require("@nkmjs/utils");
-
-const UI_ID = require(`../ui-id`);
-const BaseManipulator = require(`./manipulator`);
+const ImageManipulator = require(`./manipulator-background`);
 
 /**
  * @description TODO
  * @class
- * @augments ui.core.manipulators.BaseManipulator
+ * @augments ui.core.manipulators.ImageManipulator
  * @memberof ui.core.manipulators
  */
-class ImageManipulator extends BaseManipulator {
+class ImageManipulator extends ImageManipulator {
 
     /**
      * @description TODO
@@ -23,46 +20,16 @@ class ImageManipulator extends BaseManipulator {
         super(p_element, p_autoHide, p_sizeControl); }
 
     get content() {
-        return this._element ? this._element.style.backgroundImage : null;
-    }
-
-    /**
-     * @access private
-     * @param {*} p_element 
-     * @param {*} p_value string or BlobResource
-     */
-    _Update(p_element, p_value) {
-
-        if (u.tils.isVoid(p_value)) {
-            this._ApplyPath(p_element, false);
-            return false;
-        } else {
-
-            let path = ``;
-
-            if (u.tils.isString(p_value)) { path = p_value; }
-            else if (UI_ID.ICON in p_value) { path = p_value[UI_ID.ICON]; }
-            else if (UI_ID.PATH in p_value) { path = p_value[UI_ID.PATH]; }
-            else if (`img` in p_value) { path = p_value.img; }
-            else if (`objectURL` in p_value) { path = p_value.objectURL; }
-
-            if (path === `` || !u.tils.isString(path)) { return false; }
-
-            path = u.PATH.FULL(path);
-
-            this._ApplyPath(p_element, path);
-
-            return true;
-
-        }
-
+        return this._element ? this._element.src : null;
     }
 
     _ApplyPath(p_element, p_path = false){
+        p_element.src = `style/default/icons/icon.svg`;
+        return;
         if(!p_path){
-            p_element.style.removeProperty(`backgroundImage`);
+            p_element.src = ``;
         }else{
-            p_element.style.backgroundImage = `url(${p_path})`;
+            p_element.src = p_path;
         }
     }
 

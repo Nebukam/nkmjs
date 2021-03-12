@@ -16,39 +16,24 @@ class TaskBuildElectronApp extends ScriptBase {
         super(`build-electron`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
+        this.Run(`./task-extract-build-configs`, this._Bind(this._OnPreparationComplete));
+
+    }
+
+    _OnPreparationComplete(){
+
         this._Bind(this.BuildNext);
 
         // Fetch target package config in project ( { platform:'windows', arch:'x64' } )
-        this.configIndex = 0;
-        this.validConfigCount = 0;
-        this.configs = null;
+        this.configs = [...NKMjs.Get(`buildconf-electron`, [])];
+
+        if (this.configs.length == 0) {
+            this._logWarn(`There are no electron build target set in your nkmjs.config.json. See https://nebukam.github.io/nkmjs/doc/config.html`);
+            this.End();
+            return;
+        }
 
         this._log(`--pack-only : ${chalk.blue(NKMjs.shortargs.Has(`pack-only`) ? true : false)}`, 1);
-
-        if (`builds` in NKMjs.projectConfig) { this.configs = NKMjs.projectConfig.builds; }
-
-        if (!this.configs) {
-            this._logWarn(`There are no build target set in your nkmjs.config.json. See https://nebukam.github.io/nkmjs/doc/config.html`);
-            this.End();
-            return;
-        }
-
-        let validPlatforms = ["windows", "linux", "mac"],
-            validArch = ["x64", "ia32", "armv7l", "arm64"],
-            validConfigs = [];
-
-        for (let i = 0, n = this.configs.length; i < n; i++) {
-            let conf = this.configs[i];
-            if (validPlatforms.includes(conf.platform)) { validConfigs.push(conf); }
-        }
-
-        if (validConfigs.length == 0) {
-            this._logWarn(`No valid electron config found.`);
-            this.End();
-            return;
-        }
-
-        this.configs = validConfigs;
 
         fs.copyFileSync(NKMjs.InProject(`package.json`), NKMjs.InProject(`package.bak.json`));
 
@@ -137,6 +122,7 @@ class TaskBuildElectronApp extends ScriptBase {
                     productName: shared.productName,
                     appId: shared.appId,
                     asar: !!conf.asar,
+                    icon:NKMjs.InBuildRsc(`icon.png`),
                     directories: {
                         output: NKMjs.InVersionedBuilds(`desktop`, `${conf.platform}-${conf.arch}-${shared.version}`),
                         //app: shared.appDirectory,
