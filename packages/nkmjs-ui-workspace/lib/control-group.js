@@ -81,7 +81,7 @@ class ControlGroup extends Control{
         this._header = u.dom.New(`div`, { class:`header` }, this._host);
 
         this._expandBtn = this.Add(ToolButton, `toggle`, this._header);
-        this._icon = new manipulators.Image(u.dom.New(`span`, {class:`icon`}, this._header));
+        this._icon = new manipulators.Icon(u.dom.New(`div`, {class:`icon`}, this._header));
         this._label = new manipulators.Text(u.dom.New(`span`, {class:`label`}, this._header));
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._header);
         

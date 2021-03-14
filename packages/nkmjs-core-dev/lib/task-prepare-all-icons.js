@@ -23,7 +23,7 @@ class TaskPrepareAllIcons extends ScriptBase {
     OnPreparationComplete() {
 
         let iconList = NKMjs.Get(`icon-list`, []),
-            htmlIcons = ``,
+            htmlIcons = `<!-- ICONS -->\n`,
             lastSize = 0;
 
         // any-purpose icons

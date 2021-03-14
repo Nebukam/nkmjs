@@ -32,7 +32,7 @@ class Tab extends CatalogWidget {
     // ----> DOM
 
     /**
-     * @returns {ui.core.manipulators.Image}
+     * @returns {ui.core.manipulators.Icon}
      */
     get icon() { return this._icon; }
     /**
@@ -50,7 +50,7 @@ class Tab extends CatalogWidget {
     set label(p_value) { this._label.Set(p_value); }
 
     /**
-     * @returns {ui.core.manipulators.Image}
+     * @returns {ui.core.manipulators.Icon}
      */
     get closeIcon() { return this._closeIcon; }
     /**

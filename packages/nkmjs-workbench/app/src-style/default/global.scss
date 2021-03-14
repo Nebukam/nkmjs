@@ -1,18 +1,9 @@
-/*
-
-    MAIN.SCSS
-    CSS Variable declarations.
-    :host selector traverse shadow dom (and only :host), hence shared variables & styles are stored there.
-    
-    It is only imported once, in the root app wrapper.
-    For non-host related selectors, use common.scss
-
-*/
+/*--------------------------*/
+/*<!---- @nkmjs/style ----!>*/
+/*--------------------------*/
 
 @import './_mixins';
 @import './_variables';
-@import './_fonts';
-
 @import './_typography';
 
 /*
@@ -41,7 +32,7 @@
 
 // ----> Global Host Presets
 
-:host{
+*, :host{
 
     // Font sizes
     @for $i from 0 to length($font_size_varnames) { 
@@ -79,3 +70,55 @@
 
 @include scrollbar("", 4px);
 @include scrollbar(":host", 4px);
+
+/*----------------------------*/
+/*<!---- @nkmjs/ui-core ----!>*/
+/*----------------------------*/
+
+@import './_mixins';
+@import './_variables';
+
+
+// ----> Extended color schemes (state color variations)
+
+:host{
+
+    // For each flavor color
+
+    @for $i from 0 to length($col_flavors_ex) { 
+        
+        $base_color: nth($col_flavors_ex, $i + 1);
+        $flavor_name: str-replace(nth($col_flavors_ex_varnames, $i + 1), '--col_');
+        $flavor_id: $i+1;
+
+        // Create per-state variants
+
+        $main_color: rgba($base_color, 0.2);
+        $secondary_color: rgba($base_color, 0.5);
+
+        @include state-color-variations( $main_color, $secondary_color, 0.5, 0.8 )
+        using( $index, $st, $p, $s, $c ){
+            $short_state: nth($short_states_ids, $index);
+            #{'--fcol_'+$flavor_id+'_0_'+$short_state}: $p;
+            #{'--fcol_'+$flavor_id+'_1_'+$short_state}: $s;
+            #{'--fcol_'+$flavor_id+'_2_'+$short_state}: $c;
+        }
+
+    }
+
+    #{$varname_drawer_bg}: $drawer_bg_dark;
+    #{$varname_overlay_bg}: $overlay_bg_dark;
+}/*---------------------------------*/
+/*<!---- @nkmjs/ui-workspace ----!>*/
+/*---------------------------------*/
+
+@import './_mixins';
+@import './_variables';
+
+:host{
+    #{$varname_workspace_bg}: $workspace_bg_dark;
+    #{$varname_workspace_nav_bg}: $workspace_nav_bg_dark;
+
+    #{$varname_tree_indent}: $tree_indent;
+    #{$varname_tree_size}: var(--size_s);
+}

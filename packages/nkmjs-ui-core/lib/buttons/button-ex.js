@@ -47,7 +47,7 @@ class ButtonEx extends ButtonBase {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.Image}
+     * @type {ui.core.manipulators.Icon}
      * @customtag read-only
      */
     get icon() { return this._icon; }
@@ -61,7 +61,7 @@ class ButtonEx extends ButtonBase {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.Image}
+     * @type {ui.core.manipulators.Icon}
      * @customtag read-only
      */
     get label() { return this._label; }
@@ -76,7 +76,7 @@ class ButtonEx extends ButtonBase {
     _Render() {
         super._Render();
 
-        this._icon = new manipulators.Image(u.dom.New(`img`, { class: UI_ID.ICON }, this._host));
+        this._icon = new manipulators.Icon(u.dom.New(`div`, { class: UI_ID.ICON }, this._host));
         this._label = new manipulators.Text(u.dom.New(`span`, { class: UI_ID.LABEL }, this._host));
 
     }

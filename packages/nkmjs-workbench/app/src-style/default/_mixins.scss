@@ -1,3 +1,9 @@
+/*--------------------------*/
+/*<!---- @nkmjs/style ----!>*/
+/*--------------------------*/
+
+@use 'sass:string';
+
 /* OS Theme mixins */
 
 @mixin prefers_dark() {
@@ -176,14 +182,10 @@
     #{':host('+$element + nth($SIZES, $i + 1)+')'} {
         @include repeat-value(auto, $selectors...);
     }
-}@import './_variables';
-@import './_constants';
-@import './_functions';
+}
 
-/* Size mixins */
+// ----> UTILS
 
-$prefix: 'before';
-$suffix: 'after';
 
 /*
     Repeats the same value for multiple properties
@@ -207,7 +209,6 @@ $suffix: 'after';
     }
 }
 
-/////////
 @mixin for-each-selector($before, $selectorList, $after: '', $valueList: null, $properties...) {
     @for $i from 0 to length($selectorList) {
         $index: $i + 1;
@@ -227,7 +228,6 @@ $suffix: 'after';
     }
 }
 
-/////////
 @mixin for-each-host-selector($before, $selectorList, $after: '', $element: '', $valueList: null, $properties...) {
     @for $i from 0 to length($selectorList) {
         $index: $i + 1;
@@ -247,15 +247,21 @@ $suffix: 'after';
     }
 }
 
-
-/* Interactive states mixins */
-
 @mixin for-each-in($list) {
     @for $i from 0 to length($list) {
         $index: $i + 1;
         @content( $index, nth($list, $index));
     }
 }
+
+/*----------------------------*/
+/*<!---- @nkmjs/ui-core ----!>*/
+/*----------------------------*/
+
+@import './_variables';
+@import './_constants';
+@import './_functions';
+
 
 @mixin state-color-variations( $main_color, $secondary_color, $prim_alpha: 0.5, $sec_alpha: 0.8) {
     // Create per-state variants

@@ -25,6 +25,7 @@
             [
                 "task-start-electron",
                 {
+                    "delete-inlined-files":false,
                     "rebuild-styles": true
                 }
             ],

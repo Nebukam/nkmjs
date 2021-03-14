@@ -1,13 +1,9 @@
-/*
 
-    MAIN.SCSS
-    CSS Variable declarations.
-    :host selector traverse shadow dom (and only :host), hence shared variables & styles are stored there.
-    
-    It is only imported once, in the root app wrapper.
-    For non-host related selectors, use common.scss
 
-*/
+/*----------------------------*/
+/*<!---- @nkmjs/ui-core ----!>*/
+/*----------------------------*/
+
 @import './_mixins';
 @import './_variables';
 

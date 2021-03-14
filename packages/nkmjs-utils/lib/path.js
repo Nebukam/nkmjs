@@ -94,7 +94,7 @@ class PATH {
      * @param {string} p_path 
      * @returns {string} Shrinked path
      * @order 2
-     * @example PATH.FULL('./style/default/main.css') == '%STYLE%/main.css'
+     * @example PATH.FULL('./style/default/global.css') == '%STYLE%/global.css'
      */
     static SHORT(p_path) {
         p_path = this.Sanitize(p_path);
@@ -108,7 +108,7 @@ class PATH {
      * @param {string} p_path 
      * @returns {string} Expanded path
      * @order 2
-     * @example PATH.FULL('%STYLE%/main.css'); == './style/default/main.css'
+     * @example PATH.FULL('%STYLE%/global.css'); == './style/default/global.css'
      */
     static FULL(p_path) {
         for (let n in this.MAP) { p_path = p_path.replace(n, this.MAP[n]); }
@@ -130,9 +130,9 @@ class PATH {
      * @description Attempt to isolate the last name inside a path.
      * @param {string} p_path 
      * @returns {string}
-     * @example PATH.name('./style/default/main.css')  === 'main'
-     * @example PATH.name('./style/default/main')  === 'main'
-     * @example PATH.name('./style/default/main/')  === 'main'
+     * @example PATH.name('./style/default/global.css')  === 'global'
+     * @example PATH.name('./style/default/global')  === 'global'
+     * @example PATH.name('./style/default/global/')  === 'global'
      */
     static name(p_path) {
         let splitBase = p_path.split('/');
@@ -146,8 +146,8 @@ class PATH {
      * @description Attempts to isolate and return the extension from a given path
      * @param {string} p_path 
      * @returns {string}
-     * @example PATH.name('./style/default/main.css')  === '.css'
-     * @example PATH.name('./style/default/main.css?value=none')  === '.css'
+     * @example PATH.name('./style/default/global.css')  === '.css'
+     * @example PATH.name('./style/default/global.css?value=none')  === '.css'
      */
     static ext(p_path) {
 

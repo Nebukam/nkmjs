@@ -92,7 +92,7 @@ class DialogBox extends Widget {
 
     _Render() {
 
-        this._icon = new manipulators.Image(u.dom.New('img', { class: `icon` }, this._host), false, true);
+        this._icon = new manipulators.Icon(u.dom.New('div', { class: `icon` }, this._host), false, true);
 
         this._header = u.dom.New(`div`, { class: `group header` }, this._host);
         this._body = u.dom.New(`div`, { class: `group body` }, this._host);

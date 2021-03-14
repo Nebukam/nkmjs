@@ -6,6 +6,7 @@ module.exports = {
     
     Background: require(`./manipulator-background`),
     Image: require(`./manipulator-image`),
+    Icon: require(`./manipulator-icon`),
     Text: require(`./manipulator-text`),
     
 }

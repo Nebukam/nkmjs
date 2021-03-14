@@ -39,9 +39,9 @@ class StyleguideApp extends AppBase {
         this._buttonConfigs = [
             { htitle: `htitle A text`, label: 'Overlay', trigger: { fn: this._Overlay }, variant: UI_FLAG.FRAME },
             { htitle: `htitle B text`, group: 'A', label: 'Label B', toggle: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, flavor: COMMON_FLAG.WARNING },
-            { htitle: `htitle C text`, group: 'A', icon: '_', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF } },
+            { htitle: `htitle C text`, group: 'A', icon: 'icons-01', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF } },
             { htitle: `htitle D text`, label: 'Popup', trigger: { fn: this._Dialog }, flavor: UI_FLAG.CTA },
-            { htitle: `htitle E text`, icon: '_', trigger: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.WARNING }
+            { htitle: `htitle E text`, icon: 'icon', trigger: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.WARNING }
         ];
 
         this._dialogInfos = pool.POOL.Rent(OverlayOptions);

@@ -1,17 +1,11 @@
-/*
-
-    COMMON.SCSS
-    Generic/shared style declarations.
-
-    It is imported on a per-component basis
-    For generic, host-related selectors, use main.scss
-
-*/
+/*--------------------------*/
+/*<!---- @nkmjs/style ----!>*/
+/*--------------------------*/
 
 @import './_mixins';
 @import './_variables';
-@import './_fonts';
 @import './_typography';
+
 .row-break {
     flex-basis: 100%;
     height: 0;
@@ -22,10 +16,6 @@
     flex-basis: 100%;
     height: 0%;
     width: 0;
-}
-
-.test{
-    background-image: url("./icons/icon.svg");
 }
 
 // ----> Host presets

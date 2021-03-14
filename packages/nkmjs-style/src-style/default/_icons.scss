@@ -1,0 +1,16 @@
+/*--------------------------*/
+/*<!---- @nkmjs/style ----!>*/
+/*--------------------------*/
+
+@import './_mixins';
+
+$icon-paths: "<!nkm-- list-files ./assets/icons .svg,.png -->";
+$icon-names: "<!nkm-- list-files ./assets/icons .svg,.png name-only -->";
+
+// Include prefers_dark / prefers_light
+
+@include for-each-in($icon-names) using ($i, $item){
+    .icon[data-icon="#{$item}"]{
+        background-image: url("#{nth($icon-paths, $i)}");
+    }
+}

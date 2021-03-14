@@ -1,3 +1,6 @@
+/*--------------------------*/
+/*<!---- @nkmjs/style ----!>*/
+/*--------------------------*/
 
 /* High-level UI Flags */
 
@@ -14,6 +17,11 @@ $CTA: '.cta';
 
 $FLAVORS: $INFOS, $WARNING, $ERROR;
 $FLAVORS_EX: $INFOS, $WARNING, $ERROR, $READY, $DIRTY, $LOADING, $PROCESSING, $WAITING, $ACTIVE, $CTA;
+
+/*----------------------------*/
+/*<!---- @nkmjs/ui-core ----!>*/
+/*----------------------------*/
+
 /* Generics */
 
 $NONE: '.none';

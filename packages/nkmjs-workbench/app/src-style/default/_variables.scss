@@ -1,3 +1,7 @@
+/*--------------------------*/
+/*<!---- @nkmjs/style ----!>*/
+/*--------------------------*/
+
 @import './functions';
 
 ////////////
@@ -211,6 +215,11 @@ $size_varnames_third:
     $varname_size_xl_third;
 
 
+
+/*----------------------------*/
+/*<!---- @nkmjs/ui-core ----!>*/
+/*----------------------------*/
+
 @import './_constants';
 @import './_functions';
 
@@ -238,7 +247,11 @@ $drawer_bg_dark: #3d3d3d;
 $drawer_bg_light: #f0f0f0;
 
 $varname_drawer_bg: '--col_drawer_bg';
-$varname_overlay_bg: '--col_overlay_bg';$workspace_bg_dark: #191919;
+$varname_overlay_bg: '--col_overlay_bg';/*---------------------------------*/
+/*<!---- @nkmjs/ui-workspace ----!>*/
+/*---------------------------------*/
+
+$workspace_bg_dark: #191919;
 $workspace_nav_bg_dark: rgba(#4d4d4d, 0.2);
 
 $workspace_bg_light: #f0f0f0;

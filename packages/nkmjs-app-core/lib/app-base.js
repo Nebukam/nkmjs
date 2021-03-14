@@ -132,9 +132,9 @@ class AppBase extends com.helpers.SingletonEx {
         this._mainWrapper = UI.Rent(this._mainWrapperClass);
         this._mainWrapper.setAttribute(`id`, `app`);
 
-        // Insert main.css in ShadowDom so all subsequent elements benefit from it
+        // Insert global.css in ShadowDom so all subsequent elements benefit from it
         u.dom.AttachFirst(
-            u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/main.css`), rel: `stylesheet` })
+            u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` })
             , this._mainWrapper._host);
 
         if (this._layers) {
@@ -172,7 +172,7 @@ class AppBase extends com.helpers.SingletonEx {
         u.LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
 
         // Push the app wrapper to the DOM
-        u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/main.css`), rel: `stylesheet` }, document.head);
+        u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
         u.dom.Attach(this._mainWrapper, document.body);
 
         this._userPreferences.Load(
@@ -211,7 +211,7 @@ class AppBase extends com.helpers.SingletonEx {
                 u.dom.Detach(p_evt.target);
             });
             
-            let delay = `50ms`,
+            let delay = `250ms`,
                 duration = `250ms`,
                 transition = `cubic-bezier(0.885, 0.025, 0.960, 0.030)`,
                 name = this.constructor.__loading_cssAnimationOut;

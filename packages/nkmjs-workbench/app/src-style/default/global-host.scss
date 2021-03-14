@@ -1,17 +1,11 @@
-/*
-
-    COMMON.SCSS
-    Generic/shared style declarations.
-
-    It is imported on a per-component basis
-    For generic, host-related selectors, use main.scss
-
-*/
+/*--------------------------*/
+/*<!---- @nkmjs/style ----!>*/
+/*--------------------------*/
 
 @import './_mixins';
 @import './_variables';
-@import './_fonts';
 @import './_typography';
+
 .row-break {
     flex-basis: 100%;
     height: 0;
@@ -22,10 +16,6 @@
     flex-basis: 100%;
     height: 0%;
     width: 0;
-}
-
-.test{
-    background-image: url("./icons/icon.svg");
 }
 
 // ----> Host presets
@@ -51,15 +41,11 @@
 }
 
 @include scrollbar("", 4px);
-@include scrollbar(":host", 4px);/*
+@include scrollbar(":host", 4px);
 
-    COMMON.SCSS
-    Generic/shared style declarations.
-
-    It is imported on a per-component basis
-    For generic, host-only selectors, use main.scss
-
-*/
+/*----------------------------*/
+/*<!---- @nkmjs/ui-core ----!>*/
+/*----------------------------*/
 
 @import './_mixins';
 @import './_variables';
@@ -106,16 +92,18 @@ using ($index, $val){
     min-height: var(--clamped-size);
     max-height: var(--clamped-size);
 
-    border: 3px solid #e5e5e5;
+    //border: 3px solid #e5e5e5;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
 
     opacity: 0.8;
 
-    border-radius: 1000px;
+    //border-radius: 1000px;
 
     box-sizing: border-box;
+
+    background: url("./assets/icons/icons-01.svg");
 
     &:only-child{
         margin:0;
@@ -123,21 +111,11 @@ using ($index, $val){
 
 }
 
-img .icon{
-
-    &#main{
-        fill: var(--flavor_contrast) !important;
-    }
-
-    &#accent{
-        fill: var(--flavor_color) !important;
-    }
-    
-}
-
 div.icon{
     display: inline-block;
 }
+
+@import './_icons';
 
 /* Extensions */
 
@@ -153,15 +131,9 @@ div.icon{
 
 .drop-target-overlay{
     border: 1px solid #{$col_ready};
-}/*
-
-    COMMON.SCSS
-    Generic/shared style declarations.
-
-    It is imported on a per-component basis
-    For generic, host-related selectors, use main.scss
-
-*/
+}/*---------------------------------*/
+/*<!---- @nkmjs/ui-workspace ----!>*/
+/*---------------------------------*/
 
 @import './_mixins';
 @import './_variables';

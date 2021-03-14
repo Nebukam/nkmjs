@@ -26,7 +26,7 @@ class TPLFacadeLabel extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.New(`img`, { class: UI_ID.ICON }), __icon);
+        this._Add(u.dom.New(`div`, { class: UI_ID.ICON }), __icon);
         this._Add(u.dom.New(`span`, { class: UI_ID.LABEL }), __label);
     }
 
@@ -34,7 +34,7 @@ class TPLFacadeLabel extends DOMTemplate {
         let owner = super.Render(p_host, p_options),
             iconOpts = u.tils.Get(p_options, UI_ID.ICON, null),
             labelOpts = u.tils.Get(p_options, UI_ID.LABEL, null),
-            icon = owner[__icon] = new manipulators.Image(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
+            icon = owner[__icon] = new manipulators.Icon(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
             label = owner[__label] = new manipulators.Text(owner[__label], labelOpts && `autoHide` in labelOpts ? labelOpts.autoHide : false);
 
         if (iconOpts) { 

@@ -14,7 +14,11 @@ class SwapURLtoURI {
 
     static seen = {};
 
-    constructor(p_filePath, p_doneFn, p_swapFn = null) {
+    constructor(p_filePath, p_options) {
+
+        this._content = ``;
+        this._exts = p_options.inline;
+        this._processedAny = false;
 
         let encodeSVG = this.EncodeSVG = this.EncodeSVG.bind(this),
             encodeRAW = this.EncodeIMG = this.EncodeRAW.bind(this),
@@ -25,13 +29,15 @@ class SwapURLtoURI {
                 '.gif': encodeRAW,
                 '.otf': encodeRAW,
                 '.ttf': encodeRAW
-            };
+            },
+            contentStr = p_options.content ? p_options.content : null;
 
         try {
 
-            let dir = path.dirname(p_filePath),
-                contentStr = fs.readFileSync(p_filePath, 'utf8'),
-                firstPassSplit = contentStr.split(`url("`);
+            let dir = path.dirname(p_filePath);
+            contentStr = contentStr ? contentStr : fs.readFileSync(p_filePath, 'utf8');
+            
+            let firstPassSplit = contentStr.split(`url("`);
 
             firstPassSplit.shift(); // remove first bit, we don't need to process it.
 
@@ -50,10 +56,11 @@ class SwapURLtoURI {
                     } else {
 
                         let ext = path.extname(targetFile),
+                            limit = ext in this._exts ? this._exts[ext] : null,
                             stats = fs.statSync(targetFile),
                             encodingFn = ext in encoders ? encoders[ext] : null;
 
-                        if (stats.size >= 2000 || !encodingFn) { uri = null; }
+                        if (limit === null || stats.size >= limit || !encodingFn) { uri = null; }
                         else { uri = encodingFn(targetFile, u.MIME.Get(ext), url); }
 
                         this.constructor.seen[targetFile] = uri;
@@ -62,18 +69,21 @@ class SwapURLtoURI {
 
                     if (uri === null) { continue; }
 
-                    if (p_swapFn !== null) { uri = p_swapFn(url, uri); }
+                    if (p_options.swap) { uri = p_options.swap(url, uri); }
 
-                    console.log(`"${url}"`);
-                    contentStr = contentStr.split(`"${url}"`).join(`"${uri}"`);
+                    //console.log(`"${url}" / ${uri}`);
+                    contentStr = contentStr.split(`"${url}"`).join(`${uri}`);
+                    this._processedAny = true;
 
-                } catch (e) { }
+                } catch (e) { console.log(e); }
 
             }
 
-            p_doneFn(p_filePath, contentStr);
-
         } catch (e) { console.log(e); }
+
+        if (this._processedAny) {
+            if (p_options.done) { p_options.done(p_filePath, contentStr); }
+        }
 
     }
 
@@ -82,12 +92,15 @@ class SwapURLtoURI {
     EncodeSVG(targetFilePath, mime, url) {
         let data = fs.readFileSync(targetFilePath, 'utf8');
         data = data.split(`"`).join(`'`);
-        return `data:${mime.type};utf8,${data}`;
+        data = encodeURI(data);
+        data = data.split(`%20`).join(` `); // Need valid spaces
+        data = data.split(`#`).join(`%23`); // And need to replace #
+        return `"data:${mime.type},${data}"`;
     }
 
     EncodeRAW(targetFilePath, mime, url) {
         let data = Buffer.from(fs.readFileSync(targetFilePath)).toString('base64');
-        return `data:${mime.type};base64,${data}`;
+        return `"data:${mime.type};base64,${data}"`;
     }
 }
 

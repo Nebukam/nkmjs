@@ -7,7 +7,7 @@ const { CSS } = require("@nkmjs/core").style;
 class UIItem extends DisplayObjectContainer {
     constructor() { super(); }
 
-    static __NFO__ = { css: [`@/common.css`, `css/test.css`] }
+    static __NFO__ = { css: [`@/global-host.css`, `css/test.css`] }
 
     static __usePaintCallback = true;
 

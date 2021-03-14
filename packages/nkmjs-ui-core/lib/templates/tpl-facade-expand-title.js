@@ -31,8 +31,8 @@ class TPLFacadeExpandTitle extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.New(`img`, { class: `${UI_ID.ICON} expand` }), __expandIcon);
-        this._Add(u.dom.New(`img`, { class: UI_ID.ICON }), __icon);
+        this._Add(u.dom.New(`div`, { class: `${UI_ID.ICON} expand` }), __expandIcon);
+        this._Add(u.dom.New(`div`, { class: UI_ID.ICON }), __icon);
         this._Add(u.dom.New(`span`, { class: UI_ID.TITLE }), __title);
     }
 
@@ -41,8 +41,8 @@ class TPLFacadeExpandTitle extends DOMTemplate {
             expIconOpts = u.tils.Get(p_options, `expandIcon`, null),
             iconOpts = u.tils.Get(p_options, UI_ID.ICON, null),
             titleOpts = u.tils.Get(p_options, UI_ID.TITLE, null),
-            expandIcon = owner[__expandIcon] = new manipulators.Image(owner[__expandIcon], expIconOpts && `autoHide` in expIconOpts ? expIconOpts.autoHide : false),
-            icon = owner[__icon] = new manipulators.Image(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
+            expandIcon = owner[__expandIcon] = new manipulators.Icon(owner[__expandIcon], expIconOpts && `autoHide` in expIconOpts ? expIconOpts.autoHide : false),
+            icon = owner[__icon] = new manipulators.Icon(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
             title = owner[__title] = new manipulators.Text(owner[__title], titleOpts && `autoHide` in titleOpts ? titleOpts.autoHide : false);
 
         if (expIconOpts) {

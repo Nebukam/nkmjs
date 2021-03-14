@@ -19,8 +19,8 @@ class TPLBodyExpand extends DOMTemplate {
     static _CreateTemplate() {
         super._CreateTemplate();
         this._Add(u.dom.New(`div`, { class: UI_ID.HEADER }), __header);
-        this._Add(u.dom.New(`img`, { class: `${UI_ID.ICON} expand` }), __expandIcon, __header);
-        this._Add(u.dom.New(`img`, { class: UI_ID.ICON }), __icon, __header);
+        this._Add(u.dom.New(`div`, { class: `${UI_ID.ICON} expand` }), __expandIcon, __header);
+        this._Add(u.dom.New(`div`, { class: UI_ID.ICON }), __icon, __header);
         this._Add(u.dom.New(`span`, { class: UI_ID.LABEL }), __label, __header);
         this._Add(u.dom.New(`div`, { class: UI_ID.BODY }), __body);
     }
@@ -30,8 +30,8 @@ class TPLBodyExpand extends DOMTemplate {
             expIconOpts = u.tils.Get(p_options, `expandIcon`, null),
             iconOpts = u.tils.Get(p_options, UI_ID.ICON, null),
             labelOpts = u.tils.Get(p_options, UI_ID.TITLE, null),
-            expandIcon = owner[__expandIcon] = new manipulators.Image(owner[__expandIcon], expIconOpts && `autoHide` in expIconOpts ? expIconOpts.autoHide : false),
-            icon = owner[__icon] = new manipulators.Image(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
+            expandIcon = owner[__expandIcon] = new manipulators.Icon(owner[__expandIcon], expIconOpts && `autoHide` in expIconOpts ? expIconOpts.autoHide : false),
+            icon = owner[__icon] = new manipulators.Icon(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
             label = owner[__label] = new manipulators.Text(owner[__label], labelOpts && `autoHide` in labelOpts ? labelOpts.autoHide : false);
 
         if (expIconOpts) {

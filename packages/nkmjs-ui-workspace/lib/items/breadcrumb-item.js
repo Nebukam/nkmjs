@@ -42,7 +42,6 @@ class BreadcrumbItem extends ButtonBase {
 
     _OnDataUpdated(p_data) {
         super._OnDataUpdated(p_data);
-        //this._label.Set(this._data);
     }
 }
 

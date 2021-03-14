@@ -1,6 +1,6 @@
 {
-    "inlineURLs":true,
-    "replaceSVGColors":{
-        "#fff":"#000"
+    "inline":{
+        ".svg":1000,
+        ".png":1000
     }
 }

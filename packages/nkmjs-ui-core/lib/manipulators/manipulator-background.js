@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 
 const UI_ID = require(`../ui-id`);
-const BaseManipulator = require(`./manipulator`);
+const Manipulator = require(`./manipulator`);
 
 /**
  * @description TODO
@@ -11,7 +11,7 @@ const BaseManipulator = require(`./manipulator`);
  * @augments ui.core.manipulators.BaseManipulator
  * @memberof ui.core.manipulators
  */
-class BackgroundManipulator extends BaseManipulator {
+class BackgroundManipulator extends Manipulator {
 
     /**
      * @description TODO
@@ -19,8 +19,9 @@ class BackgroundManipulator extends BaseManipulator {
      * @param {boolean} p_autoHide 
      * @param {boolean} p_sizeControl 
      */
-    constructor(p_element = null, p_autoHide = true, p_sizeControl = false) { 
-        super(p_element, p_autoHide, p_sizeControl); }
+    constructor(p_element = null, p_autoHide = true, p_sizeControl = false) {
+        super(p_element, p_autoHide, p_sizeControl);
+    }
 
     get content() {
         return this._element ? this._element.style.backgroundImage : null;
@@ -58,10 +59,10 @@ class BackgroundManipulator extends BaseManipulator {
 
     }
 
-    _ApplyPath(p_element, p_path = false){
-        if(!p_path){
+    _ApplyPath(p_element, p_path = false) {
+        if (!p_path) {
             p_element.style.removeProperty(`backgroundImage`);
-        }else{
+        } else {
             p_element.style.backgroundImage = `url(${p_path})`;
         }
     }

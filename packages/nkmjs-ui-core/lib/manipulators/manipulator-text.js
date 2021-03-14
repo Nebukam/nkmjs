@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const HSLA = require("@nkmjs/style/lib/colors/hsla");
 const RGBA = require("@nkmjs/style/lib/colors/rgba");
-const BaseManipulator = require("./manipulator");
+const Manipulator = require("./manipulator");
 
 /**
  * @description TODO
@@ -11,7 +11,7 @@ const BaseManipulator = require("./manipulator");
  * @augments ui.core.manipulators.BaseManipulator
  * @memberof ui.core.manipulators
  */
-class TextManipulator extends BaseManipulator {
+class TextManipulator extends Manipulator {
 
     /**
      * @description TODO
@@ -19,8 +19,9 @@ class TextManipulator extends BaseManipulator {
      * @param {boolean} p_autoHide 
      * @param {boolean} p_sizeControl 
      */
-    constructor(p_element = null, p_autoHide = true, p_sizeControl = false) { 
-        super(p_element, p_autoHide, p_sizeControl); }
+    constructor(p_element = null, p_autoHide = true, p_sizeControl = false) {
+        super(p_element, p_autoHide, p_sizeControl);
+    }
 
     get content() {
         return this._element ? this._element.innerHTML : null;

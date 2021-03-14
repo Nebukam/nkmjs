@@ -67,7 +67,7 @@ class TreeItem extends CatalogWidget {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.Image}
+     * @type {ui.core.manipulators.Icon}
      * @customtag read-only
      */
     get icon() { return this._icon; }

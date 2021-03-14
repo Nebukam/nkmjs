@@ -40,7 +40,7 @@ class TPLBodyHeaderTitles extends DOMTemplate {
     static _CreateTemplate() {
         super._CreateTemplate();
         this._Add(u.dom.New(`div`, { class: UI_ID.HEADER }), __header);
-        this._Add(u.dom.New(`img`, { class: UI_ID.ICON }), __icon, __header);
+        this._Add(u.dom.New(`div`, { class: UI_ID.ICON }), __icon, __header);
         this._Add(u.dom.New(`span`, { class: `titles` }), __titles, __header);
         this._Add(u.dom.New(`span`, { class: UI_ID.TITLE }), __title, __titles);
         this._Add(u.dom.New(`span`, { class: UI_ID.SUBTITLE }), __subtitle, __titles);
@@ -52,7 +52,7 @@ class TPLBodyHeaderTitles extends DOMTemplate {
             iconOpts = u.tils.Get(p_options, UI_ID.ICON, null),
             titleOpts = u.tils.Get(p_options, UI_ID.TITLE, null),
             subtitleOpts = u.tils.Get(p_options, UI_ID.SUBTITLE, null),
-            icon = owner[__icon] = new manipulators.Image(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : false),
+            icon = owner[__icon] = new manipulators.Icon(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : false),
             title = owner[__title] = new manipulators.Text(owner[__title], titleOpts && `autoHide` in titleOpts ? titleOpts.autoHide : false),
             subtitle = owner[__subtitle] = new manipulators.Text(owner[__subtitle], subtitleOpts && `autoHide` in subtitleOpts? subtitleOpts.autoHide : false);
 

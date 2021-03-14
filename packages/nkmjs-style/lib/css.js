@@ -106,7 +106,7 @@ class CSS_UTILS extends com.helpers.Singleton {
                     if (sourceValue[0] === null) {
                         //first value is null, remove previous values
                         let arrCopy = [...sourceValue];
-                        arrCopy.unshift(); //remove null
+                        arrCopy.shift(); //remove null
                         p_base[name] = arrCopy;
                     } else {
                         if (u.tils.isArray(baseValue)) {

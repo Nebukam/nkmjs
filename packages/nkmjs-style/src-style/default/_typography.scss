@@ -1,6 +1,18 @@
-@import './_variables';
-//@import './_fonts';
+/*--------------------------*/
+/*<!---- @nkmjs/style ----!>*/
+/*--------------------------*/
 
+@import './_variables';
+
+@font-face { 
+    font-family: 'Regular'; 
+    src: url('./assets/fonts/roboto/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face { 
+    font-family: 'Title'; 
+    src: url('./assets/fonts/d-din/D-DINCondensed.otf') format('opentype');
+}
 
 $family_regular: 'Regular', apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 

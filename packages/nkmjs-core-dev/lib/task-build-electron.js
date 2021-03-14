@@ -8,6 +8,7 @@ const NKMjs = require(`./nkm.js`);
 const chalk = require('chalk');
 const FSUTILS = require(`./helpers/fsutils`);
 const builder = require(`electron-builder`);
+const FileBackup = require('./helpers/file-backup');
 
 class TaskBuildElectronApp extends ScriptBase {
 
@@ -15,6 +16,8 @@ class TaskBuildElectronApp extends ScriptBase {
 
         super(`build-electron`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
+
+        this._backups = new FileBackup();
 
         this.Run(`./task-extract-build-configs`, this._Bind(this._OnPreparationComplete));
 
@@ -35,7 +38,7 @@ class TaskBuildElectronApp extends ScriptBase {
 
         this._log(`--pack-only : ${chalk.blue(NKMjs.shortargs.Has(`pack-only`) ? true : false)}`, 1);
 
-        fs.copyFileSync(NKMjs.InProject(`package.json`), NKMjs.InProject(`package.bak.json`));
+        this._backups.Backup(NKMjs.InProject(`package.json`));
 
         // ----> Ignore files
         let files = this.BuildIgnoreList();
@@ -153,13 +156,8 @@ class TaskBuildElectronApp extends ScriptBase {
 
     }
 
-    _RestorePackageJson() {
-        fs.unlinkSync(NKMjs.InProject(`package.json`));
-        fs.renameSync(NKMjs.InProject(`package.bak.json`), NKMjs.InProject(`package.json`));
-    }
-
     _OnBuildsComplete() {
-        this._RestorePackageJson();
+        this._backups.Restore();
         this.End();
     }
 
