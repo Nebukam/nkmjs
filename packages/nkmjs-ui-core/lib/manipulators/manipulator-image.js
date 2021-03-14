@@ -1,6 +1,6 @@
 'use strict';
 
-const ImageManipulator = require(`./manipulator-background`);
+const BackgroundManipulator = require(`./manipulator-background`);
 
 /**
  * @description TODO
@@ -8,7 +8,7 @@ const ImageManipulator = require(`./manipulator-background`);
  * @augments ui.core.manipulators.ImageManipulator
  * @memberof ui.core.manipulators
  */
-class ImageManipulator extends ImageManipulator {
+class ImageManipulator extends BackgroundManipulator {
 
     /**
      * @description TODO

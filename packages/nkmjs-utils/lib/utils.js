@@ -291,52 +291,13 @@ class UTILS {
     }
 
     /**
-     * @description Merges the value of an Object into another. 
-     * Recursive, overwrites (unless p_skipExisting === true)
-     * @param {object} p_base The base object to append into
-     * @param {object} p_source The reference object to fetch values from
-     * @param {object} p_skipExisting Whether or not to overwrite on existing values
-     * @returns {object} The p_base object
-     */
-    static Merge(p_base, p_source, p_skipExisting = false) {
-
-        if (UTILS.isVoid(p_base)) { return p_source; }
-
-        for (let member in p_source) {
-
-            if (!(p_source.hasOwnProperty(member))) { continue; }
-            let sourceValue = p_source[member];
-
-            if (p_base.hasOwnProperty(member) && !p_skipExisting) {
-                //Property exist in base, update its values
-                let baseValue = p_base[member];
-                if (!UTILS.isArray(baseValue) && UTILS.isObject(baseValue)) {
-                    if (!UTILS.isArray(sourceValue) && UTILS.isObject(sourceValue)) {
-                        UTILS.Merge(baseValue, sourceValue);
-                    } else {
-                        p_base[member] = sourceValue;
-                    }
-                } else {
-                    p_base[member] = sourceValue;
-                }
-            } else {
-                //Simply assign value
-                p_base[member] = sourceValue;
-            }
-        }
-
-        return p_base;
-
-    }
-
-    /**
      * @description Copy values from p_source currently missing in p_base.
      * Merge object properties
      * @param {*} p_base 
      * @param {*} p_source 
-     * @param {*} p_mergeArrays if true, will unshift array values from source into base when the two values are arrays.
+     * @param {number} p_mergeArrays 0 doesn't merge, -1 unshifts missing values, 1 pushes them.
      */
-    static SetMissing(p_base, p_source, p_mergeArrays = false) {
+    static SetMissing(p_base, p_source, p_mergeArrays = 0) {
 
         for (let key in p_source) {
             let sourceValue = p_source[key];
@@ -351,9 +312,12 @@ class UTILS {
             } else {
                 let baseValue = p_base[key];
                 if (UTILS.isArray(baseValue)) {
-                    if (UTILS.isArray(sourceValue) && p_mergeArrays) {
+                    if (UTILS.isArray(sourceValue) && p_mergeArrays !== 0) {
                         for (let i = 0, n = sourceValue.length; i < n; i++) {
-                            if (!baseValue.includes(sourceValue[i])) { baseValue.unshift(sourceValue[i]); }
+                            if (!baseValue.includes(sourceValue[i])) {
+                                if (p_mergeArrays < 0) { baseValue.unshift(sourceValue[i]); }
+                                else { baseValue.push(sourceValue[i]); }
+                            }
                         }
                     }
                 } else if (UTILS.isObject(baseValue) && UTILS.isObject(sourceValue)) {
@@ -869,15 +833,15 @@ class UTILS {
             },
             str = ``;
 
-        if(result.days > 0){
+        if (result.days > 0) {
             str = `${result.days}d${result.hours}h${result.minutes}m${result.seconds}s${result.ms}ms`;
-        }else if(result.hours > 0){
+        } else if (result.hours > 0) {
             str = `${result.hours}h${result.minutes}m${result.seconds}s${result.ms}ms`;
-        }else if(result.minutes > 0){
+        } else if (result.minutes > 0) {
             str = `${result.minutes}m${result.seconds}s${result.ms}ms`;
-        }else if(result.seconds > 0){
+        } else if (result.seconds > 0) {
             str = `${result.seconds}s${result.ms}ms`;
-        }else{
+        } else {
             str = `${result.ms}ms`;
         }
 

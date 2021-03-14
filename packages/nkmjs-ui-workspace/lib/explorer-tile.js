@@ -1,6 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const style = require("@nkmjs/style");
 const { UI } = require(`@nkmjs/ui-core`);
 
 const Explorer = require(`./explorer`);
@@ -12,7 +13,7 @@ class TileExplorer extends Explorer{
 
     _Style(){
 
-        return u.tils.Merge(super._Style(),{
+        return style.CSS.Extends({
             '.body':{
                 display:`flex`,
                 'flex-flow':`row wrap`,
@@ -31,7 +32,7 @@ class TileExplorer extends Explorer{
                 'align-content':`flex-start`,
                 'align-items':`flex-start`,
             }
-        });
+        }, super._Style());
     }
 }
 

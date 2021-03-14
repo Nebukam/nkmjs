@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const actions = require("@nkmjs/actions");
 const com = require("@nkmjs/common");
+const style = require("@nkmjs/style");
 const { Catalog } = require(`@nkmjs/data-core`);
 const { UI } = require(`@nkmjs/ui-core`);
 
@@ -40,7 +41,7 @@ class RootWorkspace extends Workspace {
     // ----> Rendering
 
     _Style() {
-        return u.tils.Merge(super._Style(), {
+        return style.CSS.Extends({
             ':host': {
                 position: `relative`,
                 width: `1px`, //!important dirty fix
@@ -48,7 +49,7 @@ class RootWorkspace extends Workspace {
                 flex: `1 1 auto`,
                 display: `flex`,
             },
-        });
+        }, super._Style());
     }
 
     // ----> Request handling

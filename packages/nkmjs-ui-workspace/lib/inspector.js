@@ -8,6 +8,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const style = require("@nkmjs/style");
 const { UI } = require(`@nkmjs/ui-core`);
 
 const Control = require(`./control`);
@@ -21,7 +22,7 @@ class Inspector extends Control {
     }
 
     _Style() {
-        return u.tils.Merge(super._Style(), {
+        return style.CSS.Extends({
             ':host': {
                 position: `relative`,
                 display: `flex`,
@@ -30,7 +31,7 @@ class Inspector extends Control {
                 'align-items': `stretch`,
                 'background-color': `rgba(0,0,0,0.0)`, //'background-color':`rgba(0,0,0,0.1)`,
             },
-        });
+        }, super._Style());
     }
 
     AddInspector(p_cl, p_cssSelector = null) {

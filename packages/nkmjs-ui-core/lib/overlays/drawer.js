@@ -66,7 +66,9 @@ class Drawer extends View {
                 'grid-row': '1'
             },
             '.body':{
-                'grid-row': '2'
+                'grid-row': '2',
+                'overflow-x':'hidden',
+                'overflow-y':'auto',
             },
             '.icon.close':{
             }
@@ -74,7 +76,7 @@ class Drawer extends View {
     }
 
     /**
-     * @returns {IconManipulator}
+     * @returns {Image}
      */
     get icon() { return this._icon; }
     /**
@@ -92,7 +94,7 @@ class Drawer extends View {
     set title(p_value) { this._title.Set(p_value); }
 
     /**
-     * @returns {IconManipulator}
+     * @returns {Image}
      */
     get closeIcon() { return this._closeIcon; }
     /**

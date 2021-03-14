@@ -1,4 +1,5 @@
 const u = require("@nkmjs/utils");
+const style = require("@nkmjs/style");
 const { UI_ID, UI, manipulators } = require(`@nkmjs/ui-core`);
 const { Metadata, ActionMetadataSet } = require(`@nkmjs/data-core`);
 const { INPUT_SIGNAL, InputField } = require(`@nkmjs/ui-inputs`);
@@ -28,7 +29,7 @@ class MetaControlItem extends InspectorItem{
     // ----> DOM
 
     _Style(){
-        return u.tils.Merge(super._Style(), {
+        return style.CSS.Extends({
             ':host':{
                 margin:`5px`,
                 padding:`6px`,
@@ -45,7 +46,7 @@ class MetaControlItem extends InspectorItem{
             '.control':{
                 flex:`1 1 auto`,
             }
-        });
+        }, super._Style());
     }
 
     _Render(){

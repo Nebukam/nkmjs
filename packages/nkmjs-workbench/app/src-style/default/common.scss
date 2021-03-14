@@ -24,6 +24,10 @@
     width: 0;
 }
 
+.test{
+    background-image: url("./icons/icon.svg");
+}
+
 // ----> Host presets
 // Sizes
 @include for-each-host-selector('', $SIZES, '', '', $size_varnames) using ($index, $val) {

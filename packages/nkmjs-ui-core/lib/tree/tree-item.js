@@ -67,7 +67,7 @@ class TreeItem extends CatalogWidget {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.Icon}
+     * @type {ui.core.manipulators.Image}
      * @customtag read-only
      */
     get icon() { return this._icon; }
@@ -81,7 +81,7 @@ class TreeItem extends CatalogWidget {
 
     /**
      * @description TODO
-     * @type {ui.core.manipulators.Icon}
+     * @type {ui.core.manipulators.Text}
      * @customtag read-only
      */
     get label() { return this._label; }

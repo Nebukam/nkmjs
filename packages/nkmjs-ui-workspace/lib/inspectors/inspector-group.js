@@ -1,4 +1,5 @@
 const u = require("@nkmjs/utils");
+const style = require("@nkmjs/style");
 const { UI_ID, UI, UI_SIGNAL, Toolbar, ToolButton, DOMTemplate, UI_FLAG, MOUSE, templates, extensions } = require(`@nkmjs/ui-core`);
 
 const InspectorItem = require(`./inspector-item`);
@@ -49,7 +50,7 @@ class InspectorGroup extends InspectorItem {
     get footer() { return this._footer; }
 
     _Style() {
-        return u.tils.Merge(super._Style(), {
+        return style.CSS.Extends({
             ':host': {
                 //TODO : Implement orientation in styling
                 position: `relative`,
@@ -100,7 +101,7 @@ class InspectorGroup extends InspectorItem {
             ':host(.expanded) .body': {
                 display: `flex`,
             },
-        });
+        }, super._Style());
     }
 
     _Render() {

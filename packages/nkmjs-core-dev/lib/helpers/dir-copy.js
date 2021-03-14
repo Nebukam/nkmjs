@@ -64,14 +64,24 @@ class DirCopy {
                 if (canAppend && this._canAppend) { canAppend = this._canAppend(p_dest); }
 
                 if (canAppend) {
+
                     if (this._appendArray.includes(p_dest)) {
+
+                        if (typeof canAppend === `function`) {
+                            try {
+                                let merged = canAppend(p_dest, p_src);
+                                fs.writeFileSync(p_dest, merged);
+                            } catch (e) { }
+                            return;
+                        }
+
                         let data = fs.readFileSync(p_src);
 
-                        try{
+                        try {
                             let existingData = fs.readFileSync(p_dest);
-                            if(existingData.includes(data)){ return; } 
-                        }catch(e){}
-                        
+                            if (existingData.includes(data)) { return; }
+                        } catch (e) { }
+
                         fs.appendFileSync(p_dest, data);
                         //console.log(`   MERGED IN > ${p_dest}`);
                         return;

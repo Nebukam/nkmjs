@@ -8,7 +8,7 @@ const UI_FLAG = require(`../ui-flag`);
 const UI_ID = require(`../ui-id`);
 const UI = require(`../ui.js`);
 const ButtonBase = require(`../button-base`);
-const { Icon: IconManipulator } = require("../manipulators");
+const manipulators = require("../manipulators");
 
 /**
  * @description A tool button is a simple button with an icon.
@@ -42,7 +42,7 @@ class ToolButton extends ButtonBase {
     
     /**
      * @description TODO
-     * @type {ui.core.manipulators.IconManipulator}
+     * @type {ui.core.manipulators.Image}
      * @customtag read-only
      */
     get icon() { return this._icon; }
@@ -56,7 +56,7 @@ class ToolButton extends ButtonBase {
 
     _Render() {
         super._Render();
-        this._icon = new IconManipulator(u.dom.New(`img`, { class: UI_ID.ICON }, this._host), false);
+        this._icon = new manipulators.Image(u.dom.New(`img`, { class: UI_ID.ICON }, this._host), false);
     }
 
     _PostRender(){

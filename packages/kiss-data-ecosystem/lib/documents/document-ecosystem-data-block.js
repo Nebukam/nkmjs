@@ -1,6 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 
 const { JSONResource } = require(`@nkmjs/data-core`);
 const { Document } = require(`@nkmjs/documents`);
@@ -10,13 +11,10 @@ const { SERIALIZER_JSON } = require(`../serialization/keys.js`);
 
 class DataBlockDocument extends Document {
 
-
-    static get _NFO_() {
-        return u.tils.SetMissing({
+    static __NFO__ = com.NFOS.Ext({
             resourceType: JSONResource,
             serializer: SERIALIZER_JSON
-        }, Document.__NFO__);
-    }
+        }, Document);
 
     constructor() { super(); }
 

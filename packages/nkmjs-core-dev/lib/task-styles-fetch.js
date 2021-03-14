@@ -5,6 +5,7 @@ const path = require(`path`);
 const ScriptBase = require("./script-base");
 const chalk = require('chalk');
 const NKMjs = require(`./nkm.js`);
+const u = require("@nkmjs/utils");
 
 const DirCopy = require("./helpers/dir-copy");
 const ForEachModule = require("./helpers/foreach-module");
@@ -59,7 +60,20 @@ class TaskFetchStyles extends ScriptBase {
             },
                 NKMjs.shortargs.Get(`replace`, false),
                 this._appendArray,
-                (p_dest) => { return path.extname(p_dest) === `.scss`; });
+                (p_dest) => {
+                    let ext = path.extname(p_dest);
+                    if (ext === `.json`) {
+                        return (p_dest, p_src) => {
+                            return JSON.stringify(
+                                u.tils.SetMissing(
+                                    JSON.parse(fs.readFileSync(p_src, 'utf8')),
+                                    JSON.parse(fs.readFileSync(p_dest, 'utf8')),
+                                    1)
+                            );
+                        }
+                    }
+                    return ext === `.scss`;
+                });
 
             if (local.length != 0) {
                 for (let i = 0, n = local.length; i < n; i++) {

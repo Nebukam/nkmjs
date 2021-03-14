@@ -1,6 +1,7 @@
 'use strict'
 
 const u = require("@nkmjs/utils");
+const style = require("@nkmjs/style");
 const { UI } = require(`@nkmjs/ui-core`);
 
 const InspectorShell = require(`./inspector-shell`);
@@ -22,7 +23,7 @@ class HistoryInspectorShell extends InspectorShell{
     // ----> DOM
 
     _Style(){
-        return u.tils.Merge(super._Style(), {
+        return style.CSS.Extends({
             ':host':{
                 //'background-color':`#f5f5f5`
             },
@@ -31,7 +32,7 @@ class HistoryInspectorShell extends InspectorShell{
             '.navigation':{
                 
             }
-        });
+        }, super._Style());
     }
 
     _Render(){

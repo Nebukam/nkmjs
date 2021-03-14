@@ -11,12 +11,10 @@ const { SERIALIZER_JSON } = require(`../serialization/keys.js`);
 
 class MetaDocument extends Document {
 
-    static get _NFO_() {
-        return U.Merge(Document._NFO_, {
+    static __NFO__ = com.NFOS.Ext({
             resourceType: JSONResource,
             serializer: SERIALIZER_JSON
-        });
-    }
+        }, Document);
 
     constructor() { super(); }
 

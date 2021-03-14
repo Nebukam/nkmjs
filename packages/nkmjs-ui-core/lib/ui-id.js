@@ -59,6 +59,30 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
+    static IMG = `img`;
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Common
+    */
+    static FLAVOR = `flavor`;
+
+    /**
+   * @description TODO
+   * @type {string}
+   * @customtag read-only
+   * @group Common
+   */
+    static VARIANT = `variant`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Common
+     */
     static PATH = com.COM_ID.PATH;
 
     /**

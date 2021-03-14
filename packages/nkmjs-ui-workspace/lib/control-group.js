@@ -1,6 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const style = require("@nkmjs/style");
 const { UI, UI_SIGNAL, ToolButton, Toolbar, extensions, manipulators } = require(`@nkmjs/ui-core`);
 const Control = require(`./control.js`);
 
@@ -43,7 +44,7 @@ class ControlGroup extends Control{
     // ----> DOM
 
     _Style(){
-        return u.tils.Merge(super._Style(), {
+        return style.CSS.Extends({
             ':host':{
 
             },
@@ -72,7 +73,7 @@ class ControlGroup extends Control{
             '.content.collapsed':{
                 display:`none`
             }
-        });
+        }, super._Style());
     }
 
     _Render(){

@@ -38,7 +38,7 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
             let cachePath = NKMjs.InApp(caches[i]), stat;
             try { stat = fs.statSync(cachePath); } catch (e) { continue; }
             if (stat.isDirectory()) {
-                new DirRead(cachePath, ``, {
+                new DirRead(cachePath, ``, { // Only include resources that exist, not pre-computed ones.
                     'anyFile': (p_src) => {
                         let mime = MIME.Get(path.extname(p_src));
                         if (mime && mime.as !== `fetch`) { map.push(NKMjs.Short(p_src, NKMjs.InApp(), `.`, true)); }

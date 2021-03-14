@@ -1,6 +1,7 @@
 const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
+const style = require("@nkmjs/style");
 const { UI } = require(`@nkmjs/ui-core`);
 
 const InspectorGroup = require(`./inspector-group`);
@@ -36,7 +37,7 @@ class MetaControlGroup extends InspectorGroup {
     // ----> DOM
 
     _Style() {
-        return u.tils.Merge(super._Style(), {
+        return style.CSS.Extends({
             ':host': {
                 margin: `5px`
             },
@@ -45,7 +46,7 @@ class MetaControlGroup extends InspectorGroup {
                 padding: `6px`
             },
             '.facade': { flex: `1 1 auto` },
-        });
+        }, super._Style());
     }
 
     get metaPath() { return this._metaPath; }
