@@ -61,7 +61,7 @@ class DirCopy {
             if (!destStat || this._replace) { //Only copy if does not exists
 
                 let canAppend = !!this._appendArray;
-                if (canAppend && this._canAppend) { canAppend = this._canAppend(p_dest); }
+                if (canAppend && this._canAppend) { canAppend = this._canAppend(p_dest, p_src); }
 
                 if (canAppend) {
 
@@ -70,7 +70,7 @@ class DirCopy {
                         if (typeof canAppend === `function`) {
                             try {
                                 let merged = canAppend(p_dest, p_src);
-                                fs.writeFileSync(p_dest, merged);
+                                if(merged){ fs.writeFileSync(p_dest, merged); }
                             } catch (e) { }
                             return;
                         }

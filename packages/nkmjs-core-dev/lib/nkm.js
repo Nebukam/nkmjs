@@ -81,7 +81,7 @@ class NKMjs {
         process.argv = process.argv.splice(2);
         this.shortargs = new u.Argv(process.argv);
 
-        this.projectVersion = ((NKMjs.projectConfig.__packagejson ? NKMjs.projectConfig.__packagejson.version : false ) || `0.0.0`);
+        this.projectVersion = ((NKMjs.projectConfig.__packagejson ? NKMjs.projectConfig.__packagejson.version : false) || `0.0.0`);
         this.CORE_CACHE_DIR = this.InCore(`caches`, `@nkmjs`);
 
         if (this.shortargs[`invalidate-cache`]) {
@@ -117,7 +117,7 @@ class NKMjs {
         else { fs.writeFileSync(p_path, p_content, p_options); }
     }
 
-    static CopyTempSync(p_src, p_dest){
+    static CopyTempSync(p_src, p_dest) {
         if (!this.tempFiles.includes(p_dest)) { this.tempFiles.push(p_dest); }
         fs.copyFileSync(p_src, p_dest);
     }
@@ -244,6 +244,29 @@ class NKMjs {
         p_name = p_name.split(`/`).join(`-`);
         p_name = p_name.split(`\\`).join(`-`);
         return `lib-${p_name}`;
+    }
+
+    static ModuleOwner(p_filePath) {
+        
+        p_filePath = p_filePath.split(path.sep).join(`/`);
+        if (!p_filePath.includes(`node_modules/`)) { return null; }
+
+        try{
+            let splitPath = p_filePath.split(`node_modules/`),
+                lastBitParts = splitPath.pop().split(`/`),
+                firstBit = lastBitParts[0];
+
+            if(firstBit[0] === `@`){
+                // namespace
+                return `${firstBit}/${lastBitParts[1]}`;
+            }else{
+                return firstBit;
+            }
+
+        }catch(e){
+            return null;
+        }
+
     }
 
 }

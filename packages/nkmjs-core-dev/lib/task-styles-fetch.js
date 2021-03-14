@@ -20,10 +20,10 @@ class TaskFetchStyles extends ScriptBase {
         // Fetch node_modules dir contents
         this._Bind(this._ProcessModuleContent);
 
-        this._log(`--append : ${chalk.blue(NKMjs.shortargs.Has(`append`))}`, 1);
+        this._log(`--append : ${chalk.blue(NKMjs.shortargs.Get(`append`, true))}`, 1);
         this._log(`--replace : ${chalk.blue(NKMjs.shortargs.Get(`replace`, false))}`, 1);
 
-        this._appendArray = NKMjs.shortargs.Has(`append`) ? [] : null;
+        this._appendArray = NKMjs.shortargs.Get(`append`, true) ? [] : null;
 
         this.rootOutput = NKMjs.InApp(NKMjs.projectConfig.dirs.styleSource);
         this._log(`output to : ${chalk.italic(this.rootOutput)}`, 1);
@@ -60,7 +60,7 @@ class TaskFetchStyles extends ScriptBase {
             },
                 NKMjs.shortargs.Get(`replace`, false),
                 this._appendArray,
-                (p_dest) => {
+                (p_dest, p_src) => {
                     let ext = path.extname(p_dest);
                     if (ext === `.json`) {
                         return (p_dest, p_src) => {
@@ -72,7 +72,16 @@ class TaskFetchStyles extends ScriptBase {
                             );
                         }
                     }
-                    return ext === `.scss`;
+                    if (ext === `.scss`) {
+                        return (p_dest, p_src) => {
+                            let sourceModuleName = NKMjs.ModuleOwner(p_src),
+                                destContent = fs.readFileSync(p_dest, 'utf8');
+                            // Check if sourceModuleName is present in destination content
+                            if(destContent.includes(`/*<---- ${sourceModuleName} ---->*/`)){ return false; }
+                            else{ return destContent + '\n\n' + fs.readFileSync(p_src, 'utf8'); }
+                        }
+                    }
+                    return false; //ext === `.scss`;
                 });
 
             if (local.length != 0) {
