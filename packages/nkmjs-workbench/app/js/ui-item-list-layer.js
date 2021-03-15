@@ -1,8 +1,9 @@
 'use strict';
 
-const u = require(`@nkmjs/core`).utils;
-const { UI, Layer, UI_FLAG } = require("@nkmjs/core").ui;
-const { CSS } = require("@nkmjs/core").style;
+const NKMjs = require(`@nkmjs/core`);
+const u = NKMjs.utils;
+const { UI, Layer, UI_FLAG } = NKMjs.ui;
+const { CSS } = NKMjs.style;
 
 const UIItem = require("./ui-item");
 

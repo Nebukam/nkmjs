@@ -5,7 +5,7 @@
 @import './_mixins';
 
 $icon-paths: "<!nkm-- list-files ./assets/icons .svg,.png -->";
-$icon-names: "<!nkm-- list-files ./assets/icons .svg,.png name-only -->";
+$icon-names: "<!nkm-- list-files ./assets/icons .svg,.png name-only rm=icon_ -->";
 
 // Include prefers_dark / prefers_light
 

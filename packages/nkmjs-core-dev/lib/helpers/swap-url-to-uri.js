@@ -75,11 +75,11 @@ class SwapURLtoURI {
                     contentStr = contentStr.split(`"${url}"`).join(`${uri}`);
                     this._processedAny = true;
 
-                } catch (e) { console.log(e); }
+                } catch (e) { }
 
             }
 
-        } catch (e) { console.log(e); }
+        } catch (e) {  }
 
         if (this._processedAny) {
             if (p_options.done) { p_options.done(p_filePath, contentStr); }

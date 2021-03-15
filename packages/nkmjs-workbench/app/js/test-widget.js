@@ -1,8 +1,8 @@
 'use strict';
 
-const { ui } = require("@nkmjs/core");
+const NKMjs = require(`@nkmjs/core`);
 
-class TestWidget extends ui.Widget{
+class TestWidget extends NKMjs.ui.Widget{
     constructor(){super();}
 
     _Style(){
@@ -18,4 +18,4 @@ class TestWidget extends ui.Widget{
 }
 
 module.exports = TestWidget;
-ui.UI.Register(`nkmjs-test-widget`, TestWidget);
+NKMjs.ui.UI.Register(`nkmjs-test-widget`, TestWidget);

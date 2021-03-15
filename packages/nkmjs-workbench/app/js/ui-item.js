@@ -1,8 +1,9 @@
 'use strict';
 
-const u = require(`@nkmjs/core`).utils;
-const { UI, manipulators, DisplayObjectContainer } = require("@nkmjs/core").ui;
-const { CSS } = require("@nkmjs/core").style;
+const NKMjs = require(`@nkmjs/core`);
+const u = NKMjs.utils;
+const { UI, manipulators, DisplayObjectContainer } = NKMjs.ui;
+const { CSS } = NKMjs.style;
 
 class UIItem extends DisplayObjectContainer {
     constructor() { super(); }
