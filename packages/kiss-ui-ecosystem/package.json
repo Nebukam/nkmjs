@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/kiss-ui-ecosystem",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "NKMjs / KISS UI Ecosystem",
   "main": "index.js",
   "private": true,
@@ -17,13 +17,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^0.0.13",
+    "@nkmjs/actions": "^0.0.14",
     "@nkmjs/collections": "^0.1.1",
-    "@nkmjs/common": "^0.1.4",
-    "@nkmjs/data-core": "^0.0.13",
-    "@nkmjs/dialog": "^0.0.14",
-    "@nkmjs/style": "^0.0.15",
-    "@nkmjs/utils": "^0.0.13"
+    "@nkmjs/common": "^0.1.5",
+    "@nkmjs/data-core": "^0.0.14",
+    "@nkmjs/dialog": "^0.0.15",
+    "@nkmjs/style": "^0.0.16",
+    "@nkmjs/utils": "^0.0.14"
   },
   "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }
