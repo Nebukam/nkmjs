@@ -2,20 +2,20 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CatalogItem, Catalog, CatalogWatcher } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const UI = require(`../ui`);
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const View = require(`../views/view`);
 
 /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments data.core.catalog.CatalogWatcher
+ * @augments data.core.catalogs.CatalogWatcher
  * @memberof ui.core.helpers
  */
-class CatalogViewBuilder extends CatalogWatcher {
+class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
     constructor() { super(); }
 
     // ----> Init
@@ -28,8 +28,8 @@ class CatalogViewBuilder extends CatalogWatcher {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.Catalog} p_catalog 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      */
     _OnCatalogItemAdded(p_catalog, p_item) {
 
@@ -46,7 +46,7 @@ class CatalogViewBuilder extends CatalogWatcher {
             if (!u.tils.isInstanceOf(viewType, View)) { throw new Error(`viewType (${viewType.name}) is not of type View`); }
 
             view = UI.Rent(viewType);
-            p_item.SetOption(UI_ID.VIEW, view);
+            p_item.SetOption(IDS.VIEW, view);
 
         } else {
             if (!u.tils.isInstanceOf(view, View)) { throw new Error(`view is not of type View.`); }
@@ -66,8 +66,8 @@ class CatalogViewBuilder extends CatalogWatcher {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.Catalog} p_catalog 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      */
     _OnCatalogItemRemoved(p_catalog, p_item) {
 

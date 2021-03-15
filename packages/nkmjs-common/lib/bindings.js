@@ -5,7 +5,7 @@ const { DictionaryList, KDictionary, Dictionary } = require(`@nkmjs/collections`
 
 const SingletonEx = require(`./helpers/singleton-ex`);
 const NFOS = require(`./nfos`);
-const COM_ID = require(`./common-id`);
+const IDS = require(`./ids`);
 
 /**
  * <div class="tip infos" data-title="Important note">The BINDINGS Singleton is a critical
@@ -97,7 +97,7 @@ class BINDINGS extends SingletonEx {
         let uid = this._classReverseLookup.Get(p_class);
 
         if (!uid) {
-            uid = u.tils.Get(NFOS.Get(p_class), COM_ID.uid, null);
+            uid = u.tils.Get(NFOS.Get(p_class), IDS.uid, null);
             if (!uid) { throw new Error(`No valid NFO found for ${p_class}`); }
             this._SetClass(uid, p_class);
         }

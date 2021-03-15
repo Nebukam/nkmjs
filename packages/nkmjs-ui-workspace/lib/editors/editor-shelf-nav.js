@@ -1,9 +1,9 @@
 'use strict';
 
 const { CSS } = require(`@nkmjs/style`);
-const { UI, Widget, ShelfNav } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
-class EditorShelfNav extends ShelfNav {
+class EditorShelfNav extends ui.views.ShelfNav {
     constructor() { super(); }
 
     _Init() {
@@ -23,4 +23,4 @@ class EditorShelfNav extends ShelfNav {
 }
 
 module.exports = EditorShelfNav;
-UI.Register('nkmjs-editor-shelf-nav', EditorShelfNav);
+ui.Register('nkmjs-editor-shelf-nav', EditorShelfNav);

@@ -20,11 +20,4 @@ module.exports = {
     resources: require(`./lib/resources`),
     ioprocesses: require(`./lib/io-processes`),
 
-    // Resources
-
-    BinaryResource: require(`./lib/resources/resource-binary`),
-    BlobResource: require(`./lib/resources/resource-blob`),
-    TextResource: require(`./lib/resources/resource-text`),
-    JSONResource: require(`./lib/resources/resource-json`),
-
 }

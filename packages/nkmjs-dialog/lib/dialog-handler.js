@@ -1,7 +1,7 @@
 const actions = require("@nkmjs/actions");
-const { UI, OverlayHandler, UI_REQUEST } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
-class DialogHandler extends OverlayHandler {
+class DialogHandler extends ui.overlays.OverlayHandler {
     constructor() { super(); }
 
     _Init() {
@@ -9,8 +9,8 @@ class DialogHandler extends OverlayHandler {
         super._Init();
         this._RegisterLocalRequestHandler(actions.ACTION_REQUEST.DIALOG, this.HandleOverlayRequest);
 
-        actions.RELAY.Watch(UI_REQUEST.OVERLAY, this.HandleOverlayRequest, this);
-        actions.RELAY.Watch(UI_REQUEST.DRAWER, this.HandleOverlayRequest, this);
+        actions.RELAY.Watch(ui.REQUEST.OVERLAY, this.HandleOverlayRequest, this);
+        actions.RELAY.Watch(ui.REQUEST.DRAWER, this.HandleOverlayRequest, this);
         actions.RELAY.Watch(actions.ACTION_REQUEST.DIALOG, this.HandleOverlayRequest, this);
         
     }
@@ -18,4 +18,4 @@ class DialogHandler extends OverlayHandler {
 }
 
 module.exports = DialogHandler;
-UI.Register('nkmjs-dialog-handler', DialogHandler);
+ui.Register('nkmjs-dialog-handler', DialogHandler);

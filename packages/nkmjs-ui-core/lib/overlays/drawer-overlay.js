@@ -5,7 +5,7 @@ const { CSS } = require(`@nkmjs/style`);
 
 const UI = require(`../ui`);
 const Overlay = require(`./overlay`);
-const UI_FLAG = require(`../ui-flag`);
+const FLAGS = require(`../flags`);
 
 class DrawerOverlay extends Overlay {
     constructor() { super(); }
@@ -14,7 +14,7 @@ class DrawerOverlay extends Overlay {
         css: [`@/views/drawer-overlay.css`]
     }, Overlay, ['css']);
 
-    static __default_contentPlacement = UI_FLAG.BOTTOM_LEFT;
+    static __default_contentPlacement = FLAGS.BOTTOM_LEFT;
 
     _Init() {
         super._Init();

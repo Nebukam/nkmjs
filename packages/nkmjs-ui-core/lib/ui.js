@@ -4,7 +4,7 @@ const u = require("@nkmjs/utils");
 const { List, Dictionary, DictionaryList } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common"); 
 
-const UI_SIGNAL = require(`./ui-signal`);
+const SIGNAL = require(`./signal`);
 const DisposableHTMLElement = require(`./disposable-htmlelement`);
 
 /**
@@ -207,7 +207,7 @@ class UI extends com.helpers.SingletonEx {
 
         this.DRAG_DATA = p_data;
         this.DRAG_TARGET = p_target;
-        this.instance._Broadcast(UI_SIGNAL.DRAG_STARTED, p_data);
+        this.instance._Broadcast(SIGNAL.DRAG_STARTED, p_data);
     }
 
     /**
@@ -215,7 +215,7 @@ class UI extends com.helpers.SingletonEx {
      * @group Drag and drop
      */
     static DragEnded() {
-        this.instance._Broadcast(UI_SIGNAL.DRAG_ENDED);
+        this.instance._Broadcast(SIGNAL.DRAG_ENDED);
         this.DRAG_DATA = null;
         this.DRAG_TARGET = null;
         this.dragLength = 0;

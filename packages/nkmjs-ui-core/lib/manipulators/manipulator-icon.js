@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const Manipulator = require(`./manipulator`);
 
 const __id_i = `data-icon`;
@@ -48,8 +48,8 @@ class IconManipulator extends Manipulator {
         }
 
         if (u.tils.isObject(p_value)) {
-            if (UI_ID.ICON in p_value) { p_flavor = p_value[UI_ID.ICON]; }
-            else if (UI_ID.IMG in p_value) { p_value = p_value[UI_ID.IMG]; }
+            if (IDS.ICON in p_value) { p_flavor = p_value[IDS.ICON]; }
+            else if (IDS.IMG in p_value) { p_value = p_value[IDS.IMG]; }
             else { p_value = null; }
         }
 
@@ -59,7 +59,7 @@ class IconManipulator extends Manipulator {
         // Flavor
 
         if (u.tils.isObject(p_flavor)) {
-            if (UI_ID.FLAVOR in p_flavor) { p_flavor = p_flavor[UI_ID.FLAVOR]; }
+            if (IDS.FLAVOR in p_flavor) { p_flavor = p_flavor[IDS.FLAVOR]; }
             else { p_flavor = null; }
         }
 
@@ -69,7 +69,7 @@ class IconManipulator extends Manipulator {
         // Variant
 
         if (u.tils.isObject(p_variant)) {
-            if (UI_ID.VARIANT in p_variant) { p_variant = p_variant[UI_ID.VARIANT]; }
+            if (IDS.VARIANT in p_variant) { p_variant = p_variant[IDS.VARIANT]; }
             else { p_variant = null; }
         }
 

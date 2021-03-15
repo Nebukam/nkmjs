@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { IOProcess } = require(`@nkmjs/io-core`);
+const io = require(`@nkmjs/io-core`);
 const com = require("@nkmjs/common");
 const path = require(`path`);
 const fs = require(`fs`);
@@ -12,7 +12,7 @@ const PathCreate = require(`../helpers/path-create`);
  * Desktop IO Reader
  */
 
-class FSIOWriter extends IOProcess {
+class FSIOWriter extends io.IOProcess {
 
     constructor() { super(); }
 
@@ -33,7 +33,7 @@ class FSIOWriter extends IOProcess {
         let dirPath = this._operation.fullPath;
         if (!this.rsc.isDir) { dirPath = u.PATH.dir(dirPath); }
 
-        com.pool.POOL.Rent(PathCreate).Do(dirPath, this._OnPathCreated);
+        com.Rent(PathCreate).Do(dirPath, this._OnPathCreated);
 
     }
 

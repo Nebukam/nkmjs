@@ -1,9 +1,9 @@
 'use strict';
 
-const { NFOS } = require("@nkmjs/common");
+const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 
-const UI_FLAG = require(`../ui-flag`);
+const FLAGS = require(`../flags`);
 const UI = require(`../ui`);
 
 const ToolButton = require(`./button-tool`);
@@ -18,7 +18,7 @@ const ToolButton = require(`./button-tool`);
 class ButtonDragHandle extends ToolButton {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/button-drag-handle.css`]
     }, ToolButton, ['css']);
 

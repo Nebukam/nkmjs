@@ -2,17 +2,17 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CatalogItem, Catalog, CatalogWatcher } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 /**
  * @description A CatalogBuilder observe a catalog's additions and removals 
  * and keeps a display list up to date.
  * @class
  * @hideconstructor
- * @augments data.core.catalog.CatalogWatcher
+ * @augments data.core.catalogs.CatalogWatcher
  * @memberof ui.core.helpers
  */
-class CatalogBuilder extends CatalogWatcher {
+class CatalogBuilder extends data.catalogs.CatalogWatcher {
     constructor() { super(); }
 
     _Init() {
@@ -35,8 +35,8 @@ class CatalogBuilder extends CatalogWatcher {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.Catalog} p_catalog 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      */
     _OnCatalogItemAdded(p_catalog, p_item) {
 
@@ -44,7 +44,7 @@ class CatalogBuilder extends CatalogWatcher {
 
         let mappedObject = null;
 
-        if (u.tils.isInstanceOf(p_item, Catalog)) {
+        if (u.tils.isInstanceOf(p_item, data.catalogs.Catalog)) {
             mappedObject = this._owner.Add(
                 com.BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
                 `item group`, this._host);
@@ -66,8 +66,8 @@ class CatalogBuilder extends CatalogWatcher {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.Catalog} p_catalog 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      */
     _OnCatalogItemRemoved(p_catalog, p_item) {
 
@@ -84,7 +84,7 @@ class CatalogBuilder extends CatalogWatcher {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
+     * @param {data.core.catalogs.Catalog} p_catalog 
      */
     _OnCatalogSorted(p_catalog) {
 

@@ -242,7 +242,7 @@ class Resource extends com.pool.DisposableObjectEx {
             return false;
         }
 
-        this._operation = com.pool.POOL.Rent(ResourceOperation);
+        this._operation = com.Rent(ResourceOperation);
         this._operation.Prepare(this, p_fn, p_states, p_options, args);
         return true;
 

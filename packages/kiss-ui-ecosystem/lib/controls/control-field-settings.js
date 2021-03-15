@@ -10,8 +10,6 @@ const UI = require(`../ui.js`);
 const { ActionModelReorderField } = require(`../data-core/actions/@model.js`);
 const FieldSettings = require(`../data-core/field-settings.js`);
 
-const DATA_SIGNAL = require(`../data-core/core-data-signal.js`);
-
 const InspectorGroup = require(`./inspector-group.js`);
 const _flag_allowDropUp = 'allow-drop-up';
 const _flag_allowDropDown = 'allow-drop-down';

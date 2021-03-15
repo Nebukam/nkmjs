@@ -2,9 +2,6 @@
 
 const com = require("@nkmjs/common");
 
-const CATALOG_SIGNAL = require(`./catalog-signal`);
-const CatalogItem = require(`./catalog-item`);
-const Catalog = require(`./catalog`);
 const CatalogWatcher = require(`./catalog-watcher`);
 
  /**
@@ -12,7 +9,7 @@ const CatalogWatcher = require(`./catalog-watcher`);
  * It simply dispatches an addition event as well as releases any mapped object on deletion.
  * @class
  * @hideconstructor
- * @augments data.core.catalog.CatalogWatcher
+ * @augments data.core.catalogs.CatalogWatcher
  * @memberof data.core.catalog
  */
 class CatalogHandler extends CatalogWatcher {
@@ -30,8 +27,8 @@ class CatalogHandler extends CatalogWatcher {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.Catalog} p_catalog 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      */
     _OnCatalogItemAdded(p_catalog, p_item) {
 
@@ -45,8 +42,8 @@ class CatalogHandler extends CatalogWatcher {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.Catalog} p_catalog 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      */
     _OnCatalogItemRemoved(p_catalog, p_item) {
 

@@ -15,5 +15,8 @@
     "email": "nebukam@gmail.com"
   },
   "license": "MIT",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
   "gitHead": "031a8fae4c3c124b3bcbe91ca40e8981b29bf7ce"
 }

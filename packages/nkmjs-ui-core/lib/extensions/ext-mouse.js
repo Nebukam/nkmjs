@@ -2,7 +2,7 @@
 
 const UI = require(`../ui`);
 const MOUSE = require(`../mouse`);
-const UI_SIGNAL = require(`../ui-signal`);
+const SIGNAL = require(`../signal`);
 
 const Extension = require(`./extension`);
 
@@ -180,7 +180,7 @@ class MouseExtension extends Extension {
         this._buttons[eNum] = MOUSE.DOWN;
         this._Trigger(`${eNum}_${MOUSE.DOWN}`);
 
-        UI.Watch(UI_SIGNAL.DRAG_ENDED, this._mUpOutside);
+        UI.Watch(SIGNAL.DRAG_ENDED, this._mUpOutside);
 
     }
 
@@ -202,7 +202,7 @@ class MouseExtension extends Extension {
 
         this._isAnyBtnDown = this.isMouseDown();
         if (!this._isAnyBtnDown) {
-            UI.Unwatch(UI_SIGNAL.DRAG_ENDED, this._mUpOutside);
+            UI.Unwatch(SIGNAL.DRAG_ENDED, this._mUpOutside);
             MOUSE.instance.StopUsing(this._using);
         }
 
@@ -228,7 +228,7 @@ class MouseExtension extends Extension {
         if (!this._isAnyBtnDown) {
             if (this._focusFn) { this._focusFn(false); }
             MOUSE.Unwatch(MOUSE.MOUSE_UP, this._mUpOutside);
-            UI.Unwatch(UI_SIGNAL.DRAG_ENDED, this._mUpOutside);
+            UI.Unwatch(SIGNAL.DRAG_ENDED, this._mUpOutside);
             MOUSE.instance.StopUsing(this._using);
         }
 

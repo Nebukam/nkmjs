@@ -1,6 +1,6 @@
 'use strict';
 
-const { JSONSerializer } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const DataManipulationCommand = require(`../../commands/command-data`);
 
@@ -21,6 +21,8 @@ class ModelDuplicate extends DataManipulationCommand {
                 f = this._ecosystem.models._factory;
 
             while (!f.IsIDAvailable(duplicateId)) { duplicateId = `${baseId}(${i++})`; }
+
+            let JSONSerializer = data.serialization.JSONSerializer;
 
             JSONSerializer.Deserialize(
                 JSONSerializer.Serialize(this._context), null,

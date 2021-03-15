@@ -2,7 +2,7 @@
 
 const com = require("@nkmjs/common");
 
-const DATA_SIGNAL = require(`../data-signal`);
+const SIGNAL = require(`../signal`);
 const Metadata = require(`./metadata`);
 const ID = require(`../id/id`);
 
@@ -16,8 +16,8 @@ const ID = require(`../id/id`);
 class DataBlock extends com.pool.DisposableObjectEx {
     
     static __NFO__ = {
-        [com.COM_ID.ICON]: `%ICON%/icon_data_block.svg`,
-        [com.COM_ID.UID]: `@nkmjs/data-core:data-block`
+        [com.IDS.ICON]: `%ICON%/icon_data_block.svg`,
+        [com.IDS.UID]: `@nkmjs/data-core:data-block`
     };
 
     constructor() { super(); }
@@ -34,8 +34,8 @@ class DataBlock extends com.pool.DisposableObjectEx {
         this._metadata = new Metadata();
         this._metadata.owner = this;
 
-        this._metadata.Watch(DATA_SIGNAL.DIRTY, this.Dirty, this);
-        this._metadata.Watch(DATA_SIGNAL.DIRTY_CLEARED, this._OnMetadataCleaned, this);
+        this._metadata.Watch(SIGNAL.DIRTY, this.Dirty, this);
+        this._metadata.Watch(SIGNAL.DIRTY_CLEARED, this._OnMetadataCleaned, this);
 
         this._ready = true;
         
@@ -74,7 +74,7 @@ class DataBlock extends com.pool.DisposableObjectEx {
      */
     Dirty(){
         if(this._isDirty){return;} this._isDirty = true;
-        this._Broadcast(DATA_SIGNAL.DIRTY, this);
+        this._Broadcast(SIGNAL.DIRTY, this);
     }
 
     /**
@@ -82,7 +82,7 @@ class DataBlock extends com.pool.DisposableObjectEx {
      */
     ClearDirty(){
         if(!this._isDirty){return;} this._isDirty = false;
-        this._Broadcast(DATA_SIGNAL.DIRTY_CLEARED, this);
+        this._Broadcast(SIGNAL.DIRTY_CLEARED, this);
     }
 
     /**

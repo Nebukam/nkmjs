@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
-const { DATA_SIGNAL, DataFactory } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const M = require(`../meta`);
 const EcosystemPart = require(`../ecosystem-part`);
@@ -18,11 +18,11 @@ class ModelManager extends EcosystemPart {
 
         super._Init();
 
-        this._factory = new DataFactory();
+        this._factory = new data.DataFactory();
         this._factory.itemClass = Model;
 
-        this._factory.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this);
-        this._factory.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
+        this._factory.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this);
+        this._factory.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
 
         this._catMap = new Dictionary();
 
@@ -97,20 +97,20 @@ class ModelManager extends EcosystemPart {
 
         //Create an entry in the catalog based on model meta
         let itemOptions = {
-            [COM_ID.NAME]: p_model.id.name,
-            [COM_ID.DATA]: p_model,
-            [COM_ID.PATH]: `${p_model.constructor.name}s/${p_model.id.name}/`,
-            [COM_ID.ICON]: u.tils.isInstanceOf(p_model, SystemModel) ? `%ICON%/icon_lock.svg` : `%ICON%/icon_model.svg`,
-            [COM_ID.CMD_SECONDARY]: this._cmdModelEdit,
-            [COM_ID.CMD_LIST]: [this._cmdModelCreateChild, this._cmdModelCreateEntry] //this._cmdModelDuplicate
+            [com.IDS.NAME]: p_model.id.name,
+            [com.IDS.DATA]: p_model,
+            [com.IDS.PATH]: `${p_model.constructor.name}s/${p_model.id.name}/`,
+            [com.IDS.ICON]: u.tils.isInstanceOf(p_model, SystemModel) ? `%ICON%/icon_lock.svg` : `%ICON%/icon_model.svg`,
+            [com.IDS.CMD_SECONDARY]: this._cmdModelEdit,
+            [com.IDS.CMD_LIST]: [this._cmdModelCreateChild, this._cmdModelCreateEntry] //this._cmdModelDuplicate
         }
 
         let modelMeta = M.ETA(p_model);
 
         if (modelMeta) {
             //console.log(modelMeta);
-            itemOptions[COM_ID.PATH] = `${u.tils.Default(modelMeta.catalogPath, itemOptions.path)}/`;
-            itemOptions[COM_ID.ICON] = (modelMeta[COM_ID.ICON] || itemOptions[COM_ID.ICON]);
+            itemOptions[com.IDS.PATH] = `${u.tils.Default(modelMeta.catalogPath, itemOptions.path)}/`;
+            itemOptions[com.IDS.ICON] = (modelMeta[com.IDS.ICON] || itemOptions[com.IDS.ICON]);
         } else {
             //console.log(`no meta found for ${p_model}`);
         }
@@ -123,7 +123,7 @@ class ModelManager extends EcosystemPart {
 
         //console.log(`%c +${p_model}`, 'color: #00d2ff');
 
-        this._Broadcast(DATA_SIGNAL.ITEM_REGISTERED, p_model);
+        this._Broadcast(data.SIGNAL.ITEM_REGISTERED, p_model);
 
     }
 
@@ -134,7 +134,7 @@ class ModelManager extends EcosystemPart {
             catEntry.Release();
         }
 
-        this._Broadcast(DATA_SIGNAL.ITEM_UNREGISTERED, p_model);
+        this._Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_model);
     }
 
     /**

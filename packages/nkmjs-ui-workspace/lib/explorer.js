@@ -1,9 +1,9 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { UI, View } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
-class Explorer extends View{
+class Explorer extends ui.views.View{
     constructor(){super();}
 
     _Init(){
@@ -85,4 +85,4 @@ class Explorer extends View{
 }
 
 module.exports = Explorer;
-UI.Register('nkmjs-explorer', Explorer);
+ui.Register('nkmjs-explorer', Explorer);

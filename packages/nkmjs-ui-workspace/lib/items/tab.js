@@ -3,17 +3,16 @@
 const com = require("@nkmjs/common");
 const { ENV } = require(`@nkmjs/environment`);
 const { CSS } = require(`@nkmjs/style`);
-const { DATA_SIGNAL, DataObserver, CATALOG_SIGNAL } = require(`@nkmjs/data-core`);
-const { UI_ID, UI, MOUSE, UI_SIGNAL, Widget, DOMTemplate, UI_FLAG, FlagEnum, CatalogWidget, manipulators, extensions } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const templates = require(`../templates`);
 
-class Tab extends CatalogWidget {
+class Tab extends ui.CatalogWidget {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/items/tab.css`]
-    }, Widget, ['css']);
+    }, ui.Widget, ['css']);
 
     // ----> Init
 
@@ -23,9 +22,9 @@ class Tab extends CatalogWidget {
 
         this._Bind(this._CloseRequest);
 
-        this._closeBtn = this._interactions.Add(extensions.Mouse);
-        this._closeBtn.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._CloseRequest);
-        this._interactions.Hook(MOUSE.BTN_MIDDLE, MOUSE.RELEASE, this._CloseRequest);
+        this._closeBtn = this._interactions.Add(ui.extensions.Mouse);
+        this._closeBtn.Hook(ui.MOUSE.BTN_LEFT, ui.MOUSE.RELEASE, this._CloseRequest);
+        this._interactions.Hook(ui.MOUSE.BTN_MIDDLE, ui.MOUSE.RELEASE, this._CloseRequest);
 
     }
 
@@ -75,8 +74,8 @@ class Tab extends CatalogWidget {
     }
 
     _Render() {
-        DOMTemplate.Render(templates.FacadeTab, this, {
-            [UI_ID.OWNER]: this,
+        ui.DOMTemplate.Render(templates.FacadeTab, this, {
+            [ui.IDS.OWNER]: this,
             closeIcon: { htitle: `Close` }
         });
 
@@ -111,14 +110,14 @@ class Tab extends CatalogWidget {
 
     _CloseRequest() {
         if (!this._isActivable) { return; }
-        this._Broadcast(UI_SIGNAL.CLOSE_REQUESTED, this);
+        this._Broadcast(ui.SIGNAL.CLOSE_REQUESTED, this);
     }
 
     // ----> DATA    
 
     _UpdateInfos() {
         if (this._itemData) {
-            this._flavorEnum.Set(this._itemData.isDirty ? com.COMMON_FLAG.WARNING : null);
+            this._flavorEnum.Set(this._itemData.isDirty ? com.FLAGS.WARNING : null);
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
             if (!this._icon.Set(this._itemData)) { this._icon.Set(this._data.options); }
         } else {
@@ -139,4 +138,4 @@ class Tab extends CatalogWidget {
 }
 
 module.exports = Tab;
-UI.Register(`nkmjs-tab`, Tab);
+ui.Register(`nkmjs-tab`, Tab);

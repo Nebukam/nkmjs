@@ -2,7 +2,7 @@
 
 const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
-const UI_SIGNAL = require(`./ui-signal`);
+const SIGNAL = require(`./signal`);
 
 let uinc = 0;
 
@@ -20,19 +20,19 @@ let uinc = 0;
 
 /**
  * @typedef SignalFirstPaint
- * @type ui.core.UI_SIGNAL.FIRST_PAINT
+ * @type ui.core.SIGNAL.FIRST_PAINT
  * @property {ui.core.DisposableHTMLElement} target Source of the signal ( would be event.target )
  */
 
 /**
  * @typedef SignalPainted
- * @type ui.core.UI_SIGNAL.PAINTED
+ * @type ui.core.SIGNAL.PAINTED
  * @property {ui.core.DisposableHTMLElement} target Source of the signal ( would be event.target )
  */
 
 /**
  * @typedef SignalUnpainted
- * @type ui.core.UI_SIGNAL.UNPAINTED
+ * @type ui.core.SIGNAL.UNPAINTED
  * @property {ui.core.DisposableHTMLElement} target Source of the signal ( would be event.target )
  */
 
@@ -147,10 +147,10 @@ class DisposableHTMLElement extends HTMLElement {
      */
     _OnPaintChange() {
         if (this._isPainted) {
-            if (this._isFirstPaint) { this._signals.Broadcast(UI_SIGNAL.FIRST_PAINT, this); }
-            this._signals.Broadcast(UI_SIGNAL.PAINTED, this);
+            if (this._isFirstPaint) { this._signals.Broadcast(SIGNAL.FIRST_PAINT, this); }
+            this._signals.Broadcast(SIGNAL.PAINTED, this);
         } else {
-            this._signals.Broadcast(UI_SIGNAL.UNPAINTED, this);
+            this._signals.Broadcast(SIGNAL.UNPAINTED, this);
         }
     }
 

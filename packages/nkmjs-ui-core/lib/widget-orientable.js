@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 
-const UI_FLAG = require(`./ui-flag`);
+const FLAGS = require(`./flags`);
 const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
 
@@ -30,14 +30,14 @@ class OrientableWidget extends Widget {
      * @description TODO
      * @type {string}
      */
-    static __default_orientation = UI_FLAG.HORIZONTAL;
+    static __default_orientation = FLAGS.HORIZONTAL;
 
     _Init() {
 
         super._Init();
         this._isHorizontalScrollEnabled = false;
 
-        this._orientation = new FlagEnum(UI_FLAG.orientations, true);
+        this._orientation = new FlagEnum(FLAGS.orientations, true);
         this._orientation.Add(this);
         this._orientation.onFlagChanged.Add(this._Bind(this._OnOrientationChanged));
 
@@ -70,7 +70,7 @@ class OrientableWidget extends Widget {
      */
     _OnOrientationChanged(p_newValue, p_oldValue) {
         if (this._isHorizontalScrollEnabled) {
-            if (this._orientation.currentFlag === UI_FLAG.VERTICAL) { this._interactions.wheelFn = null; }
+            if (this._orientation.currentFlag === FLAGS.VERTICAL) { this._interactions.wheelFn = null; }
             else { this._interactions.wheelFn = this._HorizontalScroll; }
         }
     }

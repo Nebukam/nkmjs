@@ -10,7 +10,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { DATA_SIGNAL, DataBlock, Catalog } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 const actions = require("@nkmjs/actions");
 
 const URI = require(`./uri`);
@@ -18,7 +18,7 @@ const { FieldManager, ModelManager, EntryManager } = require(`./parts`);
 const EcosystemCommand = require(`./data/commands/command-ecosystem`);
 const EcosystemCleanCatalog = require(`./commands/ecosystem-clean-catalog`);
 
-class Ecosystem extends DataBlock {
+class Ecosystem extends data.DataBlock {
     constructor() { super(); }
 
     _Init() {
@@ -28,25 +28,25 @@ class Ecosystem extends DataBlock {
         this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister));
         this._dependencies = {}; //Kits are registered here
 
-        let fields = com.pool.POOL.Rent(FieldManager);
+        let fields = com.Rent(FieldManager);
         fields.ecosystem = this;
-        fields.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
-        fields.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
+        fields.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
+        fields.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
         this._fields = fields;
 
-        let models = com.pool.POOL.Rent(ModelManager);
+        let models = com.Rent(ModelManager);
         models.ecosystem = this;
-        models.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this);
-        models.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
+        models.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this);
+        models.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
         this._models = models;
 
-        let entries = com.pool.POOL.Rent(EntryManager);
+        let entries = com.Rent(EntryManager);
         entries.ecosystem = this;
-        entries.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
-        entries.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
+        entries.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
+        entries.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
         this._entries = entries;
 
-        this._catalog = new Catalog();
+        this._catalog = new data.catalogs.Catalog();
         this._catalog.expanded = true;
         this._catalog.name = `Ecosystem`;
 
@@ -98,16 +98,16 @@ class Ecosystem extends DataBlock {
     // ---->
 
     _OnEntityRegistered(p_entity) {
-        p_entity.Watch(DATA_SIGNAL.DIRTY, this._OnEntityDirty, this);
-        p_entity.Watch(DATA_SIGNAL.DIRTY_CLEARED, this._OnEntityCleaned, this);
+        p_entity.Watch(data.SIGNAL.DIRTY, this._OnEntityDirty, this);
+        p_entity.Watch(data.SIGNAL.DIRTY_CLEARED, this._OnEntityCleaned, this);
         if (p_entity.isDirty) {
             this._OnEntityDirty(p_entity);
         }
     }
 
     _OnEntityUnregistered(p_entity) {
-        p_entity.Unwatch(DATA_SIGNAL.DIRTY, this._OnEntityDirty, this);
-        p_entity.Unwatch(DATA_SIGNAL.DIRTY_CLEARED, this._OnEntityCleaned, this);
+        p_entity.Unwatch(data.SIGNAL.DIRTY, this._OnEntityDirty, this);
+        p_entity.Unwatch(data.SIGNAL.DIRTY_CLEARED, this._OnEntityCleaned, this);
     }
 
     _OnEntityDirty(p_entity) {

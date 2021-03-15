@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { DATA_SIGNAL, Metadata, Repertoire } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const DerivableDataBlock = require(`./data-block-derivable`);
 
@@ -16,15 +16,15 @@ class Model extends DerivableDataBlock {
 
     static CreateField(p_model, p_fieldClass, p_id, p_options = null) {
 
-        let fieldSettings = com.pool.POOL.Rent(u.tils.Get(p_options, `cl`, FieldSettings));
+        let fieldSettings = com.Rent(u.tils.Get(p_options, `cl`, FieldSettings));
         fieldSettings.fieldClass = p_fieldClass;
-        fieldSettings.instance = com.pool.POOL.Rent(p_fieldClass);
+        fieldSettings.instance = com.Rent(p_fieldClass);
 
         let settings = u.tils.Get(p_options, `settings`, null);
         if (settings) { fieldSettings.settings = settings; }
         let metadata = u.tils.Get(p_options, `metadata`, null);
         if (metadata) {
-            if (u.tils.isInstanceOf(metadata, Metadata)) {
+            if (u.tils.isInstanceOf(metadata, data.Metadata)) {
                 fieldSettings.metadata.Clone(metadata);
             } else {
                 fieldSettings.metadata._data = metadata;
@@ -38,7 +38,7 @@ class Model extends DerivableDataBlock {
 
     static get _NFO_() {
         return {
-            [COM_ID.ICON]: `%ICON%/icon_model.svg`
+            [com.IDS.ICON]: `%ICON%/icon_model.svg`
         };
     }
 
@@ -57,9 +57,9 @@ class Model extends DerivableDataBlock {
         this._editable = true;
         this._entryCreationAllowed = true;
 
-        this._fieldRep = new Repertoire();
-        this._fieldRep.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
-        this._fieldRep.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
+        this._fieldRep = new data.Repertoire();
+        this._fieldRep.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
+        this._fieldRep.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
         this._fieldRep.Watch(com.SIGNAL.RENAMED, this._OnFieldRenamed, this);
 
         this._baseObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnBaseFieldAdded, this);
@@ -220,7 +220,7 @@ class Model extends DerivableDataBlock {
 
     _OnFieldRegistered(p_repertoire, p_fieldSettings) {
 
-        p_fieldSettings.Watch(DATA_SIGNAL.DIRTY, this._OnFieldDirty, this);
+        p_fieldSettings.Watch(data.SIGNAL.DIRTY, this._OnFieldDirty, this);
         p_fieldSettings.model = this;
         p_fieldSettings.fieldIndex = this._fieldRep.IndexOf(p_fieldSettings);
         p_fieldSettings.metadata.Clone(this._ecosystem.fields.metaTemplate);
@@ -242,7 +242,7 @@ class Model extends DerivableDataBlock {
     }
 
     _OnFieldUnregistered(p_repertoire, p_fieldSettings) {
-        p_fieldSettings.Unwatch(DATA_SIGNAL.DIRTY, this._OnFieldDirty, this);
+        p_fieldSettings.Unwatch(data.SIGNAL.DIRTY, this._OnFieldDirty, this);
         this._Broadcast(FIELD_EVENT.FIELD_REMOVED, this, p_fieldSettings);
         if (p_fieldSettings.model === this) {
             p_fieldSettings.model = null;

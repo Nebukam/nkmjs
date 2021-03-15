@@ -1,5 +1,7 @@
 'use strict';
 
+const uuid = require('uuid');
+
 const toString = Object.prototype.toString;
 
 /**
@@ -783,6 +785,14 @@ class UTILS {
      */
     static get unsafeUID() {
         return `_${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    /**
+     * @description Compute an 'safe' RFC4122 UUID.
+     * @type {string}
+     */
+    static get UUID(){
+        return uuid.v4();
     }
 
     static Move(p_array, p_currentIndex, p_newIndex) {

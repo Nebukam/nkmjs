@@ -3,8 +3,8 @@
 const com = require("@nkmjs/common");
 
 const UI = require(`./ui`);
-const UI_SIGNAL = require(`./ui-signal`);
-const UI_FLAG = require(`./ui-flag`);
+const SIGNAL = require(`./signal`);
+const FLAGS = require(`./flags`);
 const INPUT = require(`./input`);
 const MOUSE = require(`./mouse`);
 const DisplayObjectContainer = require(`./display-object-container`);
@@ -28,7 +28,7 @@ class Widget extends DisplayObjectContainer {
     static __fouc_hidden = true;
     static __usePaintCallback = true;
 
-    static __default_iState = UI_FLAG.IDLE;
+    static __default_iState = FLAGS.IDLE;
 
     /**
      * @access protected
@@ -65,14 +65,14 @@ class Widget extends DisplayObjectContainer {
         this._dataObserver.Hook(com.SIGNAL.UPDATED, this._OnDataUpdated, this);
 
         this._flags.Add(this,
-            UI_FLAG.ACTIVATED,
-            UI_FLAG.SELECTED);
+            FLAGS.ACTIVATED,
+            FLAGS.SELECTED);
 
-        this._placement = new FlagEnum(UI_FLAG.placement, true);
+        this._placement = new FlagEnum(FLAGS.placement, true);
         this._placement.Add(this);
         this._placement.onFlagChanged.Add(this._Bind(this._OnPlacementChanged));
 
-        this._istateEnum = new FlagEnum(UI_FLAG.istates, true);
+        this._istateEnum = new FlagEnum(FLAGS.istates, true);
         this._istateEnum.Add(this);
 
         this.default_SelectOnActivation = (this.default_SelectOnActivation || false);
@@ -234,18 +234,18 @@ class Widget extends DisplayObjectContainer {
         if (this._isSelected === p_toggle) { return; }
 
         this._isSelected = p_toggle;
-        this._flags.Set(UI_FLAG.SELECTED, p_toggle);
+        this._flags.Set(FLAGS.SELECTED, p_toggle);
 
         let sStack = this._notifiesSelectionStack ? this._parent ? this._parent.selectionStack : null : null;
 
         if (p_toggle) {
             this._SelectionGain();
-            this._Broadcast(UI_SIGNAL.SELECTION_GAIN, this);
+            this._Broadcast(SIGNAL.SELECTION_GAIN, this);
             if (sStack) { sStack.Add(this); }
             this._Highlight(true);
         } else {
             this._SelectionLost();
-            this._Broadcast(UI_SIGNAL.SELECTION_LOST, this);
+            this._Broadcast(SIGNAL.SELECTION_LOST, this);
             if (sStack) { sStack.Remove(this); }
             if (!this._isFocused) { this._Highlight(false); }
         }
@@ -281,10 +281,10 @@ class Widget extends DisplayObjectContainer {
         this._isFocusable = p_value;
         if (!p_value) {
             this.Focus(false);
-            this._istateEnum.Set(UI_FLAG.DISABLED);
+            this._istateEnum.Set(FLAGS.DISABLED);
             this.style[`pointer-events`] = `none`;
         } else {
-            this._istateEnum.Set(UI_FLAG.IDLE);
+            this._istateEnum.Set(FLAGS.IDLE);
             this.style.removeProperty(`pointer-events`);
         }
 
@@ -312,8 +312,8 @@ class Widget extends DisplayObjectContainer {
 
         this._isFocused = p_toggle;
 
-        if (p_toggle) { this._istateEnum.Set(UI_FLAG.FOCUSED); }
-        else { this._istateEnum.Set(UI_FLAG.IDLE); }
+        if (p_toggle) { this._istateEnum.Set(FLAGS.FOCUSED); }
+        else { this._istateEnum.Set(FLAGS.IDLE); }
 
         if (p_toggle) {
             this._FocusGain();
@@ -396,7 +396,7 @@ class Widget extends DisplayObjectContainer {
      */
     Activate(p_evt) {
         if (!this._isActivable) { return false; }
-        this._Broadcast(UI_SIGNAL.ACTIVATED, this, p_evt);
+        this._Broadcast(SIGNAL.ACTIVATED, this, p_evt);
 
         if (this._selectOnActivation) {
             if (this._isSelectable) { this.Select(INPUT.ctrl ? !this._isSelected : true); }
@@ -431,7 +431,7 @@ class Widget extends DisplayObjectContainer {
             this._OnDataUpdated(p_value);
         }
 
-        this._Broadcast(UI_SIGNAL.DATA_CHANGED, this, p_value, oldValue);
+        this._Broadcast(SIGNAL.DATA_CHANGED, this, p_value, oldValue);
 
     }
 

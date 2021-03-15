@@ -19,7 +19,7 @@ class ID extends com.pool.DisposableObjectEx {
      * @param {data.core.ID} p_id 
      */
     static New(p_id){
-        let newID = com.pool.POOL.Rent(ID);
+        let newID = com.Rent(ID);
         newID.name = p_id;
         return newID;
     }

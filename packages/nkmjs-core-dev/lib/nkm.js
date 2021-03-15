@@ -42,6 +42,7 @@ class NKMjs {
         if (this.__initialized) { return; }
         this.__initialized = true;
 
+        this.buildUID = u.tils.UUID;
         this.args = new u.Argv(process.argv);
 
         let eC = process.env.INIT_CWD, //process.argv[1],
@@ -91,6 +92,8 @@ class NKMjs {
 
         //console.log(`dirnameProject : ${this.dirnameProject}`);
         //console.log(`dirnameCore : ${this.dirnameCore}`);
+
+        this.projectConfig.__keys[`build-uid`] = this.buildUID;
 
     }
 

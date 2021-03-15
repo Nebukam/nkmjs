@@ -1,16 +1,16 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { UI_ID, UI, ShelfNav } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const Tab = require(`../items/tab`);
 
-class WorkspaceCellNav extends ShelfNav {
+class WorkspaceCellNav extends ui.views.ShelfNav {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace-cell-nav.css`]
-    }, ShelfNav, ['css']);
+    }, ui.views.ShelfNav, ['css']);
 
     // ----> Init
 
@@ -27,7 +27,7 @@ class WorkspaceCellNav extends ShelfNav {
         super._Render();
 
         this._cellOptionsBtn = this._toolbar.CreateHandle({
-            [UI_ID.ICON]: `%ICON%/icon_more.svg`, text: `More Actions...`,
+            [ui.IDS.ICON]: `%ICON%/icon_more.svg`, text: `More Actions...`,
             trigger: { thisArg: this, fn: this._OpenSettings },
             //request:{}
         });
@@ -53,4 +53,4 @@ class WorkspaceCellNav extends ShelfNav {
 }
 
 module.exports = WorkspaceCellNav;
-UI.Register('nkmjs-workspace-cell-nav', WorkspaceCellNav);
+ui.Register('nkmjs-workspace-cell-nav', WorkspaceCellNav);

@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { OVERLAY_CONTEXT } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
 const DialogBox = require(`./lib/dialog-box`);
@@ -16,13 +16,13 @@ class Bindings extends com.helpers.BindingKit {
 
         this.Add(
             {
-                context: OVERLAY_CONTEXT.OVERLAY,
+                context: ui.overlays.CONTEXT.OVERLAY,
                 kvps: [
                     { key: actions.ACTION_REQUEST.DIALOG, binding: DialogOverlay }
                 ]
             },
             {
-                context: OVERLAY_CONTEXT.CONTENT,
+                context: ui.overlays.CONTEXT.CONTENT,
                 kvps: [
                     { key: actions.ACTION_REQUEST.DIALOG, binding: DialogBox }
                 ]

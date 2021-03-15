@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const { ID } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const Model = require(`../model`);
 const FieldSettingsProxy = require(`../fields/field-settings-proxy`);
@@ -19,7 +19,7 @@ class ModelProxy extends Model {
     _Init() {
         super._Init();
         this._referenceModel = null;
-        this._id = new ID();
+        this._id = new data.ID();
         this._proxyMap = new Dictionary();
 
         this._refObserver = new com.signals.Observer();

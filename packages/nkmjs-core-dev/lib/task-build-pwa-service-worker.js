@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const u = require("@nkmjs/utils");
 const fs = require(`fs`);
 const path = require(`path`);
 const ScriptBase = require(`./script-base`);
@@ -53,14 +53,16 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
         // Build & write service worker
 
         let pwaSWJS = NKMjs.InPWABuildRsc(NKMjs.PWA_SERVICE_WORKER),
+            cachedList = `[\n    "` + map.join(`",\n    "`) + `"]`,
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
                 {
-                    cacheURLs: `[\n    "` + map.join(`",\n    "`) + `"]`,
+                    cacheURLs: cachedList,
+                    " cacheURLs ": cachedList,
                     version: NKMjs.projectVersion
                 }
             ),
-            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`pwa-service-worker.js`), 'utf8'));
+            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`, `js`, `pwa-service-worker.js`), 'utf8'));
 
         // Transform & replace
 

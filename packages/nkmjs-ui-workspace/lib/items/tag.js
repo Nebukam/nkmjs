@@ -3,23 +3,23 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const { FONT_FLAG } = require("@nkmjs/style");
-const { UI, UI_FLAG, FlagEnum, Widget, manipulators, UI_ID } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 
-class Tag extends Widget {
+class Tag extends ui.Widget {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/items/tag.css`]
-    }, Widget, ['css']);
+    }, ui.Widget, ['css']);
 
     _Init() {
         super._Init();
 
-        this._sizeEnum = new FlagEnum(UI_FLAG.sizes, true);
+        this._sizeEnum = new ui.helpers.FlagEnum(ui.FLAGS.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(UI_FLAG.flavorsExtended, true);
+        this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
     }
@@ -36,10 +36,10 @@ class Tag extends Widget {
     set label(p_value) { this._label.Set(p_value); }
 
     _Render() {
-        this._label = new manipulators.Text(u.dom.New(`span`, { class: `${UI_ID.LABEL} ${FONT_FLAG.TAG}` }, this), false);
+        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: `${ui.IDS.LABEL} ${FONT_FLAG.TAG}` }, this), false);
     }
 
 }
 
 module.exports = Tag;
-UI.Register(`nkmjs-tag`, Tag);
+ui.Register(`nkmjs-tag`, Tag);

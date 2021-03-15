@@ -6,7 +6,7 @@ const com = require("@nkmjs/common");
 const { STYLE, CSS } = require(`@nkmjs/style`);
 
 const UI = require(`../ui`);
-const UI_FLAG = require("../ui-flag");
+const FLAGS = require("../flags");
 
 /**
  * @description TODO
@@ -22,7 +22,7 @@ class FlagEnum {
         this._enum = p_enum ? p_enum :new Array(0);
         this._currentFlag = null;
 
-        this._onFlagChanged = com.pool.POOL.Rent(com.signals.SignalBroadcaster);
+        this._onFlagChanged = com.Rent(com.signals.SignalBroadcaster);
     }
 
     /**

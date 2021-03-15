@@ -6,7 +6,7 @@
  * @hideconstructor
  * @memberof data.core.catalog
  */
-class CATALOG_SIGNAL{
+class SIGNAL{
     constructor() {}
 
     /**
@@ -54,4 +54,4 @@ class CATALOG_SIGNAL{
 
 }
 
-module.exports = CATALOG_SIGNAL;
+module.exports = SIGNAL;

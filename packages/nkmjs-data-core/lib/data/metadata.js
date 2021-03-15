@@ -3,7 +3,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const DATA_SIGNAL = require(`../data-signal`);
+const SIGNAL = require(`../signal`);
 
 /**
  * @description TODO
@@ -15,8 +15,8 @@ const DATA_SIGNAL = require(`../data-signal`);
 class Metadata extends com.pool.DisposableObjectEx {
 
     static __NFO__ = {
-        [com.COM_ID.ICON]: `%ICON%/icon_data_block.svg`,
-        [com.COM_ID.UID]: `@nkmjs/data-core:metadata`
+        [com.IDS.ICON]: `%ICON%/icon_data_block.svg`,
+        [com.IDS.UID]: `@nkmjs/data-core:metadata`
     };
 
     constructor() {
@@ -55,7 +55,7 @@ class Metadata extends com.pool.DisposableObjectEx {
      */
     Dirty(){
         if(this._isDirty){return;} this._isDirty = true;
-        this._Broadcast(DATA_SIGNAL.DIRTY, this);
+        this._Broadcast(SIGNAL.DIRTY, this);
     }
 
     /**
@@ -63,7 +63,7 @@ class Metadata extends com.pool.DisposableObjectEx {
      */
     ClearDirty(){
         if(!this._isDirty){return;} this._isDirty = false;
-        this._Broadcast(DATA_SIGNAL.DIRTY_CLEARED, this);
+        this._Broadcast(SIGNAL.DIRTY_CLEARED, this);
     }
 
     /**
@@ -127,14 +127,14 @@ class Metadata extends com.pool.DisposableObjectEx {
 
         if (dispatch) {
 
-            if (created) { this._Broadcast(DATA_SIGNAL.META_ADDED, this, p_path, lastElement); }
+            if (created) { this._Broadcast(SIGNAL.META_ADDED, this, p_path, lastElement); }
 
             n -= 1;
             for (let p = 0; p < n; p++) {
-                this._Broadcast(DATA_SIGNAL.META_MID_UPDATE, this, u.tils.Join(path, '.', 0, p));
+                this._Broadcast(SIGNAL.META_MID_UPDATE, this, u.tils.Join(path, '.', 0, p));
             }
 
-            this._Broadcast(DATA_SIGNAL.META_UPDATED, this, p_path, lastElement, previousValue);
+            this._Broadcast(SIGNAL.META_UPDATED, this, p_path, lastElement, previousValue);
             this._Broadcast(com.SIGNAL.UPDATED, this);
             this.Dirty();
         }

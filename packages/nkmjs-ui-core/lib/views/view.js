@@ -3,8 +3,8 @@
 const actions = require("@nkmjs/actions");
 
 const UI = require(`../ui`);
-const UI_SIGNAL = require(`../ui-signal`);
-const UI_FLAG = require(`../ui-flag`);
+const SIGNAL = require(`../signal`);
+const FLAGS = require(`../flags`);
 const OrientableWidget = require(`../widget-orientable`);
 
  /**
@@ -29,7 +29,7 @@ class View extends OrientableWidget {
      * @description TODO
      */
     RequestDisplay() {
-        this._Broadcast(UI_SIGNAL.DISPLAY_REQUESTED, this);
+        this._Broadcast(SIGNAL.DISPLAY_REQUESTED, this);
         //Handle notifications bubbles & warnings the same way.
     }
 

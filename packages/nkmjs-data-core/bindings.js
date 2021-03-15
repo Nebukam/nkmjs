@@ -3,12 +3,12 @@
 const com = require("@nkmjs/common");
 
 const { Metadata, DataBlock } = require(`./lib/data`);
-const { TEXTSerializer, JSONSerializer, SERIALIZATION_CONTEXT } = require(`./lib/serialization`);
-const { MetadataJSONSerializer, DataBlockJSONSerializer } = require(`./lib/serialization/json`);
+const serialization = require(`./lib/serialization`);
 
-class Bindings extends com.helpers.BindingKit{
-    constructor(){super();}
-    _Init(){ super._Init();
+class Bindings extends com.helpers.BindingKit {
+    constructor() { super(); }
+    _Init() {
+        super._Init();
 
         this.AddClasses(
             Metadata,
@@ -16,20 +16,20 @@ class Bindings extends com.helpers.BindingKit{
         );
 
         this.Add(
-        {
-            context:SERIALIZATION_CONTEXT.SERIALIZER,
-            kvps:[
-                { key:SERIALIZATION_CONTEXT.JSON, binding:JSONSerializer },
-                { key:SERIALIZATION_CONTEXT.TEXT, binding:TEXTSerializer }
-            ]
-        },
-        {
-            context:SERIALIZATION_CONTEXT.JSON,
-            kvps:[
-                { key:Metadata, binding:MetadataJSONSerializer },
-                { key:DataBlock, binding:DataBlockJSONSerializer }
-            ]
-        });
+            {
+                context: serialization.CONTEXT.SERIALIZER,
+                kvps: [
+                    { key: serialization.CONTEXT.JSON, binding: serialization.JSONSerializer },
+                    { key: serialization.CONTEXT.TEXT, binding: serialization.TEXTSerializer }
+                ]
+            },
+            {
+                context: serialization.CONTEXT.JSON,
+                kvps: [
+                    { key: Metadata, binding: serialization.json.Metadata },
+                    { key: DataBlock, binding: serialization.json.DataBlock }
+                ]
+            });
 
     }
 }

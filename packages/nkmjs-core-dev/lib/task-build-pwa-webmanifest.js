@@ -77,8 +77,7 @@ class TaskBuildWebmanifest extends ScriptBase {
         manifest.background_color = projectInfos.app.colorTheme;
         manifest.lang = projectInfos.lang;
 
-
-
+        htmlHeader+= NKMjs.Get(`html-icons`, ``);
 
         NKMjs.WriteTempSync(NKMjs.InPWABuildRsc(`manifest.webmanifest`), JSON.stringify(manifest, null, 4));
         NKMjs.Set(`html-webmanifest`, htmlHeader);

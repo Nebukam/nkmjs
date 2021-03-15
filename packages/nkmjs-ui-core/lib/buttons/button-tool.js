@@ -1,13 +1,13 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { NFOS } = require("@nkmjs/common");
+const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
 
-const UI_FLAG = require(`../ui-flag`);
-const UI_ID = require(`../ui-id`);
+const FLAGS = require(`../flags`);
+const IDS = require(`../ids`);
 const UI = require(`../ui.js`);
-const ButtonBase = require(`../button-base`);
+const ButtonBase = require(`./button-base`);
 const manipulators = require("../manipulators");
 
 /**
@@ -20,7 +20,7 @@ const manipulators = require("../manipulators");
 class ToolButton extends ButtonBase {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/button-tool.css`]
     }, ButtonBase, ['css']);
 
@@ -28,7 +28,7 @@ class ToolButton extends ButtonBase {
 
         super._Init();
 
-        this._optionsHandler.Hook(UI_ID.ICON, null, ``);
+        this._optionsHandler.Hook(IDS.ICON, null, ``);
         
         this._icon = null;
 
@@ -56,7 +56,7 @@ class ToolButton extends ButtonBase {
 
     _Render() {
         super._Render();
-        this._icon = new manipulators.Icon(u.dom.New(`div`, { class: UI_ID.ICON }, this._host), false);
+        this._icon = new manipulators.Icon(u.dom.New(`div`, { class: IDS.ICON }, this._host), false);
     }
 
     _PostRender(){

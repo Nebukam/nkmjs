@@ -1,6 +1,6 @@
 const u = require("@nkmjs/utils");
-const { UI } = require(`@nkmjs/ui-core`);
-const { DATA_SIGNAL } = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
 
 const Control = require(`../control`);
 
@@ -14,7 +14,7 @@ class InspectorItem extends Control{
 
         if(!this._ignoreMetaStyle){
             this._metadataObserver.Hook(
-                DATA_SIGNAL.META_MID_UPDATE, 
+                data.SIGNAL.META_MID_UPDATE, 
                 `presentation`,
                 this._OnMetaPresentationChanged,
                 this);
@@ -42,4 +42,4 @@ class InspectorItem extends Control{
 }
 
 module.exports = InspectorItem;
-UI.Register(`nkmjs-inspector-item`, InspectorItem);
+ui.Register(`nkmjs-inspector-item`, InspectorItem);

@@ -3,8 +3,8 @@
 const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
-const UI_ID = require(`../ui-id`);
-const UI_SIGNAL = require(`../ui-signal`);
+const IDS = require(`../ids`);
+const SIGNAL = require(`../signal`);
 
 const extensions = require(`../extensions`);
 
@@ -37,8 +37,8 @@ class TreeItemGroup extends TreeItem {
         this._extExpand = this._interactions.Add(extensions.Expand);
         this._extExpand._toggled = false;
 
-        this._extExpand.Watch(UI_SIGNAL.EXPANDED, this._Expand, this);
-        this._extExpand.Watch(UI_SIGNAL.COLLAPSED, this._Collapse, this);
+        this._extExpand.Watch(SIGNAL.EXPANDED, this._Expand, this);
+        this._extExpand.Watch(SIGNAL.COLLAPSED, this._Collapse, this);
 
         this._builder = null;
 
@@ -65,7 +65,7 @@ class TreeItemGroup extends TreeItem {
     }
 
     _SetupBuilder() {
-        this._builder = com.pool.POOL.Rent(CatalogBuilder);
+        this._builder = com.Rent(CatalogBuilder);
         this._builder.owner = this;
         this._builder.host = this._body;
         this._builder._defaultItemClass = TreeItem;
@@ -121,8 +121,8 @@ class TreeItemGroup extends TreeItem {
     _Render() {
 
         this._tplOptions = {
-            [UI_ID.OWNER]: this,
-            [UI_ID.ICON]: { autoHide: true },
+            [IDS.OWNER]: this,
+            [IDS.ICON]: { autoHide: true },
             expandIcon: { htitle: `Expand` }
         };
 

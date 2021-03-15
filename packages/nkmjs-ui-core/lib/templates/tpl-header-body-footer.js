@@ -2,12 +2,12 @@
 
 const u = require("@nkmjs/utils");
 
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const DOMTemplate = require(`../dom-template`);
 
-const __header = `_${UI_ID.HEADER}`;
-const __body = `_${UI_ID.BODY}`;
-const __footer = `_${UI_ID.FOOTER}`;
+const __header = `_${IDS.HEADER}`;
+const __body = `_${IDS.BODY}`;
+const __footer = `_${IDS.FOOTER}`;
 
 class TPLHeaderBodyFooter extends DOMTemplate {
     constructor() { super(); }
@@ -23,9 +23,9 @@ class TPLHeaderBodyFooter extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.New(`div`, { class: UI_ID.HEADER }), __header);
-        this._Add(u.dom.New(`div`, { class: UI_ID.BODY }), __body);
-        this._Add(u.dom.New(`div`, { class: UI_ID.FOOTER }), __footer);
+        this._Add(u.dom.New(`div`, { class: IDS.HEADER }), __header);
+        this._Add(u.dom.New(`div`, { class: IDS.BODY }), __body);
+        this._Add(u.dom.New(`div`, { class: IDS.FOOTER }), __footer);
     }
 
 }

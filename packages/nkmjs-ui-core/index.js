@@ -1,13 +1,15 @@
 'use strict';
 
+const __uiManager = require(`./lib/ui`);
+
 module.exports = {
 
-    UI_SIGNAL: require(`./lib/ui-signal`),
-    UI_FLAG: require(`./lib/ui-flag`),
-    UI_ID: require(`./lib/ui-id`),
-    UI_REQUEST: require(`./lib/ui-request`),
+    SIGNAL: require(`./lib/signal`),
+    FLAGS: require(`./lib/flags`),
+    IDS: require(`./lib/ids`),
+    REQUEST: require(`./lib/request`),
 
-    UI: require(`./lib/ui`),
+    UI: __uiManager,
 
     INPUT: require(`./lib/input`),
     MOUSE: require(`./lib/mouse`),
@@ -56,19 +58,9 @@ module.exports = {
     ShelfNav: require(`./lib/views/shelf-nav`),
     Shelf: require(`./lib/views/shelf`),
 
-    // Overlays
-
-    OverlayOptions: require(`./lib/overlays/overlay-options`),
-    Overlay: require(`./lib/overlays/overlay`),
-    OverlayHandler: require(`./lib/overlays/overlay-handler`),
-    Drawer: require(`./lib/overlays/drawer`),
-    DrawerOverlay: require(`./lib/overlays/drawer-overlay`),
-
-    OVERLAY_CONTEXT: require(`./lib/overlays/overlay-context`),
-
     // Buttons
 
-    ButtonBase: require(`./lib/button-base`),
+    ButtonBase: require(`./lib/buttons/button-base`),
 
     ToolButton: require(`./lib/buttons/button-tool`),
     ButtonEx: require(`./lib/buttons/button-ex`),
@@ -76,8 +68,12 @@ module.exports = {
 
     // Templates
 
-    DOMTemplate: require(`./lib/dom-template`)
+    DOMTemplate: require(`./lib/dom-template`),
 
+    // Shortcuts
+
+    // Short to UI.Register
+    Register:(p_id, p_class, p_extends = `div`) => { __uiManager.Register(p_id, p_class, p_extends); },
 }
 
 require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

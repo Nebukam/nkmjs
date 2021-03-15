@@ -1,11 +1,11 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { time, SIGNAL, helpers } = require("@nkmjs/common");
+const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
-const UI_FLAG = require(`../ui-flag`);
-const UI_SIGNAL = require(`../ui-signal`);
+const FLAGS = require(`../flags`);
+const SIGNAL = require(`../signal`);
 const DisplayObjectContainer = require(`../display-object-container`);
 
 const FlagEnum = require(`./flag-enum`);
@@ -156,13 +156,13 @@ class PopIn extends DisplayObjectContainer {
         this._options = null;
         this._placement = null;
 
-        this._placementEnum = new FlagEnum(UI_FLAG.placements);
+        this._placementEnum = new FlagEnum(FLAGS.placements);
         this._placementEnum.Add(this);
 
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
 
-        this._optionsHandler = new helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed));
+        this._optionsHandler = new com.helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed));
         this._optionsHandler.Hook(`mode`);
         this._optionsHandler.Hook(`context`, null, document.body);
         this._optionsHandler.Hook(`anchor`);
@@ -236,7 +236,7 @@ class PopIn extends DisplayObjectContainer {
         this._ownsContent = u.tils.isFunc(p_value);
 
         this._content = this.Add(p_value, `content`);
-        this._content.Watch(UI_SIGNAL.CLOSE_REQUESTED, () => { this.Release(); });
+        this._content.Watch(SIGNAL.CLOSE_REQUESTED, () => { this.Release(); });
 
     }
 
@@ -260,8 +260,8 @@ class PopIn extends DisplayObjectContainer {
     set anchor(p_value) {
         if (this._anchor === p_value) { return; }
         this._anchor = p_value;
-        if(this._anchor){ time.TIME.Watch(SIGNAL.TICK, this._UpdateAnchoredPosition); }
-        else{ time.TIME.Unwatch(SIGNAL.TICK, this._UpdateAnchoredPosition); }
+        if(this._anchor){ com.time.TIME.Watch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
+        else{ com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
     }
 
     /**

@@ -2,12 +2,12 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CatalogItem } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const UI = require(`../ui`);
-const UI_SIGNAL = require(`../ui-signal`);
-const UI_FLAG = require(`../ui-flag`);
+const SIGNAL = require(`../signal`);
+const FLAGS = require(`../flags`);
 
 const View = require(`./view`);
 const CatalogViewBuilder = require("../helpers/catalog-view-builder");
@@ -44,9 +44,9 @@ class Shelf extends View {
 
     // ----> Init
 
-    static __default_orientation = UI_FLAG.VERTICAL;
+    static __default_orientation = FLAGS.VERTICAL;
 
-    static __default_navPlacement = UI_FLAG.TOP;
+    static __default_navPlacement = FLAGS.TOP;
 
     _Init() {
         super._Init();
@@ -65,9 +65,9 @@ class Shelf extends View {
 
         this._currentHandle = null;
 
-        this._flags.Add(this, UI_FLAG.FIXED_SIZE);
+        this._flags.Add(this, FLAGS.FIXED_SIZE);
 
-        this._navPlacement = new FlagEnum(UI_FLAG.placement, true);
+        this._navPlacement = new FlagEnum(FLAGS.placement, true);
         this._navPlacement.Add(this);
         this._navPlacement.onFlagChanged.Add(this._Bind(this._OnNavPlacementChanged));
 
@@ -124,48 +124,48 @@ class Shelf extends View {
      */
     _OnNavPlacementChanged(p_newValue, p_oldValue) {
         // We need the info to properly setup the shelf's CSS Grid
-        if (this._orientation.currentFlag === UI_FLAG.VERTICAL) {
+        if (this._orientation.currentFlag === FLAGS.VERTICAL) {
             // Vertical shelf ( nav on the left or right )
             // Only support top or bottom nav placement
             switch (this._navPlacement.currentFlag) {
-                case UI_FLAG.RIGHT:
-                case UI_FLAG.TOP_RIGHT:
-                case UI_FLAG.BOTTOM_RIGHT:
-                case UI_FLAG.BOTTOM:
+                case FLAGS.RIGHT:
+                case FLAGS.TOP_RIGHT:
+                case FLAGS.BOTTOM_RIGHT:
+                case FLAGS.BOTTOM:
                     this.classList.add(`nav-end`);
                     this.classList.remove(`nav-start`);
-                    this._nav.placement = UI_FLAG.RIGHT;
+                    this._nav.placement = FLAGS.RIGHT;
                     break;
                 default:
-                case UI_FLAG.LEFT:
-                case UI_FLAG.TOP_LEFT:
-                case UI_FLAG.BOTTOM_LEFT:
-                case UI_FLAG.TOP:
+                case FLAGS.LEFT:
+                case FLAGS.TOP_LEFT:
+                case FLAGS.BOTTOM_LEFT:
+                case FLAGS.TOP:
                     this.classList.add(`nav-start`);
                     this.classList.remove(`nav-end`);
-                    this._nav.placement = UI_FLAG.LEFT;
+                    this._nav.placement = FLAGS.LEFT;
                     break;
             }
         } else {
             // Horizontal shelf ( nav on top or bottom )
             // Only support left or right nav placement
             switch (this._navPlacement.currentFlag) {
-                case UI_FLAG.BOTTOM:
-                case UI_FLAG.BOTTOM_LEFT:
-                case UI_FLAG.BOTTOM_RIGHT:
-                case UI_FLAG.RIGHT:
+                case FLAGS.BOTTOM:
+                case FLAGS.BOTTOM_LEFT:
+                case FLAGS.BOTTOM_RIGHT:
+                case FLAGS.RIGHT:
                     this.classList.add(`nav-end`);
                     this.classList.remove(`nav-start`);
-                    this._nav.placement = UI_FLAG.BOTTOM;
+                    this._nav.placement = FLAGS.BOTTOM;
                     break;
                 default:
-                case UI_FLAG.TOP:
-                case UI_FLAG.TOP_LEFT:
-                case UI_FLAG.TOP_RIGHT:
-                case UI_FLAG.LEFT:
+                case FLAGS.TOP:
+                case FLAGS.TOP_LEFT:
+                case FLAGS.TOP_RIGHT:
+                case FLAGS.LEFT:
                     this.classList.add(`nav-start`);
                     this.classList.remove(`nav-end`);
-                    this._nav.placement = UI_FLAG.TOP;
+                    this._nav.placement = FLAGS.TOP;
                     break;
             }
         }
@@ -257,16 +257,16 @@ class Shelf extends View {
     /**
      * @description Create a view & a nav item from a catalogItem
      * @param {CatalogViewBuilder} p_builder 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      */
     _OnCatalogItemAdded(p_builder, p_item, p_mappedView) {
 
         let handle = this._nav.CreateHandle(p_item);
-        handle.Watch(UI_SIGNAL.CLOSE_REQUESTED, this._OnHandleCloseRequest, this);
+        handle.Watch(SIGNAL.CLOSE_REQUESTED, this._OnHandleCloseRequest, this);
 
-        p_mappedView.Watch(UI_SIGNAL.DISPLAY_REQUESTED, this._OnViewRequestDisplay, this);
+        p_mappedView.Watch(SIGNAL.DISPLAY_REQUESTED, this._OnViewRequestDisplay, this);
         p_mappedView.visible = false;
-        p_mappedView.classList.add(UI_ID.VIEW);
+        p_mappedView.classList.add(IDS.VIEW);
         this.Add(p_mappedView);
 
         this._Broadcast(Shelf.VIEW_ADDED, this, p_mappedView, handle);
@@ -284,7 +284,7 @@ class Shelf extends View {
      * @access protected
      * @description Remove the view & handle associated with the removed catalogItem
      * @param {ui.core.helpers.CatalogViewBuilder} p_builder 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      * @param {ui.core.View} p_mappedView 
      */
     _OnCatalogItemRemoved(p_builder, p_item, p_mappedView) {
@@ -381,11 +381,11 @@ class Shelf extends View {
 
         if (oldValue) { 
             oldValue.Select(false); 
-            oldValue._flags.Set(UI_FLAG.TOGGLED, false);
+            oldValue._flags.Set(FLAGS.TOGGLED, false);
         }
         if (this._currentHandle) { 
             this._currentHandle.Select(true);
-            this._currentHandle._flags.Set(UI_FLAG.TOGGLED, true);
+            this._currentHandle._flags.Set(FLAGS.TOGGLED, true);
         }
 
         this._OnCurrentHandleChanged(oldValue);

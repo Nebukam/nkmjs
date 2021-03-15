@@ -2,8 +2,8 @@
 
 const com = require("@nkmjs/common");
 const { ENV } = require(`@nkmjs/environment`);
-const { SERIALIZATION_CONTEXT } = require(`@nkmjs/data-core`);
-const { IO_TYPE, JSONResource } = require(`@nkmjs/io-core`);
+const data = require(`@nkmjs/data-core`);
+const io = require(`@nkmjs/io-core`);
 
 const Document = require(`../document`);
 
@@ -20,13 +20,13 @@ class MetaDocument extends Document{
     constructor(){super();}
 
     static __NFO__ = com.NFOS.Ext({
-        resource: JSONResource,
-        serializationContext: SERIALIZATION_CONTEXT.JSON
+        resource: io.resources.JSONResource,
+        serializationContext: data.serialization.CONTEXT.JSON
         }, Document.__NFO__);
 
     _CheckOptions( p_options = null ){
         p_options = p_options ? p_options : {};
-        p_options.io = ENV.IF_NODE(IO_TYPE.FILE_SYSTEM, IO_TYPE.LOCAL_STORAGE);
+        p_options.io = ENV.IF_NODE(io.IO_TYPE.FILE_SYSTEM, io.IO_TYPE.LOCAL_STORAGE);
         return p_options;
     }
 

@@ -3,17 +3,17 @@
 const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const { CatalogItem, Catalog, CatalogHandler } = require(`@nkmjs/data-core`);
-const { UI, UI_SIGNAL, View } = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const WorkspaceCell = require(`./workspace-cell`);
 
-class Workspace extends View {
+class Workspace extends ui.views.View {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace.css`]
-    }, View, ['css']);
+    }, ui.views.View, ['css']);
 
     _Init() {
 
@@ -23,14 +23,14 @@ class Workspace extends View {
 
         this._cells = new List();
 
-        this._catalogHandler = new CatalogHandler();
+        this._catalogHandler = new data.catalogs.CatalogHandler();
         this._catalogHandler.Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
         this._catalogHandler.Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
     }
 
     /**
-     * @type {data.core.catalog.Catalog}
+     * @type {data.core.catalogs.Catalog}
      */
     get catalog() { return this._catalogHandler.catalog; }
     set catalog(p_value) { this._catalogHandler.catalog = p_value; }
@@ -59,7 +59,7 @@ class Workspace extends View {
 
     _OnCatalogItemAdded(p_handler, p_item) {
 
-        if (!u.tils.isInstanceOf(p_item, Catalog)) {
+        if (!u.tils.isInstanceOf(p_item, data.catalogs.Catalog)) {
             throw new Error(`non-catalog item added to workspace catalog : ${p_item}.`);
         }
 
@@ -80,7 +80,7 @@ class Workspace extends View {
 
     _OnCellCreated(p_item, p_cell) {
         this._cells.Add(p_item);
-        p_cell.Watch(UI_SIGNAL.FOCUS_REQUESTED, this._OnCellRequestFocus, this);
+        p_cell.Watch(ui.SIGNAL.FOCUS_REQUESTED, this._OnCellRequestFocus, this);
         p_cell.catalog = p_item;
     }
 
@@ -110,7 +110,7 @@ class Workspace extends View {
 
     _OnCellRemoved(p_item, p_cell) {
         this._cells.Remove(p_item);
-        p_cell.Unwatch(UI_SIGNAL.FOCUS_REQUESTED, this._OnCellRequestFocus, this);
+        p_cell.Unwatch(ui.SIGNAL.FOCUS_REQUESTED, this._OnCellRequestFocus, this);
     }
 
     _OnCellRequestFocus(p_view) {
@@ -126,7 +126,7 @@ class Workspace extends View {
         let localCatalog = this._FetchCatalog();
 
 
-        if (u.tils.isInstanceOf(p_item, CatalogItem)) {
+        if (u.tils.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
             // Attempting to host an existing catalog item.
             localCatalog.Add(p_item);
             return;
@@ -160,7 +160,7 @@ class Workspace extends View {
 
         if (!localCatalog) {
             // No local catalog exists for this workspace. Create one.
-            let wCat = com.pool.POOL.Rent(Catalog);
+            let wCat = com.Rent(data.catalogs.Catalog);
             localCatalog = wCat.GetOrCreateCatalog({ name: 'RootCell' });
             this.catalog = wCat;
         } else {
@@ -171,7 +171,7 @@ class Workspace extends View {
             let i = 0;
             while (cat === null || i < n) {
                 cat = localCatalog.At(i);
-                if (!u.tils.isInstanceOf(cat, Catalog)) { cat = null; } // Get rid of non-catalog items
+                if (!u.tils.isInstanceOf(cat, data.catalogs.Catalog)) { cat = null; } // Get rid of non-catalog items
                 i++;
             }
             if (!cat) {
@@ -194,4 +194,4 @@ class Workspace extends View {
 }
 
 module.exports = Workspace;
-UI.Register('nkmjs-workspace', Workspace);
+ui.Register('nkmjs-workspace', Workspace);

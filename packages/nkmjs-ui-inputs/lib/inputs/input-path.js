@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InputField = require(`../input-field`);
 
@@ -15,4 +15,4 @@ class InputPath extends InputField {
 }
 
 module.exports = InputPath;
-UI.Register(`nkmjs-input-path`, InputPath);
+ui.Register(`nkmjs-input-path`, InputPath);

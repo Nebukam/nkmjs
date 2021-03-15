@@ -9,6 +9,6 @@ module.exports = {
     Drawer: require(`./drawer`),
     DrawerOverlay: require(`./drawer-overlay`),
 
-    OVERLAY_CONTEXT: require(`./overlay-context`),
+    CONTEXT: require(`./overlay-context`),
 
 }

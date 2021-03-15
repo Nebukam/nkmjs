@@ -9,8 +9,10 @@ const com = require("@nkmjs/common");
 const { ServicesManager, ServiceBase } = require(`@nkmjs/services`);
 
 const ENV_SIGNAL = require(`./env-signal`);
+const SW_SIGNAL = require(`./sw-signal`);
 const Features = require(`./helpers/features`);
 const DOM_STATE = require(`./dom-state`);
+const ServiceWorkerHandler = require(`./helpers/service-worker-handler`);
 
 /**
  * @description TODO
@@ -72,10 +74,15 @@ class ENV extends com.helpers.SingletonEx {
         this._app = null;
         this._config = null;
 
+        this._updateQueued = false;
         this._started = false;
         this._running = false;
 
         this._services = new List();
+        this._pwaSWHandler = new ServiceWorkerHandler();
+        this._pwaSWHandler.Watch(SW_SIGNAL.SW_READY, this._OnServiceWorkerReady, this);
+        this._pwaSWHandler.Watch(SW_SIGNAL.SW_UPDATE_AVAILABLE, this._OnServiceWorkerUpdateAvailable, this);
+        this._pwaSWHandler.Watch(SW_SIGNAL.SW_REGISTRATION_ERROR, this._OnServiceWorkerRegistrationError, this);
 
         this._Bind(this._BootService);
 
@@ -166,24 +173,33 @@ class ENV extends com.helpers.SingletonEx {
         this._config = p_config;
         console.log(this._config);
 
-        if(p_config.argv.Has(`offline`)){
+        if (p_config.argv.Has(`offline`)) {
             this._features._isOnline = false;
         }
 
         // Register the service worker if available.
         let swPath = u.tils.Get(this._config, `service_worker`, false);
         if (swPath !== false) {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register(swPath)
-                    .then(this._Bind(this._InternalStart))
-                    .catch(this._Bind(this._OnServiceWorkerRegistrationError));
-            } else {
-                this._InternalStart();
-            }
+            if(!this._pwaSWHandler.Register(swPath)){ this._InternalStart(); }
         } else {
             this._InternalStart();
         }
 
+    }
+
+
+    // ----> Service Worker handling
+
+    _OnServiceWorkerReady() {
+        this._InternalStart();
+    }
+
+    _OnServiceWorkerUpdateAvailable(){
+        if(!this._running){
+            this._updateQueued = true; // ENV will call again when running.
+        }else{
+            this._Broadcast(ENV_SIGNAL.PWA_UPDATE_AVAILABLE);
+        }
     }
 
     /**
@@ -194,6 +210,9 @@ class ENV extends com.helpers.SingletonEx {
         console.warn('Error whilst registering service worker', err);
         this._InternalStart();
     }
+
+
+    // ----> Start
 
     /**
      * @access private
@@ -268,11 +287,13 @@ class ENV extends com.helpers.SingletonEx {
 
         if (this._running) { return; }
         this._running = true;
-
+        
         if (this._app) { this._app._InternalStart(); }
 
         this._onStart.Notify(this).Clear();
         this._Broadcast(ENV_SIGNAL.START, this);
+
+        if(this._updateQueued){ this._OnServiceWorkerUpdateAvailable(); }
 
     }
 

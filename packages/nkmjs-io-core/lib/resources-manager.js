@@ -170,7 +170,7 @@ class RESOURCES extends ServiceBase {
             if (!rscClass) { rscClass = Resource; }
         }
 
-        rsc = com.pool.POOL.Rent(rscClass);
+        rsc = com.Rent(rscClass);
 
         /*
         if(rsc.isDir){
@@ -238,7 +238,7 @@ class RESOURCES extends ServiceBase {
      * @param {io.core.ResourceOperation} p_operation 
      */
     _RequestRead(p_operation) {
-        let ioProcess = com.pool.POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].read);
+        let ioProcess = com.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].read);
         ioProcess.operation = p_operation;
         this._PushIOProcess(ioProcess);
     }
@@ -248,7 +248,7 @@ class RESOURCES extends ServiceBase {
      * @param {io.core.ResourceOperation} p_operation 
      */
     _RequestWrite(p_operation) {
-        let ioProcess = com.pool.POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].write);
+        let ioProcess = com.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].write);
         ioProcess.operation = p_operation;
         this._PushIOProcess(ioProcess);
     }
@@ -258,7 +258,7 @@ class RESOURCES extends ServiceBase {
      * @param {io.core.ResourceOperation} p_operation 
      */
     _RequestDelete(p_operation) {
-        let ioProcess = com.pool.POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].delete);
+        let ioProcess = com.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].delete);
         ioProcess.operation = p_operation;
         this._PushIOProcess(ioProcess);
     }
@@ -269,7 +269,7 @@ class RESOURCES extends ServiceBase {
      * @param {string} p_newPath 
      */
     _RequestRename(p_operation, p_newPath) {
-        let ioProcess = com.pool.POOL.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].rename);
+        let ioProcess = com.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].rename);
         ioProcess.operation = p_operation;
         ioProcess.targetPath = p_newPath;
         this._PushIOProcess(ioProcess);

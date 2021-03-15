@@ -2,10 +2,10 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { DATA_SIGNAL, CATALOG_SIGNAL, CatalogItem } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const MOUSE = require("./mouse");
-const UI_FLAG = require(`./ui-flag`);
+const FLAGS = require(`./flags`);
 const extensions = require(`./extensions`);
 const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
@@ -28,10 +28,10 @@ class CatalogWidget extends Widget {
 
         this._Bind(this._ExecuteCommand);
 
-        this._dataObserver.Hook(CATALOG_SIGNAL.ITEM_DATA_CHANGED, this._OnItemDataChanged, this);
+        this._dataObserver.Hook(data.catalogs.SIGNAL.ITEM_DATA_CHANGED, this._OnItemDataChanged, this);
         this._itemData = null;
 
-        this._flavorEnum = new FlagEnum(UI_FLAG.flavors, true);
+        this._flavorEnum = new FlagEnum(FLAGS.flavors, true);
         this._flavorEnum.Add(this);
 
         this._interactions.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));
@@ -95,7 +95,7 @@ class CatalogWidget extends Widget {
      */
     _ExtractItemData(p_value) {
         if (!p_value) { return null; }
-        if (u.tils.isInstanceOf(p_value, CatalogItem)) { return p_value.GetOption(com.COM_ID.DATA, null); }
+        if (u.tils.isInstanceOf(p_value, data.catalogs.CatalogItem)) { return p_value.GetOption(com.IDS.DATA, null); }
         return null;
     }
 
@@ -105,8 +105,8 @@ class CatalogWidget extends Widget {
      * @param {common.signals.Observer} p_observer 
      */
     _HookItemDataSignals(p_observer) {
-        p_observer.Hook(DATA_SIGNAL.DIRTY, this._OnItemDataDirty, this);
-        p_observer.Hook(DATA_SIGNAL.DIRTY_CLEARED, this._OnItemDataCleaned, this);
+        p_observer.Hook(data.SIGNAL.DIRTY, this._OnItemDataDirty, this);
+        p_observer.Hook(data.SIGNAL.DIRTY_CLEARED, this._OnItemDataCleaned, this);
         p_observer.Hook(com.SIGNAL.UPDATED, this._OnItemDataUpdated, this);
     }
 
@@ -126,7 +126,7 @@ class CatalogWidget extends Widget {
         if (this._itemData) {
             if (!this._itemDataObserver) {
                 // Create observer
-                this._itemDataObserver = com.pool.POOL.Rent(com.signals.Observer);
+                this._itemDataObserver = com.Rent(com.signals.Observer);
                 this._HookItemDataSignals(this._itemDataObserver);
             }
             this._itemDataObserver.ObserveOnly(this._itemData);
@@ -144,7 +144,7 @@ class CatalogWidget extends Widget {
      * @param {*} p_data 
      * @customtag override-me
      */
-    _OnItemDataDirty(p_data) { this._flavorEnum.Set(com.COMMON_FLAG.WARNING); }
+    _OnItemDataDirty(p_data) { this._flavorEnum.Set(com.FLAGS.WARNING); }
 
     /**
      * @access protected

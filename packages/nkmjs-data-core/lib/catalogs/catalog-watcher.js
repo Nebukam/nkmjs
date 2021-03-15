@@ -2,9 +2,7 @@
 
 const com = require("@nkmjs/common");
 
-const CATALOG_SIGNAL = require(`./catalog-signal`);
-const Catalog = require(`../catalog/catalog`);
-const CatalogItem = require("./catalog-item");
+const SIGNAL = require(`./catalog-signal`);
 
  /**
  * @description A CatalogWatcher observe a catalog's additions and removals.
@@ -32,7 +30,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         this._catalogObserver = new com.signals.Observer();
         this._catalogObserver.Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
         this._catalogObserver.Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
-        this._catalogObserver.Hook(CATALOG_SIGNAL.SORTED, this._OnCatalogSorted, this);
+        this._catalogObserver.Hook(SIGNAL.SORTED, this._OnCatalogSorted, this);
 
         // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
         //both filtered AND flagged as 'flatten catalog'
@@ -55,7 +53,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
     /**
      * @description TODO
-     * @type {data.core.catalog.Catalog}
+     * @type {data.core.catalogs.Catalog}
      */
     get catalog() { return this._catalog; }
     set catalog(p_value) {
@@ -135,11 +133,11 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
             // Unkook regular signals
             this._catalogObserver.Unhook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
             this._catalogObserver.Unhook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
-            this._catalogObserver.Unhook(CATALOG_SIGNAL.SORTED, this._OnCatalogSorted, this);
+            this._catalogObserver.Unhook(SIGNAL.SORTED, this._OnCatalogSorted, this);
 
             // Hook root signals
-            this._catalogObserver.Hook(CATALOG_SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this);
-            this._catalogObserver.Hook(CATALOG_SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+            this._catalogObserver.Hook(SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this);
+            this._catalogObserver.Hook(SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
             if (this._isEnabled && this._catalog) {
                 this._RemoveCatalogContent(this._catalog);
@@ -149,13 +147,13 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         } else {
 
             // Unkook root signals
-            this._catalogObserver.Unhook(CATALOG_SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this);
-            this._catalogObserver.Unhook(CATALOG_SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+            this._catalogObserver.Unhook(SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this);
+            this._catalogObserver.Unhook(SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
             // Hook regular signals
             this._catalogObserver.Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
             this._catalogObserver.Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
-            this._catalogObserver.Hook(CATALOG_SIGNAL.SORTED, this._OnCatalogSorted, this);
+            this._catalogObserver.Hook(SIGNAL.SORTED, this._OnCatalogSorted, this);
 
             if (this._isEnabled && this._catalog) {
                 this._RemoveCatalogContent(this._catalog, true);
@@ -173,7 +171,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      * @description Goes over the content of a given catalog and calls _OnCatalogItemAdded
      * for each encountered item. 
      * This function is useful when the watcher is enabled with a set catalog to go through.
-     * @param {data.core.catalog.Catalog} p_catalog 
+     * @param {data.core.catalogs.Catalog} p_catalog 
      * @param {boolean} [p_deep]
      */
     _AddCatalogContent(p_catalog, p_deep = false) {
@@ -198,7 +196,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      * @description Goes over the content of a given catalog and calls _OnCatalogItemRemoved
      * for each encountered item. 
      * This function is useful when the watcher is disabled with a set catalog to go through.
-     * @param {data.core.catalog.Catalog} p_catalog 
+     * @param {data.core.catalogs.Catalog} p_catalog 
      * @param {boolean} [p_deep] 
      */
     _RemoveCatalogContent(p_catalog, p_deep = false) {
@@ -220,7 +218,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_oldValue previously assigned catalog, if any
+     * @param {data.core.catalogs.Catalog} p_oldValue previously assigned catalog, if any
      * @customtag override-me
      */
     _OnCatalogChanged(p_oldValue) {
@@ -233,8 +231,8 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.Catalog} p_catalog 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      * @customtag override-me
      */
     _OnCatalogItemAdded(p_catalog, p_item) {
@@ -249,7 +247,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
         if (this._filters && !this._filters.Check(p_item)) { return false; }
 
-        p_item.Watch(CATALOG_SIGNAL.ITEM_DATA_RELEASED, this._OnItemDataReleased, this);
+        p_item.Watch(SIGNAL.ITEM_DATA_RELEASED, this._OnItemDataReleased, this);
 
         return true;
 
@@ -258,8 +256,8 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.Catalog} p_catalog 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      * @customtag override-me
      */
     _OnCatalogItemRemoved(p_catalog, p_item) {
@@ -273,7 +271,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         this._itemCount --;
 
         if (!p_item.isReleasing) {
-            p_item.Unwatch(CATALOG_SIGNAL.ITEM_DATA_RELEASED, this._OnItemDataReleased, this);
+            p_item.Unwatch(SIGNAL.ITEM_DATA_RELEASED, this._OnItemDataReleased, this);
         }
 
         let mappedObject = this._map.get(p_item);
@@ -285,7 +283,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      * @param {*} p_data 
      * @customtag override-me
      */
@@ -296,18 +294,18 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
     /**
      * @access protected
      * @description TODO
-     * @param {data.core.catalog.Catalog} p_catalog 
+     * @param {data.core.catalogs.Catalog} p_catalog 
      * @customtag override-me
      */
     _OnCatalogSorted(p_catalog) {
-        this._Broadcast(CATALOG_SIGNAL.SORTED, this);
+        this._Broadcast(SIGNAL.SORTED, this);
     }
 
     // ----> Map
 
     /**
      * @description TODO
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      * @param {*} p_mappedValue 
      * @returns {*} mappedValue
      */
@@ -318,7 +316,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
     /**
      * @description TODO
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      * @returns {*} value mapped to provided item, if any
      */
     Get(p_item) { return this._map.get(p_item); }

@@ -111,7 +111,7 @@ console.log(`hsla = ${someHSLColor.hsla}`);
 
 console.log(STYLE.TF(`this is test`, {
     strong: true,
-    color: com.COMMON_FLAG.WARNING,
+    color: com.FLAGS.WARNING,
     style: {
         'hum': 0,
         '@': [`A`]

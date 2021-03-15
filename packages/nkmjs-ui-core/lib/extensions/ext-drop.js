@@ -3,8 +3,8 @@
 const u = require("@nkmjs/utils");
 
 const UI = require(`../ui`);
-const UI_FLAG = require(`../ui-flag`);
-const UI_SIGNAL = require(`../ui-signal`);
+const FLAGS = require(`../flags`);
+const SIGNAL = require(`../signal`);
 
 const Extension = require("./extension");
 
@@ -92,8 +92,8 @@ class DropExtension extends Extension {
 
         this._feedbackHost = p_feedback ? p_feedback : p_target;
 
-        if (oldTarget) { oldTarget.flags.Remove(oldTarget, UI_FLAG.ALLOW_DROP); }
-        if (p_target) { p_target.flags.Add(p_target, UI_FLAG.ALLOW_DROP); }
+        if (oldTarget) { oldTarget.flags.Remove(oldTarget, FLAGS.ALLOW_DROP); }
+        if (p_target) { p_target.flags.Add(p_target, FLAGS.ALLOW_DROP); }
 
     }
 
@@ -216,7 +216,7 @@ class DropExtension extends Extension {
             }
         }
 
-        UI.DRAG_TARGET._Broadcast(UI_SIGNAL.DROPPED, UI.DRAG_TARGET);
+        UI.DRAG_TARGET._Broadcast(SIGNAL.DROPPED, UI.DRAG_TARGET);
 
         this._Clear();
 
@@ -228,7 +228,7 @@ class DropExtension extends Extension {
         this._isActive = p_toggle;
 
         if (this._feedbackHost) {
-            this._feedbackHost.flags.Set(UI_FLAG.ALLOW_DROP, p_toggle);
+            this._feedbackHost.flags.Set(FLAGS.ALLOW_DROP, p_toggle);
 
             for (let i = 0, n = this._allowedHooks.length; i < n; i++) {
 
@@ -251,12 +251,12 @@ class DropExtension extends Extension {
             //Becomes the main drop target        
             DropExtension.ACTIVE_TARGET = this;
             this._target.addEventListener(`drop`, this._mDrop);
-            UI.instance.Unwatch(UI_SIGNAL.DRAG_ENDED, this._dragEnd, this);
+            UI.instance.Unwatch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
         } else {
             //Stops being the main drop target
             if (DropExtension.ACTIVE_TARGET === this) { DropExtension.ACTIVE_TARGET = null; }
             this._target.removeEventListener(`drop`, this._mDrop);
-            UI.instance.Watch(UI_SIGNAL.DRAG_ENDED, this._dragEnd, this);
+            UI.instance.Watch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
         }
 
     }

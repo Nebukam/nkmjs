@@ -4,15 +4,21 @@ const u = require("@nkmjs/utils");
 const { Dictionary, List } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const { UI, UI_SIGNAL, Widget, manipulators, Frame, Toolbar, ButtonEx, UI_FLAG, OverlayOptions } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 const { INPUT_SIGNAL, InputBase, InputFormHandler } = require(`@nkmjs/ui-inputs`);
 
-class DialogBox extends Widget {
+class DialogBox extends ui.Widget {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/dialogs/dialog-box.css`]
-    }, Widget, ['css']);
+    }, ui.Widget, ['css']);
+
+    /**
+     * @description TODO
+     * @type {string}
+     */
+     static __default_flavor = null;
 
     _Init() {
         super._Init();
@@ -34,14 +40,18 @@ class DialogBox extends Widget {
         this._submitMap = new Dictionary();
         this._submitList = new List();
 
-        this._toolbarClass = Toolbar;
-        this._toolbarDefaultButtonClass = ButtonEx;
+        this._toolbarClass = ui.Toolbar;
+        this._toolbarDefaultButtonClass = ui.ButtonEx;
         this._toolbar = null;
 
         this._optionsHandler = new com.helpers.OptionsHandler(
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
+        this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavors, true);
+        this._flavorEnum.Add(this);
+
+        this._optionsHandler.Hook(`flavor`, (p_value) => { this._flavorEnum.Set(p_value); });
         this._optionsHandler.Hook(`title`, null, `!!! MISSING TITLE !!!`);
         this._optionsHandler.Hook(`icon`);
         this._optionsHandler.Hook(`message`);
@@ -54,6 +64,22 @@ class DialogBox extends Widget {
     }
 
     // ----> DOM
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag write-only
+     * @group Styling
+     */
+     set flavor(p_value) { this._flavorEnum.Set(p_value); }
+
+     /**
+      * @description TODO
+      * @type {ui.core.helpers.FlagEnum}
+      * @customtag read-only
+      * @group Styling
+      */
+     get flavor() { return this._flavorEnum.currentFlag; }
 
     _Style() {
 
@@ -92,7 +118,7 @@ class DialogBox extends Widget {
 
     _Render() {
 
-        this._icon = new manipulators.Icon(u.dom.New('div', { class: `icon` }, this._host), false, true);
+        this._icon = new ui.manipulators.Icon(u.dom.New('div', { class: `icon` }, this._host), false, true);
 
         this._header = u.dom.New(`div`, { class: `group header` }, this._host);
         this._body = u.dom.New(`div`, { class: `group body` }, this._host);
@@ -100,15 +126,15 @@ class DialogBox extends Widget {
 
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._footer);
         this._toolbar._defaultButtonClass = this._toolbarDefaultButtonClass;
-        this._toolbar.size = UI_FLAG.SIZE_M;
+        this._toolbar.size = ui.FLAGS.SIZE_M;
 
-        this._title = new manipulators.Text(u.dom.New(`span`, { class: `title ${FONT_FLAG.MEDIUM}` }, this._header), false);
+        this._title = new ui.manipulators.Text(u.dom.New(`span`, { class: `title ${FONT_FLAG.MEDIUM}` }, this._header), false);
         this._messageElement = null;
 
     }
 
     _OnOptionsWillUpdate(p_options) {
-        
+
     }
 
     _OnOptionsUpdated(p_options) {
@@ -202,13 +228,13 @@ class DialogBox extends Widget {
 
         {
             //Dialog title
-            [COM_ID.TITLE]:`Dialog title`, 
+            [com.IDS.TITLE]:`Dialog title`, 
 
             //Dialog message
-            [COM_ID.MESSAGE]:`Dialog message` //Optional
+            [com.IDS.MESSAGE]:`Dialog message` //Optional
 
             //Dialog icon
-            [COM_ID.ICON]:`%ICON%/icon_info.svg`, //Optional
+            [com.IDS.ICON]:`%ICON%/icon_info.svg`, //Optional
 
             //Dialog actions
             //displayed at the bottom of the dialog.
@@ -262,13 +288,13 @@ class DialogBox extends Widget {
             //to close the dialog box. Otherwise, close by default.
             this._submitMap.Set(handle, p_options.submit);
             this._submitList.Add(handle);
-            handle.Watch(UI_SIGNAL.TRIGGERED, this._Submit);
+            handle.Watch(ui.SIGNAL.TRIGGERED, this._Submit);
         }
 
         if (u.tils.Get(p_options, `close`, true)) {
             //TODO : Need to add a generic 'triggered' activation signal
             //to close the dialog box. Otherwise, close by default.
-            handle.Watch(UI_SIGNAL.TRIGGERED, this._Close);
+            handle.Watch(ui.SIGNAL.TRIGGERED, this._Close);
         }
 
         return handle;
@@ -301,12 +327,13 @@ class DialogBox extends Widget {
         this._submitMap.Clear();
         this._submitList.Clear();
         this._formHandler.Clear();
+        this._flavorEnum.Set(this.constructor.__default_flavor);
         this._ClearHandles();
 
         for (let i = 0, n = this._contents.length; i < n; i++) {
             let item = this._contents[i];
             if (`Release` in item) { this._contents[i].Release(); }
-            else { u.dom.Remove(item); }
+            else { u.dom.Detach(item); }
         }
 
         this._hasInput = false;
@@ -321,4 +348,4 @@ class DialogBox extends Widget {
 }
 
 module.exports = DialogBox;
-UI.Register('nkmjs-dialog-box', DialogBox);
+ui.Register('nkmjs-dialog-box', DialogBox);

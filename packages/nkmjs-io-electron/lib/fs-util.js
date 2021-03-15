@@ -1,6 +1,6 @@
 'use strict';
 
-const { ENCODING } = require(`@nkmjs/io-core`);
+const io = require(`@nkmjs/io-core`);
 const fs = require('fs');
 const path = require('path');
 
@@ -15,7 +15,7 @@ class FSUTIL {
 
         if (!stats.isDirectory()) { return; }
 
-        let content = fs.readdirSync(p_path, ENCODING.UTF8);
+        let content = fs.readdirSync(p_path, io.ENCODING.UTF8);
         for (let i = 0, n = content.length; i < n; i++) {
             FSUTIL.Delete(path.join(p_path, content[i]));
         }

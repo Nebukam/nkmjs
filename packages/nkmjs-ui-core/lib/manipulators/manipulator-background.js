@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const Manipulator = require(`./manipulator`);
 
 /**
@@ -42,8 +42,8 @@ class BackgroundManipulator extends Manipulator {
             let path = ``;
 
             if (u.tils.isString(p_value)) { path = p_value; }
-            else if (UI_ID.ICON in p_value) { path = p_value[UI_ID.ICON]; }
-            else if (UI_ID.PATH in p_value) { path = p_value[UI_ID.PATH]; }
+            else if (IDS.ICON in p_value) { path = p_value[IDS.ICON]; }
+            else if (IDS.PATH in p_value) { path = p_value[IDS.PATH]; }
             else if (`img` in p_value) { path = p_value.img; }
             else if (`objectURL` in p_value) { path = p_value.objectURL; }
 

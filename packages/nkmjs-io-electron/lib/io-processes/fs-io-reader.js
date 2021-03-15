@@ -1,6 +1,6 @@
 'use strict';
 
-const { IOProcess } = require(`@nkmjs/io-core`);
+const io = require(`@nkmjs/io-core`);
 
 const fs = require(`fs`);
 
@@ -8,7 +8,7 @@ const fs = require(`fs`);
  * Desktop IO Reader
  */
 
-class FSIOReader extends IOProcess {
+class FSIOReader extends io.IOProcess {
 
     constructor() { super(); }
 

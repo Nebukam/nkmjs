@@ -36,7 +36,7 @@ class STYLE extends com.helpers.Singleton {
 
         super._Init();
 
-        this._defaultPalette = com.pool.POOL.Rent(Palette);
+        this._defaultPalette = com.Rent(Palette);
         this._defaultPalette._STYLE = this;
         this._current = this._defaultPalette;
         this._headerStyle = null;
@@ -79,7 +79,7 @@ class STYLE extends com.helpers.Singleton {
      * @returns {style.Palette} new Palette
      */
     static CreatePalette(p_initWithDefaults = true, p_makeCurrent = true) {
-        let newPalette = com.pool.POOL.Rent(Palette);
+        let newPalette = com.Rent(Palette);
         newPalette._STYLE = this;
         if (p_initWithDefaults) { newPalette.InitFrom(this.instance.defaultPalette); }
         if (p_makeCurrent) { this.instance.current = newPalette; }

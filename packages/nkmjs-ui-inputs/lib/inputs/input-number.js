@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InputField = require(`../input-field`);
 
@@ -58,4 +58,4 @@ class InputNumber extends InputField {
 }
 
 module.exports = InputNumber;
-UI.Register(`nkmjs-input-number`, InputNumber);
+ui.Register(`nkmjs-input-number`, InputNumber);

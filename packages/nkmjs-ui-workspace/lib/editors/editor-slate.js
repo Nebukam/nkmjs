@@ -1,6 +1,6 @@
 'use strict';
 
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const EditorEx = require(`./editor-ex`);
 
@@ -22,4 +22,4 @@ class SlateEditor extends EditorEx{
 }
 
 module.exports = SlateEditor;
-UI.Register('nkmjs-editor-slate', SlateEditor);
+ui.Register('nkmjs-editor-slate', SlateEditor);

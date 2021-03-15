@@ -123,7 +123,7 @@ class ModelApply extends DataManipulationCommand {
             return;
         }
 
-        let conf = { color: com.COMMON_FLAG.WARNING, strong: true },
+        let conf = { color: com.FLAGS.WARNING, strong: true },
             str0 = STYLE.TF(`No way back`, conf),
             str1 = STYLE.TF(`${models.length} models`, conf),
             str2 = STYLE.TF(`${eCount} entries`, conf),
@@ -250,9 +250,9 @@ class ModelApply extends DataManipulationCommand {
         DIALOG.Push({
             title: p_title,
             message: p_message,
-            [COM_ID.ICON]: `%ICON%/icon_error.svg`,
+            [com.IDS.ICON]: `%ICON%/icon_error.svg`,
             actions: [
-                { text: `Ok`, trigger: { fn: this._OnDialogFail, arg: p_message }, [COM_ID.ICON]: `%ICON%/icon_close.svg` }
+                { text: `Ok`, trigger: { fn: this._OnDialogFail, arg: p_message }, [com.IDS.ICON]: `%ICON%/icon_close.svg` }
             ]
         });
         return p_message;
@@ -262,10 +262,10 @@ class ModelApply extends DataManipulationCommand {
         DIALOG.Push({
             title: p_title,
             message: p_message,
-            [COM_ID.ICON]: `%ICON%/icon_warning.svg`,
+            [com.IDS.ICON]: `%ICON%/icon_warning.svg`,
             actions: [
                 { text: `Apply.`, trigger: { fn: this._OnDialogConfirm } },
-                { text: `Abort !`, trigger: { fn: this._OnDialogCancel }, [COM_ID.ICON]: `%ICON%/icon_close.svg` }
+                { text: `Abort !`, trigger: { fn: this._OnDialogCancel }, [com.IDS.ICON]: `%ICON%/icon_close.svg` }
             ]
         });
         return p_message;

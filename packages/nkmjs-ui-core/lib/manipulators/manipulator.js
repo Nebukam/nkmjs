@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
-const UI_FLAG = require(`../ui-flag`);
+const FLAGS = require(`../flags`);
 const FlagEnum = require("../helpers/flag-enum");
 const UI = require("../ui");
 
@@ -28,7 +28,7 @@ class Manipulator {
         this._isVisible = true;
 
         if (p_sizeControl) {
-            this._sizeFlags = new FlagEnum(UI_FLAG.sizes, true);
+            this._sizeFlags = new FlagEnum(FLAGS.sizes, true);
         } else { this._sizeFlags = null; }
 
     }

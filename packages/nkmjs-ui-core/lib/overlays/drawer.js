@@ -2,13 +2,13 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CatalogItem } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
 
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const UI = require(`../ui`);
-const UI_SIGNAL = require(`../ui-signal`);
-const UI_FLAG = require(`../ui-flag`);
+const SIGNAL = require(`../signal`);
+const FLAGS = require(`../flags`);
 
 const View = require(`../views/view`);
 const CatalogViewBuilder = require("../helpers/catalog-view-builder");
@@ -36,7 +36,7 @@ class Drawer extends View {
 
     // ----> Init
 
-    static __default_orientation = UI_FLAG.VERTICAL;
+    static __default_orientation = FLAGS.VERTICAL;
     static __default_facadeTPL = templates.FacadeTitleClose;
 
     _Init() {
@@ -108,8 +108,8 @@ class Drawer extends View {
         this._body = u.dom.New(`div`, {class:`body`}, this);
 
         DOMTemplate.Render(this.constructor.__default_facadeTPL, this._header, {
-            [UI_ID.OWNER]: this,
-            [UI_ID.TITLE]:{ [UI_ID.CSS_CL]:`${FONT_FLAG.MEDIUM}` },
+            [IDS.OWNER]: this,
+            [IDS.TITLE]:{ [IDS.CSS_CL]:`${FONT_FLAG.MEDIUM}` },
             closeIcon: { htitle: `Close` }
         });
 
@@ -139,7 +139,7 @@ class Drawer extends View {
         if(this._data){
             this._data.Consume();
         }
-        //this._Broadcast(UI_SIGNAL.CLOSE_REQUESTED, this);
+        //this._Broadcast(SIGNAL.CLOSE_REQUESTED, this);
     }
 
     // ----> Pooling

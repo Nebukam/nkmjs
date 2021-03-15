@@ -5,7 +5,7 @@ const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 const { ENV } = require(`@nkmjs/environment`);
 const { CSS } = require('@nkmjs/style');
-const { UI, ToolButton, UI_FLAG } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InputPath = require(`./input-path`);
 
@@ -32,49 +32,17 @@ class InputFile extends InputPath {
                 flex: `1 1 auto`
             }
         }, super._Style());
-        /*
-        //This is for the default file picker
-        return CSS.Extends({
-            '.input-btn':{
-                flex:`1 0 30px`,
-                'max-width':`30px`
-            },
-            '.input-btn::-webkit-file-upload-button': {
-                visibility: `hidden`
-            },
-            '.input-btn::before': {
-                content: '"..."',
-                'box-sizing':`border-box`, 
-                display: `inline-block`,
-                'border-radius': `3px`,
-                padding: `5px 10px`,
-                outline: `none`,
-                'white-space': `nowrap`,
-                '-webkit-user-select': `none`,
-                cursor: `pointer`,
-                'height':`100%`,
-                'width':`30px`,
-                'background-color':this.GEC(UI.elBG, UI.sIDLE)
-            },
-            '.input-btn:hover::before':{
-                'background-color':this.GEC(UI.elBG, UI.sFOCUS)
-            },
-            '.input-btn:active::before':{
-                'background-color':this.GEC(UI.elBG, UI.sSELECT)
-            }
-        }, super._Style());
-        */
     }
 
     _Render() {
         super._Render();
 
         if (ENV.FEATURES.isNodeEnabled) {
-            this._picker = this.Add(ToolButton, `input-btn`);
+            this._picker = this.Add(ui.buttons.ToolButton, `input-btn`);
             this._picker.options = {
-                [com.COM_ID.ICON]: `%ICON%/icon_more.svg`,
+                [com.IDS.ICON]: `%ICON%/icon_more.svg`,
                 trigger: { fn: this._Pick, thisArg: this },
-                variant: UI_FLAG.FRAME
+                variant: ui.FLAGS.FRAME
             };
 
             this._sizeEnum.Add(this._picker);
@@ -113,4 +81,4 @@ class InputFile extends InputPath {
 }
 
 module.exports = InputFile;
-UI.Register(`nkmjs-input-file`, InputFile);
+ui.Register(`nkmjs-input-file`, InputFile);

@@ -9,7 +9,7 @@
 Check out the [NKMjs root](https://github.com/Nebukam/nkmjs/) readme to get started.
 
 ## **FEATURES & MODULES**
-NKMjs is a plain javascript framework aimed at making web-based application & tool developement quick & easy. It supports a number of features out-of-the-box and is painless to extend.  
+NKMjs is a javascript (CommonJS) framework aimed at making web-based application & tool developement quick & easy. It supports a number of features out-of-the-box and is painless to extend.  
 _While not written in typescript, NKMjs is strongly object-oriented (if this sounds counter-intuitive, it's because it is.)_
 
 * ### **Component-based UI**  

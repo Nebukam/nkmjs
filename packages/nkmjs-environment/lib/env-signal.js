@@ -58,6 +58,13 @@ class ENV_SIGNAL {
      */
     static OFFLINE = Symbol(`offline`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     */
+     static PWA_UPDATE_AVAILABLE = Symbol(`pwa-update-available`);
+
 }
 
 module.exports = ENV_SIGNAL;

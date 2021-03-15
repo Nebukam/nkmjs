@@ -60,7 +60,7 @@ class FieldSettings extends DerivableDataBlock {
         }
 
         if (p_value) {
-            this._fieldInstance = com.pool.POOL.Rent(p_value);
+            this._fieldInstance = com.Rent(p_value);
             this._fieldInstance.settings = this._settings;
         }
 

@@ -13,7 +13,7 @@ class Field extends com.pool.DisposableObjectEx {
 
     static get _NFO_() {
         return {
-            [COM_ID.ICON]: `%ICON%/KitCore/icon_field.svg`
+            [com.IDS.ICON]: `%ICON%/KitCore/icon_field.svg`
         };
     }
 

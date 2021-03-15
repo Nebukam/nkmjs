@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
-const { DATA_SIGNAL, DataFactory } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const M = require(`../meta`);
 const EcosystemPart = require(`../ecosystem-part`);
@@ -16,11 +16,11 @@ class FieldManager extends EcosystemPart {
 
         super._Init();
 
-        this._factory = new DataFactory();
+        this._factory = new data.DataFactory();
         this._factory.itemClass = FieldDescriptor;
 
-        this._factory.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
-        this._factory.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
+        this._factory.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
+        this._factory.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
 
         this._idMap = new Dictionary();
 
@@ -49,10 +49,10 @@ class FieldManager extends EcosystemPart {
 
         this._catalog.Register(
             {
-                [COM_ID.PATH]: fieldMETA.catalogPath,
-                [COM_ID.DATA]: fieldItem,
-                [COM_ID.ICON]: (fieldMETA.icon || `%ICON%/icon_field.svg`),
-                [COM_ID.NAME]: u.tils.CamelSplit(p_fieldClass.name)
+                [com.IDS.PATH]: fieldMETA.catalogPath,
+                [com.IDS.DATA]: fieldItem,
+                [com.IDS.ICON]: (fieldMETA.icon || `%ICON%/icon_field.svg`),
+                [com.IDS.NAME]: u.tils.CamelSplit(p_fieldClass.name)
             }
         );
 
@@ -66,11 +66,11 @@ class FieldManager extends EcosystemPart {
 
     _OnFieldRegistered(p_factory, p_field) {
         this._OnDataRegistered(p_field);
-        this._Broadcast(DATA_SIGNAL.ITEM_REGISTERED, p_field);
+        this._Broadcast(data.SIGNAL.ITEM_REGISTERED, p_field);
     }
 
     _OnFieldUnregistered(p_factory, p_field) {
-        this._Broadcast(DATA_SIGNAL.ITEM_UNREGISTERED, p_field);
+        this._Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_field);
     }
 
 }

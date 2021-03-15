@@ -3,10 +3,10 @@
 const u = require("@nkmjs/utils");
 const { CSS } = require("@nkmjs/style");
 const { List } = require("@nkmjs/collections");
-const { time } = require("@nkmjs/common");
+const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
-const UI_SIGNAL = require(`../ui-signal`);
+const SIGNAL = require(`../signal`);
 const Layer = require(`./layer`);
 
 const __className_topLayer = `layer-top`;
@@ -27,7 +27,7 @@ class LayerContainer extends Layer {
     _Init() {
         this._layerClassName = `layer`;
         super._Init();
-        this._updateDepths = new time.DelayedCall(this._Bind(this._UpdateLayerDepth));
+        this._updateDepths = new com.time.DelayedCall(this._Bind(this._UpdateLayerDepth));
         this._layerList = new List(0);
     }
 
@@ -54,7 +54,7 @@ class LayerContainer extends Layer {
         if (layer) {
             this._layerList.Add(layer);
             layer.classList.add(this._layerClassName);
-            layer.Watch(UI_SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
+            layer.Watch(SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }
     }
@@ -67,7 +67,7 @@ class LayerContainer extends Layer {
             layer.classList.remove(this._layerClassName);
             layer.classList.remove(__className_topLayer);
             layer.classList.remove(__className_subLayer);
-            layer.Unwatch(UI_SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
+            layer.Unwatch(SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }
     }

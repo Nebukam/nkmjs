@@ -40,7 +40,7 @@ class TreeRoot extends TreeItemGroup {
         // TODO : Find an elegant way to make the toolbar static
         /*
                 this._searchBtn = this._toolbar.CreateHandle({
-                    [UI_ID.ICON]:`%ICON%/icon_search.svg`, text:`Find...`,
+                    [IDS.ICON]:`%ICON%/icon_search.svg`, text:`Find...`,
                     trigger:{ thisArg:this, fn:this._OpenFind},
                     //request:{}
                 });

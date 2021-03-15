@@ -1,16 +1,16 @@
 'use strict';
 
-const NKMjs = require(`@nkmjs/core`);
-const u = NKMjs.utils;
-const { UI, Layer, UI_FLAG } = NKMjs.ui;
-const { CSS } = NKMjs.style;
+const nkm = require(`@nkmjs/core`);
+const u = nkm.utils;
+const ui = nkm.ui;
+const { CSS } = nkm.style;
 
 const UIItem = require("./ui-item");
 
-class UIItemListLayer extends Layer {
+class UIItemListLayer extends ui.views.Layer {
     constructor() { super(); }
 
-    static __default_orientation = UI_FLAG.VERTICAL;
+    static __default_orientation = ui.FLAGS.VERTICAL;
 
     _Init() {
         super._Init();
@@ -72,12 +72,12 @@ class UIItemListLayer extends Layer {
             for (let i = 0, n = variants.length; i < n; i++) {
                 let item = this.Add(UIItem, `item`, this._itemContainer);
                 item.Display(p_id, p_class, variants[i]);
-                if(callback){ callback(item._sample); }
+                if(callback){ callback(item._sample, variants[i]); }
             }
         } else {
             let item = this.Add(UIItem, `item`, this._itemContainer);
             item.Display(p_id, p_class);
-            if(callback){ callback(item._sample); }
+            if(callback){ callback(item._sample, null); }
         }
 
     }
@@ -85,4 +85,4 @@ class UIItemListLayer extends Layer {
 }
 
 module.exports = UIItemListLayer;
-UI.Register(`nkmjs-ui-item-list-layer`, UIItemListLayer);
+ui.Register(`nkmjs-ui-item-list-layer`, UIItemListLayer);

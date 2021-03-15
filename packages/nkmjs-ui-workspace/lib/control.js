@@ -3,20 +3,20 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
-const { DATA_SIGNAL, DataBlock, MetadataObserver } = require(`@nkmjs/data-core`);
-const { UI, OrientableWidget } = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
 const Editor = require(`./editor`);
 
-class Control extends OrientableWidget{
+class Control extends ui.OrientableWidget{
     constructor(){super();}
 
     _Init(){
         super._Init();
-        this._metadataObserver = new MetadataObserver();
+        this._metadataObserver = new data.helpers.MetadataObserver();
 
-        this._dataObserver.Hook(DATA_SIGNAL.DIRTY, this._OnDataDirty, this);
+        this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
         this._dataObserver.Hook(com.SIGNAL.UPDATED, this._OnDataUpdated, this);
     }
 
@@ -56,7 +56,7 @@ class Control extends OrientableWidget{
 
     _OnDataChanged(p_oldValue){
         super._OnDataChanged(p_oldValue);
-        if(u.tils.isInstanceOf(this._data, DataBlock)){ this._metadataObserver.target = this._data.metadata; }
+        if(u.tils.isInstanceOf(this._data, data.DataBlock)){ this._metadataObserver.target = this._data.metadata; }
         else{ this._metadataObserver.target = null; }
     }
 
@@ -76,4 +76,4 @@ class Control extends OrientableWidget{
 }
 
 module.exports = Control;
-UI.Register(`nkmjs-control`, Control);
+ui.Register(`nkmjs-control`, Control);

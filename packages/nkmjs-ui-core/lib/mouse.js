@@ -2,7 +2,7 @@
 
 const { Dictionary } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const UI_SIGNAL = require(`./ui-signal`);
+const SIGNAL = require(`./signal`);
 
 
 /**

@@ -38,7 +38,7 @@ class DataObserver extends com.signals.Observer {
 
     _ExtractNestedData(p_value) {
         if (p_value && !u.tils.isInstanceOf(p_value, DataBlock)) {
-            if (u.tils.isInstanceOf(p_value[com.COM_ID.DATA], DataBlock)) { p_value = p_value[com.COM_ID.DATA]; }
+            if (u.tils.isInstanceOf(p_value[com.IDS.DATA], DataBlock)) { p_value = p_value[com.IDS.DATA]; }
             else { p_value = null; }
         }
         return p_value;

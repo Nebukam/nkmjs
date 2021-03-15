@@ -1,7 +1,7 @@
 const com = require("@nkmjs/common");
 
 const DataBlock = require(`../../data/data-block`);
-const SERIALIZATION_CONTEXT = require(`../serialization-context`);
+const CONTEXT = require(`../context`);
 const BaseSerializer = require(`../serializer-base`);
 
 
@@ -46,7 +46,7 @@ class DataBlockJSONSerializer extends BaseSerializer {
         let metadata = p_data[__metaID];
 
         let serializer = com.BINDINGS.Get(
-            SERIALIZATION_CONTEXT.JSON,
+            CONTEXT.JSON,
             metadata);
 
         let serial = p_data.Pack();
@@ -71,7 +71,7 @@ class DataBlockJSONSerializer extends BaseSerializer {
 
         let metadata = p_data.metadata,
             serializer = com.BINDINGS.Get(
-                SERIALIZATION_CONTEXT.JSON,
+                CONTEXT.JSON,
                 metadata);
 
         if (__metaID in p_serial) { serializer.Deserialize(p_serial[__metaID], metadata, p_options); }

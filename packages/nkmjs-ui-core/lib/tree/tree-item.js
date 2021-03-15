@@ -5,7 +5,7 @@ const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
 
 const UI = require(`../ui`);
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const MOUSE = require("../mouse");
 
 const DOMTemplate = require(`../dom-template`);
@@ -109,8 +109,8 @@ class TreeItem extends CatalogWidget {
 
         if (!this._tplOptions) {
             this._tplOptions = {
-                [UI_ID.OWNER]: this,
-                [UI_ID.ICON]: { autoHide: false }
+                [IDS.OWNER]: this,
+                [IDS.ICON]: { autoHide: false }
             };
         }
 
@@ -125,7 +125,7 @@ class TreeItem extends CatalogWidget {
     _UpdateInfos() {
 
         if (this._itemData) {
-            this._flavorEnum.Set(this._itemData.isDirty ? com.COMMON_FLAG.WARNING : null);
+            this._flavorEnum.Set(this._itemData.isDirty ? com.FLAGS.WARNING : null);
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
             if (!this._icon.Set(this._itemData)) { this._icon.Set(this._data.options); }
         } else {

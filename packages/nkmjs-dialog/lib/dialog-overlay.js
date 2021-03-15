@@ -2,17 +2,17 @@
 
 const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
-const { UI, Overlay } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 
 const DialogBox = require(`./dialog-box.js`);
 
-class DialogOverlay extends Overlay {
+class DialogOverlay extends ui.overlays.Overlay {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/dialogs/dialog-overlay.css`]
-    }, Overlay, ['css']);
+    }, ui.overlays.Overlay, ['css']);
 
     static __default_overlayContentClass = DialogBox;
 
@@ -41,4 +41,4 @@ class DialogOverlay extends Overlay {
 }
 
 module.exports = DialogOverlay;
-UI.Register('nkmjs-dialog-overlay', DialogOverlay);
+ui.Register('nkmjs-dialog-overlay', DialogOverlay);

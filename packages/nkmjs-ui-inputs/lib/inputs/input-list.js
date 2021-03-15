@@ -6,7 +6,7 @@
 
 'use strict';
 
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InputBase = require(`../input-base`);
 const { CSS } = require("@nkmjs/style");
@@ -34,4 +34,4 @@ class InputList extends InputBase {
 }
 
 module.exports = InputList;
-UI.Register(`nkmjs-input-list`, InputList);
+ui.Register(`nkmjs-input-list`, InputList);

@@ -9,7 +9,7 @@ const Catalog = require(`./catalog`);
  * as such it does not own items internally, nor releases them
  * @class
  * @hideconstructor
- * @augments data.core.catalog.Catalog
+ * @augments data.core.catalogs.Catalog
  * @memberof data.core.catalog
  */
 class CatalogSelection extends Catalog {

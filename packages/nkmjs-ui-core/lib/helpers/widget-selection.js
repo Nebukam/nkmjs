@@ -3,7 +3,7 @@
 const com = require("@nkmjs/common");
 const { List } = require(`@nkmjs/collections`);
 
-const UI_SIGNAL = require(`../ui-signal`);
+const SIGNAL = require(`../signal`);
 const INPUT = require(`../input`);
 
 /**
@@ -61,9 +61,9 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
         this._stack.Add(p_item);
 
-        p_item.Watch(UI_SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this);
-        p_item.Watch(UI_SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this);
-        p_item.Watch(UI_SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this);
+        p_item.Watch(SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this);
+        p_item.Watch(SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this);
+        p_item.Watch(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this);
 
         p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
@@ -82,9 +82,9 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         if (this._stack.Remove(p_item)) {
             p_item.Select(false);
 
-            p_item.Unwatch(UI_SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this);
-            p_item.Unwatch(UI_SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this);
-            p_item.Unwatch(UI_SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this);
+            p_item.Unwatch(SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this);
+            p_item.Unwatch(SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this);
+            p_item.Unwatch(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this);
 
             p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
@@ -96,9 +96,9 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
     _OnItemReleased(p_item) { this.Remove(p_item); }
 
-    _OnItemDragStarted(p_item) { this._SpreadEvent(UI_SIGNAL.DRAG_STARTED, p_item); }
+    _OnItemDragStarted(p_item) { this._SpreadEvent(SIGNAL.DRAG_STARTED, p_item); }
 
-    _OnItemDragEnded(p_item) { this._SpreadEvent(UI_SIGNAL.DRAG_ENDED, p_item); }
+    _OnItemDragEnded(p_item) { this._SpreadEvent(SIGNAL.DRAG_ENDED, p_item); }
 
     /**
      * @access protected

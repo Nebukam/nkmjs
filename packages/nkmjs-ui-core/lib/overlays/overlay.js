@@ -3,13 +3,13 @@ const { CSS } = require(`@nkmjs/style`);
 const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
-const UI_FLAG = require(`../ui-flag`);
-const Layer = require(`../views/layer`);
-
-const OVERLAY_CONTEXT = require(`./overlay-context`);
-const OverlayOptions = require(`./overlay-options`);
-const extensions = require(`../extensions`);
+const FLAGS = require(`../flags`);
 const MOUSE = require("../mouse");
+const Layer = require(`../views/layer`);
+const extensions = require(`../extensions`);
+
+const CONTEXT = require(`./overlay-context`);
+const OverlayOptions = require(`./overlay-options`);
 
 /**
  * @description TODO
@@ -25,7 +25,7 @@ class Overlay extends Layer {
 
     static __default_overlayContentClass = null;
     static __default_contentPlacement = null;
-    static __content_context = OVERLAY_CONTEXT.CONTENT;
+    static __content_context = CONTEXT.CONTENT;
 
     _Init() {
 
@@ -56,25 +56,27 @@ class Overlay extends Layer {
         // when an overlay is created for the first time
         super._OnPaintChange();
         if (this._isPainted) {
-            if (this._isFirstPaint) {
-                this._bg.style.setProperty(`--__click_offset`, `0%`);
-            }
+            this.style.setProperty(`transform`, `translateX(0%)`);
+        }else{
+            this.style.removeProperty(`transform`);
         }
     }
 
     _Style() {
         return CSS.Extends({
+            ':host':{
+                'transform': 'translateX(-100%)',
+                'transition': 'transform 0s linear'
+            },
             '.bg': {
                 '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box
-                '--__click_offset': '-100%',
-                'transform': 'translateX(var(--__click_offset))',
-                'transition': 'transform 0s linear'
             }
         }, super._Style());
     }
 
     _Render() {
         super._Render();
+        this.style.setProperty(`--__click_offset`, `0%`);
         this._bg = u.dom.New(`div`, { class: `bg` }, this);
         this._closeBg.element = this._bg;
     }
@@ -109,9 +111,9 @@ class Overlay extends Layer {
             this.classList.remove(`content-${this._contentPlacement}`);
         }
 
-        let simplified = UI_FLAG.SimplifyPlacement(
+        let simplified = FLAGS.SimplifyPlacement(
             p_value,
-            this._orientation.currentFlag == UI_FLAG.VERTICAL ? true : false);
+            this._orientation.currentFlag == FLAGS.VERTICAL ? true : false);
 
         if (simplified) {
             this._contentPlacement = simplified;
@@ -182,14 +184,14 @@ class Overlay extends Layer {
 
             // First, check if any content is bound to the requestType
             contentClass = com.BINDINGS.Get(
-                OVERLAY_CONTEXT.CONTENT,
+                CONTEXT.CONTENT,
                 p_overlayData.request.requestType,
                 null);
 
             // Fall back to contentData association if any
             if (p_contentData && !contentClass) {
                 contentClass = com.BINDINGS.Get(
-                    OVERLAY_CONTEXT.CONTENT,
+                    CONTEXT.CONTENT,
                     p_contentData,
                     null);
             }
@@ -221,7 +223,7 @@ class Overlay extends Layer {
 
     DisplayGranted() {
         super.DisplayGranted();
-        this.classList.add(UI_FLAG.SHOWN);
+        this.classList.add(FLAGS.SHOWN);
     }
 
     /**
@@ -234,7 +236,7 @@ class Overlay extends Layer {
     }
 
     _CleanUp() {
-        this.classList.remove(UI_FLAG.SHOWN);
+        this.classList.remove(FLAGS.SHOWN);
         super._CleanUp();
     }
 

@@ -101,7 +101,7 @@ class ActionStack {
         if (!this._isEnabled) { return null; }
 
         if (this._groupingActive) {
-            if (!this._group) { this._group = this._Register(com.pool.POOL.Rent(ActionGroup)); }
+            if (!this._group) { this._group = this._Register(com.Rent(ActionGroup)); }
         }
 
         // Check if last action can be updated instead of creating a new one.
@@ -122,9 +122,9 @@ class ActionStack {
         }
 
         if (this._group) {
-            return this._group._Register(com.pool.POOL.Rent(p_actionClass).Do(p_operation, false));
+            return this._group._Register(com.Rent(p_actionClass).Do(p_operation, false));
         } else {
-            return this._Register(com.pool.POOL.Rent(p_actionClass).Do(p_operation, false));
+            return this._Register(com.Rent(p_actionClass).Do(p_operation, false));
         }
 
     }

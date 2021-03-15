@@ -1,6 +1,6 @@
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
-const { UI_ID, UI, UI_SIGNAL, Toolbar, ToolButton, DOMTemplate, UI_FLAG, MOUSE, templates, extensions } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InspectorItem = require(`./inspector-item`);
 
@@ -10,20 +10,20 @@ class InspectorGroup extends InspectorItem {
     _Init() {
         super._Init();
 
-        this._extExpand = new extensions.Expand();
+        this._extExpand = new ui.extensions.Expand();
         this._extExpand._isExpanded = false;
-        this._extExpand.Watch(UI_SIGNAL.EXPANDED, this._Expand, this);
-        this._extExpand.Watch(UI_SIGNAL.COLLAPSED, this._Collapse, this);
+        this._extExpand.Watch(ui.SIGNAL.EXPANDED, this._Expand, this);
+        this._extExpand.Watch(ui.SIGNAL.COLLAPSED, this._Collapse, this);
 
         this._header = null;
         this._expandOnHeaderAltActivation = u.tils.Default(this._expandOnHeaderAltActivation, true);
 
         this._useGroupExpand = false;
 
-        this._expandBtnClass = ToolButton;
+        this._expandBtnClass = ui.buttons.ToolButton;
         this._expandBtn = null;
 
-        this._toolbarClass = Toolbar;
+        this._toolbarClass = ui.helpers.Toolbar;
         this._toolbar = null;
 
         this._footer = null;
@@ -31,7 +31,7 @@ class InspectorGroup extends InspectorItem {
         this._staticContent = true; //Always build controllers
         this._alwaysExpanded = false; //Keep group expanded after release (static content only)
 
-        this._interactions.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));
+        this._interactions.Hook(ui.MOUSE.BTN_LEFT, ui.MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));
 
     }
 
@@ -106,9 +106,9 @@ class InspectorGroup extends InspectorItem {
 
     _Render() {
 
-        DOMTemplate.Render(templates.HeaderBodyFooter, this, { [UI_ID.OWNER]: this });
-        DOMTemplate.Render(templates.FacadeExpandTitle, this._header, {
-            [UI_ID.OWNER]: this,
+        ui.DOMTemplate.Render(ui.templates.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
+        ui.DOMTemplate.Render(ui.templates.FacadeExpandTitle, this._header, {
+            [ui.IDS.OWNER]: this,
             expandIcon: { url: `%ICON%/icon_expand_arrow.svg`, htitle: `Expand` }
         });
 
@@ -119,12 +119,12 @@ class InspectorGroup extends InspectorItem {
         if (this._useGroupExpand) {
 
             this._expandAllBtn = this._toolbar.CreateHandle({
-                [UI_ID.ICON]: `%ICON%/icon_expand_all.svg`, text: `Expand All`,
+                [ui.IDS.ICON]: `%ICON%/icon_expand_all.svg`, text: `Expand All`,
                 trigger: { thisArg: this, fn: this.ExpandAll },
             });
 
             this._collapseAllBtn = this._toolbar.CreateHandle({
-                [UI_ID.ICON]: `%ICON%/icon_collapse_all.svg`, text: `Collapse All`,
+                [ui.IDS.ICON]: `%ICON%/icon_collapse_all.svg`, text: `Collapse All`,
                 trigger: { thisArg: this, fn: this.CollapseAll },
             });
 
@@ -151,7 +151,7 @@ class InspectorGroup extends InspectorItem {
             this._BuildContent();
         }
 
-        this._expandIcon.element.classList.remove(UI_FLAG.EXPANDED);
+        this._expandIcon.element.classList.remove(ui.FLAGS.EXPANDED);
         this._toolbar.hidden = false;
     }
 
@@ -162,7 +162,7 @@ class InspectorGroup extends InspectorItem {
             this._ClearContent();
         }
 
-        this._expandIcon.element.classList.add(UI_FLAG.EXPANDED);
+        this._expandIcon.element.classList.add(ui.FLAGS.EXPANDED);
         this._toolbar.hidden = true;
     }
 
@@ -236,4 +236,4 @@ class InspectorGroup extends InspectorItem {
 }
 
 module.exports = InspectorGroup;
-UI.Register(`nkmjs-inspector-group`, InspectorGroup);
+ui.Register(`nkmjs-inspector-group`, InspectorGroup);

@@ -3,8 +3,8 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
-const CATALOG_SIGNAL = require(`./catalog-signal`);
-const CATALOG_SORTING = require(`./catalog-sorting`);
+const SIGNAL = require(`./catalog-signal`);
+const SORTING = require(`./catalog-sorting`);
 const CatalogItem = require(`./catalog-item`);
 
 /**
@@ -24,7 +24,7 @@ const CatalogItem = require(`./catalog-item`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments data.core.catalog.CatalogItem
+ * @augments data.core.catalogs.CatalogItem
  * @memberof data.core.catalog
  */
 class Catalog extends CatalogItem {
@@ -98,7 +98,7 @@ class Catalog extends CatalogItem {
     static CreateFrom(p_rootOptions, p_content = null, p_parent = null) {
         if (!p_content && !p_rootOptions) { throw new Error(`Cannot create Catalog from null options nor struct.`); }
 
-        let catalog = com.pool.POOL.Rent(this.GetItemClass(p_rootOptions, true));
+        let catalog = com.Rent(this.GetItemClass(p_rootOptions, true));
         catalog.options = p_rootOptions;
 
         if (p_parent) { catalog.parent = p_parent; }
@@ -209,7 +209,7 @@ class Catalog extends CatalogItem {
     /**
      * @description TODOReturns the item at the specified position in this catalog.
      * @param {number} p_index the item's index.
-     * @returns {data.core.catalog.CatalogItem|data.core.catalog.Catalog} The item present at the given index. Otherwise throws an out-of-bound error.
+     * @returns {data.core.catalogs.CatalogItem|data.core.catalogs.Catalog} The item present at the given index. Otherwise throws an out-of-bound error.
      */
     At(p_index) {
         if (this._items.length <= p_index) { throw new Error(`Argument error : Catalog index outside boundaries.`); }
@@ -256,11 +256,11 @@ class Catalog extends CatalogItem {
     /**
      * @description Gets or create a catalog inside this one using the specified options
      * @param {CatalogItemOptions} p_options
-     * @returns {data.core.catalog.Catalog} Either a new catalog with the provided options, otherwise an existing one that matches them.
+     * @returns {data.core.catalogs.Catalog} Either a new catalog with the provided options, otherwise an existing one that matches them.
      */
     GetOrCreateCatalog(p_options) {
 
-        let catalogName = u.tils.isString(p_options) ? p_options : p_options[com.COM_ID.NAME];
+        let catalogName = u.tils.isString(p_options) ? p_options : p_options[com.IDS.NAME];
 
         let list = this._items,
             catalog = null;
@@ -270,10 +270,10 @@ class Catalog extends CatalogItem {
             if (u.tils.isInstanceOf(catalog, Catalog) && catalog.name === catalogName) { return catalog; }
         }
 
-        catalog = com.pool.POOL.Rent(Catalog.GetItemClass(p_options, true));
+        catalog = com.Rent(Catalog.GetItemClass(p_options, true));
         catalog.options = u.tils.Ensure(u.tils.isObject(p_options) ? p_options : {}, {
-            [com.COM_ID.NAME]: catalogName,
-            [com.COM_ID.ICON]: `%ICON%/icon_directory.svg`
+            [com.IDS.NAME]: catalogName,
+            [com.IDS.ICON]: `%ICON%/icon_directory.svg`
         });
 
         return this.Add(catalog);
@@ -283,7 +283,7 @@ class Catalog extends CatalogItem {
     /**
      * @description Create a catalog item given the specified item infos.
      * @param {CatalogItemOptions} p_itemInfos 
-     * @returns {data.core.catalog.CatalogItem|data.core.catalog.Catalog} A new catalog or item, based on the provided itemInfos
+     * @returns {data.core.catalogs.CatalogItem|data.core.catalogs.Catalog} A new catalog or item, based on the provided itemInfos
      */
     Register(p_itemInfos) {
 
@@ -293,10 +293,10 @@ class Catalog extends CatalogItem {
 
         //If no valid path is provided, simply create and return a new CatalogItem
         if (!pathInfos.valid || !pathInfos.path) {
-            let item = com.pool.POOL.Rent(Catalog.GetItemClass(p_itemInfos));
+            let item = com.Rent(Catalog.GetItemClass(p_itemInfos));
             item.options = u.tils.EnsureMultiple(p_itemInfos, {
-                [com.COM_ID.NAME]: pathInfos.name,
-                [com.COM_ID.icon]: `%ICON%/icon_document.svg`
+                [com.IDS.NAME]: pathInfos.name,
+                [com.IDS.icon]: `%ICON%/icon_document.svg`
             });
             return this.Add(item);
         }
@@ -314,15 +314,15 @@ class Catalog extends CatalogItem {
 
         if (pathInfos.isDir) {
             catalog.options = u.tils.EnsureMultiple(p_itemInfos, {
-                [com.COM_ID.NAME]: pathInfos.name,
-                [com.COM_ID.icon]: `%ICON%/icon_directory.svg`
+                [com.IDS.NAME]: pathInfos.name,
+                [com.IDS.icon]: `%ICON%/icon_directory.svg`
             });
             return catalog;
         } else {
-            let item = com.pool.POOL.Rent(Catalog.GetItemClass(p_itemInfos));
+            let item = com.Rent(Catalog.GetItemClass(p_itemInfos));
             item.options = u.tils.EnsureMultiple(p_itemInfos, {
-                [com.COM_ID.NAME]: pathInfos.name,
-                [com.COM_ID.icon]: `%ICON%/icon_document.svg`
+                [com.IDS.NAME]: pathInfos.name,
+                [com.IDS.icon]: `%ICON%/icon_document.svg`
             });
             return catalog.Add(item);
         }
@@ -362,7 +362,7 @@ class Catalog extends CatalogItem {
         p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         if (this._rootCatalog) {
-            this._rootCatalog._Broadcast(CATALOG_SIGNAL.ROOT_ITEM_ADDED, this._rootCatalog, p_item);
+            this._rootCatalog._Broadcast(SIGNAL.ROOT_ITEM_ADDED, this._rootCatalog, p_item);
         }
 
         this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item);
@@ -403,7 +403,7 @@ class Catalog extends CatalogItem {
         this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item);
 
         if (this._rootCatalog) {
-            this._rootCatalog._Broadcast(CATALOG_SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item);
+            this._rootCatalog._Broadcast(SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item);
         }
 
         p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
@@ -547,11 +547,11 @@ class Catalog extends CatalogItem {
 
         let sorted = false;
         if (!p_options) {
-            this._items.sort(this._defaultSortFunc ? this._defaultSortFunc : CATALOG_SORTING.NAME_ASC);
+            this._items.sort(this._defaultSortFunc ? this._defaultSortFunc : SORTING.NAME_ASC);
             sorted = true;
         } else {
             if (p_options.id) {
-                CATALOG_SORTING.SortByOption(this, p_options.id, p_options.fn);
+                SORTING.SortByOption(this, p_options.id, p_options.fn);
                 sorted = true;
             } else if (p_options.fn) {
                 this._items.sort(p_options.fn);
@@ -559,7 +559,7 @@ class Catalog extends CatalogItem {
             }
         }
 
-        if (sorted) { this._Broadcast(CATALOG_SIGNAL.SORTED, this); }
+        if (sorted) { this._Broadcast(SIGNAL.SORTED, this); }
 
     }
 

@@ -5,8 +5,8 @@ const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 const INPUT = require(`../input`);
-const UI_FLAG = require(`../ui-flag`);
-const UI_SIGNAL = require(`../ui-signal`);
+const FLAGS = require(`../flags`);
+const SIGNAL = require(`../signal`);
 const MOUSE = require("../mouse");
 
 const Extension = require("./extension");
@@ -37,8 +37,8 @@ class DragExtension extends Extension {
         this._grabDataCallback = null;
 
         this._ownerObserver = new com.signals.Observer();
-        this._ownerObserver.Hook(UI_SIGNAL.DRAG_STARTED, this._OnOwnerDragStarted, this);
-        this._ownerObserver.Hook(UI_SIGNAL.DRAG_ENDED, this._OnOwnerDragEnded, this);
+        this._ownerObserver.Hook(SIGNAL.DRAG_STARTED, this._OnOwnerDragStarted, this);
+        this._ownerObserver.Hook(SIGNAL.DRAG_ENDED, this._OnOwnerDragEnded, this);
         this._ownerObserver.Hook(com.SIGNAL.RELEASED, this._OnOwnerReleased, this);
 
         this._Bind(this._mUp);
@@ -105,8 +105,8 @@ class DragExtension extends Extension {
         this.activator = p_activator ? p_activator : p_target;
         this._feedbackHost = p_feedback ? p_feedback : p_target;
 
-        if (oldTarget) { oldTarget.flags.Remove(oldTarget, UI_FLAG.DRAGGED); }
-        if (p_target) { p_target.flags.Add(p_target, UI_FLAG.DRAGGED); }
+        if (oldTarget) { oldTarget.flags.Remove(oldTarget, FLAGS.DRAGGED); }
+        if (p_target) { p_target.flags.Add(p_target, FLAGS.DRAGGED); }
     }
 
     // ----> Availability
@@ -157,7 +157,7 @@ class DragExtension extends Extension {
         this._target.addEventListener(`drag`, this._mDrag);
 
         _dragDataContent.length = 0;
-        this._OwnerBroadcast(UI_SIGNAL.DRAG_STARTED);
+        this._OwnerBroadcast(SIGNAL.DRAG_STARTED);
         UI.DragStarted(_dragDataContent, this._target);
 
         this._ShowHint();
@@ -168,12 +168,12 @@ class DragExtension extends Extension {
         //Keep mouse position up-to-date in MOUSE
         //mousemove being muted on drag :/
         MOUSE.instance._mMove(p_evt);
-        this._OwnerBroadcast(UI_SIGNAL.DRAGGED);
+        this._OwnerBroadcast(SIGNAL.DRAGGED);
     }
 
     _mDragEnd(p_evt) {
         this._EndDrag();
-        this._OwnerBroadcast(UI_SIGNAL.DRAG_ENDED);
+        this._OwnerBroadcast(SIGNAL.DRAG_ENDED);
         UI.DragEnded();
     }
 
@@ -196,12 +196,12 @@ class DragExtension extends Extension {
     _OnOwnerDragStarted(p_target) {
         if (!this._isEnabled) { return; }
         _dragDataContent.push(this._GrabData());
-        this._target.flags.Set(UI_FLAG.DRAGGED, true);
+        this._target.flags.Set(FLAGS.DRAGGED, true);
     }
 
     _OnOwnerDragEnded(p_target) {
         if (!this._isEnabled) { return; }
-        this._target.flags.Set(UI_FLAG.DRAGGED, false);
+        this._target.flags.Set(FLAGS.DRAGGED, false);
     }
 
     _ShowHint() {

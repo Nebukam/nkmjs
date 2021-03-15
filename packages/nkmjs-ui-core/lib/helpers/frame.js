@@ -1,7 +1,7 @@
 'use strict';
 
 const UI = require(`../ui`);
-const UI_FLAG = require(`../ui-flag`);
+const FLAGS = require(`../flags`);
 const manipulators = require("../manipulators");
 const DisplayObject = require("../display-object");
 

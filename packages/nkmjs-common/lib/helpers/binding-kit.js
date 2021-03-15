@@ -31,14 +31,14 @@ const BINDINGS = require(`../bindings`);
  *
  *     this.Add(
  *     {
- *         context:SERIALIZATION_CONTEXT.SERIALIZER,
+ *         context:serialization.CONTEXT.SERIALIZER,
  *         kvps:[
- *              { key:SERIALIZATION_CONTEXT.JSON, binding:JSONSerializer },
- *              { key:SERIALIZATION_CONTEXT.TEXT, binding:TEXTSerializer }
+ *              { key:serialization.CONTEXT.JSON, binding:JSONSerializer },
+ *              { key:serialization.CONTEXT.TEXT, binding:TEXTSerializer }
  *          ]
  *     },
  *     {
- *         context:SERIALIZATION_CONTEXT.JSON,
+ *         context:serialization.CONTEXT.JSON,
  *         kvps:[
  *             { key:Metadata, binding:MetadataJSONSerializer },
  *             { key:DataBlock, binding:DataBlockJSONSerializer }
@@ -76,7 +76,7 @@ class BindingKit extends DisposableObjectEx {
             ]
         },
         {
-            context:SERIALIZATION_CONTEXT.SERIALIZER,
+            context:serialization.CONTEXT.SERIALIZER,
             kvps:[
                 { key:SKEY.JSON, binding:JSONSerializer }
             ]

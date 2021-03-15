@@ -1,22 +1,21 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { DataBlock, CatalogItem } = require(`@nkmjs/data-core`);
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const { UI_ID, UI, UI_FLAG, ButtonBase, DOMTemplate, templates } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
-class BreadcrumbItem extends ButtonBase {
+class BreadcrumbItem extends ui.buttons.ButtonBase {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/items/breadcrum-item.css`]
-    }, ButtonBase, ['css']);
+    }, ui.buttons.ButtonBase, ['css']);
 
     _Init() {
         super._Init();
 
-        this._optionsHandler.Hook(UI_ID.ICON, null, ``);
-        this._optionsHandler.Hook(UI_ID.LABEL, null, ``);
+        this._optionsHandler.Hook(ui.IDS.ICON, null, ``);
+        this._optionsHandler.Hook(ui.IDS.LABEL, null, ``);
 
         this._alwaysDisplayCommand = true;
         this._icon = null;
@@ -26,15 +25,15 @@ class BreadcrumbItem extends ButtonBase {
     // ----> DOM
 
     get icon() { return this._icon; }
-    set icon(p_value) { this._flags.Set(UI_FLAG.NO_ICON, !this._icon.Set(p_value)); }
+    set icon(p_value) { this._flags.Set(ui.FLAGS.NO_ICON, !this._icon.Set(p_value)); }
 
     get label() { return this._label; }
-    set label(p_value) { this._flags.Set(UI_FLAG.NO_LABEL, !this._label.Set(p_value)); }
+    set label(p_value) { this._flags.Set(ui.FLAGS.NO_LABEL, !this._label.Set(p_value)); }
 
     _Render() {
-        DOMTemplate.Render(templates.FacadeLabel, this, {
-            [UI_ID.OWNER]: this,
-            [UI_ID.LABEL]: { [UI_ID.CSS_CL]: FONT_FLAG.REGULAR }
+        ui.DOMTemplate.Render(ui.templates.FacadeLabel, this, {
+            [ui.IDS.OWNER]: this,
+            [ui.IDS.LABEL]: { [ui.IDS.CSS_CL]: FONT_FLAG.REGULAR }
         });
 
         this.focusArea = this;
@@ -46,4 +45,4 @@ class BreadcrumbItem extends ButtonBase {
 }
 
 module.exports = BreadcrumbItem;
-UI.Register(`nkmjs-breadcrum-item`, BreadcrumbItem);
+ui.Register(`nkmjs-breadcrum-item`, BreadcrumbItem);

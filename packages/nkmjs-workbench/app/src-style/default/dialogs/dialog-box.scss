@@ -22,6 +22,9 @@ $br: 5px;
 
 .header {
     //'background-color:`rgba(0,0,0,0.1)`
+    & .title{
+        color:var(--flavor_color);
+    }
 }
 
 .footer {
@@ -29,7 +32,7 @@ $br: 5px;
     padding-top: $br * 2;
     padding-bottom: $br * 2;
 
-    border-top: 1px solid rgba(127,127,127,0.2);
+    border-top: 1px solid rgba(var(--flavor_color_rgb), 0.5); /*rgba(127,127,127,0.2);*/
     background-color: rgba(0,0,0,0.2);
     //'box-shadow' : inset 0px -50px 50px rgba(0,0,0,0.2);
     border-bottom-left-radius: $br;

@@ -4,14 +4,12 @@ const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
 
 const UI = require(`../ui`);
-const UI_REQUEST = require(`../ui-request`);
+const REQUEST = require(`../request`);
 const LayerContainer = require(`../views/layer-container`);
 
-const OVERLAY_CONTEXT = require("./overlay-context");
+const CONTEXT = require("./overlay-context");
 const OverlayOptions = require("./overlay-options");
 const Overlay = require("./overlay");
-const { pool } = require("@nkmjs/common");
-
 
 /**
  * @description TODO
@@ -28,8 +26,8 @@ class OverlayHandler extends LayerContainer {
         this._overlayList = new List(0);
         this._Bind(this._OnOverlayOptionsConsumed);
 
-        this._RegisterLocalRequestHandler(UI_REQUEST.OVERLAY, this.HandleOverlayRequest);
-        this._RegisterLocalRequestHandler(UI_REQUEST.DRAWER, this.HandleOverlayRequest);
+        this._RegisterLocalRequestHandler(REQUEST.OVERLAY, this.HandleOverlayRequest);
+        this._RegisterLocalRequestHandler(REQUEST.DRAWER, this.HandleOverlayRequest);
 
         this.visible = false;
 
@@ -54,9 +52,7 @@ class OverlayHandler extends LayerContainer {
         if (!overlayOptions) { throw new Error(`Cannot build overlay without valid options.`); }
 
         if (!u.tils.isInstanceOf(overlayOptions, OverlayOptions)) {
-            let oOptions = pool.POOL.Rent(OverlayOptions);
-            oOptions.options = overlayOptions;
-            overlayOptions = oOptions;
+            overlayOptions = OverlayOptions.Create(overlayOptions);
         }
 
         overlayOptions.request = p_request;
@@ -72,7 +68,7 @@ class OverlayHandler extends LayerContainer {
         this.visible = true;
 
         let fallbackOverlayClass = com.BINDINGS.Get(
-            OVERLAY_CONTEXT.OVERLAY,
+            CONTEXT.OVERLAY,
             p_request.requestType,
             this.constructor.__default_overlayClass);
 

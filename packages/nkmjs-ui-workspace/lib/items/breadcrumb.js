@@ -2,16 +2,16 @@
 
 const com = require("@nkmjs/common");
 const { CSS } = require(`@nkmjs/style`);
-const { UI, Toolbar } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const BreadcrumbItem = require(`./breadcrumb-item`);
 
-class Breadcrumb extends Toolbar{
+class Breadcrumb extends ui.helpers.Toolbar{
     constructor(){super();}
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/items/breadcrum.css`]
-    }, Toolbar, ['css']);
+    }, ui.helpers.Toolbar, ['css']);
 
     _Init(){
         super._Init();
@@ -36,4 +36,4 @@ class Breadcrumb extends Toolbar{
 }
 
 module.exports = Breadcrumb;
-UI.Register('nkmjs-breadcrum', Breadcrumb);
+ui.Register('nkmjs-breadcrum', Breadcrumb);

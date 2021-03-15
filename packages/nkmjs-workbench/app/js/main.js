@@ -1,23 +1,22 @@
 'use strict';
 
-const NKMjs = require(`@nkmjs/core`); 
-const u = NKMjs.utils;
-const { AppBase, AutoUpdateDialogBox } = NKMjs.app;
-const { Request } = NKMjs.actions;
-const { pool, COMMON_FLAG } = NKMjs.common;
-const { DIALOG, DialogBox, DialogHandler } = NKMjs.dialog;
-const { InputBase } = NKMjs.inputs;
-const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = NKMjs.workspace;
-const { ID, DataBlock, Catalog, CatalogItem } = NKMjs.data;
-const { UI, Layer, ButtonBase, UI_FLAG, UI_REQUEST, Toolbar, View, PopIn, Shelf, TreeItem, ShelfNav, OverlayOptions } = NKMjs.ui;
-
+const nkm = require(`@nkmjs/core`);
+const u = nkm.utils;
+const { AppBase, AutoUpdateDialogBox } = nkm.app;
+const { Request } = nkm.actions;
+const { pool, FLAGS } = nkm.common;
+const { DIALOG, DialogBox, DialogHandler } = nkm.dialog;
+const { InputBase } = nkm.inputs;
+const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = nkm.workspace;
+const data = nkm.data;
+const ui = nkm.ui;
 const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
 const TestWidget = require(`./test-widget`);
 
 
 
-class StyleguideApp extends AppBase {
+class StyleguideApp extends nkm.app.AppBase {
 
     constructor() { super(); }
 
@@ -33,30 +32,22 @@ class StyleguideApp extends AppBase {
         ];
 
         this._ignore = [
-            AutoUpdateDialogBox, UIItem, UIItemListLayer, Group, BreadcrumbItem, DialogHandler, TestWidget
+            nkm.app.AutoUpdateDialogBox, UIItem, UIItemListLayer, Group, BreadcrumbItem, DialogHandler, TestWidget
         ]
 
         this._buttonConfigs = [
-            { htitle: `htitle A text`, label: 'Overlay', trigger: { fn: this._Overlay }, variant: UI_FLAG.FRAME },
-            { htitle: `htitle B text`, group: 'A', label: 'Label B', toggle: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, flavor: COMMON_FLAG.WARNING },
-            { htitle: `htitle C text`, group: 'A', icon: 'icons-01', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF } },
-            { htitle: `htitle D text`, label: 'Popup', trigger: { fn: this._Dialog }, flavor: UI_FLAG.CTA },
-            { htitle: `htitle E text`, icon: 'icon', trigger: { thisArg: this, fn: this._TriggerTest, arg: UI_FLAG.SELF }, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.WARNING }
+            { htitle: `htitle A text`, label: 'Overlay', trigger: { fn: this._Overlay }, variant: ui.FLAGS.FRAME },
+            { htitle: `htitle B text`, group: 'A', label: 'Label B', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF }, flavor: FLAGS.WARNING },
+            { htitle: `htitle C text`, group: 'A', icon: 'icons-01', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF } },
+            { htitle: `htitle D text`, label: 'Popup', trigger: { fn: this._Dialog }, flavor: ui.FLAGS.CTA },
+            { htitle: `htitle E text`, icon: 'icon', trigger: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF }, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING }
         ];
 
-        this._dialogInfos = pool.POOL.Rent(OverlayOptions);
-        this._dialogInfos.options = {
-            title: `Title`,
-            message: `This is a message !`,
-            content: [],
-            actions: this._buttonConfigs
-        };
-
         let newData = (p_id, p_dirty = false) => {
-            let data = pool.POOL.Rent(DataBlock);
-            data.id = ID.New(p_id);
-            if (p_dirty) { data.Dirty(); }
-            return data;
+            let newData = pool.POOL.Rent(data.DataBlock);
+            newData.id = data.ID.New(p_id);
+            if (p_dirty) { newData.Dirty(); }
+            return newData;
         };
 
         this._fakeData = [
@@ -67,7 +58,7 @@ class StyleguideApp extends AppBase {
             newData(`Data E`)
         ]
 
-        this._catalogSample = Catalog.CreateFrom({
+        this._catalogSample = data.catalogs.Catalog.CreateFrom({
             name: `I'm a Catalog !`
         }, [
             { name: `item 0` },
@@ -91,14 +82,14 @@ class StyleguideApp extends AppBase {
         ]);
 
         this._shelfCatalog = () => {
-            return Catalog.CreateFrom({
+            return data.catalogs.Catalog.CreateFrom({
                 name: `Shelf Catalog`
             }, [
-                { name: `View`, viewType: View, data: this._fakeData[0] },
+                { name: `View`, viewType: ui.views.View, data: this._fakeData[0] },
                 { name: `Editor`, viewType: Editor, data: this._fakeData[1] },
                 { name: `Extended editor`, viewType: EditorEx, data: this._fakeData[2] },
                 { name: `InspectorShell`, viewType: InspectorShell, data: this._fakeData[3] },
-                { name: `Another View`, viewType: View, data: this._fakeData[4] },
+                { name: `Another View`, viewType: ui.views.View, data: this._fakeData[4] },
             ]);
         };
 
@@ -107,29 +98,29 @@ class StyleguideApp extends AppBase {
     AppReady() {
         super.AppReady();
 
-        let keys = UI.instance._uiTypes.keys;
+        let keys = ui.UI.instance._uiTypes.keys;
 
         this._mainContainer.SetVariants([
             {
-                cl: ButtonBase,
+                cl: ui.ButtonBase,
                 variants: [
-                    { size: UI_FLAG.SIZE_XS },
-                    { size: UI_FLAG.SIZE_S },
-                    { size: UI_FLAG.SIZE_L },
-                    { size: UI_FLAG.SIZE_M, flavor: COMMON_FLAG.INFOS },
-                    { size: UI_FLAG.SIZE_M, flavor: COMMON_FLAG.WARNING },
-                    { size: UI_FLAG.SIZE_M, flavor: COMMON_FLAG.ERROR },
-                    { size: UI_FLAG.SIZE_M, flavor: UI_FLAG.CTA },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.MINIMAL },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.MINIMAL, flavor: COMMON_FLAG.INFOS },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.MINIMAL, flavor: COMMON_FLAG.WARNING },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.MINIMAL, flavor: COMMON_FLAG.ERROR },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.MINIMAL, flavor: UI_FLAG.CTA },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.FRAME },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.INFOS },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.WARNING },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.FRAME, flavor: COMMON_FLAG.ERROR },
-                    { size: UI_FLAG.SIZE_M, variant: UI_FLAG.FRAME, flavor: UI_FLAG.CTA },
+                    { size: ui.FLAGS.SIZE_XS },
+                    { size: ui.FLAGS.SIZE_S },
+                    { size: ui.FLAGS.SIZE_L },
+                    { size: ui.FLAGS.SIZE_M, flavor: FLAGS.INFOS },
+                    { size: ui.FLAGS.SIZE_M, flavor: FLAGS.WARNING },
+                    { size: ui.FLAGS.SIZE_M, flavor: FLAGS.ERROR },
+                    { size: ui.FLAGS.SIZE_M, flavor: ui.FLAGS.CTA },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: FLAGS.INFOS },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: FLAGS.WARNING },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: FLAGS.ERROR },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: ui.FLAGS.CTA },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: FLAGS.INFOS },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: FLAGS.ERROR },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: ui.FLAGS.CTA },
                 ], fn: this._Bind(this._OnButtonCreated)
             },
             {
@@ -138,43 +129,51 @@ class StyleguideApp extends AppBase {
             {
                 cl: InputBase,
                 variants: [
-                    { size: UI_FLAG.SIZE_XS },
-                    { size: UI_FLAG.SIZE_S },
-                    { size: UI_FLAG.SIZE_L },
+                    { size: ui.FLAGS.SIZE_XS },
+                    { size: ui.FLAGS.SIZE_S },
+                    { size: ui.FLAGS.SIZE_L },
                 ]
             },
             {
-                cl: Toolbar, not: [WorkspaceCellNav, ShelfNav],
+                cl: ui.helpers.Toolbar, not: [WorkspaceCellNav, ui.views.ShelfNav],
                 variants: [
-                    { size: UI_FLAG.SIZE_XS },
-                    { size: UI_FLAG.SIZE_S },
-                    { size: UI_FLAG.SIZE_L },
+                    { size: ui.FLAGS.SIZE_XS },
+                    { size: ui.FLAGS.SIZE_S },
+                    { size: ui.FLAGS.SIZE_L },
                 ], fn: this._Bind(this._FillToolbar)
             },
             {
                 cl: Tag,
                 variants: [
                     {},
-                    { size: UI_FLAG.SIZE_XS, flavor: COMMON_FLAG.WARNING },
-                    { size: UI_FLAG.SIZE_S, flavor: COMMON_FLAG.ERROR }
+                    { size: ui.FLAGS.SIZE_XS, flavor: FLAGS.WARNING },
+                    { size: ui.FLAGS.SIZE_S, flavor: FLAGS.ERROR }
                 ], fn: this._Bind(this._PopInTag)
             },
-            { cl: DialogBox, fn: this._Bind(this._FillDialog) },
-            { cl: Shelf, 
-                variants:[
-                    { orientation: UI_FLAG.HORIZONTAL, navPlacement: UI_FLAG.TOP },
-                    { orientation: UI_FLAG.HORIZONTAL, navPlacement: UI_FLAG.BOTTOM },
-                    { orientation: UI_FLAG.VERTICAL, navPlacement: UI_FLAG.LEFT },
-                    { orientation: UI_FLAG.VERTICAL, navPlacement: UI_FLAG.RIGHT },
-                ],fn: this._Bind(this._FillShelf) },
-            { cl: TreeItem, fn: this._Bind(this._FillTreeItem) },
+            { cl: DialogBox,
+                variants: [
+                    {},
+                    { flavor: FLAGS.WARNING },
+                    { flavor: FLAGS.INFOS },
+                    { flavor: FLAGS.ERROR }
+                ], fn: this._Bind(this._FillDialog) },
+            {
+                cl: ui.views.Shelf,
+                variants: [
+                    { orientation: ui.FLAGS.HORIZONTAL, navPlacement: ui.FLAGS.TOP },
+                    { orientation: ui.FLAGS.HORIZONTAL, navPlacement: ui.FLAGS.BOTTOM },
+                    { orientation: ui.FLAGS.VERTICAL, navPlacement: ui.FLAGS.LEFT },
+                    { orientation: ui.FLAGS.VERTICAL, navPlacement: ui.FLAGS.RIGHT },
+                ], fn: this._Bind(this._FillShelf)
+            },
+            { cl: ui.tree.TreeItem, fn: this._Bind(this._FillTreeItem) },
         ]);
 
         //for (let i = 0, n = keys.length; i < n; i++) {
         for (let i = keys.length - 1; i >= 0; i--) {
             let key = keys[i];
             if (this._ignore.includes(key)) { continue; }
-            let cl = UI.instance._uiTypes.Get(key);
+            let cl = ui.UI.instance._uiTypes.Get(key);
             this._mainContainer.Handle(cl, key);
         }
 
@@ -185,48 +184,54 @@ class StyleguideApp extends AppBase {
         //setTimeout(this._Bind(this._Overlay), 1000);
     }
 
-    _Dialog(){
+    _Dialog() {
         DIALOG.Push({
-            title:`Welcome to the NKMjs Workbench`,
-            actions:[
-                { label:`Open Drawer`, trigger:{ fn:this._Overlay, thisArg:this } },
-                { label:`Close` }
+            title: `Welcome to the NKMjs Workbench`,
+            actions: [
+                { label: `Open Drawer`, trigger: { fn: this._Overlay, thisArg: this } },
+                { label: `Close` }
             ],
-            origin:this
+            origin: this
         });
     }
 
-    _Overlay(){
+    _Overlay() {
 
-        if(!this._drawerOptions){
+        if (!this._drawerOptions) {
             this._drawerOptions = [
-                { orientation:UI_FLAG.VERTICAL, placement:UI_FLAG.BOTTOM },
-                { orientation:UI_FLAG.HORIZONTAL, placement:UI_FLAG.LEFT },
-                { orientation:UI_FLAG.VERTICAL, placement:UI_FLAG.TOP },
-                { orientation:UI_FLAG.HORIZONTAL, placement:UI_FLAG.RIGHT }
+                { orientation: ui.FLAGS.VERTICAL, placement: ui.FLAGS.BOTTOM },
+                { orientation: ui.FLAGS.HORIZONTAL, placement: ui.FLAGS.LEFT },
+                { orientation: ui.FLAGS.VERTICAL, placement: ui.FLAGS.TOP },
+                { orientation: ui.FLAGS.HORIZONTAL, placement: ui.FLAGS.RIGHT }
             ];
         }
 
         let opts = this._drawerOptions.pop();
-        if(this._drawerOptions.length == 0 ){this._drawerOptions = null;}
+        if (this._drawerOptions.length == 0) { this._drawerOptions = null; }
 
         opts.title = `Drawer Title`;
 
-        Request.Emit(UI_REQUEST.DRAWER, opts, this);
+        Request.Emit(ui.REQUEST.DRAWER, opts, this);
     }
 
 
     // ----
 
     _FillToolbar(p_toolbar) {
-        if (u.tils.isInstanceOf(p_toolbar, ShelfNav)) { return; }
+        if (u.tils.isInstanceOf(p_toolbar, ui.views.ShelfNav)) { return; }
         for (let i = 0, n = this._buttonConfigs.length; i < n; i++) {
             p_toolbar.CreateHandle(this._buttonConfigs[i]);
         }
     }
 
-    _FillDialog(p_dialogBox) {
-        p_dialogBox.data = this._dialogInfos;
+    _FillDialog(p_dialogBox, p_variant) {
+        p_dialogBox.data = ui.overlays.OverlayOptions.Create({
+            title: p_variant ? p_variant.flavor ? p_variant.flavor : `Title` :`Title`,
+            message: `This is a message !`,
+            content: [],
+            flavor: p_variant ? p_variant.flavor : null,
+            actions: this._buttonConfigs
+        });
     }
 
     _FillShelf(p_shelf) {
@@ -240,17 +245,17 @@ class StyleguideApp extends AppBase {
 
     _PopInTag(p_tagItem) {
         return;
-        PopIn.Pop({
+        ui.helpers.PopIn.Pop({
             content: TestWidget,
             anchor: p_tagItem,
-            placement: UI_FLAG.TOP_LEFT
+            placement: ui.FLAGS.TOP_LEFT
         });
     }
 
     // ----
 
     _OnButtonCreated(p_btn) {
-        p_btn.trigger = { fn: (btn) => { btn._flags.Toggle(UI_FLAG.TOGGLED); }, arg: UI_FLAG.SELF };
+        p_btn.trigger = { fn: (btn) => { btn._flags.Toggle(ui.FLAGS.TOGGLED); }, arg: ui.FLAGS.SELF };
         //this._PopInTag(p_btn);
     }
 

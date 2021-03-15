@@ -2,8 +2,8 @@
 
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
-const { DATA_SIGNAL } = require(`@nkmjs/data-core`);
-const { UI, MOUSE, View } = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 /**
  * An editor is an abstract implementation of the generic "editor" concept.
@@ -13,7 +13,7 @@ const { UI, MOUSE, View } = require(`@nkmjs/ui-core`);
  * edited data to be inspected further, and selected more specifically, based on Editor's implementation.
  */
 
-class Editor extends View{
+class Editor extends ui.views.View{
     constructor(){super();}
 
     _Init(){
@@ -23,14 +23,14 @@ class Editor extends View{
         //TODO : Find a way to invalidate action stacks // <--- WTF ?
         this._actionStack = new actions.ActionStack();
 
-        this._dataObserver.Hook(DATA_SIGNAL.DIRTY, this._OnDataDirty, this);
-        this._dataObserver.Hook(DATA_SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
+        this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
+        this._dataObserver.Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
 
         this._inspectedData = null;
         this._inspectedObserver = new com.signals.Observer();
         this._inspectedObserver.Hook(com.SIGNAL.RELEASED, this._OnInspectedDataReleased, this);
 
-        this._flags.Add(this, com.COMMON_FLAG.WARNING);
+        this._flags.Add(this, com.FLAGS.WARNING);
 
         this._Bind(this.Inspect);
 
@@ -117,4 +117,4 @@ class Editor extends View{
 }
 
 module.exports = Editor;
-UI.Register('nkmjs-editor', Editor);
+ui.Register('nkmjs-editor', Editor);

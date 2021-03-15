@@ -13,13 +13,13 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { DATA_SIGNAL, DataFactory } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const ECOSYSTEM_CONSTANTS = require(`../ecosystem-constants`);
 const DataEntry = require(`./data-entry`);
 const FIELD_EVENT = require(`./fields/field-event`);
 
-class DataLibrary extends DataFactory {
+class DataLibrary extends data.DataFactory {
     constructor() { super(); }
 
     _Init() {
@@ -33,7 +33,7 @@ class DataLibrary extends DataFactory {
         this._modelObserver.Hook(FIELD_EVENT.FIELD_UPDATED, this._OnModelFieldUpdated, this);
         this._modelObserver.Hook(FIELD_EVENT.FIELD_RENAMED, this._OnModelFieldRenamed, this);
 
-        this._modelObserver.Hook(DATA_SIGNAL.DIRTY, this._OnModelDirty, this);
+        this._modelObserver.Hook(data.SIGNAL.DIRTY, this._OnModelDirty, this);
 
     }
 

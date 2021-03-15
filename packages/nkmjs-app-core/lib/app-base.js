@@ -13,12 +13,12 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { ENV, ENV_SIGNAL } = require(`@nkmjs/environment`);
+const { ENV, ENV_SIGNAL, ENV_DISPLAY } = require(`@nkmjs/environment`);
 const actions = require("@nkmjs/actions");
-const { RESOURCES } = require(`@nkmjs/io-core`);
+const io = require(`@nkmjs/io-core`);
 const { STYLE } = require(`@nkmjs/style`);
-const { UI, OverlayHandler, LayerContainer } = require(`@nkmjs/ui-core`);
-const { Metadata } = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
 const { DIALOG, DialogHandler, AutoUpdateDialogBox } = require(`@nkmjs/dialog`)
 
 const APP_MESSAGES = require(`./app-messages`);
@@ -51,10 +51,10 @@ class AppBase extends com.helpers.SingletonEx {
         this._darkPaletteBuilder = null;
         this._lightPaletteBuilder = null;
 
-        this._userPreferences = com.pool.POOL.Rent(UserPreferences);
+        this._userPreferences = com.Rent(UserPreferences);
         this._defaultUserPreferences = {};
 
-        this._mainWrapperClass = LayerContainer;
+        this._mainWrapperClass = ui.views.LayerContainer;
         this._mainWrapper = null;
 
         this._layers = null;
@@ -72,6 +72,7 @@ class AppBase extends com.helpers.SingletonEx {
 
 
         ENV.FEATURES.Watch(ENV_SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
+        ENV.Watch(ENV_SIGNAL.PWA_UPDATE_AVAILABLE, this._OnPWAUpdateAvailable, this);
 
         this._loadingOverlay = document.getElementById(`__loading__`);
         if (this._loadingOverlay && ENV.ARGV.Has(`no-loading`)) {
@@ -88,7 +89,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         ENV.instance.RegisterServices(
             actions.RELAY,
-            RESOURCES,
+            io.RESOURCES,
             DIALOG
         );
 
@@ -96,8 +97,8 @@ class AppBase extends com.helpers.SingletonEx {
             throw new Error(`No app wrapper constructor defined.`);
         }
 
-        if (!u.tils.isInstanceOf(this._mainWrapperClass, LayerContainer)) {
-            throw new Error(`App wrapper constructor (${this._mainWrapperClass.name}) must implement LayerContainer.`);
+        if (!u.tils.isInstanceOf(this._mainWrapperClass, ui.views.LayerContainer)) {
+            throw new Error(`App wrapper constructor (${this._mainWrapperClass.name}) must implement ui.views.LayerContainer.`);
         }
 
     }
@@ -108,7 +109,7 @@ class AppBase extends com.helpers.SingletonEx {
     get mainWrapper() { return this._mainWrapper; }
 
     /**
-     * @type {Metadata}
+     * @type {data.Metadata}
      */
     get userPreferences() { return this._userPreferences; }
 
@@ -129,13 +130,13 @@ class AppBase extends com.helpers.SingletonEx {
 
         STYLE.instance.defaultPalette._themeId = (ENV.instance.config.theme || `default`);
 
-        this._mainWrapper = UI.Rent(this._mainWrapperClass);
+        this._mainWrapper = ui.UI.Rent(this._mainWrapperClass);
         this._mainWrapper.setAttribute(`id`, `app`);
 
         // Insert global.css in ShadowDom so all subsequent elements benefit from it
         u.dom.AttachFirst(
-            u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` })
-            , this._mainWrapper._host);
+            u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
+            this._mainWrapper._host);
 
         if (this._layers) {
             for (let i = 0, n = this._layers.length; i < n; i++) {
@@ -155,6 +156,26 @@ class AppBase extends com.helpers.SingletonEx {
             binding = this._ipcBindings[i];
             actions.RELAY.ipcOn(binding.evt, binding.fn);
         }
+    }
+
+    _OnPWAUpdateAvailable(){
+
+        let msg = ``;
+        if(ENV.FEATURES.displayMode != ENV_DISPLAY.STANDALONE){
+            msg = `An update is available, please refresh the page to apply it.`;
+        }else{
+            msg = `An update is available, please close & re-open the app to apply it.`;
+        }
+
+        DIALOG.Push({
+            title:`Update available`,
+            message:msg,
+            actions:[
+                { label:`Ok`, flavor:ui.FLAGS.CTA }
+            ],
+            origin:this
+        });
+
     }
 
     /**
@@ -206,18 +227,18 @@ class AppBase extends com.helpers.SingletonEx {
         // Loading container
 
         if (this._loadingOverlay) {
-            
+
             this._loadingOverlay.addEventListener(`animationend`, (p_evt) => {
                 u.dom.Detach(p_evt.target);
             });
-            
+
             let delay = `250ms`,
                 duration = `250ms`,
                 transition = `cubic-bezier(0.885, 0.025, 0.960, 0.030)`,
                 name = this.constructor.__loading_cssAnimationOut;
 
             this._loadingOverlay.style.animation = `${name} ${delay} ${duration} ${transition}`;
-            
+
         }
 
     }
@@ -279,9 +300,9 @@ class AppBase extends com.helpers.SingletonEx {
     _onNodeError(p_evt, p_content) {
         console.error(p_content.error);
         DIALOG.Push({
-            [com.COM_ID.TITLE]: p_content.message,
-            [com.COM_ID.ICON]: `% ICON % /icon_error.svg`,
-            [com.COM_ID.MESSAGE]: `${p_content.error.message}`,
+            [com.IDS.TITLE]: p_content.message,
+            [com.IDS.ICON]: `% ICON % /icon_error.svg`,
+            [com.IDS.MESSAGE]: `${p_content.error.message}`,
             actions: [
                 { text: `Close` },
             ]
@@ -291,9 +312,9 @@ class AppBase extends com.helpers.SingletonEx {
     _onNodeWarning(p_evt, p_content) {
         console.warning(p_content.message);
         DIALOG.Push({
-            [com.COM_ID.TITLE]: `Attention !`,
-            [com.COM_ID.ICON]: `%ICON%/icon_warning.svg`,
-            [com.COM_ID.MESSAGE]: `${p_content.message}`,
+            [com.IDS.TITLE]: `Attention !`,
+            [com.IDS.ICON]: `%ICON%/icon_warning.svg`,
+            [com.IDS.MESSAGE]: `${p_content.message}`,
             actions: [
                 { text: `Close` },
             ]

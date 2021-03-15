@@ -88,7 +88,7 @@ class CommandAction extends Command {
             editor.Do(this._actionClass, this._context);
         } else {
             //If no editor found, create action, execute it then release it immediately.
-            com.pool.POOL.Rent(this._actionClass)
+            com.Rent(this._actionClass)
                 .Do(this._context, false)
                 .Release();
         }

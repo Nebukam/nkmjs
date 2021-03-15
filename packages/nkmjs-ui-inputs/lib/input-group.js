@@ -1,6 +1,6 @@
 'use struct';
 
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 const InputBase = require(`./input-base`);
 
 /**
@@ -13,4 +13,4 @@ class InputGroup extends InputBase {
 }
 
 module.exports = InputGroup;
-UI.Register(`nkmjs-input-group`, InputGroup);
+ui.Register(`nkmjs-input-group`, InputGroup);

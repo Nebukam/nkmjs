@@ -2,21 +2,21 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { Catalog, CatalogItem } = require(`@nkmjs/data-core`);
-const { UI, UI_FLAG, Shelf } = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const WorkspaceCellNav = require(`./workspace-cell-nav`);
 
-class WorkspaceCell extends Shelf {
+class WorkspaceCell extends ui.views.Shelf {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace-cell.css`]
-    }, Shelf, ['css']);
+    }, ui.views.Shelf, ['css']);
 
     // ----> Init
 
-    static __default_orientation = UI_FLAG.HORIZONTAL;
+    static __default_orientation = ui.FLAGS.HORIZONTAL;
 
     _Init() {
         super._Init();
@@ -28,13 +28,13 @@ class WorkspaceCell extends Shelf {
     /**
      * Create a view & a nav item from a catalogItem
      * @param {CatalogHandler} p_handler 
-     * @param {data.core.catalog.CatalogItem} p_item 
+     * @param {data.core.catalogs.CatalogItem} p_item 
      */
     _OnCatalogItemAdded(p_handler, p_item, p_mappedView) {
 
-        if (!u.tils.isInstanceOf(p_item, CatalogItem)) {
+        if (!u.tils.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
             throw new Error(`non-catalog item added to workspace cell catalog.`);
-        } else if (u.tils.isInstanceOf(p_item, Catalog)) {
+        } else if (u.tils.isInstanceOf(p_item, data.catalogs.Catalog)) {
             throw new Error(`Full catalog item added to workspace cell catalog.`);
         }
 
@@ -51,4 +51,4 @@ class WorkspaceCell extends Shelf {
 }
 
 module.exports = WorkspaceCell;
-UI.Register('nkmjs-workspace-cell', WorkspaceCell);
+ui.Register('nkmjs-workspace-cell', WorkspaceCell);

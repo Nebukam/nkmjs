@@ -4,10 +4,10 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const { CSS, FONT_FLAG } = require("@nkmjs/style");
 
-const UI_FLAG = require(`../ui-flag`);
-const UI_ID = require(`../ui-id`);
+const FLAGS = require(`../flags`);
+const IDS = require(`../ids`);
 const UI = require(`../ui.js`);
-const ButtonBase = require(`../button-base`);
+const ButtonBase = require(`./button-base`);
 const manipulators = require("../manipulators");
 
 /**
@@ -27,14 +27,14 @@ class ButtonEx extends ButtonBase {
     _Init() {
         super._Init();
 
-        this._optionsHandler.Hook( UI_ID.ICON, null, ``);
-        this._optionsHandler.Hook( UI_ID.LABEL, null, ``);
+        this._optionsHandler.Hook( IDS.ICON, null, ``);
+        this._optionsHandler.Hook( IDS.LABEL, null, ``);
         this._optionsHandler.Hook(`uppercaseText`);
 
         this._icon = null;
         this._label = null;
 
-        this._flags.Add(this, UI_FLAG.NO_ICON, UI_FLAG.NO_LABEL);
+        this._flags.Add(this, FLAGS.NO_ICON, FLAGS.NO_LABEL);
 
     }
 
@@ -57,7 +57,7 @@ class ButtonEx extends ButtonBase {
      * @type {*}
      * @customtag write-only
      */
-    set icon(p_value) { this._flags.Set(UI_FLAG.NO_ICON, !this._icon.Set(p_value)); }
+    set icon(p_value) { this._flags.Set(FLAGS.NO_ICON, !this._icon.Set(p_value)); }
 
     /**
      * @description TODO
@@ -71,13 +71,13 @@ class ButtonEx extends ButtonBase {
      * @type {*}
      * @customtag write-only
      */
-    set label(p_value) {  this._flags.Set(UI_FLAG.NO_LABEL, !this._label.Set(p_value)); }
+    set label(p_value) {  this._flags.Set(FLAGS.NO_LABEL, !this._label.Set(p_value)); }
 
     _Render() {
         super._Render();
 
-        this._icon = new manipulators.Icon(u.dom.New(`div`, { class: UI_ID.ICON }, this._host));
-        this._label = new manipulators.Text(u.dom.New(`span`, { class: UI_ID.LABEL }, this._host));
+        this._icon = new manipulators.Icon(u.dom.New(`div`, { class: IDS.ICON }, this._host));
+        this._label = new manipulators.Text(u.dom.New(`span`, { class: IDS.LABEL }, this._host));
 
     }
 

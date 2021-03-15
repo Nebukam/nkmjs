@@ -1,10 +1,10 @@
 'use strict';
 
-const { UI, Widget } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
-class StatusBar extends Widget{
+class StatusBar extends ui.Widget{
     constructor(){super();}
 }
 
 module.exports = StatusBar;
-UI.Register(`nkmjs-status-bar`, StatusBar);
+ui.Register(`nkmjs-status-bar`, StatusBar);

@@ -2,8 +2,8 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { SERIALIZATION_CONTEXT, DATA_SIGNAL } = require(`@nkmjs/data-core`);
-const { IO_SIGNAL, ENCODING, RESOURCES, Resource, IO_TYPE } = require(`@nkmjs/io-core`);
+const data = require(`@nkmjs/data-core`);
+const io = require(`@nkmjs/io-core`);
 
 /**
  * A document is wrapper for a resource and a data object.
@@ -18,11 +18,11 @@ class Document extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.COM_ID.ICON]: `%ICON%/icon_document.svg`,
-        resource: Resource,
-        encoding: ENCODING.UTF8,
-        serializationContext: SERIALIZATION_CONTEXT.NONE,
-        defaultIOType: IO_TYPE.DEFAULT
+        [com.IDS.ICON]: `%ICON%/icon_document.svg`,
+        resource: io.Resource,
+        encoding: io.ENCODING.UTF8,
+        serializationContext: data.serialization.CONTEXT.NONE,
+        defaultIOType: io.IO_TYPE.DEFAULT
     };
 
     _Init() {
@@ -36,13 +36,13 @@ class Document extends com.pool.DisposableObjectEx {
 
         this._resourceObserver = new com.signals.Observer();
         this._resourceObserver.Hook(com.SIGNAL.RELEASED, this._OnRscReleased, this);
-        this._resourceObserver.Hook(IO_SIGNAL.READ_COMPLETE, this._OnReadComplete, this);
-        this._resourceObserver.Hook(IO_SIGNAL.WRITE_START, this._OnWriteStart, this);
+        this._resourceObserver.Hook(io.IO_SIGNAL.READ_COMPLETE, this._OnReadComplete, this);
+        this._resourceObserver.Hook(io.IO_SIGNAL.WRITE_START, this._OnWriteStart, this);
 
         this._dataObserver = new com.signals.Observer();
         this._dataObserver.Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this);
-        this._dataObserver.Hook(DATA_SIGNAL.DIRTY, this._OnDataDirty, this);
-        this._dataObserver.Hook(DATA_SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
+        this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
+        this._dataObserver.Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
 
         this._Bind(this._OnLoadError);
         this._Bind(this._OnSaveError);
@@ -107,9 +107,9 @@ class Document extends com.pool.DisposableObjectEx {
     set currentData(p_value) {
 
         if (this._currentData === p_value) {
-            if (p_value) { 
-                if(p_value.isDirty){ this.Dirty(); }
-                else{ this.ClearDirty(); }
+            if (p_value) {
+                if (p_value.isDirty) { this.Dirty(); }
+                else { this.ClearDirty(); }
             }
             return;
         }
@@ -120,8 +120,8 @@ class Document extends com.pool.DisposableObjectEx {
         if (p_value) {
             this._dataObserver.Observe(p_value);
             // Dirty document if data is dirty
-            if(p_value.isDirty){ this.Dirty(); }
-            else{ this.ClearDirty(); }
+            if (p_value.isDirty) { this.Dirty(); }
+            else { this.ClearDirty(); }
         }
 
     }
@@ -136,17 +136,17 @@ class Document extends com.pool.DisposableObjectEx {
     /**
      * @description TODO
      */
-    Dirty(){
-        if(this._isDirty){return;} this._isDirty = true;
-        this._Broadcast(DATA_SIGNAL.DIRTY, this);
+    Dirty() {
+        if (this._isDirty) { return; } this._isDirty = true;
+        this._Broadcast(data.SIGNAL.DIRTY, this);
     }
 
     /**
      * @description TODO
      */
-    ClearDirty(){
-        if(!this._isDirty){return;} this._isDirty = false;
-        this._Broadcast(DATA_SIGNAL.DIRTY_CLEARED, this);
+    ClearDirty() {
+        if (!this._isDirty) { return; } this._isDirty = false;
+        this._Broadcast(data.SIGNAL.DIRTY_CLEARED, this);
     }
 
     // ----> RSC Management
@@ -159,7 +159,7 @@ class Document extends com.pool.DisposableObjectEx {
         if (!this._currentRsc) {
             // No resource currently set, fetch it.
             if (u.tils.isEmpty(this._currentPath)) { throw new Error(`Empty path.`); }
-            this.currentRsc = RESOURCES.Get(this._currentPath, p_options);
+            this.currentRsc = io.RESOURCES.Get(this._currentPath, p_options);
         }
 
         return this._currentRsc;
@@ -231,14 +231,14 @@ class Document extends com.pool.DisposableObjectEx {
         // Otherwise, create a new data !
         // SomeSerializer.Read( p_rsc.content )
         let serializer = com.BINDINGS.Get(
-            SERIALIZATION_CONTEXT.SERIALIZER,
+            data.serialization.CONTEXT.SERIALIZER,
             com.NFOS.Get(this).serializationContext),
 
-            data = serializer.Deserialize(p_content, p_data, null); //TODO : A way to provide deserialization options
+            unpacked = serializer.Deserialize(p_content, p_data, null); //TODO : A way to provide deserialization options
 
         this.Dirty();
 
-        return data;
+        return unpacked;
 
     }
 
@@ -293,7 +293,7 @@ class Document extends com.pool.DisposableObjectEx {
     _Pack(p_data) {
         //Pack document data into serializable data
         let serializer = com.BINDINGS.Get(
-            SERIALIZATION_CONTEXT.SERIALIZER,
+            data.serialization.CONTEXT.SERIALIZER,
             com.NFOS.Get(this).serializationContext);
 
         return serializer.Serialize(p_data, null);

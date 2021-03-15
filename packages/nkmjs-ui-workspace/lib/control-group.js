@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
-const { UI, UI_SIGNAL, ToolButton, Toolbar, extensions, manipulators } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 const Control = require(`./control.js`);
 
 /**
@@ -19,17 +19,17 @@ class ControlGroup extends Control{
         
         super._Init();
 
-        this._extExpand = new extensions.Expand();
+        this._extExpand = new ui.extensions.Expand();
         this._extExpand._isExpanded = false;
-        this._extExpand.Watch(UI_SIGNAL.EXPANDED, this._Expand, this);
-        this._extExpand.Watch(UI_SIGNAL.COLLAPSED, this._Collapse, this);
+        this._extExpand.Watch(ui.SIGNAL.EXPANDED, this._Expand, this);
+        this._extExpand.Watch(ui.SIGNAL.COLLAPSED, this._Collapse, this);
 
         this._header = null;
         this._expandBtn = null;
         this._icon = null;
         this._label = null;
 
-        this._toolbarClass = Toolbar;
+        this._toolbarClass = ui.helpers.Toolbar;
         this._toolbar = null;
 
         this._itemWrapper = null;
@@ -80,9 +80,9 @@ class ControlGroup extends Control{
 
         this._header = u.dom.New(`div`, { class:`header` }, this._host);
 
-        this._expandBtn = this.Add(ToolButton, `toggle`, this._header);
-        this._icon = new manipulators.Icon(u.dom.New(`div`, {class:`icon`}, this._header));
-        this._label = new manipulators.Text(u.dom.New(`span`, {class:`label`}, this._header));
+        this._expandBtn = this.Add(ui.buttons.ToolButton, `toggle`, this._header);
+        this._icon = new ui.manipulators.Icon(u.dom.New(`div`, {class:`icon`}, this._header));
+        this._label = new ui.manipulators.Text(u.dom.New(`span`, {class:`label`}, this._header));
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._header);
         
         this._expandBtn.icon = '%ICON%/icon_expand_arrow.svg';
@@ -118,4 +118,4 @@ class ControlGroup extends Control{
 }
 
 module.exports = ControlGroup;
-UI.Register(`nkmjs-control-group`, ControlGroup);
+ui.Register(`nkmjs-control-group`, ControlGroup);

@@ -4,12 +4,12 @@ const u = require("@nkmjs/utils");
 const { List } = require("@nkmjs/collections");
 
 const UI = require(`./ui`);
-const UI_SIGNAL = require(`./ui-signal`);
+const SIGNAL = require(`./signal`);
 const DisplayObject = require(`./display-object`);
 
 /**
  * @typedef SignalItemAdded
- * @type ui.core.UI_SIGNAL.CHILD_ADDED
+ * @type ui.core.SIGNAL.CHILD_ADDED
  * @property {ui.core.DisplayObjectContainer} parent Parent of the display list
  * @property {ui.core.DisplayObject} target The display object that just got added to the display list
  * @property {number} index display object index inside the display list
@@ -17,7 +17,7 @@ const DisplayObject = require(`./display-object`);
 
 /**
  * @typedef SignalItemMoved
- * @type ui.core.UI_SIGNAL.CHILD_MOVED
+ * @type ui.core.SIGNAL.CHILD_MOVED
  * @property {ui.core.DisplayObjectContainer} parent Parent of the display list
  * @property {ui.core.DisplayObject} target The display object that just got moved inside the display list
  * @property {number} index New index inside the display list
@@ -26,7 +26,7 @@ const DisplayObject = require(`./display-object`);
 
 /**
  * @typedef SignalItemRemoved
- * @type ui.core.UI_SIGNAL.CHILD_REMOVED
+ * @type ui.core.SIGNAL.CHILD_REMOVED
  * @property {ui.core.DisplayObjectContainer} parent Parent of the display list
  * @property {ui.core.DisplayObject} target The display object that just got removed to the display list
  * @property {number} index Index of the removed object (before removal)
@@ -223,7 +223,7 @@ class DisplayObjectContainer extends DisplayObject {
      * @param {ui.core.DisplayObject} p_displayObject 
      * @param {number} p_index 
      * @customtag override-me
-     * @broadcasts ui.core.UI_SIGNAL.CHILD_ADDED
+     * @broadcasts ui.core.SIGNAL.CHILD_ADDED
      * @group Child Management
      * @example _OnChildAdded(p_displayObject, p_index){
      *     // ... Before signal broadcast
@@ -232,7 +232,7 @@ class DisplayObjectContainer extends DisplayObject {
      * }
      */
     _OnChildAdded(p_displayObject, p_index) {
-        this._Broadcast(UI_SIGNAL.CHILD_ADDED, this, p_displayObject, p_index);
+        this._Broadcast(SIGNAL.CHILD_ADDED, this, p_displayObject, p_index);
     }
 
     /**
@@ -244,7 +244,7 @@ class DisplayObjectContainer extends DisplayObject {
      * @param {number} p_index 
      * @param {number} p_oldIndex 
      * @customtag override-me
-     * @broadcasts ui.core.UI_SIGNAL.CHILD_MOVED
+     * @broadcasts ui.core.SIGNAL.CHILD_MOVED
      * @group Child Management
      * @example _OnChildMoved(p_displayObject, p_index, p_oldIndex){
      *     // ... Before signal broadcast
@@ -253,7 +253,7 @@ class DisplayObjectContainer extends DisplayObject {
      * }
      */
     _OnChildMoved(p_displayObject, p_index, p_oldIndex) {
-        this._Broadcast(UI_SIGNAL.CHILD_MOVED, this, p_displayObject, p_index, p_oldIndex);
+        this._Broadcast(SIGNAL.CHILD_MOVED, this, p_displayObject, p_index, p_oldIndex);
     }
 
     /**
@@ -264,7 +264,7 @@ class DisplayObjectContainer extends DisplayObject {
      * @param {ui.core.DisplayObject} p_displayObject 
      * @param {number} p_index 
      * @customtag override-me
-     * @broadcasts ui.core.UI_SIGNAL.CHILD_REMOVED
+     * @broadcasts ui.core.SIGNAL.CHILD_REMOVED
      * @group Child Management
      * @example _OnChildRemoved(p_displayObject, p_index){
      *     // ... Before signal broadcast
@@ -273,7 +273,7 @@ class DisplayObjectContainer extends DisplayObject {
      * }
      */
     _OnChildRemoved(p_displayObject, p_index) {
-        this._Broadcast(UI_SIGNAL.CHILD_REMOVED, this, p_displayObject, p_index);
+        this._Broadcast(SIGNAL.CHILD_REMOVED, this, p_displayObject, p_index);
     }
 
 

@@ -1,8 +1,8 @@
 'use strict';
 
-const { UI, LayerContainer } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
-class Shell extends LayerContainer{
+class Shell extends ui.views.LayerContainer{
     
     constructor() { super(); }
    
@@ -13,4 +13,4 @@ class Shell extends LayerContainer{
 }
 
 module.exports = Shell;
-UI.Register(`nkmjs-shell`, Shell);
+ui.Register(`nkmjs-shell`, Shell);

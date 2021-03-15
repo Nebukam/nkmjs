@@ -1,15 +1,15 @@
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
-const { UI_ID, UI, manipulators } = require(`@nkmjs/ui-core`);
-const { Metadata, ActionMetadataSet } = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
 const { INPUT_SIGNAL, InputField } = require(`@nkmjs/ui-inputs`);
 
 const InspectorItem = require(`./inspector-item`);
 
-class MetaControlItem extends InspectorItem{
-    constructor(){super();}
-    
-    _Init(){
+class MetaControlItem extends InspectorItem {
+    constructor() { super(); }
+
+    _Init() {
 
         this.default_SelectOnActivation = false;
         this._ignoreMetaStyle = true;
@@ -28,57 +28,57 @@ class MetaControlItem extends InspectorItem{
 
     // ----> DOM
 
-    _Style(){
+    _Style() {
         return style.CSS.Extends({
-            ':host':{
-                margin:`5px`,
-                padding:`6px`,
-                display:`flex`,
-                'flex-flow':`column`,
-                'align-items':`stretch`,
-                'align-content':`stretch`,
+            ':host': {
+                margin: `5px`,
+                padding: `6px`,
+                display: `flex`,
+                'flex-flow': `column`,
+                'align-items': `stretch`,
+                'align-content': `stretch`,
             },
-            '.facade':{ 
-                flex:`1 1 auto`,
-                'margin-top':`-5px`,
-                'margin-bottom':`0px`
+            '.facade': {
+                flex: `1 1 auto`,
+                'margin-top': `-5px`,
+                'margin-bottom': `0px`
             },
-            '.control':{
-                flex:`1 1 auto`,
+            '.control': {
+                flex: `1 1 auto`,
             }
         }, super._Style());
     }
 
-    _Render(){
+    _Render() {
         super._Render();
-        this._label = new manipulators.Text(u.dom.New(`span`, { class: UI_ID.LABEL }, this._host));
+        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: ui.IDS.LABEL }, this._host));
     }
 
-    get metaPath(){return this._metaPath;}
-    set metaPath(p_value){
+    get metaPath() { return this._metaPath; }
+    set metaPath(p_value) {
         this._metaPath = p_value;
     }
 
-    get metaID(){return this._metaID;}
-    set metaID(p_value){
+    get metaID() { return this._metaID; }
+    set metaID(p_value) {
         this._metaID = p_value;
         this._facade.text = p_value;
     }
 
-    _OnDataChanged(p_oldValue){
+    _OnDataChanged(p_oldValue) {
         super._OnDataChanged(p_oldValue);
 
-        if(this._input){
+        if (this._input) {
             this._input.Release();
             this._input = null;
         }
 
-        if(!this._data){ return; }
+        if (!this._data) { return; }
 
-        let mData = u.tils.isInstanceOf(this._data, Metadata) ? this._data : this._data.metadata;
+        let mData = u.tils.isInstanceOf(this._data, data.Metadata) ? this._data : this._data.metadata;
         let obj = mData.Get(this._metaPath, null);
-        
-        if(u.tils.Void(obj)){ return; }
+
+        if (u.tils.Void(obj)) { return; }
 
         this._input = this.Add(this._inputClass, `control`);
         this._OnInputCreated(this._input);
@@ -87,26 +87,26 @@ class MetaControlItem extends InspectorItem{
 
     }
 
-    _OnInputCreated(p_input){
+    _OnInputCreated(p_input) {
 
     }
 
-    _OnInputValueCommited(p_input, p_changedValue){
+    _OnInputValueCommited(p_input, p_changedValue) {
 
-        let mData = u.tils.isInstanceOf(this._data, Metadata) ? this._data : this._data.metadata;
+        let mData = u.tils.isInstanceOf(this._data, data.Metadata) ? this._data : this._data.metadata;
         let mPath = this._metaPath;
 
-        this._Do( ActionMetadataSet, {
-            target : mData,
-            path : mPath,
-            value : p_changedValue
+        this._Do(data.actions.ActionMetadataSet, {
+            target: mData,
+            path: mPath,
+            value: p_changedValue
         });
-        
+
         this._input.currentValue = mData.Get(mPath, undefined);
 
     }
 
-    _CleanUp(){
+    _CleanUp() {
         this._metaPath = '';
         super._CleanUp();
     }
@@ -114,4 +114,4 @@ class MetaControlItem extends InspectorItem{
 }
 
 module.exports = MetaControlItem;
-UI.Register(`nkmjs-meta-control-item`, MetaControlItem);
+ui.Register(`nkmjs-meta-control-item`, MetaControlItem);

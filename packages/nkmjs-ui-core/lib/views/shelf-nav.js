@@ -5,9 +5,9 @@ const { CSS } = require(`@nkmjs/style`);
 const { Dictionary } = require("@nkmjs/collections");
 
 const UI = require(`../ui`);
-const UI_ID = require(`../ui-id`);
-const UI_SIGNAL = require(`../ui-signal`);
-const UI_FLAG = require(`../ui-flag`);
+const IDS = require(`../ids`);
+const SIGNAL = require(`../signal`);
+const FLAGS = require(`../flags`);
 
 const DOMTemplate = require(`../dom-template`);
 const Toolbar = require(`../helpers/toolbar`);
@@ -33,7 +33,7 @@ class ShelfNav extends Toolbar {
 
     // ----> Init
 
-    static __default_orientation = UI_FLAG.VERTICAL;
+    static __default_orientation = FLAGS.VERTICAL;
 
     _Init() {
 
@@ -118,7 +118,7 @@ class ShelfNav extends Toolbar {
     }
 
     _Render() {
-        DOMTemplate.Render(templates.HeaderBodyFooter, this, { [UI_ID.OWNER]: this });
+        DOMTemplate.Render(templates.HeaderBodyFooter, this, { [IDS.OWNER]: this });
         this._toolbar = this.Add(Toolbar, `toolbar`, this._footer);
 
         this._orientation.AddManaged(this._toolbar._orientation);
@@ -177,7 +177,7 @@ class ShelfNav extends Toolbar {
 
         handle.data = p_item;
 
-        handle.Watch(UI_SIGNAL.ACTIVATED, this._OnHandleActivated, this);
+        handle.Watch(SIGNAL.ACTIVATED, this._OnHandleActivated, this);
 
         if (`orientation` in handle) { handle.orientation = this._orientation.currentFlag; }
 

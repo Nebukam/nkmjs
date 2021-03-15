@@ -1,22 +1,23 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { Metadata } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
-const DOCUMENT_CONTEXT = require(`./lib/document-context`);
+const CONTEXT = require(`./lib/context`);
 const { MetaDocument } = require(`./lib/documents`);
 
-class Bindings extends com.helpers.BindingKit{
-    constructor(){super();}
-    _Init(){ super._Init();
+class Bindings extends com.helpers.BindingKit {
+    constructor() { super(); }
+    _Init() {
+        super._Init();
 
         this.Add(
-        {
-            context:DOCUMENT_CONTEXT.DOCUMENT,
-            kvps:[
-                { key:Metadata, binding:MetaDocument }
-            ]
-        });
+            {
+                context: CONTEXT.DOCUMENT,
+                kvps: [
+                    { key: data.Metadata, binding: MetaDocument }
+                ]
+            });
 
     }
 }

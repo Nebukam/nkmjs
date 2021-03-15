@@ -1,12 +1,14 @@
 'use strict';
 
+const __poolManager = require(`./lib/pool/pool`);
+
 module.exports = {
 
     NFOS: require(`./lib/nfos`),
     BINDINGS: require(`./lib/bindings`),
     SIGNAL: require(`./lib/signal`),
-    COMMON_FLAG: require(`./lib/common-flag`),
-    COM_ID: require(`./lib/common-id`),    
+    FLAGS: require(`./lib/flags`),
+    IDS: require(`./lib/ids`),    
 
     filters: require(`./lib/filters`),
     helpers: require(`./lib/helpers`),
@@ -14,4 +16,7 @@ module.exports = {
     signals: require(`./lib/signals`),
     time: require(`./lib/time`),  
     
+    // Shortcut to pool.POOL.Rent
+    Rent:(p_class) => { return __poolManager.Rent(p_class); },
+
 }

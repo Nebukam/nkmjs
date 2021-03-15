@@ -1,7 +1,7 @@
 'use strict';
 
-const DATA_SIGNAL = require(`../data-signal`);
 const com = require("@nkmjs/common");
+const SIGNAL = require(`../signal`);
 
 const _add_ = `ADD`;
 const _rem_ = `REM`;
@@ -23,10 +23,10 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
     _Init() {
         super._Init();
         this._observer = new com.signals.Observer();
-        this._observer.Hook(DATA_SIGNAL.META_ADDED, this._OnMetaAdded, this);
-        this._observer.Hook(DATA_SIGNAL.META_REMOVED, this._OnMetaRemoved, this);
-        this._observer.Hook(DATA_SIGNAL.META_UPDATED, this._OnMetaUpdated, this);
-        this._observer.Hook(DATA_SIGNAL.META_MID_UPDATE, this._OnMetaMidUpdate, this);
+        this._observer.Hook(SIGNAL.META_ADDED, this._OnMetaAdded, this);
+        this._observer.Hook(SIGNAL.META_REMOVED, this._OnMetaRemoved, this);
+        this._observer.Hook(SIGNAL.META_UPDATED, this._OnMetaUpdated, this);
+        this._observer.Hook(SIGNAL.META_MID_UPDATE, this._OnMetaMidUpdate, this);
     }
     
     /**
@@ -43,10 +43,10 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      */
     _GetPrefix(p_evt) {
         switch (p_evt) {
-            case DATA_SIGNAL.META_ADDED: return _add_;
-            case DATA_SIGNAL.META_REMOVED: return _rem_;
-            case DATA_SIGNAL.META_UPDATED: return _upd_;
-            case DATA_SIGNAL.META_MID_UPDATE: return _mpd_;
+            case SIGNAL.META_ADDED: return _add_;
+            case SIGNAL.META_REMOVED: return _rem_;
+            case SIGNAL.META_UPDATED: return _upd_;
+            case SIGNAL.META_MID_UPDATE: return _mpd_;
         }
 
         throw new Error(`Cannot hook to a signal that isn't META_ADDED, META_REMOVED or META_UPDATED`);

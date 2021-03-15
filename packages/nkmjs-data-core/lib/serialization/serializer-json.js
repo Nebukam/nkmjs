@@ -2,8 +2,7 @@ const com = require("@nkmjs/common");
 const DataBlock = require(`../data/data-block`);
 
 const BaseSerializer = require(`./serializer-base`);
-const SERIALIZATION_CONTEXT = require(`./serialization-context`);
-const JSON = SERIALIZATION_CONTEXT.JSON;
+const CONTEXT = require(`./context`);
 
 /*
     expected input/output :
@@ -38,7 +37,7 @@ class JSONSerializer extends BaseSerializer {
 
         // Retrieve serializer
         let serializer = com.BINDINGS.Get(
-            SERIALIZATION_CONTEXT.JSON,
+            CONTEXT.JSON,
             p_data.constructor,
             null);
 
@@ -48,23 +47,23 @@ class JSONSerializer extends BaseSerializer {
 
         // Ensure there is a data object
 
-        if (!(JSON.DATA_KEY in serial)) {
+        if (!(CONTEXT.JSON.DATA_KEY in serial)) {
             let wrapper = {};
-            wrapper[JSON.DATA_KEY] = serial;
+            wrapper[CONTEXT.JSON.DATA_KEY] = serial;
             serial = wrapper;
         }
 
         // Ensure there is a meta object
 
         let metas = null;
-        if (!(JSON.META_KEY in serial)) {
+        if (!(CONTEXT.JSON.META_KEY in serial)) {
             metas = {};
-            serial[JSON.META_KEY] = metas;
+            serial[CONTEXT.JSON.META_KEY] = metas;
         } else {
-            metas = serial[JSON.META_KEY];
+            metas = serial[CONTEXT.JSON.META_KEY];
         }
 
-        metas[JSON.CLASS] = com.BINDINGS.GetClassKey(p_data.constructor);
+        metas[CONTEXT.JSON.CLASS] = com.BINDINGS.GetClassKey(p_data.constructor);
 
         return serial;
 
@@ -85,22 +84,22 @@ class JSONSerializer extends BaseSerializer {
         if (p_data != null) {
             targetClass = p_data.constructor;
         } else {
-            let metas = p_serial[JSON.META_KEY];
+            let metas = p_serial[CONTEXT.JSON.META_KEY];
             if (!metas) { throw new Error(`Cannot unserialize without nfos`); }
 
-            targetClass = com.BINDINGS.GetClass(metas[JSON.CLASS]);
+            targetClass = com.BINDINGS.GetClass(metas[CONTEXT.JSON.CLASS]);
             if (!targetClass) { throw new Error(`Could not find constructor ${metas.instanceOf}`); }
 
             p_data = com.POOL.Rent(targetClass);
         }
 
         let dataWrapper = null;
-        if (!(JSON.DATA_KEY in p_serial)) { return p_data; }
-        else { dataWrapper = p_serial[JSON.DATA_KEY]; }
+        if (!(CONTEXT.JSON.DATA_KEY in p_serial)) { return p_data; }
+        else { dataWrapper = p_serial[CONTEXT.JSON.DATA_KEY]; }
 
         // Retrieve serializer
         let serializer = com.BINDINGS.Get(
-            SERIALIZATION_CONTEXT.JSON,
+            CONTEXT.JSON,
             targetClass,
             null);
 

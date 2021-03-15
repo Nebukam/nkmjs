@@ -1,6 +1,6 @@
 'use strict';
 
-const UI_FLAG = require(`../ui-flag`);
+const FLAGS = require(`../flags`);
 
 const Extension = require(`./extension`);
 
@@ -17,7 +17,7 @@ const Extension = require(`./extension`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments data.core.catalog.CatalogWatcher
+ * @augments data.core.catalogs.CatalogWatcher
  * @memberof ui.core.helpers
  */
 class AnimControllerExtension extends Extension {
@@ -84,7 +84,7 @@ class AnimControllerExtension extends Extension {
 
     _aStart(p_evt) {
         if (!this._animationsMap.hasOwnProperty(p_evt.animationName)) { return; }
-        this._Trigger(p_evt.animationName, UI_FLAG.A_START);
+        this._Trigger(p_evt.animationName, FLAGS.A_START);
         this._element.addEventListener(`animationcancel`, this._aCancel);
         this._element.addEventListener(`animationend`, this._aEnd);
         this._element.addEventListener(`animationiteration`, this._aIteration);
@@ -93,20 +93,20 @@ class AnimControllerExtension extends Extension {
     _aCancel(p_evt) {
         if (!this._animationsMap.hasOwnProperty(p_evt.animationName)) { return; }
         this._ClearListeners();
-        this._Trigger(p_evt.animationName, UI_FLAG.A_CANCEL);
-        this._Trigger(p_evt.animationName, UI_FLAG.A_ANY_END);
+        this._Trigger(p_evt.animationName, FLAGS.A_CANCEL);
+        this._Trigger(p_evt.animationName, FLAGS.A_ANY_END);
     }
 
     _aIteration(p_evt) {
         if (!this._animationsMap.hasOwnProperty(p_evt.animationName)) { return; }
-        this._Trigger(p_evt.animationName, UI_FLAG.A_ITERATION);
+        this._Trigger(p_evt.animationName, FLAGS.A_ITERATION);
     }
 
     _aEnd(p_evt) {
         if (!this._animationsMap.hasOwnProperty(p_evt.animationName)) { return; }
         this._ClearListeners();
-        this._Trigger(p_evt.animationName, UI_FLAG.A_END);
-        this._Trigger(p_evt.animationName, UI_FLAG.A_ANY_END);
+        this._Trigger(p_evt.animationName, FLAGS.A_END);
+        this._Trigger(p_evt.animationName, FLAGS.A_ANY_END);
     }
 
     _ClearListeners() {

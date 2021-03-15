@@ -2,16 +2,16 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { UI, manipulators } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InputField = require(`../input-field`);
 const { CSS } = require("@nkmjs/style");
 
 
-const ERR_SPACE = { type: com.COMMON_FLAG.ERROR, message: `No space allowed.` };
-const ERR_NUM = { type: com.COMMON_FLAG.ERROR, message: `Must starts with <strong>A-Z, a-z</strong> or <strong>_</strong>` };
-const ERR_EMPTY = { type: com.COMMON_FLAG.ERROR, message: `Cannot be empty` };
-const ERR_ILLEGAL_CHARS = { type: com.COMMON_FLAG.ERROR, message: `Can only contains the following characters : <strong>A-Z, a-z, _, 0-9</strong>` };
+const ERR_SPACE = { type: com.FLAGS.ERROR, message: `No space allowed.` };
+const ERR_NUM = { type: com.FLAGS.ERROR, message: `Must starts with <strong>A-Z, a-z</strong> or <strong>_</strong>` };
+const ERR_EMPTY = { type: com.FLAGS.ERROR, message: `Cannot be empty` };
+const ERR_ILLEGAL_CHARS = { type: com.FLAGS.ERROR, message: `Can only contains the following characters : <strong>A-Z, a-z, _, 0-9</strong>` };
 
 class InputIdentifier extends InputField {
     constructor() { super(); }
@@ -50,12 +50,12 @@ class InputIdentifier extends InputField {
 
     _Render() {
         this._inputField = u.dom.New(`input`, { class: 'field', type: 'search' });
-        this._label = new manipulators.Text(u.dom.New(`p`, { class: 'error' }, this));
+        this._label = new ui.manipulators.Text(u.dom.New(`p`, { class: 'error' }, this));
     }
 
     _OnInputErrors() {
         super._OnInputErrors();
-        this._label.Set(this._ConcatErrors(com.COMMON_FLAG.ERROR, '<br/>'));
+        this._label.Set(this._ConcatErrors(com.FLAGS.ERROR, '<br/>'));
     }
 
     _ClearFeedbacks() {
@@ -88,4 +88,4 @@ class InputIdentifier extends InputField {
 }
 
 module.exports = InputIdentifier;
-UI.Register(`nkmjs-input-identifier`, InputIdentifier);
+ui.Register(`nkmjs-input-identifier`, InputIdentifier);

@@ -2,7 +2,7 @@ const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InspectorGroup = require(`./inspector-group`);
 const MetaControlItem = require(`./meta-control-item`);
@@ -97,7 +97,7 @@ class MetaControlGroup extends InspectorGroup {
                     let mPath = u.tils.Empty(this._metaPath) ? `${member}` : `${this._metaPath}.${member}`,
                         value = obj[member],
                         ctrlClass = com.BINDINGS.Get(
-                            `${com.COM_ID.METAPREFIX}${mPath}`,
+                            `${com.IDS.METAPREFIX}${mPath}`,
                             this._data.constructor,
                             u.tils.isObject(value) ? MetaControlGroup : MetaControlItem),
                         ctrl = this.Add(ctrlClass, `group`);
@@ -130,4 +130,4 @@ class MetaControlGroup extends InspectorGroup {
 }
 
 module.exports = MetaControlGroup;
-UI.Register(`nkmjs-meta-control-group`, MetaControlGroup);
+ui.Register(`nkmjs-meta-control-group`, MetaControlGroup);

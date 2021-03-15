@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
-const { UI, manipulators } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InputField = require(`../input-field`);
 
@@ -32,7 +32,7 @@ class InputColor extends InputField {
     }
 
     _Render() {
-        this._label = new manipulators.Text(u.dom.New(`span`, { class: `label` }, this._host));
+        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: `label` }, this._host));
         this._inputField = u.dom.New(`input`, { class: 'field', type: 'color' }, this._host);
         this._body = u.dom.New(`div`, { class: 'body' }, this._host);
     }
@@ -45,4 +45,4 @@ class InputColor extends InputField {
 }
 
 module.exports = InputColor;
-UI.Register(`nkmjs-input-color`, InputColor);
+ui.Register(`nkmjs-input-color`, InputColor);

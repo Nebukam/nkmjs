@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const Explorer = require(`./explorer`);
 
@@ -37,4 +37,4 @@ class TileExplorer extends Explorer{
 }
 
 module.exports = TileExplorer;
-UI.Register('nkmjs-tile-explorer', TileExplorer);
+ui.Register('nkmjs-tile-explorer', TileExplorer);

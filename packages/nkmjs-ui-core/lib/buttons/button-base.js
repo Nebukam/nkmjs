@@ -4,11 +4,11 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 
-const UI = require(`./ui`);
-const UI_SIGNAL = require(`./ui-signal`);
-const UI_FLAG = require(`./ui-flag`);
-const Widget = require(`./widget`);
-const FlagEnum = require("./helpers/flag-enum");
+const UI = require(`../ui`);
+const SIGNAL = require(`../signal`);
+const FLAGS = require(`../flags`);
+const Widget = require(`../widget`);
+const FlagEnum = require("../helpers/flag-enum");
 
 /**
  * @description TODO
@@ -60,15 +60,15 @@ class ButtonBase extends Widget {
         this._commandObserver = new com.signals.Observer();
         this._commandObserver.Hook(com.SIGNAL.UPDATED, this._OnCommandUpdated, this);
 
-        this._flags.Add(this, UI_FLAG.TOGGLED);
+        this._flags.Add(this, FLAGS.TOGGLED);
 
-        this._sizeEnum = new FlagEnum(UI_FLAG.sizes, true);
+        this._sizeEnum = new FlagEnum(FLAGS.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(UI_FLAG.flavors, true);
+        this._flavorEnum = new FlagEnum(FLAGS.flavors, true);
         this._flavorEnum.Add(this);
 
-        this._variantEnum = new FlagEnum(UI_FLAG.variants, true);
+        this._variantEnum = new FlagEnum(FLAGS.variants, true);
         this._variantEnum.Add(this);
 
         this._optionsHandler = new com.helpers.OptionsHandler(null, this._Bind(this._OnOptionsWillUpdate));
@@ -158,7 +158,7 @@ class ButtonBase extends Widget {
      */
     set isActivable(p_value) {
         super.isActivable = p_value;
-        this._flags.Set(UI_FLAG.DISABLED, !this._isActivable);
+        this._flags.Set(FLAGS.DISABLED, !this._isActivable);
     }
 
     /**
@@ -239,7 +239,7 @@ class ButtonBase extends Widget {
         if (!p_value) { return; }
 
         this._optionsHandler.Process(this, p_value);
-        this._flags.Set(UI_FLAG.NO_SCALE, p_value.noscale ? p_value.noscale : false);
+        this._flags.Set(FLAGS.NO_SCALE, p_value.noscale ? p_value.noscale : false);
 
     }
 
@@ -335,7 +335,7 @@ class ButtonBase extends Widget {
             let thisArg = u.tils.Get(this._trigger, `thisArg`, null);
             if (this._trigger.argArray) { this._trigger.fn.call(thisArg, ...this._trigger.argArray); }
             else if (this._trigger.arg) {
-                if (this._trigger.arg === UI_FLAG.SELF) { this._trigger.fn.call(thisArg, this); }
+                if (this._trigger.arg === FLAGS.SELF) { this._trigger.fn.call(thisArg, this); }
                 else { this._trigger.fn.call(thisArg, this._trigger.arg); }
             }
             else { this._trigger.fn.call(thisArg); }
@@ -352,12 +352,12 @@ class ButtonBase extends Widget {
             } else {
 
                 this._isToggled = true;
-                this._flags.Set(UI_FLAG.TOGGLED, true);
+                this._flags.Set(FLAGS.TOGGLED, true);
 
                 let thisArg = u.tils.Get(this._toggle, `thisArg`, null);
                 if (this._toggle.argArray) { this._toggle.fn.call(thisArg, ...this._toggle.argArray); }
                 else if (this._toggle.arg) {
-                    if (this._toggle.arg === UI_FLAG.SELF) { this._toggle.fn.call(thisArg, this); }
+                    if (this._toggle.arg === FLAGS.SELF) { this._toggle.fn.call(thisArg, this); }
                     else { this._toggle.fn.call(thisArg, this._toggle.arg); }
                 }
                 else { this._toggle.fn.call(thisArg); }
@@ -392,7 +392,7 @@ class ButtonBase extends Widget {
             );
         }
 
-        this._Broadcast(UI_SIGNAL.TRIGGERED, this);
+        this._Broadcast(SIGNAL.TRIGGERED, this);
 
         return true;
 
@@ -406,21 +406,21 @@ class ButtonBase extends Widget {
         if (!this._isToggled) { return; }
 
         this._isToggled = false;
-        this._flags.Set(UI_FLAG.TOGGLED, false);
+        this._flags.Set(FLAGS.TOGGLED, false);
 
         if (this._toggle) {
             if (this._toggle.fnOff) {
                 let thisArg = u.tils.Get(this._toggle, `thisArg`, null);
                 if (this._toggle.argArray) { this._toggle.fnOff.call(thisArg, ...this._toggle.argArray); }
                 else if (this._toggle.arg) {
-                    if (this._toggle.arg === UI_FLAG.SELF) { this._toggle.fnOff.call(thisArg, this); }
+                    if (this._toggle.arg === FLAGS.SELF) { this._toggle.fnOff.call(thisArg, this); }
                     else { this._toggle.fnOff.call(thisArg, this._toggle.arg); }
                 }
                 else { this._toggle.fnOff.call(thisArg); }
             }
         }
 
-        this._Broadcast(UI_SIGNAL.DEACTIVATED, this);
+        this._Broadcast(SIGNAL.DEACTIVATED, this);
 
     }
 

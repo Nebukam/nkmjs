@@ -2,12 +2,12 @@
 
 const u = require("@nkmjs/utils");
 
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const DOMTemplate = require(`../dom-template`);
 const manipulators = require(`../manipulators`);
 
-const __icon = `_${UI_ID.ICON}`;
-const __label = `_${UI_ID.LABEL}`;
+const __icon = `_${IDS.ICON}`;
+const __label = `_${IDS.LABEL}`;
 
 class TPLFacadeLabel extends DOMTemplate {
     constructor() {
@@ -17,33 +17,33 @@ class TPLFacadeLabel extends DOMTemplate {
     /*
 
     get icon() { return this._icon; }
-    set icon(p_value) { this._flags.Set(UI_FLAG.NO_ICON, !this._icon.Set(p_value)); }
+    set icon(p_value) { this._flags.Set(FLAGS.NO_ICON, !this._icon.Set(p_value)); }
 
     get label() { return this._label; }
-    set label(p_value) {  this._flags.Set(UI_FLAG.NO_LABEL, !this._label.Set(p_value)); }
+    set label(p_value) {  this._flags.Set(FLAGS.NO_LABEL, !this._label.Set(p_value)); }
 
     */
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.New(`div`, { class: UI_ID.ICON }), __icon);
-        this._Add(u.dom.New(`span`, { class: UI_ID.LABEL }), __label);
+        this._Add(u.dom.New(`div`, { class: IDS.ICON }), __icon);
+        this._Add(u.dom.New(`span`, { class: IDS.LABEL }), __label);
     }
 
     Render(p_host, p_options = null) {
         let owner = super.Render(p_host, p_options),
-            iconOpts = u.tils.Get(p_options, UI_ID.ICON, null),
-            labelOpts = u.tils.Get(p_options, UI_ID.LABEL, null),
+            iconOpts = u.tils.Get(p_options, IDS.ICON, null),
+            labelOpts = u.tils.Get(p_options, IDS.LABEL, null),
             icon = owner[__icon] = new manipulators.Icon(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
             label = owner[__label] = new manipulators.Text(owner[__label], labelOpts && `autoHide` in labelOpts ? labelOpts.autoHide : false);
 
         if (iconOpts) { 
             icon.Set(iconOpts); 
-            if(iconOpts[UI_ID.CSS_CL]){ icon.element.classList.add(iconOpts[UI_ID.CSS_CL]); }
+            if(iconOpts[IDS.CSS_CL]){ icon.element.classList.add(iconOpts[IDS.CSS_CL]); }
         }
         if (labelOpts) { 
             label.Set(labelOpts); 
-            if(labelOpts[UI_ID.CSS_CL]){ label.element.classList.add(labelOpts[UI_ID.CSS_CL]); }
+            if(labelOpts[IDS.CSS_CL]){ label.element.classList.add(labelOpts[IDS.CSS_CL]); }
         }
 
         return owner;

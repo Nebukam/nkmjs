@@ -6,31 +6,31 @@ const com = require("@nkmjs/common");
 const { Catalog } = require(`./lib/catalog`);
 const { DataBlock } = require('./lib/data');
 
-let someData = com.pool.POOL.Rent(DataBlock);
+let someData = com.Rent(DataBlock);
 someData.Release();
-let newData = com.pool.POOL.Rent(DataBlock);
+let newData = com.Rent(DataBlock);
 assert.ok(someData === newData);
 someData = newData;
 
 let catalogName = `Test Catalog`;
 let catalog = Catalog.CreateFrom({
-    [com.COM_ID.NAME]: catalogName,
-    [com.COM_ID.ICON]: `%ICONS%/some_icon.svg`,
-    [com.COM_ID.CMD_PRIMARY]: null,
-    [com.COM_ID.CMD_SECONDARY]: null,
-    [com.COM_ID.CMD_LIST]: null
+    [com.IDS.NAME]: catalogName,
+    [com.IDS.ICON]: `%ICONS%/some_icon.svg`,
+    [com.IDS.CMD_PRIMARY]: null,
+    [com.IDS.CMD_SECONDARY]: null,
+    [com.IDS.CMD_LIST]: null
 });
 
 assert.ok(!u.tils.isVoid(catalog));
-assert.ok(catalog.GetOption(com.COM_ID.NAME) === catalogName);
+assert.ok(catalog.GetOption(com.IDS.NAME) === catalogName);
 
 let itemName = `Test Item`;
 let cItem = catalog.Register({
-    [com.COM_ID.NAME]: itemName
+    [com.IDS.NAME]: itemName
 });
 
 assert.ok(!u.tils.isVoid(cItem));
-assert.ok(cItem.GetOption(com.COM_ID.NAME) === itemName);
+assert.ok(cItem.GetOption(com.IDS.NAME) === itemName);
 assert.ok(catalog.At(0) === cItem);
 assert.ok(u.tils.isVoid(catalog.Add(cItem)));
 //assert.ok(catalog.Resolve(`Test Item`) === cItem); //Not implemented  yet

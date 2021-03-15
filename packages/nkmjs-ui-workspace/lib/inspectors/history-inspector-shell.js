@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InspectorShell = require(`./inspector-shell`);
 
@@ -43,4 +43,4 @@ class HistoryInspectorShell extends InspectorShell{
 }
 
 module.exports = HistoryInspectorShell;
-UI.Register(`nkmjs-history-inspector-shell`, HistoryInspectorShell);
+ui.Register(`nkmjs-history-inspector-shell`, HistoryInspectorShell);

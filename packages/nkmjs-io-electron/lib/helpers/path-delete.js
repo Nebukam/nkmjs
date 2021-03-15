@@ -99,7 +99,7 @@ class PathDelete extends com.pool.DisposableObject {
 
         let pathDelete = null;
         for (let i = 0; i < n; i++) {
-            com.pool.POOL.Rent(PathDelete).Do(path.join(this._basePath, p_fileList[i]), this);
+            com.Rent(PathDelete).Do(path.join(this._basePath, p_fileList[i]), this);
         }
     }
 

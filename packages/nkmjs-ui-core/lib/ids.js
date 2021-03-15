@@ -1,6 +1,6 @@
 'use strict';
 
-const com = require("@nkmjs/common"); //{ COM_ID }
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -8,7 +8,7 @@ const com = require("@nkmjs/common"); //{ COM_ID }
  * @hideconstructor
  * @memberof ui.core
  */
-class UI_ID {
+class IDS {
     constructor() { }
 
     /**
@@ -16,10 +16,10 @@ class UI_ID {
      * @type {string}
      * @customtag read-only
      * @group Common
-     * @groupdescription These IDs collection are directly referencing the one found in {@link common.COM_ID}.
-     * They are present in UI_ID for convenience.
+     * @groupdescription These IDs collection are directly referencing the one found in {@link common.IDS}.
+     * They are present in IDS for convenience.
      */
-    static UID = com.COM_ID.UID;
+    static UID = com.IDS.UID;
 
     /**
      * @description TODO
@@ -27,7 +27,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static NAME = com.COM_ID.NAME;
+    static NAME = com.IDS.NAME;
 
     /**
      * @description TODO
@@ -35,7 +35,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static TITLE = com.COM_ID.TITLE;
+    static TITLE = com.IDS.TITLE;
 
     /**
      * @description TODO
@@ -43,7 +43,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static MESSAGE = com.COM_ID.MESSAGE;
+    static MESSAGE = com.IDS.MESSAGE;
 
     /**
      * @description TODO
@@ -51,7 +51,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static ICON = com.COM_ID.ICON;
+    static ICON = com.IDS.ICON;
 
     /**
      * @description TODO
@@ -83,7 +83,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static PATH = com.COM_ID.PATH;
+    static PATH = com.IDS.PATH;
 
     /**
      * @description TODO
@@ -91,7 +91,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static DATA = com.COM_ID.DATA;
+    static DATA = com.IDS.DATA;
 
     /**
      * @description TODO
@@ -99,7 +99,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static CMD_PRIMARY = com.COM_ID.CMD_PRIMARY;
+    static CMD_PRIMARY = com.IDS.CMD_PRIMARY;
 
     /**
      * @description TODO
@@ -107,7 +107,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static CMD_SECONDARY = com.COM_ID.CMD_SECONDARY;
+    static CMD_SECONDARY = com.IDS.CMD_SECONDARY;
 
     /**
      * @description TODO
@@ -115,7 +115,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static CMD_LIST = com.COM_ID.CMD_LIST;
+    static CMD_LIST = com.IDS.CMD_LIST;
 
     /**
      * @description TODO
@@ -123,7 +123,7 @@ class UI_ID {
      * @customtag read-only
      * @group Common
      */
-    static OWNER = com.COM_ID.OWNER;
+    static OWNER = com.IDS.OWNER;
 
     /**
      * @description TODO
@@ -191,4 +191,4 @@ class UI_ID {
 
 }
 
-module.exports = UI_ID;
+module.exports = IDS;

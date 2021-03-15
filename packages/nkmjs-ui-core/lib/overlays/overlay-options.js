@@ -9,6 +9,13 @@ const com = require("@nkmjs/common");
  * @memberof dialog
  */
 class OverlayOptions extends com.pool.DisposableObjectEx {
+
+    static Create( p_options ){
+        let overlayOptions = com.Rent(OverlayOptions);
+        overlayOptions.options = p_options;
+        return overlayOptions;
+    }
+
     constructor() { super(); }
 
     _Init() {

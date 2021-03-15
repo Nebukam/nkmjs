@@ -1,8 +1,8 @@
 const u = require("@nkmjs/utils");
 const { Dictionary } = require(`@nkmjs/collections`);
-const { UI, OrientableWidget } = require(`@nkmjs/ui-core`);
+const ui= require(`@nkmjs/ui-core`);
 
-class Group extends OrientableWidget {
+class Group extends ui.OrientableWidget {
     constructor() { super(); }
 
     static GROUP_CREATED = Symbol(`groupCreated`);
@@ -116,4 +116,4 @@ class Group extends OrientableWidget {
 }
 
 module.exports = Group;
-UI.Register('nkmjs-group', Group);
+ui.Register('nkmjs-group', Group);

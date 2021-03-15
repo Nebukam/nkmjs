@@ -37,7 +37,7 @@ class CommandFn extends Command {
             throw new Error(`Cannot create CommandFn with empty function`);
         }
 
-        let cmd = com.pool.POOL.Rent(CommandFn);
+        let cmd = com.Rent(CommandFn);
         cmd.options = p_options;
 
         return cmd;

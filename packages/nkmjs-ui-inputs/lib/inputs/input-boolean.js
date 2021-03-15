@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
-const { UI, manipulators } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 const InputField = require(`../input-field`);
 
 
@@ -37,7 +37,7 @@ class InputBoolean extends InputField {
 
     _Render() {
 
-        this._label = new manipulators.Text(u.dom.New(`span`, { class: `label` }, this._host));
+        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: `label` }, this._host));
         let body = u.dom.New(`div`, { class: `body` }, this._host);
         this._handle = u.dom.New(`div`, { class: `handle` }, body);
         this._inputField = u.dom.New(`input`, { class: 'field', type: 'checkbox' }, this._host);
@@ -55,4 +55,4 @@ class InputBoolean extends InputField {
 }
 
 module.exports = InputBoolean;
-UI.Register(`nkmjs-input-boolean`, InputBoolean);
+ui.Register(`nkmjs-input-boolean`, InputBoolean);

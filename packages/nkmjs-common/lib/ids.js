@@ -8,7 +8,7 @@
  * @hideconstructor
  * @memberof common
  */
-class COM_ID {
+class IDS {
     constructor() { }
 
     /**
@@ -90,4 +90,4 @@ class COM_ID {
 
 }
 
-module.exports = COM_ID;
+module.exports = IDS;

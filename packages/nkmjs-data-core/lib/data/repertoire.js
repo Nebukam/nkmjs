@@ -5,7 +5,7 @@ const { Dictionary } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const { ID, IDDispenser } = require(`../id`);
 
-const DATA_SIGNAL = require(`../data-signal`);
+const SIGNAL = require(`../signal`);
 const DataBlock = require(`./data-block`);
 
 /**
@@ -184,7 +184,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
 
         this._OnItemRegistered(p_item);
 
-        this._Broadcast(DATA_SIGNAL.ITEM_REGISTERED, this, p_item);
+        this._Broadcast(SIGNAL.ITEM_REGISTERED, this, p_item);
 
     }
 
@@ -212,7 +212,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
 
         this._itemMap.Remove(itemID);
         this._OnItemUnregistered(p_item);
-        this._Broadcast(DATA_SIGNAL.ITEM_UNREGISTERED, this, p_item);
+        this._Broadcast(SIGNAL.ITEM_UNREGISTERED, this, p_item);
 
         //Free ID
         p_item.id = null;

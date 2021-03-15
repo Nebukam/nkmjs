@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InputField = require(`../input-field`);
 
@@ -25,8 +25,8 @@ class InputTextarea extends InputField {
     _Render() {
         this._inputField = u.dom.New(`textarea`, { class: 'field', rows: 3 }, this._host);
     }
-    expandable
+    
 }
 
 module.exports = InputTextarea;
-UI.Register(`nkmjs-input-textarea`, InputTextarea);
+ui.Register(`nkmjs-input-textarea`, InputTextarea);

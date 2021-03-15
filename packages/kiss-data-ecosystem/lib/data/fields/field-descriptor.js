@@ -1,6 +1,6 @@
 'use strict';
 
-const { DataBlock } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const M = require(`../../meta`);
 
@@ -13,7 +13,7 @@ const M = require(`../../meta`);
 //      - a data-model entry : either a reference to an existing one, or an "embedded" one.
 //          - embedded data-model entries are in fact created and "hidden" elsewhere, so they are never really embedded.
 
-class FieldDescriptor extends DataBlock {
+class FieldDescriptor extends data.DataBlock {
     constructor() { super(); }
 
     _Init() {

@@ -9,7 +9,7 @@
 
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const Control = require(`./control`);
 
@@ -66,4 +66,4 @@ class Inspector extends Control {
 }
 
 module.exports = Inspector;
-UI.Register('nkmjs-inspector', Inspector);
+ui.Register('nkmjs-inspector', Inspector);

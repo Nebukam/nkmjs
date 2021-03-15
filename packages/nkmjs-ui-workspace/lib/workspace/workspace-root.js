@@ -4,8 +4,8 @@ const u = require("@nkmjs/utils");
 const actions = require("@nkmjs/actions");
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
-const { Catalog } = require(`@nkmjs/data-core`);
-const { UI } = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const WORKSPACE_CONTEXT = require(`../workspace-context`);
 const Workspace = require(`./workspace.js`);
@@ -19,7 +19,7 @@ class RootWorkspace extends Workspace {
     _Init() {
         super._Init();
 
-        this._rootCatalog = new Catalog();
+        this._rootCatalog = new data.catalogs.Catalog();
         this._rootCatalog.GetOrCreateCatalog({ name: 'RootCell' });
 
     }
@@ -108,4 +108,4 @@ class RootWorkspace extends Workspace {
 }
 
 module.exports = RootWorkspace;
-UI.Register(`nkmjs-root-workspace`, RootWorkspace);
+ui.Register(`nkmjs-root-workspace`, RootWorkspace);

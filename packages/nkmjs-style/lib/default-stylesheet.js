@@ -18,15 +18,15 @@ class DefaultStylesheet extends PaletteBuilder{
 
         let defaultColors = {};
 
-        defaultColors[com.COMMON_FLAG.INFOS] = COLOR.RGBA(102, 175, 204);
-        defaultColors[com.COMMON_FLAG.WARNING] = COLOR.RGBA(255, 206, 0);
-        defaultColors[com.COMMON_FLAG.ERROR] = COLOR.RGBA(226, 5, 0);
-        defaultColors[com.COMMON_FLAG.READY] = COLOR.RGBA(120, 164, 0);
-        defaultColors[com.COMMON_FLAG.DIRTY] = COLOR.RGBA(164, 100, 0);
-        defaultColors[com.COMMON_FLAG.LOADING] = COLOR.RGBA(102, 119, 204);
-        defaultColors[com.COMMON_FLAG.PROCESSING] = COLOR.RGBA(102, 119, 204);
-        defaultColors[com.COMMON_FLAG.WAITING] = COLOR.RGBA(102, 119, 204);
-        defaultColors[com.COMMON_FLAG.ACTIVE] = COLOR.RGBA(62, 193, 136);
+        defaultColors[com.FLAGS.INFOS] = COLOR.RGBA(102, 175, 204);
+        defaultColors[com.FLAGS.WARNING] = COLOR.RGBA(255, 206, 0);
+        defaultColors[com.FLAGS.ERROR] = COLOR.RGBA(226, 5, 0);
+        defaultColors[com.FLAGS.READY] = COLOR.RGBA(120, 164, 0);
+        defaultColors[com.FLAGS.DIRTY] = COLOR.RGBA(164, 100, 0);
+        defaultColors[com.FLAGS.LOADING] = COLOR.RGBA(102, 119, 204);
+        defaultColors[com.FLAGS.PROCESSING] = COLOR.RGBA(102, 119, 204);
+        defaultColors[com.FLAGS.WAITING] = COLOR.RGBA(102, 119, 204);
+        defaultColors[com.FLAGS.ACTIVE] = COLOR.RGBA(62, 193, 136);
 
         palette.AddColors(defaultColors);
 

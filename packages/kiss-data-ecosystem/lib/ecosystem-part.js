@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const { Catalog } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 const actions = require("@nkmjs/actions");
 
 const EcosystemCommand = require(`./data/commands/command-ecosystem`);
@@ -17,7 +17,7 @@ class EcosystemPart extends com.pool.DisposableObjectEx {
         this._commands = new actions.CommandBox();
 
         this._ecosystem = null;
-        this._catalog = new Catalog();
+        this._catalog = new data.catalogs.Catalog();
         this._catalog.expanded = true;
 
         this._metaTemplate = {

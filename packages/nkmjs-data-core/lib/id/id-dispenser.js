@@ -70,7 +70,7 @@ class IDDispenser extends com.pool.DisposableObjectEx {
 
         if (!this.IsAvailable(p_string)) { throw new Error(`ID ${p_string} is not available.`); }
 
-        let newID = com.pool.POOL.Rent(ID);
+        let newID = com.Rent(ID);
         newID.name = p_string;
         this._idMap.Set(p_string, newID);
         this._idList.Add(newID);

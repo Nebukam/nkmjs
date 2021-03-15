@@ -6,7 +6,7 @@
  * @hideconstructor
  * @memberof data.core
  */
-class DATA_SIGNAL{
+class SIGNAL{
     constructor() {}
 
     /**
@@ -84,4 +84,4 @@ class DATA_SIGNAL{
 
 }
 
-module.exports = DATA_SIGNAL;
+module.exports = SIGNAL;

@@ -1,6 +1,6 @@
 'use strict';
 
-const { JSONSerializer } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const DataManipulationCommand = require(`../../commands/command-data`);
 
@@ -21,8 +21,8 @@ class EntryDuplicate extends DataManipulationCommand {
 
             while (!dLib.IsIDAvailable(duplicateId)) { duplicateId = `${baseId}(${i++})`; }
 
-            JSONSerializer.Deserialize(
-                JSONSerializer.Serialize(this._context), null,
+            data.serialization.JSONSerializer.Deserialize(
+                data.serialization.JSONSerializer.Serialize(this._context), null,
                 { ecosystem: this._ecosystem, id: duplicateId });
         } catch (e) {
             this._Fail(`Error during serialization : ${e.message}`);

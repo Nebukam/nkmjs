@@ -1,10 +1,10 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { COMMON_FLAG } = require("@nkmjs/common");
+const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
-const { Catalog } = require(`@nkmjs/data-core`);
-const { UI_ID, UI, UI_FLAG, View, DOMTemplate, templates } = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InspectorShell = require(`../inspectors/inspector-shell`);
 const HistoryInspectorShell = require(`../inspectors/history-inspector-shell`);
@@ -19,13 +19,13 @@ class EditorEx extends Editor {
     static __default_shelfClass = EditorShelf;
     static __default_inspectorShellClass = InspectorShell;
     static __default_historyInspectorClass = HistoryInspectorShell;
-    static __default_viewportClass = View;
+    static __default_viewportClass = ui.views.View;
 
     _Init() {
 
         super._Init();
 
-        this._shelfCatalog = new Catalog(false);
+        this._shelfCatalog = new data.catalogs.Catalog(false);
 
         this._shelf = null;
         this._inspectorShell = null;
@@ -74,8 +74,8 @@ class EditorEx extends Editor {
     _InitShelfCatalog(p_configList) {
         p_configList.push(
             {
-                [UI_ID.NAME]: `Inspector`,
-                [UI_ID.ICON]: `%ICON%/icon_parameters.svg`, //icon:`%ICON%/icon_more.svg`,
+                [ui.IDS.NAME]: `Inspector`,
+                [ui.IDS.ICON]: `%ICON%/icon_parameters.svg`, //icon:`%ICON%/icon_more.svg`,
                 viewType: this.constructor.__default_inspectorShellClass,
                 assign: `_inspector`
             }
@@ -141,15 +141,15 @@ class EditorEx extends Editor {
 
     _Render() {
 
-        DOMTemplate.Render(templates.HeaderBodyFooter, this, { [UI_ID.OWNER]: this });
+        ui.DOMTemplate.Render(ui.templates.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
 
         this._shelf = this.Add(this.constructor.__default_shelfClass, `shelf`, this._body);
         this._viewport = this.Add(this.constructor.__default_viewportClass, `viewport`, this._body);
 
         this._inspectorShell = this.Add(this.constructor.__default_inspectorShellClass, `inspector`, this._body);
-        this._inspectorShell.orientation = UI_FLAG.HORIZONTAL;
+        this._inspectorShell.orientation = ui.FLAGS.HORIZONTAL;
 
-        this._shelf.orientation = UI_FLAG.HORIZONTAL;
+        this._shelf.orientation = ui.FLAGS.HORIZONTAL;
 
     }
 
@@ -176,13 +176,13 @@ class EditorEx extends Editor {
         return;
         let bar = this._topStatus;
         if (p_toggle) {
-            this._flags.Set(COMMON_FLAG.WARNING, true);
-            bar.flag = COMMON_FLAG.WARNING;
+            this._flags.Set(com.FLAGS.WARNING, true);
+            bar.flag = com.FLAGS.WARNING;
             bar.text = `There are unsaved modifications.`;
             bar.htitle = `Unsaved modifications are only affect the ecosystem once applied.`;
             bar.visible = true;
         } else {
-            this._flags.Set(COMMON_FLAG.WARNING, false);
+            this._flags.Set(com.FLAGS.WARNING, false);
             bar.visible = false;
         }
     }
@@ -208,4 +208,4 @@ class EditorEx extends Editor {
 }
 
 module.exports = EditorEx;
-UI.Register('nkmjs-editor-ex', EditorEx);
+ui.Register('nkmjs-editor-ex', EditorEx);

@@ -2,8 +2,8 @@
 
 const com = require("@nkmjs/common");
 
-const DATA_ID = require(`../data-id`);
-const CATALOG_SIGNAL = require(`./catalog-signal`);
+const IDS = require(`../ids`);
+const SIGNAL = require(`./catalog-signal`);
 
 /**
  * @description TODO
@@ -30,8 +30,8 @@ class CatalogItem extends com.helpers.OptionsObject {
         this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._OnUpdate));
 
         this._optionHandler.wrapUpFn = this._Bind(this._OnOptionsUpdated);
-        this._optionHandler.Hook(com.COM_ID.DATA);
-        this._optionHandler.Hook(DATA_ID.BOUND);
+        this._optionHandler.Hook(com.IDS.DATA);
+        this._optionHandler.Hook(IDS.BOUND);
 
     }
 
@@ -45,7 +45,7 @@ class CatalogItem extends com.helpers.OptionsObject {
     /**
      * @access protected
      * @description TODO
-     * @type {data.core.catalog.Catalog}
+     * @type {data.core.catalogs.Catalog}
      */
     get rootCatalog() { return this._rootCatalog; }
     set rootCatalog(p_value) { this._rootCatalog = p_value; }
@@ -68,7 +68,7 @@ class CatalogItem extends com.helpers.OptionsObject {
 
     /**
      * @description TODO
-     * @type {data.core.catalog.Catalog}
+     * @type {data.core.catalogs.Catalog}
      */
     set parent(p_value) {
         if (this._parent === p_value) { return; }
@@ -92,31 +92,31 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @description TODO
      * @type {string}
      */
-    get name() { return this._options[com.COM_ID.NAME]; }
-    set name(p_value) { this.SetOption(com.COM_ID.NAME, p_value); }
+    get name() { return this._options[com.IDS.NAME]; }
+    set name(p_value) { this.SetOption(com.IDS.NAME, p_value); }
 
     /**
      * @description TODO
      * @type {string}
      */
-    get path() { return this._options[com.COM_ID.PATH]; }
-    set path(p_value) { this.SetOption(com.COM_ID.PATH, p_value); }
+    get path() { return this._options[com.IDS.PATH]; }
+    set path(p_value) { this.SetOption(com.IDS.PATH, p_value); }
 
     /**
      * @description TODO
      * @type {boolean}
      */
-    get dataBound() { return this._options[DATA_ID.BOUND] }
-    set dataBound(p_value) { this.SetOption(DATA_ID.BOUND, p_value); }
+    get dataBound() { return this._options[IDS.BOUND] }
+    set dataBound(p_value) { this.SetOption(IDS.BOUND, p_value); }
 
     /**
      * @description TODO
      * @type {core.data.DataBlock}
      */
-    get data() { return this._options[com.COM_ID.DATA]; }
+    get data() { return this._options[com.IDS.DATA]; }
     set data(p_value) {
-        let p_oldValue = this._options[com.COM_ID.DATA];
-        this._options[com.COM_ID.DATA] = p_value;
+        let p_oldValue = this._options[com.IDS.DATA];
+        this._options[com.IDS.DATA] = p_value;
         this._OnDataChanged(p_value, p_oldValue);
     }
 
@@ -124,22 +124,22 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @description TODO
      * @type {actions.Command}
      */
-    get primaryCommand() { return this._options[com.COM_ID.CMD_PRIMARY]; }
-    set primaryCommand(p_value) { this.SetOption(com.COM_ID.CMD_PRIMARY, p_value); }
+    get primaryCommand() { return this._options[com.IDS.CMD_PRIMARY]; }
+    set primaryCommand(p_value) { this.SetOption(com.IDS.CMD_PRIMARY, p_value); }
 
     /**
      * @description TODO
      * @type {actions.Command}
      */
-    get secondaryCommand() { return this._options[com.COM_ID.CMD_SECONDARY]; }
-    set secondaryCommand(p_value) { this.SetOption(com.COM_ID.CMD_SECONDARY, p_value); }
+    get secondaryCommand() { return this._options[com.IDS.CMD_SECONDARY]; }
+    set secondaryCommand(p_value) { this.SetOption(com.IDS.CMD_SECONDARY, p_value); }
 
     /**
      * @description TODO
      * @type {actions.Command}
      */
-    get commandList() { return this._options[com.COM_ID.CMD_LIST]; }
-    set commandList(p_value) { this.SetOption(com.COM_ID.CMD_LIST, p_value); }
+    get commandList() { return this._options[com.IDS.CMD_LIST]; }
+    set commandList(p_value) { this.SetOption(com.IDS.CMD_LIST, p_value); }
 
     /**
      * @access protected
@@ -152,7 +152,7 @@ class CatalogItem extends com.helpers.OptionsObject {
         if (p_oldData && `Unwatch` in p_oldData) { p_oldData.Unwatch(com.SIGNAL.RELEASED, this._OnDataReleased, this); }
         if (p_newData && `Watch` in p_newData) { p_newData.Watch(com.SIGNAL.RELEASED, this._OnDataReleased, this); }
 
-        this._Broadcast(CATALOG_SIGNAL.ITEM_DATA_CHANGED, this, p_newData, p_oldData);
+        this._Broadcast(SIGNAL.ITEM_DATA_CHANGED, this, p_newData, p_oldData);
         this._delayedUpdate.Schedule();
     }
 
@@ -162,8 +162,8 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @param {data.core.DataBlock} p_data 
      */
     _OnDataReleased(p_data) {
-        this._Broadcast(CATALOG_SIGNAL.ITEM_DATA_RELEASED, this, p_data);
-        if (this._options[DATA_ID.BOUND]) { this.Release(); }
+        this._Broadcast(SIGNAL.ITEM_DATA_RELEASED, this, p_data);
+        if (this._options[IDS.BOUND]) { this.Release(); }
     }
 
     // ----> Commands
@@ -173,7 +173,7 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @param {data.core.Command} p_cmd 
      */
     AddCommand(p_cmd) {
-        let cmdList = this.GetOrSetOption(com.COM_ID.CMD_LIST, [], false);
+        let cmdList = this.GetOrSetOption(com.IDS.CMD_LIST, [], false);
         if (cmdList.includes(p_cmd)) { return; }
         cmdList.push(p_cmd);
         this._delayedUpdate.Schedule();
@@ -203,7 +203,7 @@ class CatalogItem extends com.helpers.OptionsObject {
     }
 
     toString() {
-        return `${this._options[com.COM_ID.NAME]} (${this.constructor.name})`;
+        return `${this._options[com.IDS.NAME]} (${this.constructor.name})`;
     }
 
 }

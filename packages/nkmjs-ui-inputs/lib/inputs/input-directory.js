@@ -1,6 +1,6 @@
 'use strict';
 
-const { UI } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const InputFile = require(`./input-file`);
 
@@ -15,4 +15,4 @@ class InputDirectory extends InputFile {
 }
 
 module.exports = InputDirectory;
-UI.Register(`nkmjs-input-directory`, InputDirectory);
+ui.Register(`nkmjs-input-directory`, InputDirectory);

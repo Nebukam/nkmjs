@@ -5,13 +5,13 @@ const com = require("@nkmjs/common");
 const { Dictionary } = require(`@nkmjs/collections`);
 
 const UI = require(`../ui.js`);
-const UI_FLAG = require('../ui-flag');
+const FLAGS = require('../flags');
 
 const OrientableWidget = require(`../widget-orientable`);
 const ToolButton = require(`../buttons/button-tool`);
-const ButtonBase = require(`../button-base`);
+const ButtonBase = require(`../buttons/button-base`);
 const FlagEnum = require('./flag-enum');
-const UI_SIGNAL = require('../ui-signal');
+const SIGNAL = require('../signal');
 
 const _flag_STRETCH = `stretch`;
 const _flag_STRETCH_SAME = `stretch-same`;
@@ -36,7 +36,7 @@ class Toolbar extends OrientableWidget {
 
     // ----> Init
     
-    static __default_size = UI_FLAG.SIZE_M;
+    static __default_size = FLAGS.SIZE_M;
 
     _Init() {
 
@@ -55,7 +55,7 @@ class Toolbar extends OrientableWidget {
         this._stretchEnum = new FlagEnum(this.constructor.__stretchENUMs, true);
         this._stretchEnum.Add(this);
 
-        this._sizeEnum = new FlagEnum(UI_FLAG.sizes, true);
+        this._sizeEnum = new FlagEnum(FLAGS.sizes, true);
         this._sizeEnum.Add(this);
         this._sizeEnum.onFlagChanged.Add(this._Bind(this._OnSizeChanged));
 
@@ -161,8 +161,8 @@ class Toolbar extends OrientableWidget {
             group.handles.push(handle);
 
             if (toggle) {
-                handle.Watch(UI_SIGNAL.ACTIVATED, this._OnRadioActivated, this);
-                handle.Watch(UI_SIGNAL.DEACTIVATED, this._OnRadioDeactivated, this);
+                handle.Watch(SIGNAL.ACTIVATED, this._OnRadioActivated, this);
+                handle.Watch(SIGNAL.DEACTIVATED, this._OnRadioDeactivated, this);
             }
 
         } else {

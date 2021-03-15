@@ -5,16 +5,16 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { UI, UI_FLAG, Widget, FlagEnum } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const INPUT_SIGNAL = require(`./input-signal`);
 
-class BaseInput extends Widget {
+class BaseInput extends ui.Widget {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/shared.css`]
-    }, Widget, ['css']);
+    }, ui.Widget, ['css']);
 
     // ----> Init
 
@@ -34,10 +34,10 @@ class BaseInput extends Widget {
 
         this._inputId = ``;
 
-        this._sizeEnum = new FlagEnum(UI_FLAG.sizes, true);
+        this._sizeEnum = new ui.helpers.FlagEnum(ui.FLAGS.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(UI_FLAG.flavors, true);
+        this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavors, true);
         this._flavorEnum.Add(this);
 
     }
@@ -213,7 +213,7 @@ class BaseInput extends Widget {
      * @param {*} p_err 
      */
     _PushError(p_err) {
-        if (u.tils.isString(p_err)) { p_err = { type: com.COMMON_FLAG.ERROR, message: p_err }; }
+        if (u.tils.isString(p_err)) { p_err = { type: com.FLAGS.ERROR, message: p_err }; }
 
         if (this._inputErrors.includes(p_err)) { return; }
 

@@ -6,7 +6,7 @@
  * @hideconstructor
  * @memberof ui.core
  */
-class UI_SIGNAL {
+class SIGNAL {
     constructor() { }
 
     /**
@@ -183,4 +183,4 @@ class UI_SIGNAL {
 
 }
 
-module.exports = UI_SIGNAL;
+module.exports = SIGNAL;

@@ -4,7 +4,7 @@ const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
-const DATA_SIGNAL = require(`../data-signal`);
+const SIGNAL = require(`../signal`);
 const DataBlock = require(`./data-block`);
 const Repertoire = require(`./repertoire`);
 
@@ -26,8 +26,8 @@ class DataFactory extends com.pool.DisposableObjectEx {
         this._tempItemList = new List(0);
 
         this._itemRep = new Repertoire();
-        this._itemRep.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnItemRegistered, this);
-        this._itemRep.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnItemUnregistered, this);
+        this._itemRep.Watch(SIGNAL.ITEM_REGISTERED, this._OnItemRegistered, this);
+        this._itemRep.Watch(SIGNAL.ITEM_UNREGISTERED, this._OnItemUnregistered, this);
 
         this._itemClass = null;
 
@@ -88,7 +88,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
 
         if (u.tils.isVoid(cl)) { throw new Error(`Cannot create temp item with no itemClass set.`); }
 
-        let newItem = com.pool.POOL.Rent(cl);
+        let newItem = com.Rent(cl);
         newItem._isTemp = true;
         this._tempItemList.Add(newItem);
 
@@ -125,7 +125,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
      * @param {*} p_item 
      */
     _OnItemRegistered(p_repertoire, p_item) {
-        this._Broadcast(DATA_SIGNAL.ITEM_REGISTERED, this, p_item);
+        this._Broadcast(SIGNAL.ITEM_REGISTERED, this, p_item);
     }
 
     /**
@@ -144,7 +144,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
      * @param {*} p_item 
      */
     _OnItemUnregistered(p_repertoire, p_item) {
-        this._Broadcast(DATA_SIGNAL.ITEM_UNREGISTERED, this, p_item);
+        this._Broadcast(SIGNAL.ITEM_UNREGISTERED, this, p_item);
     }
 
     /**

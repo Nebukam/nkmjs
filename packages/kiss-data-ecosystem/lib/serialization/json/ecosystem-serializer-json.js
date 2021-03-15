@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { Serializer, SERIALIZATION_CONTEXT } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const Model = require(`../../data/model`);
 const DataEntry = require(`../../data/data-entry`);
@@ -17,14 +17,14 @@ const type_default = `default`;
  * This is a copy-paste of the @nkmjs-core-data JSONSerializer with small twists to accomodate Models, Fields etc.
  * TODO : When the ecosystem module is 'initialized' (and it must be), replace the existing one.
  */
-class EcosystemJSONSerializer extends Serializer {
+class EcosystemJSONSerializer extends data.serialization.Serializer {
     constructor() { super(); }
 
     static Serialize(p_target, p_options = null) {
 
         //Find suitable JSON Object serializer depending on target type.
         let serializer = com.BINDINGS.Get(
-            SERIALIZATION_CONTEXT.JSON,
+            data.serialization.CONTEXT.JSON,
             p_target.constructor,
             null);
 
@@ -112,13 +112,13 @@ class EcosystemJSONSerializer extends Serializer {
                 }
 
             } else {
-                p_data = com.pool.POOL.Rent(cl);
+                p_data = com.Rent(cl);
             }
 
         }
 
         let serializer = com.BINDINGS.Get(
-            SERIALIZATION_CONTEXT.JSON,
+            data.serialization.CONTEXT.JSON,
             cl,
             null);
 

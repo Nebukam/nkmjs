@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { ID } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 const actions = require("@nkmjs/actions");
 
 const DataManipulationCommand = require(`../../commands/command-data`);
@@ -18,7 +18,7 @@ class ModelCreate extends DataManipulationCommand {
     _InternalExecute() {
 
         let tempModel = this._ecosystem.models.CreateTemp(),
-            tempID = new ID(),
+            tempID = new data.ID(),
             name = `NewModel${u.tils.unsafeUID}`;
 
         //Make sure we don't push a duplicate id

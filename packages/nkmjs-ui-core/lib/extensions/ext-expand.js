@@ -2,8 +2,8 @@
 
 const u = require("@nkmjs/utils");
 
-const UI_FLAG = require(`../ui-flag`);
-const UI_SIGNAL = require(`../ui-signal`);
+const FLAGS = require(`../flags`);
+const SIGNAL = require(`../signal`);
 const DisplayObject = require("../display-object");
 
 const Extension = require("./extension");
@@ -57,11 +57,11 @@ class ExpandExtension extends Extension {
         if (this._isEnabled) {
 
             if (oldValue) {
-                if (u.tils.isInstanceOf(oldValue, DisplayObject)) { oldValue.Unwatch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+                if (u.tils.isInstanceOf(oldValue, DisplayObject)) { oldValue.Unwatch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
                 else { oldValue.removeEventListener(`click`, this._mClick); }
             }
             if (p_value) {
-                if (u.tils.isInstanceOf(p_value, DisplayObject)) { p_value.Watch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+                if (u.tils.isInstanceOf(p_value, DisplayObject)) { p_value.Watch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
                 else { p_value.addEventListener(`click`, this._mClick); }
             }
 
@@ -82,13 +82,13 @@ class ExpandExtension extends Extension {
 
         if (!p_target) { return; }
 
-        p_target.flags.Add(p_target, UI_FLAG.EXPANDED, UI_FLAG.COLLAPSED);
+        p_target.flags.Add(p_target, FLAGS.EXPANDED, FLAGS.COLLAPSED);
         if (p_wrapper) {
-            p_target.flags.Add(p_wrapper, UI_FLAG.EXPANDED, UI_FLAG.COLLAPSED);
+            p_target.flags.Add(p_wrapper, FLAGS.EXPANDED, FLAGS.COLLAPSED);
         }
 
         this._UpdateFlags();
-        this._Broadcast(this._isExpanded ? UI_SIGNAL.EXPANDED : UI_SIGNAL.COLLAPSED);
+        this._Broadcast(this._isExpanded ? SIGNAL.EXPANDED : SIGNAL.COLLAPSED);
 
         if (p_activator) {
             this.activator = p_activator;
@@ -105,7 +105,7 @@ class ExpandExtension extends Extension {
     Enable() {
         if (!super.Enable()) { return false; }
         if (this._activator) {
-            if (u.tils.isInstanceOf(this._activator, DisplayObject)) { this._activator.Watch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+            if (u.tils.isInstanceOf(this._activator, DisplayObject)) { this._activator.Watch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
             else { this._activator.addEventListener(`click`, this._mClick); }
         }
         return true;
@@ -117,7 +117,7 @@ class ExpandExtension extends Extension {
     Disable() {
         if (!super.Disable()) { return false; }
         if (this._activator) {
-            if (u.tils.isInstanceOf(this._activator, DisplayObject)) { this._activator.Unwatch(UI_SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+            if (u.tils.isInstanceOf(this._activator, DisplayObject)) { this._activator.Unwatch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
             else { this._activator.removeEventListener(`click`, this._mClick); }
         }
         return true;
@@ -151,7 +151,7 @@ class ExpandExtension extends Extension {
         if (p_scrollTo) {
             this._target.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
         }
-        this._Broadcast(UI_SIGNAL.EXPANDED);
+        this._Broadcast(SIGNAL.EXPANDED);
     }
 
     /**
@@ -161,13 +161,13 @@ class ExpandExtension extends Extension {
         if (!this._isExpanded) { return; }
         this._isExpanded = false;
         this._UpdateFlags();
-        this._Broadcast(UI_SIGNAL.COLLAPSED);
+        this._Broadcast(SIGNAL.COLLAPSED);
     }
 
     _UpdateFlags() {
         if (!this._target) { return; }
-        this._target.flags.Set(UI_FLAG.EXPANDED, this._isExpanded);
-        this._target.flags.Set(UI_FLAG.COLLAPSED, !this._isExpanded);
+        this._target.flags.Set(FLAGS.EXPANDED, this._isExpanded);
+        this._target.flags.Set(FLAGS.COLLAPSED, !this._isExpanded);
     }
 
     // ----> Pooling

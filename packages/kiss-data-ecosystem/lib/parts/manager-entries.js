@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const { Dictionary, List } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const { DATA_SIGNAL, ID } = require(`@nkmjs/data-core`);
+const data = require(`@nkmjs/data-core`);
 
 const EcosystemPart = require(`../ecosystem-part`);
 
@@ -61,11 +61,11 @@ class EntryManager extends EcosystemPart {
             throw new Error(`A library already exists with that model ID : ${id}`);
         }
 
-        let newLibrary = com.pool.POOL.Rent(DataLibrary);
+        let newLibrary = com.Rent(DataLibrary);
         newLibrary.model = p_model;
 
-        newLibrary.Watch(DATA_SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
-        newLibrary.Watch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
+        newLibrary.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
+        newLibrary.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
 
         this._libraries.Add(newLibrary);
         this._librariesMap.Set(id, newLibrary);
@@ -86,8 +86,8 @@ class EntryManager extends EcosystemPart {
 
         let library = this._librariesMap.Get(id);
 
-        newLibrary.Unwatch(DATA_SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
-        newLibrary.Unwatch(DATA_SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
+        newLibrary.Unwatch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
+        newLibrary.Unwatch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
 
         this._libraries.Remove(library);
         this._librariesMap.Remove(library);
@@ -99,13 +99,13 @@ class EntryManager extends EcosystemPart {
 
     /**
      * Return a data library associated with a given key (model or ID)
-     * @param {ID | Model} p_key 
+     * @param {data.ID | Model} p_key 
      */
     GetLibrary(p_key) {
 
         let id = null;
 
-        if (u.tils.isInstanceOf(p_key, ID)) {
+        if (u.tils.isInstanceOf(p_key, data.ID)) {
             id = p_key;
         } else if (u.tils.isInstanceOf(p_key, Model)) {
             id = p_key.id;
@@ -190,9 +190,9 @@ class EntryManager extends EcosystemPart {
         p_entry.ClearDirty();
         p_entry.metadirty = false;
 
-        this._Broadcast(DATA_SIGNAL.ITEM_REGISTERED, p_entry);
+        this._Broadcast(data.SIGNAL.ITEM_REGISTERED, p_entry);
 
-        p_entry.metadata.Watch(DATA_SIGNAL.META_UPDATED, this._OnEntryMetaUpdated, this);
+        p_entry.metadata.Watch(data.SIGNAL.META_UPDATED, this._OnEntryMetaUpdated, this);
 
     }
 
@@ -240,11 +240,11 @@ class EntryManager extends EcosystemPart {
 
         if (!p_options) {
             p_options = {
-                [COM_ID.NAME]: name,
-                [COM_ID.DATA]: p_entry,
-                [COM_ID.ICON]: p_entry.metadata.Get(_meta_iconPath, `%ICON%/icon_document.svg`),
-                [COM_ID.CMD_SECONDARY]: this._cmdEntryEdit,
-                [COM_ID.CMD_LIST]: [this._cmdEntryCreateChild, this._cmdEntryDuplicate]
+                [com.IDS.NAME]: name,
+                [com.IDS.DATA]: p_entry,
+                [com.IDS.ICON]: p_entry.metadata.Get(_meta_iconPath, `%ICON%/icon_document.svg`),
+                [com.IDS.CMD_SECONDARY]: this._cmdEntryEdit,
+                [com.IDS.CMD_LIST]: [this._cmdEntryCreateChild, this._cmdEntryDuplicate]
             }
         }
 
@@ -276,7 +276,7 @@ class EntryManager extends EcosystemPart {
             cItem.Release();
         }
 
-        this._Broadcast(DATA_SIGNAL.ITEM_UNREGISTERED, p_entry);
+        this._Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_entry);
         this._entryCatalogMap.Remove(p_entry);
     }
 

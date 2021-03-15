@@ -68,7 +68,7 @@ class DOMTemplate {
 
         if (`_wrapper` in p_host) { p_host = p_host._wrapper; }
 
-        let owner = u.tils.Get(p_options, com.COM_ID.OWNER, this);
+        let owner = u.tils.Get(p_options, com.IDS.OWNER, this);
         if (!owner) { owner = this; }
 
         let tpl = this.constructor.__HTMLtemplate;

@@ -8,7 +8,7 @@ const { List, Dictionary } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const { ServiceBase } = require(`@nkmjs/services`);
 const actions = require("@nkmjs/actions");
-const { OverlayOptions } = require("@nkmjs/ui-core");
+const ui = require("@nkmjs/ui-core");
 
 /**
  * @description TODO
@@ -54,9 +54,8 @@ class DIALOG extends ServiceBase {
 
         let dialogOptions = null;
 
-        if (!u.tils.isInstanceOf(p_options, OverlayOptions)) {
-            dialogOptions = com.pool.POOL.Rent(OverlayOptions);
-            dialogOptions.options = p_options;
+        if (!u.tils.isInstanceOf(p_options, ui.overlays.OverlayOptions)) {
+            dialogOptions = ui.overlays.OverlayOptions.Create(p_options);
             this._ownedDialogData.Set(dialogOptions, true);
         } else {
             dialogOptions = p_options;

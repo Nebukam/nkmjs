@@ -7,7 +7,7 @@
  * @hideconstructor
  * @memberof common
  */
-class COMMON_FLAG{
+class FLAGS{
     constructor() {}
 
     /**
@@ -79,4 +79,4 @@ class COMMON_FLAG{
 
 }
 
-module.exports = COMMON_FLAG;
+module.exports = FLAGS;

@@ -114,7 +114,7 @@ class WINDOWS extends com.helpers.SingletonEx {
 
             if (winOptions.id === WINDOWS.ID_MAIN) { this._mainWindow = newWindow; }
 
-            wrapper = com.pool.POOL.Rent(WindowWrapper);
+            wrapper = com.Rent(WindowWrapper);
             wrapper.initOptions = winOptions;
             wrapper.window = newWindow;
 

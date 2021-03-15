@@ -1,11 +1,11 @@
 'use strict';
 
 const { CSS } = require(`@nkmjs/style`);
-const { UI, Widget, Shelf } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const EditorShelfNav = require(`./editor-shelf-nav`);
 
-class EditorShelf extends Shelf {
+class EditorShelf extends ui.views.Shelf {
     constructor() { super(); }
 
     _Init() {
@@ -35,4 +35,4 @@ class EditorShelf extends Shelf {
 }
 
 module.exports = EditorShelf;
-UI.Register('nkmjs-editor-shelf', EditorShelf);
+ui.Register('nkmjs-editor-shelf', EditorShelf);

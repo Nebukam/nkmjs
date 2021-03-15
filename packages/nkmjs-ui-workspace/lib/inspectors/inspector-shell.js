@@ -9,7 +9,7 @@
 
 const com = require("@nkmjs/common");
 const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
-const { UI_ID, UI, UI_FLAG, View, DOMTemplate, templates } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const WORKSPACE_CONTEXT = require(`../workspace-context`);
 
@@ -20,12 +20,12 @@ const WORKSPACE_CONTEXT = require(`../workspace-context`);
  * 
  * The InspectorShell looks for the most suitable inspector and displays it.
  */
-class InspectorShell extends View {
+class InspectorShell extends ui.views.View {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/inspector-shell.css`]
-    }, View, ['css']);
+    }, ui.views.View, ['css']);
 
     _Init() {
 
@@ -34,8 +34,8 @@ class InspectorShell extends View {
         this._context = null;
         this._inspector = null;
 
-        this._flags.Add(this, UI_FLAG.FIXED_SIZE);
-        this._flags.Set(UI_FLAG.FIXED_SIZE, true);
+        this._flags.Add(this, ui.FLAGS.FIXED_SIZE);
+        this._flags.Set(ui.FLAGS.FIXED_SIZE, true);
 
         this._icon = null;
         this._title = null;
@@ -64,10 +64,10 @@ class InspectorShell extends View {
     // ----> DOM
 
     get icon() { return this._icon; }
-    set icon(p_value) { this._flags.Set(UI_FLAG.NO_ICON, !this._icon.Set(p_value)); }
+    set icon(p_value) { this._flags.Set(ui.FLAGS.NO_ICON, !this._icon.Set(p_value)); }
 
     get title() { return this._title; }
-    set title(p_value) { this._flags.Set(UI_FLAG.NO_LABEL, !this._title.Set(p_value)); }
+    set title(p_value) { this._flags.Set(ui.FLAGS.NO_LABEL, !this._title.Set(p_value)); }
 
     get subtitle() { return this._subtitle; }
     set subtitle(p_value) { this._subtitle.Set(p_value); }
@@ -107,10 +107,10 @@ class InspectorShell extends View {
     }
 
     _Render() {
-        DOMTemplate.Render(templates.BodyHeaderTitles, this, { 
-            [UI_ID.OWNER]: this,
-            [UI_ID.ICON]:{ [UI_ID.CSS_CL]:UI_FLAG.SIZE_S },
-            [UI_ID.SUBTITLE]:{ [UI_ID.CSS_CL]:FONT_FLAG.SMALL }
+        ui.DOMTemplate.Render(ui.templates.BodyHeaderTitles, this, { 
+            [ui.IDS.OWNER]: this,
+            [ui.IDS.ICON]:{ [ui.IDS.CSS_CL]:ui.FLAGS.SIZE_S },
+            [ui.IDS.SUBTITLE]:{ [ui.IDS.CSS_CL]:FONT_FLAG.SMALL }
         });
     }
 
@@ -158,4 +158,4 @@ class InspectorShell extends View {
 }
 
 module.exports = InspectorShell;
-UI.Register('nkmjs-inspector-shell', InspectorShell);
+ui.Register('nkmjs-inspector-shell', InspectorShell);

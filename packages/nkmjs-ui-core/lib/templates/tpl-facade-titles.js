@@ -2,13 +2,13 @@
 
 const u = require("@nkmjs/utils");
 
-const UI_ID = require(`../ui-id`);
+const IDS = require(`../ids`);
 const DOMTemplate = require(`../dom-template`);
 const manipulators = require(`../manipulators`);
 
-const __icon = `_${UI_ID.ICON}`;
-const __title = `_${UI_ID.TITLE}`;
-const __subtitle = `_${UI_ID.SUBTITLE}`;
+const __icon = `_${IDS.ICON}`;
+const __title = `_${IDS.TITLE}`;
+const __subtitle = `_${IDS.SUBTITLE}`;
 
 class TPLFacadeTitles extends DOMTemplate {
     constructor() {
@@ -18,10 +18,10 @@ class TPLFacadeTitles extends DOMTemplate {
     /*
 
     get icon() { return this._icon; }
-    set icon(p_value) { this._flags.Set(UI_FLAG.NO_ICON, !this._icon.Set(p_value)); }
+    set icon(p_value) { this._flags.Set(FLAGS.NO_ICON, !this._icon.Set(p_value)); }
 
     get title() { return this._title; }
-    set title(p_value) {  this._flags.Set(UI_FLAG.NO_LABEL, !this._title.Set(p_value)); }
+    set title(p_value) {  this._flags.Set(FLAGS.NO_LABEL, !this._title.Set(p_value)); }
 
     get subtitle() { return this._subtitle; }
     set subtitle(p_value) {  this._subtitle.Set(p_value); }
@@ -31,31 +31,31 @@ class TPLFacadeTitles extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.New(`div`, { class: UI_ID.ICON }), __icon);
-        this._Add(u.dom.New(`span`, { class: UI_ID.TITLE }), __title);
-        this._Add(u.dom.New(`span`, { class: UI_ID.SUBTITLE }), __subtitle);
+        this._Add(u.dom.New(`div`, { class: IDS.ICON }), __icon);
+        this._Add(u.dom.New(`span`, { class: IDS.TITLE }), __title);
+        this._Add(u.dom.New(`span`, { class: IDS.SUBTITLE }), __subtitle);
     }
 
     Render(p_host, p_options = null) {
         let owner = super.Render(p_host, p_options),
-            iconOpts = u.tils.Get(p_options, UI_ID.ICON, null),
-            titleOpts = u.tils.Get(p_options, UI_ID.TITLE, null),
-            subtitleOpts = u.tils.Get(p_options, UI_ID.SUBTITLE, null),
+            iconOpts = u.tils.Get(p_options, IDS.ICON, null),
+            titleOpts = u.tils.Get(p_options, IDS.TITLE, null),
+            subtitleOpts = u.tils.Get(p_options, IDS.SUBTITLE, null),
             icon = owner[__icon] = new manipulators.Icon(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
             title = owner[__title] = new manipulators.Text(owner[__title], titleOpts && `autoHide` in titleOpts ? titleOpts.autoHide : false),
             subtitle = owner[__subtitle] = new manipulators.Text(owner[__subtitle], subtitleOpts && `autoHide` in subtitleOpts ? subtitleOpts.autoHide : false);
 
         if (iconOpts) { 
             icon.Set(iconOpts); 
-            if(iconOpts[UI_ID.CSS_CL]){ icon.element.classList.add(iconOpts[UI_ID.CSS_CL]); }
+            if(iconOpts[IDS.CSS_CL]){ icon.element.classList.add(iconOpts[IDS.CSS_CL]); }
         }
         if (titleOpts) { 
             title.Set(titleOpts); 
-            if(titleOpts[UI_ID.CSS_CL]){ title.element.classList.add(titleOpts[UI_ID.CSS_CL]); }
+            if(titleOpts[IDS.CSS_CL]){ title.element.classList.add(titleOpts[IDS.CSS_CL]); }
         }
         if (subtitleOpts) { 
             subtitle.Set(subtitleOpts); 
-            if(subtitleOpts[UI_ID.CSS_CL]){ subtitle.element.classList.add(subtitleOpts[UI_ID.CSS_CL]); }
+            if(subtitleOpts[IDS.CSS_CL]){ subtitle.element.classList.add(subtitleOpts[IDS.CSS_CL]); }
         }
 
         return owner;

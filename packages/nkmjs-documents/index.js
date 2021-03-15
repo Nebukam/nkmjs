@@ -3,8 +3,9 @@
 module.exports = {
     
     DOCUMENTS: require(`./lib/documents-manager`),
-    Document: require(`./lib/document`),
+    CONTEXT: require(`./lib/context`),
 
+    Document: require(`./lib/document`),
     MetaDocument: require(`./lib/documents/document-meta`)
 }
 

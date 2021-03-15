@@ -22,7 +22,7 @@ Then the order of a and b remains unchanged.
  * @hideconstructor
  * @memberof data.core.catalog
  */
-class CATALOG_SORTING {
+class SORTING {
     constructor() { }
 
     /**
@@ -118,9 +118,9 @@ class CATALOG_SORTING {
     static SortByOption(p_catalog, p_optionId, p_method) {
         _optionID = p_optionId;
         _compareMethod = p_method;
-        p_catalog._items.sort(CATALOG_SORTING.OPTION);
+        p_catalog._items.sort(SORTING.OPTION);
     }
 
 }
 
-module.exports = CATALOG_SORTING;
+module.exports = SORTING;

@@ -6,7 +6,7 @@
  * @hideconstructor
  * @memberof data.core
  */
-class DATA_ID {
+class IDS {
     constructor() { }
 
     /**
@@ -25,4 +25,4 @@ class DATA_ID {
 
 }
 
-module.exports = DATA_ID;
+module.exports = IDS;

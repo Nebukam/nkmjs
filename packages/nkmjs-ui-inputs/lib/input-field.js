@@ -1,9 +1,9 @@
 //implement this : https://javascript.info/events-change-input
 
 const u = require("@nkmjs/utils");
-const { NFOS, COMMON_FLAG } = require("@nkmjs/common");
+const com = require("@nkmjs/common");
 const { CSS } = require("@nkmjs/style");
-const { UI, INPUT, KEYBOARD } = require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const INPUT_SIGNAL = require(`./input-signal`);
 const InputBase = require(`./input-base`);
@@ -11,7 +11,7 @@ const InputBase = require(`./input-base`);
 class InputField extends InputBase {
     constructor() { super(); }
 
-    static __NFO__ = NFOS.Ext({
+    static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/field.css`]
     }, InputBase, ['css']);
 
@@ -78,18 +78,18 @@ class InputField extends InputBase {
     }
 
     _FOut(p_evt) {
-        if (INPUT.shift) { return; }
+        if (ui.INPUT.shift) { return; }
 
         if (p_evt) { p_evt.preventDefault(); }
         this._inputField.blur();
     }
 
     _onFocusIn(p_evt) {
-        INPUT.ONKeyDown(KEYBOARD._enter, this._FOut);
+        ui.INPUT.ONKeyDown(ui.KEYBOARD._enter, this._FOut);
     }
 
     _onFocusOut(p_evt) {
-        INPUT.OFFKeyDown(KEYBOARD._enter, this._FOut);
+        ui.INPUT.OFFKeyDown(ui.KEYBOARD._enter, this._FOut);
         this.SubmitValue();
         //this.SoftReset();
     }
@@ -101,4 +101,4 @@ class InputField extends InputBase {
 }
 
 module.exports = InputField;
-UI.Register(`nkmjs-input-field`, InputField);
+ui.Register(`nkmjs-input-field`, InputField);

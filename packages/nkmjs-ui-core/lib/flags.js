@@ -1,6 +1,6 @@
 'use strict';
 
-const com = require("@nkmjs/common"); //{ COMMON_FLAG }
+const com = require("@nkmjs/common");
 
 /**
  * @description TODO
@@ -8,7 +8,7 @@ const com = require("@nkmjs/common"); //{ COMMON_FLAG }
  * @hideconstructor
  * @memberof ui.core
  */
-class UI_FLAG {
+class FLAGS {
     constructor() { }
 
     // Generics
@@ -437,7 +437,7 @@ class UI_FLAG {
      * @type {string}
      * @customtag read-only
      * @group Flavors
-     * @groupdescription Flavors are mostly taken from {@link common.COMMON_FLAG}.
+     * @groupdescription Flavors are mostly taken from {@link common.FLAGS}.
      */
     static CTA = `cta`;
 
@@ -448,9 +448,9 @@ class UI_FLAG {
      * @group Flavors
      */
     static flavors = [
-        com.COMMON_FLAG.INFOS,
-        com.COMMON_FLAG.WARNING,
-        com.COMMON_FLAG.ERROR,
+        com.FLAGS.INFOS,
+        com.FLAGS.WARNING,
+        com.FLAGS.ERROR,
         this.CTA
     ];
 
@@ -461,15 +461,15 @@ class UI_FLAG {
      * @group Flavors
      */
     static flavorsExtended = [
-        com.COMMON_FLAG.INFOS,
-        com.COMMON_FLAG.WARNING,
-        com.COMMON_FLAG.ERROR,
-        com.COMMON_FLAG.READY,
-        com.COMMON_FLAG.DIRTY,
-        com.COMMON_FLAG.LOADING,
-        com.COMMON_FLAG.PROCESSING,
-        com.COMMON_FLAG.WAITING,
-        com.COMMON_FLAG.active,
+        com.FLAGS.INFOS,
+        com.FLAGS.WARNING,
+        com.FLAGS.ERROR,
+        com.FLAGS.READY,
+        com.FLAGS.DIRTY,
+        com.FLAGS.LOADING,
+        com.FLAGS.PROCESSING,
+        com.FLAGS.WAITING,
+        com.FLAGS.active,
         this.CTA
     ];
 
@@ -546,4 +546,4 @@ class UI_FLAG {
 
 }
 
-module.exports = UI_FLAG;
+module.exports = FLAGS;
