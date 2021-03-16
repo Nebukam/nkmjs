@@ -64,8 +64,9 @@ class EntryManager extends EcosystemPart {
         let newLibrary = com.Rent(DataLibrary);
         newLibrary.model = p_model;
 
-        newLibrary.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
-        newLibrary.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
+        newLibrary
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
 
         this._libraries.Add(newLibrary);
         this._librariesMap.Set(id, newLibrary);
@@ -86,8 +87,9 @@ class EntryManager extends EcosystemPart {
 
         let library = this._librariesMap.Get(id);
 
-        newLibrary.Unwatch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
-        newLibrary.Unwatch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
+        newLibrary
+            .Unwatch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this)
+            .Unwatch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
 
         this._libraries.Remove(library);
         this._librariesMap.Remove(library);
@@ -270,7 +272,7 @@ class EntryManager extends EcosystemPart {
 
         let entryMap = this._entryCatalogMap,
             cItem = entryMap.Get(p_entry);
-            
+
         if (cItem) {
             entryMap.Remove(p_entry);
             cItem.Release();

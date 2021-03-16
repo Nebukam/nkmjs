@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 const axios = require('axios');
 
 const IOProcess = require(`../io-process`);
@@ -28,7 +28,7 @@ class StoragePromiseIOReader extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        ENV.FEATURES.storageArea.local.get(this._operation.fullPath)
+        env.ENV.FEATURES.storageArea.local.get(this._operation.fullPath)
             .then(this._OnStorageRead)
             .catct(this._OnStorageReadError);
 

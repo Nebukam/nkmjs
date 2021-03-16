@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 const data = require(`@nkmjs/data-core`);
 const io = require(`@nkmjs/io-core`);
 
@@ -26,7 +26,7 @@ class MetaDocument extends Document{
 
     _CheckOptions( p_options = null ){
         p_options = p_options ? p_options : {};
-        p_options.io = ENV.IF_NODE(io.IO_TYPE.FILE_SYSTEM, io.IO_TYPE.LOCAL_STORAGE);
+        p_options.io = env.ENV.IF_NODE(io.IO_TYPE.FILE_SYSTEM, io.IO_TYPE.LOCAL_STORAGE);
         return p_options;
     }
 

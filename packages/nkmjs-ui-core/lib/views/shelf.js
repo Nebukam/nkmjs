@@ -57,8 +57,9 @@ class Shelf extends View {
         this._placeholderView = null;
 
         this._catalogViewBuilder = new CatalogViewBuilder();
-        this._catalogViewBuilder.Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-        this._catalogViewBuilder.Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+        this._catalogViewBuilder
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
         this._navClass = ShelfNav;
         this._nav = null;
@@ -379,11 +380,11 @@ class Shelf extends View {
         let oldValue = this._currentHandle;
         this._currentHandle = p_value;
 
-        if (oldValue) { 
-            oldValue.Select(false); 
+        if (oldValue) {
+            oldValue.Select(false);
             oldValue._flags.Set(FLAGS.TOGGLED, false);
         }
-        if (this._currentHandle) { 
+        if (this._currentHandle) {
             this._currentHandle.Select(true);
             this._currentHandle._flags.Set(FLAGS.TOGGLED, true);
         }

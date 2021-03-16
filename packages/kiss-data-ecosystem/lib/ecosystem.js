@@ -30,20 +30,23 @@ class Ecosystem extends data.DataBlock {
 
         let fields = com.Rent(FieldManager);
         fields.ecosystem = this;
-        fields.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
-        fields.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
+        fields
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
         this._fields = fields;
 
         let models = com.Rent(ModelManager);
         models.ecosystem = this;
-        models.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this);
-        models.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
+        models
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
         this._models = models;
 
         let entries = com.Rent(EntryManager);
         entries.ecosystem = this;
-        entries.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this);
-        entries.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
+        entries
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnEntryRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnEntryUnregistered, this);
         this._entries = entries;
 
         this._catalog = new data.catalogs.Catalog();
@@ -98,16 +101,19 @@ class Ecosystem extends data.DataBlock {
     // ---->
 
     _OnEntityRegistered(p_entity) {
-        p_entity.Watch(data.SIGNAL.DIRTY, this._OnEntityDirty, this);
-        p_entity.Watch(data.SIGNAL.DIRTY_CLEARED, this._OnEntityCleaned, this);
+        p_entity
+            .Watch(data.SIGNAL.DIRTY, this._OnEntityDirty, this)
+            .Watch(data.SIGNAL.DIRTY_CLEARED, this._OnEntityCleaned, this);
+
         if (p_entity.isDirty) {
             this._OnEntityDirty(p_entity);
         }
     }
 
     _OnEntityUnregistered(p_entity) {
-        p_entity.Unwatch(data.SIGNAL.DIRTY, this._OnEntityDirty, this);
-        p_entity.Unwatch(data.SIGNAL.DIRTY_CLEARED, this._OnEntityCleaned, this);
+        p_entity
+            .Unwatch(data.SIGNAL.DIRTY, this._OnEntityDirty, this)
+            .Unwatch(data.SIGNAL.DIRTY_CLEARED, this._OnEntityCleaned, this);
     }
 
     _OnEntityDirty(p_entity) {

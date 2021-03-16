@@ -98,15 +98,17 @@ class Manipulator {
 
         let oldContent = this._content;
         if (oldContent && u.tils.isInstanceOf(oldContent, com.pool.DisposableObjectEx)) {
-            oldContent.Unwatch(com.SIGNAL.UPDATED, this._OnContentUpdate, this);
-            oldContent.Unwatch(com.SIGNAL.RENAMED, this._OnContentUpdate, this);
-            oldContent.Unwatch(com.SIGNAL.RELEASED, this._OnContentReleased, this);
+            oldContent
+                .Unwatch(com.SIGNAL.UPDATED, this._OnContentUpdate, this)
+                .Unwatch(com.SIGNAL.RENAMED, this._OnContentUpdate, this)
+                .Unwatch(com.SIGNAL.RELEASED, this._OnContentReleased, this);
         }
         if (p_value && u.tils.isInstanceOf(this._content, com.pool.DisposableObjectEx)) {
             this._content = p_value;
-            this._content.Watch(com.SIGNAL.UPDATED, this._OnContentUpdate, this);
-            this._content.Watch(com.SIGNAL.RENAMED, this._OnContentUpdate, this);
-            this._content.Watch(com.SIGNAL.RELEASED, this._OnContentReleased, this);
+            this._content
+                .Watch(com.SIGNAL.UPDATED, this._OnContentUpdate, this)
+                .Watch(com.SIGNAL.RENAMED, this._OnContentUpdate, this)
+                .Watch(com.SIGNAL.RELEASED, this._OnContentReleased, this);
         } else {
             this._content = null;
         }

@@ -13,7 +13,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { ENV, ENV_SIGNAL, ENV_DISPLAY } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 const actions = require("@nkmjs/actions");
 const io = require(`@nkmjs/io-core`);
 const { STYLE } = require(`@nkmjs/style`);
@@ -71,11 +71,11 @@ class AppBase extends com.helpers.SingletonEx {
         ];
 
 
-        ENV.FEATURES.Watch(ENV_SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
-        ENV.Watch(ENV_SIGNAL.PWA_UPDATE_AVAILABLE, this._OnPWAUpdateAvailable, this);
+        env.ENV.FEATURES.Watch(env.SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
+        env.ENV.Watch(env.SIGNAL.PWA_UPDATE_AVAILABLE, this._OnPWAUpdateAvailable, this);
 
         this._loadingOverlay = document.getElementById(`__loading__`);
-        if (this._loadingOverlay && ENV.ARGV.Has(`no-loading`)) {
+        if (this._loadingOverlay && env.ENV.ARGV.Has(`no-loading`)) {
             u.dom.Detach(this._loadingOverlay);
         }
 
@@ -87,7 +87,7 @@ class AppBase extends com.helpers.SingletonEx {
     _PostInit() {
         super._PostInit();
 
-        ENV.instance.RegisterServices(
+        env.ENV.instance.RegisterServices(
             actions.RELAY,
             io.RESOURCES,
             DIALOG
@@ -121,14 +121,14 @@ class AppBase extends com.helpers.SingletonEx {
 
         u.LOG._(`${this._APPID} : SETUP`, `#339a6e`, `#212121`);
 
-        if (ENV.FEATURES.isNodeEnabled) { this._RegisterIPCBindings(); }
+        if (env.ENV.FEATURES.isNodeEnabled) { this._RegisterIPCBindings(); }
 
         // ----> At that point, the Service Manager has started.
         // Initialize and start critical services.
 
         // TODO : Move what's below AFTER App Start.
 
-        STYLE.instance.defaultPalette._themeId = (ENV.instance.config.theme || `default`);
+        STYLE.instance.defaultPalette._themeId = (env.ENV.instance.config.theme || `default`);
 
         this._mainWrapper = ui.UI.Rent(this._mainWrapperClass);
         this._mainWrapper.setAttribute(`id`, `app`);
@@ -161,7 +161,7 @@ class AppBase extends com.helpers.SingletonEx {
     _OnPWAUpdateAvailable(){
 
         let msg = ``;
-        if(ENV.FEATURES.displayMode != ENV_DISPLAY.STANDALONE){
+        if(env.ENV.FEATURES.displayMode != env.ENV_DISPLAY.STANDALONE){
             msg = `An update is available, please refresh the page to apply it.`;
         }else{
             msg = `An update is available, please close & re-open the app to apply it.`;
@@ -183,7 +183,7 @@ class AppBase extends com.helpers.SingletonEx {
      * readyState === complete, after SetUp has been called.
      */
     _InternalStart() {
-        if (ENV.ARGV.Has(`no-start`)) { return; }
+        if (env.ENV.ARGV.Has(`no-start`)) { return; }
         this.Start();
         //setTimeout(this._Bind(this.Start), 1000);
     }
@@ -214,7 +214,7 @@ class AppBase extends com.helpers.SingletonEx {
         // Load base kits... ?
         //this._LoadBaseKits();
 
-        if (ENV.FEATURES.isNodeEnabled) {
+        if (env.ENV.FEATURES.isNodeEnabled) {
             if (false) {//Check if auto-updates are enabled
                 DIALOG.Push({ dialogClass: AutoUpdateDialogBox });
             }

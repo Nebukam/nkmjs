@@ -6,6 +6,6 @@ module.exports = {
     Drag: require(`./ext-drag`),
     Drop: require(`./ext-drop`),
     Expand: require(`./ext-expand`),
-    Mouse: require(`./ext-mouse`),
-    MouseMove: require(`./ext-mouse-move`),
+    Pointer: require(`./ext-pointer`),
+    PointerMove: require(`./ext-pointer-move`),
 }

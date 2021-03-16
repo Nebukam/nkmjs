@@ -21,8 +21,9 @@ class ModelManager extends EcosystemPart {
         this._factory = new data.DataFactory();
         this._factory.itemClass = Model;
 
-        this._factory.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this);
-        this._factory.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
+        this._factory
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
 
         this._catMap = new Dictionary();
 

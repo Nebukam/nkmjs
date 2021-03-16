@@ -5,14 +5,15 @@ class DialogHandler extends ui.overlays.OverlayHandler {
     constructor() { super(); }
 
     _Init() {
-        
+
         super._Init();
         this._RegisterLocalRequestHandler(actions.ACTION_REQUEST.DIALOG, this.HandleOverlayRequest);
 
-        actions.RELAY.Watch(ui.REQUEST.OVERLAY, this.HandleOverlayRequest, this);
-        actions.RELAY.Watch(ui.REQUEST.DRAWER, this.HandleOverlayRequest, this);
-        actions.RELAY.Watch(actions.ACTION_REQUEST.DIALOG, this.HandleOverlayRequest, this);
-        
+        actions.RELAY
+            .Watch(ui.REQUEST.OVERLAY, this.HandleOverlayRequest, this)
+            .Watch(ui.REQUEST.DRAWER, this.HandleOverlayRequest, this)
+            .Watch(actions.ACTION_REQUEST.DIALOG, this.HandleOverlayRequest, this);
+
     }
 
 }

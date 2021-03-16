@@ -61,11 +61,11 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
         this._stack.Add(p_item);
 
-        p_item.Watch(SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this);
-        p_item.Watch(SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this);
-        p_item.Watch(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this);
-
-        p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
+        p_item
+            .Watch(SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this)
+            .Watch(SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this)
+            .Watch(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this)
+            .Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         p_item.Select(true);
         this._Broadcast(com.SIGNAL.ITEM_ADDED, p_item);
@@ -82,11 +82,11 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         if (this._stack.Remove(p_item)) {
             p_item.Select(false);
 
-            p_item.Unwatch(SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this);
-            p_item.Unwatch(SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this);
-            p_item.Unwatch(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this);
-
-            p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
+            p_item
+                .Unwatch(SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this)
+                .Unwatch(SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this)
+                .Unwatch(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this)
+                .Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
             this._Broadcast(com.SIGNAL.ITEM_REMOVED, p_item);
         }

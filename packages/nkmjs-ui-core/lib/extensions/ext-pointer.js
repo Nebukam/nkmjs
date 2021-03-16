@@ -13,7 +13,7 @@ const Extension = require(`./extension`);
  * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
-class MouseExtension extends Extension {
+class PointerExtension extends Extension {
 
     /**
      * 
@@ -302,4 +302,4 @@ class MouseExtension extends Extension {
 
 }
 
-module.exports = MouseExtension;
+module.exports = PointerExtension;

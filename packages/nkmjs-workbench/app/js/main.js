@@ -13,6 +13,7 @@ const ui = nkm.ui;
 const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
 const TestWidget = require(`./test-widget`);
+const FeaturesWidget = require("./features-widget");
 
 
 
@@ -173,6 +174,9 @@ class StyleguideApp extends nkm.app.AppBase {
         for (let i = keys.length - 1; i >= 0; i--) {
             let key = keys[i];
             if (this._ignore.includes(key)) { continue; }
+            if(i === 0){
+                this._mainContainer.Handle(`Features`, FeaturesWidget);    
+            }
             let cl = ui.UI.instance._uiTypes.Get(key);
             this._mainContainer.Handle(cl, key);
         }

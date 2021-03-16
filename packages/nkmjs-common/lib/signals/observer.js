@@ -71,6 +71,7 @@ class Observer extends DisposableObjectEx {
                 this._targets[i].Watch(p_evt, p_fn, p_subscriber);
             }
         }
+        return this;
     }
 
     /**
@@ -94,6 +95,7 @@ class Observer extends DisposableObjectEx {
                 }
             }
         }
+        return this;
     }
 
     /**

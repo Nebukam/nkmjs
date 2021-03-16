@@ -4,7 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const { Dictionary } = require(`@nkmjs/collections`);
 const { ServiceBase } = require(`@nkmjs/services`);
-const { ENV } = require("@nkmjs/environment");
+const env = require("@nkmjs/environment");
 
 const IO_SIGNAL = require(`./io-signal`);
 const ENCODING = require(`./encoding`);
@@ -50,8 +50,8 @@ class RESOURCES extends ServiceBase {
             delete: ioprocesses.HTTPIODelete
         };
 
-        if (ENV.FEATURES.isExtension) {
-            if (ENV.FEATURES.isChromium) {
+        if (env.ENV.FEATURES.isExtension) {
+            if (env.ENV.FEATURES.isChromium) {
                 this._io[IO_TYPE.LOCAL_STORAGE] = {
                     read: ioprocesses.StorageIOReader,
                     write: ioprocesses.StorageIOWriter,

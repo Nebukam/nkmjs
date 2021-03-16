@@ -34,9 +34,9 @@ class CatalogWidget extends Widget {
         this._flavorEnum = new FlagEnum(FLAGS.flavors, true);
         this._flavorEnum.Add(this);
 
-        this._interactions.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));
+        this._pointer.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));
 
-        this._extDrag = this._interactions.Add(extensions.Drag);
+        this._extDrag = this._pointer.Add(extensions.Drag);
         this._extDrag.grabDataCallback = this._Bind(this._GrabDragData);
 
         this._dragActivator = null;

@@ -75,9 +75,10 @@ class IDDispenser extends com.pool.DisposableObjectEx {
         this._idMap.Set(p_string, newID);
         this._idList.Add(newID);
 
-        newID.Watch(com.SIGNAL.RENAMING, this._OnIDRenaming, this);
-        newID.Watch(com.SIGNAL.RENAMED, this._OnIDRenamed, this);
-        newID.Watch(com.SIGNAL.RELEASED, this._OnIDReleased, this);
+        newID
+            .Watch(com.SIGNAL.RENAMING, this._OnIDRenaming, this)
+            .Watch(com.SIGNAL.RENAMED, this._OnIDRenamed, this)
+            .Watch(com.SIGNAL.RELEASED, this._OnIDReleased, this);
 
         return newID;
 

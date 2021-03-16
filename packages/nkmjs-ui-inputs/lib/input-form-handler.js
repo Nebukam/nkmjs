@@ -42,9 +42,10 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
             this._Broadcast(INPUT_SIGNAL.FORM_READY, this);
         }
 
-        p_input.Watch(INPUT_SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this);
-        p_input.Watch(INPUT_SIGNAL.VALUE_CHANGED, this._OnInputChanged, this);
-        p_input.Watch(INPUT_SIGNAL.INPUT_ERROR, this._OnInputError, this);
+        p_input
+            .Watch(INPUT_SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
+            .Watch(INPUT_SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
+            .Watch(INPUT_SIGNAL.INPUT_ERROR, this._OnInputError, this);
 
     }
 
@@ -54,9 +55,10 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
 
         delete this._inputValues[p_input.inputId];
 
-        p_input.Unwatch(INPUT_SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this);
-        p_input.Unwatch(INPUT_SIGNAL.VALUE_CHANGED, this._OnInputChanged, this);
-        p_input.Unwatch(INPUT_SIGNAL.INPUT_ERROR, this._OnInputError, this);
+        p_input
+            .Unwatch(INPUT_SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
+            .Unwatch(INPUT_SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
+            .Unwatch(INPUT_SIGNAL.INPUT_ERROR, this._OnInputError, this);
 
     }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 
 const IOProcess = require(`../io-process`);
 
@@ -53,7 +53,7 @@ class StoragePromiseIORename extends IOProcess {
 
         this._oldPath = this._operation.fullPath;
 
-        ENV.FEATURES.storageArea.local.get(this._targetPath)
+        env.ENV.FEATURES.storageArea.local.get(this._targetPath)
             .then(this._OnRenameExistsCheck)
             .catch(this._OnRenameExistsCheckError);
 
@@ -74,7 +74,7 @@ class StoragePromiseIORename extends IOProcess {
         let data = p_results[this._oldPath];
         if (u.tils.isVoid(data)) {
             // Data do not exists !
-            let storage = ENV.FEATURES.storageArea, dataCopy = {};
+            let storage = env.ENV.FEATURES.storageArea, dataCopy = {};
             dataCopy[this._targetPath] = data;
             storage.local.set(dataCopy, this._OnRenameStorageWritten);
         } else {

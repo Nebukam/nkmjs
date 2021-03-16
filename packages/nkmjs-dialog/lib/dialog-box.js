@@ -18,14 +18,15 @@ class DialogBox extends ui.Widget {
      * @description TODO
      * @type {string}
      */
-     static __default_flavor = null;
+    static __default_flavor = null;
 
     _Init() {
         super._Init();
 
         this._formHandler = new InputFormHandler();
-        this._formHandler.Watch(INPUT_SIGNAL.FORM_INVALID, this._OnFormInvalid, this);
-        this._formHandler.Watch(INPUT_SIGNAL.FORM_READY, this._OnFormReady, this);
+        this._formHandler
+            .Watch(INPUT_SIGNAL.FORM_INVALID, this._OnFormInvalid, this)
+            .Watch(INPUT_SIGNAL.FORM_READY, this._OnFormReady, this);
 
         this._header = null;
         this._body = null;
@@ -71,15 +72,15 @@ class DialogBox extends ui.Widget {
      * @customtag write-only
      * @group Styling
      */
-     set flavor(p_value) { this._flavorEnum.Set(p_value); }
+    set flavor(p_value) { this._flavorEnum.Set(p_value); }
 
-     /**
-      * @description TODO
-      * @type {ui.core.helpers.FlagEnum}
-      * @customtag read-only
-      * @group Styling
-      */
-     get flavor() { return this._flavorEnum.currentFlag; }
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.FlagEnum}
+     * @customtag read-only
+     * @group Styling
+     */
+    get flavor() { return this._flavorEnum.currentFlag; }
 
     _Style() {
 

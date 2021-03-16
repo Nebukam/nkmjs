@@ -1,6 +1,6 @@
 'use strict';
 
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 
 const IOProcess = require(`../io-process`);
 
@@ -26,7 +26,7 @@ class StoragePromiseIOWriter extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        ENV.FEATURES.storageArea.local.set({ [this._operation.fullPath]: this.rsc.raw })
+        env.ENV.FEATURES.storageArea.local.set({ [this._operation.fullPath]: this.rsc.raw })
             .then(this._OnStorageWritten)
             .catch(this._OnStorageWrittenError);
 

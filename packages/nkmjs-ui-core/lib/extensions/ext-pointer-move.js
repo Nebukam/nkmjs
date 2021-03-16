@@ -9,7 +9,7 @@ const Extension = require("./extension");
  * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
-class MouseMoveExtension extends Extension {
+class PointerMoveExtension extends Extension {
 
     /**
      * 
@@ -168,4 +168,4 @@ class MouseMoveExtension extends Extension {
 
 }
 
-module.exports = MouseMoveExtension;
+module.exports = PointerMoveExtension;

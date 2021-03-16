@@ -24,8 +24,9 @@ class Workspace extends ui.views.View {
         this._cells = new List();
 
         this._catalogHandler = new data.catalogs.CatalogHandler();
-        this._catalogHandler.Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-        this._catalogHandler.Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+        this._catalogHandler
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
     }
 
@@ -136,7 +137,7 @@ class Workspace extends ui.views.View {
         let view = null,
             viewType = p_item.GetOption(`viewType`, null),
             dataHolders = localCatalog.FindDataHolders(p_item.data);
-            
+
         for (let i = 0, n = dataHolders.length; i < n; i++) {
             let view = dataHolders[i].GetOption(`viewType`, null);
             if (view && u.tils.isInstanceOf(view, viewType)) {

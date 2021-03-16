@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 const { CSS } = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
@@ -22,9 +22,9 @@ class Tab extends ui.CatalogWidget {
 
         this._Bind(this._CloseRequest);
 
-        this._closeBtn = this._interactions.Add(ui.extensions.Mouse);
+        this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
         this._closeBtn.Hook(ui.MOUSE.BTN_LEFT, ui.MOUSE.RELEASE, this._CloseRequest);
-        this._interactions.Hook(ui.MOUSE.BTN_MIDDLE, ui.MOUSE.RELEASE, this._CloseRequest);
+        this._pointer.Hook(ui.MOUSE.BTN_MIDDLE, ui.MOUSE.RELEASE, this._CloseRequest);
 
     }
 
@@ -79,7 +79,7 @@ class Tab extends ui.CatalogWidget {
             closeIcon: { htitle: `Close` }
         });
 
-        if (!ENV.FEATURES.isTouchEnabled) {
+        if (!env.ENV.FEATURES.isTouchEnabled) {
             this._closeIcon.element.style.opacity = 0;
         }
 
@@ -97,13 +97,13 @@ class Tab extends ui.CatalogWidget {
     //
 
     _HighlightGain() {
-        if (!ENV.FEATURES.isTouchEnabled) {
+        if (!env.ENV.FEATURES.isTouchEnabled) {
             this._closeIcon.element.style.removeProperty(`opacity`);
         }
     }
 
     _HighlightLost() {
-        if (!ENV.FEATURES.isTouchEnabled) {
+        if (!env.ENV.FEATURES.isTouchEnabled) {
             this._closeIcon.element.style.opacity = 0;
         }
     }

@@ -26,8 +26,9 @@ class DataFactory extends com.pool.DisposableObjectEx {
         this._tempItemList = new List(0);
 
         this._itemRep = new Repertoire();
-        this._itemRep.Watch(SIGNAL.ITEM_REGISTERED, this._OnItemRegistered, this);
-        this._itemRep.Watch(SIGNAL.ITEM_UNREGISTERED, this._OnItemUnregistered, this);
+        this._itemRep
+            .Watch(SIGNAL.ITEM_REGISTERED, this._OnItemRegistered, this)
+            .Watch(SIGNAL.ITEM_UNREGISTERED, this._OnItemUnregistered, this);
 
         this._itemClass = null;
 

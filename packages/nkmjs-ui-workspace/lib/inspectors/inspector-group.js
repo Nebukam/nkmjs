@@ -12,8 +12,9 @@ class InspectorGroup extends InspectorItem {
 
         this._extExpand = new ui.extensions.Expand();
         this._extExpand._isExpanded = false;
-        this._extExpand.Watch(ui.SIGNAL.EXPANDED, this._Expand, this);
-        this._extExpand.Watch(ui.SIGNAL.COLLAPSED, this._Collapse, this);
+        this._extExpand
+            .Watch(ui.SIGNAL.EXPANDED, this._Expand, this)
+            .Watch(ui.SIGNAL.COLLAPSED, this._Collapse, this);
 
         this._header = null;
         this._expandOnHeaderAltActivation = u.tils.Default(this._expandOnHeaderAltActivation, true);
@@ -31,7 +32,7 @@ class InspectorGroup extends InspectorItem {
         this._staticContent = true; //Always build controllers
         this._alwaysExpanded = false; //Keep group expanded after release (static content only)
 
-        this._interactions.Hook(ui.MOUSE.BTN_LEFT, ui.MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));
+        this._pointer.Hook(ui.MOUSE.BTN_LEFT, ui.MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));
 
     }
 

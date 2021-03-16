@@ -35,7 +35,7 @@ class Toolbar extends OrientableWidget {
     static __stretchENUMs = [_flag_STRETCH, _flag_STRETCH_SAME];
 
     // ----> Init
-    
+
     static __default_size = FLAGS.SIZE_M;
 
     _Init() {
@@ -61,7 +61,7 @@ class Toolbar extends OrientableWidget {
 
     }
 
-    _PostInit(){
+    _PostInit() {
         super._PostInit();
         this._sizeEnum.Set(this.constructor.__default_size);
     }
@@ -92,7 +92,7 @@ class Toolbar extends OrientableWidget {
                 'justify-content': `flex-start`,
                 'align-items': `center`
             },
-            
+
             ':host(.vertical)': { 'flex-flow': `column nowrap` },
             ':host(.horizontal)': { 'flex-flow': `row nowrap` },
 
@@ -108,8 +108,8 @@ class Toolbar extends OrientableWidget {
             '.item': {
                 'position': `relative`,
                 'flex': `0 0 auto`,
-                'min-width':'0',
-                'min-height':'0',
+                'min-width': '0',
+                'min-height': '0',
             },
             ':host(.stretch), :host(.stretch-same)': {
                 'align-items': `stretch`,
@@ -126,7 +126,7 @@ class Toolbar extends OrientableWidget {
     _Render() {
         this.focusArea = this;
     }
-    
+
     _OnSizeChanged(p_newValue, p_oldValue) {
         this._sizeEnum.Apply(`size`, this._handles);
     }
@@ -136,7 +136,7 @@ class Toolbar extends OrientableWidget {
     _OnPlacementChanged(p_newValue, p_oldValue) {
         super._OnPlacementChanged(p_newValue, p_oldValue);
         // Update items placement based on this nav placement
-        for(let i = 0, n = this._handles.length; i < n; i++){
+        for (let i = 0, n = this._handles.length; i < n; i++) {
             let handle = this._handles[i];
             if (`placement` in handle) { handle.placement = p_newValue; }
         }
@@ -161,8 +161,9 @@ class Toolbar extends OrientableWidget {
             group.handles.push(handle);
 
             if (toggle) {
-                handle.Watch(SIGNAL.ACTIVATED, this._OnRadioActivated, this);
-                handle.Watch(SIGNAL.DEACTIVATED, this._OnRadioDeactivated, this);
+                handle
+                    .Watch(SIGNAL.ACTIVATED, this._OnRadioActivated, this)
+                    .Watch(SIGNAL.DEACTIVATED, this._OnRadioDeactivated, this);
             }
 
         } else {
@@ -179,7 +180,7 @@ class Toolbar extends OrientableWidget {
 
         handle.flags.Set(this._orientation, true);
         if (`placement` in handle) { handle.placement = this._placement.currentFlag; }
-        
+
         this._handles.push(handle);
 
         return handle;

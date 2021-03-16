@@ -58,9 +58,10 @@ class Model extends DerivableDataBlock {
         this._entryCreationAllowed = true;
 
         this._fieldRep = new data.Repertoire();
-        this._fieldRep.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
-        this._fieldRep.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
-        this._fieldRep.Watch(com.SIGNAL.RENAMED, this._OnFieldRenamed, this);
+        this._fieldRep
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this)
+            .Watch(com.SIGNAL.RENAMED, this._OnFieldRenamed, this);
 
         this._baseObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnBaseFieldAdded, this);
         this._baseObserver.Hook(FIELD_EVENT.FIELD_REMOVED, this._OnBaseFieldRemoved, this);
@@ -289,7 +290,7 @@ class Model extends DerivableDataBlock {
     _UpdateLocalFieldIndexes(p_commitUpdate = false) {
 
         if (p_commitUpdate) {
-            
+
             let list = this.localFieldList.internalArray,
                 updated = false;
 

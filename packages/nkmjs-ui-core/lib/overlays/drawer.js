@@ -44,7 +44,7 @@ class Drawer extends View {
 
         this._Bind(this._CloseRequest);
 
-        this._closeBtn = this._interactions.Add(extensions.Mouse);
+        this._closeBtn = this._pointer.Add(extensions.Pointer);
         this._closeBtn.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._CloseRequest);
 
     }

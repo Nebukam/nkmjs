@@ -97,8 +97,9 @@ class Repertoire extends com.pool.DisposableObjectEx {
 
         let newID = this._idDispenser.Create(p_stringID);
 
-        newID.Watch(com.SIGNAL.RELEASED, this._OnIDReleased, this);
-        newID.Watch(com.SIGNAL.RENAMED, this._OnIDRenamed, this);
+        newID
+            .Watch(com.SIGNAL.RELEASED, this._OnIDReleased, this)
+            .Watch(com.SIGNAL.RENAMED, this._OnIDRenamed, this);
 
         return newID;
 

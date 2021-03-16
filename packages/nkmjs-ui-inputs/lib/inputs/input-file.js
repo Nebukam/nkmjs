@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 const { CSS } = require('@nkmjs/style');
 const ui = require(`@nkmjs/ui-core`);
 
@@ -37,7 +37,7 @@ class InputFile extends InputPath {
     _Render() {
         super._Render();
 
-        if (ENV.FEATURES.isNodeEnabled) {
+        if (env.ENV.FEATURES.isNodeEnabled) {
             this._picker = this.Add(ui.buttons.ToolButton, `input-btn`);
             this._picker.options = {
                 [com.IDS.ICON]: `%ICON%/icon_more.svg`,
@@ -59,7 +59,7 @@ class InputFile extends InputPath {
     }
 
     _Pick() {
-        if (ENV.FEATURES.isNodeEnabled) {
+        if (env.ENV.FEATURES.isNodeEnabled) {
             actions.RELAY.ShowOpenDialog({
                 defaultPath: this._currentValue ? this._currentValue : ``,
                 properties: [this._openType]

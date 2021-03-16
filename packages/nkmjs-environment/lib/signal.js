@@ -6,7 +6,7 @@
  * @hideconstructor
  * @memberof environment
  */
-class ENV_SIGNAL {
+class SIGNAL {
     constructor() { }
 
     /**
@@ -67,4 +67,4 @@ class ENV_SIGNAL {
 
 }
 
-module.exports = ENV_SIGNAL;
+module.exports = SIGNAL;

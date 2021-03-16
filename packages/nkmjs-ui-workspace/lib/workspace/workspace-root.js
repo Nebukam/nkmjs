@@ -28,9 +28,10 @@ class RootWorkspace extends Workspace {
 
         super._PostInit();
 
-        actions.RELAY.Watch(actions.ACTION_REQUEST.EDIT, this._HandleEditRequest, this);
-        actions.RELAY.Watch(actions.ACTION_REQUEST.OPEN, this._HandleOpenRequest, this);
-        actions.RELAY.Watch(actions.ACTION_REQUEST.CREATE, this._HandleCreateRequest, this);
+        actions.RELAY
+            .Watch(actions.ACTION_REQUEST.EDIT, this._HandleEditRequest, this)
+            .Watch(actions.ACTION_REQUEST.OPEN, this._HandleOpenRequest, this)
+            .Watch(actions.ACTION_REQUEST.CREATE, this._HandleCreateRequest, this);
 
         this.catalog = this._rootCatalog;
 

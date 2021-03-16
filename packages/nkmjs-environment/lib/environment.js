@@ -8,7 +8,7 @@ const { List } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const { ServicesManager, ServiceBase } = require(`@nkmjs/services`);
 
-const ENV_SIGNAL = require(`./env-signal`);
+const SIGNAL = require(`./signal`);
 const SW_SIGNAL = require(`./sw-signal`);
 const Features = require(`./helpers/features`);
 const DOM_STATE = require(`./dom-state`);
@@ -68,8 +68,9 @@ class ENV extends com.helpers.SingletonEx {
         super._Init();
 
         this._features = new Features();
-        this._features.Watch(ENV_SIGNAL.ONLINE, this._OnEnvOnline, this);
-        this._features.Watch(ENV_SIGNAL.OFFLINE, this._OnEnvOffline, this);
+        this._features
+            .Watch(SIGNAL.ONLINE, this._OnEnvOnline, this)
+            .Watch(SIGNAL.OFFLINE, this._OnEnvOffline, this);
 
         this._app = null;
         this._config = null;
@@ -80,9 +81,10 @@ class ENV extends com.helpers.SingletonEx {
 
         this._services = new List();
         this._pwaSWHandler = new ServiceWorkerHandler();
-        this._pwaSWHandler.Watch(SW_SIGNAL.SW_READY, this._OnServiceWorkerReady, this);
-        this._pwaSWHandler.Watch(SW_SIGNAL.SW_UPDATE_AVAILABLE, this._OnServiceWorkerUpdateAvailable, this);
-        this._pwaSWHandler.Watch(SW_SIGNAL.SW_REGISTRATION_ERROR, this._OnServiceWorkerRegistrationError, this);
+        this._pwaSWHandler
+            .Watch(SW_SIGNAL.SW_READY, this._OnServiceWorkerReady, this)
+            .Watch(SW_SIGNAL.SW_UPDATE_AVAILABLE, this._OnServiceWorkerUpdateAvailable, this)
+            .Watch(SW_SIGNAL.SW_REGISTRATION_ERROR, this._OnServiceWorkerRegistrationError, this);
 
         this._Bind(this._BootService);
 
@@ -180,7 +182,7 @@ class ENV extends com.helpers.SingletonEx {
         // Register the service worker if available.
         let swPath = u.tils.Get(this._config, `service_worker`, false);
         if (swPath !== false) {
-            if(!this._pwaSWHandler.Register(swPath)){ this._InternalStart(); }
+            if (!this._pwaSWHandler.Register(swPath)) { this._InternalStart(); }
         } else {
             this._InternalStart();
         }
@@ -194,11 +196,11 @@ class ENV extends com.helpers.SingletonEx {
         this._InternalStart();
     }
 
-    _OnServiceWorkerUpdateAvailable(){
-        if(!this._running){
+    _OnServiceWorkerUpdateAvailable() {
+        if (!this._running) {
             this._updateQueued = true; // ENV will call again when running.
-        }else{
-            this._Broadcast(ENV_SIGNAL.PWA_UPDATE_AVAILABLE);
+        } else {
+            this._Broadcast(SIGNAL.PWA_UPDATE_AVAILABLE);
         }
     }
 
@@ -238,7 +240,7 @@ class ENV extends com.helpers.SingletonEx {
         ServicesManager.instance.Boot();
         this._services.ForEach(this._BootService);
 
-        // Only dispatch ENV_SIGNAL.START once the DOM is ready.
+        // Only dispatch SIGNAL.START once the DOM is ready.
         // otherwise _OnStart() will be called in _OnDOMReady
         if (this._features.isBrowser) {
 
@@ -247,7 +249,7 @@ class ENV extends com.helpers.SingletonEx {
                 case DOM_STATE.LOADING:
                 case DOM_STATE.INTERACTIVE:
                     if (this._features.domState == DOM_STATE.INTERACTIVE && this._app) { this._app.SetUp(); }
-                    this._features.Watch(ENV_SIGNAL.DOMSTATE_CHANGED, this._OnDOMStateChanged, this);
+                    this._features.Watch(SIGNAL.DOMSTATE_CHANGED, this._OnDOMStateChanged, this);
                     break;
                 case DOM_STATE.COMPLETE:
                     if (this._app) { this._app.SetUp(); }
@@ -273,7 +275,7 @@ class ENV extends com.helpers.SingletonEx {
                 if (this._app) { this._app.SetUp(); }
                 break;
             case DOM_STATE.COMPLETE:
-                this._features.Unwatch(ENV_SIGNAL.DOMSTATE_CHANGED, this._OnDOMStateChanged, this);
+                this._features.Unwatch(SIGNAL.DOMSTATE_CHANGED, this._OnDOMStateChanged, this);
                 this._OnStart();
                 break;
         }
@@ -287,13 +289,13 @@ class ENV extends com.helpers.SingletonEx {
 
         if (this._running) { return; }
         this._running = true;
-        
+
         if (this._app) { this._app._InternalStart(); }
 
         this._onStart.Notify(this).Clear();
-        this._Broadcast(ENV_SIGNAL.START, this);
+        this._Broadcast(SIGNAL.START, this);
 
-        if(this._updateQueued){ this._OnServiceWorkerUpdateAvailable(); }
+        if (this._updateQueued) { this._OnServiceWorkerUpdateAvailable(); }
 
     }
 
@@ -314,12 +316,12 @@ class ENV extends com.helpers.SingletonEx {
     /**
      * @access private
      */
-    _OnEnvOnline() { this._Broadcast(ENV_SIGNAL.ONLINE); }
+    _OnEnvOnline() { this._Broadcast(SIGNAL.ONLINE); }
 
     /**
      * @access private
      */
-    _OnEnvOffline() { this._Broadcast(ENV_SIGNAL.OFFLINE); }
+    _OnEnvOffline() { this._Broadcast(SIGNAL.OFFLINE); }
 
 }
 

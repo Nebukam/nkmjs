@@ -19,8 +19,9 @@ class FieldManager extends EcosystemPart {
         this._factory = new data.DataFactory();
         this._factory.itemClass = FieldDescriptor;
 
-        this._factory.Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this);
-        this._factory.Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
+        this._factory
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
 
         this._idMap = new Dictionary();
 

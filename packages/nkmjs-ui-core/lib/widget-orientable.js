@@ -70,8 +70,8 @@ class OrientableWidget extends Widget {
      */
     _OnOrientationChanged(p_newValue, p_oldValue) {
         if (this._isHorizontalScrollEnabled) {
-            if (this._orientation.currentFlag === FLAGS.VERTICAL) { this._interactions.wheelFn = null; }
-            else { this._interactions.wheelFn = this._HorizontalScroll; }
+            if (this._orientation.currentFlag === FLAGS.VERTICAL) { this._pointer.wheelFn = null; }
+            else { this._pointer.wheelFn = this._HorizontalScroll; }
         }
     }
 

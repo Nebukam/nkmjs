@@ -55,9 +55,9 @@ class Widget extends DisplayObjectContainer {
 
         this._isActivable = true;
 
-        this._interactions = new extensions.Mouse();
-        this._interactions.focusFn = this._Bind(this.Focus);
-        this._interactions.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._Bind(this.Activate));
+        this._pointer = new extensions.Pointer();
+        this._pointer.focusFn = this._Bind(this.Focus);
+        this._pointer.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._Bind(this.Activate));
 
         this._focusArea = null;
 
@@ -88,7 +88,7 @@ class Widget extends DisplayObjectContainer {
 
     _OnPaintChange() {
         super._OnPaintChange();
-        this._interactions.enabled = this._isPainted;
+        this._pointer.enabled = this._isPainted;
     }
 
     // ----> Placement & Orientation
@@ -103,8 +103,8 @@ class Widget extends DisplayObjectContainer {
      * @type {string}
      * @group Placement & Orientation
      */
-     get placement() { return this._placement; }
-     set placement(p_value) { this._placement.Set(p_value); }
+    get placement() { return this._placement; }
+    set placement(p_value) { this._placement.Set(p_value); }
 
     /**
      * @access protected
@@ -145,7 +145,7 @@ class Widget extends DisplayObjectContainer {
     set focusArea(p_value) {
         if (this._focusArea === p_value) { return; }
         this._focusArea = p_value;
-        this._interactions.element = this._focusArea;
+        this._pointer.element = this._focusArea;
     }
 
     // ----> Selection
@@ -167,8 +167,9 @@ class Widget extends DisplayObjectContainer {
         if (this._selectionStack) { return; }
 
         let sStack = new WidgetSelection();
-        sStack.Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this);
-        sStack.Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
+        sStack
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
 
         this._selectionStack = sStack;
     }

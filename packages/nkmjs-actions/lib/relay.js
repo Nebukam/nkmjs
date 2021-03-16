@@ -6,7 +6,7 @@
 const u = require("@nkmjs/utils");
 const { List } = require(`@nkmjs/collections`);
 const { ServiceBase } = require(`@nkmjs/services`);
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 const { signals } = require("@nkmjs/common");
 
 /**
@@ -41,9 +41,9 @@ class RELAY extends ServiceBase {
     _Init() {
         super._Init();
         this._requests = new List();
-        if (ENV.FEATURES.isExtension) {
+        if (env.ENV.FEATURES.isExtension) {
             this._extIpc = new signals.SignalBox();
-            ENV.FEATURES.runtime.onMessage.addListener(function (request, sender, response) {
+            env.ENV.FEATURES.runtime.onMessage.addListener(function (request, sender, response) {
                 let signal = request.signal,
                     data = request;
                 request.respond = response;
@@ -123,9 +123,9 @@ class RELAY extends ServiceBase {
      * @param {function} p_fn 
      */
     _ipcSend(p_evt, ...args) {
-        if (ENV.FEATURES.isExtension) {
+        if (env.ENV.FEATURES.isExtension) {
             // sendMessage to background extension, if any
-            ENV.FEATURES.runtime.sendMessage(null, JSON.stringify({ signal:p_evt, args:args }));
+            env.ENV.FEATURES.runtime.sendMessage(null, JSON.stringify({ signal:p_evt, args:args }));
         }
     }
 

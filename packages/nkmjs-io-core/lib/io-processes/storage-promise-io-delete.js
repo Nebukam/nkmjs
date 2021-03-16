@@ -1,6 +1,6 @@
 'use strict';
 
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 
 const IOProcess = require(`../io-process`);
 
@@ -26,7 +26,7 @@ class StoragePromiseIODelete extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        ENV.FEATURES.storageArea.local.remove(this._operation.fullPath)
+        env.ENV.FEATURES.storageArea.local.remove(this._operation.fullPath)
             .then(this._OnStorageRemoved)
             .catch(this._OnStorageRemovedError);
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { ENV } = require(`@nkmjs/environment`);
+const env = require(`@nkmjs/environment`);
 
 const IOProcess = require(`../io-process`);
 
@@ -50,7 +50,7 @@ class StorageIORename extends IOProcess {
 
         this._oldPath = this._operation.fullPath;
 
-        ENV.FEATURES.storageArea.local.get(this._targetPath, this._OnRenameExistsCheck);
+        env.ENV.FEATURES.storageArea.local.get(this._targetPath, this._OnRenameExistsCheck);
 
     }
 
@@ -62,7 +62,7 @@ class StorageIORename extends IOProcess {
         let data = p_data[this._oldPath];
         if (u.tils.isVoid(data)) {
             // Data do not exists !
-            let storage = ENV.FEATURES.storageArea, dataCopy = {};
+            let storage = env.ENV.FEATURES.storageArea, dataCopy = {};
             dataCopy[this._targetPath] = data;
             storage.local.set(dataCopy, this._OnRenameStorageWritten);
         } else {
@@ -77,8 +77,8 @@ class StorageIORename extends IOProcess {
      */
     _OnRenameStorageWritten() {
 
-        if (!ENV.FEATURES.runtime.lastError) {
-            this._OnError(ENV.FEATURES.runtime.lastError);
+        if (!env.ENV.FEATURES.runtime.lastError) {
+            this._OnError(env.ENV.FEATURES.runtime.lastError);
             return;
         }
 
@@ -92,8 +92,8 @@ class StorageIORename extends IOProcess {
      */
     _OnRenameStorageOldDeleted() {
 
-        if (ENV.FEATURES.runtime.lastError) {
-            this._OnError(ENV.FEATURES.runtime.lastError);
+        if (env.ENV.FEATURES.runtime.lastError) {
+            this._OnError(env.ENV.FEATURES.runtime.lastError);
             return;
         }
 

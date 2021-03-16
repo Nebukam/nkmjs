@@ -34,11 +34,12 @@ class TreeItemGroup extends TreeItem {
 
         this._tplClass = templates.BodyExpand;
 
-        this._extExpand = this._interactions.Add(extensions.Expand);
+        this._extExpand = this._pointer.Add(extensions.Expand);
         this._extExpand._toggled = false;
 
-        this._extExpand.Watch(SIGNAL.EXPANDED, this._Expand, this);
-        this._extExpand.Watch(SIGNAL.COLLAPSED, this._Collapse, this);
+        this._extExpand
+            .Watch(SIGNAL.EXPANDED, this._Expand, this)
+            .Watch(SIGNAL.COLLAPSED, this._Collapse, this);
 
         this._builder = null;
 
@@ -70,8 +71,9 @@ class TreeItemGroup extends TreeItem {
         this._builder.host = this._body;
         this._builder._defaultItemClass = TreeItem;
         this._builder._defaultGroupClass = TreeItemGroup;
-        this._builder.Watch(com.SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this);
-        this._builder.Watch(com.SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
+        this._builder
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
     }
 
     // ----> DOM

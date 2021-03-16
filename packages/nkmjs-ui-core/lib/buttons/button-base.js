@@ -211,8 +211,8 @@ class ButtonBase extends Widget {
             radius = diameter / 2;
 
         ripple.style.width = ripple.style.height = `${diameter}px`;
-        ripple.style.left = `${this._interactions._position.x - (rect.x + radius)}px`;
-        ripple.style.top = `${this._interactions._position.y - (rect.y + radius)}px`;
+        ripple.style.left = `${this._pointer._position.x - (rect.x + radius)}px`;
+        ripple.style.top = `${this._pointer._position.y - (rect.y + radius)}px`;
         ripple.classList.add(`ripple`);
         ripple.addEventListener('animationend', this._OnRippleAnimationEnd);
 

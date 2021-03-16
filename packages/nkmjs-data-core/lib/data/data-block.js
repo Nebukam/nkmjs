@@ -14,7 +14,7 @@ const ID = require(`../id/id`);
  * @memberof data.core
  */
 class DataBlock extends com.pool.DisposableObjectEx {
-    
+
     static __NFO__ = {
         [com.IDS.ICON]: `%ICON%/icon_data_block.svg`,
         [com.IDS.UID]: `@nkmjs/data-core:data-block`
@@ -34,11 +34,12 @@ class DataBlock extends com.pool.DisposableObjectEx {
         this._metadata = new Metadata();
         this._metadata.owner = this;
 
-        this._metadata.Watch(SIGNAL.DIRTY, this.Dirty, this);
-        this._metadata.Watch(SIGNAL.DIRTY_CLEARED, this._OnMetadataCleaned, this);
+        this._metadata
+            .Watch(SIGNAL.DIRTY, this.Dirty, this)
+            .Watch(SIGNAL.DIRTY_CLEARED, this._OnMetadataCleaned, this);
 
         this._ready = true;
-        
+
     }
 
     /**
@@ -72,16 +73,16 @@ class DataBlock extends com.pool.DisposableObjectEx {
     /**
      * @description TODO
      */
-    Dirty(){
-        if(this._isDirty){return;} this._isDirty = true;
+    Dirty() {
+        if (this._isDirty) { return; } this._isDirty = true;
         this._Broadcast(SIGNAL.DIRTY, this);
     }
 
     /**
      * @description TODO
      */
-    ClearDirty(){
-        if(!this._isDirty){return;} this._isDirty = false;
+    ClearDirty() {
+        if (!this._isDirty) { return; } this._isDirty = false;
         this._Broadcast(SIGNAL.DIRTY_CLEARED, this);
     }
 
@@ -97,14 +98,14 @@ class DataBlock extends com.pool.DisposableObjectEx {
         if (oldId) { oldId.Unwatch(com.SIGNAL.RENAMED, this.Dirty, this); }
         if (p_value) { p_value.Watch(com.SIGNAL.RENAMED, this.Dirty, this); }
     }
-    
+
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    get name(){ return this._id ? this._id.name : ``; }
-    
+    get name() { return this._id ? this._id.name : ``; }
+
     /**
      * @description True if the DataBlock is meant to be a temporary one, otherwise false.
      * @type {boolean}
@@ -125,8 +126,8 @@ class DataBlock extends com.pool.DisposableObjectEx {
      * is meant to be provided to Unpack().
      * @returns {object} packed DataObject
      */
-    Pack() { 
-        return { '!!!warning!!!':`you must re-implement the DataBlock.Pack() method in your data objects !` }
+    Pack() {
+        return { '!!!warning!!!': `you must re-implement the DataBlock.Pack() method in your data objects !` }
     }
 
     /**
@@ -153,7 +154,7 @@ class DataBlock extends com.pool.DisposableObjectEx {
 
         super._CleanUp();
 
-    }    
+    }
 
     /**
      * @access protected

@@ -36,7 +36,7 @@ class Overlay extends Layer {
         this._dataObserver.Hook(com.SIGNAL.CONSUMED, this._Bind(this._OnDataConsumed));
         this._transitions = new extensions.AnimController();
 
-        this._closeBg = this._interactions.Add(extensions.Mouse);
+        this._closeBg = this._pointer.Add(extensions.Pointer);
         this._closeBg.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._Bind(this._CloseRequest));
 
         this._options = null;

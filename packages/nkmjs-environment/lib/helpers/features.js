@@ -5,7 +5,7 @@ const com = require("@nkmjs/common");
 
 const ENV_DISPLAY = require(`../env-display`);
 const DOM_STATE = require(`../dom-state`);
-const ENV_SIGNAL = require(`../env-signal`);
+const SIGNAL = require(`../signal`);
 
 /**
  * @description TODO
@@ -257,7 +257,7 @@ class Features extends com.pool.DisposableObjectEx {
                 break;
         }
 
-        this._Broadcast(ENV_SIGNAL.DOMSTATE_CHANGED, this._domState);
+        this._Broadcast(SIGNAL.DOMSTATE_CHANGED, this._domState);
 
     }
 
@@ -339,7 +339,7 @@ class Features extends com.pool.DisposableObjectEx {
 
         u.LOG._U(`displayMode`, this._displayMode, oldMode, `#f7d801`);
 
-        this._Broadcast(ENV_SIGNAL.DISPLAY_MODE_CHANGED, this._displayMode, oldMode);
+        this._Broadcast(SIGNAL.DISPLAY_MODE_CHANGED, this._displayMode, oldMode);
 
     }
 
@@ -361,7 +361,7 @@ class Features extends com.pool.DisposableObjectEx {
 
         u.LOG._U(`prefersColorScheme`, this._prefersColorScheme, oldValue, `#f7d801`);
 
-        this._Broadcast(ENV_SIGNAL.COLOR_SCHEME_CHANGED, this._prefersColorScheme, oldValue);
+        this._Broadcast(SIGNAL.COLOR_SCHEME_CHANGED, this._prefersColorScheme, oldValue);
 
     }
 
@@ -384,7 +384,7 @@ class Features extends com.pool.DisposableObjectEx {
 
         u.LOG._U(`device`, this._displayType, oldMode, `#f7d801`);
 
-        this._Broadcast(ENV_SIGNAL.DISPLAY_TYPE_CHANGED, this._displayType, oldMode);
+        this._Broadcast(SIGNAL.DISPLAY_TYPE_CHANGED, this._displayType, oldMode);
 
     }
 
@@ -404,13 +404,13 @@ class Features extends com.pool.DisposableObjectEx {
     _OnEnvironmentOnline(p_evt){
         if(this._isOnline){ return; }
         this._isOnline = true;
-        this._Broadcast(ENV_SIGNAL.ONLINE);
+        this._Broadcast(SIGNAL.ONLINE);
     }
 
     _OnEnvironmentOffline(p_evt){
         if(!this._isOnline){ return; }
         this._isOnline = false;
-        this._Broadcast(ENV_SIGNAL.OFFLINE);
+        this._Broadcast(SIGNAL.OFFLINE);
     }
 
     //
