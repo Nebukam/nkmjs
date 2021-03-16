@@ -52,6 +52,8 @@ class DIALOG extends ServiceBase {
      */
     _Push(p_options) {
 
+        console.log(`DIALOG._Push`, p_options);
+
         let dialogOptions = null;
 
         if (!u.tils.isInstanceOf(p_options, ui.overlays.OverlayOptions)) {

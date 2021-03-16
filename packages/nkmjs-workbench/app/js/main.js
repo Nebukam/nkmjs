@@ -185,6 +185,7 @@ class StyleguideApp extends nkm.app.AppBase {
     }
 
     _Dialog() {
+        console.log(`_Dialog !`);
         DIALOG.Push({
             title: `Welcome to the NKMjs Workbench`,
             actions: [

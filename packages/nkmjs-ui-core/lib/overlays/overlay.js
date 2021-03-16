@@ -17,8 +17,6 @@ const OverlayOptions = require(`./overlay-options`);
 class Overlay extends Layer {
     constructor() { super(); }
 
-    static __usePaintCallback = true;
-
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/overlay.css`]
     }, Layer, ['css']);
@@ -51,32 +49,22 @@ class Overlay extends Layer {
 
     // ----> DOM
 
-    _OnPaintChange() {
-        // This is to make sure the background slides in and recieve mouse events
-        // when an overlay is created for the first time
-        super._OnPaintChange();
-        if (this._isPainted) {
-            this.style.setProperty(`transform`, `translateX(0%)`);
-        }else{
-            this.style.removeProperty(`transform`);
-        }
-    }
-
     _Style() {
         return CSS.Extends({
             ':host':{
-                'transform': 'translateX(-100%)',
+                'transform': 'translateX(-100%)', // YES this is a terrible hack
                 'transition': 'transform 0s linear'
             },
             '.bg': {
                 '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box
+                'transform': 'translateY(-100%)',
+                'transition': 'transform 0s linear'
             }
         }, super._Style());
     }
 
     _Render() {
         super._Render();
-        this.style.setProperty(`--__click_offset`, `0%`);
         this._bg = u.dom.New(`div`, { class: `bg` }, this);
         this._closeBg.element = this._bg;
     }
@@ -222,6 +210,8 @@ class Overlay extends Layer {
     }
 
     DisplayGranted() {
+        this.style.setProperty(`transform`, `translateX(0%)`);
+        this._bg.style.setProperty(`transform`, `translateY(0%)`);
         super.DisplayGranted();
         this.classList.add(FLAGS.SHOWN);
     }
@@ -236,6 +226,8 @@ class Overlay extends Layer {
     }
 
     _CleanUp() {
+        this.style.removeProperty(`transform`);
+        this._bg.style.removeProperty(`transform`);
         this.classList.remove(FLAGS.SHOWN);
         super._CleanUp();
     }
