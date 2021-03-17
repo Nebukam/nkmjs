@@ -7,7 +7,7 @@ module.exports = {
     common : require("@nkmjs/common"),
     data : require(`@nkmjs/data-core`),
     dialog : require(`@nkmjs/dialog`),
-    document : require(`@nkmjs/documents`),
+    documents : require(`@nkmjs/documents`),
     env : require(`@nkmjs/environment`),
     localisation : require(`@nkmjs/localisation`),
     metrics : require(`@nkmjs/metrics`),

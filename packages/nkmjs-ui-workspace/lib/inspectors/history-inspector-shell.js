@@ -23,7 +23,7 @@ class HistoryInspectorShell extends InspectorShell{
     // ----> DOM
 
     _Style(){
-        return style.CSS.Extends({
+        return style.Extends({
             ':host':{
                 //'background-color':`#f5f5f5`
             },

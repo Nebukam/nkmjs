@@ -98,6 +98,7 @@ class UIItem extends DisplayObjectContainer {
         } catch (e) {
             this._errorTf.Set(e.message);
             this.order = -1;
+            console.log(`faulty item`, p_id, p_class);
             throw e;
             console.error(e);
         }

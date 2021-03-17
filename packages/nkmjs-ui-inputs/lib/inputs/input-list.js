@@ -7,9 +7,10 @@
 'use strict';
 
 const ui = require(`@nkmjs/ui-core`);
+const style = require("@nkmjs/style");
 
 const InputBase = require(`../input-base`);
-const { CSS } = require("@nkmjs/style");
+
 
 class InputList extends InputBase {
     constructor() { super(); }
@@ -21,7 +22,7 @@ class InputList extends InputBase {
     // ----> DOM
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             '.field': {
             }
         }, super._Style());

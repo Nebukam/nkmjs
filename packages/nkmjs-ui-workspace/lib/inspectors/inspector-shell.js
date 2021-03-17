@@ -8,7 +8,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 const WORKSPACE_CONTEXT = require(`../workspace-context`);
@@ -76,7 +76,7 @@ class InspectorShell extends ui.views.View {
     get body() { return this._body; }
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 'display': `flex`,
                 'flex-flow': `column nowrap`,
@@ -107,10 +107,10 @@ class InspectorShell extends ui.views.View {
     }
 
     _Render() {
-        ui.DOMTemplate.Render(ui.templates.BodyHeaderTitles, this, { 
+        ui.Render(ui.templates.BodyHeaderTitles, this, { 
             [ui.IDS.OWNER]: this,
             [ui.IDS.ICON]:{ [ui.IDS.CSS_CL]:ui.FLAGS.SIZE_S },
-            [ui.IDS.SUBTITLE]:{ [ui.IDS.CSS_CL]:FONT_FLAG.SMALL }
+            [ui.IDS.SUBTITLE]:{ [ui.IDS.CSS_CL]:style.FONT_FLAG.SMALL }
         });
     }
 

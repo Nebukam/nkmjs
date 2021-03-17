@@ -1,5 +1,5 @@
 const u = require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
@@ -7,7 +7,7 @@ const ui = require(`@nkmjs/ui-core`);
 const InspectorGroup = require(`./inspector-group`);
 const MetaControlItem = require(`./meta-control-item`);
 
-let _expandedMetaPaths = new Dictionary();
+let _expandedMetaPaths = new collections.Dictionary();
 
 class MetaControlGroup extends InspectorGroup {
     constructor() { super(); }
@@ -37,7 +37,7 @@ class MetaControlGroup extends InspectorGroup {
     // ----> DOM
 
     _Style() {
-        return style.CSS.Extends({
+        return style.Extends({
             ':host': {
                 margin: `5px`
             },

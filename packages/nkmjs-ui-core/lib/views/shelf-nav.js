@@ -1,8 +1,8 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { CSS } = require(`@nkmjs/style`);
-const { Dictionary } = require("@nkmjs/collections");
+const style = require(`@nkmjs/style`);
+const collections = require("@nkmjs/collections");
 
 const UI = require(`../ui`);
 const IDS = require(`../ids`);
@@ -41,7 +41,7 @@ class ShelfNav extends Toolbar {
 
         this._isHorizontalScrollEnabled = true;
 
-        this._handlesMap = new Dictionary();
+        this._handlesMap = new collections.Dictionary();
         this._currentHandle = null;
 
         this._header = null;
@@ -62,7 +62,7 @@ class ShelfNav extends Toolbar {
 
     _Style() {
 
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 //'align-content': `flex-start`,
                 'display': 'grid',

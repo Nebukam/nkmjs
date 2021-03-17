@@ -5,7 +5,7 @@ const fs = require(`fs`);
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { List, Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const APP_MESSAGES = require(`@nkmjs/app-core/lib/app-messages`);
 
 const WindowWrapper = require(`./helpers/window-wrapper`);
@@ -28,9 +28,9 @@ class WINDOWS extends com.helpers.SingletonEx {
 
         super._Init();
 
-        this._windows = new List();
-        this._mapIDToWrapper = new Dictionary();
-        this._mapWindowToID = new Dictionary();
+        this._windows = new collections.List();
+        this._mapIDToWrapper = new collections.Dictionary();
+        this._mapWindowToID = new collections.Dictionary();
 
         this._mainWindow = null;
 

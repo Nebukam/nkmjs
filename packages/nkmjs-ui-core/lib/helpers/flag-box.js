@@ -1,6 +1,6 @@
 'use strict';
 
-const { Dictionary, List, DictionaryList } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const __NULL = Symbol(`null`);
 
@@ -13,7 +13,7 @@ const __NULL = Symbol(`null`);
 class FlagBox {
     constructor() {
         this._elements = null;
-        this._flags = new Dictionary();
+        this._flags = new collections.Dictionary();
     }
 
     // ----> Flags
@@ -60,7 +60,7 @@ class FlagBox {
      * @param  {...string} args 
      */
     Add(p_element, ...args) {
-        if (!this._elements) { this._elements = new DictionaryList(); }
+        if (!this._elements) { this._elements = new collections.DictionaryList(); }
         //TODO : Check whether the flag is already active or not and apply it.
         for (let i = 0, n = args.length; i < n; i++) {
             this._elements.Set(args[i], p_element);

@@ -4,9 +4,9 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const { ServicesManager, ServiceBase } = require(`@nkmjs/services`);
+const services = require(`@nkmjs/services`);
 
 const SIGNAL = require(`./signal`);
 const SW_SIGNAL = require(`./sw-signal`);
@@ -79,7 +79,7 @@ class ENV extends com.helpers.SingletonEx {
         this._started = false;
         this._running = false;
 
-        this._services = new List();
+        this._services = new collections.List();
         this._pwaSWHandler = new ServiceWorkerHandler();
         this._pwaSWHandler
             .Watch(SW_SIGNAL.SW_READY, this._OnServiceWorkerReady, this)
@@ -237,7 +237,7 @@ class ENV extends com.helpers.SingletonEx {
         }
 
 
-        ServicesManager.instance.Boot();
+        services.ServicesManager.instance.Boot();
         this._services.ForEach(this._BootService);
 
         // Only dispatch SIGNAL.START once the DOM is ready.
@@ -305,7 +305,7 @@ class ENV extends com.helpers.SingletonEx {
      * @param {services.ServiceBase} p_serviceClass 
      */
     _BootService(p_serviceClass) {
-        if (!u.tils.isInstanceOf(p_serviceClass, ServiceBase)) {
+        if (!u.tils.isInstanceOf(p_serviceClass, services.ServiceBase)) {
             throw new Error(`${p_serviceClass} is not a service.`);
         }
         p_serviceClass.instance.InitializeAndStart(this);

@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary, DictionaryList } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const Singleton = require(`../helpers/singleton`);
 const DisposableObject = require(`./disposable-object`);
@@ -21,8 +21,8 @@ class POOL extends Singleton {
     _Init() {
         super._Init();
 
-        this._globalTypes = new Dictionary();
-        this._globalPool = new DictionaryList();
+        this._globalTypes = new collections.Dictionary();
+        this._globalPool = new collections.DictionaryList();
 
         this._Bind(this._Return);
     }

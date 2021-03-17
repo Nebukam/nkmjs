@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
-const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 
 const IDS = require(`../ids`);
 const UI = require(`../ui`);
@@ -15,7 +15,7 @@ const CatalogViewBuilder = require("../helpers/catalog-view-builder");
 const FlagEnum = require(`../helpers/flag-enum`);
 const DOMTemplate = require(`../dom-template`);
 const extensions = require("../extensions");
-const MOUSE = require("../mouse");
+const POINTER = require("../pointer");
 const templates = require(`../templates`);
 
 const OverlayOptions = require("./overlay-options");
@@ -45,7 +45,7 @@ class Drawer extends View {
         this._Bind(this._CloseRequest);
 
         this._closeBtn = this._pointer.Add(extensions.Pointer);
-        this._closeBtn.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._CloseRequest);
+        this._closeBtn.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._CloseRequest);
 
     }
 
@@ -57,7 +57,7 @@ class Drawer extends View {
     // ----> DOM
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 'display': `grid`,
                 'grid-template-rows': 'max-content auto'
@@ -109,7 +109,7 @@ class Drawer extends View {
 
         DOMTemplate.Render(this.constructor.__default_facadeTPL, this._header, {
             [IDS.OWNER]: this,
-            [IDS.TITLE]:{ [IDS.CSS_CL]:`${FONT_FLAG.MEDIUM}` },
+            [IDS.TITLE]:{ [IDS.CSS_CL]:`${style.FONT_FLAG.MEDIUM}` },
             closeIcon: { htitle: `Close` }
         });
 

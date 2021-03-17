@@ -1,6 +1,6 @@
 'use strict';
 
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const u = require("@nkmjs/utils");
 
 const NFOS = require(`../nfos`);
@@ -61,7 +61,7 @@ class BindingKit extends DisposableObjectEx {
         this._deployed = false;
         this._KVPS = new Array(0);
         this._CLASSES = new Array(0);
-        this._classDict = new Dictionary();
+        this._classDict = new collections.Dictionary();
 
         /* KVP Example
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const CSS_UTILS = require(`./css`);
@@ -45,7 +45,7 @@ class Palette extends com.pool.DisposableObject {
         this._externalCSSMap = {};
         this._themeId = `default`;
 
-        this._cache = new Dictionary();
+        this._cache = new collections.Dictionary();
 
     }
 

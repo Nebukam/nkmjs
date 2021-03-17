@@ -1,6 +1,6 @@
 'use strict';
 
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 /**
  * A Callbacks object is a very simple helper class that stores a list of functions
@@ -17,9 +17,9 @@ class Callbacks {
 
     constructor() {
         this._dispatching = false;
-        this._onSuccessList = new List(0);
-        this._onErrorList = new List(0);
-        this._onAnyList = new List(0);
+        this._onSuccessList = new collections.List(0);
+        this._onErrorList = new collections.List(0);
+        this._onAnyList = new collections.List(0);
     }
 
     /**

@@ -57,6 +57,8 @@ class Bundler {
             return;
         }
 
+
+
         this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
 
         let code = p_src.toString(),
@@ -68,7 +70,7 @@ class Bundler {
                 plugins: [NKMjs.InCoreModules('@babel/plugin-proposal-class-properties')]
             };
 
-        try { localBabelConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`babel.config.json`))); } catch (e) {}
+        try { localBabelConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`babel.config.json`))); } catch (e) { }
 
         let babeled = require("@babel/core").transformSync(code, babelConfig);
 
@@ -81,6 +83,7 @@ class Bundler {
                 toplevel: true,
                 parse: { bare_returns: true },
                 mangle: {
+                    reserved:[`require`],
                     //keep_classnames : true,
                     keep_fnames: true,
                     //module : true,
@@ -92,7 +95,7 @@ class Bundler {
                 },
             };
 
-        try { localTerserConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`terser.config.json`))); } catch (e) {}
+        try { localTerserConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`terser.config.json`))); } catch (e) { }
 
         minify(babeled.code, terserConfig).then(this._OnTerseryfied.bind(this));
 
@@ -111,14 +114,12 @@ class Bundler {
 
     }
 
-    //
-
     _ReplaceExternal(p_content) {
 
         for (let i = 0, n = this.externals.length; i < n; i++) {
             let id = this.externals[i];
             if (id === this.moduleID) { continue; }
-            p_content = p_content.split(`t("${id}")`).join(`window.nkmjs[${i}]`);
+            p_content = p_content.split(`require("${id}")`).join(`window.nkmjs[${i}]`);
             p_content = p_content.split(`"${id}":void 0`).join(``);
         }
 
@@ -128,7 +129,7 @@ class Bundler {
 
     _ReplaceKeys(p_content) {
 
-        let requireStart = p_content.split(`t("`),
+        let requireStart = p_content.split(`require("`),
             paths = [];
         requireStart.shift();
 
@@ -144,6 +145,8 @@ class Bundler {
                 B = `${i}`;
             p_content = p_content.split(A).join(B);
         }
+
+        p_content = p_content.split(`require`).join(`__r__`);
 
         for (let key in this.shrinkMap) {
             //p_content = p_content.split(key).join(this.shrinkMap[key]);

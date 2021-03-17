@@ -1,8 +1,8 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { CSS } = require("@nkmjs/style");
-const { List } = require("@nkmjs/collections");
+const style = require("@nkmjs/style");
+const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
@@ -28,14 +28,14 @@ class LayerContainer extends Layer {
         this._layerClassName = `layer`;
         super._Init();
         this._updateDepths = new com.time.DelayedCall(this._Bind(this._UpdateLayerDepth));
-        this._layerList = new List(0);
+        this._layerList = new collections.List(0);
     }
 
     // ----> DOM
 
     _Style() {
 
-        let s = CSS.Extends({
+        let s = style.Extends({
             ':host': {
                 //position:`relative`,
             }

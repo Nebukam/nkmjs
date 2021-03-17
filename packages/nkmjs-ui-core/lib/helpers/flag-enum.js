@@ -3,11 +3,6 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
-const { STYLE, CSS } = require(`@nkmjs/style`);
-
-const UI = require(`../ui`);
-const FLAGS = require("../flags");
-
 /**
  * @description TODO
  * @class

@@ -1,8 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const HSLA = require("@nkmjs/style/lib/colors/hsla");
-const RGBA = require("@nkmjs/style/lib/colors/rgba");
+
 const Manipulator = require("./manipulator");
 
 /**

@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CSS } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
@@ -42,7 +42,7 @@ class Control extends ui.OrientableWidget{
     }
 
     _Style(){
-        return CSS.Extends({
+        return style.Extends({
             ':host':{
                 position:`relative`,
                 display:`flex`,

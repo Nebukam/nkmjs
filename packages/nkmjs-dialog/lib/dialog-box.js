@@ -1,9 +1,9 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary, List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 const { INPUT_SIGNAL, InputBase, InputFormHandler } = require(`@nkmjs/ui-inputs`);
 
@@ -38,8 +38,8 @@ class DialogBox extends ui.Widget {
 
         this._handles = new Array(0);
         this._contents = new Array(0);
-        this._submitMap = new Dictionary();
-        this._submitList = new List();
+        this._submitMap = new collections.Dictionary();
+        this._submitList = new collections.List();
 
         this._toolbarClass = ui.Toolbar;
         this._toolbarDefaultButtonClass = ui.ButtonEx;
@@ -84,7 +84,7 @@ class DialogBox extends ui.Widget {
 
     _Style() {
 
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 display: `flex`,
                 'flex-flow': `column`,
@@ -129,7 +129,7 @@ class DialogBox extends ui.Widget {
         this._toolbar._defaultButtonClass = this._toolbarDefaultButtonClass;
         this._toolbar.size = ui.FLAGS.SIZE_M;
 
-        this._title = new ui.manipulators.Text(u.dom.New(`span`, { class: `title ${FONT_FLAG.MEDIUM}` }, this._header), false);
+        this._title = new ui.manipulators.Text(u.dom.New(`span`, { class: `title ${style.FONT_FLAG.MEDIUM}` }, this._header), false);
         this._messageElement = null;
 
     }

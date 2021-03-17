@@ -4,9 +4,9 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { List, Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const { ServiceBase } = require(`@nkmjs/services`);
+const services= require(`@nkmjs/services`);
 const actions = require("@nkmjs/actions");
 const ui = require("@nkmjs/ui-core");
 
@@ -17,13 +17,13 @@ const ui = require("@nkmjs/ui-core");
  * @augments services.ServiceBase
  * @memberof dialog
  */
-class DIALOG extends ServiceBase {
+class DIALOG extends services.ServiceBase {
     constructor() { super(); }
 
     _Init() {
         super._Init();
-        this._dialogs = new List();
-        this._ownedDialogData = new Dictionary();
+        this._dialogs = new collections.List();
+        this._ownedDialogData = new collections.Dictionary();
 
         this._Bind(this._ProcessNext);
         this._inDialog = false;

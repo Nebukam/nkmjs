@@ -1,7 +1,6 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { CSS } = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
 const InputField = require(`../input-field`);

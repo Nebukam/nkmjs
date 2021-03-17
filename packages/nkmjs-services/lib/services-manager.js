@@ -1,6 +1,6 @@
 'use strict';
 
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 /**
@@ -16,7 +16,7 @@ class ServicesManager extends com.helpers.SingletonEx{
     _Init()
     {
         super._Init();
-        this._services = new List();
+        this._services = new collections.List();
     }
 
     _PostInit()

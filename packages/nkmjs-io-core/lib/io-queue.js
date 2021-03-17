@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 /**
  * @description TODO
@@ -17,7 +17,7 @@ class IOQueue extends com.pool.DisposableObjectEx {
 
     _Init() {
         super._Init();
-        this._queue = new List();
+        this._queue = new collections.List();
         this._currentItem = null;
         this._running = false;
 

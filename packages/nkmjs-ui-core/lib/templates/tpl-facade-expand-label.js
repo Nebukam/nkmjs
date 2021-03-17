@@ -7,9 +7,9 @@ const DOMTemplate = require(`../dom-template`);
 
 const manipulators = require(`../manipulators`);
 
-const __expandIcon = `_expandIcon`;
-const __icon = `_${IDS.ICON}`;
-const __label = `_${IDS.LABEL}`;
+const __expandIcon = `expandIcon`;
+const __icon = IDS.ICON;
+const __label = IDS.LABEL;
 
 class TPLFacadeExpandLabel extends DOMTemplate {
     constructor() {
@@ -30,36 +30,18 @@ class TPLFacadeExpandLabel extends DOMTemplate {
     */
 
     static _CreateTemplate() {
-        super._CreateTemplate();
-        this._Add(u.dom.New(`div`, { class: `${IDS.ICON} expand` }), __expandIcon);
-        this._Add(u.dom.New(`div`, { class: IDS.ICON }), __icon);
-        this._Add(u.dom.New(`span`, { class: IDS.LABEL }), __label);
-    }
-
-    Render(p_host, p_options = null) {
-        let owner = super.Render(p_host, p_options),
-            expIconOpts = u.tils.Get(p_options, `expandIcon`, null),
-            iconOpts = u.tils.Get(p_options, IDS.ICON, null),
-            labelOpts = u.tils.Get(p_options, IDS.TITLE, null),
-            expandIcon = owner[__expandIcon] = new manipulators.Icon(owner[__expandIcon], expIconOpts && `autoHide` in expIconOpts ? expIconOpts.autoHide : false),
-            icon = owner[__icon] = new manipulators.Icon(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : true),
-            label = owner[__label] = new manipulators.Text(owner[__label], labelOpts && `autoHide` in labelOpts ? labelOpts.autoHide : false);
-
-        if (expIconOpts) {
-            expandIcon.Set(expIconOpts.url);
-            if (expIconOpts.htitle) { expandIcon.element.htitle = expIconOpts.htitle; }
-            if(expandIcon[IDS.CSS_CL]){ expandIcon.element.classList.add(expandIcon[IDS.CSS_CL]); }
-        }
-        if (iconOpts) { 
-            icon.Set(iconOpts); 
-            if(iconOpts[IDS.CSS_CL]){ icon.element.classList.add(iconOpts[IDS.CSS_CL]); }
-        }
-        if (labelOpts) { 
-            label.Set(labelOpts); 
-            if(labelOpts[IDS.CSS_CL]){ label.element.classList.add(labelOpts[IDS.CSS_CL]); }
-        }
-
-        return owner;
+        this._Add(u.dom.New(`div`, { class: `${IDS.ICON} expand` }), {
+            [IDS.UID]: __expandIcon,
+            fn: this.AsIconStatic
+        });
+        this._Add(u.dom.New(`div`, { class: IDS.ICON }), {
+            [IDS.UID]: __icon,
+            fn: this.AsIcon
+        });
+        this._Add(u.dom.New(`span`, { class: IDS.LABEL }), {
+            [IDS.UID]: __label,
+            fn: this.AsTextStatic
+        });
     }
 
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const SIGNAL = require(`../signal`);
 const INPUT = require(`../input`);
@@ -20,7 +20,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
     _Init() {
         super._Init();
-        this._stack = new List();
+        this._stack = new collections.List();
         this._shareSignals = true;
         this._allowMultiple = true;
         this._clearing = false;

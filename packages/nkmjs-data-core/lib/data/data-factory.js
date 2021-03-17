@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const SIGNAL = require(`../signal`);
@@ -23,7 +23,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
         super._Init();
 
         this._id = null;
-        this._tempItemList = new List(0);
+        this._tempItemList = new collections.List(0);
 
         this._itemRep = new Repertoire();
         this._itemRep

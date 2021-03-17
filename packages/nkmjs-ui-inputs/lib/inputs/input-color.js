@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CSS } = require("@nkmjs/style");
+const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
 const InputField = require(`../input-field`);
@@ -26,7 +26,7 @@ class InputColor extends InputField {
     set label(p_value){ this._label.Set(p_value); }
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             '.field': { '@': [`invisible-fill`] }
         }, super._Style());
     }

@@ -2,8 +2,8 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { Dictionary } = require(`@nkmjs/collections`);
-const { ServiceBase } = require(`@nkmjs/services`);
+const collections = require(`@nkmjs/collections`);
+const services = require(`@nkmjs/services`);
 const env = require("@nkmjs/environment");
 
 const IO_SIGNAL = require(`./io-signal`);
@@ -24,14 +24,14 @@ const IOProcess = require(`./io-process`);
  * @augments services.ServiceBase
  * @memberof io.core
  */
-class RESOURCES extends ServiceBase {
+class RESOURCES extends services.ServiceBase {
 
     constructor() { super(); }
 
     _Init() {
         super._Init();
 
-        this._resources = new Dictionary();
+        this._resources = new collections.Dictionary();
         this._IOStatCheck = this._GetStats;
 
         let ioprocesses = require(`./io-processes`);

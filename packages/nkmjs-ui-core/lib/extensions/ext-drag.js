@@ -7,7 +7,7 @@ const UI = require(`../ui`);
 const INPUT = require(`../input`);
 const FLAGS = require(`../flags`);
 const SIGNAL = require(`../signal`);
-const MOUSE = require("../mouse");
+const POINTER = require("../pointer");
 
 const Extension = require("./extension");
 
@@ -48,7 +48,7 @@ class DragExtension extends Extension {
         this._Bind(this._mDragEnd);
 
         this._hintElement = null;
-
+        
         //The trick is not to add the draggable attribute until the drag handle gets the mousedown event.
     }
 
@@ -132,15 +132,15 @@ class DragExtension extends Extension {
     //
 
     _mDown(p_evt) {
-        if (!this._isEnabled || p_evt.button !== MOUSE.BTN_LEFT) { return; }
+        if (!this._isEnabled || p_evt.button !== POINTER.MOUSE_LEFT) { return; }
         this._target.setAttribute(`draggable`, true);
         this._target.addEventListener(`dragstart`, this._mDragStart);
-        MOUSE.Watch(MOUSE.MOUSE_UP, this._mUp);
+        POINTER.Watch(POINTER.MOUSE_UP, this._mUp);
     }
 
     _mUp(p_evt) {
-        if (!this._isEnabled || p_evt.button !== MOUSE.BTN_LEFT) { return; }
-        MOUSE.Unwatch(MOUSE.MOUSE_UP, this._mUp);
+        if (!this._isEnabled || p_evt.button !== POINTER.MOUSE_LEFT) { return; }
+        POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
         this._EndDrag();
     }
 
@@ -148,10 +148,10 @@ class DragExtension extends Extension {
 
         if(this._feedbackHost){
             console.log(p_evt);
-            p_evt.dataTransfer.setDragImage(this._feedbackHost);//, -10, -10);
+            //p_evt.dataTransfer.setDragImage(this._feedbackHost);//, -10, -10);
         }
 
-        MOUSE.Unwatch(MOUSE.MOUSE_UP, this._mUp);
+        POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
 
         this._target.addEventListener(`dragend`, this._mDragEnd);
         this._target.addEventListener(`drag`, this._mDrag);
@@ -165,9 +165,9 @@ class DragExtension extends Extension {
     }
 
     _mDrag(p_evt) {
-        //Keep mouse position up-to-date in MOUSE
+        //Keep mouse position up-to-date in POINTER
         //mousemove being muted on drag :/
-        MOUSE.instance._mMove(p_evt);
+        POINTER.instance._mMove(p_evt);
         this._OwnerBroadcast(SIGNAL.DRAGGED);
     }
 
@@ -205,7 +205,7 @@ class DragExtension extends Extension {
     }
 
     _ShowHint() {
-        if (this._feedbackHost) {
+        if (this._feedbackHost) {            
             if (this._hintElement) { u.dom.Attach(this._hintElement, this._feedbackHost); }
             else { this._hintElement = u.dom.New(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
         }

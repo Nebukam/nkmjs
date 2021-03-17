@@ -1,7 +1,7 @@
-const { Dictionary, List } = require("@nkmjs/collections");
+const collections = require("@nkmjs/collections");
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CSS } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 
 const UI = require(`../ui`);
 const REQUEST = require(`../request`);
@@ -22,8 +22,8 @@ class OverlayHandler extends LayerContainer {
     _Init() {
         super._Init();
 
-        this._overlayMap = new Dictionary();
-        this._overlayList = new List(0);
+        this._overlayMap = new collections.Dictionary();
+        this._overlayList = new collections.List(0);
         this._Bind(this._OnOverlayOptionsConsumed);
 
         this._RegisterLocalRequestHandler(REQUEST.OVERLAY, this.HandleOverlayRequest);
@@ -36,7 +36,7 @@ class OverlayHandler extends LayerContainer {
     // ---> DOM
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host': { 'pointer-events': 'none' },
             '.overlay': { 'pointer-events': 'auto' },
             [this._layerClassName]: { 'pointer-events': 'auto' }

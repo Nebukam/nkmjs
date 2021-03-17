@@ -1,6 +1,6 @@
 'use strict';
 
-const { CSS } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 class EditorShelfNav extends ui.views.ShelfNav {
@@ -11,7 +11,7 @@ class EditorShelfNav extends ui.views.ShelfNav {
     }
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
 
         }, super._Style());
     }

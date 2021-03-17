@@ -1,6 +1,6 @@
 'use strict';
 
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const u = require("@nkmjs/utils");
 
 /**
@@ -14,7 +14,7 @@ const u = require("@nkmjs/utils");
 class CallList {
 
     constructor() {
-        this._list = new List(0);
+        this._list = new collections.List(0);
     }
 
     /**

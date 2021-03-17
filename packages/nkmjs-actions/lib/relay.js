@@ -4,8 +4,8 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { List } = require(`@nkmjs/collections`);
-const { ServiceBase } = require(`@nkmjs/services`);
+const collections = require(`@nkmjs/collections`);
+const services = require(`@nkmjs/services`);
 const env = require(`@nkmjs/environment`);
 const { signals } = require("@nkmjs/common");
 
@@ -16,7 +16,7 @@ const { signals } = require("@nkmjs/common");
  * @augments services.ServiceBase
  * @memberof actions 
  */
-class RELAY extends ServiceBase {
+class RELAY extends services.ServiceBase {
 
     /**
      * @description TODO
@@ -40,7 +40,7 @@ class RELAY extends ServiceBase {
 
     _Init() {
         super._Init();
-        this._requests = new List();
+        this._requests = new collections.List();
         if (env.ENV.FEATURES.isExtension) {
             this._extIpc = new signals.SignalBox();
             env.ENV.FEATURES.runtime.onMessage.addListener(function (request, sender, response) {

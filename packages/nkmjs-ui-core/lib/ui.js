@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { List, Dictionary, DictionaryList } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common"); 
 
 const SIGNAL = require(`./signal`);
@@ -21,10 +21,10 @@ class UI extends com.helpers.SingletonEx {
 
         super._Init();
 
-        this._uiPool = new DictionaryList();
-        this._uiTypes = new Dictionary();
+        this._uiPool = new collections.DictionaryList();
+        this._uiTypes = new collections.Dictionary();
 
-        this._dirtyElements = new List(0);
+        this._dirtyElements = new collections.List(0);
 
         this._Bind(this._Return);
         this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._UpdateDirty));

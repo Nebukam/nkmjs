@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const { ID, IDDispenser } = require(`../id`);
 
@@ -24,8 +24,8 @@ class Repertoire extends com.pool.DisposableObjectEx {
 
         this._idDispenser = new IDDispenser();
 
-        this._itemList = new List(0);
-        this._itemMap = new Dictionary(); // <ID, entry>
+        this._itemList = new collections.List(0);
+        this._itemMap = new collections.Dictionary(); // <ID, entry>
 
     }
 

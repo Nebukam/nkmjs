@@ -16,7 +16,7 @@ const com = require("@nkmjs/common");
 const env = require(`@nkmjs/environment`);
 const actions = require("@nkmjs/actions");
 const io = require(`@nkmjs/io-core`);
-const { STYLE } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 const data = require(`@nkmjs/data-core`);
 const { DIALOG, DialogHandler, AutoUpdateDialogBox } = require(`@nkmjs/dialog`)
@@ -128,14 +128,14 @@ class AppBase extends com.helpers.SingletonEx {
 
         // TODO : Move what's below AFTER App Start.
 
-        STYLE.instance.defaultPalette._themeId = (env.ENV.instance.config.theme || `default`);
+        style.STYLE.instance.defaultPalette._themeId = (env.ENV.instance.config.theme || `default`);
 
         this._mainWrapper = ui.UI.Rent(this._mainWrapperClass);
         this._mainWrapper.setAttribute(`id`, `app`);
 
         // Insert global.css in ShadowDom so all subsequent elements benefit from it
         u.dom.AttachFirst(
-            u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
+            u.dom.New(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
             this._mainWrapper._host);
 
         if (this._layers) {
@@ -193,7 +193,7 @@ class AppBase extends com.helpers.SingletonEx {
         u.LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
 
         // Push the app wrapper to the DOM
-        u.dom.New(`link`, { href: STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
+        u.dom.New(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
         u.dom.Attach(this._mainWrapper, document.body);
 
         this._userPreferences.Load(

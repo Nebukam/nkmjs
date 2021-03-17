@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { DictionaryList } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 
 const __direct = Symbol(`direct`);
@@ -22,7 +22,7 @@ class OptionsHandler {
      * @param {function} [p_defaults] 
      */
     constructor(p_wrapUpFn = null, p_beginFn = null, p_defaults = null) {
-        this._hooks = new DictionaryList();
+        this._hooks = new collections.DictionaryList();
         this._defaults = p_defaults;
         this._beginFn = p_beginFn;
         this._wrapUpFn = p_wrapUpFn;

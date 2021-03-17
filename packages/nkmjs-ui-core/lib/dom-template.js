@@ -3,6 +3,12 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+const manipulators = require(`./manipulators`);
+
+const IDS = require(`./ids`);
+
+const __hide = `autoHide`;
+
 /**
  * @description TODO
  * @class
@@ -13,6 +19,32 @@ class DOMTemplate {
 
     constructor() { }
 
+    // ----> Static processors
+
+    static AsIcon(node, opts, customOpts) {
+        node = new manipulators.Icon(node, u.tils.Get(opts, __hide, true));
+        node.Set(customOpts);
+        return node;
+    }
+
+    static AsIconStatic(node, opts, customOpts) {
+        node = new manipulators.Icon(node, u.tils.Get(opts, __hide, false));
+        node.Set(customOpts);
+        return node;
+    }
+
+    static AsText(node, opts, customOpts) {
+        node = new manipulators.Text(node, u.tils.Get(opts, __hide, true));
+        node.Set(customOpts);
+        return node;
+    }
+
+    static AsTextStatic(node, opts, customOpts) {
+        node = new manipulators.Text(node, u.tils.Get(opts, __hide, false));
+        node.Set(customOpts);
+        return node;
+    }
+
     // ----> Template
 
     /**
@@ -21,17 +53,14 @@ class DOMTemplate {
      * @type {array}
      */
     static __HTMLtemplate = null;
+    static __shelf = {};
+    static __shelfIDs = {};
 
     /**
      * @access protected
      * @description Create a node template to be cloned by _RenderTemplate to speed up initialization.
      */
-    static _CreateTemplate() {
-        if (this.__HTMLtemplate) {
-            throw new Error(`HTMLTemplate (${this.name}) initialized more than once.`);
-        }
-        this.__HTMLtemplate = new Array(0);
-    }
+    static _CreateTemplate() { }
 
     /**
      * @access protected
@@ -40,10 +69,9 @@ class DOMTemplate {
      * @param {string} [p_id] 
      * @param {string} [p_parentId] 
      */
-    static _Add(p_element, p_id = null, p_parentId = null) {
-        let node = { node: p_element };
-        if (p_id) { node.id = p_id; }
-        if (p_parentId) { node.parent = p_parentId; }
+    static _Add(p_element, p_options = null) {
+        let node = { node: p_element, ...p_options };
+        if (IDS.UID in p_options) { node._id = `_${p_options[IDS.UID]}`; }
         this.__HTMLtemplate.push(node);
     }
 
@@ -62,30 +90,69 @@ class DOMTemplate {
     /**
      * @description Render the DOM template into an host.
      * @param {Element} p_host Object to create element into
-     * @param {object} p_propertyHolder Object to create properties onto
+     * @param {object} p_options Object to create properties onto
      */
     Render(p_host, p_options = null) {
 
         if (`_wrapper` in p_host) { p_host = p_host._wrapper; }
 
-        let owner = u.tils.Get(p_options, com.IDS.OWNER, this);
+        let owner = u.tils.Get(p_options, com.IDS.OWNER, this),
+            shelf = this.constructor.__shelf,
+            ids = this.constructor.__shelfIDs;
+
         if (!owner) { owner = this; }
 
         let tpl = this.constructor.__HTMLtemplate;
 
         if (!tpl) {
+            this.constructor.__HTMLtemplate = [];
             this.constructor._CreateTemplate();
             tpl = this.constructor.__HTMLtemplate;
         }
 
         for (let i = 0, n = tpl.length; i < n; i++) {
-            let nodeInfos = tpl[i],
-                node = nodeInfos.node.cloneNode(true);
 
-            if (nodeInfos.parent) { owner[nodeInfos.parent].appendChild(node); }
+            let nodeInfos = tpl[i],
+                nodeID = nodeInfos[IDS.UID],
+                node = nodeInfos.node.cloneNode(true),
+                customInfos = p_options[nodeID],
+                writeNode = u.tils.Get(customInfos, `write`, u.tils.Get(nodeInfos, `write`, true));
+
+            shelf[nodeID] = node;
+
+            if (nodeInfos.parent) { shelf[nodeInfos.parent].appendChild(node); }
             else { p_host.appendChild(node); }
 
-            if (nodeInfos.id) { owner[nodeInfos.id] = node; }
+            if (customInfos) {
+                // Add custom class
+                let customClass = customInfos[IDS.CSS_CL];
+
+                // Use return value of custom function as assigned value
+                if (customClass) { node.classList.add(customClass); }
+                if (writeNode) {
+                    // Write using custom ID, or default one
+                    let customID = customInfos[IDS.UID],
+                        propId = customID ? customID : nodeInfos._id,
+                        processFn = nodeInfos.fn;
+
+                    if (processFn) { node = processFn(node, nodeInfos, customInfos); };
+
+                    owner[propId] = node;
+                    if (nodeID) { ids[nodeID] = customID ? customID : propId; }
+                }
+            } else {
+                if (writeNode && nodeID) {
+                    // Write using default ID
+                    // Note we add a '_' in front of the default ID.
+                    let processFn = nodeInfos.fn;
+                    if (processFn) { node = processFn(node, nodeInfos, customInfos); };
+
+                    let propId = nodeInfos._id;
+                    ids[nodeID] = propId;
+                    owner[propId] = node;
+                }
+            }
+
         }
 
         return owner;

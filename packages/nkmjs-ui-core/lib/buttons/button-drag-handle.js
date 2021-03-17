@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { CSS } = require("@nkmjs/style");
+const style = require("@nkmjs/style");
 
 const FLAGS = require(`../flags`);
 const UI = require(`../ui`);
@@ -23,7 +23,7 @@ class ButtonDragHandle extends ToolButton {
     }, ToolButton, ['css']);
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 //border:`1px solid #ff0000`
                 cursor: `move`, /* fallback if grab cursor is unsupported */

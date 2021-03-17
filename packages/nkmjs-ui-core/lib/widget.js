@@ -6,7 +6,7 @@ const UI = require(`./ui`);
 const SIGNAL = require(`./signal`);
 const FLAGS = require(`./flags`);
 const INPUT = require(`./input`);
-const MOUSE = require(`./mouse`);
+const POINTER = require(`./pointer`);
 const DisplayObjectContainer = require(`./display-object-container`);
 const WidgetSelection = require(`./helpers/widget-selection`);
 const FlagEnum = require(`./helpers/flag-enum`);
@@ -57,7 +57,7 @@ class Widget extends DisplayObjectContainer {
 
         this._pointer = new extensions.Pointer();
         this._pointer.focusFn = this._Bind(this.Focus);
-        this._pointer.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._Bind(this.Activate));
+        this._pointer.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this.Activate));
 
         this._focusArea = null;
 

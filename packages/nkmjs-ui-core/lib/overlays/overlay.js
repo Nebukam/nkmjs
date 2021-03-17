@@ -1,10 +1,10 @@
 const u = require("@nkmjs/utils");
-const { CSS } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 const FLAGS = require(`../flags`);
-const MOUSE = require("../mouse");
+const POINTER = require("../pointer");
 const Layer = require(`../views/layer`);
 const extensions = require(`../extensions`);
 
@@ -37,7 +37,7 @@ class Overlay extends Layer {
         this._transitions = new extensions.AnimController();
 
         this._closeBg = this._pointer.Add(extensions.Pointer);
-        this._closeBg.Hook(MOUSE.BTN_LEFT, MOUSE.RELEASE, this._Bind(this._CloseRequest));
+        this._closeBg.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this._CloseRequest));
 
         this._options = null;
         this._optionsHandler = new com.helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed), this._Bind(this._OnOptionsWillUpdate));
@@ -50,7 +50,7 @@ class Overlay extends Layer {
     // ----> DOM
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host':{
                 'transform': 'translateX(-100%)', // YES this is a terrible hack
                 'transition': 'transform 0s linear'

@@ -32,7 +32,7 @@ class InspectorGroup extends InspectorItem {
         this._staticContent = true; //Always build controllers
         this._alwaysExpanded = false; //Keep group expanded after release (static content only)
 
-        this._pointer.Hook(ui.MOUSE.BTN_LEFT, ui.MOUSE.RELEASE_TWICE, this._Bind(this.AltActivate));
+        this._pointer.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
 
     }
 
@@ -51,7 +51,7 @@ class InspectorGroup extends InspectorItem {
     get footer() { return this._footer; }
 
     _Style() {
-        return style.CSS.Extends({
+        return style.Extends({
             ':host': {
                 //TODO : Implement orientation in styling
                 position: `relative`,
@@ -107,8 +107,8 @@ class InspectorGroup extends InspectorItem {
 
     _Render() {
 
-        ui.DOMTemplate.Render(ui.templates.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
-        ui.DOMTemplate.Render(ui.templates.FacadeExpandTitle, this._header, {
+        ui.Render(ui.templates.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
+        ui.Render(ui.templates.FacadeExpandTitle, this._header, {
             [ui.IDS.OWNER]: this,
             expandIcon: { url: `%ICON%/icon_expand_arrow.svg`, htitle: `Expand` }
         });

@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { FONT_FLAG } = require("@nkmjs/style");
+const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
 
@@ -36,7 +36,7 @@ class Tag extends ui.Widget {
     set label(p_value) { this._label.Set(p_value); }
 
     _Render() {
-        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: `${ui.IDS.LABEL} ${FONT_FLAG.TAG}` }, this), false);
+        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: `${ui.IDS.LABEL} ${style.FONT_FLAG.TAG}` }, this), false);
     }
 
 }

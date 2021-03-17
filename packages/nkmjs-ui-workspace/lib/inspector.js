@@ -22,7 +22,7 @@ class Inspector extends Control {
     }
 
     _Style() {
-        return style.CSS.Extends({
+        return style.Extends({
             ':host': {
                 position: `relative`,
                 display: `flex`,

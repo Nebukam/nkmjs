@@ -29,7 +29,7 @@ class MetaControlItem extends InspectorItem {
     // ----> DOM
 
     _Style() {
-        return style.CSS.Extends({
+        return style.Extends({
             ':host': {
                 margin: `5px`,
                 padding: `6px`,

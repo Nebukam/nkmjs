@@ -42,7 +42,7 @@ class RootWorkspace extends Workspace {
     // ----> Rendering
 
     _Style() {
-        return style.CSS.Extends({
+        return style.Extends({
             ':host': {
                 position: `relative`,
                 width: `1px`, //!important dirty fix

@@ -8,7 +8,7 @@ const SERVICE_STATE = require(`./service-state`);
  * @hideconstructor
  * @memberof services
  */
-class SERVICE_SIGNAL{
+class SIGNAL{
     constructor() {}
 
     /**
@@ -62,4 +62,4 @@ class SERVICE_SIGNAL{
 
 }
 
-module.exports = SERVICE_SIGNAL;
+module.exports = SIGNAL;

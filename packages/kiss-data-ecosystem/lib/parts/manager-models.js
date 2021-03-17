@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const data = require(`@nkmjs/data-core`);
 
 const M = require(`../meta`);
@@ -25,7 +25,7 @@ class ModelManager extends EcosystemPart {
             .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnModelRegistered, this)
             .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnModelUnregistered, this);
 
-        this._catMap = new Dictionary();
+        this._catMap = new collections.Dictionary();
 
         this._catalog.name = `Models`;
         this._catalog.icon = `%ICON%/icon_modellist.svg`;

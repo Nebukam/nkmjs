@@ -4,7 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 const env = require(`@nkmjs/environment`);
-const { CSS } = require('@nkmjs/style');
+const style = require('@nkmjs/style');
 const ui = require(`@nkmjs/ui-core`);
 
 const InputPath = require(`./input-path`);
@@ -27,7 +27,7 @@ class InputFile extends InputPath {
     // ----> DOM
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             '.input-btn': {
                 flex: `1 1 auto`
             }

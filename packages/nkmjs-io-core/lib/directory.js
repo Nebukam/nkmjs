@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const Resource = require(`./resource`);
 
@@ -21,8 +21,8 @@ class Directory extends Resource {
 
         this._requestRsc = null;
 
-        this._directories = new List();
-        this._resources = new List();
+        this._directories = new collections.List();
+        this._resources = new collections.List();
 
     }
 

@@ -7,13 +7,12 @@ const DOMTemplate = require(`../dom-template`);
 
 const manipulators = require(`../manipulators`);
 
-const __icon = `_${IDS.ICON}`;
-const __title = `_${IDS.TITLE}`;
-const __subtitle = `_${IDS.SUBTITLE}`;
-const __header = `_${IDS.HEADER}`;
-const __body = `_${IDS.BODY}`;
-
-const __titles = `_titles`;
+const __icon = IDS.ICON;
+const __title = IDS.TITLE;
+const __subtitle = IDS.SUBTITLE;
+const __header = IDS.HEADER;
+const __body = IDS.BODY;
+const __titles = `titles`;
 
 class TPLBodyHeaderTitles extends DOMTemplate {
     constructor() {
@@ -38,38 +37,21 @@ class TPLBodyHeaderTitles extends DOMTemplate {
     */
 
     static _CreateTemplate() {
-        super._CreateTemplate();
-        this._Add(u.dom.New(`div`, { class: IDS.HEADER }), __header);
-        this._Add(u.dom.New(`div`, { class: IDS.ICON }), __icon, __header);
-        this._Add(u.dom.New(`span`, { class: `titles` }), __titles, __header);
-        this._Add(u.dom.New(`span`, { class: IDS.TITLE }), __title, __titles);
-        this._Add(u.dom.New(`span`, { class: IDS.SUBTITLE }), __subtitle, __titles);
-        this._Add(u.dom.New(`div`, { class: IDS.BODY }), __body);
-    }
-
-    Render(p_host, p_options = null) {
-        let owner = super.Render(p_host, p_options),
-            iconOpts = u.tils.Get(p_options, IDS.ICON, null),
-            titleOpts = u.tils.Get(p_options, IDS.TITLE, null),
-            subtitleOpts = u.tils.Get(p_options, IDS.SUBTITLE, null),
-            icon = owner[__icon] = new manipulators.Icon(owner[__icon], iconOpts && `autoHide` in iconOpts ? iconOpts.autoHide : false),
-            title = owner[__title] = new manipulators.Text(owner[__title], titleOpts && `autoHide` in titleOpts ? titleOpts.autoHide : false),
-            subtitle = owner[__subtitle] = new manipulators.Text(owner[__subtitle], subtitleOpts && `autoHide` in subtitleOpts? subtitleOpts.autoHide : false);
-
-            if (iconOpts) { 
-                icon.Set(iconOpts); 
-                if(iconOpts[IDS.CSS_CL]){ icon.element.classList.add(iconOpts[IDS.CSS_CL]); }
-            }
-            if (titleOpts) { 
-                title.Set(titleOpts); 
-                if(titleOpts[IDS.CSS_CL]){ title.element.classList.add(titleOpts[IDS.CSS_CL]); }
-            }
-            if (subtitleOpts) { 
-                subtitle.Set(subtitleOpts); 
-                if(subtitleOpts[IDS.CSS_CL]){ subtitle.element.classList.add(subtitleOpts[IDS.CSS_CL]); }
-            }
-
-        return owner;
+        this._Add(u.dom.New(`div`, { class: IDS.HEADER }), { [IDS.UID]: __header });
+        this._Add(u.dom.New(`div`, { class: IDS.ICON }), {
+            [IDS.UID]: __icon, parent: __header,
+            fn: this.AsIcon
+        });
+        this._Add(u.dom.New(`span`, { class: `titles` }), { [IDS.UID]: __titles, parent: __header });
+        this._Add(u.dom.New(`span`, { class: IDS.TITLE }), {
+            [IDS.UID]: __title, parent: __titles,
+            fn: this.AsText
+        });
+        this._Add(u.dom.New(`span`, { class: IDS.SUBTITLE }), {
+            [IDS.UID]: __subtitle, parent: __titles,
+            fn: this.AsText
+        });
+        this._Add(u.dom.New(`div`, { class: IDS.BODY }), { [IDS.UID]: __body });
     }
 
 }

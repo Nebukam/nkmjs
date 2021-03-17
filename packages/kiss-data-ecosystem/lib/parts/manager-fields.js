@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const data = require(`@nkmjs/data-core`);
 
 const M = require(`../meta`);
@@ -23,7 +23,7 @@ class FieldManager extends EcosystemPart {
             .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this)
             .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this);
 
-        this._idMap = new Dictionary();
+        this._idMap = new collections.Dictionary();
 
         this._catalog.name = `Fields`;
         this._catalog.icon = `%ICON%/icon_fieldlist.svg`;

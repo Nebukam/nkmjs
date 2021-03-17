@@ -3,23 +3,30 @@
 const nkm = require(`@nkmjs/core`);
 const env = nkm.env;
 const u = nkm.utils;
-const { UI, manipulators, DisplayObjectContainer } = nkm.ui;
-const { CSS } = nkm.style;
+const ui = nkm.ui;
+const style = nkm.style;
 
-class FeaturesWidget extends DisplayObjectContainer {
+class FeatureLine extends ui.DOMTemplate {
+    constructor() { super(); }
+
+    static _CreateTemplate() {
+        this._Add(u.dom.New(`div`, { class: ui.IDS.ICON }), {
+            [ui.IDS.UID]: ui.IDS.ICON, fn: this.AsIcon
+        });
+        this._Add(u.dom.New(`span`, { class: ui.IDS.LABEL }), {
+            [ui.IDS.UID]: ui.IDS.LABEL, fn: this.AsTextStatic
+        });
+    }
+
+}
+
+class FeaturesWidget extends ui.DisplayObjectContainer {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
 
-    static __usePaintCallback = true;
-
     _Init() {
         super._Init();
-        this._label = null;
-        this._errorTf = null;
-        this._sample = null;
-        this._visibilityRatio = 0;
-        this._isPainted = false;
     }
 
     _PostInit() {
@@ -40,7 +47,7 @@ class FeaturesWidget extends DisplayObjectContainer {
     // ----> DOM
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 //opacity: 0,
                 margin: `5px`,
@@ -49,47 +56,47 @@ class FeaturesWidget extends DisplayObjectContainer {
                 display: `flex`,
                 'flex-flow': `column wrap`,
                 'overflow': 'hidden',
-            },
-            '.label': {
-                'margin-block-start': 0,
-                'margin-block-end': 0,
-                'margin-bottom': `5px`,
-                'transform': 'scale(0.8,0.8)',
-            },
-            '.item-wrapper': {
-                position: `relative`,
-                padding: `5px`,
-                display: `flex`,
-                'align-items': `center`,
-                'justify-content': `center`,
-                flex: `1 1 auto`,
-                //'background-color': 'rgba(200,200,200,1)',
-                'background-image': `url('img/checker_20a.png')`,
-                'overflow': 'hidden',
-                'min-width': 0,
-                'min-height': 0,
-            },
-            '.content': {
-                flex: `1 1 auto`
-            },
-            'p.error': {
-                color: `#ff0000`
             }
         }, super._Style());
     }
 
-    _UpdateInfos() {
+    _Render() {
+        let opts = { [ui.IDS.LABEL]: { [ui.IDS.UID]: `text` } };
 
+        this.line_isBrowser = ui.Render(FeatureLine, this, opts);
+        this.line_isMobile = ui.Render(FeatureLine, this, opts);
+        this.line_isExtension = ui.Render(FeatureLine, this, opts);
+        this.line_isTouchEnabled = ui.Render(FeatureLine, this, opts);
+        this.line_hasStorageArea = ui.Render(FeatureLine, this, opts);
+        this.line_isCORSEnabled = ui.Render(FeatureLine, this, opts);
+        this.line_displayMode = ui.Render(FeatureLine, this, opts);
+        this.line_prefersColorScheme = ui.Render(FeatureLine, this, opts);
+        this.line_displayType = ui.Render(FeatureLine, this, opts);
+        this.line_isNodeEnabled = ui.Render(FeatureLine, this, opts);
     }
 
-    _Render() {
-        this._label = new manipulators.Text(u.dom.New(`p`, { class: `label` }, this));
-        this._wrapper = u.dom.New(`div`, { class: `item-wrapper` }, this);
-        this._errorTf = new manipulators.Text(u.dom.New(`p`, { class: `error` }, this));
+    // ----> Update
+
+    _UpdateInfos() {
+
+        let F = env.ENV.FEATURES,
+            g = `✔`, b = `❌`;
+
+        this.line_isBrowser.text.Set(`${F._isBrowser ? g : b} isBrowser`);
+        this.line_isMobile.text.Set(`${F._isMobile ? g : b} isMobile`);
+        this.line_isExtension.text.Set(`${F._isExtension ? g : b} isExtension`);
+        this.line_isTouchEnabled.text.Set(`${F._isTouchEnabled ? g : b} isToucheEnabled`);
+        this.line_hasStorageArea.text.Set(`${F._hasStorageArea ? g : b} hasStorageArea`);
+        this.line_isCORSEnabled.text.Set(`${F._isCORSEnabled ? g : b} isCORSEnabled`);
+        this.line_isNodeEnabled.text.Set(`${F._isNodeEnabled ? g : b} isNodeEnabled`);
+        this.line_displayMode.text.Set(`▢ displayMode : ${F._displayMode}`);
+        this.line_prefersColorScheme.text.Set(`◐ prefersColorScheme : ${F._prefersColorScheme}`);
+        this.line_displayType.text.Set(`⎚ displayType : ${F._displayType}`);
+
     }
 
 
 }
 
 module.exports = FeaturesWidget;
-UI.Register(`nkmjs-features`, FeaturesWidget);
+ui.Register("nkmjs-features", FeaturesWidget);

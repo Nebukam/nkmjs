@@ -13,7 +13,7 @@ class TileExplorer extends Explorer{
 
     _Style(){
 
-        return style.CSS.Extends({
+        return style.Extends({
             '.body':{
                 display:`flex`,
                 'flex-flow':`row wrap`,

@@ -1,9 +1,12 @@
 'use strict';
 
-const { Dictionary } = require(`@nkmjs/collections`);
-const com = require("@nkmjs/common"); //{ SingletonEx }
-const MOUSE = require("./mouse");
+const collections = require(`@nkmjs/collections`);
+const com = require("@nkmjs/common");
+const env = require(`@nkmjs/environment`);
+
+const POINTER = require("./pointer");
 const UI = require("./ui");
+
 
 /**
  * @description TODO
@@ -89,11 +92,11 @@ class INPUT extends com.helpers.SingletonEx {
      */
     static OFFKeyDown(p_key, p_fn) { this.Unwatch(`D_${p_key}`, p_fn); }
 
-/**
-     * @description TODO
-     * @param {*} p_key 
-     * @param {*} p_fn 
-     */
+    /**
+         * @description TODO
+         * @param {*} p_key 
+         * @param {*} p_fn 
+         */
     static ONKeyRepeat(p_key, p_fn) { this.Watch(`R_${p_key}`, p_fn); }
 
     /**
@@ -105,10 +108,10 @@ class INPUT extends com.helpers.SingletonEx {
 
     /**
      * @description TODO
-     * @type {ui.core.MOUSE}
+     * @type {ui.core.POINTER}
      * @customtag read-only
      */
-    static get MOUSE() { return this.instance._mouse; }
+    static get POINTER() { return this.instance._mouse; }
 
     _Init() {
 
@@ -116,7 +119,7 @@ class INPUT extends com.helpers.SingletonEx {
 
         this._running = false;
 
-        this._down = new Dictionary();
+        this._down = new collections.Dictionary();
 
         this._Bind(this._KHandle);
         this._Bind(this._KBlur);
@@ -126,16 +129,27 @@ class INPUT extends com.helpers.SingletonEx {
         this._altKey = false;
         this._currentKeyEvent = null;
 
-        if (this._isBrowser) { 
-            this._Start(); 
-            this._mouse = MOUSE.instance;
+        if (this._isBrowser) {
+            this._Start();
+            this._pointer = POINTER.instance;
         }
 
+    }
+
+    _Prepare() {
+        if (env.ENV.FEATURES.doMState === env.DOM_STATE.INTERACTIVE) { this._OnDomInteractive(); }
+        else { env.ENV.FEATURES.WatchOnce(env.SIGNAL.DOMSTATE_CHANGED, this._OnDomInteractive, this); }
+    }
+
+    _OnDomInteractive() {
+        this._Start();
     }
 
     _Start() {
 
         if (this._running) { return; }
+
+        console.log(`INPUT START`);
 
         window.addEventListener('keydown', this._KHandle);
         window.addEventListener('keyup', this._KHandle);
@@ -143,6 +157,8 @@ class INPUT extends com.helpers.SingletonEx {
 
         window.addEventListener('blur', this._KBlur);
 
+        POINTER.instance._Start();
+        
         this._running = true;
 
     }
@@ -156,6 +172,8 @@ class INPUT extends com.helpers.SingletonEx {
         window.removeEventListener('keypress', this._KHandle);
 
         window.removeEventListener('blur', this._KBlur);
+
+        POINTER.instance._Stop();
 
         this._running = false;
 
@@ -198,10 +216,10 @@ class INPUT extends com.helpers.SingletonEx {
 
     /**
      * @description TODO
-     * @type {ui.core.MOUSE}
+     * @type {ui.core.POINTER}
      * @customtag read-only
      */
-    get mouse() { return this._mouse; }
+    get mouse() { return this._pointer; }
 
     /**
      * @access private

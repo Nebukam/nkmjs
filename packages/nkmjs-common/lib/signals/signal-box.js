@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const DisposableObject = require(`../pool/disposable-object`);
 const POOL = require(`../pool/pool`);
@@ -18,7 +18,7 @@ class SignalBox extends DisposableObject {
 
     constructor() {
         super();
-        this._signals = new Dictionary();
+        this._signals = new collections.Dictionary();
         this._silent = false;
     }
 

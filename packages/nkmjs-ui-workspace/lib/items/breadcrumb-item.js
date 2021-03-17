@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { CSS, FONT_FLAG } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 class BreadcrumbItem extends ui.buttons.ButtonBase {
@@ -31,9 +31,9 @@ class BreadcrumbItem extends ui.buttons.ButtonBase {
     set label(p_value) { this._flags.Set(ui.FLAGS.NO_LABEL, !this._label.Set(p_value)); }
 
     _Render() {
-        ui.DOMTemplate.Render(ui.templates.FacadeLabel, this, {
+        ui.Render(ui.templates.FacadeLabel, this, {
             [ui.IDS.OWNER]: this,
-            [ui.IDS.LABEL]: { [ui.IDS.CSS_CL]: FONT_FLAG.REGULAR }
+            [ui.IDS.LABEL]: { [ui.IDS.CSS_CL]: style.FONT_FLAG.REGULAR }
         });
 
         this.focusArea = this;

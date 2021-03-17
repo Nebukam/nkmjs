@@ -4,7 +4,7 @@
  */
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { Dictionary, List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const INPUT_SIGNAL = require(`./input-signal`);
 const InputBase = require(`./input-base`);
@@ -14,7 +14,7 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
 
     _Init() {
         super._Init();
-        this._inputList = new List();
+        this._inputList = new collections.List();
         this._inputValues = {};
         this._errorCount = 0;
         this._invalidForm = false;

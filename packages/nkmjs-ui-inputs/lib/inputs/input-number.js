@@ -2,7 +2,6 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CSS } = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
 const InputField = require(`../input-field`);

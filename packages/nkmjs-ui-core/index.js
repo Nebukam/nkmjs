@@ -1,6 +1,10 @@
 'use strict';
 
 const __uiManager = require(`./lib/ui`);
+const __inputManager = require(`./lib/input`);
+__inputManager.instance._Prepare();
+
+const __DOMtemplate = require(`./lib/dom-template`);
 
 module.exports = {
 
@@ -11,8 +15,8 @@ module.exports = {
 
     UI: __uiManager,
 
-    INPUT: require(`./lib/input`),
-    MOUSE: require(`./lib/mouse`),
+    INPUT: __inputManager,
+    POINTER: require(`./lib/pointer`),
     KEYBOARD: require(`./lib/keyboard`),
 
     DisposableHTMLElement: require(`./lib/disposable-htmlelement`),
@@ -68,12 +72,17 @@ module.exports = {
 
     // Templates
 
-    DOMTemplate: require(`./lib/dom-template`),
+    DOMTemplate: __DOMtemplate,
 
     // Shortcuts
 
-    // Short to UI.Register
+    // to UI.Register
     Register:(p_id, p_class, p_extends = `div`) => { __uiManager.Register(p_id, p_class, p_extends); },
+    // to UI.RegisterGroup
+    RegisterGroup:(p_group) => { __uiManager.RegisterGroup(p_group); },
+    // to DOMTemplate.Render
+    Render:(p_tpl, p_host, p_options) => { return __DOMtemplate.Render(p_tpl, p_host, p_options); },
+    
 }
 
 require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

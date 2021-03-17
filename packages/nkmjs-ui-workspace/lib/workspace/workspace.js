@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
@@ -21,7 +21,7 @@ class Workspace extends ui.views.View {
 
         this._cellDefaultClass = WorkspaceCell;
 
-        this._cells = new List();
+        this._cells = new collections.List();
 
         this._catalogHandler = new data.catalogs.CatalogHandler();
         this._catalogHandler

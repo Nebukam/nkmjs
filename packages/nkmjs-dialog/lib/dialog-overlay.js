@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const { CSS } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 
@@ -23,7 +23,7 @@ class DialogOverlay extends ui.overlays.Overlay {
     // ----> DOM
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 display: `flex`,
                 'flex-flow': `row`,

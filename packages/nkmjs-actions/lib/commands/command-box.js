@@ -2,7 +2,7 @@
 
 
 const u = require("@nkmjs/utils");
-const { List, Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const Command = require(`./command`);
 
@@ -20,8 +20,8 @@ class CommandBox {
 
         this._context = null;
 
-        this._commandList = new List(0);
-        this._commandHooks = new Dictionary();
+        this._commandList = new collections.List(0);
+        this._commandHooks = new collections.Dictionary();
         this._onRegisterCmd = p_onRegister;
 
     }

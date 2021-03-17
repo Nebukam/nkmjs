@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const { ServiceBase } = require(`@nkmjs/services`);
+const services = require(`@nkmjs/services`);
 
 /**
  * @description TODO
@@ -12,7 +12,7 @@ const { ServiceBase } = require(`@nkmjs/services`);
  * @augments services.ServiceBase
  * @memberof metrics 
  */
-class METRICS extends ServiceBase {
+class METRICS extends services.ServiceBase {
 
     constructor() { super(); }
 

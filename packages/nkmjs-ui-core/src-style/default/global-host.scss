@@ -10,6 +10,19 @@
 :host{
     order: var(--order);
 }
+  
+ /* Hide scrollbar for IE, Edge and Firefox */
+:host(.invisible-scrollbar){
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+}
 
 @include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) 
 using ($index, $val){

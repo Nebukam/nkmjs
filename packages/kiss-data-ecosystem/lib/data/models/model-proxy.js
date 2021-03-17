@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 
@@ -20,7 +20,7 @@ class ModelProxy extends Model {
         super._Init();
         this._referenceModel = null;
         this._id = new data.ID();
-        this._proxyMap = new Dictionary();
+        this._proxyMap = new collections.Dictionary();
 
         this._refObserver = new com.signals.Observer();
         this._refObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnRefModelFieldAdded, this);

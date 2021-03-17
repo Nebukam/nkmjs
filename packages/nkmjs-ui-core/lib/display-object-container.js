@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { List } = require("@nkmjs/collections");
+const collections = require("@nkmjs/collections");
 
 const UI = require(`./ui`);
 const SIGNAL = require(`./signal`);
@@ -51,7 +51,7 @@ class DisplayObjectContainer extends DisplayObject {
 
     _Init() {
         super._Init();
-        this._displayList = new List(0);
+        this._displayList = new collections.List(0);
     }
 
     _PostInit() {

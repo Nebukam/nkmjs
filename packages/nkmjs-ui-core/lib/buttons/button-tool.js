@@ -2,7 +2,6 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { CSS } = require("@nkmjs/style");
 
 const FLAGS = require(`../flags`);
 const IDS = require(`../ids`);

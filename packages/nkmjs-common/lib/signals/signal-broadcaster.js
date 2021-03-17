@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { DictionaryList } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const DisposableObject = require(`../pool/disposable-object`);
 
 /**
@@ -19,8 +19,8 @@ class SignalBroadcaster extends DisposableObject {
         super._Init();
         this._broadcasting = false;
         this._removeAll = false;
-        this._slots = new DictionaryList();
-        this._onceSlots = new DictionaryList();
+        this._slots = new collections.DictionaryList();
+        this._onceSlots = new collections.DictionaryList();
         this._deprecatedKVP = new Array(0);
         this._queuedBroadcasts = new Array(0);
     }

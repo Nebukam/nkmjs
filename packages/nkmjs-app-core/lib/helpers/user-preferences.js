@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
-const { DOCUMENTS } = require(`@nkmjs/documents`);
+const documents = require(`@nkmjs/documents`);
 
 class UserPreferences extends com.pool.DisposableObjectEx {
 
@@ -41,7 +41,7 @@ class UserPreferences extends com.pool.DisposableObjectEx {
 
         this._waitForThen = true;
 
-        this._document = DOCUMENTS.Get({
+        this._document = documents.DOCUMENTS.Get({
             path: `${u.PATH.USER_DATA}/${p_name}.json`,
             data: data.Metadata
         });

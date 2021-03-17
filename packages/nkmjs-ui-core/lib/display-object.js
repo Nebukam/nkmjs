@@ -1,10 +1,9 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary, List, DictionaryList } = require(`@nkmjs/collections`);
 const actions = require("@nkmjs/actions");
 const com = require("@nkmjs/common");
-const { STYLE, CSS } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 
 const UI = require(`./ui`);
 const FLAGS = require("./flags");
@@ -132,7 +131,7 @@ class DisplayObject extends DisposableHTMLElement {
             this._styles.length = 0;
         }
 
-        this._styles = STYLE.Get(this.constructor, this._Bind(this._Style), p_invalidateCache);
+        this._styles = style.STYLE.Get(this.constructor, this._Bind(this._Style), p_invalidateCache);
         for (let i = 0, n = this._styles.length; i < n; i++) {
             u.dom.Attach(this._styles[i].cloneNode(true), this._host);
         }

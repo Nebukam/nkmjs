@@ -1,7 +1,7 @@
 'use strict';
 
 const UI = require(`../ui`);
-const MOUSE = require(`../mouse`);
+const POINTER = require(`../pointer`);
 const SIGNAL = require(`../signal`);
 
 const Extension = require(`./extension`);
@@ -124,10 +124,10 @@ class PointerExtension extends Extension {
      */
     isMouseDown(p_btn = null) {
         if (p_btn === null) {
-            for (var btn in this._buttons) { if (this._buttons[btn] === MOUSE.DOWN) { return true; } }
+            for (var btn in this._buttons) { if (this._buttons[btn] === POINTER.DOWN) { return true; } }
             return false;
         }
-        return p_btn in this._buttons && this._buttons[p_btn] === MOUSE.DOWN;
+        return p_btn in this._buttons && this._buttons[p_btn] === POINTER.DOWN;
     }
 
     _mOver(p_evt) {
@@ -140,7 +140,7 @@ class PointerExtension extends Extension {
         this._element.addEventListener(`mouseup`, this._mUp);
         this._element.addEventListener(`mouseleave`, this._mOut);
 
-        if (this._isAnyBtnDown) { MOUSE.Unwatch(MOUSE.MOUSE_UP, this._mUpOutside); }
+        if (this._isAnyBtnDown) { POINTER.Unwatch(POINTER.MOUSE_UP, this._mUpOutside); }
         if (this._focusFn) { this._focusFn(true); }
 
         if (this._wheelFn) { this._element.addEventListener('wheel', this._mWheel); }
@@ -157,7 +157,7 @@ class PointerExtension extends Extension {
         this._element.removeEventListener(`mouseup`, this._mUp);
         this._element.removeEventListener(`mouseleave`, this._mOut);
 
-        if (this._isAnyBtnDown) { MOUSE.Watch(MOUSE.MOUSE_UP, this._mUpOutside); }
+        if (this._isAnyBtnDown) { POINTER.Watch(POINTER.MOUSE_UP, this._mUpOutside); }
         else if (this._focusFn) { this._focusFn(false); }
 
         if (this._wheelFn) { this._element.removeEventListener('wheel', this._mWheel); }
@@ -166,7 +166,7 @@ class PointerExtension extends Extension {
 
     _mDown(p_evt) {
 
-        MOUSE.instance.StartUsing(this._using);
+        POINTER.instance.StartUsing(this._using);
 
         this._position.x = p_evt.clientX;
         this._position.y = p_evt.clientY;
@@ -177,8 +177,8 @@ class PointerExtension extends Extension {
 
         let eNum = p_evt.button;
 
-        this._buttons[eNum] = MOUSE.DOWN;
-        this._Trigger(`${eNum}_${MOUSE.DOWN}`);
+        this._buttons[eNum] = POINTER.DOWN;
+        this._Trigger(`${eNum}_${POINTER.DOWN}`);
 
         UI.Watch(SIGNAL.DRAG_ENDED, this._mUpOutside);
 
@@ -188,14 +188,14 @@ class PointerExtension extends Extension {
 
         let eNum = p_evt.button;
 
-        if (this._buttons[eNum] === MOUSE.DOWN) {
-            this._buttons[eNum] = MOUSE.UP;
-            this._Trigger(`${eNum}_${MOUSE.UP}`);
-            if (p_evt.detail === 1) { this._Trigger(`${eNum}_${MOUSE.RELEASE}`); }
-            else if (p_evt.detail === 2) { this._Trigger(`${eNum}_${MOUSE.RELEASE_TWICE}`); }
+        if (this._buttons[eNum] === POINTER.DOWN) {
+            this._buttons[eNum] = POINTER.UP;
+            this._Trigger(`${eNum}_${POINTER.UP}`);
+            if (p_evt.detail === 1) { this._Trigger(`${eNum}_${POINTER.RELEASE}`); }
+            else if (p_evt.detail === 2) { this._Trigger(`${eNum}_${POINTER.RELEASE_TWICE}`); }
         } else {
-            this._buttons[eNum] = MOUSE.UP;
-            this._Trigger(`${eNum}_${MOUSE.UP}`);
+            this._buttons[eNum] = POINTER.UP;
+            this._Trigger(`${eNum}_${POINTER.UP}`);
         }
 
         delete this._buttons[eNum];
@@ -203,7 +203,7 @@ class PointerExtension extends Extension {
         this._isAnyBtnDown = this.isMouseDown();
         if (!this._isAnyBtnDown) {
             UI.Unwatch(SIGNAL.DRAG_ENDED, this._mUpOutside);
-            MOUSE.instance.StopUsing(this._using);
+            POINTER.instance.StopUsing(this._using);
         }
 
     }
@@ -212,14 +212,14 @@ class PointerExtension extends Extension {
 
         if (p_evt) {
             let eNum = p_evt.button;
-            if (this._buttons[eNum] === MOUSE.DOWN) {
-                this._Trigger(`${eNum}_${MOUSE.RELEASE_OUTSIDE}`);
+            if (this._buttons[eNum] === POINTER.DOWN) {
+                this._Trigger(`${eNum}_${POINTER.RELEASE_OUTSIDE}`);
             }
             delete this._buttons[eNum];
         } else {
             // INPUT.DRAG_END does not have a button
             for (var key in this._buttons) {
-                this._Trigger(`${this._buttons[key]}_${MOUSE.RELEASE_OUTSIDE}`);
+                this._Trigger(`${this._buttons[key]}_${POINTER.RELEASE_OUTSIDE}`);
             }
             this._buttons = {};
         }
@@ -227,9 +227,9 @@ class PointerExtension extends Extension {
         this._isAnyBtnDown = this.isMouseDown();
         if (!this._isAnyBtnDown) {
             if (this._focusFn) { this._focusFn(false); }
-            MOUSE.Unwatch(MOUSE.MOUSE_UP, this._mUpOutside);
+            POINTER.Unwatch(POINTER.MOUSE_UP, this._mUpOutside);
             UI.Unwatch(SIGNAL.DRAG_ENDED, this._mUpOutside);
-            MOUSE.instance.StopUsing(this._using);
+            POINTER.instance.StopUsing(this._using);
         }
 
     }

@@ -4,7 +4,7 @@ const url = require(`url`);
 const fs = require(`fs`);
 
 const u = require("@nkmjs/utils");
-const { List, Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const APP_MESSAGES = require(`@nkmjs/app-core/lib/app-messages`);
 const WINDOWS = require(`./windows`);
@@ -61,9 +61,9 @@ class ElectronBase {
         this._Bind(this._SendWarning);
         this._Bind(this._SendMessage);
 
-        this._windows = new List();
-        this._windowsMap = new Dictionary();
-        this._windowsIDMap = new Dictionary();
+        this._windows = new collections.List();
+        this._windowsMap = new collections.Dictionary();
+        this._windowsIDMap = new collections.Dictionary();
 
         ipcMain.on(APP_MESSAGES.AU_CHECK_REQUEST, this._Bind(this._OnRequestCheckForUpdates));
 

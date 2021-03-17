@@ -1,6 +1,6 @@
 'use strict';
 
-const { CSS } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 const EditorShelfNav = require(`./editor-shelf-nav`);
@@ -19,7 +19,7 @@ class EditorShelf extends ui.views.Shelf {
     }
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 width: `354px`,
                 flex: `0 0 auto`,

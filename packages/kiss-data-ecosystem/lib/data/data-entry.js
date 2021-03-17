@@ -1,7 +1,7 @@
 'use strict';
 
-const u= require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const u = require("@nkmjs/utils");
+const collections = require(`@nkmjs/collections`);
 
 const URI = require(`../uri`);
 const ECOSYSTEM_EVENT = require(`../ecosystem-event`);
@@ -17,7 +17,7 @@ class DataEntry extends DataBlockEx {
         this._model = null;
         this._base = null;
 
-        this._fieldMap = new Dictionary();
+        this._fieldMap = new collections.Dictionary();
         this._fieldData = {};
         this._roamingFieldData = {};
     }

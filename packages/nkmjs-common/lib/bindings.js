@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { DictionaryList, KDictionary, Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const SingletonEx = require(`./helpers/singleton-ex`);
 const NFOS = require(`./nfos`);
@@ -33,15 +33,15 @@ class BINDINGS extends SingletonEx {
 
         super._Init();
 
-        this._classLookup = new Dictionary();
-        this._classReverseLookup = new Dictionary();
+        this._classLookup = new collections.Dictionary();
+        this._classReverseLookup = new collections.Dictionary();
 
-        this._squashedAssocs = new KDictionary();//Array of squashed associations (as kits get loaded and all)
+        this._squashedAssocs = new collections.KDictionary();//Array of squashed associations (as kits get loaded and all)
 
-        this._contextMap = new KDictionary();
-        this._contextKeyLists = new DictionaryList();
+        this._contextMap = new collections.KDictionary();
+        this._contextKeyLists = new collections.DictionaryList();
 
-        this._distanceMap = new KDictionary();
+        this._distanceMap = new collections.KDictionary();
 
     }
 

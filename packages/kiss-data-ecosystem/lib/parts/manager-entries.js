@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary, List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 
@@ -23,9 +23,9 @@ class EntryManager extends EcosystemPart {
     _Init() {
         super._Init();
 
-        this._libraries = new List();
-        this._librariesMap = new Dictionary();
-        this._entryCatalogMap = new Dictionary();
+        this._libraries = new collections.List();
+        this._librariesMap = new collections.Dictionary();
+        this._entryCatalogMap = new collections.Dictionary();
 
         //Commands
 

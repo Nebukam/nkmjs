@@ -164,7 +164,10 @@ class DisposableHTMLElement extends HTMLElement {
      * @groupdescription This section list the main methods used to watch/unwatch signals on this object.
      * For more info on signals, see {@tutorial signals}
      */
-    _Broadcast(p_signal, ...args) { this._signals.Broadcast(p_signal, ...args); }
+    _Broadcast(p_signal, ...args) { 
+        this._signals.Broadcast(p_signal, ...args); 
+        return this;
+    }
 
     /**
      * @description Watch a signal broadcasted by this object.  

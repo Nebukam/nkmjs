@@ -2,7 +2,7 @@
 
 const com = require("@nkmjs/common");
 const env = require(`@nkmjs/environment`);
-const { CSS } = require(`@nkmjs/style`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 const templates = require(`../templates`);
@@ -23,8 +23,8 @@ class Tab extends ui.CatalogWidget {
         this._Bind(this._CloseRequest);
 
         this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
-        this._closeBtn.Hook(ui.MOUSE.BTN_LEFT, ui.MOUSE.RELEASE, this._CloseRequest);
-        this._pointer.Hook(ui.MOUSE.BTN_MIDDLE, ui.MOUSE.RELEASE, this._CloseRequest);
+        this._closeBtn.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE, this._CloseRequest);
+        this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
 
     }
 
@@ -59,7 +59,7 @@ class Tab extends ui.CatalogWidget {
 
     _Style() {
 
-        return CSS.Extends({
+        return style.Extends({
 
             ':host': {
                 'position': `relative`,
@@ -74,7 +74,7 @@ class Tab extends ui.CatalogWidget {
     }
 
     _Render() {
-        ui.DOMTemplate.Render(templates.FacadeTab, this, {
+        ui.Render(templates.FacadeTab, this, {
             [ui.IDS.OWNER]: this,
             closeIcon: { htitle: `Close` }
         });

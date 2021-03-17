@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { Dictionary, List } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const ID = require(`./id`);
@@ -18,8 +18,8 @@ class IDDispenser extends com.pool.DisposableObjectEx {
 
     _Init() {
         super._Init();
-        this._idMap = new Dictionary();
-        this._idList = new List();
+        this._idMap = new collections.Dictionary();
+        this._idList = new collections.List();
         // - Repertoire for IDs to avoid duplicate IDs.
         // - factory should check for duplicates through repertoire
     }

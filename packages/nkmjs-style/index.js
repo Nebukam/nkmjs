@@ -1,6 +1,8 @@
 
 'use strict';
 
+const __css = require(`./lib/css`);
+
 module.exports = {
 
     FONT_FLAG: require(`./lib/font-flag`),
@@ -11,10 +13,13 @@ module.exports = {
 
     COLOR: require(`./lib/colors/color`),
 
-    CSS: require(`./lib/css`),
+    CSS: __css,
     STYLE: require(`./lib/style`),
     Palette: require(`./lib/palette`),
     PaletteBuilder: require(`./lib/palette-builder`),
+
+    // Shortcut to CSS.Extends
+    Extends:(p_base, p_source) => { return __css.Extends(p_base, p_source); }
 
 }
 

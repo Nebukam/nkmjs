@@ -1,5 +1,5 @@
 const u = require("@nkmjs/utils");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 const ui= require(`@nkmjs/ui-core`);
 
 class Group extends ui.OrientableWidget {
@@ -12,7 +12,7 @@ class Group extends ui.OrientableWidget {
         this._header = null;
         this._footer = null;
 
-        this._groupMap = new Dictionary();
+        this._groupMap = new collections.Dictionary();
         this._groupList = new Array(0);
 
     }

@@ -24,6 +24,7 @@ class SingletonEx extends Singleton {
      */
     _Broadcast(p_signalId, ...args) {
         this._signals.Broadcast(p_signalId, ...args);
+        return this;
     }
 
     /**

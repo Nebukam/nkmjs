@@ -2,8 +2,8 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { STYLE } = require(`@nkmjs/style`);
-const { DIALOG } = require(`@nkmjs/dialog`);
+const style = require(`@nkmjs/style`);
+const dialog = require(`@nkmjs/dialog`);
 
 const DataManipulationCommand = require(`../../commands/command-data`);
 const FieldSettingsProxy = require(`../../fields/field-settings-proxy`);
@@ -124,10 +124,10 @@ class ModelApply extends DataManipulationCommand {
         }
 
         let conf = { color: com.FLAGS.WARNING, strong: true },
-            str0 = STYLE.TF(`No way back`, conf),
-            str1 = STYLE.TF(`${models.length} models`, conf),
-            str2 = STYLE.TF(`${eCount} entries`, conf),
-            str3 = STYLE.TF(`It cannot be undone.`, conf);
+            str0 = style.STYLE.TF(`No way back`, conf),
+            str1 = style.STYLE.TF(`${models.length} models`, conf),
+            str2 = style.STYLE.TF(`${eCount} entries`, conf),
+            str3 = style.STYLE.TF(`It cannot be undone.`, conf);
 
         this._ConfirmDialog(
             str0, // T.F
@@ -247,7 +247,7 @@ class ModelApply extends DataManipulationCommand {
     }
 
     _ErrorDialog(p_title, p_message) {
-        DIALOG.Push({
+        dialog.DIALOG.Push({
             title: p_title,
             message: p_message,
             [com.IDS.ICON]: `%ICON%/icon_error.svg`,
@@ -259,7 +259,7 @@ class ModelApply extends DataManipulationCommand {
     }
 
     _ConfirmDialog(p_title, p_message) {
-        DIALOG.Push({
+        dialog.DIALOG.Push({
             title: p_title,
             message: p_message,
             [com.IDS.ICON]: `%ICON%/icon_warning.svg`,

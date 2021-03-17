@@ -1,8 +1,6 @@
 'use strict';
 
-const { Dictionary } = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const SIGNAL = require(`./signal`);
 
 
 /**
@@ -12,7 +10,7 @@ const SIGNAL = require(`./signal`);
  * @augments common.helpers.SingletonEx
  * @memberof ui.core
  */
-class MOUSE extends com.helpers.SingletonEx {
+class POINTER extends com.helpers.SingletonEx {
     constructor() { super(); }
 
     /**
@@ -21,7 +19,7 @@ class MOUSE extends com.helpers.SingletonEx {
      * @customtag read-only
      * @group Buttons
      */
-    static BTN_LEFT = 0;
+    static MOUSE_LEFT = 0;
 
     /**
      * @description TODO
@@ -29,7 +27,7 @@ class MOUSE extends com.helpers.SingletonEx {
      * @customtag read-only
      * @group Buttons
      */
-    static BTN_MIDDLE = 1;
+    static MOUSE_MIDDLE = 1;
 
     /**
      * @description TODO
@@ -37,7 +35,7 @@ class MOUSE extends com.helpers.SingletonEx {
      * @customtag read-only
      * @group Buttons
      */
-    static BTN_RIGHT = 2;
+    static MOUSE_RIGHT = 2;
 
     /**
      * @description TODO
@@ -45,7 +43,7 @@ class MOUSE extends com.helpers.SingletonEx {
      * @customtag read-only
      * @group Buttons
      */
-    static BTN_PREV = 3;
+    static MOUSE_PREV = 3;
 
     /**
      * @description TODO
@@ -53,7 +51,7 @@ class MOUSE extends com.helpers.SingletonEx {
      * @customtag read-only
      * @group Buttons
      */
-    static BTN_NEXT = 4;
+    static MOUSE_NEXT = 4;
 
 
     /**
@@ -102,7 +100,7 @@ class MOUSE extends com.helpers.SingletonEx {
      * @customtag read-only
      * @group Button Event
      */
-    static WHEEL = 5;
+    static MOUSE_WHEEL = 5;
 
     /**
      * @description TODO
@@ -125,7 +123,7 @@ class MOUSE extends com.helpers.SingletonEx {
      * @type {object}
      * @customtag read-only
      */
-    static get MOUSE() { return this.instance.mouse; }
+    static get POINTER() { return this.instance.mouse; }
 
     /**
      * @description TODO
@@ -162,6 +160,16 @@ class MOUSE extends com.helpers.SingletonEx {
         this._Bind(this._mUp);
         this._Bind(this._mMove);
 
+        this._Bind(this._tStart);
+        this._Bind(this._tMove);
+        this._Bind(this._tEnd);
+        this._Bind(this._tCancel);
+
+        this._Bind(this._gStart);
+        this._Bind(this._gChange);
+        this._Bind(this._gEnd);
+
+
         if (this._isBrowser) { this._Start(); }
 
     }
@@ -172,6 +180,9 @@ class MOUSE extends com.helpers.SingletonEx {
 
         document.addEventListener('mousedown', this._mDown);
         document.addEventListener('mouseup', this._mUp);
+        document.addEventListener('touchstart', this._tStart);
+        document.addEventListener('gesturestart', this._gStart);
+        
 
         this._running = true;
 
@@ -183,6 +194,8 @@ class MOUSE extends com.helpers.SingletonEx {
 
         document.removeEventListener('mousedown', this._mDown);
         document.removeEventListener('mouseup', this._mUp);
+        document.removeEventListener('touchstart', this._tStart);
+        document.removeEventListener('gesturestart', this._gStart);
 
         this._running = false;
 
@@ -222,7 +235,7 @@ class MOUSE extends com.helpers.SingletonEx {
 
     _IsUsing(p_btn) {
 
-        if(p_btn === MOUSE.BTN_LEFT){ return false; }
+        if(p_btn === POINTER.MOUSE_LEFT){ return false; }
 
         for (let i = 0, n = this._using.length; i < n; i++) {
             if (p_btn in this._using[i]) { return true; }
@@ -246,7 +259,7 @@ class MOUSE extends com.helpers.SingletonEx {
      */
     _mDown(p_evt) {
         if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
-        this._Broadcast(MOUSE.MOUSE_DOWN, p_evt);
+        this._Broadcast(POINTER.MOUSE_DOWN, p_evt);
     }
 
     /**
@@ -255,7 +268,7 @@ class MOUSE extends com.helpers.SingletonEx {
      */
     _mUp(p_evt) {
         if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
-        this._Broadcast(MOUSE.MOUSE_UP, p_evt);
+        this._Broadcast(POINTER.MOUSE_UP, p_evt);
     }
 
     /**
@@ -267,6 +280,52 @@ class MOUSE extends com.helpers.SingletonEx {
         this._position.y = p_evt.clientY;
     }
 
+    _tStart(p_evt){
+        if(p_evt.cancelable){ p_evt.preventDefault(); }
+        document.addEventListener('touchmove', this._tMove);
+        document.addEventListener('touchend', this._tEnd);
+        document.addEventListener('touchcancel', this._tCancel);
+    }
+
+    _tMove(p_evt){
+        //if(p_evt.cancelable){ p_evt.preventDefault(); }
+        //console.log(`touch move`,p_evt);
+    }
+
+    _tEnd(p_evt){
+        //if(p_evt.cancelable){ p_evt.preventDefault(); }
+        this._clearTouchListeners();
+    }
+
+    _tCancel(p_evt){
+        //if(p_evt.cancelable){ p_evt.preventDefault(); }
+        this._clearTouchListeners();
+    }
+
+    _clearTouchListeners(){
+        document.removeEventListener('touchmove', this._tMove);
+        document.removeEventListener('touchend', this._tEnd);
+        document.removeEventListener('touchcancel', this._tCancel);
+    }
+
+    // Gesture events
+
+    _gStart(p_evt){
+        if(p_evt.cancelable){ p_evt.preventDefault(); }
+        document.addEventListener('gesturechange', this._gChange);
+        document.addEventListener('gestureend', this._gEnd);
+    }
+
+    _gChange(p_evt){
+        if(p_evt.cancelable){ p_evt.preventDefault(); }
+    }
+
+    _gEnd(p_evt){
+        if(p_evt.cancelable){ p_evt.preventDefault(); }
+        document.removeEventListener('gesturechange', this._gChange);
+        document.removeEventListener('gestureend', this._gEnd);
+    }
+
 }
 
-module.exports = MOUSE;
+module.exports = POINTER;

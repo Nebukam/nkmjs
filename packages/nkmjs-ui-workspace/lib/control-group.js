@@ -45,7 +45,7 @@ class ControlGroup extends Control {
     // ----> DOM
 
     _Style() {
-        return style.CSS.Extends({
+        return style.Extends({
             ':host': {
 
             },

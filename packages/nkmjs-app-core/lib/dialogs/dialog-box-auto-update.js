@@ -1,13 +1,13 @@
 'use strict';
 
 const ui = require(`@nkmjs/ui-core`);
-const { DialogBox } = require(`@nkmjs/dialog`);
+const dialog = require(`@nkmjs/dialog`);
 
 const APP_MESSAGES = require(`../app-messages.js`);
 
 // Auto update dialog
 
-class AutoUpdateDialogBox extends DialogBox {
+class AutoUpdateDialogBox extends dialog.DialogBox {
     constructor() { super(); }
 
     _Init() {

@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const { Dictionary } = require(`@nkmjs/collections`);
+const collections = require(`@nkmjs/collections`);
 
 const UI = require(`../ui.js`);
 const FLAGS = require('../flags');
@@ -42,7 +42,7 @@ class Toolbar extends OrientableWidget {
 
         super._Init();
         this._defaultButtonClass = ToolButton;
-        this._optionsMap = new Dictionary();
+        this._optionsMap = new collections.Dictionary();
         this._handles = new Array(0);
 
         this._groups = {};

@@ -3,9 +3,10 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const ui = require(`@nkmjs/ui-core`);
+const style = require("@nkmjs/style");
 
 const InputField = require(`../input-field`);
-const { CSS } = require("@nkmjs/style");
+
 
 
 const ERR_SPACE = { type: com.FLAGS.ERROR, message: `No space allowed.` };
@@ -34,7 +35,7 @@ class InputIdentifier extends InputField {
     set label(p_value){ this._label.Set(p_value); }
 
     _Style() {
-        return CSS.Extends({
+        return style.Extends({
             ':host': {
                 display: `flex`,
                 'flex-flow': `column nowrap`,
