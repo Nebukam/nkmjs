@@ -51,7 +51,7 @@ class URI {
             entryId = entrySplit.join(URI.DELIM_MODEL);
         } entrySplit.length = 0;
 
-        if (!u.tils.isEmpty(p_uri)) { modelId = p_uri; }
+        if (!u.isEmpty(p_uri)) { modelId = p_uri; }
 
         if (modelId) {
             // modelId

@@ -39,7 +39,7 @@ class InputNumber extends InputField {
     // ----> DOM
 
     _Render() {
-        this._inputField = u.dom.New(`input`, { class: 'field', type: 'number' }, this._host);
+        this._inputField = u.dom.El(`input`, { class: 'field', type: 'number' }, this._host);
         this._flags.Add(this._inputField, __slider);
         //this.SetSliderData(0,1,0.01);
     }

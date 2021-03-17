@@ -57,11 +57,11 @@ class ExpandExtension extends Extension {
         if (this._isEnabled) {
 
             if (oldValue) {
-                if (u.tils.isInstanceOf(oldValue, DisplayObject)) { oldValue.Unwatch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+                if (u.isInstanceOf(oldValue, DisplayObject)) { oldValue.Unwatch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
                 else { oldValue.removeEventListener(`click`, this._mClick); }
             }
             if (p_value) {
-                if (u.tils.isInstanceOf(p_value, DisplayObject)) { p_value.Watch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+                if (u.isInstanceOf(p_value, DisplayObject)) { p_value.Watch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
                 else { p_value.addEventListener(`click`, this._mClick); }
             }
 
@@ -105,7 +105,7 @@ class ExpandExtension extends Extension {
     Enable() {
         if (!super.Enable()) { return false; }
         if (this._activator) {
-            if (u.tils.isInstanceOf(this._activator, DisplayObject)) { this._activator.Watch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+            if (u.isInstanceOf(this._activator, DisplayObject)) { this._activator.Watch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
             else { this._activator.addEventListener(`click`, this._mClick); }
         }
         return true;
@@ -117,7 +117,7 @@ class ExpandExtension extends Extension {
     Disable() {
         if (!super.Disable()) { return false; }
         if (this._activator) {
-            if (u.tils.isInstanceOf(this._activator, DisplayObject)) { this._activator.Unwatch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
+            if (u.isInstanceOf(this._activator, DisplayObject)) { this._activator.Unwatch(SIGNAL.ACTIVATED, this._OnWidgetActivated, this); }
             else { this._activator.removeEventListener(`click`, this._mClick); }
         }
         return true;

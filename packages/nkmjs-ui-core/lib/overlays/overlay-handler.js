@@ -51,7 +51,7 @@ class OverlayHandler extends LayerContainer {
 
         if (!overlayOptions) { throw new Error(`Cannot build overlay without valid options.`); }
 
-        if (!u.tils.isInstanceOf(overlayOptions, OverlayOptions)) {
+        if (!u.isInstanceOf(overlayOptions, OverlayOptions)) {
             overlayOptions = OverlayOptions.Create(overlayOptions);
         }
 

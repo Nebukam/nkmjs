@@ -32,7 +32,7 @@ class FieldManager extends EcosystemPart {
 
     Register(p_fieldClass) {
 
-        if (!u.tils.isInstanceOf(p_fieldClass, Field)) {
+        if (!u.isInstanceOf(p_fieldClass, Field)) {
             throw new Error("Attempting to register a non-field constructor.");
         }
 

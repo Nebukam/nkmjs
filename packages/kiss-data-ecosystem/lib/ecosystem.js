@@ -127,7 +127,7 @@ class Ecosystem extends data.DataBlock {
     // ---->
 
     _OnCmdRegister(p_cmd) {
-        if (u.tils.isInstanceOf(p_cmd, EcosystemCommand)) { p_cmd.ecosystem = this; }
+        if (u.isInstanceOf(p_cmd, EcosystemCommand)) { p_cmd.ecosystem = this; }
     }
 
     // ---->

@@ -11,7 +11,7 @@ class META {
 
     static ETA(p_obj) {
 
-        if (u.tils.isVoid(p_obj)) { return null; }
+        if (u.isVoid(p_obj)) { return null; }
 
         // We can be provided with either a constructor or an object.
 
@@ -22,21 +22,21 @@ class META {
             // Prioritize object's own _NFO_ if any/non-null
             if (`_NFO_` in p_obj) {
                 let localNFO = null;
-                if (u.tils.isFunc(p_obj._NFO_)) { localNFO = p_obj._NFO_(); }
+                if (u.isFunc(p_obj._NFO_)) { localNFO = p_obj._NFO_(); }
                 else { localNFO = p_obj._NFO_; }
-                if (!u.tils.isVoid(localNFO)) { return localNFO; }
+                if (!u.isVoid(localNFO)) { return localNFO; }
             }
 
             cstr = p_obj.constructor;
 
-        } else if (u.tils.isFunc(p_obj)) { //Need to get the prototype
+        } else if (u.isFunc(p_obj)) { //Need to get the prototype
             cstr = p_obj.prototype.constructor;
         }
 
         // Check if cstr has an _NFO_ property
         if (`_NFO_` in cstr) {
             let result = _METAS.get(cstr);
-            if (!u.tils.isVoid(result)) { return result; }
+            if (!u.isVoid(result)) { return result; }
 
             // Register new NFO
             result = cstr._NFO_;
@@ -59,9 +59,9 @@ class META {
 
         let cstr = null;
 
-        if (u.tils.isFunc(p_obj)) {
+        if (u.isFunc(p_obj)) {
             cstr = p_obj.prototype.constructor;
-        } else if (u.tils.isObject(p_obj)) {
+        } else if (u.isObject(p_obj)) {
             cstr = p_obj.constructor;
         }
 
@@ -72,9 +72,9 @@ class META {
 
         let ctnr = null;
 
-        if (u.tils.isFunc(p_obj)) {
+        if (u.isFunc(p_obj)) {
             ctnr = p_obj.prototype.constructor;
-        } else if (u.tils.isObject(p_obj)) {
+        } else if (u.isObject(p_obj)) {
             ctnr = p_obj.constructor;
         }
 

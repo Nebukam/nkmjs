@@ -305,7 +305,7 @@ class ENV extends com.helpers.SingletonEx {
      * @param {services.ServiceBase} p_serviceClass 
      */
     _BootService(p_serviceClass) {
-        if (!u.tils.isInstanceOf(p_serviceClass, services.ServiceBase)) {
+        if (!u.isInstanceOf(p_serviceClass, services.ServiceBase)) {
             throw new Error(`${p_serviceClass} is not a service.`);
         }
         p_serviceClass.instance.InitializeAndStart(this);

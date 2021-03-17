@@ -144,9 +144,9 @@ class BindingKit extends DisposableObjectEx {
 
                 if (true) {
                     // TODO : REMOVE, FOR DEV ONLY
-                    let cName = u.tils.isFunc(context) ? context.name : context,
-                        kName = u.tils.isFunc(kvp.key) ? kvp.key.name : kvp.key,
-                        vName = u.tils.isFunc(kvp.binding) ? kvp.binding.name : kvp.binding;
+                    let cName = u.isFunc(context) ? context.name : context,
+                        kName = u.isFunc(kvp.key) ? kvp.key.name : kvp.key,
+                        vName = u.isFunc(kvp.binding) ? kvp.binding.name : kvp.binding;
                         u.LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
                 }
 

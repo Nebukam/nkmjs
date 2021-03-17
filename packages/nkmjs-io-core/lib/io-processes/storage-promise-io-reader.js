@@ -28,7 +28,7 @@ class StoragePromiseIOReader extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        env.ENV.FEATURES.storageArea.local.get(this._operation.fullPath)
+        env.storageArea.local.get(this._operation.fullPath)
             .then(this._OnStorageRead)
             .catct(this._OnStorageReadError);
 
@@ -42,7 +42,7 @@ class StoragePromiseIOReader extends IOProcess {
 
         console.log(p_results);
         let data = p_results[this._operation.fullPath];
-        if (u.tils.isVoid(data)) {
+        if (u.isVoid(data)) {
             // Data do not exists
             this._OnError(new Error(`Key '${this._operation.fullPath}' is not set.`));
         } else {

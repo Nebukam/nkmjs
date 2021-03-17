@@ -37,21 +37,21 @@ class TPLBodyHeaderTitles extends DOMTemplate {
     */
 
     static _CreateTemplate() {
-        this._Add(u.dom.New(`div`, { class: IDS.HEADER }), { [IDS.UID]: __header });
-        this._Add(u.dom.New(`div`, { class: IDS.ICON }), {
+        this._Add(u.dom.El(`div`, { class: IDS.HEADER }), { [IDS.UID]: __header });
+        this._Add(u.dom.El(`div`, { class: IDS.ICON }), {
             [IDS.UID]: __icon, parent: __header,
             fn: this.AsIcon
         });
-        this._Add(u.dom.New(`span`, { class: `titles` }), { [IDS.UID]: __titles, parent: __header });
-        this._Add(u.dom.New(`span`, { class: IDS.TITLE }), {
+        this._Add(u.dom.El(`span`, { class: `titles` }), { [IDS.UID]: __titles, parent: __header });
+        this._Add(u.dom.El(`span`, { class: IDS.TITLE }), {
             [IDS.UID]: __title, parent: __titles,
             fn: this.AsText
         });
-        this._Add(u.dom.New(`span`, { class: IDS.SUBTITLE }), {
+        this._Add(u.dom.El(`span`, { class: IDS.SUBTITLE }), {
             [IDS.UID]: __subtitle, parent: __titles,
             fn: this.AsText
         });
-        this._Add(u.dom.New(`div`, { class: IDS.BODY }), { [IDS.UID]: __body });
+        this._Add(u.dom.El(`div`, { class: IDS.BODY }), { [IDS.UID]: __body });
     }
 
 }

@@ -32,9 +32,9 @@ class WorkspaceCell extends ui.views.Shelf {
      */
     _OnCatalogItemAdded(p_handler, p_item, p_mappedView) {
 
-        if (!u.tils.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
+        if (!u.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
             throw new Error(`non-catalog item added to workspace cell catalog.`);
-        } else if (u.tils.isInstanceOf(p_item, data.catalogs.Catalog)) {
+        } else if (u.isInstanceOf(p_item, data.catalogs.Catalog)) {
             throw new Error(`Full catalog item added to workspace cell catalog.`);
         }
 

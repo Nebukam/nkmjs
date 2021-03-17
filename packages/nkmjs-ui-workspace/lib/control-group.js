@@ -79,17 +79,17 @@ class ControlGroup extends Control {
 
     _Render() {
 
-        this._header = u.dom.New(`div`, { class: `header` }, this._host);
+        this._header = u.dom.El(`div`, { class: `header` }, this._host);
 
         this._expandBtn = this.Add(ui.buttons.ToolButton, `toggle`, this._header);
-        this._icon = new ui.manipulators.Icon(u.dom.New(`div`, { class: `icon` }, this._header));
-        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: `label` }, this._header));
+        this._icon = new ui.manipulators.Icon(u.dom.El(`div`, { class: `icon` }, this._header));
+        this._label = new ui.manipulators.Text(u.dom.El(`span`, { class: `label` }, this._header));
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._header);
 
         this._expandBtn.icon = '%ICON%/icon_expand_arrow.svg';
         this._expandBtn.scale = 0.75;
 
-        this._itemWrapper = u.dom.New(`div`, { class: `content` }, this._host);
+        this._itemWrapper = u.dom.El(`div`, { class: `content` }, this._host);
 
         this.focusArea = this._header;
 

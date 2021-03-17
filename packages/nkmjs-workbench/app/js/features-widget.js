@@ -11,13 +11,13 @@ class FeatureLine extends ui.DOMTemplate {
 
     static _CreateTemplate() {
         let wrapper = `wrapper`;
-        this._Add(u.dom.New(`li`, { class: `item` }), {
+        this._Add(u.dom.El(`li`, { class: `item` }), {
             [ui.IDS.UID]: wrapper
         });
-        this._Add(u.dom.New(`div`, { class: ui.IDS.ICON }), {
+        this._Add(u.dom.El(`div`, { class: ui.IDS.ICON }), {
             [ui.IDS.UID]: ui.IDS.ICON, parent: wrapper, fn: this.AsIcon
         });
-        this._Add(u.dom.New(`span`, { class: ui.IDS.LABEL }), {
+        this._Add(u.dom.El(`span`, { class: ui.IDS.LABEL }), {
             [ui.IDS.UID]: ui.IDS.LABEL, parent: wrapper, fn: this.AsTextStatic
         });
     }
@@ -53,7 +53,7 @@ class FeaturesWidget extends ui.DisplayObjectContainer {
         this._Bind(this._UpdateInfos);
 
         let updateFn = this._UpdateInfos;
-        env.ENV.FEATURES
+        env.features
             .Watch(env.SIGNAL.DISPLAY_MODE_CHANGED, updateFn)
             .Watch(env.SIGNAL.COLOR_SCHEME_CHANGED, updateFn)
             .Watch(env.SIGNAL.DISPLAY_TYPE_CHANGED, updateFn);
@@ -88,7 +88,7 @@ class FeaturesWidget extends ui.DisplayObjectContainer {
 
     _UpdateInfos() {
 
-        var F = env.ENV.FEATURES;
+        var F = env.features;
 
         this._items.forEach((item) => {
             let marker = ``;

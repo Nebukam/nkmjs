@@ -51,7 +51,7 @@ class MetaControlItem extends InspectorItem {
 
     _Render() {
         super._Render();
-        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: ui.IDS.LABEL }, this._host));
+        this._label = new ui.manipulators.Text(u.dom.El(`span`, { class: ui.IDS.LABEL }, this._host));
     }
 
     get metaPath() { return this._metaPath; }
@@ -75,7 +75,7 @@ class MetaControlItem extends InspectorItem {
 
         if (!this._data) { return; }
 
-        let mData = u.tils.isInstanceOf(this._data, data.Metadata) ? this._data : this._data.metadata;
+        let mData = u.isInstanceOf(this._data, data.Metadata) ? this._data : this._data.metadata;
         let obj = mData.Get(this._metaPath, null);
 
         if (u.tils.Void(obj)) { return; }
@@ -93,7 +93,7 @@ class MetaControlItem extends InspectorItem {
 
     _OnInputValueCommited(p_input, p_changedValue) {
 
-        let mData = u.tils.isInstanceOf(this._data, data.Metadata) ? this._data : this._data.metadata;
+        let mData = u.isInstanceOf(this._data, data.Metadata) ? this._data : this._data.metadata;
         let mPath = this._metaPath;
 
         this._Do(data.actions.ActionMetadataSet, {

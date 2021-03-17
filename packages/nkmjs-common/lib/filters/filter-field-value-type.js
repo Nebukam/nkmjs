@@ -18,7 +18,7 @@ class FilterFieldValueType extends FilterFieldValue {
     // ----> Checks
 
     Check(p_obj) {
-        if (u.tils.isInstanceOf(this._FetchValue(p_obj), this._checkValue)) { this._Accept(p_obj); }
+        if (u.isInstanceOf(this._FetchValue(p_obj), this._checkValue)) { this._Accept(p_obj); }
         else { this._Deny(p_obj); }
     }
 

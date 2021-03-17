@@ -71,7 +71,7 @@ class AppBase extends com.helpers.SingletonEx {
         ];
 
 
-        env.ENV.FEATURES.Watch(env.SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
+        env.features.Watch(env.SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
         env.ENV.Watch(env.SIGNAL.PWA_UPDATE_AVAILABLE, this._OnPWAUpdateAvailable, this);
 
         this._loadingOverlay = document.getElementById(`__loading__`);
@@ -97,7 +97,7 @@ class AppBase extends com.helpers.SingletonEx {
             throw new Error(`No app wrapper constructor defined.`);
         }
 
-        if (!u.tils.isInstanceOf(this._mainWrapperClass, ui.views.LayerContainer)) {
+        if (!u.isInstanceOf(this._mainWrapperClass, ui.views.LayerContainer)) {
             throw new Error(`App wrapper constructor (${this._mainWrapperClass.name}) must implement ui.views.LayerContainer.`);
         }
 
@@ -121,7 +121,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         u.LOG._(`${this._APPID} : SETUP`, `#339a6e`, `#212121`);
 
-        if (env.ENV.FEATURES.isNodeEnabled) { this._RegisterIPCBindings(); }
+        if (env.isNodeEnabled) { this._RegisterIPCBindings(); }
 
         // ----> At that point, the Service Manager has started.
         // Initialize and start critical services.
@@ -135,7 +135,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         // Insert global.css in ShadowDom so all subsequent elements benefit from it
         u.dom.AttachFirst(
-            u.dom.New(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
+            u.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
             this._mainWrapper._host);
 
         if (this._layers) {
@@ -161,7 +161,7 @@ class AppBase extends com.helpers.SingletonEx {
     _OnPWAUpdateAvailable(){
 
         let msg = ``;
-        if(env.ENV.FEATURES.displayMode != env.ENV_DISPLAY.STANDALONE){
+        if(env.displayMode != env.ENV_DISPLAY.STANDALONE){
             msg = `An update is available, please refresh the page to apply it.`;
         }else{
             msg = `An update is available, please close & re-open the app to apply it.`;
@@ -193,7 +193,7 @@ class AppBase extends com.helpers.SingletonEx {
         u.LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
 
         // Push the app wrapper to the DOM
-        u.dom.New(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
+        u.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
         u.dom.Attach(this._mainWrapper, document.body);
 
         this._userPreferences.Load(
@@ -214,7 +214,7 @@ class AppBase extends com.helpers.SingletonEx {
         // Load base kits... ?
         //this._LoadBaseKits();
 
-        if (env.ENV.FEATURES.isNodeEnabled) {
+        if (env.isNodeEnabled) {
             if (false) {//Check if auto-updates are enabled
                 dialog.DIALOG.Push({ dialogClass: dialog.AutoUpdateDialogBox });
             }

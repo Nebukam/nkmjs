@@ -25,13 +25,13 @@ class StorageIODelete extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        env.ENV.FEATURES.storageArea.local.remove(this._operation.fullPath, this._OnStorageRemoved);
+        env.storageArea.local.remove(this._operation.fullPath, this._OnStorageRemoved);
 
     }
 
     _OnStorageRemoved(p_evt) {
-        if(env.ENV.FEATURES.runtime.lastError){
-            this._OnError(env.ENV.FEATURES.runtime.lastError);
+        if(env.runtime.lastError){
+            this._OnError(env.runtime.lastError);
             return;
         }
         this._OnProgress(1);

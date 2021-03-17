@@ -93,7 +93,7 @@ class ModelApply extends DataManipulationCommand {
 
         for (let i = 0; i < proxyFieldList.length; i++) {
             let field = proxyFieldList[i];
-            if (u.tils.isInstanceOf(field, FieldSettingsProxy)) {
+            if (u.isInstanceOf(field, FieldSettingsProxy)) {
                 if (field.isDeletePlanned) {
                     this._toBeDeleted.push(field); //Field is to be delete
                 } else {

@@ -79,7 +79,7 @@ class Tab extends ui.CatalogWidget {
             closeIcon: { htitle: `Close` }
         });
 
-        if (!env.ENV.FEATURES.isTouchEnabled) {
+        if (!env.isTouchEnabled) {
             this._closeIcon.element.style.opacity = 0;
         }
 
@@ -97,13 +97,13 @@ class Tab extends ui.CatalogWidget {
     //
 
     _HighlightGain() {
-        if (!env.ENV.FEATURES.isTouchEnabled) {
+        if (!env.isTouchEnabled) {
             this._closeIcon.element.style.removeProperty(`opacity`);
         }
     }
 
     _HighlightLost() {
-        if (!env.ENV.FEATURES.isTouchEnabled) {
+        if (!env.isTouchEnabled) {
             this._closeIcon.element.style.opacity = 0;
         }
     }

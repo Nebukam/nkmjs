@@ -55,7 +55,7 @@ class IOProcess extends com.pool.DisposableObjectEx {
      */
     Validate() {
         
-        if (u.tils.isEmpty(this._operation.rsc.path)) {
+        if (u.isEmpty(this._operation.rsc.path)) {
             this._OnError(new Error(`Resource path is empty.`));
             return false;
         }

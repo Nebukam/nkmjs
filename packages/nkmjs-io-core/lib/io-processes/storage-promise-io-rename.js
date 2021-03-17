@@ -53,7 +53,7 @@ class StoragePromiseIORename extends IOProcess {
 
         this._oldPath = this._operation.fullPath;
 
-        env.ENV.FEATURES.storageArea.local.get(this._targetPath)
+        env.storageArea.local.get(this._targetPath)
             .then(this._OnRenameExistsCheck)
             .catch(this._OnRenameExistsCheckError);
 
@@ -72,9 +72,9 @@ class StoragePromiseIORename extends IOProcess {
     _OnRenameExistsCheck(p_results) {
 
         let data = p_results[this._oldPath];
-        if (u.tils.isVoid(data)) {
+        if (u.isVoid(data)) {
             // Data do not exists !
-            let storage = env.ENV.FEATURES.storageArea, dataCopy = {};
+            let storage = env.storageArea, dataCopy = {};
             dataCopy[this._targetPath] = data;
             storage.local.set(dataCopy, this._OnRenameStorageWritten);
         } else {

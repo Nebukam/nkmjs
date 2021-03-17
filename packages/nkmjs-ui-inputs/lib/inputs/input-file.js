@@ -37,7 +37,7 @@ class InputFile extends InputPath {
     _Render() {
         super._Render();
 
-        if (env.ENV.FEATURES.isNodeEnabled) {
+        if (env.isNodeEnabled) {
             this._picker = this.Add(ui.buttons.ToolButton, `input-btn`);
             this._picker.options = {
                 [com.IDS.ICON]: `%ICON%/icon_more.svg`,
@@ -48,7 +48,7 @@ class InputFile extends InputPath {
             this._sizeEnum.Add(this._picker);
 
         } else {
-            this._picker = u.dom.New(`input`, { class: 'input-btn', type: 'file' }, this._host);
+            this._picker = u.dom.El(`input`, { class: 'input-btn', type: 'file' }, this._host);
             this._picker.addEventListener(`change`, this._onPickerChange);
         }
 
@@ -59,7 +59,7 @@ class InputFile extends InputPath {
     }
 
     _Pick() {
-        if (env.ENV.FEATURES.isNodeEnabled) {
+        if (env.isNodeEnabled) {
             actions.RELAY.ShowOpenDialog({
                 defaultPath: this._currentValue ? this._currentValue : ``,
                 properties: [this._openType]

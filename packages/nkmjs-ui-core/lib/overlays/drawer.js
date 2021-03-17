@@ -104,8 +104,8 @@ class Drawer extends View {
 
     _Render() {
 
-        this._header = u.dom.New(`div`, {class:`header`}, this);
-        this._body = u.dom.New(`div`, {class:`body`}, this);
+        this._header = u.dom.El(`div`, {class:`header`}, this);
+        this._body = u.dom.El(`div`, {class:`body`}, this);
 
         DOMTemplate.Render(this.constructor.__default_facadeTPL, this._header, {
             [IDS.OWNER]: this,
@@ -122,7 +122,7 @@ class Drawer extends View {
     // ----> DATA
 
     _PreprocessData(p_data) {
-        if (u.tils.isInstanceOf(p_data, OverlayOptions)) {
+        if (u.isInstanceOf(p_data, OverlayOptions)) {
             let p_options = p_data.options;
             this._icon.Set(p_options);
             this._title.Set(p_options);

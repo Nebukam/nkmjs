@@ -34,9 +34,9 @@ class StateBase {
      * @returns {StateBase} Requested state
      */
     static GetOrCreate(p_stateId, p_data = null) {
-        if (u.tils.isVoid(this._stateMap)) { this._stateMap = new collections.Dictionary(); }
+        if (u.isVoid(this._stateMap)) { this._stateMap = new collections.Dictionary(); }
         let state = this._stateMap.Get(p_stateId);
-        if (u.tils.isVoid(state)) {
+        if (u.isVoid(state)) {
             state = new this();
             state._id = p_stateId;
             state._data = p_data;

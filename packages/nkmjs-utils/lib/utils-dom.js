@@ -2,6 +2,7 @@
 'use strict';
 
 const UTILS = require(`./utils`);
+const CHECKS = require(`./checks`);
 
 /**
  * UTILS_DOM is a wrapper class that contains a bunch of utilitary static methods to manipulate the DOM.
@@ -20,18 +21,18 @@ class UTILS_DOM {
      * @param {string} p_element 
      * @param {object} [p_attributes] inlined attributes & values
      * @param {Node} [p_container] Parent node to append the new node into
-     * @example let newNode = UTILS_DOM.New(`div`, { class:`foo`, ['data-title']:`bar` });
+     * @example let newNode = this.New(`div`, { class:`foo`, ['data-title']:`bar` });
      * newNode == <div class="foo" data-title:"bar"></div> //dom element
      */
-    static New(p_element, p_attributes = null, p_container = null) {
+    static El(p_element, p_attributes = null, p_container = null) {
 
         let element = document.createElement(p_element);
 
-        if (!UTILS.isVoid(p_attributes)) {
+        if (!CHECKS.isVoid(p_attributes)) {
             for (let att in p_attributes) { element.setAttribute(att, p_attributes[att]); }
         }
 
-        if (!UTILS.isVoid(p_container)) { UTILS_DOM.Attach(element, p_container); }
+        if (!CHECKS.isVoid(p_container)) { this.Attach(element, p_container); }
 
         return element;
     }
@@ -41,9 +42,9 @@ class UTILS_DOM {
      * @param {Node} p_element Node to clone
      * @param {Node} [p_container] Parent node to append the new node into
      */
-    static NewClone(p_element, p_container = null) {
+    static ElClone(p_element, p_container = null) {
         let element = p_element.cloneNode(true);
-        if (!UTILS.isVoid(p_container)) { UTILS_DOM.Attach(element, p_container); }
+        if (!CHECKS.isVoid(p_container)) { this.Attach(element, p_container); }
         return element;
     }
 
@@ -80,7 +81,7 @@ class UTILS_DOM {
      * @param {Node} p_element 
      */
     static Detach(p_element) {
-        if (!UTILS.isVoid(p_element.parentNode)) {
+        if (!CHECKS.isVoid(p_element.parentNode)) {
             p_element.parentNode.removeChild(p_element);
         }
     }
@@ -92,7 +93,7 @@ class UTILS_DOM {
      * @param {boolean} [p_frontOfNode] If true, move the node at the front of the last child. Otherwise last childElement.
      */
     static ToFront(p_node, p_frontOfNode = false) {
-        if (!UTILS.isVoid(p_node.parentNode)) {
+        if (!CHECKS.isVoid(p_node.parentNode)) {
             if(p_node.parentNode.lastChild != p_node){
                 p_node.parentNode.appendChild(p_node);
             }
@@ -120,7 +121,7 @@ class UTILS_DOM {
      * @param {boolean} [p_backOfNode] If true, move the node at the back of the first child. Otherwise first childElement.
      */
     static ToBack(p_node, p_backOfNode = false) {
-        if (!UTILS.isVoid(p_node.parentNode)) {
+        if (!CHECKS.isVoid(p_node.parentNode)) {
             if (p_backOfNode) {
                 if (p_node.parentNode.firstChild) {
                     p_node.parentNode.insertBefore(p_node, p_node.parentNode.firstChild);

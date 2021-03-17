@@ -67,7 +67,7 @@ class TIME extends helpers.SingletonEx {
      * @param {function} p_fn 
      */
     NextTickAdd(p_fn) {
-        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
+        if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
         this._nextTick.Add(p_fn);
         this._ScheduleNextTick();
     }
@@ -77,7 +77,7 @@ class TIME extends helpers.SingletonEx {
      * @param {function} p_fn 
      */
     NextTickRemove(p_fn) {
-        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
+        if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
         this._nextTick.Remove(p_fn);
     }
 

@@ -60,7 +60,7 @@ class Workspace extends ui.views.View {
 
     _OnCatalogItemAdded(p_handler, p_item) {
 
-        if (!u.tils.isInstanceOf(p_item, data.catalogs.Catalog)) {
+        if (!u.isInstanceOf(p_item, data.catalogs.Catalog)) {
             throw new Error(`non-catalog item added to workspace catalog : ${p_item}.`);
         }
 
@@ -127,7 +127,7 @@ class Workspace extends ui.views.View {
         let localCatalog = this._FetchCatalog();
 
 
-        if (u.tils.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
+        if (u.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
             // Attempting to host an existing catalog item.
             localCatalog.Add(p_item);
             return;
@@ -140,7 +140,7 @@ class Workspace extends ui.views.View {
 
         for (let i = 0, n = dataHolders.length; i < n; i++) {
             let view = dataHolders[i].GetOption(`viewType`, null);
-            if (view && u.tils.isInstanceOf(view, viewType)) {
+            if (view && u.isInstanceOf(view, viewType)) {
                 view.RequestDisplay();
                 return;
             }
@@ -172,7 +172,7 @@ class Workspace extends ui.views.View {
             let i = 0;
             while (cat === null || i < n) {
                 cat = localCatalog.At(i);
-                if (!u.tils.isInstanceOf(cat, data.catalogs.Catalog)) { cat = null; } // Get rid of non-catalog items
+                if (!u.isInstanceOf(cat, data.catalogs.Catalog)) { cat = null; } // Get rid of non-catalog items
                 i++;
             }
             if (!cat) {

@@ -21,7 +21,7 @@ let catalog = Catalog.CreateFrom({
     [com.IDS.CMD_LIST]: null
 });
 
-assert.ok(!u.tils.isVoid(catalog));
+assert.ok(!u.isVoid(catalog));
 assert.ok(catalog.GetOption(com.IDS.NAME) === catalogName);
 
 let itemName = `Test Item`;
@@ -29,10 +29,10 @@ let cItem = catalog.Register({
     [com.IDS.NAME]: itemName
 });
 
-assert.ok(!u.tils.isVoid(cItem));
+assert.ok(!u.isVoid(cItem));
 assert.ok(cItem.GetOption(com.IDS.NAME) === itemName);
 assert.ok(catalog.At(0) === cItem);
-assert.ok(u.tils.isVoid(catalog.Add(cItem)));
+assert.ok(u.isVoid(catalog.Add(cItem)));
 //assert.ok(catalog.Resolve(`Test Item`) === cItem); //Not implemented  yet
 
 cItem.Release();
@@ -57,7 +57,7 @@ let serial = JSONSerializer.Serialize(someData);
 let deserialized = JSONSerializer.Deserialize(serial);
 
 assert(deserialized != someData); // Not the same data
-assert(u.tils.isInstanceOf(deserialized, someData)); // Same object type (apparently)
+assert(u.isInstanceOf(deserialized, someData)); // Same object type (apparently)
 for (let n in metas) { assert(deserialized.metadata.Get(n) === metas[n]); } // Meta have been copied correctly
 
 let changedValue = 12654684;

@@ -40,7 +40,7 @@ class PathCreate extends com.pool.DisposableObject {
 
         if (this._splitPath.length <= 1) { return this._OnEnd(new Error(`Invalid path : ${p_basePath}`)); }
 
-        if (u.tils.isEmpty(this._splitPath[this._splitPath.length - 1])) { this._splitPath.pop(); }
+        if (u.isEmpty(this._splitPath[this._splitPath.length - 1])) { this._splitPath.pop(); }
 
         fs.stat(path.resolve(...this._splitPath), this._OnNextStatsRead);
 

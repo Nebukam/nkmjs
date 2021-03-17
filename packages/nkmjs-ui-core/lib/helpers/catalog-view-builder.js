@@ -43,13 +43,13 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
 
             let viewType = p_item.GetOption(`viewType`, null);
             if (!viewType) { throw new Error(`Shelf's item has neither a view or a viewType set.`); }
-            if (!u.tils.isInstanceOf(viewType, View)) { throw new Error(`viewType (${viewType.name}) is not of type View`); }
+            if (!u.isInstanceOf(viewType, View)) { throw new Error(`viewType (${viewType.name}) is not of type View`); }
 
             view = UI.Rent(viewType);
             p_item.SetOption(IDS.VIEW, view);
 
         } else {
-            if (!u.tils.isInstanceOf(view, View)) { throw new Error(`view is not of type View.`); }
+            if (!u.isInstanceOf(view, View)) { throw new Error(`view is not of type View.`); }
         }
 
         this._map.set(p_item, view);

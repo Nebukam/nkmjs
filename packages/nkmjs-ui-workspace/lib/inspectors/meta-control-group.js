@@ -91,7 +91,7 @@ class MetaControlGroup extends InspectorGroup {
         let obj = u.tils.Empty(this._metaPath) ? mData._data : mData.Get(this._metaPath, null);
 
         if (obj) {
-            if (u.tils.isObject(obj)) {
+            if (u.isObject(obj)) {
                 for (let member in obj) {
 
                     let mPath = u.tils.Empty(this._metaPath) ? `${member}` : `${this._metaPath}.${member}`,
@@ -99,7 +99,7 @@ class MetaControlGroup extends InspectorGroup {
                         ctrlClass = com.BINDINGS.Get(
                             `${com.IDS.METAPREFIX}${mPath}`,
                             this._data.constructor,
-                            u.tils.isObject(value) ? MetaControlGroup : MetaControlItem),
+                            u.isObject(value) ? MetaControlGroup : MetaControlItem),
                         ctrl = this.Add(ctrlClass, `group`);
 
                     //if(!ctrl){continue;}

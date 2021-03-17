@@ -27,7 +27,7 @@ class FilterBox extends Filter {
      */
     Add( p_filter, p_filterOptions = null ){
 
-        if(u.tils.isFunc(p_filter)){
+        if(u.isFunc(p_filter)){
             p_filter = POOL.Rent(p_filter);
             if(p_filterOptions){
                 for(let key in p_filterOptions){ p_filter[key] = p_filterOptions[key]; }

@@ -137,8 +137,8 @@ class INPUT extends com.helpers.SingletonEx {
     }
 
     _Prepare() {
-        if (env.ENV.FEATURES.doMState === env.DOM_STATE.INTERACTIVE) { this._OnDomInteractive(); }
-        else { env.ENV.FEATURES.WatchOnce(env.SIGNAL.DOMSTATE_CHANGED, this._OnDomInteractive, this); }
+        if (env.features.doMState === env.DOM_STATE.INTERACTIVE) { this._OnDomInteractive(); }
+        else { env.features.WatchOnce(env.SIGNAL.DOMSTATE_CHANGED, this._OnDomInteractive, this); }
     }
 
     _OnDomInteractive() {

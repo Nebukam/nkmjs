@@ -199,12 +199,12 @@ class ButtonBase extends Widget {
     CreateRipple() {
 
         if (!this._rippleWrapper) {
-            this._rippleWrapper = u.dom.New('div', { class: `ripple-wrapper` });
+            this._rippleWrapper = u.dom.El('div', { class: `ripple-wrapper` });
             u.dom.AttachFirst(this._rippleWrapper, this._wrapper, false);
         }
 
         let rect = u.dom.Rect(this._rippleWrapper),
-            ripple = u.dom.New('span', {}, this._rippleWrapper),
+            ripple = u.dom.El('span', {}, this._rippleWrapper),
             w = rect.width,
             h = rect.height,
             diameter = Math.max(w, h),

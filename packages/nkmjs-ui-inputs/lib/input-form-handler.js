@@ -26,7 +26,7 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
 
     Register(p_input) {
 
-        if (!u.tils.isInstanceOf(p_input, InputBase)) {
+        if (!u.isInstanceOf(p_input, InputBase)) {
             throw new Error(`InputFormHandler cannot register non-input items.`);
         }
 

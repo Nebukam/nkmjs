@@ -101,14 +101,14 @@ class TextManipulator extends Manipulator {
      */
     _Update(p_element, p_value) {
 
-        if (u.tils.isVoid(p_value)) {
+        if (u.isVoid(p_value)) {
             p_element.innerHTML = ``;
             return false;
         } else {
 
             let text = ``;
 
-            if (u.tils.isString(p_value)) { text = p_value; }
+            if (u.isString(p_value)) { text = p_value; }
             else if (`name` in p_value) { text = p_value.name; }
             else if (`title` in p_value) { text = p_value.title }
             else if (`objectURL` in p_value) { text = p_value.objectURL; }

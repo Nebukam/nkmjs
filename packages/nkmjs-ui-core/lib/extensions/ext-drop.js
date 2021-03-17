@@ -285,7 +285,7 @@ class DropExtension extends Extension {
     _ShowHint() {
         if (this._feedbackHost) {
             if (this._hintElement) { u.dom.Attach(this._hintElement, this._feedbackHost); }
-            else { this._hintElement = u.dom.New(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
+            else { this._hintElement = u.dom.El(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
         }
     }
 

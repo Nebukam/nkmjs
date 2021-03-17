@@ -44,7 +44,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
 
         let mappedObject = null;
 
-        if (u.tils.isInstanceOf(p_item, data.catalogs.Catalog)) {
+        if (u.isInstanceOf(p_item, data.catalogs.Catalog)) {
             mappedObject = this._owner.Add(
                 com.BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
                 `item group`, this._host);

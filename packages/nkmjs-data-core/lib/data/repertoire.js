@@ -136,20 +136,20 @@ class Repertoire extends com.pool.DisposableObjectEx {
      */
     Register(p_item, p_id = null) {
 
-        if (u.tils.isVoid(p_item)) { throw new Error(`Cannot register a null item.`); }
-        if (!u.tils.isInstanceOf(p_item, DataBlock)) { throw new Error(`Cannot register a non-DataBlock item.`); }
-        if (!u.tils.isVoid(p_item.id)) { throw new Error(`Cannot register an item with an ID already set.`); }
+        if (u.isVoid(p_item)) { throw new Error(`Cannot register a null item.`); }
+        if (!u.isInstanceOf(p_item, DataBlock)) { throw new Error(`Cannot register a non-DataBlock item.`); }
+        if (!u.isVoid(p_item.id)) { throw new Error(`Cannot register an item with an ID already set.`); }
         if (this._itemList.Contains(p_item)) { throw new Error(`Cannot re-register an item.`); }
 
         let itemID = null;
 
-        if (u.tils.isVoid(p_id)) {
+        if (u.isVoid(p_id)) {
             //No ID provided. Create a random one.
             itemID = this.ReserveID(u.tils.unsafeUID);
         } else {
             //An ID has been provided.
             let itemID = p_id;
-            if (u.tils.isInstanceOf(p_id, ID)) {
+            if (u.isInstanceOf(p_id, ID)) {
                 //ID is an object of type ID.
                 if (this._idDispenser.GetID(p_id.name) === p_id) {
                     //ID appear to be owned by this repertoire.
@@ -162,10 +162,10 @@ class Repertoire extends com.pool.DisposableObjectEx {
                 itemID = p_id;
             } else {
                 //ID is a string. (Or should be)
-                if (!u.tils.isString(p_id)) { throw new Error(`Cannot register an item with an ID that isn't an ID object nor a string.`); }
-                if (u.tils.isEmpty(p_id)) { throw new Error(`Cannot use empty string as ID. Use null or undefined instead to generate a random one.`); }
+                if (!u.isString(p_id)) { throw new Error(`Cannot register an item with an ID that isn't an ID object nor a string.`); }
+                if (u.isEmpty(p_id)) { throw new Error(`Cannot use empty string as ID. Use null or undefined instead to generate a random one.`); }
                 let existingID = this._idDispenser.Get(p_id);
-                if (!u.tils.isVoid(existingID)) {
+                if (!u.isVoid(existingID)) {
                     //An ID has already been created with this string
                     if (this._itemMap.Contains(existingID)) {
                         throw new Error(`ID(${p_id}) already in use.`);
@@ -204,12 +204,12 @@ class Repertoire extends com.pool.DisposableObjectEx {
      */
     Unregister(p_item) {
 
-        if (u.tils.isVoid(p_item)) { throw new Error(`Cannot unregister a null item.`); }
+        if (u.isVoid(p_item)) { throw new Error(`Cannot unregister a null item.`); }
 
         let itemID = p_item.id;
 
-        if (u.tils.isVoid(itemID)) { throw new Error(`Cannot unregister a item with no ID.`); }
-        if (u.tils.isVoid(this._itemList.Remove(p_item))) { throw new Error(`Cannot unregister an item that is not in the repertoire.`); }
+        if (u.isVoid(itemID)) { throw new Error(`Cannot unregister a item with no ID.`); }
+        if (u.isVoid(this._itemList.Remove(p_item))) { throw new Error(`Cannot unregister an item that is not in the repertoire.`); }
 
         this._itemMap.Remove(itemID);
         this._OnItemUnregistered(p_item);
@@ -246,12 +246,12 @@ class Repertoire extends com.pool.DisposableObjectEx {
      */
     Get(p_id) {
 
-        if (u.tils.isVoid(p_id)) { throw new Error(`p_id cannot be null or undefined`); }
-        if (u.tils.isString(p_id)) {
+        if (u.isVoid(p_id)) { throw new Error(`p_id cannot be null or undefined`); }
+        if (u.isString(p_id)) {
             let id = this._idDispenser.Get(p_id);
-            if (u.tils.isVoid(id)) { return null; }
+            if (u.isVoid(id)) { return null; }
         }
-        else if (u.tils.isInstanceOf(p_id, ID)) { }
+        else if (u.isInstanceOf(p_id, ID)) { }
         else { throw new Error(`p_id must be either of type string or ID.`); }
 
         return this._itemMap.Get(p_id);

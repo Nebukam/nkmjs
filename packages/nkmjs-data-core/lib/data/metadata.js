@@ -102,7 +102,7 @@ class Metadata extends com.pool.DisposableObjectEx {
             if (i === countMinusOne) {
                 let existingValue = lastElement[id];
 
-                if (u.tils.isVoid(existingValue)) { created = true; }
+                if (u.isVoid(existingValue)) { created = true; }
                 if (existingValue === p_value) {
                     return p_value;
                 }
@@ -114,7 +114,7 @@ class Metadata extends com.pool.DisposableObjectEx {
             } else {
                 element = lastElement[id];
 
-                if (u.tils.isVoid(element)) {
+                if (u.isVoid(element)) {
                     element = {};
                     lastElement[id] = element;
                 }
@@ -154,15 +154,15 @@ class Metadata extends com.pool.DisposableObjectEx {
 
         if (Array.isArray(p_path)) {
             path = p_path;
-        } else if (u.tils.isString(p_path)) {
+        } else if (u.isString(p_path)) {
             path = p_path.split('.');
         } else { throw new Error(`Path ${p_path} is invalid.`); }
 
         let element = null;
 
-        if (u.tils.isVoid(p_fallback)) {
+        if (u.isVoid(p_fallback)) {
             element = this._data;
-            while (!u.tils.isVoid(element) && path.length != 0) {
+            while (!u.isVoid(element) && path.length != 0) {
                 element = element[path.shift()];
             }
             path.length = 0;
@@ -172,7 +172,7 @@ class Metadata extends com.pool.DisposableObjectEx {
             let lastElement = element;
             while (path.length != 0) {
                 element = lastElement[path.shift()];
-                if (u.tils.isVoid(element)) {
+                if (u.isVoid(element)) {
                     path.length = 0;
                     this._signals.silent = true;
                     element = this.Set(p_path, p_fallback);
@@ -200,9 +200,9 @@ class Metadata extends com.pool.DisposableObjectEx {
      */
     Clone(p_source = null, p_silent = true) {
         if (p_source) {
-            if (u.tils.isInstanceOf(p_source, Metadata)) {
+            if (u.isInstanceOf(p_source, Metadata)) {
                 this._data = u.tils.Clone(p_source._data);
-            } else if (u.tils.isObject(p_source)) {
+            } else if (u.isObject(p_source)) {
                 this._data = u.tils.Clone(p_source);
             } else {
                 return;

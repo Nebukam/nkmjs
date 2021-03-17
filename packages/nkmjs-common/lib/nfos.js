@@ -35,10 +35,10 @@ class NFOS {
      */
     static Get(p_obj, p_fallback = null) {
 
-        if (u.tils.isObject(p_obj)) {
+        if (u.isObject(p_obj)) {
             if (__NFO__ in p_obj) { return p_obj[__NFO__]; }
             else if (__NFO__ in p_obj.constructor) { return p_obj.constructor[__NFO__]; }
-        } else if (u.tils.isFunc(p_obj) && __NFO__ in p_obj) {
+        } else if (u.isFunc(p_obj) && __NFO__ in p_obj) {
             return p_obj[__NFO__];
         }
 
@@ -88,22 +88,22 @@ class NFOS {
         for (let key in source) {
             let sourceValue = source[key];
             if (!(p_baseObject.hasOwnProperty(key))) {
-                if (u.tils.isArray(sourceValue)) {
+                if (u.isArray(sourceValue)) {
                     p_baseObject[key] = [...sourceValue];
-                } else if (u.tils.isObject()) {
+                } else if (u.isObject()) {
                     p_baseObject[key] = this.Ext({}, sourceValue);
                 } else {
                     p_baseObject[key] = sourceValue;
                 }
             } else {
                 let baseValue = p_baseObject[key];
-                if (u.tils.isArray(baseValue)) {
-                    if (u.tils.isArray(sourceValue) && p_merge && p_merge.includes(key)) {
+                if (u.isArray(baseValue)) {
+                    if (u.isArray(sourceValue) && p_merge && p_merge.includes(key)) {
                         for (let i = 0, n = sourceValue.length; i < n; i++) {
                             if (!baseValue.includes(sourceValue[i])) { baseValue.push(sourceValue[i]); }
                         }
                     }
-                } else if (u.tils.isObject(baseValue) && UTILS.isObject(sourceValue)) {
+                } else if (u.isObject(baseValue) && UTILS.isObject(sourceValue)) {
                     this.Ext(baseValue, sourceValue, p_merge);
                 } else {
                     // Ignore

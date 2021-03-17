@@ -19,7 +19,7 @@ class JSONResource extends TextResource {
     static defaultType = RESPONSE_TYPE.JSON;
 
     _Encode() {
-        return u.tils.isObject(this._content) ? JSON.stringify(this._content, null, `     `) : `{}`;
+        return u.isObject(this._content) ? JSON.stringify(this._content, null, `     `) : `{}`;
     }
 
     _Decode() {

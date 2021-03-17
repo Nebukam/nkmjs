@@ -10,12 +10,12 @@ class DataManipulationCommand extends EcosystemCommand {
 
         if (!p_context) { return null; }
         let dClass = this._dataClass;
-        if (u.tils.isInstanceOf(p_context, dClass)) { return p_context; }
+        if (u.isInstanceOf(p_context, dClass)) { return p_context; }
         let cData = p_context.data;
         if (cData) {
-            if (u.tils.isInstanceOf(cData, dClass)) {
+            if (u.isInstanceOf(cData, dClass)) {
                 return cData;
-            } else if (u.tils.isInstanceOf(cData.data, dClass)) {
+            } else if (u.isInstanceOf(cData.data, dClass)) {
                 return cData.data;//In case the actual data item is a wrapper.
             }
         }

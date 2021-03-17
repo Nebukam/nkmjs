@@ -15,7 +15,7 @@ class DebugFill extends DisplayObjectContainer{
 
     _Render(){
         super._Render();
-        let p = u.dom.New(`p`);
+        let p = u.dom.El(`p`);
         p.innerText = mediumParagraph;
     }
 

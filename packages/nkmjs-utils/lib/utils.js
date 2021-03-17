@@ -1,8 +1,7 @@
 'use strict';
 
 const uuid = require('uuid');
-
-const toString = Object.prototype.toString;
+const CHECKS = require(`./checks`);
 
 /**
  * UTILS is a wrapper class that contains a bunch of utilitary static methods.
@@ -24,126 +23,9 @@ class UTILS {
     static DELIM_COMMA = `,`;
     static DELIM_PIPE = `|`;
 
-    /**
-     * @description Determine if a value is an Array
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is an Array, otherwise false
-     */
-    static isArray(p_value) { return Array.isArray(p_value); }
-
-    /**
-     * @description Determine if a value is an ArrayBuffer
-     * @param {object} val The value to test
-     * @returns {boolean} True if value is an ArrayBuffer, otherwise false
-     */
-    static isArrayBuffer(p_value) {
-        return toString.call(p_value) === '[object ArrayBuffer]';
-    }
-
-    /**
-     * @description Determine if a value is an Object
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is an Object, otherwise false
-     */
-    static isSymbol(p_value) { return typeof p_value === 'symbol'; }
-
-    /**
-     * @description Determine if a value is an Object
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is an Object, otherwise false
-     */
-    static isObject(p_value) { return p_value !== null && typeof p_value === 'object'; }
-
-    /**
-     * @description Determine if a value is a Function
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is an Function, otherwise false
-     */
-    static isFunc(p_value) { return typeof p_value === 'function'; }
-
-    /**
-     * @description Determine if a value is a string
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is an string, otherwise false
-     */
-    static isString(p_value) { return typeof p_value === 'string'; }
-
-    /**
-     * @description Determine if a value is a Number
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is an Number, otherwise false
-     */
-    static isNumber(p_value) { return typeof p_value === 'number'; }
-
-    /**
-     * @description Determine if a value is a Boolean
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is a Boolean, otherwise false
-     */
-    static isBool(p_value) { return typeof p_value === 'boolean'; }
-
-    /**
-     * @description Determine if a value is undefined
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is undefined, otherwise false
-     */
-    static isUndefined(p_value) { return typeof p_value === 'undefined'; }
-
-    /**
-     * @description Determine if a value is either undefined or null
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if value is either undefined or null, otherwise false
-     */
-    static isVoid(p_value) { return (typeof p_value === 'undefined' || p_value === null); }
-
-    /**
-     * @description Determine if a (source) Class or Instance of a constructor is an instance of another (target) Class 
-     * or Instance of a given Class.     *
-     * @param {Object|Function} p_source The value to test
-     * @param {Object|Function} p_target The value to test against 
-     * @returns {boolean} True if p_source is or extends target type, otherwise false
-     */
-    static isInstanceOf(p_source, p_target) {
-
-        if (UTILS.isVoid(p_source)
-            || UTILS.isVoid(p_target)) {
-            return false;
-        }
-
-        let AisFunc = (typeof p_source) === 'function',
-            BisFunc = (typeof p_target) === 'function';
-
-        if (AisFunc && BisFunc && p_source === p_target) {
-            return true;
-        }
-
-        let A = AisFunc ? p_source.prototype : p_source,
-            B = BisFunc ? p_target : p_target.constructor;
-
-        return A instanceof B;
-
-    }
-
-    /**
-     * @description Determine if an object is empty
-     * @param {*} p_value The value to test
-     * @returns {boolean} True if p_value is empty, otherwise false
-     */
-    static isEmpty(p_value) {
-        if (UTILS.isVoid(p_value) || p_value === ``) {
-            return true;
-        }
-        if (UTILS.isArray(p_value)) { return p_value.length === 0; }
-        if (UTILS.isObject(p_value)) {
-            for (let key in p_value) { return false; }
-            return true;
-        }
-        return false;
-    }
-
     static JSONStripEmpty(p_key, p_value) {
-        if (UTILS.isEmpty(p_value)) { return undefined; }
-        if (UTILS.isObject(p_value)) {
+        if (CHECKS.isEmpty(p_value)) { return undefined; }
+        if (CHECKS.isObject(p_value)) {
             for (let k in p_value) {
                 if (p_value.hasOwnProperty(k)) {
                     return p_value;
@@ -162,7 +44,7 @@ class UTILS {
     static Default(...args) {
         for (let i = 0, n = args.length; i < n; i++) {
             let val = args[i];
-            if (!UTILS.isVoid(val)) { return val; }
+            if (!CHECKS.isVoid(val)) { return val; }
         }
         return null;
     }
@@ -176,9 +58,9 @@ class UTILS {
      * @returns {*} The value, otherwise the provided fallback.
      */
     static Get(p_obj, p_key, p_fallback = null) {
-        if (UTILS.isVoid(p_obj)) { return p_fallback; }
+        if (CHECKS.isVoid(p_obj)) { return p_fallback; }
         let val = p_obj[p_key];
-        if (UTILS.isVoid(val)) { return p_fallback; }
+        if (CHECKS.isVoid(val)) { return p_fallback; }
         else { return val; }
     }
 
@@ -214,39 +96,39 @@ class UTILS {
      */
     static ParsePath(p_stringPath) {
 
-        if (UTILS.isVoid(p_stringPath)) { return null; }
+        if (CHECKS.isVoid(p_stringPath)) { return null; }
 
         let parseResult = {};
 
-        let hasProtocol = p_stringPath.includes(UTILS.DELIM_PROTOCOL);
+        let hasProtocol = p_stringPath.includes(this.DELIM_PROTOCOL);
         if (hasProtocol) {
-            let protocolSplit = p_stringPath.split(UTILS.DELIM_PROTOCOL);
+            let protocolSplit = p_stringPath.split(this.DELIM_PROTOCOL);
             if (protocolSplit.length != 2) { throw new Error(`Path '${p_stringPath}' cannot be parsed (protocol malformed).`); }
-            parseResult.protocol = protocolSplit[0] + UTILS.DELIM_PROTOCOL;
+            parseResult.protocol = protocolSplit[0] + this.DELIM_PROTOCOL;
             p_stringPath = protocolSplit[1];
         }
 
-        let hasDrive = p_stringPath.includes(UTILS.DELIM_DRIVE);
+        let hasDrive = p_stringPath.includes(this.DELIM_DRIVE);
         if (hasDrive) {
-            let driveSplit = p_stringPath.split(UTILS.DELIM_DRIVE);
+            let driveSplit = p_stringPath.split(this.DELIM_DRIVE);
             if (driveSplit.length > 2) { throw new Error(`Path '${p_stringPath}' cannot be parsed (drive malformed).`); }
-            parseResult.drive = driveSplit[0] + UTILS.DELIM_PROTOCOL;
+            parseResult.drive = driveSplit[0] + this.DELIM_PROTOCOL;
             p_stringPath = driveSplit[1];
         }
 
-        let split = p_stringPath.split(UTILS.DELIM_DIR),
+        let split = p_stringPath.split(this.DELIM_DIR),
             lastIndex = split.length - 1,
             fname = split[lastIndex],
-            splitEx = fname.split(UTILS.DELIM_EXT);
+            splitEx = fname.split(this.DELIM_EXT);
 
         split.splice(lastIndex, 1);
 
         for (let i = 0, n = split.length; i < n; i++) { if (split[i] === ``) { split.splice(i, 1); i--; } }
 
-        parseResult.path = split.join(UTILS.DELIM_DIR) + UTILS.DELIM_DIR;
+        parseResult.path = split.join(this.DELIM_DIR) + this.DELIM_DIR;
         parseResult.pathArray = split;
         parseResult.name = splitEx[0];
-        parseResult.ext = UTILS.DELIM_EXT + splitEx[splitEx.length - 1];
+        parseResult.ext = this.DELIM_EXT + splitEx[splitEx.length - 1];
 
         return parseResult;
 
@@ -283,8 +165,8 @@ class UTILS {
      */
     static Append(p_base, p_source) {
 
-        if (UTILS.isVoid(p_base)) { p_base = {}; }
-        if (UTILS.isVoid(p_source)) { return p_base; }
+        if (CHECKS.isVoid(p_base)) { p_base = {}; }
+        if (CHECKS.isVoid(p_source)) { return p_base; }
         for (let member in p_source) {
             if (p_base.hasOwnProperty(member)) { continue; }
             p_base[member] = p_source[member];
@@ -304,17 +186,17 @@ class UTILS {
         for (let key in p_source) {
             let sourceValue = p_source[key];
             if (!(p_base.hasOwnProperty(key))) {
-                if (UTILS.isArray(sourceValue)) {
+                if (CHECKS.isArray(sourceValue)) {
                     p_base[key] = [...sourceValue];
-                } else if (UTILS.isObject()) {
-                    p_base[key] = UTILS.SetMissing({}, sourceValue);
+                } else if (CHECKS.isObject(sourceValue)) {
+                    p_base[key] = this.SetMissing({}, sourceValue);
                 } else {
                     p_base[key] = sourceValue;
                 }
             } else {
                 let baseValue = p_base[key];
-                if (UTILS.isArray(baseValue)) {
-                    if (UTILS.isArray(sourceValue) && p_mergeArrays !== 0) {
+                if (CHECKS.isArray(baseValue)) {
+                    if (CHECKS.isArray(sourceValue) && p_mergeArrays !== 0) {
                         for (let i = 0, n = sourceValue.length; i < n; i++) {
                             if (!baseValue.includes(sourceValue[i])) {
                                 if (p_mergeArrays < 0) { baseValue.unshift(sourceValue[i]); }
@@ -322,8 +204,8 @@ class UTILS {
                             }
                         }
                     }
-                } else if (UTILS.isObject(baseValue) && UTILS.isObject(sourceValue)) {
-                    UTILS.SetMissing(baseValue, sourceValue);
+                } else if (CHECKS.isObject(baseValue) && CHECKS.isObject(sourceValue)) {
+                    this.SetMissing(baseValue, sourceValue);
                 } else {
                     // Ignore
                 }
@@ -345,19 +227,19 @@ class UTILS {
         for (let key in p_source) {
             let sourceValue = p_source[key];
             if (!(p_base.hasOwnProperty(key))) {
-                if (UTILS.isArray(sourceValue)) {
+                if (CHECKS.isArray(sourceValue)) {
                     p_base[key] = sourceValue;
-                } else if (UTILS.isObject()) {
+                } else if (CHECKS.isObject()) {
                     p_base[key] = sourceValue;
                 } else {
                     p_base[key] = sourceValue;
                 }
             } else {
                 let baseValue = p_base[key];
-                if (UTILS.isArray(baseValue)) {
+                if (CHECKS.isArray(baseValue)) {
                     p_base[key] = sourceValue;
-                } else if (UTILS.isObject(sourceValue)) {
-                    if (UTILS.isObject(baseValue)) { UTILS.SetOverwrite(baseValue, sourceValue); }
+                } else if (CHECKS.isObject(sourceValue)) {
+                    if (CHECKS.isObject(baseValue)) { this.SetOverwrite(baseValue, sourceValue); }
                     else { p_base[key] = sourceValue; }
                 } else {
                     p_base[key] = sourceValue;
@@ -399,14 +281,14 @@ class UTILS {
      * @returns {object} Clone of p_base
      */
     static Clone(p_base) {
-        if (!UTILS.isObject(p_base)) { throw new Error(`Cannot Clone the non-object '${p_base}'`); }
+        if (!CHECKS.isObject(p_base)) { throw new Error(`Cannot Clone the non-object '${p_base}'`); }
         let clone = {};
         for (let member in p_base) {
             if (!p_base.hasOwnProperty(member)) { continue; }
             let value = p_base[member];
             if (value != null) {
-                if (UTILS.isArray(value)) { value = UTILS.CloneArray(value); }
-                else if (UTILS.isObject(value)) { value = UTILS.Clone(value); }
+                if (CHECKS.isArray(value)) { value = this.CloneArray(value); }
+                else if (CHECKS.isObject(value)) { value = this.Clone(value); }
             }
             clone[member] = value;
         }
@@ -420,13 +302,13 @@ class UTILS {
      * @returns {array} Clone of p_base
      */
     static CloneArray(p_base) {
-        if (!UTILS.isArray(p_base)) { throw new Error(`Cannot CloneArray the non-array '${p_base}'`); }
+        if (!CHECKS.isArray(p_base)) { throw new Error(`Cannot CloneArray the non-array '${p_base}'`); }
         let arr = new Array(0);
         for (let i = 0, n = p_base.length; i < n; i++) {
             let arrValue = p_base[i];
             if (arrValue != null) {
-                if (UTILS.isArray(arrValue)) { arrValue = UTILS.CloneArray(arrValue); }
-                else if (UTILS.isObject(arrValue)) { arrValue = UTILS.Clone(arrValue); }
+                if (CHECKS.isArray(arrValue)) { arrValue = this.CloneArray(arrValue); }
+                else if (CHECKS.isObject(arrValue)) { arrValue = this.Clone(arrValue); }
             }
             arr.push(arrValue);
         }
@@ -456,15 +338,15 @@ class UTILS {
         //p_out is the items from oldArray not in the new one
         //p_int are the items from the newArray not in the old one
 
-        if (UTILS.isVoid(p_oldArray)) {
-            if (UTILS.isVoid(p_newArray)) { return; }
+        if (CHECKS.isVoid(p_oldArray)) {
+            if (CHECKS.isVoid(p_newArray)) { return; }
             //Everything in
             for (let i = 0, n = p_newArray.length; i < n; i++) {
                 p_in.push(p_newArray[i]);
             }
             return;
-        } else if (UTILS.isVoid(p_newArray)) {
-            if (UTILS.isVoid(p_oldArray)) { return; }
+        } else if (CHECKS.isVoid(p_newArray)) {
+            if (CHECKS.isVoid(p_oldArray)) { return; }
             //Everything out
             for (let i = 0, n = p_oldArray.length; i < n; i++) {
                 p_out.push(p_oldArray[i]);
@@ -495,15 +377,15 @@ class UTILS {
     static ArrayDiffCallbacks(p_oldArray, p_newArray, p_outCallback, p_inCallback) {
 
 
-        if (UTILS.isVoid(p_oldArray)) {
-            if (UTILS.isVoid(p_newArray)) { return; }
+        if (CHECKS.isVoid(p_oldArray)) {
+            if (CHECKS.isVoid(p_newArray)) { return; }
             //Everything in
             for (let i = 0, n = p_newArray.length; i < n; i++) {
                 p_inCallback(p_newArray[i], i);
             }
             return;
-        } else if (UTILS.isVoid(p_newArray)) {
-            if (UTILS.isVoid(p_oldArray)) { return; }
+        } else if (CHECKS.isVoid(p_newArray)) {
+            if (CHECKS.isVoid(p_oldArray)) { return; }
             //Everything out
             for (let i = 0, n = p_oldArray.length; i < n; i++) {
                 p_outCallback(p_oldArray[i], i);
@@ -536,7 +418,7 @@ class UTILS {
     static InheritanceDistance(p_from, p_to) {
         //Return -1 if no inheritance
         let dist = 0;
-        if (!UTILS.isInstanceOf(p_from, p_to)) { return -1; }
+        if (!CHECKS.isInstanceOf(p_from, p_to)) { return -1; }
 
         let cl = Object.getPrototypeOf(p_from);
 
@@ -577,8 +459,8 @@ class UTILS {
         let value = null;
         for (let member in p_obj) {
             value = p_obj[member];
-            if (UTILS.isArray(value)) { UTILS.DeepClearArray(value); }
-            else if (UTILS.isObject(value)) { UTILS.DeepClear(value); }
+            if (CHECKS.isArray(value)) { this.DeepClearArray(value); }
+            else if (CHECKS.isObject(value)) { this.DeepClear(value); }
             p_obj[member] = null; // delete is too slow
         }
         if (p_returnNewEmpty) { return {}; }
@@ -593,8 +475,8 @@ class UTILS {
         let value = null;
         while (p_arr.length != 0) {
             value = p_arr.pop();
-            if (UTILS.isArray(value)) { UTILS.DeepClearArray(value); }
-            else if (UTILS.isObject(value)) { UTILS.DeepClear(value); }
+            if (CHECKS.isArray(value)) { this.DeepClearArray(value); }
+            else if (CHECKS.isObject(value)) { this.DeepClear(value); }
         }
     }
 
@@ -620,10 +502,10 @@ class UTILS {
                         otherTof = typeof otherValue;
 
                     if (tof === otherTof) {
-                        if (UTILS.isArray(value)) {
-                            if (!UTILS.isSameArray(value, otherValue)) { return false; }
+                        if (CHECKS.isArray(value)) {
+                            if (!this.isSameArray(value, otherValue)) { return false; }
                         } else if (tof === 'object') {
-                            if (!UTILS.isSame(value, otherValue)) { return false; }
+                            if (!this.isSame(value, otherValue)) { return false; }
                         } else {
                             return false;
                         }
@@ -668,10 +550,10 @@ class UTILS {
                     otherTof = typeof otherValue;
 
                 if (tof === otherTof) {
-                    if (UTILS.isArray(value)) {
-                        if (!UTILS.isSameArray(value, otherValue)) { return false; }
+                    if (CHECKS.isArray(value)) {
+                        if (!this.isSameArray(value, otherValue)) { return false; }
                     } else if (tof === 'object') {
-                        if (!UTILS.isSame(value, otherValue)) { return false; }
+                        if (!this.isSame(value, otherValue)) { return false; }
                     } else {
                         return false;
                     }

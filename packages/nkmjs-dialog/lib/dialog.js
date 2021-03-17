@@ -56,7 +56,7 @@ class DIALOG extends services.ServiceBase {
 
         let dialogOptions = null;
 
-        if (!u.tils.isInstanceOf(p_options, ui.overlays.OverlayOptions)) {
+        if (!u.isInstanceOf(p_options, ui.overlays.OverlayOptions)) {
             dialogOptions = ui.overlays.OverlayOptions.Create(p_options);
             this._ownedDialogData.Set(dialogOptions, true);
         } else {

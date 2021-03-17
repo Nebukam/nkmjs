@@ -59,9 +59,9 @@ class Group extends ui.OrientableWidget {
     }
 
     _Render() {
-        this._header = u.dom.New(`div`, { class: `header` }, this._host);
-        this._wrapper = u.dom.New(`div`, { class: `body` }, this._host);
-        this._footer = u.dom.New(`div`, { class: `footer` }, this._host);
+        this._header = u.dom.El(`div`, { class: `header` }, this._host);
+        this._wrapper = u.dom.El(`div`, { class: `body` }, this._host);
+        this._footer = u.dom.El(`div`, { class: `footer` }, this._host);
     }
 
     _GetOrCreateGroup(p_key, p_flags = null, p_class = null) {

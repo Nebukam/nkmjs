@@ -34,20 +34,20 @@ class BackgroundManipulator extends Manipulator {
      */
     _Update(p_element, p_value) {
 
-        if (u.tils.isVoid(p_value)) {
+        if (u.isVoid(p_value)) {
             this._ApplyPath(p_element, false);
             return false;
         } else {
 
             let path = ``;
 
-            if (u.tils.isString(p_value)) { path = p_value; }
+            if (u.isString(p_value)) { path = p_value; }
             else if (IDS.ICON in p_value) { path = p_value[IDS.ICON]; }
             else if (IDS.PATH in p_value) { path = p_value[IDS.PATH]; }
             else if (`img` in p_value) { path = p_value.img; }
             else if (`objectURL` in p_value) { path = p_value.objectURL; }
 
-            if (path === `` || !u.tils.isString(path)) { return false; }
+            if (path === `` || !u.isString(path)) { return false; }
 
             path = u.PATH.FULL(path);
 

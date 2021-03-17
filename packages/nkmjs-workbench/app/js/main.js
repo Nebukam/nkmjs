@@ -223,7 +223,7 @@ class StyleguideApp extends nkm.app.AppBase {
     // ----
 
     _FillToolbar(p_toolbar) {
-        if (u.tils.isInstanceOf(p_toolbar, ui.views.ShelfNav)) { return; }
+        if (u.isInstanceOf(p_toolbar, ui.views.ShelfNav)) { return; }
         for (let i = 0, n = this._buttonConfigs.length; i < n; i++) {
             p_toolbar.CreateHandle(this._buttonConfigs[i]);
         }

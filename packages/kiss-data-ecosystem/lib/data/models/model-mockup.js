@@ -93,7 +93,7 @@ class ModelMockup extends com.pool.DisposableObjectEx {
 
             } else {
 
-                if (u.tils.isInstanceOf(existingField.fieldClass, mockField.cl)) {
+                if (u.isInstanceOf(existingField.fieldClass, mockField.cl)) {
                     //Field exists, type matches.
                     if (mockField.settings) {
                         existingField.Unpack(mockField.settings);
@@ -194,7 +194,7 @@ class ModelMockup extends com.pool.DisposableObjectEx {
     Has(p_fieldId) { return this._mockup.hasOwnProperty(p_fieldId); }
 
     Add(p_fieldId, p_fieldClass, p_fieldSettings = null) {
-        if (u.tils.isEmpty(p_fieldId)) { throw new Error(`Cannot add a field with an empty ID.`); }
+        if (u.isEmpty(p_fieldId)) { throw new Error(`Cannot add a field with an empty ID.`); }
         if (!p_fieldClass) { throw new Error(`Cannot add a field with an empty type.`); }
         let mockup = this._mockup;
         if (mockup.hasOwnProperty(p_fieldId)) {
@@ -228,7 +228,7 @@ class ModelMockup extends com.pool.DisposableObjectEx {
             let existingField = p_model.Get(member);
             if (!existingField) { return false; }//Field missing
             let mockField = mockup[member];
-            if (!u.tils.isInstanceOf(existingField.fieldClass, mockField.cl)) { return false; } //Field type mismatch
+            if (!u.isInstanceOf(existingField.fieldClass, mockField.cl)) { return false; } //Field type mismatch
             if (!p_inspectSettings) { continue; }
             throw new Error(`settings inspection not implemented yet`);
         }
@@ -249,7 +249,7 @@ class ModelMockup extends com.pool.DisposableObjectEx {
         for (let member in mockup) {
             let existingField = p_model.Get(member);
             if (!existingField) { return false; }//Field missing
-            if (!u.tils.isInstanceOf(existingField.fieldClass, mockup[member].cl)) { return false; } //Field type mismatch
+            if (!u.isInstanceOf(existingField.fieldClass, mockup[member].cl)) { return false; } //Field type mismatch
         }
 
         return true;

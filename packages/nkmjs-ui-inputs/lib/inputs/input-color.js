@@ -32,9 +32,9 @@ class InputColor extends InputField {
     }
 
     _Render() {
-        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: `label` }, this._host));
-        this._inputField = u.dom.New(`input`, { class: 'field', type: 'color' }, this._host);
-        this._body = u.dom.New(`div`, { class: 'body' }, this._host);
+        this._label = new ui.manipulators.Text(u.dom.El(`span`, { class: `label` }, this._host));
+        this._inputField = u.dom.El(`input`, { class: 'field', type: 'color' }, this._host);
+        this._body = u.dom.El(`div`, { class: 'body' }, this._host);
     }
 
     _UpdatePreview() {

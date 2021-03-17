@@ -119,17 +119,17 @@ class DialogBox extends ui.Widget {
 
     _Render() {
 
-        this._icon = new ui.manipulators.Icon(u.dom.New('div', { class: `icon` }, this._host), false, true);
+        this._icon = new ui.manipulators.Icon(u.dom.El('div', { class: `icon` }, this._host), false, true);
 
-        this._header = u.dom.New(`div`, { class: `group header` }, this._host);
-        this._body = u.dom.New(`div`, { class: `group body` }, this._host);
-        this._footer = u.dom.New(`div`, { class: `group footer` }, this._host);
+        this._header = u.dom.El(`div`, { class: `group header` }, this._host);
+        this._body = u.dom.El(`div`, { class: `group body` }, this._host);
+        this._footer = u.dom.El(`div`, { class: `group footer` }, this._host);
 
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._footer);
         this._toolbar._defaultButtonClass = this._toolbarDefaultButtonClass;
         this._toolbar.size = ui.FLAGS.SIZE_M;
 
-        this._title = new ui.manipulators.Text(u.dom.New(`span`, { class: `title ${style.FONT_FLAG.MEDIUM}` }, this._header), false);
+        this._title = new ui.manipulators.Text(u.dom.El(`span`, { class: `title ${style.FONT_FLAG.MEDIUM}` }, this._header), false);
         this._messageElement = null;
 
     }
@@ -151,7 +151,7 @@ class DialogBox extends ui.Widget {
 
     set message(p_message) {
         if (!this._messageElement) {
-            this._messageElement = u.dom.New(`span`, { class: `item message` }, this._body);
+            this._messageElement = u.dom.El(`span`, { class: `item message` }, this._body);
         }
         this._messageElement.innerHTML = p_message;
         this._contents.push(this._messageElement);
@@ -196,7 +196,7 @@ class DialogBox extends ui.Widget {
 
             let item = this.Add(itemClass, `item`, this._body);
 
-            if (u.tils.isInstanceOf(itemClass, InputBase)) {
+            if (u.isInstanceOf(itemClass, InputBase)) {
 
                 item.inputId = itemNfos.inputId;
 

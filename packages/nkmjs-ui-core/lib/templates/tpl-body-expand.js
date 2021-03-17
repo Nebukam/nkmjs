@@ -18,20 +18,20 @@ class TPLBodyExpand extends TPLFacadeExpandLabel {
 
     static _CreateTemplate() {
 
-        this._Add(u.dom.New(`div`, { class: IDS.HEADER }), { [IDS.UID]: __header });
-        this._Add(u.dom.New(`div`, { class: `${IDS.ICON} expand` }), {
+        this._Add(u.dom.El(`div`, { class: IDS.HEADER }), { [IDS.UID]: __header });
+        this._Add(u.dom.El(`div`, { class: `${IDS.ICON} expand` }), {
             [IDS.UID]: __expandIcon, parent: __header,
             fn: this.AsIcon
         });
-        this._Add(u.dom.New(`div`, { class: IDS.ICON }), {
+        this._Add(u.dom.El(`div`, { class: IDS.ICON }), {
             [IDS.UID]: __icon, parent: __header,
             fn: this.AsIcon
         });
-        this._Add(u.dom.New(`span`, { class: IDS.LABEL }), {
+        this._Add(u.dom.El(`span`, { class: IDS.LABEL }), {
             [IDS.UID]: __label, parent: __header,
             fn: this.AsText
         });
-        this._Add(u.dom.New(`div`, { class: IDS.BODY }), { [IDS.UID]: __body });
+        this._Add(u.dom.El(`div`, { class: IDS.BODY }), { [IDS.UID]: __body });
 
     }
 

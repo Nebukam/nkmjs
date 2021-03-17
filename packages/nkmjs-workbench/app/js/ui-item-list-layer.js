@@ -42,7 +42,7 @@ class UIItemListLayer extends ui.views.Layer {
 
     _Render() {
 
-        this._itemContainer = u.dom.New(`div`, { class: `list-ctnr` }, this);
+        this._itemContainer = u.dom.El(`div`, { class: `list-ctnr` }, this);
 
     }
 
@@ -62,7 +62,7 @@ class UIItemListLayer extends ui.views.Layer {
 
         for (let i = 0, n = this._variants.length; i < n; i++) {
             let v = this._variants[i];
-            if (u.tils.isInstanceOf(p_class, v.cl) && (!v.not || !v.not.includes(p_class))) {
+            if (u.isInstanceOf(p_class, v.cl) && (!v.not || !v.not.includes(p_class))) {
                 variants = v.variants;
                 callback = v.fn;
             }

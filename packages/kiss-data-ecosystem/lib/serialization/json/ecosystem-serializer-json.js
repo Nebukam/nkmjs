@@ -39,11 +39,11 @@ class EcosystemJSONSerializer extends data.serialization.Serializer {
 
         let type = nfos.type;
 
-        if (u.tils.isInstanceOf(p_target, Model)) {
+        if (u.isInstanceOf(p_target, Model)) {
             type = type_model;
-        } else if (u.tils.isInstanceOf(p_target, DataEntry)) {
+        } else if (u.isInstanceOf(p_target, DataEntry)) {
             type = type_entry;
-        } else if (u.tils.isInstanceOf(p_target, FieldSettings)) {
+        } else if (u.isInstanceOf(p_target, FieldSettings)) {
             type = type_field;
         } else {
             type = type_default;

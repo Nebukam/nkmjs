@@ -70,7 +70,7 @@ class Document extends com.pool.DisposableObjectEx {
 
         this._currentPath = p_value;
 
-        if (!u.tils.isEmpty(p_value) && this._currentRsc) {
+        if (!u.isEmpty(p_value) && this._currentRsc) {
             if (this._currentRsc.path != p_value) {
                 // Current resource doesn't have the provided path : unlink it.
                 // Document will fetch the correct resource when required.
@@ -158,7 +158,7 @@ class Document extends com.pool.DisposableObjectEx {
 
         if (!this._currentRsc) {
             // No resource currently set, fetch it.
-            if (u.tils.isEmpty(this._currentPath)) { throw new Error(`Empty path.`); }
+            if (u.isEmpty(this._currentPath)) { throw new Error(`Empty path.`); }
             this.currentRsc = io.RESOURCES.Get(this._currentPath, p_options);
         }
 

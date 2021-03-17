@@ -65,7 +65,7 @@ class Catalog extends CatalogItem {
 
             for (let i = 0, n = pathSplit.length; i < n; i++) {
                 let current = pathSplit.shift();
-                if (!u.tils.isEmpty(current)) {
+                if (!u.isEmpty(current)) {
                     pathArray.push(current);
                 } else if (i === n - 1) {
                     isDir = true;
@@ -130,12 +130,12 @@ class Catalog extends CatalogItem {
 
         let itemClass = null;
 
-        if (u.tils.isObject(p_itemOptions)) {
+        if (u.isObject(p_itemOptions)) {
             let data = u.tils.Get(p_itemOptions, `data`, null);
             if (data) { itemClass = com.BINDINGS.Get(Catalog, data, null); }
 
             if (!itemClass) {
-                if (p_forceCatalog || u.tils.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = this.__default_catalogClass; }
+                if (p_forceCatalog || u.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = this.__default_catalogClass; }
                 else { itemClass = this.__default_itemClass; }
             }
         } else {
@@ -260,18 +260,18 @@ class Catalog extends CatalogItem {
      */
     GetOrCreateCatalog(p_options) {
 
-        let catalogName = u.tils.isString(p_options) ? p_options : p_options[com.IDS.NAME];
+        let catalogName = u.isString(p_options) ? p_options : p_options[com.IDS.NAME];
 
         let list = this._items,
             catalog = null;
 
         for (let i = 0, n = list.length; i < n; i++) {
             catalog = list[i];
-            if (u.tils.isInstanceOf(catalog, Catalog) && catalog.name === catalogName) { return catalog; }
+            if (u.isInstanceOf(catalog, Catalog) && catalog.name === catalogName) { return catalog; }
         }
 
         catalog = com.Rent(Catalog.GetItemClass(p_options, true));
-        catalog.options = u.tils.Ensure(u.tils.isObject(p_options) ? p_options : {}, {
+        catalog.options = u.tils.Ensure(u.isObject(p_options) ? p_options : {}, {
             [com.IDS.NAME]: catalogName,
             [com.IDS.ICON]: `%ICON%/icon_directory.svg`
         });
@@ -336,7 +336,7 @@ class Catalog extends CatalogItem {
      */
     Add(p_item) {
 
-        if (!u.tils.isInstanceOf(p_item, CatalogItem)) { throw new Error(`Cannot Add a non-CatalogItem (${p_item}) to Catalog.`); }
+        if (!u.isInstanceOf(p_item, CatalogItem)) { throw new Error(`Cannot Add a non-CatalogItem (${p_item}) to Catalog.`); }
 
         if (this._items.includes(p_item)) { return null; }
 
@@ -385,7 +385,7 @@ class Catalog extends CatalogItem {
      * @param {data.core.CatalogItem} p_item 
      */
     Remove(p_item) {
-        if (!u.tils.isInstanceOf(p_item, CatalogItem)) { return; }
+        if (!u.isInstanceOf(p_item, CatalogItem)) { return; }
 
         let index = this._items.indexOf(p_item);
         if (index === -1) { return; }
@@ -442,7 +442,7 @@ class Catalog extends CatalogItem {
                     p_results.push(item);
                 }
             }
-            if (u.tils.isInstanceOf(item, Catalog)) {
+            if (u.isInstanceOf(item, Catalog)) {
                 item.FindDataHolders(p_data, p_results);
             }
         }
@@ -461,7 +461,7 @@ class Catalog extends CatalogItem {
         for (let i = 0, n = this._items.length; i < n; i++) {
             let item = this._items[i];
             if (item.data === p_data) { return item; }
-            if (u.tils.isInstanceOf(item, Catalog)) {
+            if (u.isInstanceOf(item, Catalog)) {
                 item = item.FindDataHolders(p_data);
                 if (item) { return item; }
             }
@@ -597,7 +597,7 @@ class Catalog extends CatalogItem {
     StructToString(p_string = null, p_depth = null) {
 
         if (!p_string) { p_string = ''; }
-        if (u.tils.isVoid(p_depth)) { p_depth = -1; }
+        if (u.isVoid(p_depth)) { p_depth = -1; }
         p_depth++;
 
         let s = `\t`,
@@ -609,7 +609,7 @@ class Catalog extends CatalogItem {
 
         for (let i = 0, n = this._items.length; i < n; i++) {
             let item = this._items[i];
-            if (u.tils.isInstanceOf(item, Catalog)) {
+            if (u.isInstanceOf(item, Catalog)) {
                 p_string = item.StructToString(p_string, p_depth);
             } else {
                 p_string += `${spaces}${s}· ${item.name}\n`;

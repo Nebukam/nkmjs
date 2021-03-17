@@ -41,9 +41,9 @@ class RELAY extends services.ServiceBase {
     _Init() {
         super._Init();
         this._requests = new collections.List();
-        if (env.ENV.FEATURES.isExtension) {
+        if (env.isExtension) {
             this._extIpc = new signals.SignalBox();
-            env.ENV.FEATURES.runtime.onMessage.addListener(function (request, sender, response) {
+            env.runtime.onMessage.addListener(function (request, sender, response) {
                 let signal = request.signal,
                     data = request;
                 request.respond = response;
@@ -123,9 +123,9 @@ class RELAY extends services.ServiceBase {
      * @param {function} p_fn 
      */
     _ipcSend(p_evt, ...args) {
-        if (env.ENV.FEATURES.isExtension) {
+        if (env.isExtension) {
             // sendMessage to background extension, if any
-            env.ENV.FEATURES.runtime.sendMessage(null, JSON.stringify({ signal:p_evt, args:args }));
+            env.runtime.sendMessage(null, JSON.stringify({ signal:p_evt, args:args }));
         }
     }
 

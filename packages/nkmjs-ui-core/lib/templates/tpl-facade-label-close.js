@@ -28,15 +28,15 @@ class TPLFacadeLabelClose extends DOMTemplate {
     */
 
     static _CreateTemplate() {
-        this._Add(u.dom.New(`div`, { class: IDS.ICON }), {
+        this._Add(u.dom.El(`div`, { class: IDS.ICON }), {
             [IDS.UID]: __icon,
             fn: this.AsIcon
         });
-        this._Add(u.dom.New(`span`, { class: IDS.LABEL }), {
+        this._Add(u.dom.El(`span`, { class: IDS.LABEL }), {
             [IDS.UID]: __label,
             fn: this.AsTextStatic
         });
-        this._Add(u.dom.New(`div`, { class: `${IDS.ICON} close` }), {
+        this._Add(u.dom.El(`div`, { class: `${IDS.ICON} close` }), {
             [IDS.UID]: __closeIcon,
             fn: this.AsIconStatic // Need to add 'node.htitle = xxx'
         });

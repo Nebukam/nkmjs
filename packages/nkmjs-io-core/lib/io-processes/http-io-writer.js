@@ -32,7 +32,7 @@ class HTTPIOWriter extends IOProcess {
             let a = HTTPIOWriter.dlLink;
             a.download = `${u.PATH.name(this._operation.fullPath)}${ext}`;
             a.href = window.URL.createObjectURL(
-                u.tils.isInstanceOf(this.rsc.content, Blob) ? this.rsc.content
+                u.isInstanceOf(this.rsc.content, Blob) ? this.rsc.content
                     : new Blob([this.rsc.content], { type: `${this.rsc.mime ? this.rsc.mime.type : `text/plain`}` }));
 
             a.click(); //hack much

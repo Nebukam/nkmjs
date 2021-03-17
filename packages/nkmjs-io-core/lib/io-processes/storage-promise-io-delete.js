@@ -26,7 +26,7 @@ class StoragePromiseIODelete extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        env.ENV.FEATURES.storageArea.local.remove(this._operation.fullPath)
+        env.storageArea.local.remove(this._operation.fullPath)
             .then(this._OnStorageRemoved)
             .catch(this._OnStorageRemovedError);
 

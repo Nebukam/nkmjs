@@ -26,7 +26,7 @@ class StoragePromiseIOWriter extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        env.ENV.FEATURES.storageArea.local.set({ [this._operation.fullPath]: this.rsc.raw })
+        env.storageArea.local.set({ [this._operation.fullPath]: this.rsc.raw })
             .then(this._OnStorageWritten)
             .catch(this._OnStorageWrittenError);
 

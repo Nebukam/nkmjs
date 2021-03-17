@@ -35,7 +35,7 @@ class Control extends ui.OrientableWidget{
     get editor(){
         let p = this._parent;
         while(p != null){
-            if(u.tils.isInstanceOf(p, Editor)){return p;}
+            if(u.isInstanceOf(p, Editor)){return p;}
             p = p._parent;
         }
         return null;
@@ -56,7 +56,7 @@ class Control extends ui.OrientableWidget{
 
     _OnDataChanged(p_oldValue){
         super._OnDataChanged(p_oldValue);
-        if(u.tils.isInstanceOf(this._data, data.DataBlock)){ this._metadataObserver.target = this._data.metadata; }
+        if(u.isInstanceOf(this._data, data.DataBlock)){ this._metadataObserver.target = this._data.metadata; }
         else{ this._metadataObserver.target = null; }
     }
 

@@ -42,12 +42,12 @@ class IconManipulator extends Manipulator {
 
         // Icon
 
-        if(u.tils.isString(p_value)){
+        if(u.isString(p_value)){
             p_value = p_value.trim();
             if(p_value === ``){ p_value = null; }
         }
 
-        if (u.tils.isObject(p_value)) {
+        if (u.isObject(p_value)) {
             if (IDS.ICON in p_value) { p_flavor = p_value[IDS.ICON]; }
             else if (IDS.IMG in p_value) { p_value = p_value[IDS.IMG]; }
             else { p_value = null; }
@@ -58,7 +58,7 @@ class IconManipulator extends Manipulator {
 
         // Flavor
 
-        if (u.tils.isObject(p_flavor)) {
+        if (u.isObject(p_flavor)) {
             if (IDS.FLAVOR in p_flavor) { p_flavor = p_flavor[IDS.FLAVOR]; }
             else { p_flavor = null; }
         }
@@ -68,7 +68,7 @@ class IconManipulator extends Manipulator {
 
         // Variant
 
-        if (u.tils.isObject(p_variant)) {
+        if (u.isObject(p_variant)) {
             if (IDS.VARIANT in p_variant) { p_variant = p_variant[IDS.VARIANT]; }
             else { p_variant = null; }
         }

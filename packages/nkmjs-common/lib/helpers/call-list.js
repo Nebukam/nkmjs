@@ -32,7 +32,7 @@ class CallList {
      * @example calllist.Add(foo).Add(bar);
      */
     Add(p_fn) {
-        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a Function.`); }
+        if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a Function.`); }
         this._list.Add(p_fn);
         return this;
     }

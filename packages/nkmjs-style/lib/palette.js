@@ -176,7 +176,7 @@ class Palette extends com.pool.DisposableObject {
 
         let style = this._cache.Get(p_class);
 
-        if (!u.tils.isVoid(style) && !p_invalidateCache) { return style; }
+        if (!u.isVoid(style) && !p_invalidateCache) { return style; }
 
         if (style) { style.length = 0; }
         else { style = new Array(0); }
@@ -187,7 +187,7 @@ class Palette extends com.pool.DisposableObject {
 
             if (nfos.css) {
                 for (let i = nfos.css.length - 1; i >= 0; i--) {
-                    style.push(u.dom.New(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
+                    style.push(u.dom.El(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
                 }
             }
 
@@ -200,9 +200,9 @@ class Palette extends com.pool.DisposableObject {
 
         let styleObject = p_generator();
 
-        if (!u.tils.isEmpty(styleObject)) {
+        if (!u.isEmpty(styleObject)) {
 
-            if (!u.tils.isObject(styleObject)) { throw new Error(`Generator must return an object.`); }
+            if (!u.isObject(styleObject)) { throw new Error(`Generator must return an object.`); }
 
             //Replace KVPs before appending globals, for performance reasons
             let styleString = ``;
@@ -210,7 +210,7 @@ class Palette extends com.pool.DisposableObject {
             for (let el in styleObject) { this._ProcessSuffixes(el, styleObject[el], styleObject); }
             for (let el in styleObject) { styleString += CSS_UTILS.CSS(el, this._ProcessSingleRuleset(el, styleObject[el])); }
 
-            let styleElement = u.dom.New(`style`);
+            let styleElement = u.dom.El(`style`);
             styleElement.innerText = styleString;
             style.push(styleElement);
 
@@ -235,9 +235,9 @@ class Palette extends com.pool.DisposableObject {
 
         let refCandidate = p_el[0] === __REF;
 
-        if (!u.tils.isArray(p_ruleset)) {
+        if (!u.isArray(p_ruleset)) {
 
-            if (refCandidate && u.tils.isObject(p_ruleset)) {
+            if (refCandidate && u.isObject(p_ruleset)) {
                 if (p_el.indexOf(`@media`) === 0
                     || p_el.indexOf(`@supports`) === 0) {
                     //media query or supports query
@@ -247,7 +247,7 @@ class Palette extends com.pool.DisposableObject {
 
             return;
         }
-        if (!refCandidate || !u.tils.isArray(p_ruleset)) { return; }
+        if (!refCandidate || !u.isArray(p_ruleset)) { return; }
 
         let prefix = p_el.substr(1, p_el.length - 1);
 
@@ -278,7 +278,7 @@ class Palette extends com.pool.DisposableObject {
      */
     _ProcessSingleRuleset(p_el, p_ruleset) {
 
-        let isObject = u.tils.isObject(p_ruleset);
+        let isObject = u.isObject(p_ruleset);
 
         if (p_el[0] === __REF && isObject) {
 
@@ -321,7 +321,7 @@ class Palette extends com.pool.DisposableObject {
         if (isObject) {
             for (let r in p_ruleset) {
                 let rule = p_ruleset[r];
-                if (u.tils.isString(rule) && rule.includes(__DELIM_KVP)) { p_ruleset[r] = this._ReplaceVars(rule); }
+                if (u.isString(rule) && rule.includes(__DELIM_KVP)) { p_ruleset[r] = this._ReplaceVars(rule); }
             }
         }
 

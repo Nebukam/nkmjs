@@ -30,15 +30,15 @@ class TPLFacadeExpandTitle extends DOMTemplate {
     */
 
     static _CreateTemplate() {
-        this._Add(u.dom.New(`div`, { class: `${IDS.ICON} expand` }), {
+        this._Add(u.dom.El(`div`, { class: `${IDS.ICON} expand` }), {
             [IDS.UID]: __expandIcon,
             fn: this.AsIconStatic // Need to add 'node.htitle = xxx'
         });
-        this._Add(u.dom.New(`div`, { class: IDS.ICON }), {
+        this._Add(u.dom.El(`div`, { class: IDS.ICON }), {
             [IDS.UID]: __icon,
             fn: this.AsIcon
         });
-        this._Add(u.dom.New(`span`, { class: IDS.TITLE }), {
+        this._Add(u.dom.El(`span`, { class: IDS.TITLE }), {
             [IDS.UID]: __title,
             fn: this.AsText
         });

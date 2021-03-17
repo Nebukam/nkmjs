@@ -373,7 +373,7 @@ class Resource extends com.pool.DisposableObjectEx {
     }
 
     _OnDeleteSuccess() {
-        if (u.tils.isInstanceOf(this._content, com.pool.DisposableObject)) { this._content.Release(); } // this might be dangerous
+        if (u.isInstanceOf(this._content, com.pool.DisposableObject)) { this._content.Release(); } // this might be dangerous
         this._content = null;
         this._raw = null;
         this._loaded = false;

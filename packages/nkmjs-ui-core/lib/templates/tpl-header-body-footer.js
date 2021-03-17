@@ -23,9 +23,9 @@ class TPLHeaderBodyFooter extends DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.New(`div`, { class: IDS.HEADER }), { [IDS.UID]:__header });
-        this._Add(u.dom.New(`div`, { class: IDS.BODY }), { [IDS.UID]:__body });
-        this._Add(u.dom.New(`div`, { class: IDS.FOOTER }), { [IDS.UID]:__footer });
+        this._Add(u.dom.El(`div`, { class: IDS.HEADER }), { [IDS.UID]:__header });
+        this._Add(u.dom.El(`div`, { class: IDS.BODY }), { [IDS.UID]:__body });
+        this._Add(u.dom.El(`div`, { class: IDS.FOOTER }), { [IDS.UID]:__footer });
     }
 
 }

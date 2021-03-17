@@ -54,7 +54,7 @@ class InputField extends InputBase {
     }
 
     _Render() {
-        this._inputField = u.dom.New(`input`, { class: 'field' }, this._host); //, type:'search'
+        this._inputField = u.dom.El(`input`, { class: 'field' }, this._host); //, type:'search'
     }
 
     set placeholderValue(p_value) {

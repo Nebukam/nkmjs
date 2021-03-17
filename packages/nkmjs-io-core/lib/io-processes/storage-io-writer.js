@@ -25,14 +25,14 @@ class StorageIOWriter extends IOProcess {
         this._OnStart();
         this._OnProgress(0);
 
-        env.ENV.FEATURES.storageArea.local.set({ [this._operation.fullPath]: this.rsc.raw }, this._OnStorageWritten);
+        env.storageArea.local.set({ [this._operation.fullPath]: this.rsc.raw }, this._OnStorageWritten);
 
     }
 
     _OnStorageWritten() {
 
-        if (env.ENV.FEATURES.runtime.lastError) {
-            this._OnError(env.ENV.FEATURES.runtime.lastError);
+        if (env.runtime.lastError) {
+            this._OnError(env.runtime.lastError);
             return;
         }
 

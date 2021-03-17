@@ -25,7 +25,7 @@ class Extension extends com.pool.DisposableObjectEx {
     Add(p_ext) {
         if (!this._childExtensions) { this._childExtensions = new Array(0); }
         if (this._childExtensions.includes(p_ext)) { return p_ext; }
-        if(u.tils.isFunc(p_ext)){ p_ext = com.Rent(p_ext); }
+        if(u.isFunc(p_ext)){ p_ext = com.Rent(p_ext); }
         this._childExtensions.push(p_ext);
         p_ext.enabled = this._isEnabled;
         return p_ext;

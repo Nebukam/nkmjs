@@ -67,9 +67,9 @@ class UIItem extends DisplayObjectContainer {
     }
 
     _Render() {
-        this._label = new manipulators.Text(u.dom.New(`p`, { class: `label` }, this));
-        this._wrapper = u.dom.New(`div`, { class: `item-wrapper` }, this);
-        this._errorTf = new manipulators.Text(u.dom.New(`p`, { class: `error` }, this));
+        this._label = new manipulators.Text(u.dom.El(`p`, { class: `label` }, this));
+        this._wrapper = u.dom.El(`div`, { class: `item-wrapper` }, this);
+        this._errorTf = new manipulators.Text(u.dom.El(`p`, { class: `error` }, this));
     }
 
     Display(p_id, p_class, p_variant) {

@@ -191,7 +191,7 @@ class BaseInput extends ui.Widget {
      */
     AddSanitization(p_fn, p_thisArg = null) {
         let item = null;
-        if (u.tils.isObject(p_fn)) { item = p_fn; }
+        if (u.isObject(p_fn)) { item = p_fn; }
         else { item = { fn: p_fn, thisArg: p_thisArg }; }
         this._externalSanitizationStack.push(item);
     }
@@ -203,7 +203,7 @@ class BaseInput extends ui.Widget {
      */
     AddValidation(p_fn, p_thisArg = null) {
         let item = null;
-        if (u.tils.isObject(p_fn)) { item = p_fn; }
+        if (u.isObject(p_fn)) { item = p_fn; }
         else { item = { fn: p_fn, thisArg: p_thisArg }; }
         this._externalValidationStack.push(item);
     }
@@ -213,7 +213,7 @@ class BaseInput extends ui.Widget {
      * @param {*} p_err 
      */
     _PushError(p_err) {
-        if (u.tils.isString(p_err)) { p_err = { type: com.FLAGS.ERROR, message: p_err }; }
+        if (u.isString(p_err)) { p_err = { type: com.FLAGS.ERROR, message: p_err }; }
 
         if (this._inputErrors.includes(p_err)) { return; }
 

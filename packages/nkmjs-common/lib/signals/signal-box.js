@@ -52,7 +52,7 @@ class SignalBox extends DisposableObject {
         if (this._silent || this._signals.isEmpty ) { return; }
 
         let signal = this._signals.Get(p_signalId);
-        if (u.tils.isVoid(signal)) { return; }
+        if (u.isVoid(signal)) { return; }
 
         signal.Broadcast(...args);
     }
@@ -66,7 +66,7 @@ class SignalBox extends DisposableObject {
     Add(p_signalId, p_fn, p_listener = null) {
 
         let signal = this._signals.Get(p_signalId);
-        if (u.tils.isVoid(signal)) {
+        if (u.isVoid(signal)) {
             signal = POOL.Rent(SignalBroadcaster);
             this._signals.Set(p_signalId, signal);
         }
@@ -84,7 +84,7 @@ class SignalBox extends DisposableObject {
     AddOnce(p_signalId, p_fn, p_listener = null) {
 
         let signal = this._signals.Get(p_signalId);
-        if (u.tils.isVoid(signal)) {
+        if (u.isVoid(signal)) {
             signal = POOL.Rent(SignalBroadcaster);
             this._signals.Set(p_signalId, signal);
         }
@@ -102,7 +102,7 @@ class SignalBox extends DisposableObject {
     Remove(p_signalId, p_fn, p_listener = null) {
 
         let signal = this._signals.Get(p_signalId);
-        if (u.tils.isVoid(signal)) { return; }
+        if (u.isVoid(signal)) { return; }
 
         signal.Remove(p_fn, p_listener);
 
@@ -120,7 +120,7 @@ class SignalBox extends DisposableObject {
     RemoveAll(p_signalId) {
 
         let signal = this._signals.Get(p_signalId);
-        if (u.tils.isVoid(signal)) { return; }
+        if (u.isVoid(signal)) { return; }
 
         this._signals.Remove(p_signalId);
         signal.Release();

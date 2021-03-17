@@ -17,7 +17,7 @@ function signalFn( arg ){ console.log(`signalFn got : ${arg}`); }
 function signalFn2( arg1, arg2 ){ console.log(`signalFn2 got : ${arg1} + ${arg2}`); }
 
 let singleSignal = POOL.Rent(signals.SignalBroadcaster);
-assert.ok(!u.tils.isVoid(singleSignal));
+assert.ok(!u.isVoid(singleSignal));
 
 singleSignal.Add(signalFn);
 assert.ok(singleSignal._slots.count === 1);
@@ -53,7 +53,7 @@ let EVT_TEST_A = Symbol('test-event-a');
 let EVT_TEST_B = Symbol('test-event-b');
 
 let sBox = POOL.Rent(signals.SignalBox);
-assert.ok(!u.tils.isVoid(sBox));
+assert.ok(!u.isVoid(sBox));
 
 sBox.Add(EVT_TEST_A, signalBoxFnA);
 sBox.Add(EVT_TEST_B, signalBoxFnB);

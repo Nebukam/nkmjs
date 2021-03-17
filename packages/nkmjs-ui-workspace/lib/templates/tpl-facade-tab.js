@@ -26,15 +26,15 @@ class TPLFacadeTab extends ui.DOMTemplate {
     */
 
     static _CreateTemplate() {
-        this._Add(u.dom.New(`div`, { class: ui.IDS.ICON }), {
+        this._Add(u.dom.El(`div`, { class: ui.IDS.ICON }), {
             [ui.IDS.UID]: __icon,
             fn: this.AsIcon
         });
-        this._Add(u.dom.New(`span`, { class: ui.IDS.LABEL }), {
+        this._Add(u.dom.El(`span`, { class: ui.IDS.LABEL }), {
             [ui.IDS.UID]: __label,
             fn: this.AsTextStatic
         });
-        this._Add(u.dom.New(`div`, { class: `${ui.IDS.ICON} close` }), {
+        this._Add(u.dom.El(`div`, { class: `${ui.IDS.ICON} close` }), {
             [ui.IDS.UID]: __closeIcon,
             fn: this.AsIconStatic // Need to add 'node.htitle = xxx'
         });

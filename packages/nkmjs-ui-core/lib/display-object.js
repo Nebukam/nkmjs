@@ -488,21 +488,21 @@ class DisplayObject extends DisposableHTMLElement {
      * @group Transforms
      * @discreet
      */
-    set width(p_value) { this.style.width = u.tils.isEmpty(p_value) ? `` : `${p_value}px`; }
+    set width(p_value) { this.style.width = u.isEmpty(p_value) ? `` : `${p_value}px`; }
 
     /**
      * @group Transforms
      * @discreet
      */
-    set height(p_value) { this.style.height = u.tils.isEmpty(p_value) ? `` : `${p_value}px`; }
+    set height(p_value) { this.style.height = u.isEmpty(p_value) ? `` : `${p_value}px`; }
 
     set sizeRel(p_value) {
         this.widthRel = p_value;
         this.heightRel = p_value;
     }
 
-    set widthRel(p_value) { this.style.width = u.tils.isEmpty(p_value) ? `` : `${p_value}%`; }
-    set heightRel(p_value) { this.style.height = u.tils.isEmpty(p_value) ? `` : `${p_value}%`; }
+    set widthRel(p_value) { this.style.width = u.isEmpty(p_value) ? `` : `${p_value}%`; }
+    set heightRel(p_value) { this.style.height = u.isEmpty(p_value) ? `` : `${p_value}%`; }
 
     // ----> Pooling
 

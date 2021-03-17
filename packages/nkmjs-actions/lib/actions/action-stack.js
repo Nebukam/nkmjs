@@ -113,7 +113,7 @@ class ActionStack {
         }
 
         if (p_actionClass.mergeable) {
-            if (u.tils.isInstanceOf(lastAction, p_actionClass)) {
+            if (u.isInstanceOf(lastAction, p_actionClass)) {
                 if (lastAction.CanMerge(p_operation)) {
                     //Merge if mergeable & can merge current options
                     return lastAction.Do(p_operation, true);;

@@ -50,7 +50,7 @@ class UI extends com.helpers.SingletonEx {
      */
     _Register(p_id, p_class, p_extends = `div`) {
 
-        if (!u.tils.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
+        if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
         console.log(p_id);
         this._uiTypes.Set(p_class, p_id);
         customElements.define(p_id, p_class);//, { extends: p_extends });
@@ -79,8 +79,8 @@ class UI extends com.helpers.SingletonEx {
      */
     _Return(p_displayObject) {
 
-        if (!u.tils.isObject(p_displayObject)
-            || !u.tils.isInstanceOf(p_displayObject, DisposableHTMLElement)) {
+        if (!u.isObject(p_displayObject)
+            || !u.isInstanceOf(p_displayObject, DisposableHTMLElement)) {
             throw new Error(`Return used with invalid object : ${p_displayObject}`);
         }
 

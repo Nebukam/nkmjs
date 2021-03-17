@@ -47,7 +47,7 @@ class POOL extends Singleton {
      */
     _Register(p_class) {
 
-        if (!u.tils.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
+        if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
 
         this._globalTypes.Set(p_class.name, p_class);
         //#LOG console.log(`%c+ ${p_class.name}`, 'color: #ff8a00');
@@ -86,8 +86,8 @@ class POOL extends Singleton {
      */
     _Return(p_obj) {
 
-        if (!u.tils.isObject(p_obj)
-            || !u.tils.isInstanceOf(p_obj, DisposableObject)) { throw new Error("Return used with invalid object : " + p_obj); }
+        if (!u.isObject(p_obj)
+            || !u.isInstanceOf(p_obj, DisposableObject)) { throw new Error("Return used with invalid object : " + p_obj); }
 
         let keyName = p_obj.constructor.name;
 
@@ -116,7 +116,7 @@ class POOL extends Singleton {
 
         let keyName = null;
 
-        if (u.tils.isString(p_class)) {
+        if (u.isString(p_class)) {
             keyName = p_class;
         } else if (typeof p_class === `function`) {
             keyName = p_class.name;
@@ -124,7 +124,7 @@ class POOL extends Singleton {
 
         if (!this._globalTypes.Contains(keyName)) {
             if (typeof p_class === `function`
-                && u.tils.isInstanceOf(p_class.prototype, DisposableObject)) {
+                && u.isInstanceOf(p_class.prototype, DisposableObject)) {
                 this._Register(p_class);
             } else { throw new Error(`Could not find any constructor association for : ${keyName}`); }
         }

@@ -233,7 +233,7 @@ class PopIn extends DisplayObjectContainer {
             return; 
         }
 
-        this._ownsContent = u.tils.isFunc(p_value);
+        this._ownsContent = u.isFunc(p_value);
 
         this._content = this.Add(p_value, `content`);
         this._content.Watch(SIGNAL.CLOSE_REQUESTED, () => { this.Release(); });

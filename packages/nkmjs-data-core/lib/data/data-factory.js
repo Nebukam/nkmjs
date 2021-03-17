@@ -46,7 +46,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
      * @type {function}
      */
     set itemClass(p_value) {
-        if (!u.tils.isInstanceOf(p_value, DataBlock)) { throw new Error(`itemClass must inherit DataBlock`); }
+        if (!u.isInstanceOf(p_value, DataBlock)) { throw new Error(`itemClass must inherit DataBlock`); }
         this._itemClass = p_value;
     }
     get itemClass() { return this._itemClass; }
@@ -81,13 +81,13 @@ class DataFactory extends com.pool.DisposableObjectEx {
 
         let cl = this._itemClass;
 
-        if (!u.tils.isVoid(p_class)) {
-            if (!u.tils.isInstanceOf(p_class, cl)) {
+        if (!u.isVoid(p_class)) {
+            if (!u.isInstanceOf(p_class, cl)) {
                 throw new Error(`CreateTemp custom constructor (${p_class}) does not extends factory constructor (${this._itemClass.name})`);
             } else { cl = p_class; }
         }
 
-        if (u.tils.isVoid(cl)) { throw new Error(`Cannot create temp item with no itemClass set.`); }
+        if (u.isVoid(cl)) { throw new Error(`Cannot create temp item with no itemClass set.`); }
 
         let newItem = com.Rent(cl);
         newItem._isTemp = true;

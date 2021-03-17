@@ -50,8 +50,8 @@ class RESOURCES extends services.ServiceBase {
             delete: ioprocesses.HTTPIODelete
         };
 
-        if (env.ENV.FEATURES.isExtension) {
-            if (env.ENV.FEATURES.isChromium) {
+        if (env.isExtension) {
+            if (env.isChromium) {
                 this._io[IO_TYPE.LOCAL_STORAGE] = {
                     read: ioprocesses.StorageIOReader,
                     write: ioprocesses.StorageIOWriter,
@@ -147,7 +147,7 @@ class RESOURCES extends services.ServiceBase {
             rsc = this._resources.Get(shortPath);
 
         if (rsc) {
-            if (rscClass && !u.tils.isInstanceOf(rsc, rscClass)) {
+            if (rscClass && !u.isInstanceOf(rsc, rscClass)) {
                 throw new Error(`Attempting to get an existing resource (${rsc.constructor.name}) with a mismatching type(${rscClass.name})`);
             }
             return rsc;
@@ -162,7 +162,7 @@ class RESOURCES extends services.ServiceBase {
         if (!stats) {
             if (!rscClass) { rscClass = Resource; }
         } else if (stats.isDirectory()) {
-            if (rscClass && !u.tils.isInstanceOf(rscClass, Directory)) {
+            if (rscClass && !u.isInstanceOf(rscClass, Directory)) {
                 throw new Error(`Directory cannot be assigned Resource constructor (${rscClass.name})`);
             }
             if (!rscClass) { rscClass = Directory; }
@@ -229,7 +229,7 @@ class RESOURCES extends services.ServiceBase {
      * @returns {string}
      */
     _IOID(p_ioId, p_operation) {
-        if (u.tils.isEmpty(p_ioId) || !(p_ioId in this._io)) { return IO_TYPE.DEFAULT; }
+        if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) { return IO_TYPE.DEFAULT; }
         return p_ioId;
     }
 

@@ -77,7 +77,7 @@ class CommandAction extends Command {
                 let editorClass = com.pool.POOL.GetClass(`Editor`),
                     p = this._emitter;
                 while (!editor && p) {
-                    if (u.tils.isInstanceOf(p, editorClass)) { editor = p; }
+                    if (u.isInstanceOf(p, editorClass)) { editor = p; }
                     p = p.parent;
                 }
             }

@@ -28,7 +28,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
      * @type {io.core.Resource}
      */
     set rsc(p_value) {
-        if (u.tils.isVoid(p_value)) { p_value = this; }
+        if (u.isVoid(p_value)) { p_value = this; }
         this._rsc = p_value;
     }
     get rsc() { return this._rsc; }

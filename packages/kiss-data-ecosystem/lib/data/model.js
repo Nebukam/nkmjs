@@ -24,7 +24,7 @@ class Model extends DerivableDataBlock {
         if (settings) { fieldSettings.settings = settings; }
         let metadata = u.tils.Get(p_options, `metadata`, null);
         if (metadata) {
-            if (u.tils.isInstanceOf(metadata, data.Metadata)) {
+            if (u.isInstanceOf(metadata, data.Metadata)) {
                 fieldSettings.metadata.Clone(metadata);
             } else {
                 fieldSettings.metadata._data = metadata;

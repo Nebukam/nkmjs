@@ -50,7 +50,7 @@ class LayerContainer extends Layer {
 
     _OnChildAdded(p_displayObject, p_index) {
         super._OnChildAdded(p_displayObject, p_index);
-        let layer = u.tils.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
+        let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Add(layer);
             layer.classList.add(this._layerClassName);
@@ -61,7 +61,7 @@ class LayerContainer extends Layer {
 
     _OnChildRemoved(p_displayObject, p_index) {
         super._OnChildRemoved(p_displayObject, p_index);
-        let layer = u.tils.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
+        let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Remove(layer);
             layer.classList.remove(this._layerClassName);

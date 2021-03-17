@@ -113,7 +113,7 @@ class STYLE extends com.helpers.Singleton {
             this.instance.current.PrintCSSLink(cssKey, document.head);
         }
 
-        if (u.tils.isVoid(this._headerStyle)) {
+        if (u.isVoid(this._headerStyle)) {
             this._headerStyle = document.createElement('style');
             this._headerStyle.innerText = css;
             u.dom.Attach(this._headerStyle, document.head);
@@ -155,7 +155,7 @@ class STYLE extends com.helpers.Singleton {
             css = ` style='${CSS.InlineCSS(this.instance.current._ProcessSingleRuleset(``, p_format.style))}' `;
         } else if (p_format.color) {
             let color = p_format.color;
-            if (u.tils.isString(color)) { if (color in this.instance.current._colors) { color = this.instance.current._colors[color]; } }
+            if (u.isString(color)) { if (color in this.instance.current._colors) { color = this.instance.current._colors[color]; } }
             css = ` style='color:${color};' `;
         }
 

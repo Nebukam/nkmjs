@@ -107,9 +107,9 @@ class EntryManager extends EcosystemPart {
 
         let id = null;
 
-        if (u.tils.isInstanceOf(p_key, data.ID)) {
+        if (u.isInstanceOf(p_key, data.ID)) {
             id = p_key;
-        } else if (u.tils.isInstanceOf(p_key, Model)) {
+        } else if (u.isInstanceOf(p_key, Model)) {
             id = p_key.id;
         } else {
             throw new Error(`Argument Error`);
@@ -131,7 +131,7 @@ class EntryManager extends EcosystemPart {
 
         if (!p_key) { throw new Error(`Argument Error : Null model reference`); }
 
-        if (u.tils.isString(p_key)) {
+        if (u.isString(p_key)) {
             p_key = this._ecosystem.models.Get(p_key);
         }
 
@@ -148,7 +148,7 @@ class EntryManager extends EcosystemPart {
         let model = p_from,
             base = null;
 
-        if (u.tils.isInstanceOf(p_from, DataEntry)) {
+        if (u.isInstanceOf(p_from, DataEntry)) {
             model = p_from.model;
             base = p_from;
         }
@@ -251,7 +251,7 @@ class EntryManager extends EcosystemPart {
         }
 
         let path = p_entry.metadata.Get(_meta_catalogPath);
-        if (u.tils.isEmpty(path)) { path = this._DefaultsCatalogPath(p_entry); }
+        if (u.isEmpty(path)) { path = this._DefaultsCatalogPath(p_entry); }
         p_options.path = `${path}/${name}`;
 
         cItem = this._ecosystem._catalog.Register(p_options);

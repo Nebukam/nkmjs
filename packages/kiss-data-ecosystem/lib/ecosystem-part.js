@@ -68,7 +68,7 @@ class EcosystemPart extends com.pool.DisposableObjectEx {
         let list = this._commands.list;
         for (let i = 0; i < list.count; i++) {
             let cmd = list.At(i);
-            if (u.tils.isInstanceOf(cmd, EcosystemCommand)) { cmd.ecosystem = this._ecosystem; }
+            if (u.isInstanceOf(cmd, EcosystemCommand)) { cmd.ecosystem = this._ecosystem; }
         }
     }
 

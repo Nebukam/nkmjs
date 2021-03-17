@@ -22,7 +22,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @returns {Element}
      */
     static CSSImport(p_import_path) {
-        let element = u.dom.New(`style`, { type: `text/css` });
+        let element = u.dom.El(`style`, { type: `text/css` });
         element.innerText = `@import url("${p_import_path}")`;
         return element;
     }
@@ -34,7 +34,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @returns {Element}
      */
     static Style(p_properties) {
-        let element = u.dom.New(`style`);
+        let element = u.dom.El(`style`);
 
         let css = null;
         if (u.tils.IsString(p_properties)) {
@@ -60,7 +60,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @returns {string}
      */
     static CSS(p_id, p_properties) {
-        if (!u.tils.isObject(p_properties)) { return ``; }
+        if (!u.isObject(p_properties)) { return ``; }
         if (p_id.indexOf(__media) === 0) {
             let css = ``;
             for (let p in p_properties) { css += CSS_UTILS.CSS(p, p_properties[p]); }
@@ -78,7 +78,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @returns {string}
      */
     static InlineCSS(p_properties) {
-        if (!u.tils.isObject(p_properties)) { return ``; }
+        if (!u.isObject(p_properties)) { return ``; }
         let css = ``;
         if (p_properties != null && p_properties != undefined) {
             for (let att in p_properties) { css += `${att}:${p_properties[att]};`; }
@@ -102,14 +102,14 @@ class CSS_UTILS extends com.helpers.Singleton {
 
             // For each property in p_source, add it to p_base and either overwrite or merge.
             if (name in p_base) {
-                if (u.tils.isArray(sourceValue)) {
+                if (u.isArray(sourceValue)) {
                     if (sourceValue[0] === null) {
                         //first value is null, remove previous values
                         let arrCopy = [...sourceValue];
                         arrCopy.shift(); //remove null
                         p_base[name] = arrCopy;
                     } else {
-                        if (u.tils.isArray(baseValue)) {
+                        if (u.isArray(baseValue)) {
                             //Append values at the end of existing array
                             for (let i = 0, n = sourceValue.length; i < n; i++) {
                                 let itemValue = sourceValue[i];
@@ -121,11 +121,11 @@ class CSS_UTILS extends com.helpers.Singleton {
                         }
                     }
 
-                } else if (u.tils.isObject(sourceValue)) { this.Merge(baseValue, sourceValue); }
+                } else if (u.isObject(sourceValue)) { this.Merge(baseValue, sourceValue); }
                 else { p_base[name] = sourceValue; }
             } else {
-                if (u.tils.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
-                else if (u.tils.isObject(sourceValue)) { p_base[name] = JSON.parse(JSON.stringify(sourceValue)); }
+                if (u.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
+                else if (u.isObject(sourceValue)) { p_base[name] = JSON.parse(JSON.stringify(sourceValue)); }
                 else { p_base[name] = sourceValue; }
             }
         }
@@ -152,19 +152,19 @@ class CSS_UTILS extends com.helpers.Singleton {
             // For each property in p_source, add it to p_base if it does not exists already.
             // Only merge arrays (in front), if allowed.
             if (name in p_base) {
-                if (u.tils.isArray(sourceValue)) {
-                    if (u.tils.isArray(baseValue)) {
+                if (u.isArray(sourceValue)) {
+                    if (u.isArray(baseValue)) {
                         if (baseValue[0] === null) { continue; }
                         for (let i = 0, n = sourceValue.length; i < n; i++) {
                             let itemValue = sourceValue[i];
                             if (!baseValue.includes(itemValue)) { baseValue.unshift(itemValue); }
                         }
                     }
-                } else if (u.tils.isObject(sourceValue)) { this.Compose(baseValue, sourceValue); }
+                } else if (u.isObject(sourceValue)) { this.Compose(baseValue, sourceValue); }
                 else { p_base[name] = sourceValue; }
             } else {
-                if (u.tils.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
-                else if (u.tils.isObject(sourceValue)) { p_base[name] = JSON.parse(JSON.stringify(sourceValue)); }
+                if (u.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
+                else if (u.isObject(sourceValue)) { p_base[name] = JSON.parse(JSON.stringify(sourceValue)); }
                 else { p_base[name] = sourceValue; }
             }
         }
@@ -191,18 +191,18 @@ class CSS_UTILS extends com.helpers.Singleton {
             // For each property in p_source, add it to p_base if it does not exists already.
             // Only merge arrays (in front), if allowed.
             if (name in p_base) {
-                if (u.tils.isArray(sourceValue)) {
-                    if (u.tils.isArray(baseValue)) {
+                if (u.isArray(sourceValue)) {
+                    if (u.isArray(baseValue)) {
                         if (baseValue[0] === null) { continue; }
                         for (let i = 0, n = sourceValue.length; i < n; i++) {
                             let itemValue = sourceValue[i];
                             if (!baseValue.includes(itemValue)) { baseValue.unshift(itemValue); }
                         }
                     }
-                } else if (u.tils.isObject(sourceValue)) { this.Extends(baseValue, sourceValue); }
+                } else if (u.isObject(sourceValue)) { this.Extends(baseValue, sourceValue); }
             } else {
-                if (u.tils.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
-                else if (u.tils.isObject(sourceValue)) { p_base[name] = JSON.parse(JSON.stringify(sourceValue)); }
+                if (u.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
+                else if (u.isObject(sourceValue)) { p_base[name] = JSON.parse(JSON.stringify(sourceValue)); }
                 else { p_base[name] = sourceValue; }
             }
         }

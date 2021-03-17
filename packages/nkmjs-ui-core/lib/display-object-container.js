@@ -115,7 +115,7 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (p_index >= this._displayList.count || p_index < 0) { p_index = -1; }
 
-        if (u.tils.isFunc(p_displayObject) && u.tils.isInstanceOf(p_displayObject, DisplayObject)) {
+        if (u.isFunc(p_displayObject) && u.isInstanceOf(p_displayObject, DisplayObject)) {
             p_displayObject = UI.Rent(p_displayObject);
         }
 
@@ -129,7 +129,7 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (!p_container || p_container === this) {
             p_container = this._wrapper;
-        } else if (u.tils.isInstanceOf(p_container, DisplayObjectContainer)) {
+        } else if (u.isInstanceOf(p_container, DisplayObjectContainer)) {
             p_container = p_container.wrapper;
         }
 

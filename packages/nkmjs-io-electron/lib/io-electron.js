@@ -40,7 +40,7 @@ class IOElectron {
     }
 
     _IOID(p_ioId, p_operation) {
-        if (u.tils.isEmpty(p_ioId) || !(p_ioId in this._io)) {
+        if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
             try{
                 let url = new URL(p_operation.fullPath);
                 return io.IO_TYPE.REMOTE;

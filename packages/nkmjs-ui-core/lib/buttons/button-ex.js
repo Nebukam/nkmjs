@@ -75,8 +75,8 @@ class ButtonEx extends ButtonBase {
     _Render() {
         super._Render();
 
-        this._icon = new manipulators.Icon(u.dom.New(`div`, { class: IDS.ICON }, this._host));
-        this._label = new manipulators.Text(u.dom.New(`span`, { class: IDS.LABEL }, this._host));
+        this._icon = new manipulators.Icon(u.dom.El(`div`, { class: IDS.ICON }, this._host));
+        this._label = new manipulators.Text(u.dom.El(`span`, { class: IDS.LABEL }, this._host));
 
     }
 

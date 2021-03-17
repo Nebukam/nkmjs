@@ -54,7 +54,7 @@ class DOCUMENTS extends com.helpers.SingletonEx {
         if (path) { document.currentPath = path; }
 
         if (data) {
-            if (u.tils.isFunc(data)) { data = com.Rent(data); }
+            if (u.isFunc(data)) { data = com.Rent(data); }
             document.currentData = data;
         }
 

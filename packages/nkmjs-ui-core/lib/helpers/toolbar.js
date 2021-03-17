@@ -173,7 +173,7 @@ class Toolbar extends OrientableWidget {
         this._optionsMap.Set(handle, p_options);
         handle.Watch(com.SIGNAL.RELEASED, this._OnHandleReleased, this);
 
-        if (u.tils.isInstanceOf(handle, ButtonBase)) {
+        if (u.isInstanceOf(handle, ButtonBase)) {
             handle.options = p_options;
             handle.size = this._sizeEnum.currentFlag;
         }
@@ -198,7 +198,7 @@ class Toolbar extends OrientableWidget {
         if (!p_create) { return null; }
 
         let group = {
-            element: u.dom.New(`span`, { class: `group` }, this),
+            element: u.dom.El(`span`, { class: `group` }, this),
             handles: []
         };
 

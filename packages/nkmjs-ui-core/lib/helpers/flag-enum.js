@@ -42,7 +42,7 @@ class FlagEnum {
      */
     AddEnum(...values) {
         if(this._isStaticEnum){ throw new Error(`FlagEnum is using a static enum.`); }
-        if (values.length === 1 && u.tils.isArray(values[0])) { values = values[0]; }
+        if (values.length === 1 && u.isArray(values[0])) { values = values[0]; }
         for (let i = 0, n = values.length; i < n; i++) {
             if (!this._enum.includes(values[i])) { this._enum.push(values[i]); }
         }
@@ -54,7 +54,7 @@ class FlagEnum {
      */
     RemoveEnum(...values) {
         if(this._isStaticEnum){ throw new Error(`FlagEnum is using a static enum.`); }
-        if (values.length === 1 && u.tils.isArray(values[0])) { values = values[0]; }
+        if (values.length === 1 && u.isArray(values[0])) { values = values[0]; }
         let index;
         for (let i = 0, n = values.length; i < n; i++) {
             index = this._enum.indexOf(values[i]);

@@ -29,14 +29,14 @@ class BlobResource extends BinaryResource {
     }
 
     _Encode() {
-        if (u.tils.isInstanceOf(this._content, Blob)) { return this._content; }
+        if (u.isInstanceOf(this._content, Blob)) { return this._content; }
         else if (this._mime) { return new Blob([this._content], { type: this._mime.type }); }
         else { return new Blob([this._content]); }
     }
 
     _Decode() {
         this._objectURL = null;
-        if (u.tils.isInstanceOf(this._raw, Blob)) { return this._raw; }
+        if (u.isInstanceOf(this._raw, Blob)) { return this._raw; }
         else if (this._mime) { return new Blob([this._raw], { type: this._mime.type }); }
         else { return new Blob([this._raw]); }
     }

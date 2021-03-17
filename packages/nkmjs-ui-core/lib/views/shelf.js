@@ -310,7 +310,7 @@ class Shelf extends View {
      */
     _OnHandleActivated(p_nav, p_handle) {
         let view = this._catalogViewBuilder.Get(p_handle.data);
-        if (!u.tils.isInstanceOf(view, View)) { return; }
+        if (!u.isInstanceOf(view, View)) { return; }
 
         if (this._isCollapsable) {
             if (this._currentView === view) {

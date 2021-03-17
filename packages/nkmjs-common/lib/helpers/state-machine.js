@@ -25,7 +25,7 @@ class StateMachine extends DisposableObjectEx {
      * @type {DisposableObjectEx}
      */
     set owner(p_value) {
-        if (u.tils.isVoid(p_value)) { p_value = this; }
+        if (u.isVoid(p_value)) { p_value = this; }
         this._owner = p_value;
     }
     get owner() { return this._owner; }

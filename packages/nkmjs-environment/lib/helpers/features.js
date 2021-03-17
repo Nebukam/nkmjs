@@ -75,14 +75,14 @@ class Features extends com.pool.DisposableObjectEx {
 
         try {
             this._storageArea = chrome.storage; // <-- Chromium
-            this._hasStorageArea = !u.tils.isVoid(this._storageArea);
+            this._hasStorageArea = !u.isVoid(this._storageArea);
 
             if (!this._hasStorageArea) { throw new Error(); }
 
         } catch (e) {
             try {
                 this._storageArea = browser.storage; // <-- Mozilla
-                this._hasStorageArea = !u.tils.isVoid(this._storageArea);
+                this._hasStorageArea = !u.isVoid(this._storageArea);
             } catch (e) {
                 this._storageArea = null;
                 this._hasStorageArea = false;
@@ -128,7 +128,7 @@ class Features extends com.pool.DisposableObjectEx {
 
             try {
                 let xhr = new XMLHttpRequest();
-                if (u.tils.isVoid(xhr.withCredentials)) { this._isCORSEnabled = false; }
+                if (u.isVoid(xhr.withCredentials)) { this._isCORSEnabled = false; }
                 else { this._isCORSEnabled = true; }
             } catch (e) { this._isCORSEnabled = false; console.warn(e); }
 

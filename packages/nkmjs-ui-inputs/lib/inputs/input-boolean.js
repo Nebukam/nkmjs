@@ -37,10 +37,10 @@ class InputBoolean extends InputField {
 
     _Render() {
 
-        this._label = new ui.manipulators.Text(u.dom.New(`span`, { class: `label` }, this._host));
-        let body = u.dom.New(`div`, { class: `body` }, this._host);
-        this._handle = u.dom.New(`div`, { class: `handle` }, body);
-        this._inputField = u.dom.New(`input`, { class: 'field', type: 'checkbox' }, this._host);
+        this._label = new ui.manipulators.Text(u.dom.El(`span`, { class: `label` }, this._host));
+        let body = u.dom.El(`div`, { class: `body` }, this._host);
+        this._handle = u.dom.El(`div`, { class: `handle` }, body);
+        this._inputField = u.dom.El(`input`, { class: 'field', type: 'checkbox' }, this._host);
     }
 
     _GrabValue() {

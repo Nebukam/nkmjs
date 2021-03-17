@@ -65,7 +65,7 @@ class Overlay extends Layer {
 
     _Render() {
         super._Render();
-        this._bg = u.dom.New(`div`, { class: `bg` }, this);
+        this._bg = u.dom.El(`div`, { class: `bg` }, this);
         this._closeBg.element = this._bg;
     }
 
@@ -143,7 +143,7 @@ class Overlay extends Layer {
 
         if (!this._data) { return; }
 
-        if (!u.tils.isInstanceOf(this._data, OverlayOptions)) {
+        if (!u.isInstanceOf(this._data, OverlayOptions)) {
             throw new Error(`Overlay expect data of type OverlayOptions, got ${this._data.constructor.name} instead.`);
         }
 

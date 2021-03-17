@@ -24,7 +24,7 @@ class TextResource extends Resource {
 
     _Decode() {
 
-        if (u.tils.isString(this._raw)) {
+        if (u.isString(this._raw)) {
             return this._raw;
         } else if (u.tils.isArrayBuffer(this._raw)) {
             let decoder = new TextDecoder(this._encoding);
@@ -35,7 +35,7 @@ class TextResource extends Resource {
             // Fallback to Blob, wrapped in try{} in case this code is
             // executed in Node
             let fileReader = new FileReaderSync();
-            if (u.tils.isInstanceOf(this._raw, Blob)) {
+            if (u.isInstanceOf(this._raw, Blob)) {
                 return fileReader.readAsString(this._raw, this._encoding);
             } else {
                 return ``;

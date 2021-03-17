@@ -95,7 +95,7 @@ class CatalogWidget extends Widget {
      */
     _ExtractItemData(p_value) {
         if (!p_value) { return null; }
-        if (u.tils.isInstanceOf(p_value, data.catalogs.CatalogItem)) { return p_value.GetOption(com.IDS.DATA, null); }
+        if (u.isInstanceOf(p_value, data.catalogs.CatalogItem)) { return p_value.GetOption(com.IDS.DATA, null); }
         return null;
     }
 

@@ -46,8 +46,8 @@ class SignalBroadcaster extends DisposableObject {
      * @param {*} p_listener 
      */
     Add(p_fn, p_listener = null) {
-        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
-        if (u.tils.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
+        if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
+        if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
         this._slots.Set(p_listener, p_fn);
         this._onceSlots.Remove(p_listener, p_fn);
     }
@@ -58,8 +58,8 @@ class SignalBroadcaster extends DisposableObject {
      * @param {*} p_listener 
      */
     AddOnce(p_fn, p_listener = null){
-        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
-        if (u.tils.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
+        if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
+        if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
         this._slots.Set(p_listener, p_fn);
         this._onceSlots.Set(p_listener, p_fn);
     }
@@ -71,8 +71,8 @@ class SignalBroadcaster extends DisposableObject {
      */
     Remove(p_fn, p_listener = null) {
 
-        if (!u.tils.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
-        if (u.tils.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
+        if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
+        if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
 
         if (this._slots.Contains(p_listener)) { 
             if (this._broadcasting) { this._deprecatedKVP.push([p_listener, p_fn]); }

@@ -18,7 +18,7 @@ class InputText extends InputField {
     // ----> DOM
 
     _Render() {
-        this._inputField = u.dom.New(`input`, { class: 'field', type: 'search' }, this._host);
+        this._inputField = u.dom.El(`input`, { class: 'field', type: 'search' }, this._host);
     }
 
 }

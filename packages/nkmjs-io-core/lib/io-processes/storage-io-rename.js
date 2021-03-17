@@ -50,7 +50,7 @@ class StorageIORename extends IOProcess {
 
         this._oldPath = this._operation.fullPath;
 
-        env.ENV.FEATURES.storageArea.local.get(this._targetPath, this._OnRenameExistsCheck);
+        env.storageArea.local.get(this._targetPath, this._OnRenameExistsCheck);
 
     }
 
@@ -60,9 +60,9 @@ class StorageIORename extends IOProcess {
     _OnRenameExistsCheck(p_data) {
 
         let data = p_data[this._oldPath];
-        if (u.tils.isVoid(data)) {
+        if (u.isVoid(data)) {
             // Data do not exists !
-            let storage = env.ENV.FEATURES.storageArea, dataCopy = {};
+            let storage = env.storageArea, dataCopy = {};
             dataCopy[this._targetPath] = data;
             storage.local.set(dataCopy, this._OnRenameStorageWritten);
         } else {
@@ -77,8 +77,8 @@ class StorageIORename extends IOProcess {
      */
     _OnRenameStorageWritten() {
 
-        if (!env.ENV.FEATURES.runtime.lastError) {
-            this._OnError(env.ENV.FEATURES.runtime.lastError);
+        if (!env.runtime.lastError) {
+            this._OnError(env.runtime.lastError);
             return;
         }
 
@@ -92,8 +92,8 @@ class StorageIORename extends IOProcess {
      */
     _OnRenameStorageOldDeleted() {
 
-        if (env.ENV.FEATURES.runtime.lastError) {
-            this._OnError(env.ENV.FEATURES.runtime.lastError);
+        if (env.runtime.lastError) {
+            this._OnError(env.runtime.lastError);
             return;
         }
 

@@ -47,8 +47,8 @@ class IDDispenser extends com.pool.DisposableObjectEx {
      * @returns {boolean} True if the Dispenser contains the given ID, otherwise false.
      */
     Contains(p_id) {
-        if (u.tils.isString(p_id)) { return this._idMap.Contains(p_id); }
-        else if (u.tils.isInstanceOf(p_id, ID)) { return this._idList.Contains(p_id); }
+        if (u.isString(p_id)) { return this._idMap.Contains(p_id); }
+        else if (u.isInstanceOf(p_id, ID)) { return this._idList.Contains(p_id); }
         throw new Error(`p_id must be either string or ID.`);
     }
 
