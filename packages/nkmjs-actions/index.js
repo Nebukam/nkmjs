@@ -1,8 +1,10 @@
 'use strict';
 
+const __RELAY = require(`./lib/relay`);
+
 module.exports = {
 
-    RELAY: require(`./lib/relay`),
+    RELAY: __RELAY,
     Request: require(`./lib/request`),
     ACTION_REQUEST: require(`./lib/action-request`),
 

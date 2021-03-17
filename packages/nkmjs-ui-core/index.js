@@ -1,8 +1,8 @@
 'use strict';
 
-const __uiManager = require(`./lib/ui`);
-const __inputManager = require(`./lib/input`);
-__inputManager.instance._Prepare();
+const __UI = require(`./lib/ui`);
+const __INPUT = require(`./lib/input`);
+__INPUT.instance._Prepare();
 
 const __DOMtemplate = require(`./lib/dom-template`);
 
@@ -13,9 +13,9 @@ module.exports = {
     IDS: require(`./lib/ids`),
     REQUEST: require(`./lib/request`),
 
-    UI: __uiManager,
+    UI: __UI,
 
-    INPUT: __inputManager,
+    INPUT: __INPUT,
     POINTER: require(`./lib/pointer`),
     KEYBOARD: require(`./lib/keyboard`),
 
@@ -77,9 +77,9 @@ module.exports = {
     // Shortcuts
 
     // to UI.Register
-    Register:(p_id, p_class, p_extends = `div`) => { __uiManager.Register(p_id, p_class, p_extends); },
+    Register:(p_id, p_class, p_extends = `div`) => { __UI.Register(p_id, p_class, p_extends); },
     // to UI.RegisterGroup
-    RegisterGroup:(p_group) => { __uiManager.RegisterGroup(p_group); },
+    RegisterGroup:(p_group) => { __UI.RegisterGroup(p_group); },
     // to DOMTemplate.Render
     Render:(p_tpl, p_host, p_options) => { return __DOMtemplate.Render(p_tpl, p_host, p_options); },
     

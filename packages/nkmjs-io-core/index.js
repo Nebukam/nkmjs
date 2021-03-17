@@ -1,5 +1,7 @@
 'use strict';
 
+const __RESOURCES = require(`./lib/resources-manager`);
+
 module.exports = {
 
     ENCODING: require(`./lib/encoding`),
@@ -7,7 +9,7 @@ module.exports = {
     IO_TYPE: require(`./lib/io-type`),
     IO_SIGNAL: require(`./lib/io-signal`),
 
-    RESOURCES: require(`./lib/resources-manager`),
+    RESOURCES: __RESOURCES,
     RESSOURCE_STATE: require(`./lib/resource-state`),
     Resource: require(`./lib/resource`),
     Directory: require(`./lib/directory`),

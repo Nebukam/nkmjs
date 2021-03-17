@@ -131,6 +131,7 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
     //
 
     _Ready() {
+        this.Send({command:`YOLO`});
         this._Broadcast(SW_SIGNAL.SW_READY, this);
     }
 

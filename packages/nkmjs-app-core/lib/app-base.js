@@ -19,7 +19,7 @@ const io = require(`@nkmjs/io-core`);
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 const data = require(`@nkmjs/data-core`);
-const { DIALOG, DialogHandler, AutoUpdateDialogBox } = require(`@nkmjs/dialog`)
+const dialog = require(`@nkmjs/dialog`);
 
 const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);
@@ -59,7 +59,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         this._layers = null;
 
-        this._overlayHandlerClass = DialogHandler;
+        this._overlayHandlerClass = dialog.DialogHandler;
         this._overlayHandler = null;
 
         this._commands = new actions.CommandBox();
@@ -90,7 +90,7 @@ class AppBase extends com.helpers.SingletonEx {
         env.ENV.instance.RegisterServices(
             actions.RELAY,
             io.RESOURCES,
-            DIALOG
+            dialog.DIALOG
         );
 
         if (!this._mainWrapperClass) {
@@ -167,7 +167,7 @@ class AppBase extends com.helpers.SingletonEx {
             msg = `An update is available, please close & re-open the app to apply it.`;
         }
 
-        DIALOG.Push({
+        dialog.DIALOG.Push({
             title:`Update available`,
             message:msg,
             actions:[
@@ -216,7 +216,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         if (env.ENV.FEATURES.isNodeEnabled) {
             if (false) {//Check if auto-updates are enabled
-                DIALOG.Push({ dialogClass: AutoUpdateDialogBox });
+                dialog.DIALOG.Push({ dialogClass: dialog.AutoUpdateDialogBox });
             }
         }
 
@@ -299,7 +299,7 @@ class AppBase extends com.helpers.SingletonEx {
 
     _onNodeError(p_evt, p_content) {
         console.error(p_content.error);
-        DIALOG.Push({
+        dialog.DIALOG.Push({
             [com.IDS.TITLE]: p_content.message,
             [com.IDS.ICON]: `% ICON % /icon_error.svg`,
             [com.IDS.MESSAGE]: `${p_content.error.message}`,
@@ -311,7 +311,7 @@ class AppBase extends com.helpers.SingletonEx {
 
     _onNodeWarning(p_evt, p_content) {
         console.warning(p_content.message);
-        DIALOG.Push({
+        dialog.DIALOG.Push({
             [com.IDS.TITLE]: `Attention !`,
             [com.IDS.ICON]: `%ICON%/icon_warning.svg`,
             [com.IDS.MESSAGE]: `${p_content.message}`,

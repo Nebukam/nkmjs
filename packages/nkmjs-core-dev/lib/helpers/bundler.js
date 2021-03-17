@@ -146,7 +146,13 @@ class Bundler {
             p_content = p_content.split(A).join(B);
         }
 
-        p_content = p_content.split(`require`).join(`__r__`);
+        //p_content = p_content.split(`require`).join(`__r__`);
+
+        let req = `__r__`;
+        // Avoid replacing `require` in content strings by being nit-picky
+        p_content = p_content.split(`require&&require`).join(`${req}&&${req}`);
+        p_content = p_content.split(`require(`).join(`${req}(`);
+        p_content = p_content.split(`(require,`).join(`(${req},`);
 
         for (let key in this.shrinkMap) {
             //p_content = p_content.split(key).join(this.shrinkMap[key]);

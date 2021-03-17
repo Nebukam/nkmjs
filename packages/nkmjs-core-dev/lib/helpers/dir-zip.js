@@ -19,8 +19,8 @@ class DirZip {
             });
 
         for (let i = 0, n = this.paths.length; i < n; i++) {
-            let p = this.paths[i].replace(p_src, ``);
-            zip.addLocalFile(this.paths[i], path.dirname(p));
+            let p = path.dirname(this.paths[i].replace(p_src, ``));
+            zip.addLocalFile(this.paths[i], p.length <= 1 ? `` : p);
         }
 
         zip.writeZip(p_dest, p_cb);

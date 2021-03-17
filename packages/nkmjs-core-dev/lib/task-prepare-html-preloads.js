@@ -76,7 +76,7 @@ class TaskPrepareHTMLMeta extends ScriptBase {
                 mime = MIME.Get(path.extname(item));
 
             if (item.substr(0, 2) == `./`) {
-                item = item.substr(2);
+                //item = item.substr(2);
             }
 
             if (mime) {

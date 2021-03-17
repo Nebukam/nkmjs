@@ -10,11 +10,15 @@ class FeatureLine extends ui.DOMTemplate {
     constructor() { super(); }
 
     static _CreateTemplate() {
+        let wrapper = `wrapper`;
+        this._Add(u.dom.New(`li`, { class: `item` }), {
+            [ui.IDS.UID]: wrapper
+        });
         this._Add(u.dom.New(`div`, { class: ui.IDS.ICON }), {
-            [ui.IDS.UID]: ui.IDS.ICON, fn: this.AsIcon
+            [ui.IDS.UID]: ui.IDS.ICON, parent: wrapper, fn: this.AsIcon
         });
         this._Add(u.dom.New(`span`, { class: ui.IDS.LABEL }), {
-            [ui.IDS.UID]: ui.IDS.LABEL, fn: this.AsTextStatic
+            [ui.IDS.UID]: ui.IDS.LABEL, parent: wrapper, fn: this.AsTextStatic
         });
     }
 
@@ -27,6 +31,20 @@ class FeaturesWidget extends ui.DisplayObjectContainer {
 
     _Init() {
         super._Init();
+
+        this._items = [
+            { id: `isBrowser` },
+            { id: `isMobile` },
+            { id: `isExtension` },
+            { id: `isTouchEnabled` },
+            { id: `hasStorageArea` },
+            { id: `isCORSEnabled` },
+            { id: `isNodeEnabled` },
+            { id: `displayMode`, icon: `▢ `, title: `displayMode`, type: `enum` },
+            { id: `prefersColorScheme`, icon: `◐ `, title: `prefersColorScheme`, type: `enum` },
+            { id: `displayType`, icon: `⎚ `, title: `displayType`, type: `enum` },
+        ];
+
     }
 
     _PostInit() {
@@ -52,46 +70,40 @@ class FeaturesWidget extends ui.DisplayObjectContainer {
                 //opacity: 0,
                 margin: `5px`,
                 padding: `5px`,
-                border: `1px solid #ffffff10`,
-                display: `flex`,
-                'flex-flow': `column wrap`,
                 'overflow': 'hidden',
+            },
+            '.item::marker': {
+                'width':'25px',
+                'content': 'attr(data-marker)'
             }
         }, super._Style());
     }
 
     _Render() {
-        let opts = { [ui.IDS.LABEL]: { [ui.IDS.UID]: `text` } };
-
-        this.line_isBrowser = ui.Render(FeatureLine, this, opts);
-        this.line_isMobile = ui.Render(FeatureLine, this, opts);
-        this.line_isExtension = ui.Render(FeatureLine, this, opts);
-        this.line_isTouchEnabled = ui.Render(FeatureLine, this, opts);
-        this.line_hasStorageArea = ui.Render(FeatureLine, this, opts);
-        this.line_isCORSEnabled = ui.Render(FeatureLine, this, opts);
-        this.line_displayMode = ui.Render(FeatureLine, this, opts);
-        this.line_prefersColorScheme = ui.Render(FeatureLine, this, opts);
-        this.line_displayType = ui.Render(FeatureLine, this, opts);
-        this.line_isNodeEnabled = ui.Render(FeatureLine, this, opts);
+        var opts = { [ui.IDS.LABEL]: { [ui.IDS.UID]: `text` } };
+        this._items.forEach((item) => { item.line = ui.Render(FeatureLine, this, opts); });
     }
 
     // ----> Update
 
     _UpdateInfos() {
 
-        let F = env.ENV.FEATURES,
-            g = `✔`, b = `❌`;
+        var F = env.ENV.FEATURES;
 
-        this.line_isBrowser.text.Set(`${F._isBrowser ? g : b} isBrowser`);
-        this.line_isMobile.text.Set(`${F._isMobile ? g : b} isMobile`);
-        this.line_isExtension.text.Set(`${F._isExtension ? g : b} isExtension`);
-        this.line_isTouchEnabled.text.Set(`${F._isTouchEnabled ? g : b} isToucheEnabled`);
-        this.line_hasStorageArea.text.Set(`${F._hasStorageArea ? g : b} hasStorageArea`);
-        this.line_isCORSEnabled.text.Set(`${F._isCORSEnabled ? g : b} isCORSEnabled`);
-        this.line_isNodeEnabled.text.Set(`${F._isNodeEnabled ? g : b} isNodeEnabled`);
-        this.line_displayMode.text.Set(`▢ displayMode : ${F._displayMode}`);
-        this.line_prefersColorScheme.text.Set(`◐ prefersColorScheme : ${F._prefersColorScheme}`);
-        this.line_displayType.text.Set(`⎚ displayType : ${F._displayType}`);
+        this._items.forEach((item) => {
+            let marker = ``;
+            switch (item.type) {
+                case `enum`:
+                    marker = (item.icon || `-`);
+                    item.line.text.Set(`${(item.title || item.id)} : ${F[`_${item.id}`]}`); break;
+                default:
+                    marker = F[`_${item.id}`] ? `✔` : `❌`;
+                    item.line.text.Set((item.title || item.id)); break;
+            }
+
+            item.line._wrapper.setAttribute(`data-marker`, marker);
+
+        });
 
     }
 

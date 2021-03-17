@@ -33,12 +33,12 @@ self.addEventListener('install', function (e) {
                     })
                     .catch((e) => {
                         console.error(e);
-                        Broadcast({ signal: `error`, err: e });
+                        self.Broadcast({ signal: `error`, err: e });
                     });
             })
             .catch((e) => {
                 console.error(e);
-                Broadcast({ signal: `error`, err: e });
+                self.Broadcast({ signal: `error`, err: e });
             })
     );
 });
