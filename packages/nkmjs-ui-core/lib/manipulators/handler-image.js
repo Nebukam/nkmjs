@@ -1,14 +1,14 @@
 'use strict';
 
-const BackgroundManipulator = require(`./manipulator-background`);
+const ContentURLManipulator = require(`./manipulator-content-url`);
 
 /**
  * @description TODO
  * @class
- * @augments ui.core.manipulators.BackgroundManipulator
+ * @augments ui.core.manipulators.ContentURLManipulator
  * @memberof ui.core.manipulators
  */
-class ImageManipulator extends BackgroundManipulator {
+class ImageHandler extends ContentURLManipulator {
 
     /**
      * @description TODO
@@ -20,18 +20,13 @@ class ImageManipulator extends BackgroundManipulator {
         super(p_element, p_autoHide, p_sizeControl);
     }
 
-    get content() {
-        return this._element ? this._element.src : null;
-    }
+    get content() { return this._element ? this._element.src : null; }
 
     _ApplyPath(p_element, p_path = false) {
-        if (!p_path) {
-            p_element.src = ``;
-        } else {
-            p_element.src = p_path;
-        }
+        if (!p_path) { p_element.src = ``; }
+        else { p_element.src = p_path; }
     }
 
 }
 
-module.exports = ImageManipulator;
+module.exports = ImageHandler;

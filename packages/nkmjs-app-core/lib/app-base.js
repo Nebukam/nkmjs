@@ -24,6 +24,13 @@ const dialog = require(`@nkmjs/dialog`);
 const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);
 
+/**
+ * @typedef LayerDefinition
+ * @property {function} cl Layer class constructor
+ * @property {string} id Layer unique id. When created, will be assigned to this[id]
+ * @property {function} [fn] Callback on layer creation (in order)
+ * @property {function} [postFn] Callback on layer creation (in order, after )
+ */
 
 /*
 
@@ -54,10 +61,10 @@ class AppBase extends com.helpers.SingletonEx {
         this._userPreferences = com.Rent(UserPreferences);
         this._defaultUserPreferences = {};
 
-        this._mainWrapperClass = ui.views.LayerContainer;
-        this._mainWrapper = null;
+        this._layersWrapperClass = ui.views.LayerContainer;
+        this._layersWrapper = null;
 
-        this._layers = null;
+        this._layers = [];
 
         this._overlayHandlerClass = dialog.DialogHandler;
         this._overlayHandler = null;
@@ -93,12 +100,12 @@ class AppBase extends com.helpers.SingletonEx {
             dialog.DIALOG
         );
 
-        if (!this._mainWrapperClass) {
+        if (!this._layersWrapperClass) {
             throw new Error(`No app wrapper constructor defined.`);
         }
 
-        if (!u.isInstanceOf(this._mainWrapperClass, ui.views.LayerContainer)) {
-            throw new Error(`App wrapper constructor (${this._mainWrapperClass.name}) must implement ui.views.LayerContainer.`);
+        if (!u.isInstanceOf(this._layersWrapperClass, ui.views.LayerContainer)) {
+            throw new Error(`App wrapper constructor (${this._layersWrapperClass.name}) must implement ui.views.LayerContainer.`);
         }
 
     }
@@ -106,7 +113,7 @@ class AppBase extends com.helpers.SingletonEx {
     /**
      * @type {LayerContainer}
      */
-    get mainWrapper() { return this._mainWrapper; }
+    get mainWrapper() { return this._layersWrapper; }
 
     /**
      * @type {data.Metadata}
@@ -130,23 +137,37 @@ class AppBase extends com.helpers.SingletonEx {
 
         style.STYLE.instance.defaultPalette._themeId = (env.ENV.instance.config.theme || `default`);
 
-        this._mainWrapper = ui.UI.Rent(this._mainWrapperClass);
-        this._mainWrapper.setAttribute(`id`, `app`);
+        this._layersWrapper = ui.UI.Rent(this._layersWrapperClass);
+        this._layersWrapper.setAttribute(`id`, `app`);
 
         // Insert global.css in ShadowDom so all subsequent elements benefit from it
         u.dom.AttachFirst(
             u.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
-            this._mainWrapper._host);
+            this._layersWrapper._host);
 
-        if (this._layers) {
-            for (let i = 0, n = this._layers.length; i < n; i++) {
+        let layerCount = this._layers ? this._layers.length : 0;
+        if (layerCount > 0) {
+
+            for (let i = 0, n = layerCount; i < n; i++) {
                 let conf = this._layers[i],
-                    layer = this._mainWrapper.Add(conf.cl);
-                if (conf.id) { this[conf.id] = layer; }
-            }
-        }
+                    layer = this._layersWrapper.Add(conf.cl);
 
-        this._overlayHandler = this._mainWrapper.Add(this._overlayHandlerClass);
+                conf.layer = layer;
+                if (conf.id) { this[conf.id] = layer; }
+                if (conf.fn) { conf.fn(layer, conf); }
+            }
+
+            // Push overlay before postFn on layers
+            this._overlayHandler = this._layersWrapper.Add(this._overlayHandlerClass);
+
+            for (let i = 0, n = layerCount; i < n; i++) {
+                let conf = this._layers[i];
+                if (conf.postFn) { conf.postFn(conf.layer, conf); }
+            }
+
+        } else {
+            this._overlayHandler = this._layersWrapper.Add(this._overlayHandlerClass);
+        }
 
     }
 
@@ -158,22 +179,22 @@ class AppBase extends com.helpers.SingletonEx {
         }
     }
 
-    _OnPWAUpdateAvailable(){
+    _OnPWAUpdateAvailable() {
 
         let msg = ``;
-        if(env.displayMode != env.ENV_DISPLAY.STANDALONE){
+        if (env.displayMode != env.ENV_DISPLAY.STANDALONE) {
             msg = `An update is available, please refresh the page to apply it.`;
-        }else{
+        } else {
             msg = `An update is available, please close & re-open the app to apply it.`;
         }
 
         dialog.DIALOG.Push({
-            title:`Update available`,
-            message:msg,
-            actions:[
-                { label:`Ok`, flavor:ui.FLAGS.CTA }
+            title: `Update available`,
+            message: msg,
+            actions: [
+                { label: `Ok`, flavor: ui.FLAGS.CTA }
             ],
-            origin:this
+            origin: this
         });
 
     }
@@ -194,7 +215,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         // Push the app wrapper to the DOM
         u.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
-        u.dom.Attach(this._mainWrapper, document.body);
+        u.dom.Attach(this._layersWrapper, document.body);
 
         this._userPreferences.Load(
             `${this._APPID}Preferences`,

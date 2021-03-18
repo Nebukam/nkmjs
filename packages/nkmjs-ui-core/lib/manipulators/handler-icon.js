@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 
 const IDS = require(`../ids`);
-const Manipulator = require(`./manipulator`);
+const ContentManipulator = require(`./manipulator-content`);
 
 const __id_i = `data-icon`;
 const __id_v = `data-variant`;
@@ -12,10 +12,10 @@ const __id_f = `data-flavor`;
 /**
  * @description TODO
  * @class
- * @augments ui.core.manipulators.BaseManipulator
+ * @augments ui.core.manipulators.ContentManipulator
  * @memberof ui.core.manipulators
  */
-class IconManipulator extends Manipulator {
+class IconHandler extends ContentManipulator {
 
     /**
      * @description TODO
@@ -77,8 +77,9 @@ class IconManipulator extends Manipulator {
         else { this._element.removeAttribute(__id_v); }
 
         return this._Toggle(p_value === null ? false : true);
+        
     }
 
 }
 
-module.exports = IconManipulator;
+module.exports = IconHandler;

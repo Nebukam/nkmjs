@@ -59,7 +59,7 @@ class StyleguideApp extends nkm.app.AppBase {
             newData(`Data E`)
         ]
 
-        this._catalogSample = data.catalogs.Catalog.CreateFrom({
+        this._catalogSample = data.catalogs.CreateFrom({
             name: `I'm a Catalog !`
         }, [
             { name: `item 0` },
@@ -83,7 +83,7 @@ class StyleguideApp extends nkm.app.AppBase {
         ]);
 
         this._shelfCatalog = () => {
-            return data.catalogs.Catalog.CreateFrom({
+            return data.catalogs.CreateFrom({
                 name: `Shelf Catalog`
             }, [
                 { name: `View`, viewType: ui.views.View, data: this._fakeData[0] },

@@ -11,7 +11,7 @@ const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
-const WORKSPACE_CONTEXT = require(`../workspace-context`);
+const CONTEXT = require(`../context`);
 
 /**
  * An inspector provide micro controls for a given piece of data.
@@ -145,7 +145,7 @@ class InspectorShell extends ui.views.View {
             this._icon.Set(null); //TODO : Swap for a '?' icon
         }
 
-        let cl = com.BINDINGS.Get(WORKSPACE_CONTEXT.DEFAULT_INSPECTOR, ctr);
+        let cl = com.BINDINGS.Get(CONTEXT.DEFAULT_INSPECTOR, ctr);
 
         if (!cl) { return; }
 

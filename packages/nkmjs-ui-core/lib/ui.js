@@ -112,7 +112,13 @@ class UI extends com.helpers.SingletonEx {
      */
     _Rent(p_class, p_parent = null) {
 
-        if (!this._uiTypes.Contains(p_class)) { throw new Error(`${p_class} could not be found.`); }
+        if (!this._uiTypes.Contains(p_class)) { 
+            if(u.isInstanceOf(p_class, DisposableHTMLElement)){
+                this._Register(u.tils.ToCustomElementID(p_class.name, true), p_class);
+            }else{
+                throw new Error(`${p_class} could not be found.`); 
+            }
+        }
 
         let obj = this._uiPool.Pop(p_class);
 

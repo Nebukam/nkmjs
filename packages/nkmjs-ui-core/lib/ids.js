@@ -179,6 +179,14 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
+     static VIEW_CLASS = `viewClass`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group elements
+     */
     static CONTROLS = `controls`;
 
     /**

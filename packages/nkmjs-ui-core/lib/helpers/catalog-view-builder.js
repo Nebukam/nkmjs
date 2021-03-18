@@ -37,11 +37,11 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
 
         // Create the view
 
-        let view = p_item.GetOption(`view`, null);
+        let view = p_item.GetOption(IDS.VIEW, null);
 
         if (!view) {
 
-            let viewType = p_item.GetOption(`viewType`, null);
+            let viewType = p_item.GetOption(IDS.VIEW_CLASS, null);
             if (!viewType) { throw new Error(`Shelf's item has neither a view or a viewType set.`); }
             if (!u.isInstanceOf(viewType, View)) { throw new Error(`viewType (${viewType.name}) is not of type View`); }
 

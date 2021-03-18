@@ -3,15 +3,15 @@
 const u = require("@nkmjs/utils");
 
 const IDS = require(`../ids`);
-const Manipulator = require(`./manipulator`);
+const ContentManipulator = require(`./manipulator-content`);
 
 /**
  * @description TODO
  * @class
- * @augments ui.core.manipulators.BaseManipulator
+ * @augments ui.core.manipulators.ContentManipulator
  * @memberof ui.core.manipulators
  */
-class BackgroundManipulator extends Manipulator {
+class ContentURLManipulator extends ContentManipulator {
 
     /**
      * @description TODO
@@ -23,16 +23,12 @@ class BackgroundManipulator extends Manipulator {
         super(p_element, p_autoHide, p_sizeControl);
     }
 
-    get content() {
-        return this._element ? this._element.style.backgroundImage : null;
-    }
-
     /**
      * @access private
      * @param {*} p_element 
      * @param {*} p_value string or BlobResource
      */
-    _Update(p_element, p_value) {
+    _Apply(p_element, p_value) {
 
         if (u.isVoid(p_value)) {
             this._ApplyPath(p_element, false);
@@ -59,14 +55,8 @@ class BackgroundManipulator extends Manipulator {
 
     }
 
-    _ApplyPath(p_element, p_path = false) {
-        if (!p_path) {
-            p_element.style.removeProperty(`backgroundImage`);
-        } else {
-            p_element.style.backgroundImage = `url(${p_path})`;
-        }
-    }
+    _ApplyPath(p_element, p_path = false) { }
 
 }
 
-module.exports = BackgroundManipulator;
+module.exports = ContentURLManipulator;

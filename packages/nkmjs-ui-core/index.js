@@ -77,11 +77,11 @@ module.exports = {
     // Shortcuts
 
     // to UI.Register
-    Register:(p_id, p_class, p_extends = `div`) => { __UI.Register(p_id, p_class, p_extends); },
+    Register:__UI.Register.bind(__UI),
     // to UI.RegisterGroup
-    RegisterGroup:(p_group) => { __UI.RegisterGroup(p_group); },
+    RegisterGroup:__UI.RegisterGroup.bind(__UI),
     // to DOMTemplate.Render
-    Render:(p_tpl, p_host, p_options) => { return __DOMtemplate.Render(p_tpl, p_host, p_options); },
+    Render:__DOMtemplate.Render.bind(__DOMtemplate),
     
 }
 

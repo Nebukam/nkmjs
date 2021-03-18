@@ -1,7 +1,7 @@
 
 'use strict';
 
-const __css = require(`./lib/css`);
+const __CSS = require(`./lib/css`);
 
 module.exports = {
 
@@ -13,13 +13,13 @@ module.exports = {
 
     COLOR: require(`./lib/colors/color`),
 
-    CSS: __css,
+    CSS: __CSS,
     STYLE: require(`./lib/style`),
     Palette: require(`./lib/palette`),
     PaletteBuilder: require(`./lib/palette-builder`),
 
     // Shortcut to CSS.Extends
-    Extends:(p_base, p_source) => { return __css.Extends(p_base, p_source); }
+    Extends:__CSS.Extends.bind(__CSS),
 
 }
 

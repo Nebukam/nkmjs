@@ -2,15 +2,15 @@
 
 const u = require("@nkmjs/utils");
 
-const Manipulator = require("./manipulator");
+const ContentManipulator = require("./manipulator-content");
 
 /**
  * @description TODO
  * @class
- * @augments ui.core.manipulators.BaseManipulator
+ * @augments ui.core.manipulators.ContentManipulator
  * @memberof ui.core.manipulators
  */
-class TextManipulator extends Manipulator {
+class TextHandler extends ContentManipulator {
 
     /**
      * @description TODO
@@ -99,7 +99,7 @@ class TextManipulator extends Manipulator {
      * @param {*} p_element 
      * @param {string} p_value 
      */
-    _Update(p_element, p_value) {
+     _Apply(p_element, p_value) {
 
         if (u.isVoid(p_value)) {
             p_element.innerHTML = ``;
@@ -124,4 +124,4 @@ class TextManipulator extends Manipulator {
 
 }
 
-module.exports = TextManipulator;
+module.exports = TextHandler;

@@ -1,6 +1,6 @@
 'use strict';
 
-const __poolManager = require(`./lib/pool/pool`);
+const __POOL = require(`./lib/pool/pool`);
 
 module.exports = {
 
@@ -17,6 +17,6 @@ module.exports = {
     time: require(`./lib/time`),  
     
     // Shortcut to pool.POOL.Rent
-    Rent:(p_class) => { return __poolManager.Rent(p_class); },
+    Rent:__POOL.Rent.bind(__POOL),
 
 }

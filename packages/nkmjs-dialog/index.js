@@ -9,7 +9,7 @@ module.exports = {
     DialogHandler: require(`./lib/dialog-handler`),
 
     // to DIALOG.Push
-    Push:(p_options) => { return __DIALOG.Push(p_options); }
+    Push:__DIALOG.Push.bind(__DIALOG),
 }
 
 require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

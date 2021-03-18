@@ -742,6 +742,10 @@ class UTILS {
         return result;
     }
 
+    static ToCustomElementID(p_id, p_addGUID = false){
+        return this.CamelSplit(`${p_id}${p_addGUID ? this.unsafeUID : ''}`).replace(` `, `-`).replace(`_`, `-`).toLowerCase();
+    }
+
 }
 
 module.exports = UTILS;

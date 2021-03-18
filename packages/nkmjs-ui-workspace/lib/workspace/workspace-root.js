@@ -7,8 +7,8 @@ const style = require("@nkmjs/style");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 
-const WORKSPACE_CONTEXT = require(`../workspace-context`);
-const Workspace = require(`./workspace.js`);
+const CONTEXT = require(`../context`);
+const Workspace = require(`./workspace`);
 
 class RootWorkspace extends Workspace {
 
@@ -72,7 +72,7 @@ class RootWorkspace extends Workspace {
         //TODO : Check if an editor class or reference is specified in the request
 
         if (editorClass) { editorClass = com.BINDINGS.Get(editorClass, editTarget, editorClass); }
-        else { editorClass = com.BINDINGS.Get(WORKSPACE_CONTEXT.DEFAULT_EDITOR, editTarget); }
+        else { editorClass = com.BINDINGS.Get(CONTEXT.DEFAULT_EDITOR, editTarget); }
 
         if (!editorClass) {
             p_request.HandleFail(`Could not find editor association for ${editTarget}.`);
