@@ -22,7 +22,7 @@ class UTILS_DOM {
      * @param {object} [p_attributes] inlined attributes & values
      * @param {Node} [p_container] Parent node to append the new node into
      * @example let newNode = this.New(`div`, { class:`foo`, ['data-title']:`bar` });
-     * newNode == <div class="foo" data-title:"bar"></div> //dom element
+     * //<div class="foo" data-title:"bar"></div> //dom element
      */
     static El(p_element, p_attributes = null, p_container = null) {
 

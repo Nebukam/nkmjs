@@ -42,13 +42,14 @@ class IconHandler extends ContentManipulator {
 
         // Icon
 
-        if(u.isString(p_value)){
+
+        if (u.isString(p_value)) {
             p_value = p_value.trim();
-            if(p_value === ``){ p_value = null; }
+            if (p_value === ``) { p_value = null; }
         }
 
         if (u.isObject(p_value)) {
-            if (IDS.ICON in p_value) { p_flavor = p_value[IDS.ICON]; }
+            if (IDS.ICON in p_value) { p_value = p_value[IDS.ICON]; }
             else if (IDS.IMG in p_value) { p_value = p_value[IDS.IMG]; }
             else { p_value = null; }
         }
@@ -77,7 +78,7 @@ class IconHandler extends ContentManipulator {
         else { this._element.removeAttribute(__id_v); }
 
         return this._Toggle(p_value === null ? false : true);
-        
+
     }
 
 }

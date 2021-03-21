@@ -23,7 +23,15 @@ class WorkspaceCell extends ui.views.Shelf {
 
         this._navClass = WorkspaceCellNav;
         this._isCollapsable = false;
+
+        this._gridItemController = new ui.manipulators.GridItem(this);
     }
+
+    // ----> Grid
+
+    get gridItemController(){ return this._gridItemController; }
+
+    // ----> Catalog Management
 
     /**
      * Create a view & a nav item from a catalogItem

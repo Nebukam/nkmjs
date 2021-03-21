@@ -11,6 +11,7 @@ const com = require("@nkmjs/common");
 class FLAGS {
     constructor() { }
 
+
     // Generics
 
     /**

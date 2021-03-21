@@ -22,14 +22,15 @@ class GridHandler extends Manipulator {
      * @description TODO
      * @param {Element} p_element 
      */
-    constructor(p_element = null, p_default = `auto`) {
-        super(p_element);
-        this._default = p_default;
-        this._width = null;
-        this._height = null;
-        this._ProcessValue = this._ProcessValue.bind(this);
-
+    constructor(p_element = null, p_width = null, p_height = null, p_default = `auto`) {
+        super(p_element, p_width, p_height, p_default);
         // TODO : Add placement shortcuts etc
+    }
+
+    _Init(p_width = null, p_height = null, p_default = `auto`){
+        this._ProcessValue = this._ProcessValue.bind(this);
+        this._default = p_default;
+        this._ConvertParams(p_width, p_height);
     }
 
     _OnElementChanged(p_oldElement) {
@@ -37,9 +38,33 @@ class GridHandler extends Manipulator {
         if (p_oldElement) {
             p_oldElement.style.removeProperty(`grid-template-columns`);
             p_oldElement.style.removeProperty(`grid-template-rows`);
+            p_oldElement.style.removeProperty(`justify-items`);
+            p_oldElement.style.removeProperty(`align-items`);
+            p_oldElement.style.removeProperty(`display`);
         }
 
-        if (this._element) { this._Apply(this._element); }
+        if (this._element) {
+            this._element.style.display = `grid`;
+            this._element.style.setProperty(`justify-items`, `stretch`);
+            this._element.style.setProperty(`align-items`, `stretch`);
+            this._Apply(this._element); 
+        }
+
+    }
+
+    _ConvertParams(p_width = null, p_height = null){
+
+        this._width = p_width;
+        if (p_width) {
+            p_width.forEach(this._ProcessValue);
+            this._width = p_width.join(` `);
+        }
+
+        this._height = p_height;
+        if (p_height) {
+            p_height.forEach(this._ProcessValue);
+            this._height = p_height.join(` `);
+        }
 
     }
 
@@ -51,18 +76,7 @@ class GridHandler extends Manipulator {
      */
     Set(p_width = null, p_height = null) {
 
-        this._width = p_width;
-        if (p_width) {
-            p_width.forEach(this._ProcessValue);
-            this._width = p_width.join(` `);
-        }
-
-        this._height = p_height;
-        if (p_height) {
-            p_height.forEach(this._ProcessValue);
-            this._width = p_height.join(` `);
-        }
-
+        this._ConvertParams(p_width, p_height);
         return this._Apply(this._element);
 
     }

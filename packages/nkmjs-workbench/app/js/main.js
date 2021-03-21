@@ -7,7 +7,7 @@ const { Request } = nkm.actions;
 const { pool, FLAGS } = nkm.common;
 const { DIALOG, DialogBox, DialogHandler } = nkm.dialog;
 const { InputBase } = nkm.inputs;
-const { Group, BreadcrumbItem, Tag, InspectorShell, WorkspaceCellNav, Editor, EditorEx } = nkm.workspace;
+const w = nkm.workspace;
 const data = nkm.data;
 const ui = nkm.ui;
 const UIItemListLayer = require("./ui-item-list-layer");
@@ -33,7 +33,7 @@ class StyleguideApp extends nkm.app.AppBase {
         ];
 
         this._ignore = [
-            nkm.app.AutoUpdateDialogBox, UIItem, UIItemListLayer, Group, BreadcrumbItem, DialogHandler, TestWidget
+            nkm.app.AutoUpdateDialogBox, UIItem, UIItemListLayer, w.helpers.Group, w.items.BreadcrumbItem, DialogHandler, TestWidget
         ]
 
         this._buttonConfigs = [
@@ -86,11 +86,11 @@ class StyleguideApp extends nkm.app.AppBase {
             return data.catalogs.CreateFrom({
                 name: `Shelf Catalog`
             }, [
-                { name: `View`, viewType: ui.views.View, data: this._fakeData[0] },
-                { name: `Editor`, viewType: Editor, data: this._fakeData[1] },
-                { name: `Extended editor`, viewType: EditorEx, data: this._fakeData[2] },
-                { name: `InspectorShell`, viewType: InspectorShell, data: this._fakeData[3] },
-                { name: `Another View`, viewType: ui.views.View, data: this._fakeData[4] },
+                { name: `View`, [ui.IDS.VIEW_CLASS]: ui.views.View, data: this._fakeData[0] },
+                { name: `Editor`, [ui.IDS.VIEW_CLASS]: w.editors.Editor, data: this._fakeData[1] },
+                { name: `Extended editor`, [ui.IDS.VIEW_CLASS]: w.editors.EditorEx, data: this._fakeData[2] },
+                { name: `InspectorShell`, [ui.IDS.VIEW_CLASS]: w.inspectors.InspectorShell, data: this._fakeData[3] },
+                { name: `Another View`, [ui.IDS.VIEW_CLASS]: ui.views.View, data: this._fakeData[4] },
             ]);
         };
 
@@ -125,7 +125,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 ], fn: this._Bind(this._OnButtonCreated)
             },
             {
-                cl: InspectorShell, fn: this._Bind(this._Stretch)
+                cl: w.inspectors.InspectorShell, fn: this._Bind(this._Stretch)
             },
             {
                 cl: InputBase,
@@ -136,7 +136,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 ]
             },
             {
-                cl: ui.helpers.Toolbar, not: [WorkspaceCellNav, ui.views.ShelfNav],
+                cl: ui.helpers.Toolbar, not: [w.WorkspaceCellNav, ui.views.ShelfNav],
                 variants: [
                     { size: ui.FLAGS.SIZE_XS },
                     { size: ui.FLAGS.SIZE_S },
@@ -144,7 +144,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 ], fn: this._Bind(this._FillToolbar)
             },
             {
-                cl: Tag,
+                cl: w.items.Tag,
                 variants: [
                     {},
                     { size: ui.FLAGS.SIZE_XS, flavor: FLAGS.WARNING },

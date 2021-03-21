@@ -19,8 +19,13 @@ class Manipulator {
      * @description TODO
      * @param {Element} p_element 
      */
-    constructor(p_element = null) {
-        this._element = p_element;
+    constructor(p_element = null, ...args) {
+        this._Init(...args);
+        this.element = p_element;
+    }
+
+    _Init(){
+
     }
 
     /**

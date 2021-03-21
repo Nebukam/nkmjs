@@ -71,9 +71,11 @@ class Tab extends ui.CatalogWidget {
             }
 
         }, super._Style());
+
     }
 
     _Render() {
+
         ui.Render(templates.FacadeTab, this, {
             [ui.IDS.OWNER]: this,
             closeIcon: { htitle: `Close` }
@@ -85,6 +87,7 @@ class Tab extends ui.CatalogWidget {
 
         this.focusArea = this;
         this._closeBtn.element = this._closeIcon.element;
+
     }
 
     //
@@ -116,10 +119,11 @@ class Tab extends ui.CatalogWidget {
     // ----> DATA    
 
     _UpdateInfos() {
+
         if (this._itemData) {
             this._flavorEnum.Set(this._itemData.isDirty ? com.FLAGS.WARNING : null);
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
-            if (!this._icon.Set(this._itemData)) { this._icon.Set(this._data.options); }
+            if (!this._icon.Set(this._itemData)) { if (!this._icon.Set(this._data.options)) { this._icon.Set(com.NFOS.Get(this._itemData)); } }
         } else {
             this._flavorEnum.Set(null);
             this._label.Set(this._data.options);

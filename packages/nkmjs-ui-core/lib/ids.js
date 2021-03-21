@@ -197,6 +197,14 @@ class IDS {
      */
     static CSS_CL = `csscl`;
 
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group elements
+     */
+     static TRIGGER = `trigger`;
+
 }
 
 module.exports = IDS;

@@ -3,7 +3,7 @@
 const ui = require(`@nkmjs/ui-core`);
 const dialog = require(`@nkmjs/dialog`);
 
-const APP_MESSAGES = require(`../app-messages.js`);
+const APP_MESSAGES = require(`../app-messages`);
 
 // Auto update dialog
 

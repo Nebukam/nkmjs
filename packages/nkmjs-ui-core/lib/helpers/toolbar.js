@@ -42,6 +42,7 @@ class Toolbar extends OrientableWidget {
 
         super._Init();
         this._defaultButtonClass = ToolButton;
+        this._defaultButtonOptions = null;
         this._optionsMap = new collections.Dictionary();
         this._handles = new Array(0);
 
@@ -81,6 +82,15 @@ class Toolbar extends OrientableWidget {
      * @group Styling
      */
     set size(p_value) { this._sizeEnum.Set(p_value); }
+
+    /**
+     * @description TODO
+     * @type {object}
+     * @customtag read-only
+     * @group Styling
+     */
+    set defaultButtonOptions(p_value){ this._defaultButtonOptions = p_value; }
+    get defaultButtonOptions(){ return this._defaultButtonOptions; }
 
     // ----> DOM
 
@@ -174,6 +184,13 @@ class Toolbar extends OrientableWidget {
         handle.Watch(com.SIGNAL.RELEASED, this._OnHandleReleased, this);
 
         if (u.isInstanceOf(handle, ButtonBase)) {
+
+            if (p_options && this._defaultButtonOptions) {
+                for (var key in this._defaultButtonOptions) {
+                    if (!p_options.hasOwnProperty(key)) { p_options[key] = this._defaultButtonOptions[key]; }
+                }
+            }
+
             handle.options = p_options;
             handle.size = this._sizeEnum.currentFlag;
         }

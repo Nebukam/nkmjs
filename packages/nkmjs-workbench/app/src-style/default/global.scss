@@ -37,7 +37,7 @@
     // Font sizes
     @for $i from 0 to length($font_size_varnames) { 
         #{nth($font_size_varnames, $i + 1)}: nth($font_size_values, $i + 1);
-        #{nth($font_size_varnames, $i + 1)+'_title'}: nth($font_size_values, $i + 1) * 1.4;
+        #{nth($font_size_varnames, $i + 1)+'-title'}: nth($font_size_values, $i + 1) * 1.4;
     }
 
     // Sizes
@@ -56,9 +56,9 @@
         @for $i from 0 to length($col_flavors_ex_varnames) { 
             $varname:nth($col_flavors_ex_varnames, $i + 1);
             $col:nth($col_flavors_ex, $i + 1);
-            #{$varname+'_rgb'}: red($col), green($col), blue($col);
+            #{$varname+'-rgb'}: red($col), green($col), blue($col);
             #{$varname}: $col;
-            #{$varname+'_contrast'}: nth($col_flavors_ex_bw, $i + 1);
+            #{$varname+'-contrast'}: nth($col_flavors_ex_bw, $i + 1);
         }
     }
 }
@@ -91,7 +91,7 @@
     @for $i from 0 to length($col_flavors_ex) { 
         
         $base_color: nth($col_flavors_ex, $i + 1);
-        $flavor_name: str-replace(nth($col_flavors_ex_varnames, $i + 1), '--col_');
+        $flavor_name: str-replace(nth($col_flavors_ex_varnames, $i + 1), '--col-');
         $flavor_id: $i+1;
 
         // Create per-state variants
@@ -102,9 +102,9 @@
         @include state-color-variations( $main_color, $secondary_color, 0.5, 0.8 )
         using( $index, $st, $p, $s, $c ){
             $short_state: nth($short_states_ids, $index);
-            #{'--fcol_'+$flavor_id+'_0_'+$short_state}: $p;
-            #{'--fcol_'+$flavor_id+'_1_'+$short_state}: $s;
-            #{'--fcol_'+$flavor_id+'_2_'+$short_state}: $c;
+            #{'--fcol-'+$flavor_id+'-0-'+$short_state}: $p;
+            #{'--fcol-'+$flavor_id+'-1-'+$short_state}: $s;
+            #{'--fcol-'+$flavor_id+'-2-'+$short_state}: $c;
         }
 
     }

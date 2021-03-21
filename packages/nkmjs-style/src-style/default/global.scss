@@ -37,7 +37,7 @@
     // Font sizes
     @for $i from 0 to length($font_size_varnames) { 
         #{nth($font_size_varnames, $i + 1)}: nth($font_size_values, $i + 1);
-        #{nth($font_size_varnames, $i + 1)+'_title'}: nth($font_size_values, $i + 1) * 1.4;
+        #{nth($font_size_varnames, $i + 1)+'-title'}: nth($font_size_values, $i + 1) * 1.4;
     }
 
     // Sizes
@@ -56,9 +56,9 @@
         @for $i from 0 to length($col_flavors_ex_varnames) { 
             $varname:nth($col_flavors_ex_varnames, $i + 1);
             $col:nth($col_flavors_ex, $i + 1);
-            #{$varname+'_rgb'}: red($col), green($col), blue($col);
+            #{$varname+'-rgb'}: red($col), green($col), blue($col);
             #{$varname}: $col;
-            #{$varname+'_contrast'}: nth($col_flavors_ex_bw, $i + 1);
+            #{$varname+'-contrast'}: nth($col_flavors_ex_bw, $i + 1);
         }
     }
 }

@@ -181,6 +181,23 @@ class SIGNAL {
      */
     static DRAG_ENDED = Symbol(`dragEnded`);
 
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Views
+     */
+     static VIEW_ADDED = Symbol(`viewAdded`);
+
+     /**
+      * @description TODO
+      * @type {symbol}
+      * @customtag read-only
+      * @group Views
+      */
+     static EMPTY = Symbol(`empty`);
+
 }
 
 module.exports = SIGNAL;

@@ -8,6 +8,8 @@ module.exports = {
     // Generic
     tils: __UTILS,
 
+    helpers: require(`./lib/helpers`),
+
     check: __CHECKS,
 
     // CHECKS Shortcuts

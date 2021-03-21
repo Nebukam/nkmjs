@@ -22,15 +22,16 @@ class ContentManipulator extends Manipulator {
      * @param {boolean} p_autoHide 
      */
     constructor(p_element = null, p_autoHide = true, p_sizeControl = false) {
-        super(p_element);
+        super(p_element, p_autoHide, p_sizeControl);
+    }
 
+    _Init(p_autoHide = true, p_sizeControl = false) {
         this._content = null;
         this._autoHide = p_autoHide;
         this._isVisible = true;
 
         if (p_sizeControl) { this._sizeFlags = new FlagEnum(FLAGS.sizes, true); }
         else { this._sizeFlags = null; }
-
     }
 
     /**
@@ -44,13 +45,17 @@ class ContentManipulator extends Manipulator {
 
         if (this._sizeFlags) {
             if (p_oldElement) {
-                let oldFlag = this._sizeFlags._currentFlag;
+
                 this._sizeFlags.Set(null);
                 this._sizeFlags.Remove(p_oldElement);
-            }
+                let oldFlag = this._sizeFlags._currentFlag;
 
-            if (this._element) { this._sizeFlags.Add(this._element); }
-            this._sizeFlags.Set(oldFlag);
+                if (this._element) { this._sizeFlags.Add(this._element); }
+                this._sizeFlags.Set(oldFlag);
+
+            } else if (this._element) {
+                this._sizeFlags.Add(this._element);
+            }
         }
 
     }

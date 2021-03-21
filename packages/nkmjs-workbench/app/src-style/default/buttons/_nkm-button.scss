@@ -32,20 +32,20 @@ $btnBorderRadius: 3px;
     background-color:rgba(0,0,0,0.5);
     border: none;
 
-    --flavor_primary_disabled:rgba(0,0,0,0.1);
-    --flavor_secondary_disabled:rgba(0,0,0,0.1);
-    --flavor_contrast_disabled:rgba(0,0,0,0.5);
+    --flavor-primary-disabled:rgba(0,0,0,0.1);
+    --flavor-secondary-disabled:rgba(0,0,0,0.1);
+    --flavor-contrast-disabled:rgba(0,0,0,0.5);
 
     @include state-color-variations( rgba(50,50,50,0.65), rgba(140,140,140,0.5), 1, 0.8) 
     using ( $index, $st, $p, $s, $c){
-        #{'--flavor_primary_'+$st}: $p;
-        #{'--flavor_secondary_'+$st}: $s;
-        #{'--flavor_contrast_'+$st}: $c;
+        #{'--flavor-primary-'+$st}: $p;
+        #{'--flavor-secondary-'+$st}: $s;
+        #{'--flavor-contrast-'+$st}: $c;
     }
 
     &::after{
         transition: all 0.15s ease;
-        background-color: var(--flavor_secondary_focused);
+        background-color: var(--flavor-secondary-focused);
     }
 
 }
@@ -54,11 +54,11 @@ $btnBorderRadius: 3px;
 
 :host(#{$IDLE}){
     //opacity:1;
-    background-color: var(--flavor_primary_idle);
-    border-color: var(--flavor_secondary_idle);
+    background-color: var(--flavor-primary-idle);
+    border-color: var(--flavor-secondary-idle);
 
     & .label{
-        color: var(--flavor_contrast_idle);
+        color: var(--flavor-contrast-idle);
     }
 }
 
@@ -68,33 +68,33 @@ $th: 4px;
 
     @include drop-shadow( 0px, 0px, 1px, rgba(0,0,0,1));
 
-    background-color: var(--flavor_primary_focused);
-    border-color: var(--flavor_secondary_focused);
+    background-color: var(--flavor-primary-focused);
+    border-color: var(--flavor-secondary-focused);
 
     & .label{
-        color: var(--flavor_contrast_focused);
+        color: var(--flavor-contrast-focused);
     }
 
 }
 
 :host(#{$SELECTED}){
 
-    background-color: var(--flavor_primary_selected);
-    border-color: var(--flavor_secondary_selected);
+    background-color: var(--flavor-primary-selected);
+    border-color: var(--flavor-secondary-selected);
 
     & .label{
-        color: var(--flavor_contrast_selected);
+        color: var(--flavor-contrast-selected);
     }
 
 }
 
 :host(#{$SELECTED+$FOCUSED}){
 
-    background-color: var(--flavor_primary_selected_focused);
-    border-color: var(--flavor_secondary_selected_focused);
+    background-color: var(--flavor-primary-selected-focused);
+    border-color: var(--flavor-secondary-selected-focused);
 
     & .label{
-        color: var(--flavor_contrast_selected_focused);
+        color: var(--flavor-contrast-selected-focused);
     }
 
 }
@@ -178,11 +178,11 @@ $th: 4px;
 :host(#{$DISABLED}){
     opacity:0.5;
 
-    background-color: var(--flavor_primary_disabled);
-    border-color: var(--flavor_secondary_disabled);
+    background-color: var(--flavor-primary-disabled);
+    border-color: var(--flavor-secondary-disabled);
 
     & .label{
-        color: var(--flavor_contrast_disabled);
+        color: var(--flavor-contrast-disabled);
     }
 }
 
@@ -201,7 +201,7 @@ $th: 4px;
 
 // ----> RIPPLE
 
-$pad: 2px;
+$pad: 0px;
 $pad2: $pad * 2;
 
 .ripple-wrapper{
@@ -210,7 +210,7 @@ $pad2: $pad * 2;
     left:-#{$pad};
     width: calc(100% + #{$pad2});
     height: calc(100% + #{$pad2});
-    border-radius: $btnBorderRadius * 2;
+    border-radius: $btnBorderRadius;
     overflow: hidden;
     opacity: 0.5;
 }
@@ -223,8 +223,8 @@ $pad2: $pad * 2;
     animation: ripple 1200ms linear;
     //background-color: transparent;
     //background-color: #fff;
-    background-color: var(--flavor_secondary_focused);
-    //background: radial-gradient(var(--flavor_secondary_focused), rgba(0,0,0,0));
+    background-color: var(--flavor-secondary-focused);
+    //background: radial-gradient(var(--flavor-secondary-focused), rgba(0,0,0,0));
 
     @keyframes ripple {
         to {

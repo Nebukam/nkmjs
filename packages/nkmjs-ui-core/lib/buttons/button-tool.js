@@ -43,6 +43,7 @@ class ToolButton extends ButtonBase {
      * @description TODO
      * @type {ui.core.manipulators.Icon}
      * @customtag read-only
+     * @group Components
      */
     get icon() { return this._icon; }
 
@@ -50,6 +51,7 @@ class ToolButton extends ButtonBase {
      * @description TODO
      * @type {*}
      * @customtag write-only
+     * @group Components
      */
     set icon(p_value) { this._icon.Set(p_value); }
 

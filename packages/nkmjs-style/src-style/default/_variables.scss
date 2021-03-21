@@ -20,16 +20,16 @@ $col_processing: rgb(102, 119, 204);
 $col_waiting: rgb(102, 119, 204);
 $col_active: rgb(62, 193, 136);
 
-$varname_col_infos: '--col_infos';
-$varname_col_warning: '--col_warning';
-$varname_col_error: '--col_error';
-$varname_col_ready: '--col_ready';
-$varname_col_dirty: '--col_dirty';
-$varname_col_loading: '--col_loading';
-$varname_col_processing: '--col_processing';
-$varname_col_waiting: '--col_waiting';
-$varname_col_active: '--col_active';
-$varname_col_cta: '--col_cta';
+$varname_col_infos: '--col-infos';
+$varname_col_warning: '--col-warning';
+$varname_col_error: '--col-error';
+$varname_col_ready: '--col-ready';
+$varname_col_dirty: '--col-dirty';
+$varname_col_loading: '--col-loading';
+$varname_col_processing: '--col-processing';
+$varname_col_waiting: '--col-waiting';
+$varname_col_active: '--col-active';
+$varname_col_cta: '--col-cta';
 
 ///////////
 /* Sizes */
@@ -41,11 +41,11 @@ $size_m: 32px;
 $size_l: 50px;
 $size_xl: 108px;
 
-$varname_size_xs: '--size_xs';
-$varname_size_s: '--size_s';
-$varname_size_m: '--size_m';
-$varname_size_l: '--size_l';
-$varname_size_xl: '--size_xl';
+$varname_size_xs: '--size-xs';
+$varname_size_s: '--size-s';
+$varname_size_m: '--size-m';
+$varname_size_l: '--size-l';
+$varname_size_xl: '--size-xl';
 
 ////////////////
 /* Font sizes */
@@ -58,12 +58,12 @@ $font_size_l: 1.65rem;
 $font_size_xl: 1.95rem;
 $font_size_tag: $font_size_xs * 0.75;
 
-$varname_font_size_tag: '--font_size_tag';
-$varname_font_size_xs: '--font_size_xs';
-$varname_font_size_s: '--font_size_s';
-$varname_font_size_m: '--font_size_m';
-$varname_font_size_l: '--font_size_l';
-$varname_font_size_xl: '--font_size_xl';
+$varname_font_size_tag: '--font-size-tag';
+$varname_font_size_xs: '--fontvsize-xs';
+$varname_font_size_s: '--font-size-s';
+$varname_font_size_m: '--font-size-m';
+$varname_font_size_l: '--font-size-l';
+$varname_font_size_xl: '--font-size-xl';
 
 
 /////////////////
@@ -162,7 +162,7 @@ $size_m_half: _round($size_m/2);
 $size_l_half: _round($size_l/2);
 $size_xl_half: _round($size_xl/2);
 
-$suffix: '_half';
+$suffix: '-half';
 $varname_size_xs_half: $varname_size_xs+$suffix;
 $varname_size_s_half: $varname_size_s+$suffix;
 $varname_size_m_half: $varname_size_m+$suffix;
@@ -190,7 +190,7 @@ $size_m_third: _round($size_m/3);
 $size_l_third: _round($size_l/3);
 $size_xl_third: _round($size_xl/3);
 
-$suffix: '_third';
+$suffix: '-third';
 $varname_size_xs_third: $varname_size_xs+$suffix;
 $varname_size_s_third: $varname_size_s+$suffix;
 $varname_size_m_third: $varname_size_m+$suffix;

@@ -26,6 +26,16 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
     }
 
     /**
+     * @description TODO
+     * @param {ui.core.views.View} p_view 
+     * @returns 
+     */
+    Owns(p_view) {
+        if (!p_view) { return false; }
+        return this._reverseMap.has(p_view);
+    }
+
+    /**
      * @access protected
      * @description TODO
      * @param {data.core.catalogs.Catalog} p_catalog 
@@ -41,11 +51,11 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
 
         if (!view) {
 
-            let viewType = p_item.GetOption(IDS.VIEW_CLASS, null);
-            if (!viewType) { throw new Error(`Shelf's item has neither a view or a viewType set.`); }
-            if (!u.isInstanceOf(viewType, View)) { throw new Error(`viewType (${viewType.name}) is not of type View`); }
+            let viewClass = p_item.GetOption(IDS.VIEW_CLASS, null);
+            if (!viewClass) { console.log(p_item); throw new Error(`Shelf's item has neither a [ui.IDS.VIEW] or [ui.IDS.VIEW_CLASS] property.`); }
+            if (!u.isInstanceOf(viewClass, View)) { throw new Error(`[ui.IDS.VIEW_CLASS] (${viewClass.name}) is not of type View`); }
 
-            view = UI.Rent(viewType);
+            view = UI.Rent(viewClass);
             p_item.SetOption(IDS.VIEW, view);
 
         } else {

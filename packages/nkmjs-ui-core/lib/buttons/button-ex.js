@@ -48,6 +48,7 @@ class ButtonEx extends ButtonBase {
      * @description TODO
      * @type {ui.core.manipulators.Icon}
      * @customtag read-only
+     * @group Components
      */
     get icon() { return this._icon; }
 
@@ -55,6 +56,7 @@ class ButtonEx extends ButtonBase {
      * @description TODO
      * @type {*}
      * @customtag write-only
+     * @group Components
      */
     set icon(p_value) { this._flags.Set(FLAGS.NO_ICON, !this._icon.Set(p_value)); }
 
@@ -62,6 +64,7 @@ class ButtonEx extends ButtonBase {
      * @description TODO
      * @type {ui.core.manipulators.Icon}
      * @customtag read-only
+     * @group Components
      */
     get label() { return this._label; }
 
@@ -69,6 +72,7 @@ class ButtonEx extends ButtonBase {
      * @description TODO
      * @type {*}
      * @customtag write-only
+     * @group Components
      */
     set label(p_value) {  this._flags.Set(FLAGS.NO_LABEL, !this._label.Set(p_value)); }
 

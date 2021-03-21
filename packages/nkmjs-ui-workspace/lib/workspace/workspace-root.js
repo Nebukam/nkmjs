@@ -45,7 +45,6 @@ class RootWorkspace extends Workspace {
         return style.Extends({
             ':host': {
                 position: `relative`,
-                width: `1px`, //!important dirty fix
                 //height:`100%`,
                 flex: `1 1 auto`,
                 display: `flex`,
@@ -82,9 +81,9 @@ class RootWorkspace extends Workspace {
         u.LOG._(`Editing request for ${editTarget} will be handled using ${editorClass.name}`);
 
         this.Host({
-            data: editTarget,
-            viewType: editorClass,
-            name: editTarget.id.name
+            [ui.IDS.DATA]: editTarget,
+            [ui.IDS.VIEW_CLASS]: editorClass,
+            [ui.IDS.NAME]: editTarget.id.name
         });
 
         p_request.HandleSuccess(this);

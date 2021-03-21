@@ -2,6 +2,8 @@
 
 module.exports = {
 
+    SIGNAL: require(`./lib/signal`),
+
     Shell: require(`./lib/shell`),
     Explorer: require(`./lib/explorer`),
     ExplorerTile: require(`./lib/explorer`),

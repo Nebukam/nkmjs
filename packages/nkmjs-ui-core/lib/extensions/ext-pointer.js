@@ -258,9 +258,10 @@ class PointerExtension extends Extension {
         if (!fnList) { fnList = this._hooks[id] = new Array(0); }
         else { fnList = this._hooks[id]; }
 
-        if (fnList.includes(p_fn)) { return; }
+        if (fnList.includes(p_fn)) { return this; }
         fnList.push(p_fn);
 
+        return this;
     }
 
     /**
@@ -274,7 +275,7 @@ class PointerExtension extends Extension {
 
         let id = `${p_button}_${p_state}`,
             fnList = this._hooks[id];
-        if (!fnList) { return; }
+        if (!fnList) { return this; }
 
         if (this._using[p_button]) {
             this._using[p_button]--;
@@ -284,8 +285,10 @@ class PointerExtension extends Extension {
         }
 
         let index = fnList.indexOf(p_fn);
-        if (index === -1) { return; }
+        if (index === -1) { return this; }
         fnList.splice(index, 1);
+
+        return this;
 
     }
 

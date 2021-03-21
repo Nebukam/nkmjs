@@ -28,20 +28,6 @@ class Shelf extends View {
         css: [`@/views/shelf.css`]
     }, View, ['css']);
 
-    /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     */
-    static VIEW_ADDED = Symbol(`viewCreated`);
-
-    /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     */
-    static EMPTY = Symbol(`empty`);
-
     // ----> Init
 
     static __default_orientation = FLAGS.VERTICAL;
@@ -205,8 +191,8 @@ class Shelf extends View {
                 'overflow-x': `overlay`,
                 'overflow-y': `overlay`,
 
-                'width': '100%',
-                'min-height': '0',
+                'height': '100%',
+                'min-width': '0',
             },
             ':host(.vertical) .navigation, :host(.vertical) .view': { 'grid-row': '1' },
             ':host(.vertical) .navigation, :host(.vertical.nav-start) .navigation': { 'grid-column': '1' },
@@ -227,8 +213,8 @@ class Shelf extends View {
                 'overflow-x': `overlay`,
                 'overflow-y': `overlay`,
 
-                'height': '100%',
-                'min-width': '0',
+                'width': '100%',
+                'min-height': '0',
             },
             ':host(.horizontal) .navigation, :host(.horizontal) .view': { 'grid-column': '1' },
             ':host(.horizontal) .navigation, :host(.horizontal.nav-start) .navigation': { 'grid-row': '1' },
@@ -244,7 +230,20 @@ class Shelf extends View {
 
         this._orientation.AddManaged(this._nav._orientation);
         this._nav.orientation = this.constructor.__default_orientation;
+
+        if(this._placholderViewClass){
+            this._placeholderView = ui.Rent(this._placholderViewClass);
+            this.currentView = this._placeholderView;
+        }
+
     }
+
+    /**
+     * @description TODO
+     * @type {ui.core.views.ShelfNav}
+     * @group Components
+     */
+    get nav() { return this._nav; }
 
     // ----> Catalog Management
 
@@ -270,7 +269,7 @@ class Shelf extends View {
         p_mappedView.classList.add(IDS.VIEW);
         this.Add(p_mappedView);
 
-        this._Broadcast(Shelf.VIEW_ADDED, this, p_mappedView, handle);
+        this._Broadcast(SIGNAL.VIEW_ADDED, this, p_mappedView, handle);
 
         if (this._empty) {
             this._OnShelfNonEmpty();
@@ -352,8 +351,7 @@ class Shelf extends View {
      */
     _OnShelfEmpty() {
         this._empty = true;
-        this._Broadcast(Shelf.EMPTY, this);
-        console.log(this._placeholderView);
+        this._Broadcast(SIGNAL.EMPTY, this);
         this.currentView = this._placeholderView;
     }
 
@@ -421,12 +419,34 @@ class Shelf extends View {
         let oldValue = this._currentView;
         this._currentView = p_value;
 
-        if (oldValue) { oldValue.visible = false; }
-        if (this._currentView) { this._currentView.visible = true; }
+        if (oldValue) {
+
+            if (this._catalogViewBuilder.Owns(oldValue)) {
+                oldValue.visible = false;
+            } else {
+                oldValue.classList.remove(IDS.VIEW);
+                this.Remove(oldValue);
+            }
+        }
+        if (this._currentView) {
+
+            if (this._catalogViewBuilder.Owns(this._currentView)) {
+                this._currentView.visible = true;
+            } else {
+                this._currentView.classList.add(IDS.VIEW);
+                this.Add(this._currentView);
+            }
+        }
 
         this._OnCurrentViewChanged(oldValue);
 
     }
+
+    /**
+     * @description Helper method to set this.currentView.
+     * @param {ui.core.View} p_view 
+     */
+    SetCurrentView(p_view = null) { this.currentView = p_view; }
 
     /**
      * @access protected
@@ -443,6 +463,7 @@ class Shelf extends View {
         // Retrieve the corresponding handle
         let item = this._catalogViewBuilder._reverseMap.get(this._currentView);
         if (item) { this.currentHandle = this._nav.Get(item); }
+        else { this.currentHandle = null; }
 
         this._currentView.DisplayGranted();
 

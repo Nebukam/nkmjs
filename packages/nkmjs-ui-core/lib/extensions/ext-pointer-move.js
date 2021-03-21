@@ -125,9 +125,12 @@ class PointerMoveExtension extends Extension {
      * @customtag read-only
      */
     get distanceOffset() {
+        
         let a = this._currentOffset.x;
         let b = this._currentOffset.y;
+
         return Math.sqrt(a * a + b * b);
+
     }
 
     /**
@@ -138,7 +141,9 @@ class PointerMoveExtension extends Extension {
     set moveFn(p_value) { this._moveFn = p_value; }
 
     _mOver(p_evt) {
+
         if (this._isMouseOver) { return; }
+
         this._isMouseOver = true;
 
         this._startPos = { x: p_evt.clientX, y: p_evt.clientY };
@@ -146,12 +151,16 @@ class PointerMoveExtension extends Extension {
         this._currentOffset = { x: 0, y: 0 };
 
         this._element.addEventListener(`mousemove`, this._mMove);
+
     }
 
     _mOut(p_evt) {
+
         if (!this._isMouseOver) { return; }
+
         this._isMouseOver = false;
         this._element.removeEventListener(`mousemove`, this._mMove);
+
     }
 
     _mMove(p_evt) {
@@ -163,6 +172,7 @@ class PointerMoveExtension extends Extension {
         this._currentPos.y = p_evt.clientY;
 
         if (this._moveFn) { this._moveFn(this); }
+
     }
 
 

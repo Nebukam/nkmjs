@@ -28,8 +28,8 @@
 // Flavors
 @include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) using ($index, $val) {
     --flavor_color: var(#{$val});
-    --flavor_color_rgb: var(#{$val+"_rgb"});
-    --flavor_contrast:var(#{$val+'_contrast'});
+    --flavor_color_rgb: var(#{$val+"-rgb"});
+    --flavor_contrast:var(#{$val+'-contrast'});
 }
 
 // ----> Remove costly filters on (presumably) mobile

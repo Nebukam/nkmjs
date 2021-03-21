@@ -333,7 +333,7 @@ class ButtonBase extends Widget {
 
         if (this._trigger) {
             let thisArg = u.tils.Get(this._trigger, `thisArg`, null);
-            if (this._trigger.argArray) { this._trigger.fn.call(thisArg, ...this._trigger.argArray); }
+            if (this._trigger.args) { this._trigger.fn.call(thisArg, ...this._trigger.args); }
             else if (this._trigger.arg) {
                 if (this._trigger.arg === FLAGS.SELF) { this._trigger.fn.call(thisArg, this); }
                 else { this._trigger.fn.call(thisArg, this._trigger.arg); }
@@ -355,7 +355,7 @@ class ButtonBase extends Widget {
                 this._flags.Set(FLAGS.TOGGLED, true);
 
                 let thisArg = u.tils.Get(this._toggle, `thisArg`, null);
-                if (this._toggle.argArray) { this._toggle.fn.call(thisArg, ...this._toggle.argArray); }
+                if (this._toggle.args) { this._toggle.fn.call(thisArg, ...this._toggle.args); }
                 else if (this._toggle.arg) {
                     if (this._toggle.arg === FLAGS.SELF) { this._toggle.fn.call(thisArg, this); }
                     else { this._toggle.fn.call(thisArg, this._toggle.arg); }
@@ -377,7 +377,7 @@ class ButtonBase extends Widget {
             let proxy = u.tils.Get(this._request, `proxy`, null);
             if (proxy) {
                 let thisArg = u.tils.Get(proxy, `thisArg`, null);
-                if (proxy.argArray) { options = proxy.fn.apply(thisArg, proxy.argArray); }
+                if (proxy.args) { options = proxy.fn.apply(thisArg, proxy.args); }
                 else if (proxy.arg) { options = proxy.fn.call(thisArg, proxy.arg); }
                 else { options = proxy.fn.call(thisArg); }
             }
@@ -411,7 +411,7 @@ class ButtonBase extends Widget {
         if (this._toggle) {
             if (this._toggle.fnOff) {
                 let thisArg = u.tils.Get(this._toggle, `thisArg`, null);
-                if (this._toggle.argArray) { this._toggle.fnOff.call(thisArg, ...this._toggle.argArray); }
+                if (this._toggle.args) { this._toggle.fnOff.call(thisArg, ...this._toggle.args); }
                 else if (this._toggle.arg) {
                     if (this._toggle.arg === FLAGS.SELF) { this._toggle.fnOff.call(thisArg, this); }
                     else { this._toggle.fnOff.call(thisArg, this._toggle.arg); }

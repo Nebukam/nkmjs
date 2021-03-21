@@ -6,6 +6,8 @@ module.exports = {
     InputBase: require(`./lib/input-base`),
     InputField: require(`./lib/input-field`),
 
+    helper: require(`./lib/helpers`),
+
     InputFormHandler: require(`./lib/input-form-handler`),
     InputGroup: require(`./lib/input-group`),
 

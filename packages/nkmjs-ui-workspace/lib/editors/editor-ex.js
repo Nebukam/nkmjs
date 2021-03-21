@@ -76,7 +76,7 @@ class EditorEx extends Editor {
             {
                 [ui.IDS.NAME]: `Inspector`,
                 [ui.IDS.ICON]: `%ICON%/icon_parameters.svg`, //icon:`%ICON%/icon_more.svg`,
-                viewType: this.constructor.__default_inspectorShellClass,
+                [ui.IDS.VIEW_CLASS]: this.constructor.__default_inspectorShellClass,
                 assign: `_inspector`
             }
         );

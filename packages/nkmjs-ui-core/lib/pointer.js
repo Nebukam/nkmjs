@@ -120,6 +120,14 @@ class POINTER extends com.helpers.SingletonEx {
 
     /**
      * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Button State
+     */
+     static MOUSE_MOVE = Symbol('mouseMove');
+
+    /**
+     * @description TODO
      * @type {object}
      * @customtag read-only
      */
@@ -180,6 +188,7 @@ class POINTER extends com.helpers.SingletonEx {
 
         document.addEventListener('mousedown', this._mDown);
         document.addEventListener('mouseup', this._mUp);
+        document.addEventListener('mousemove', this._mMove);
         document.addEventListener('touchstart', this._tStart);
         document.addEventListener('gesturestart', this._gStart);
         
@@ -194,6 +203,7 @@ class POINTER extends com.helpers.SingletonEx {
 
         document.removeEventListener('mousedown', this._mDown);
         document.removeEventListener('mouseup', this._mUp);
+        document.removeEventListener('mousemove', this._mMove);
         document.removeEventListener('touchstart', this._tStart);
         document.removeEventListener('gesturestart', this._gStart);
 
@@ -278,6 +288,7 @@ class POINTER extends com.helpers.SingletonEx {
     _mMove(p_evt) {
         this._position.x = p_evt.clientX;
         this._position.y = p_evt.clientY;
+        this._Broadcast(POINTER.MOUSE_MOVE, p_evt);
     }
 
     _tStart(p_evt){

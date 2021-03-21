@@ -28,8 +28,8 @@
 // Flavors
 @include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) using ($index, $val) {
     --flavor_color: var(#{$val});
-    --flavor_color_rgb: var(#{$val+"_rgb"});
-    --flavor_contrast:var(#{$val+'_contrast'});
+    --flavor_color_rgb: var(#{$val+"-rgb"});
+    --flavor_contrast:var(#{$val+'-contrast'});
 }
 
 // ----> Remove costly filters on (presumably) mobile
@@ -75,19 +75,22 @@
 using ($index, $val){
 
     --flavor_color: var(#{$val});
-    --flavor_contrast:var(#{$val+'_contrast'});
+    --flavor_contrast:var(#{$val+'-contrast'});
 
-    $val: str-replace($val, '--col_');
+    $val: str-replace($val, '--col-');
     $flavor_id: $index;
 
     @include for-each-in($default_states_ids) using ($i, $st){
         $short_state: nth($short_states_ids, $i);
-        #{'--flavor_primary_'+$st}:var(#{'--fcol_'+$flavor_id+'_0_'+$short_state});
-        #{'--flavor_secondary_'+$st}:var(#{'--fcol_'+$flavor_id+'_1_'+$short_state});
-        #{'--flavor_contrast_'+$st}:var(#{'--fcol_'+$flavor_id+'_2_'+$short_state});
+        #{'--flavor-primary-'+$st}:var(#{'--fcol-'+$flavor_id+'-0-'+$short_state});
+        #{'--flavor-secondary-'+$st}:var(#{'--fcol-'+$flavor_id+'-1-'+$short_state});
+        #{'--flavor-contrast-'+$st}:var(#{'--fcol-'+$flavor_id+'-2-'+$short_state});
     }
 
 }
+
+:host(#{$WAITING}){ cursor: wait; }
+:host(#{$PROCESSING}){ cursor: progress; }
 
 /* Icon */
 

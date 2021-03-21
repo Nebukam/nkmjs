@@ -22,14 +22,15 @@ class GridItemHandler extends Manipulator {
      * @description TODO
      * @param {Element} p_element 
      */
-    constructor(p_element = null) {
-        super(p_element);
-        this._x = 0;
-        this._y = 0;
-        this._width = 0;
-        this._height = 0;
+    constructor(p_element = null, p_x = 1, p_y = 1, p_width = 1, p_height = 1) {
+        super(p_element, p_x, p_y, p_width, p_height);
+    }
 
-        // TODO : Add placement shortcuts etc
+    _Init(p_x = 1, p_y = 1, p_width = 1, p_height = 1) {
+        this._x = p_x === 0 ? p_x = 1 : p_x === -1 ? 0 : p_x;
+        this._y = p_y === 0 ? p_y = 1 : p_y === -1 ? 0 : p_y;
+        this._width = p_width === 0 ? p_width = 1 : p_width === -1 ? 0 : p_width;
+        this._height = p_height === 0 ? p_height = 1 : p_height === -1 ? 0 : p_height;
     }
 
     _OnElementChanged(p_oldElement) {
@@ -44,12 +45,12 @@ class GridItemHandler extends Manipulator {
      * @param {*} p_value 
      * @returns {boolean} True if the content is valid & visible, otherwise false.
      */
-    Set(p_x = 1, p_y = 1, p_width = 0, p_height = 0) {
+    Set(p_x = 1, p_y = 1, p_width = 1, p_height = 1) {
 
-        this._x = p_x;
-        this._y = p_y;
-        this._width = p_width;
-        this._height = p_height;
+        this._x = p_x === 0 ? p_x = 1 : p_x === -1 ? 0 : p_x;
+        this._y = p_y === 0 ? p_y = 1 : p_y === -1 ? 0 : p_y;
+        this._width = p_width === 0 ? p_width = 1 : p_width === -1 ? 0 : p_width;
+        this._height = p_height === 0 ? p_height = 1 : p_height === -1 ? 0 : p_height;
 
         return this._Apply(this._element);
 

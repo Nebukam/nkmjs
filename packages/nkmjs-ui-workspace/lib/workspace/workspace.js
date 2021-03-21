@@ -20,15 +20,25 @@ class Workspace extends ui.views.View {
         super._Init();
 
         this._cellDefaultClass = WorkspaceCell;
+        this._placeholderViewClass = null;
+        this._placeholderView = null;
 
         this._cells = new collections.List();
+        this._empty = true;
 
         this._catalogHandler = new data.catalogs.CatalogHandler();
         this._catalogHandler
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
+        this._gridController = new ui.manipulators.Grid(this, [1, 1]);
+
     }
+
+
+    // ----> Grid
+
+    get gridController() { return this._gridController; }
 
     /**
      * @type {data.core.catalogs.Catalog}
@@ -58,6 +68,16 @@ class Workspace extends ui.views.View {
 
     }
 
+    _Render() {
+        super._Render();
+        if (this._placholderViewClass) {
+            this._placeholderView = this.Add(this._placholderViewClass, `cell`);
+            this._placeholderView.visible = true;
+        }
+    }
+
+    // ----> Catalog Management
+
     _OnCatalogItemAdded(p_handler, p_item) {
 
         if (!u.isInstanceOf(p_item, data.catalogs.Catalog)) {
@@ -83,6 +103,7 @@ class Workspace extends ui.views.View {
         this._cells.Add(p_item);
         p_cell.Watch(ui.SIGNAL.FOCUS_REQUESTED, this._OnCellRequestFocus, this);
         p_cell.catalog = p_item;
+        if (!this._cells.isEmpty && this._empty) { this._OnWorkspaceNonEmpty(); }
     }
 
     _OnItemDataReleased(p_data) {
@@ -112,6 +133,7 @@ class Workspace extends ui.views.View {
     _OnCellRemoved(p_item, p_cell) {
         this._cells.Remove(p_item);
         p_cell.Unwatch(ui.SIGNAL.FOCUS_REQUESTED, this._OnCellRequestFocus, this);
+        if (this._cells.isEmpty && !this._empty) { this._OnWorkspacefEmpty(); }
     }
 
     _OnCellRequestFocus(p_view) {
@@ -135,12 +157,12 @@ class Workspace extends ui.views.View {
 
         // Need to create a new item from `p_item` as options
         let view = null,
-            viewType = p_item.GetOption(`viewType`, null),
+            viewClass = p_item.GetOption([ui.IDS.VIEW_CLASS], null),
             dataHolders = localCatalog.FindDataHolders(p_item.data);
 
         for (let i = 0, n = dataHolders.length; i < n; i++) {
-            let view = dataHolders[i].GetOption(`viewType`, null);
-            if (view && u.isInstanceOf(view, viewType)) {
+            let view = dataHolders[i].GetOption([ui.IDS.VIEW_CLASS], null);
+            if (view && u.isInstanceOf(view, viewClass)) {
                 view.RequestDisplay();
                 return;
             }
@@ -185,6 +207,33 @@ class Workspace extends ui.views.View {
         return localCatalog;
 
     }
+
+    //
+
+    /**
+     * @access protected
+     * @description TODO
+     */
+    _OnWorkspacefEmpty() {
+        this._empty = true;
+        this._Broadcast(ui.SIGNAL.EMPTY, this);
+        if (this._placeholderView) {
+            this._placeholderView.visible = true;
+        }
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {*} p_view 
+     */
+    _OnWorkspaceNonEmpty(p_view) {
+        this._empty = false;
+        if (this._placeholderView) {
+            this._placeholderView.visible = fakse;
+        }
+    }
+
 
     // ----> Pooling
 

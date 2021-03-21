@@ -320,7 +320,7 @@ class UTILS {
      * @param {string} p_string The string to split
      * @returns {string} Spaced string
      */
-    static CamelSplit(p_string) { return p_string.replace(/([a-z0-9])([A-Z#])/g, '$1 $2'); }
+    static CamelSplit(p_string, p_spacer = ` `) { return p_string.replace(/([a-z0-9])([A-Z#])/g, `$1${p_spacer}$2`); }
 
     /**
      * @description Creates a diff of two array, and 'old' one and a 'new' one,
@@ -673,7 +673,7 @@ class UTILS {
      * @description Compute an 'safe' RFC4122 UUID.
      * @type {string}
      */
-    static get UUID(){
+    static get UUID() {
         return uuid.v4();
     }
 
@@ -742,8 +742,11 @@ class UTILS {
         return result;
     }
 
-    static ToCustomElementID(p_id, p_addGUID = false){
-        return this.CamelSplit(`${p_id}${p_addGUID ? this.unsafeUID : ''}`).replace(` `, `-`).replace(`_`, `-`).toLowerCase();
+    static ToCustomElementID(p_id, p_addGUID = false) {
+        return this.CamelSplit(`${p_id}${p_addGUID ? this.unsafeUID : ''}`, `-`)
+            .replace(`_`, `-`)
+            .replace(` `, `-`)
+            .toLowerCase();
     }
 
 }

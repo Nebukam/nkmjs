@@ -58,6 +58,13 @@ class ShelfNav extends Toolbar {
      */
     get currentHandle() { return this._currentHandle; }
 
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.Toolbar}
+     * @customtag read-only
+     */
+     get toolbar() { return this._toolbar; }
+
     // ----> DOM
 
     _Style() {
