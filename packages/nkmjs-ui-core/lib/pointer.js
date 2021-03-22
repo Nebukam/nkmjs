@@ -431,16 +431,16 @@ class POINTER extends com.helpers.SingletonEx {
         this._ClearExternalDragDrop();
     }
 
-    _mExternalDragOver(p_evt){
+    _mExternalDragOver(p_evt) {
         p_evt.preventDefault(); // Prevent default browser behavior
     }
 
-    _mExternalDrop(p_evt){
+    _mExternalDrop(p_evt) {
         p_evt.preventDefault(); // Prevent default browser behavior
         this._ClearExternalDragDrop();
     }
 
-    _ClearExternalDragDrop(){
+    _ClearExternalDragDrop() {
         POINTER.DragEnded();
         POINTER.DRAG_DATA = null;
         document.removeEventListener('dragleave', this._mExternalDragLeave);

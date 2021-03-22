@@ -28,7 +28,8 @@ class Workspace extends ui.views.View {
         this._placeholderView = null;
 
         this._cells = new collections.List();
-        this._empty = true;
+        this._isEmpty = true;
+        this._flags.Add(this, ui.FLAGS.EMPTY);
 
         this._catalogHandler = new data.catalogs.CatalogHandler();
         this._catalogHandler
@@ -39,8 +40,10 @@ class Workspace extends ui.views.View {
 
     }
 
-
-    // ----> Grid
+    _PostInit() {
+        super._PostInit();
+        this._OnWorkspacefEmpty();
+    }
 
     get gridController() { return this._gridController; }
 
@@ -49,6 +52,8 @@ class Workspace extends ui.views.View {
      */
     get catalog() { return this._catalogHandler.catalog; }
     set catalog(p_value) { this._catalogHandler.catalog = p_value; }
+
+    get isEmpty() { return this._isEmpty; }
 
     // ----> Rendering
 
@@ -105,10 +110,12 @@ class Workspace extends ui.views.View {
     }
 
     _OnCellCreated(p_item, p_cell) {
-        this._cells.Add(p_item);
-        p_cell.Watch(ui.SIGNAL.FOCUS_REQUESTED, this._OnCellRequestFocus, this);
+        this._cells.Add(p_cell);
+        p_cell.Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnCellDisplayRequested, this);
+        p_cell.Watch(ui.SIGNAL.EMPTY, this._OnCellEmpty, this);
+        p_cell.Watch(ui.SIGNAL.NON_EMPTY, this._OnCellNonEmpty, this);
         p_cell.catalog = p_item;
-        if (!this._cells.isEmpty && this._empty) { this._OnWorkspaceNonEmpty(); }
+        this._UpdateWorkspaceEmptyState();
     }
 
     _OnItemDataReleased(p_data) {
@@ -120,6 +127,11 @@ class Workspace extends ui.views.View {
         for (let i = 0, n = dataHolders.length; i < n; i++) {
             dataHolders[i].Release();
         }
+
+        if (dataHolders && dataHolders.length > 0) {
+            this._UpdateWorkspaceEmptyState();
+        }
+
     }
 
     _OnCatalogItemRemoved(p_handler, p_item, p_binding) {
@@ -136,14 +148,18 @@ class Workspace extends ui.views.View {
     }
 
     _OnCellRemoved(p_item, p_cell) {
-        this._cells.Remove(p_item);
-        p_cell.Unwatch(ui.SIGNAL.FOCUS_REQUESTED, this._OnCellRequestFocus, this);
-        if (this._cells.isEmpty && !this._empty) { this._OnWorkspacefEmpty(); }
+        this._cells.Remove(p_cell);
+        p_cell.Unwatch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnCellDisplayRequested, this);
+        p_cell.Unwatch(ui.SIGNAL.EMPTY, this._OnCellEmpty, this);
+        p_cell.Unwatch(ui.SIGNAL.NON_EMPTY, this._OnCellNonEmpty, this);
+        this._UpdateWorkspaceEmptyState();
     }
 
-    _OnCellRequestFocus(p_view) {
+    _OnCellDisplayRequested(p_view) { }
 
-    }
+    _OnCellEmpty(p_cell) { this._UpdateWorkspaceEmptyState(); }
+
+    _OnCellNonEmpty(p_cell) { this._UpdateWorkspaceEmptyState(); }
 
     /**
      * 
@@ -215,16 +231,39 @@ class Workspace extends ui.views.View {
 
     //
 
+    _UpdateWorkspaceEmptyState() {
+
+        let isEmpty = true;
+
+        if (this._cells.isEmpty) {
+            isEmpty = true;
+        } else {
+            for (let i = 0, n = this._cells.count; i < n; i++) {
+                let cell = this._cells.At(i);
+                if (!cell.isEmpty) {
+                    isEmpty = false;
+                    cell.visible = true;
+                } else {
+                    cell.visible = false;
+                }
+            }
+        }
+
+        if (this._isEmpty === isEmpty) { return; }
+        if (isEmpty) { this._OnWorkspacefEmpty(); }
+        else { this._OnWorkspaceNonEmpty(); }
+
+    }
+
     /**
      * @access protected
      * @description TODO
      */
     _OnWorkspacefEmpty() {
-        this._empty = true;
+        this._isEmpty = true;
+        this._flags.Set(ui.FLAGS.EMPTY, true);
         this._Broadcast(ui.SIGNAL.EMPTY, this);
-        if (this._placeholderView) {
-            this._placeholderView.visible = true;
-        }
+        if (this._placeholderView) { this._placeholderView.visible = true; }
     }
 
     /**
@@ -233,10 +272,10 @@ class Workspace extends ui.views.View {
      * @param {*} p_view 
      */
     _OnWorkspaceNonEmpty(p_view) {
-        this._empty = false;
-        if (this._placeholderView) {
-            this._placeholderView.visible = false;
-        }
+        this._isEmpty = false;
+        this._flags.Set(ui.FLAGS.EMPTY, false);
+        this._Broadcast(ui.SIGNAL.NON_EMPTY, this);
+        if (this._placeholderView) { this._placeholderView.visible = false; }
     }
 
 

@@ -14,7 +14,7 @@ const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
 const TestWidget = require(`./test-widget`);
 const FeaturesWidget = require("./features-widget");
-
+const PlaceholderView = require(`./placeholder-view`);
 
 
 class StyleguideApp extends nkm.app.AppBase {
@@ -27,6 +27,8 @@ class StyleguideApp extends nkm.app.AppBase {
 
         this._Bind(this._Dialog);
         this._Bind(this._Overlay);
+
+        ui.views.Shelf.__default_placeholderViewClass = PlaceholderView;
 
         this._layers = [
             { id: `_mainContainer`, cl: UIItemListLayer }

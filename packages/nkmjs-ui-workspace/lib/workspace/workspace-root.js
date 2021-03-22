@@ -56,7 +56,6 @@ class RootWorkspace extends Workspace {
 
     _HandleEditRequest(p_request) {
 
-
         if (p_request.handled) { return; }
 
         let editTarget = p_request.GetOption(`data`, null),

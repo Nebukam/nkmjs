@@ -47,7 +47,7 @@ class DragExtension extends Extension {
         this._Bind(this._mDragEnd);
 
         this._hintElement = null;
-        
+
         //The trick is not to add the draggable attribute until the drag handle gets the mousedown event.
     }
 
@@ -145,7 +145,7 @@ class DragExtension extends Extension {
 
     _mDragStart(p_evt) {
 
-        if(this._feedbackHost){
+        if (this._feedbackHost) {
             console.log(p_evt);
             //p_evt.dataTransfer.setDragImage(this._feedbackHost);//, -10, -10);
         }
@@ -204,7 +204,7 @@ class DragExtension extends Extension {
     }
 
     _ShowHint() {
-        if (this._feedbackHost) {            
+        if (this._feedbackHost) {
             if (this._hintElement) { u.dom.Attach(this._hintElement, this._feedbackHost); }
             else { this._hintElement = u.dom.El(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
         }

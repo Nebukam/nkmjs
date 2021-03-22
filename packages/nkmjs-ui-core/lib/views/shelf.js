@@ -35,9 +35,10 @@ class Shelf extends View {
     static __default_navPlacement = FLAGS.TOP;
 
     _Init() {
+
         super._Init();
 
-        this._empty = true;
+        this._isEmpty = true;
 
         this._placholderViewClass = null;
         this._placeholderView = null;
@@ -60,6 +61,8 @@ class Shelf extends View {
 
         this._isCollapsable = true;
 
+        this._flags.Add(this, FLAGS.EMPTY);
+
     }
 
     _PostInit() {
@@ -74,6 +77,8 @@ class Shelf extends View {
             this.currentView = this._placeholderView;
         }
 
+        this._OnShelfEmpty();
+
     }
 
     /**
@@ -82,6 +87,8 @@ class Shelf extends View {
      */
     get isCollapsable() { return this._isCollapsable; }
     set isCollapsable(p_value) { this._isCollapsable = p_value; }
+
+    get isEmpty() { return this._isEmpty; }
 
     // ----> Orientation
 
@@ -169,6 +176,9 @@ class Shelf extends View {
                 'justify-content': `stretch`,
             },
 
+            ':host(.empty) .navigation': {
+                'display': 'none'
+            },
             '.navigation': {
                 //  'flex': `0 0 auto`
             },
@@ -266,7 +276,7 @@ class Shelf extends View {
 
         this._Broadcast(SIGNAL.VIEW_ADDED, this, p_mappedView, handle);
 
-        if (this._empty) {
+        if (this._isEmpty) {
             this._OnShelfNonEmpty();
             this._OnViewRequestDisplay(p_mappedView);
         }
@@ -345,7 +355,8 @@ class Shelf extends View {
      * @description TODO
      */
     _OnShelfEmpty() {
-        this._empty = true;
+        this._isEmpty = true;
+        this._flags.Set(FLAGS.EMPTY, true);
         this._Broadcast(SIGNAL.EMPTY, this);
         this.RequestPlaceholderView(true);
     }
@@ -356,7 +367,9 @@ class Shelf extends View {
      * @param {*} p_view 
      */
     _OnShelfNonEmpty(p_view) {
-        this._empty = false;
+        this._isEmpty = false;
+        this._flags.Set(FLAGS.EMPTY, false);
+        this._Broadcast(SIGNAL.NON_EMPTY, this);
     }
 
     // ----> Shelf
@@ -446,6 +459,7 @@ class Shelf extends View {
     RequestPlaceholderView(p_force = false) {
         if (p_force) { this.currentView = this._placeholderView; }
         else if (this._placeholderView) { this.currentView = this._placeholderView; }
+        return this._placeholderView ? true : false;
     }
 
     /**

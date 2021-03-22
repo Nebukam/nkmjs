@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
-const com = require("@nkmjs/common"); 
+const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./signal`);
 const DisposableHTMLElement = require(`./disposable-htmlelement`);
@@ -112,11 +112,11 @@ class UI extends com.helpers.SingletonEx {
      */
     _Rent(p_class, p_parent = null) {
 
-        if (!this._uiTypes.Contains(p_class)) { 
-            if(u.isInstanceOf(p_class, DisposableHTMLElement)){
+        if (!this._uiTypes.Contains(p_class)) {
+            if (u.isInstanceOf(p_class, DisposableHTMLElement)) {
                 this._Register(u.tils.ToCustomElementID(p_class.name, true), p_class);
-            }else{
-                throw new Error(`${p_class} could not be found.`); 
+            } else {
+                throw new Error(`${p_class} could not be found.`);
             }
         }
 
@@ -163,7 +163,7 @@ class UI extends com.helpers.SingletonEx {
         this._dirtyElements.Clear();
     }
 
-    
+
 
 }
 

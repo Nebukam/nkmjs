@@ -172,7 +172,7 @@ class SIGNAL {
      * @group Drag and drop
      */
     static DRAGGED = Symbol(`dragged`);
-    
+
     /**
      * @description TODO
      * @type {symbol}
@@ -188,15 +188,23 @@ class SIGNAL {
      * @customtag read-only
      * @group Views
      */
-     static VIEW_ADDED = Symbol(`viewAdded`);
+    static VIEW_ADDED = Symbol(`viewAdded`);
 
-     /**
-      * @description TODO
-      * @type {symbol}
-      * @customtag read-only
-      * @group Views
-      */
-     static EMPTY = Symbol(`empty`);
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Views
+     */
+    static EMPTY = Symbol(`empty`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Views
+     */
+    static NON_EMPTY = Symbol(`non-empty`);
 
 }
 

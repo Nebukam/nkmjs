@@ -161,22 +161,6 @@ class FLAGS {
      */
     static TOGGLED = `toggled`;
 
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     * @group Interactivity
-     */
-    static DRAGGED = `dragged`;
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     * @group Interactivity
-     */
-    static ALLOW_DROP = `allow-drop`;
-
     // Placements
 
     /**
@@ -544,6 +528,68 @@ class FLAGS {
     * @group Animation
     */
     static A_ANY_END = `any-end`;
+
+    // Drag & Drop
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Drag'n Drop
+     */
+    static DRAGGED = `dragged`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Drag'n Drop
+     */
+    static ALLOW_DROP = `allow-drop`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Drag'n Drop
+     */
+    static ALLOW_DROP_TOP = `allow-drop-top`;
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Drag'n Drop
+    */
+    static ALLOW_DROP_TOP = `allow-drop-bottom`;
+
+    /**
+   * @description TODO
+   * @type {string}
+   * @customtag read-only
+   * @group Drag'n Drop
+   */
+    static ALLOW_DROP_LEFT = `allow-drop-left`;
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Drag'n Drop
+    */
+    static ALLOW_DROP_RIGHT = `allow-drop-right`;
+
+    //
+
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Views
+    */
+    static EMPTY = `empty`;
+
+
 
 }
 

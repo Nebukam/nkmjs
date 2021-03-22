@@ -24,13 +24,10 @@ class InputFile extends InputPath {
         this._picker = null;
 
         this._dropExt = this._pointer.Add(ui.extensions.Drop);
-        this._dropExt.acceptExternalDrops = true;
         this._dropExt.Hook({
             check: { fn: this._Bind(this._CheckDrop) },
             drop: { fn: this._Bind(this._Drop) },
-            drag: { fn: this._Bind(this._Drag) },
-            leave: { fn: this._Bind(this._Leave) },
-            candidate:{ fn:this._Bind(this._ToggleDropCandidate) }
+            dropCandidate:{ fn:this._Bind(this._ToggleDropCandidate) }
         });
 
     }
@@ -46,6 +43,9 @@ class InputFile extends InputPath {
         return style.Extends({
             '.input-btn': {
                 flex: `1 1 auto`
+            },
+            ':host(.allow-drop)':{
+                'background-color':`#00ff00`
             }
         }, super._Style());
     }
@@ -98,9 +98,9 @@ class InputFile extends InputPath {
 
     _ToggleDropCandidate(p_toggle){
         if(p_toggle){
-            this.style.setProperty(`background-color`, `#ff0000`);
+            this.style.setProperty(`border`, `1px solid red`);
         }else{
-            this.style.removeProperty(`background-color`);
+            this.style.removeProperty(`border`);
         }        
     }
 
@@ -111,14 +111,6 @@ class InputFile extends InputPath {
             return true;
         }
         return false;
-    }
-
-    _Drag(p_data){
-        this.style.setProperty(`background-color`, `#00ff00`);
-    }
-
-    _Leave(){
-        this.style.setProperty(`background-color`, `#0000ff`);
     }
 
     _Drop(p_data) {

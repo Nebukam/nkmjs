@@ -29,7 +29,7 @@ class WorkspaceCell extends ui.views.Shelf {
 
     // ----> Grid
 
-    get gridItemController(){ return this._gridItemController; }
+    get gridItemController() { return this._gridItemController; }
 
     // ----> Catalog Management
 
@@ -46,13 +46,10 @@ class WorkspaceCell extends ui.views.Shelf {
             throw new Error(`Full catalog item added to workspace cell catalog.`);
         }
 
-        return super._OnCatalogItemAdded(p_handler, p_item, p_mappedView);
-    }
-
-    _OnViewAdded(p_item, p_control, p_view) {
-
-        super._OnViewAdded(p_item, p_control, p_view);
-        p_view.RequestDisplay();
+        let view = super._OnCatalogItemAdded(p_handler, p_item, p_mappedView);
+        view.RequestDisplay();
+        
+        return view;
 
     }
 
