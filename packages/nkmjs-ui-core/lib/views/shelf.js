@@ -68,8 +68,9 @@ class Shelf extends View {
         this._navPlacement.Set(this.constructor.__default_navPlacement);
         this._nav.Watch(ShelfNav.HANDLE_ACTIVATED, this._OnHandleActivated, this);
 
-        if (this._placholderViewClass) {
-            this._placeholderView = this.Add(this._placholderViewClass, `view`);
+        let placholderViewClass = (this._placholderViewClass || this.constructor.__default_placeholderViewClass);
+        if (placholderViewClass) {
+            this._placeholderView = this.Add(placholderViewClass, `view`);
             this.currentView = this._placeholderView;
         }
 
@@ -230,13 +231,6 @@ class Shelf extends View {
 
         this._orientation.AddManaged(this._nav._orientation);
         this._nav.orientation = this.constructor.__default_orientation;
-
-        let placholderViewClass = (this._placholderViewClass || this.constructor.__default_placeholderViewClass);
-        if (placholderViewClass) {
-            this._placeholderView = ui.Rent(placholderViewClass);
-            this.currentView = this._placeholderView;
-        }
-
     }
 
     /**
@@ -353,7 +347,7 @@ class Shelf extends View {
     _OnShelfEmpty() {
         this._empty = true;
         this._Broadcast(SIGNAL.EMPTY, this);
-        this.currentView = this._placeholderView;
+        this.RequestPlaceholderView(true);
     }
 
     /**
@@ -448,6 +442,11 @@ class Shelf extends View {
      * @param {ui.core.View} p_view 
      */
     SetCurrentView(p_view = null) { this.currentView = p_view; }
+
+    RequestPlaceholderView(p_force = false) {
+        if (p_force) { this.currentView = this._placeholderView; }
+        else if (this._placeholderView) { this.currentView = this._placeholderView; }
+    }
 
     /**
      * @access protected
