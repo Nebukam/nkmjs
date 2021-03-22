@@ -22,6 +22,22 @@ class InputFile extends InputPath {
 
         this._openType = 'openFile';
         this._picker = null;
+
+        this._dropExt = this._pointer.Add(ui.extensions.Drop);
+        this._dropExt.acceptExternalDrops = true;
+        this._dropExt.Hook({
+            check: { fn: this._Bind(this._CheckDrop) },
+            drop: { fn: this._Bind(this._Drop) },
+            drag: { fn: this._Bind(this._Drag) },
+            leave: { fn: this._Bind(this._Leave) },
+            candidate:{ fn:this._Bind(this._ToggleDropCandidate) }
+        });
+
+    }
+
+    _PostInit() {
+        super._PostInit();
+        this._dropExt.Setup(this);
     }
 
     // ----> DOM
@@ -76,6 +92,41 @@ class InputFile extends InputPath {
     _onPickerChange(p_evt) {
         console.log(this._picker.value);
         console.log(p_evt);
+    }
+
+    // Drop
+
+    _ToggleDropCandidate(p_toggle){
+        if(p_toggle){
+            this.style.setProperty(`background-color`, `#ff0000`);
+        }else{
+            this.style.removeProperty(`background-color`);
+        }        
+    }
+
+    _CheckDrop(p_data) {
+        if(u.isString(p_data)){
+            return true;
+        }else if(u.isInstanceOf(p_data, DataTransfer)){
+            return true;
+        }
+        return false;
+    }
+
+    _Drag(p_data){
+        this.style.setProperty(`background-color`, `#00ff00`);
+    }
+
+    _Leave(){
+        this.style.setProperty(`background-color`, `#0000ff`);
+    }
+
+    _Drop(p_data) {
+        if(u.isString(p_data)){
+            this.currentValue = p_data;
+        }if(u.isInstanceOf(p_data, DataTransfer)){
+            return true;
+        }
     }
 
 }

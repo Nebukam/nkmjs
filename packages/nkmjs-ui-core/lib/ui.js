@@ -163,69 +163,7 @@ class UI extends com.helpers.SingletonEx {
         this._dirtyElements.Clear();
     }
 
-    // ----> Data drag handling    
-
     
-    static _dragLength = 0;
-    static _dragData = null;
-    static _dragTarget = null;
-
-    /**
-     * @description TODO
-     * @type {*}
-     * @group Drag and drop
-     */
-    static get DRAG_DATA() { return this._dragData; }
-    static set DRAG_DATA(p_data) { this._dragData = p_data; }
-
-    /**
-     * @description TODO
-     * @type {*}
-     * @group Drag and drop
-     */
-    static get DRAG_TARGET() { return this._dragTarget; }
-    static set DRAG_TARGET(p_target) { this._dragTarget = p_target; }
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @group Drag and drop
-     */
-    static get dragLength() { return this._dragLength; }
-    static set dragLength(p_value) { this._dragLength = p_value; }
-
-    /**
-     * @description TODO
-     * @param {*} p_data 
-     * @param {*} p_target 
-     * @group Drag and drop
-     */
-    static DragStarted(p_data, p_target) {
-
-        let dLength = 0;
-        if (p_data) {
-            if (Array.isArray(p_data)) {
-                dLength = p_data.length;
-            }
-        }
-
-        this.dragLength = dLength;
-
-        this.DRAG_DATA = p_data;
-        this.DRAG_TARGET = p_target;
-        this.instance._Broadcast(SIGNAL.DRAG_STARTED, p_data);
-    }
-
-    /**
-     * @description TODO
-     * @group Drag and drop
-     */
-    static DragEnded() {
-        this.instance._Broadcast(SIGNAL.DRAG_ENDED);
-        this.DRAG_DATA = null;
-        this.DRAG_TARGET = null;
-        this.dragLength = 0;
-    }
 
 }
 

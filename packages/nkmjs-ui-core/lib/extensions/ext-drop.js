@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 
-const UI = require(`../ui`);
+const POINTER = require(`../pointer`);
 const FLAGS = require(`../flags`);
 const SIGNAL = require(`../signal`);
 
@@ -45,13 +45,18 @@ class DropExtension extends Extension {
 
         this._hooks = new Array(0);
 
+        this._candidatesHooks = new Array(0);
         this._allowedHooks = new Array(0);
         this._onDragOverHooks = new Array(0);
         this._onLeaveHooks = new Array(0);
 
         this._isAcceptingCurrentData = false;
         this._isActive = false;
+        this._acceptExternalDrops = false;
+        this._draggingOver = false;
 
+        this._Bind(this._OnPointerDragStarted);
+        this._Bind(this._OnPointerDragEnded);
         this._Bind(this._mDragEnter);
         this._Bind(this._mDragLeave);
         this._Bind(this._mDragOver);
@@ -80,6 +85,16 @@ class DropExtension extends Extension {
 
     }
 
+    get acceptExternalDrops(){ return this._acceptExternalDrops; }
+    set acceptExternalDrops(p_value){
+        if(this._acceptExternalDrops == p_value){ return; }
+        this._acceptExternalDrops = p_value;
+        if(this._isEnabled){
+            if(p_value){ POINTER.Watch(SIGNAL.DRAG_STARTED, this._OnPointerDragStarted); }
+            else{ POINTER.Unwatch(SIGNAL.DRAG_STARTED, this._OnPointerDragStarted); }
+        }
+    }
+
     /**
      * @description TODO
      * @param {*} p_target 
@@ -105,7 +120,9 @@ class DropExtension extends Extension {
     Enable() {
         if (!super.Enable()) { return false; }
         if (this._target) { this._target.addEventListener(`dragenter`, this._mDragEnter); }
+        if (this._acceptExternalDrops) { POINTER.Watch(SIGNAL.DRAG_STARTED, this._OnPointerDragStarted); }
         return true;
+
     }
 
     /**
@@ -114,7 +131,74 @@ class DropExtension extends Extension {
     Disable() {
         if (!super.Disable()) { return false; }
         if (this._target) { this._target.removeEventListener(`dragenter`, this._mDragEnter); }
+        if (this._acceptExternalDrops) { POINTER.Unwatch(SIGNAL.DRAG_STARTED, this._OnPointerDragStarted); }
         return true;
+    }
+
+    _OnPointerDragStarted(dragData) {
+
+        this._candidatesHooks.length = 0;
+
+        let dragLength = POINTER.dragLength;
+
+        // Look for 'candidate' hooks with a 'check' hook
+        outerloop:
+        for (let i = 0, n = this._hooks.length; i < n; i++) {
+
+            let hook = this._hooks[i],
+                pass = false;
+
+            if (hook.check && hook.candidate) {
+                if (dragLength > 0) {
+
+                    innerloop:
+                    for (let d = 0, n2 = dragData.length; d < n2; d++) {
+
+                        let dataItem = dragData[d];
+
+                        if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dataItem); }
+                        else { pass = hook.check.fn(dataItem); }
+
+                        if (pass) { break innerloop; }
+                    }
+
+                } else {
+
+                    if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dragData); }
+                    else { pass = hook.check.fn(dragData); }
+
+                }
+            }
+
+            if (pass) {
+                this._candidatesHooks.push(hook);
+            }
+
+        }
+
+        if (this._candidatesHooks.length > 0) {
+
+            POINTER.Watch(SIGNAL.DRAG_ENDED, this._OnPointerDragEnded);
+
+            for (let i = 0, n = this._candidatesHooks.length; i < n; i++) {
+                let candidate = this._candidatesHooks[i].candidate;
+                if (candidate.fn) { candidate.fn(true); }
+                if (candidate.flag) { this._target.flags.Set(candidate.flag, true); }
+            }
+        }
+
+    }
+
+    _OnPointerDragEnded() {
+
+        POINTER.Unwatch(SIGNAL.DRAG_ENDED, this._OnPointerDragEnded);
+
+        for (let i = 0, n = this._candidatesHooks.length; i < n; i++) {
+            let candidate = this._candidatesHooks[i].candidate;
+            if (candidate.fn) { candidate.fn(false); }
+            if (candidate.flag) { this._target.flags.Set(candidate.flag, false); }
+        }
+
     }
 
     _mDragEnter(p_evt) {
@@ -123,7 +207,8 @@ class DropExtension extends Extension {
         this._onDragOverHooks.length = 0;
         this._onLeaveHooks.length = 0;
 
-        let dragList = UI.DRAG_DATA;
+        let dragData = POINTER.DRAG_DATA,
+            dragLength = POINTER.dragLength;
 
         outerloop:
         for (let i = 0, n = this._hooks.length; i < n; i++) {
@@ -131,15 +216,30 @@ class DropExtension extends Extension {
             let hook = this._hooks[i],
                 pass = false;
 
-            innerloop:
-            for (let d = 0, n2 = dragList.length; d < n2; d++) {
+            if (hook.check) {
 
-                let dragData = dragList[d];
+                if (dragLength > 0) {
 
-                if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dragData); }
-                else { pass = hook.check.fn(dragData); }
+                    innerloop:
+                    for (let d = 0, n2 = dragData.length; d < n2; d++) {
 
-                if (pass) { break innerloop; }
+                        let dataItem = dragData[d];
+
+                        if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dataItem); }
+                        else { pass = hook.check.fn(dataItem); }
+
+                        if (pass) { break innerloop; }
+                    }
+
+                } else {
+
+                    if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dragData); }
+                    else { pass = hook.check.fn(dragData); }
+
+                }
+
+            } else {
+                pass = true;
             }
 
             if (pass) {
@@ -171,6 +271,9 @@ class DropExtension extends Extension {
 
     _mDragOver(p_evt) {
 
+        if (this._draggingOver) { return; }
+        this._draggingOver = true;
+
         if (p_evt.defaultPrevented) {
             this._Activate(false);
             return;
@@ -181,7 +284,7 @@ class DropExtension extends Extension {
             p_evt.preventDefault();
             this._Activate(true);
 
-            let dragData = UI.DRAG_DATA;
+            let dragData = POINTER.DRAG_DATA;
 
             for (let i = 0, n = this._onDragOverHooks.length; i < n; i++) {
                 let hook = this._onDragOverHooks[i];
@@ -194,7 +297,7 @@ class DropExtension extends Extension {
 
     _mDrop(p_evt) {
 
-        let dragList = UI.DRAG_DATA,
+        let dragList = POINTER.DRAG_DATA,
             pass = false;
 
         for (let d = 0, n = dragList.length; d < n; d++) {
@@ -216,7 +319,9 @@ class DropExtension extends Extension {
             }
         }
 
-        UI.DRAG_TARGET._Broadcast(SIGNAL.DROPPED, UI.DRAG_TARGET);
+        if (POINTER.DRAG_TARGET) {
+            POINTER.DRAG_TARGET._Broadcast(SIGNAL.DROPPED, POINTER.DRAG_TARGET);
+        }
 
         this._Clear();
 
@@ -251,19 +356,21 @@ class DropExtension extends Extension {
             //Becomes the main drop target        
             DropExtension.ACTIVE_TARGET = this;
             this._target.addEventListener(`drop`, this._mDrop);
-            UI.instance.Unwatch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
+            POINTER.instance.Unwatch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
         } else {
             //Stops being the main drop target
             if (DropExtension.ACTIVE_TARGET === this) { DropExtension.ACTIVE_TARGET = null; }
             this._target.removeEventListener(`drop`, this._mDrop);
-            UI.instance.Watch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
+            POINTER.instance.Watch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
         }
 
     }
 
     _Clear() {
 
-        let dragData = UI.DRAG_DATA;
+        this._draggingOver = false;
+
+        let dragData = POINTER.DRAG_DATA;
 
         for (let i = 0, n = this._onLeaveHooks.length; i < n; i++) {
             let hook = this._onLeaveHooks[i];
@@ -274,6 +381,10 @@ class DropExtension extends Extension {
         this._target.removeEventListener(`dragleave`, this._mDragLeave);
         this._target.removeEventListener(`dragover`, this._mDragOver);
         this._Activate(false);
+
+        this._allowedHooks.length = 0;
+        this._onDragOverHooks.length = 0;
+        this._onLeaveHooks.length = 0;
 
     }
 
@@ -302,6 +413,7 @@ class DropExtension extends Extension {
      * 
      * @param {object} p_hookOptions 
      * @param {object} p_hookOptions.check
+     * @param {object} p_hookOptions.candidate
      * @param {object} p_hookOptions.drop
      * @param {object} p_hookOptions.drag
      * @param {object} p_hookOptions.leave
@@ -309,6 +421,7 @@ class DropExtension extends Extension {
      */
     Hook(p_hookOptions) {
         this._hooks.push(p_hookOptions);
+        return this;
     }
 
     // ----> Pooling

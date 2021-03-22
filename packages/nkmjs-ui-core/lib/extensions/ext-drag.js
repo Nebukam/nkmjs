@@ -3,7 +3,6 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
-const UI = require(`../ui`);
 const INPUT = require(`../input`);
 const FLAGS = require(`../flags`);
 const SIGNAL = require(`../signal`);
@@ -158,7 +157,7 @@ class DragExtension extends Extension {
 
         _dragDataContent.length = 0;
         this._OwnerBroadcast(SIGNAL.DRAG_STARTED);
-        UI.DragStarted(_dragDataContent, this._target);
+        POINTER.DragStarted(_dragDataContent, this._target);
 
         this._ShowHint();
 
@@ -174,7 +173,7 @@ class DragExtension extends Extension {
     _mDragEnd(p_evt) {
         this._EndDrag();
         this._OwnerBroadcast(SIGNAL.DRAG_ENDED);
-        UI.DragEnded();
+        POINTER.DragEnded();
     }
 
     _GrabData() { return this._grabDataCallback(); }

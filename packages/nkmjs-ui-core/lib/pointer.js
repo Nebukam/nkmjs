@@ -1,6 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const SIGNAL = require("./signal");
 
 
 /**
@@ -124,7 +125,7 @@ class POINTER extends com.helpers.SingletonEx {
      * @customtag read-only
      * @group Button State
      */
-     static MOUSE_MOVE = Symbol('mouseMove');
+    static MOUSE_MOVE = Symbol('mouseMove');
 
     /**
      * @description TODO
@@ -164,6 +165,11 @@ class POINTER extends com.helpers.SingletonEx {
         this._position = { x: 0, y: 0 };
         this._clearUsing = new com.time.DelayedCall(this._Bind(this._ClearUsing));
 
+        this._Bind(this._mExternalDragEnter);
+        this._Bind(this._mExternalDragOver);
+        this._Bind(this._mExternalDragLeave);
+        this._Bind(this._mExternalDrop);
+
         this._Bind(this._mDown);
         this._Bind(this._mUp);
         this._Bind(this._mMove);
@@ -191,7 +197,8 @@ class POINTER extends com.helpers.SingletonEx {
         document.addEventListener('mousemove', this._mMove);
         document.addEventListener('touchstart', this._tStart);
         document.addEventListener('gesturestart', this._gStart);
-        
+
+        document.addEventListener('dragenter', this._mExternalDragEnter);
 
         this._running = true;
 
@@ -206,6 +213,8 @@ class POINTER extends com.helpers.SingletonEx {
         document.removeEventListener('mousemove', this._mMove);
         document.removeEventListener('touchstart', this._tStart);
         document.removeEventListener('gesturestart', this._gStart);
+
+        document.removeEventListener('dragenter', this._mExternalDragEnter);
 
         this._running = false;
 
@@ -245,7 +254,7 @@ class POINTER extends com.helpers.SingletonEx {
 
     _IsUsing(p_btn) {
 
-        if(p_btn === POINTER.MOUSE_LEFT){ return false; }
+        if (p_btn === POINTER.MOUSE_LEFT) { return false; }
 
         for (let i = 0, n = this._using.length; i < n; i++) {
             if (p_btn in this._using[i]) { return true; }
@@ -291,29 +300,29 @@ class POINTER extends com.helpers.SingletonEx {
         this._Broadcast(POINTER.MOUSE_MOVE, p_evt);
     }
 
-    _tStart(p_evt){
-        if(p_evt.cancelable){ p_evt.preventDefault(); }
+    _tStart(p_evt) {
+        if (p_evt.cancelable) { p_evt.preventDefault(); }
         document.addEventListener('touchmove', this._tMove);
         document.addEventListener('touchend', this._tEnd);
         document.addEventListener('touchcancel', this._tCancel);
     }
 
-    _tMove(p_evt){
+    _tMove(p_evt) {
         //if(p_evt.cancelable){ p_evt.preventDefault(); }
         //console.log(`touch move`,p_evt);
     }
 
-    _tEnd(p_evt){
+    _tEnd(p_evt) {
         //if(p_evt.cancelable){ p_evt.preventDefault(); }
         this._clearTouchListeners();
     }
 
-    _tCancel(p_evt){
+    _tCancel(p_evt) {
         //if(p_evt.cancelable){ p_evt.preventDefault(); }
         this._clearTouchListeners();
     }
 
-    _clearTouchListeners(){
+    _clearTouchListeners() {
         document.removeEventListener('touchmove', this._tMove);
         document.removeEventListener('touchend', this._tEnd);
         document.removeEventListener('touchcancel', this._tCancel);
@@ -321,20 +330,122 @@ class POINTER extends com.helpers.SingletonEx {
 
     // Gesture events
 
-    _gStart(p_evt){
-        if(p_evt.cancelable){ p_evt.preventDefault(); }
+    _gStart(p_evt) {
+        if (p_evt.cancelable) { p_evt.preventDefault(); }
         document.addEventListener('gesturechange', this._gChange);
         document.addEventListener('gestureend', this._gEnd);
     }
 
-    _gChange(p_evt){
-        if(p_evt.cancelable){ p_evt.preventDefault(); }
+    _gChange(p_evt) {
+        if (p_evt.cancelable) { p_evt.preventDefault(); }
     }
 
-    _gEnd(p_evt){
-        if(p_evt.cancelable){ p_evt.preventDefault(); }
+    _gEnd(p_evt) {
+        if (p_evt.cancelable) { p_evt.preventDefault(); }
         document.removeEventListener('gesturechange', this._gChange);
         document.removeEventListener('gestureend', this._gEnd);
+    }
+
+    // ----> Data drag handling    
+
+
+    static _dragLength = 0;
+    static _dragData = null;
+    static _dragDataExternal = null;
+    static _dragTarget = null;
+
+    /**
+     * @description TODO
+     * @type {*}
+     * @group Drag and drop
+     */
+    static get DRAG_DATA() { return this._dragData; }
+    static set DRAG_DATA(p_data) { this._dragData = p_data; }
+
+    /**
+     * @description TODO
+     * @type {*}
+     * @group Drag and drop
+     */
+    static get DRAG_TARGET() { return this._dragTarget; }
+    static set DRAG_TARGET(p_target) { this._dragTarget = p_target; }
+
+    /**
+     * @description TODO
+     * @type {number}
+     * @group Drag and drop
+     */
+    static get dragLength() { return this._dragLength; }
+    static set dragLength(p_value) { this._dragLength = p_value; }
+
+    /**
+     * @description TODO
+     * @param {*} p_data 
+     * @param {*} p_target 
+     * @group Drag and drop
+     */
+    static DragStarted(p_data, p_target) {
+
+        let dLength = 0;
+        if (p_data) {
+            if (Array.isArray(p_data)) {
+                dLength = p_data.length;
+            }
+        }
+
+        this.dragLength = dLength;
+
+        this.DRAG_DATA = p_data;
+        this.DRAG_TARGET = p_target;
+        this.instance._Broadcast(SIGNAL.DRAG_STARTED, p_data);
+    }
+
+    /**
+     * @description TODO
+     * @group Drag and drop
+     */
+    static DragEnded() {
+        this.instance._Broadcast(SIGNAL.DRAG_ENDED);
+        this.DRAG_DATA = null;
+        this.DRAG_TARGET = null;
+        this.dragLength = 0;
+    }
+
+
+    //
+
+    _mExternalDragEnter(p_evt) {
+        if (POINTER.DRAG_DATA) { return; } // Internal drag
+
+        POINTER.DRAG_DATA = p_evt.dataTransfer;
+        POINTER.DragStarted(POINTER.DRAG_DATA, null);
+
+        document.addEventListener('dragleave', this._mExternalDragLeave);
+        document.addEventListener('dragover', this._mExternalDragOver);
+        document.addEventListener('drop', this._mExternalDrop);
+
+    }
+
+    _mExternalDragLeave(p_evt) {
+        p_evt.preventDefault(); // Prevent default browser behavior
+        this._ClearExternalDragDrop();
+    }
+
+    _mExternalDragOver(p_evt){
+        p_evt.preventDefault(); // Prevent default browser behavior
+    }
+
+    _mExternalDrop(p_evt){
+        p_evt.preventDefault(); // Prevent default browser behavior
+        this._ClearExternalDragDrop();
+    }
+
+    _ClearExternalDragDrop(){
+        POINTER.DragEnded();
+        POINTER.DRAG_DATA = null;
+        document.removeEventListener('dragleave', this._mExternalDragLeave);
+        document.removeEventListener('dragover', this._mExternalDragOver);
+        document.removeEventListener('drop', this._mExternalDrop);
     }
 
 }
