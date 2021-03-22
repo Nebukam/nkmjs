@@ -36,7 +36,7 @@ $hint_size: 4px;
 
     & .label{
         flex:1 1 auto;
-        @include ellipsis(true);
+        @include ellipsis();
     }
 
     &::before{

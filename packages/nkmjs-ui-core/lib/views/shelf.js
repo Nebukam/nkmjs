@@ -278,7 +278,7 @@ class Shelf extends View {
 
         if (this._isEmpty) {
             this._OnShelfNonEmpty();
-            this._OnViewRequestDisplay(p_mappedView);
+            //this._OnViewRequestDisplay(p_mappedView);
         }
 
         return p_mappedView;
@@ -334,6 +334,7 @@ class Shelf extends View {
     _OnHandleCloseRequest(p_handle) {
         //TODO : Find a way to make this behavior more configurable
         //TODO : Check if there are change to apply to the open document, yada yada yada (in workspace cell, that is)
+        //TODO : Release the view contained in the catalogItem, if not created by the shelf (uh-oh)
         let catalogItem = p_handle.data;
         catalogItem.Release();
     }

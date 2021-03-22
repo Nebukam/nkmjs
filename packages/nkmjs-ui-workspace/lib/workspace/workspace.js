@@ -173,26 +173,33 @@ class Workspace extends ui.views.View {
         if (u.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
             // Attempting to host an existing catalog item.
             localCatalog.Add(p_item);
-            return;
+            return p_item;
         }
 
         // Need to create a new item from `p_item` as options
         let view = null,
-            viewClass = p_item.GetOption([ui.IDS.VIEW_CLASS], null),
+            viewClass = u.tils.Get(p_item, [ui.IDS.VIEW_CLASS], null),
             dataHolders = localCatalog.FindDataHolders(p_item.data);
 
         for (let i = 0, n = dataHolders.length; i < n; i++) {
-            let view = dataHolders[i].GetOption([ui.IDS.VIEW_CLASS], null);
+
+            let item = dataHolders[i],
+                view = item.GetOption([ui.IDS.VIEW_CLASS], null);
+
             if (view && u.isInstanceOf(view, viewClass)) {
                 view.RequestDisplay();
-                return;
+                return item;
             }
+
         }
 
         let item = localCatalog.Register(p_item);
+        
         // TODO : Find cell associated to catalog and request focus on newly created view
         //        let view = this._catalogHandler.Get(item);
         //        view.RequestDisplay();
+
+        return item;
 
     }
 

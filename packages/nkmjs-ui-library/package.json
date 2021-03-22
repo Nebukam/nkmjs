@@ -1,0 +1,30 @@
+{
+  "name": "@nkmjs/ui-library",
+  "version": "0.0.1",
+  "description": "NKMjs Framework UI Library",
+  "browser": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-ui-library"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/collections": "^0.1.1",
+    "@nkmjs/common": "^0.1.5",
+    "@nkmjs/data-core": "^0.0.14",
+    "@nkmjs/documents": "^0.0.14",
+    "@nkmjs/environment": "^0.1.5",
+    "@nkmjs/io-core": "^0.1.5",
+    "@nkmjs/style": "^0.0.16",
+    "@nkmjs/ui-core": "^0.0.17",
+    "@nkmjs/ui-inputs": "^0.0.17",
+    "@nkmjs/utils": "^0.0.14"
+  }
+}
