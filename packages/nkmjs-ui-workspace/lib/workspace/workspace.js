@@ -15,6 +15,10 @@ class Workspace extends ui.views.View {
         css: [`@/views/workspace.css`]
     }, ui.views.View, ['css']);
 
+    // ----> Init
+
+    static __default_placeholderViewClass = null;
+
     _Init() {
 
         super._Init();
@@ -70,8 +74,9 @@ class Workspace extends ui.views.View {
 
     _Render() {
         super._Render();
-        if (this._placholderViewClass) {
-            this._placeholderView = this.Add(this._placholderViewClass, `cell`);
+        let placholderViewClass = (this._placholderViewClass || this.constructor.__default_placeholderViewClass);
+        if (placholderViewClass) {
+            this._placeholderView = this.Add(placholderViewClass, `cell`);
             this._placeholderView.visible = true;
         }
     }
@@ -230,7 +235,7 @@ class Workspace extends ui.views.View {
     _OnWorkspaceNonEmpty(p_view) {
         this._empty = false;
         if (this._placeholderView) {
-            this._placeholderView.visible = fakse;
+            this._placeholderView.visible = false;
         }
     }
 

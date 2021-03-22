@@ -30,8 +30,8 @@ class Shelf extends View {
 
     // ----> Init
 
+    static __default_placeholderViewClass = null;
     static __default_orientation = FLAGS.VERTICAL;
-
     static __default_navPlacement = FLAGS.TOP;
 
     _Init() {
@@ -231,8 +231,9 @@ class Shelf extends View {
         this._orientation.AddManaged(this._nav._orientation);
         this._nav.orientation = this.constructor.__default_orientation;
 
-        if(this._placholderViewClass){
-            this._placeholderView = ui.Rent(this._placholderViewClass);
+        let placholderViewClass = (this._placholderViewClass || this.constructor.__default_placeholderViewClass);
+        if (placholderViewClass) {
+            this._placeholderView = ui.Rent(placholderViewClass);
             this.currentView = this._placeholderView;
         }
 
