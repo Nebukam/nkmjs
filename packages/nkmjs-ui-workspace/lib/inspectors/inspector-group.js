@@ -1,6 +1,7 @@
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
+const uilib = require(`@nkmjs/ui-library`);
 
 const InspectorItem = require(`./inspector-item`);
 
@@ -21,10 +22,10 @@ class InspectorGroup extends InspectorItem {
 
         this._useGroupExpand = false;
 
-        this._expandBtnClass = ui.buttons.ToolButton;
+        this._expandBtnClass = uilib.buttons.Tool;
         this._expandBtn = null;
 
-        this._toolbarClass = ui.helpers.Toolbar;
+        this._toolbarClass = ui.WidgetBar;
         this._toolbar = null;
 
         this._footer = null;

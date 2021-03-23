@@ -2,7 +2,7 @@
 
 const nkm = require(`@nkmjs/core`);
 
-class PlaceholderView extends nkm.ui.View{
+class PlaceholderView extends nkm.ui.views.View{
     constructor(){super();}
 
     _Style(){

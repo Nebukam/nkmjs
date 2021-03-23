@@ -2,6 +2,8 @@
 
 const u = require("@nkmjs/utils");
 
+const UI = require(`./ui`);
+
 const FLAGS = require(`./flags`);
 const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
@@ -14,7 +16,7 @@ const Widget = require(`./widget`);
  * @augments ui.core.Widget
  * @memberof ui.core
  */
-class OrientableWidget extends Widget {
+class WidgetOrientable extends Widget {
     constructor() { super(); }
 
     /**
@@ -102,4 +104,5 @@ class OrientableWidget extends Widget {
 
 }
 
-module.exports = OrientableWidget;
+module.exports = WidgetOrientable;
+UI.Register(`nkmjs-widget-orientable`, WidgetOrientable);

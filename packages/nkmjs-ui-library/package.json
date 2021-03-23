@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@nkmjs/actions": "^0.0.14",
     "@nkmjs/collections": "^0.1.1",
     "@nkmjs/common": "^0.1.5",
     "@nkmjs/data-core": "^0.0.14",
@@ -24,7 +25,6 @@
     "@nkmjs/io-core": "^0.1.5",
     "@nkmjs/style": "^0.0.16",
     "@nkmjs/ui-core": "^0.0.17",
-    "@nkmjs/ui-inputs": "^0.0.17",
     "@nkmjs/utils": "^0.0.14"
   }
 }

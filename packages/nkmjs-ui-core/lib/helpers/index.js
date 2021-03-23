@@ -8,7 +8,6 @@ module.exports = {
     FlagEnum: require(`./flag-enum`),
     Frame: require(`./frame`),
     PopIn: require(`./pop-in`),
-    Toolbar: require(`./toolbar`),
     WidgetSelection: require(`./widget-selection`),
     
 }

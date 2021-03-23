@@ -9,20 +9,20 @@ const IDS = require(`../ids`);
 const POINTER = require("../pointer");
 
 const DOMTemplate = require(`../dom-template`);
-const Toolbar = require(`../helpers/toolbar`);
+const WidgetBar = require(`../widget-bar`);
 
 const templates = require(`../templates`);
-const CatalogWidget = require("../widget-catalog");
+const WidgetItem = require("../widget-item");
 
 
 /**
  * @description TODO
  * @hideconstructor
  * @class
- * @augments ui.core.CatalogWidget
+ * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class TreeItem extends CatalogWidget {
+class TreeItem extends WidgetItem {
     constructor() {
         super();
         this.depth = 0;
@@ -30,7 +30,7 @@ class TreeItem extends CatalogWidget {
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/tree/tree-item.css`]
-    }, CatalogWidget, ['css']);
+    }, WidgetItem, ['css']);
 
     // ----> Init
 
@@ -43,7 +43,7 @@ class TreeItem extends CatalogWidget {
         this._notifiesSelectionStack = true;
 
         this._tplClass = templates.FacadeLabel;
-        this._toolbarClass = Toolbar;
+        this._toolbarClass = WidgetBar;
         this._toolbar = null;
         this._toolbarCtnr = null;
 

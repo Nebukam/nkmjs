@@ -11,7 +11,6 @@ const HistoryInspectorShell = require(`../inspectors/history-inspector-shell`);
 
 const EditorShelf = require(`./editor-shelf`);
 const Editor = require(`../editor`);
-const StatusBar = require(`../items/status-bar`);
 
 class EditorEx extends Editor {
     constructor() { super(); }

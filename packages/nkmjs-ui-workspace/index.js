@@ -13,7 +13,6 @@ module.exports = {
     controls: require(`./lib/controls`),
     editors: require(`./lib/editors`),
     inspectors: require(`./lib/inspectors`),
-    items: require(`./lib/items`),
     helpers: require(`./lib/helpers`),
         
     // Workspace

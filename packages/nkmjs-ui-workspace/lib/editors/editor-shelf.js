@@ -2,10 +2,11 @@
 
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
+const uilib = require(`@nkmjs/ui-library`);
 
 const EditorShelfNav = require(`./editor-shelf-nav`);
 
-class EditorShelf extends ui.views.Shelf {
+class EditorShelf extends uilib.views.Shelf {
     constructor() { super(); }
 
     _Init() {

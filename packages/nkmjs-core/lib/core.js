@@ -15,7 +15,7 @@ module.exports = {
     services : require(`@nkmjs/services`),
     style : require(`@nkmjs/style`),
     ui : require(`@nkmjs/ui-core`),
-    inputs : require(`@nkmjs/ui-inputs`),
+    uilib : require(`@nkmjs/ui-library`),
     workspace : require(`@nkmjs/ui-workspace`),
     utils : require("@nkmjs/utils"),
 }

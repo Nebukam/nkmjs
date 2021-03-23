@@ -2,7 +2,7 @@ const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const ui= require(`@nkmjs/ui-core`);
 
-class Group extends ui.OrientableWidget {
+class Group extends ui.WidgetOrientable {
     constructor() { super(); }
 
     static GROUP_CREATED = Symbol(`groupCreated`);

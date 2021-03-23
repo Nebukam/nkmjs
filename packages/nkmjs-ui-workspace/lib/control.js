@@ -9,7 +9,7 @@ const actions = require("@nkmjs/actions");
 
 const Editor = require(`./editor`);
 
-class Control extends ui.OrientableWidget{
+class Control extends ui.WidgetOrientable{
     constructor(){super();}
 
     _Init(){

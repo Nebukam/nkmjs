@@ -501,3 +501,4 @@ class Widget extends DisplayObjectContainer {
 }
 
 module.exports = Widget;
+UI.Register(`nkmjs-widget`, Widget);

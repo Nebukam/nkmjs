@@ -5,17 +5,17 @@ const actions = require("@nkmjs/actions");
 const UI = require(`../ui`);
 const SIGNAL = require(`../signal`);
 const FLAGS = require(`../flags`);
-const OrientableWidget = require(`../widget-orientable`);
+const WidgetOrientable = require(`../widget-orientable`);
 
  /**
- * A View is a simple OrientableWidget that can request focus, and includes
+ * A View is a simple WidgetOrientable that can request focus, and includes
  * an internal CommandBox.
  * @hideconstructor
  * @class
- * @augments ui.core.OrientableWidget
+ * @augments ui.core.WidgetOrientable
  * @memberof ui.core.views
  */
-class View extends OrientableWidget {
+class View extends WidgetOrientable {
     constructor() { super(); }
 
     static __default_iState = null;

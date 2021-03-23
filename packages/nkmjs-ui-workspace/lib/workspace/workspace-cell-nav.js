@@ -2,21 +2,20 @@
 
 const com = require("@nkmjs/common");
 const ui = require(`@nkmjs/ui-core`);
+const uilib = require(`@nkmjs/ui-library`);
 
-const Tab = require(`../items/tab`);
-
-class WorkspaceCellNav extends ui.views.ShelfNav {
+class WorkspaceCellNav extends uilib.views.ShelfNav {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace-cell-nav.css`]
-    }, ui.views.ShelfNav, ['css']);
+    }, uilib.views.ShelfNav, ['css']);
 
     // ----> Init
 
     _Init() {
         super._Init();
-        this._defaultButtonClass = Tab;
+        this._defaultWidgetClass = uilib.buttons.Tab;
         this._cellOptionsBtn = null;
     }
 

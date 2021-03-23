@@ -6,10 +6,11 @@ const { AppBase, AutoUpdateDialogBox } = nkm.app;
 const { Request } = nkm.actions;
 const { pool, FLAGS } = nkm.common;
 const { DIALOG, DialogBox, DialogHandler } = nkm.dialog;
-const { InputBase } = nkm.inputs;
 const w = nkm.workspace;
 const data = nkm.data;
 const ui = nkm.ui;
+const uilib = nkm.uilib;
+
 const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
 const TestWidget = require(`./test-widget`);
@@ -28,14 +29,14 @@ class StyleguideApp extends nkm.app.AppBase {
         this._Bind(this._Dialog);
         this._Bind(this._Overlay);
 
-        ui.views.Shelf.__default_placeholderViewClass = PlaceholderView;
+        uilib.views.Shelf.__default_placeholderViewClass = PlaceholderView;
 
         this._layers = [
             { id: `_mainContainer`, cl: UIItemListLayer }
         ];
 
         this._ignore = [
-            nkm.app.AutoUpdateDialogBox, UIItem, UIItemListLayer, w.helpers.Group, w.items.BreadcrumbItem, DialogHandler, TestWidget
+            nkm.app.AutoUpdateDialogBox, UIItem, UIItemListLayer, w.helpers.Group, uilib.bars.BreadcrumbItem, DialogHandler, TestWidget
         ]
 
         this._buttonConfigs = [
@@ -105,7 +106,7 @@ class StyleguideApp extends nkm.app.AppBase {
 
         this._mainContainer.SetVariants([
             {
-                cl: ui.ButtonBase,
+                cl: ui.WidgetButton,
                 variants: [
                     { size: ui.FLAGS.SIZE_XS },
                     { size: ui.FLAGS.SIZE_S },
@@ -130,7 +131,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 cl: w.inspectors.InspectorShell, fn: this._Bind(this._Stretch)
             },
             {
-                cl: InputBase,
+                cl: ui.inputs.InputBase,
                 variants: [
                     { size: ui.FLAGS.SIZE_XS },
                     { size: ui.FLAGS.SIZE_S },
@@ -138,7 +139,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 ]
             },
             {
-                cl: ui.helpers.Toolbar, not: [w.WorkspaceCellNav, ui.views.ShelfNav],
+                cl: ui.WidgetBar, not: [w.WorkspaceCellNav, ui.views.ShelfNav],
                 variants: [
                     { size: ui.FLAGS.SIZE_XS },
                     { size: ui.FLAGS.SIZE_S },
@@ -146,7 +147,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 ], fn: this._Bind(this._FillToolbar)
             },
             {
-                cl: w.items.Tag,
+                cl: uilib.badges.Tag,
                 variants: [
                     {},
                     { size: ui.FLAGS.SIZE_XS, flavor: FLAGS.WARNING },
@@ -161,7 +162,7 @@ class StyleguideApp extends nkm.app.AppBase {
                     { flavor: FLAGS.ERROR }
                 ], fn: this._Bind(this._FillDialog) },
             {
-                cl: ui.views.Shelf,
+                cl: uilib.views.Shelf,
                 variants: [
                     { orientation: ui.FLAGS.HORIZONTAL, navPlacement: ui.FLAGS.TOP },
                     { orientation: ui.FLAGS.HORIZONTAL, navPlacement: ui.FLAGS.BOTTOM },
@@ -225,7 +226,7 @@ class StyleguideApp extends nkm.app.AppBase {
     // ----
 
     _FillToolbar(p_toolbar) {
-        if (u.isInstanceOf(p_toolbar, ui.views.ShelfNav)) { return; }
+        if (u.isInstanceOf(p_toolbar, uilib.views.ShelfNav)) { return; }
         for (let i = 0, n = this._buttonConfigs.length; i < n; i++) {
             p_toolbar.CreateHandle(this._buttonConfigs[i]);
         }

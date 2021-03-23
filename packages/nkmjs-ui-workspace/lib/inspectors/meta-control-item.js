@@ -2,7 +2,6 @@ const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 const data = require(`@nkmjs/data-core`);
-const { INPUT_SIGNAL, InputField } = require(`@nkmjs/ui-inputs`);
 
 const InspectorItem = require(`./inspector-item`);
 
@@ -19,7 +18,7 @@ class MetaControlItem extends InspectorItem {
         this._metaPath = '';
         this._metaID = '';
 
-        this._inputClass = InputField;
+        this._inputClass = ui.inputs.InputField;
         this._input = null;
 
         this._label = null;
@@ -82,7 +81,7 @@ class MetaControlItem extends InspectorItem {
 
         this._input = this.Add(this._inputClass, `control`);
         this._OnInputCreated(this._input);
-        this._input.Watch(INPUT_SIGNAL.VALUE_SUBMITTED, this._OnInputValueCommited, this);
+        this._input.Watch(ui.inputs.SIGNAL.VALUE_SUBMITTED, this._OnInputValueCommited, this);
         this._input.currentValue = obj;
 
     }

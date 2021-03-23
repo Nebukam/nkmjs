@@ -5,7 +5,7 @@ const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
-const { INPUT_SIGNAL, InputBase, InputFormHandler } = require(`@nkmjs/ui-inputs`);
+const uilib = require(`@nkmjs/ui-library`);
 
 class DialogBox extends ui.Widget {
     constructor() { super(); }
@@ -23,10 +23,10 @@ class DialogBox extends ui.Widget {
     _Init() {
         super._Init();
 
-        this._formHandler = new InputFormHandler();
+        this._formHandler = new ui.inputs.InputFormHandler();
         this._formHandler
-            .Watch(INPUT_SIGNAL.FORM_INVALID, this._OnFormInvalid, this)
-            .Watch(INPUT_SIGNAL.FORM_READY, this._OnFormReady, this);
+            .Watch(ui.inputs.SIGNAL.FORM_INVALID, this._OnFormInvalid, this)
+            .Watch(ui.inputs.SIGNAL.FORM_READY, this._OnFormReady, this);
 
         this._header = null;
         this._body = null;
@@ -41,8 +41,8 @@ class DialogBox extends ui.Widget {
         this._submitMap = new collections.Dictionary();
         this._submitList = new collections.List();
 
-        this._toolbarClass = ui.Toolbar;
-        this._toolbarDefaultButtonClass = ui.ButtonEx;
+        this._toolbarClass = ui.WidgetBar;
+        this._toolbarDefaultWidgetClass = uilib.buttons.Button;
         this._toolbar = null;
 
         this._optionsHandler = new com.helpers.OptionsHandler(
@@ -126,7 +126,7 @@ class DialogBox extends ui.Widget {
         this._footer = u.dom.El(`div`, { class: `group footer` }, this._host);
 
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._footer);
-        this._toolbar._defaultButtonClass = this._toolbarDefaultButtonClass;
+        this._toolbar._defaultWidgetClass = this._toolbarDefaultWidgetClass;
         this._toolbar.size = ui.FLAGS.SIZE_M;
 
         this._title = new ui.manipulators.Text(u.dom.El(`span`, { class: `title ${style.FONT_FLAG.MEDIUM}` }, this._header), false);
@@ -196,7 +196,7 @@ class DialogBox extends ui.Widget {
 
             let item = this.Add(itemClass, `item`, this._body);
 
-            if (u.isInstanceOf(itemClass, InputBase)) {
+            if (u.isInstanceOf(itemClass, ui.inputs.InputBase)) {
 
                 item.inputId = itemNfos.inputId;
 

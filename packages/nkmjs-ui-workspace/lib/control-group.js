@@ -3,6 +3,8 @@
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
+const uilib = require(`@nkmjs/ui-library`);
+
 const Control = require(`./control.js`);
 
 /**
@@ -30,7 +32,7 @@ class ControlGroup extends Control {
         this._icon = null;
         this._label = null;
 
-        this._toolbarClass = ui.helpers.Toolbar;
+        this._toolbarClass = ui.WidgetBar;
         this._toolbar = null;
 
         this._itemWrapper = null;
@@ -81,7 +83,7 @@ class ControlGroup extends Control {
 
         this._header = u.dom.El(`div`, { class: `header` }, this._host);
 
-        this._expandBtn = this.Add(ui.buttons.ToolButton, `toggle`, this._header);
+        this._expandBtn = this.Add(uilib.buttons.Tool, `toggle`, this._header);
         this._icon = new ui.manipulators.Icon(u.dom.El(`div`, { class: `icon` }, this._header));
         this._label = new ui.manipulators.Text(u.dom.El(`span`, { class: `label` }, this._header));
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._header);
