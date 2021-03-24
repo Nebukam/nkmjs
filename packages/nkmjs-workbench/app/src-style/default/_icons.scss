@@ -10,7 +10,7 @@ $icon-names: "<!nkm-- list-files ./assets/icons .svg,.png name-only rm=icon_ -->
 // Include prefers_dark / prefers_light
 
 @include for-each-in($icon-names) using ($i, $item){
-    .icon[data-icon="#{$item}"]{
+    [data-icon="#{$item}"]{
         background-image: url("#{nth($icon-paths, $i)}");
     }
 }

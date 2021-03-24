@@ -37,7 +37,7 @@ class WidgetItem extends Widget {
 
         this._pointer.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
 
-        this._extDrag = this._pointer.Add(extensions.Drag);
+        this._extDrag = this._extensions.Add(extensions.Drag);
         this._extDrag.grabDataCallback = this._Bind(this._GrabDragData);
 
         this._dragActivator = null;
@@ -228,6 +228,7 @@ class WidgetItem extends Widget {
             cmd.context = this;
             this._BuildCommand(cmd);
         }
+
     }
 
     /**
@@ -261,4 +262,4 @@ class WidgetItem extends Widget {
 }
 
 module.exports = WidgetItem;
-UI.Register(`nkmjs-widget-item`, WidgetItem);
+//UI.Register(`nkmjs-widget-item`, WidgetItem);

@@ -244,7 +244,7 @@ class EntryManager extends EcosystemPart {
             p_options = {
                 [com.IDS.NAME]: name,
                 [com.IDS.DATA]: p_entry,
-                [com.IDS.ICON]: p_entry.metadata.Get(_meta_iconPath, `%ICON%/icon_document.svg`),
+                [com.IDS.ICON]: p_entry.metadata.Get(_meta_iconPath, `document`),
                 [com.IDS.CMD_SECONDARY]: this._cmdEntryEdit,
                 [com.IDS.CMD_LIST]: [this._cmdEntryCreateChild, this._cmdEntryDuplicate]
             }

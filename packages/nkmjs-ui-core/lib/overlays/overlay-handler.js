@@ -26,8 +26,7 @@ class OverlayHandler extends LayerContainer {
         this._overlayList = new collections.List(0);
         this._Bind(this._OnOverlayOptionsConsumed);
 
-        this._RegisterLocalRequestHandler(REQUEST.OVERLAY, this.HandleOverlayRequest);
-        this._RegisterLocalRequestHandler(REQUEST.DRAWER, this.HandleOverlayRequest);
+        this.CaptureLocalRequest(REQUEST.OVERLAY);
 
         this.visible = false;
 
@@ -45,7 +44,14 @@ class OverlayHandler extends LayerContainer {
 
     // ----> Handling
 
+    CaptureLocalRequest(p_requestType) {
+        this._RegisterLocalRequestHandler(p_requestType, this.HandleOverlayRequest);
+        return this;
+    }
+
     HandleOverlayRequest(p_request) {
+
+        if(p_request.isHandled){ return; }
 
         let overlayOptions = p_request.options;
 
@@ -99,6 +105,13 @@ class OverlayHandler extends LayerContainer {
 
     }
 
+    // TODO : Handle request in a generic manner, to capture locally all requests that inherit OVERLAY
+    // need to re-implement DisplayObject's
+
+    // _HandleLocalRequest
+    // _RegisterLocalRequestHandler
+    // _UnregisterLocalRequestHandler
+
     _CleanUp() {
         super._CleanUp();
         this.visible = false;
@@ -107,4 +120,3 @@ class OverlayHandler extends LayerContainer {
 }
 
 module.exports = OverlayHandler;
-UI.Register('nkmjs-overlay-handler', OverlayHandler);

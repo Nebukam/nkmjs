@@ -159,7 +159,7 @@ class Request extends com.pool.DisposableObject {
      * @type {boolean}
      * @customtag read-only
      */
-    get handled() { return this._handled; }
+    get isHandled() { return this._handled; }
 
     /**
      * @description TODO
@@ -196,9 +196,9 @@ class Request extends com.pool.DisposableObject {
     }
 
     toString() {
-        let type = `toString` in this._requestType ? this._requestType.toString() : this._requestType,
+        let type = (this._requestType && `toString` in this._requestType) ? this._requestType.toString() : this._requestType,
             from = this._emitter ? this._emitter.constructor.name : `---`;
-            
+
         return `${type} (from '${from}')`;
     }
 

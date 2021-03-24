@@ -5,6 +5,8 @@ const style = require(`@nkmjs/style`);
 const collections = require("@nkmjs/collections");
 const ui = require("@nkmjs/ui-core");
 
+const dom = require(`../dom`);
+
 const buttons = require("../buttons");
 
 /**
@@ -120,7 +122,7 @@ class ShelfNav extends ui.WidgetBar {
     }
 
     _Render() {
-        ui.DOMTemplate.Render(ui.templates.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
+        ui.DOMTemplate.Render(dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
         this._toolbar = this.Add(ui.WidgetBar, `toolbar`, this._footer);
         this._toolbar._defaultWidgetClass = buttons.Tool;
 

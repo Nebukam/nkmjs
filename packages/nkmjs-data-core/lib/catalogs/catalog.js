@@ -273,7 +273,7 @@ class Catalog extends CatalogItem {
         catalog = com.Rent(Catalog.GetItemClass(p_options, true));
         catalog.options = u.tils.Ensure(u.isObject(p_options) ? p_options : {}, {
             [com.IDS.NAME]: catalogName,
-            [com.IDS.ICON]: `%ICON%/icon_directory.svg`
+            [com.IDS.ICON]: `directory`
         });
 
         return this.Add(catalog);
@@ -296,7 +296,7 @@ class Catalog extends CatalogItem {
             let item = com.Rent(Catalog.GetItemClass(p_itemInfos));
             item.options = u.tils.EnsureMultiple(p_itemInfos, {
                 [com.IDS.NAME]: pathInfos.name,
-                [com.IDS.ICON]: `%ICON%/icon_document.svg`
+                [com.IDS.ICON]: `document`
             });
             return this.Add(item);
         }
@@ -315,14 +315,14 @@ class Catalog extends CatalogItem {
         if (pathInfos.isDir) {
             catalog.options = u.tils.EnsureMultiple(p_itemInfos, {
                 [com.IDS.NAME]: pathInfos.name,
-                [com.IDS.ICON]: `%ICON%/icon_directory.svg`
+                [com.IDS.ICON]: `directory`
             });
             return catalog;
         } else {
             let item = com.Rent(Catalog.GetItemClass(p_itemInfos));
             item.options = u.tils.EnsureMultiple(p_itemInfos, {
                 [com.IDS.NAME]: pathInfos.name,
-                [com.IDS.ICON]: `%ICON%/icon_document.svg`
+                [com.IDS.ICON]: `document`
             });
             return catalog.Add(item);
         }

@@ -20,7 +20,7 @@ class EntryCreateChild extends DataManipulationCommand {
             data: tempEntry
         };
 
-        actions.Request.Emit(actions.ACTION_REQUEST.CREATE,
+        actions.Request.Emit(actions.REQUEST.CREATE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

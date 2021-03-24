@@ -18,7 +18,7 @@ class Document extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `%ICON%/icon_document.svg`,
+        [com.IDS.ICON]: `document`,
         resource: io.Resource,
         encoding: io.ENCODING.UTF8,
         serializationContext: data.serialization.CONTEXT.NONE,

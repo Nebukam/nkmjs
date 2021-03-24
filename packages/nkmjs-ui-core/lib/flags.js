@@ -561,7 +561,7 @@ class FLAGS {
     * @customtag read-only
     * @group Drag'n Drop
     */
-    static ALLOW_DROP_TOP = `allow-drop-bottom`;
+    static ALLOW_DROP_BOTTOM = `allow-drop-bottom`;
 
     /**
    * @description TODO

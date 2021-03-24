@@ -108,8 +108,8 @@ class InspectorGroup extends InspectorItem {
 
     _Render() {
 
-        ui.Render(ui.templates.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
-        ui.Render(ui.templates.FacadeExpandTitle, this._header, {
+        ui.Render(uilib.dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
+        ui.Render(uilib.dom.FacadeExpandTitle, this._header, {
             [ui.IDS.OWNER]: this,
             expandIcon: { url: `%ICON%/icon_expand_arrow.svg`, htitle: `Expand` }
         });

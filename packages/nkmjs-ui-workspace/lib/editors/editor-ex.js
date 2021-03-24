@@ -5,6 +5,7 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
+const uilib = require(`@nkmjs/ui-library`);
 
 const InspectorShell = require(`../inspectors/inspector-shell`);
 const HistoryInspectorShell = require(`../inspectors/history-inspector-shell`);
@@ -140,7 +141,7 @@ class EditorEx extends Editor {
 
     _Render() {
 
-        ui.Render(ui.templates.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
+        ui.Render(uilib.dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
 
         this._shelf = this.Add(this.constructor.__default_shelfClass, `shelf`, this._body);
         this._viewport = this.Add(this.constructor.__default_viewportClass, `viewport`, this._body);

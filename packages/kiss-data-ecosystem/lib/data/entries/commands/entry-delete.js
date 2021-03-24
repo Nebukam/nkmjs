@@ -17,7 +17,7 @@ class EntryDelete extends DataManipulationCommand {
             data: this._context
         };
 
-        actions.Request.Emit(actions.ACTION_REQUEST.DELETE,
+        actions.Request.Emit(actions.REQUEST.DELETE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

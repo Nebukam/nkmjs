@@ -34,8 +34,7 @@ module.exports = {
     helpers: require(`./lib/helpers`),
     inputs: require(`./lib/inputs`),
     manipulators: require(`./lib/manipulators`),
-    templates: require(`./lib/templates`),
-    tree: require(`./lib/tree`),
+    lists: require(`./lib/lists`),
     views: require(`./lib/views`),
     overlays: require(`./lib/overlays`),
 

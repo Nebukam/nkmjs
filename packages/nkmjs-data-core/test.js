@@ -15,7 +15,7 @@ someData = newData;
 let catalogName = `Test Catalog`;
 let catalog = Catalog.CreateFrom({
     [com.IDS.NAME]: catalogName,
-    [com.IDS.ICON]: `%ICONS%/some_icon.svg`,
+    [com.IDS.ICON]: `icon`,
     [com.IDS.CMD_PRIMARY]: null,
     [com.IDS.CMD_SECONDARY]: null,
     [com.IDS.CMD_LIST]: null

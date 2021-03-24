@@ -58,6 +58,7 @@ class RELAY extends services.ServiceBase {
      */
     HandleRequest(p_request) {
         this._requests.Add(p_request);
+        console.log(`HandleRequest`);
         this._Broadcast(p_request.requestType, p_request);
         this._tick.Schedule();
     }
@@ -73,7 +74,7 @@ class RELAY extends services.ServiceBase {
             let release = true,
                 request = list.At(i);
 
-            if (!request.handled) {
+            if (!request.isHandled) {
                 if (request.life >= request.timeout) {
                     //Unhandled request timeout
                     request.HandleFail(`timeout`);

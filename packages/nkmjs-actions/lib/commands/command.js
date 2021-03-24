@@ -34,7 +34,7 @@ class Command extends com.pool.DisposableObjectEx {
     static Rent(p_class, p_name = null, p_icon = null) {
         let cmd = com.Rent(p_class);
         cmd.name = u.isEmpty(p_name) ? u.tils.CamelSplit(p_class.name) : p_name;
-        cmd.icon = u.isEmpty(p_icon) ? `%ICON%/icon_cmd.svg` : p_icon;
+        cmd.icon = u.isEmpty(p_icon) ? `command` : p_icon;
         return cmd;
     }
 

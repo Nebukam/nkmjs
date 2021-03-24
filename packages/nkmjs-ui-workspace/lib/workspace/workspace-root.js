@@ -29,9 +29,9 @@ class RootWorkspace extends Workspace {
         super._PostInit();
 
         actions.RELAY
-            .Watch(actions.ACTION_REQUEST.EDIT, this._HandleEditRequest, this)
-            .Watch(actions.ACTION_REQUEST.OPEN, this._HandleOpenRequest, this)
-            .Watch(actions.ACTION_REQUEST.CREATE, this._HandleCreateRequest, this);
+            .Watch(actions.REQUEST.EDIT, this._HandleEditRequest, this)
+            .Watch(actions.REQUEST.OPEN, this._HandleOpenRequest, this)
+            .Watch(actions.REQUEST.CREATE, this._HandleCreateRequest, this);
 
         this.catalog = this._rootCatalog;
 
@@ -56,7 +56,7 @@ class RootWorkspace extends Workspace {
 
     _HandleEditRequest(p_request) {
 
-        if (p_request.handled) { return; }
+        if (p_request.isHandled) { return; }
 
         let editTarget = p_request.GetOption(`data`, null),
             editorClass = p_request.GetOption(`editor`, null);

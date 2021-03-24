@@ -55,7 +55,9 @@ class Widget extends DisplayObjectContainer {
 
         this._isActivable = true;
 
-        this._pointer = new extensions.Pointer();
+        this._extensions = new extensions.Extension();
+
+        this._pointer = this._extensions.Add(extensions.Pointer);
         this._pointer.focusFn = this._Bind(this.Focus);
         this._pointer.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this.Activate));
 
@@ -88,8 +90,10 @@ class Widget extends DisplayObjectContainer {
 
     _OnPaintChange() {
         super._OnPaintChange();
-        this._pointer.enabled = this._isPainted;
+        this._extensions.enabled = this._isPainted;
     }
+
+    get extensions() { return this._extensions; }
 
     // ----> Placement & Orientation
 
@@ -306,6 +310,8 @@ class Widget extends DisplayObjectContainer {
      */
     Focus(p_toggle) {
 
+        console.log(`${this}.Focus(${p_toggle}) / ${this._isFocused}`);
+
         if (!this._isFocusable) { return; }
 
         if (p_toggle && !this._isFocusable) { p_toggle = false; }
@@ -483,6 +489,8 @@ class Widget extends DisplayObjectContainer {
         } else if (this._mouseDown) {
             this._mUpOutside(null);
         }
+
+        this._extensions.CleanUp();
 
         this.Select(false);
         this.Focus(false);

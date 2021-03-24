@@ -16,7 +16,7 @@ const ID = require(`../id/id`);
 class DataBlock extends com.pool.DisposableObjectEx {
 
     static __NFO__ = {
-        [com.IDS.ICON]: `%ICON%/icon_data_block.svg`,
+        [com.IDS.ICON]: `data-block`,
         [com.IDS.UID]: `@nkmjs/data-core:data-block`
     };
 

@@ -1,5 +1,7 @@
 'use strict';
 
+const u = require(`@nkmjs/utils`);
+
 const UI = require(`../ui`);
 const POINTER = require(`../pointer`);
 const SIGNAL = require(`../signal`);
@@ -301,6 +303,12 @@ class PointerExtension extends Extension {
             fnList[i](p_evt);
         }
 
+    }
+
+    CleanUp(){
+        super.CleanUp();
+        if(this._isMouseOver){ this._mOut(null); }
+        this._buttons = {}; // Garbage, but more efficient than loop-delete...
     }
 
 }

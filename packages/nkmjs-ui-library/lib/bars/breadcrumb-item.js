@@ -4,6 +4,8 @@ const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
+const dom = require(`../dom`);
+
 class BreadcrumbItem extends ui.WidgetButton {
     constructor() { super(); }
 
@@ -32,7 +34,7 @@ class BreadcrumbItem extends ui.WidgetButton {
 
     _Render() {
         
-        ui.Render(ui.templates.FacadeLabel, this, {
+        ui.Render(dom.FacadeLabel, this, {
             [ui.IDS.OWNER]: this,
             [ui.IDS.LABEL]: { [ui.IDS.CSS_CL]: style.FONT_FLAG.REGULAR }
         });

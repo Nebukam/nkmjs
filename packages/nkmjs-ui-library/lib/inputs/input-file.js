@@ -56,7 +56,7 @@ class InputFile extends InputPath {
         if (env.isNodeEnabled) {
             this._picker = this.Add(ui.WidgetButton, `input-btn`);
             this._picker.options = {
-                [com.IDS.ICON]: `%ICON%/icon_more.svg`,
+                [com.IDS.ICON]: `plus`,
                 trigger: { fn: this._Pick, thisArg: this },
                 variant: ui.FLAGS.FRAME
             };

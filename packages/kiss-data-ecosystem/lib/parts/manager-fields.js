@@ -52,7 +52,7 @@ class FieldManager extends EcosystemPart {
             {
                 [com.IDS.PATH]: fieldMETA.catalogPath,
                 [com.IDS.DATA]: fieldItem,
-                [com.IDS.ICON]: (fieldMETA.icon || `%ICON%/icon_field.svg`),
+                [com.IDS.ICON]: (fieldMETA.icon || `data-field`),
                 [com.IDS.NAME]: u.tils.CamelSplit(p_fieldClass.name)
             }
         );

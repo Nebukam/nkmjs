@@ -19,7 +19,7 @@ class ModelCreateChild extends DataManipulationCommand {
                 data: tempModel
             };
 
-            actions.Request.Emit(actions.ACTION_REQUEST.CREATE,
+            actions.Request.Emit(actions.REQUEST.CREATE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

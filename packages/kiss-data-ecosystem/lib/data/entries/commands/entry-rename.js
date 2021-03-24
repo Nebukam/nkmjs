@@ -17,7 +17,7 @@ class EntryRename extends DataManipulationCommand {
             data: this._context
         };
 
-        actions.Request.Emit(actions.ACTION_REQUEST.RENAME,
+        actions.Request.Emit(actions.REQUEST.RENAME,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

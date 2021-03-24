@@ -5,7 +5,7 @@ const u = nkm.utils;
 const { AppBase, AutoUpdateDialogBox } = nkm.app;
 const { Request } = nkm.actions;
 const { pool, FLAGS } = nkm.common;
-const { DIALOG, DialogBox, DialogHandler } = nkm.dialog;
+const { DIALOG, DialogBox } = nkm.dialog;
 const w = nkm.workspace;
 const data = nkm.data;
 const ui = nkm.ui;
@@ -36,15 +36,26 @@ class StyleguideApp extends nkm.app.AppBase {
         ];
 
         this._ignore = [
-            nkm.app.AutoUpdateDialogBox, UIItem, UIItemListLayer, w.helpers.Group, uilib.bars.BreadcrumbItem, DialogHandler, TestWidget
-        ]
+            nkm.app.AutoUpdateDialogBox,
+            UIItem,
+            UIItemListLayer,
+            w.helpers.Group,
+            uilib.bars.BreadcrumbItem,
+            TestWidget
+        ];
+
+        this._ignoreBroad = [
+            ui.overlays.OverlayHandler,
+            ui.overlays.Overlay
+
+        ];
 
         this._buttonConfigs = [
             { htitle: `htitle A text`, label: 'Overlay', trigger: { fn: this._Overlay }, variant: ui.FLAGS.FRAME },
             { htitle: `htitle B text`, group: 'A', label: 'Label B', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF }, flavor: FLAGS.WARNING },
-            { htitle: `htitle C text`, group: 'A', icon: 'icons-01', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF } },
+            { htitle: `htitle C text`, group: 'A', icon: 'download', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF } },
             { htitle: `htitle D text`, label: 'Popup', trigger: { fn: this._Dialog }, flavor: ui.FLAGS.CTA },
-            { htitle: `htitle E text`, icon: 'icon', trigger: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF }, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING }
+            { htitle: `htitle E text`, icon: 'refresh', trigger: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF }, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING }
         ];
 
         let newData = (p_id, p_dirty = false) => {
@@ -154,13 +165,15 @@ class StyleguideApp extends nkm.app.AppBase {
                     { size: ui.FLAGS.SIZE_S, flavor: FLAGS.ERROR }
                 ], fn: this._Bind(this._PopInTag)
             },
-            { cl: DialogBox,
+            {
+                cl: DialogBox,
                 variants: [
                     {},
                     { flavor: FLAGS.WARNING },
                     { flavor: FLAGS.INFOS },
                     { flavor: FLAGS.ERROR }
-                ], fn: this._Bind(this._FillDialog) },
+                ], fn: this._Bind(this._FillDialog)
+            },
             {
                 cl: uilib.views.Shelf,
                 variants: [
@@ -170,15 +183,22 @@ class StyleguideApp extends nkm.app.AppBase {
                     { orientation: ui.FLAGS.VERTICAL, navPlacement: ui.FLAGS.RIGHT },
                 ], fn: this._Bind(this._FillShelf)
             },
-            { cl: ui.tree.TreeItem, fn: this._Bind(this._FillTreeItem) },
+            { cl: ui.WidgetItem, fn: this._Bind(this._FillTreeItem) },
         ]);
 
         //for (let i = 0, n = keys.length; i < n; i++) {
+        outerloop:
         for (let i = keys.length - 1; i >= 0; i--) {
             let key = keys[i];
             if (this._ignore.includes(key)) { continue; }
-            if(i === 0){
-                this._mainContainer.Handle(`Features`, FeaturesWidget);    
+
+            innerloop:
+            for (let a = 0; a < this._ignoreBroad.length; a++) {
+                if (u.isInstanceOf(key, this._ignoreBroad[a])) { continue outerloop; }
+            }
+
+            if (i === 0) {
+                this._mainContainer.Handle(`Features`, FeaturesWidget);
             }
             let cl = ui.UI.instance._uiTypes.Get(key);
             this._mainContainer.Handle(cl, key);
@@ -189,6 +209,9 @@ class StyleguideApp extends nkm.app.AppBase {
 
         // Generate overlay request
         //setTimeout(this._Bind(this._Overlay), 1000);
+
+        this._firsttreeItem.scrollIntoView();
+
     }
 
     _Dialog() {
@@ -219,7 +242,7 @@ class StyleguideApp extends nkm.app.AppBase {
 
         opts.title = `Drawer Title`;
 
-        Request.Emit(ui.REQUEST.DRAWER, opts, this);
+        Request.Emit(uilib.REQUEST.DRAWER, opts, this);
     }
 
 
@@ -234,7 +257,7 @@ class StyleguideApp extends nkm.app.AppBase {
 
     _FillDialog(p_dialogBox, p_variant) {
         p_dialogBox.data = ui.overlays.OverlayOptions.Create({
-            title: p_variant ? p_variant.flavor ? p_variant.flavor : `Title` :`Title`,
+            title: p_variant ? p_variant.flavor ? p_variant.flavor : `Title` : `Title`,
             message: `This is a message !`,
             content: [],
             flavor: p_variant ? p_variant.flavor : null,
@@ -248,6 +271,7 @@ class StyleguideApp extends nkm.app.AppBase {
     }
 
     _FillTreeItem(p_citem) {
+        if (!this._firsttreeItem) { this._firsttreeItem = p_citem; }
         p_citem.data = this._catalogSample;
     }
 

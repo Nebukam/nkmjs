@@ -17,8 +17,9 @@ try {
         nkmJson = null,
         scripts = pkgJson.scripts;
 
-    if (packageJsonPath.includes(`node_modules`)) {
+    if (packageJsonPath.includes(`node_modules`)){
         // Executing somewhere in node modules, we don't want that.
+        // TODO : Actually, yes, we only want to execute if at a single level of node_modules depth.
         return;
     }
 

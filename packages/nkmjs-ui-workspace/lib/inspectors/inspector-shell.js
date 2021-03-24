@@ -10,6 +10,7 @@
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
+const uilib = require(`@nkmjs/ui-library`);
 
 const CONTEXT = require(`../context`);
 
@@ -88,11 +89,11 @@ class InspectorShell extends ui.views.View {
                 'width': `350px`
             },
             '.header': {
-                'flex':'0 0 auto',
+                'flex': '0 0 auto',
             },
             '.body': {
-                'flex':'1 1 auto',
-                'min-width':'0',
+                'flex': '1 1 auto',
+                'min-width': '0',
 
                 'display': `flex`,
                 'flex-flow': `column nowrap`,
@@ -101,16 +102,16 @@ class InspectorShell extends ui.views.View {
 
             },
             '.inspector': {
-                'flex':'1 1 auto',
+                'flex': '1 1 auto',
             }
         }, super._Style());
     }
 
     _Render() {
-        ui.Render(ui.templates.BodyHeaderTitles, this, { 
+        ui.Render(uilib.dom.BodyHeaderTitles, this, {
             [ui.IDS.OWNER]: this,
-            [ui.IDS.ICON]:{ [ui.IDS.CSS_CL]:ui.FLAGS.SIZE_S },
-            [ui.IDS.SUBTITLE]:{ [ui.IDS.CSS_CL]:style.FONT_FLAG.SMALL }
+            [ui.IDS.ICON]: { [ui.IDS.CSS_CL]: ui.FLAGS.SIZE_S },
+            [ui.IDS.SUBTITLE]: { [ui.IDS.CSS_CL]: style.FONT_FLAG.SMALL }
         });
     }
 

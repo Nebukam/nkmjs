@@ -15,13 +15,13 @@ class Bindings extends com.helpers.BindingKit {
                 context: overlays.CONTEXT.OVERLAY,
                 kvps: [
                     { key: REQUEST.OVERLAY, binding: overlays.Overlay },
-                    { key: REQUEST.DRAWER, binding: overlays.DrawerOverlay }
+                    //{ key: REQUEST.DRAWER, binding: overlays.DrawerOverlay }
                 ]
             },
             {
                 context: overlays.CONTEXT.CONTENT,
                 kvps: [
-                    { key: REQUEST.DRAWER, binding: overlays.Drawer }
+                    //{ key: REQUEST.DRAWER, binding: overlays.Drawer }
                 ]
             });
 

@@ -209,8 +209,6 @@ class DisplayObject extends DisposableHTMLElement {
         this._visible = p_value;
         if (!p_value) { this.style.display = `none`; }
         else { this.style.removeProperty(`display`); }
-        //if(p_value){ this.style.display = ``; }
-        //else{ this.style.display = `none`; }
     }
 
 
@@ -271,12 +269,17 @@ class DisplayObject extends DisposableHTMLElement {
      * @access private
      */
     _HandleLocalRequest(p_request) {
+
+        if (p_request.isHandled) { return; }
+
         if (p_request.emitter != this && this._requestSignalBox) {
             this._requestSignalBox.Broadcast(p_request.requestType, p_request);
+            if (p_request.isHandled) { return; }
         }
 
         if (this._parent) { this._parent._HandleLocalRequest(p_request); }
         else { actions.RELAY.HandleRequest(p_request); }
+
     }
 
     /**

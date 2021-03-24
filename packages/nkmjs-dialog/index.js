@@ -4,9 +4,10 @@ module.exports = {
 
     DIALOG: __DIALOG,
 
+    REQUEST: require(`./lib/request`),
+
     DialogBox: require(`./lib/dialog-box`),
     DialogLayer: require(`./lib/dialog-overlay`),
-    DialogHandler: require(`./lib/dialog-handler`),
 
     // to DIALOG.Push
     Push:__DIALOG.Push.bind(__DIALOG),

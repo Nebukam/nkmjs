@@ -12,6 +12,8 @@
     backdrop-filter: blur(var(--blur_strenght));
     transition: backdrop-filter 0.25s linear;
 
+    padding:var(#{$varname_size_l});
+
     & .content{
         @include drop-shadow(0,50px,20px, rgba(0,0,0,0));
         transform: perspective(800px) scale(1.2) rotateX(20deg);

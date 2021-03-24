@@ -18,7 +18,7 @@ class ModelRename extends DataManipulationCommand {
             data: null
         };
 
-        actions.Request.Emit(actions.ACTION_REQUEST.RENAME,
+        actions.Request.Emit(actions.REQUEST.RENAME,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

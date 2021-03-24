@@ -23,7 +23,6 @@
     "@nkmjs/services": "^0.0.15",
     "@nkmjs/style": "^0.0.17",
     "@nkmjs/ui-core": "^0.0.18",
-    "@nkmjs/ui-library": "^0.0.2",
     "@nkmjs/utils": "^0.0.15"
   },
   "gitHead": "98e1d17ca160f873616ef3d86de2b10c8e7a5fc1"

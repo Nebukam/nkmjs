@@ -250,7 +250,7 @@ class ModelApply extends DataManipulationCommand {
         dialog.DIALOG.Push({
             title: p_title,
             message: p_message,
-            [com.IDS.ICON]: `%ICON%/icon_error.svg`,
+            [com.IDS.ICON]: `error`,
             actions: [
                 { text: `Ok`, trigger: { fn: this._OnDialogFail, arg: p_message }, [com.IDS.ICON]: `%ICON%/icon_close.svg` }
             ]
@@ -262,7 +262,7 @@ class ModelApply extends DataManipulationCommand {
         dialog.DIALOG.Push({
             title: p_title,
             message: p_message,
-            [com.IDS.ICON]: `%ICON%/icon_warning.svg`,
+            [com.IDS.ICON]: `warning`,
             actions: [
                 { text: `Apply.`, trigger: { fn: this._OnDialogConfirm } },
                 { text: `Abort !`, trigger: { fn: this._OnDialogCancel }, [com.IDS.ICON]: `%ICON%/icon_close.svg` }

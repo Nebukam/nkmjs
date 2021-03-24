@@ -14,6 +14,5 @@ module.exports = {
     DELETE: class DELETE extends com.helpers.CSYMBOL { constructor() { } },
     RENAME: class RENAME extends com.helpers.CSYMBOL { constructor() { } },
     APPLY: class APPLY extends com.helpers.CSYMBOL { constructor() { } },
-    DIALOG: class DIALOG extends com.helpers.CSYMBOL { constructor() { } },
 
 }

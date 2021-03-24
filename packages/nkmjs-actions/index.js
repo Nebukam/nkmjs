@@ -6,7 +6,7 @@ module.exports = {
 
     RELAY: __RELAY,
     Request: require(`./lib/request`),
-    ACTION_REQUEST: require(`./lib/action-request`),
+    REQUEST: require(`./lib/action-request`),
 
     Action : require(`./lib/actions/action`),
     ActionGroup : require(`./lib/actions/action-group`),

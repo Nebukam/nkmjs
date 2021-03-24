@@ -10,6 +10,8 @@ const services= require(`@nkmjs/services`);
 const actions = require("@nkmjs/actions");
 const ui = require("@nkmjs/ui-core");
 
+const REQUEST = require(`./request`);
+
 /**
  * @description TODO
  * @class
@@ -99,7 +101,7 @@ class DIALOG extends services.ServiceBase {
         this._inDialog = true;
         next.Watch(com.SIGNAL.CONSUMED, this._OnDialogConsumed, this);
 
-        actions.Request.Emit(actions.ACTION_REQUEST.DIALOG,
+        actions.Request.Emit(REQUEST.DIALOG,
             next,
             this,
             this._OnRequestSuccess,

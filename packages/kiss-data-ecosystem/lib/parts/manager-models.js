@@ -101,7 +101,7 @@ class ModelManager extends EcosystemPart {
             [com.IDS.NAME]: p_model.id.name,
             [com.IDS.DATA]: p_model,
             [com.IDS.PATH]: `${p_model.constructor.name}s/${p_model.id.name}/`,
-            [com.IDS.ICON]: u.isInstanceOf(p_model, SystemModel) ? `%ICON%/icon_lock.svg` : `%ICON%/icon_model.svg`,
+            [com.IDS.ICON]: u.isInstanceOf(p_model, SystemModel) ? `locked` : `data-model`,
             [com.IDS.CMD_SECONDARY]: this._cmdModelEdit,
             [com.IDS.CMD_LIST]: [this._cmdModelCreateChild, this._cmdModelCreateEntry] //this._cmdModelDuplicate
         }

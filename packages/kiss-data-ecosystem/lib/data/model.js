@@ -38,7 +38,7 @@ class Model extends DerivableDataBlock {
 
     static get _NFO_() {
         return {
-            [com.IDS.ICON]: `%ICON%/icon_model.svg`
+            [com.IDS.ICON]: `data-model`
         };
     }
 

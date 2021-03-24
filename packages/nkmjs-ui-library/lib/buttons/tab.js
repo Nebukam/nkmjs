@@ -5,6 +5,8 @@ const env = require(`@nkmjs/environment`);
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
+const dom = require(`../dom`);
+
 class Tab extends ui.WidgetItem {
     constructor() { super(); }
 
@@ -74,7 +76,7 @@ class Tab extends ui.WidgetItem {
 
     _Render() {
 
-        ui.Render(ui.templates.FacadeLabelClose, this, {
+        ui.Render(dom.FacadeLabelClose, this, {
             [ui.IDS.OWNER]: this,
             closeIcon: { htitle: `Close` }
         });

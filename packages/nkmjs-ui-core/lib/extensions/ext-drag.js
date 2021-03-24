@@ -146,7 +146,6 @@ class DragExtension extends Extension {
     _mDragStart(p_evt) {
 
         if (this._feedbackHost) {
-            console.log(p_evt);
             //p_evt.dataTransfer.setDragImage(this._feedbackHost);//, -10, -10);
         }
 

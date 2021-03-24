@@ -23,6 +23,7 @@ const dialog = require(`@nkmjs/dialog`);
 
 const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);
+const GlobalOverlayHandler = require(`./global-overlay-handler`);
 
 /**
  * @typedef LayerDefinition
@@ -66,7 +67,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         this._layers = [];
 
-        this._overlayHandlerClass = dialog.DialogHandler;
+        this._overlayHandlerClass = GlobalOverlayHandler;
         this._overlayHandler = null;
 
         this._commands = new actions.CommandBox();
@@ -230,7 +231,7 @@ class AppBase extends com.helpers.SingletonEx {
 
     _OnAppReadyInternal(p_data) {
 
-        actions.RELAY.instance.Watch(actions.ACTION_REQUEST.EDIT, this._OnEditRequest, this);
+        actions.RELAY.instance.Watch(actions.REQUEST.EDIT, this._OnEditRequest, this);
 
         // Load base kits... ?
         //this._LoadBaseKits();
@@ -322,7 +323,7 @@ class AppBase extends com.helpers.SingletonEx {
         console.error(p_content.error);
         dialog.DIALOG.Push({
             [com.IDS.TITLE]: p_content.message,
-            [com.IDS.ICON]: `% ICON % /icon_error.svg`,
+            [com.IDS.ICON]: `error`,
             [com.IDS.MESSAGE]: `${p_content.error.message}`,
             actions: [
                 { text: `Close` },
@@ -334,7 +335,7 @@ class AppBase extends com.helpers.SingletonEx {
         console.warning(p_content.message);
         dialog.DIALOG.Push({
             [com.IDS.TITLE]: `Attention !`,
-            [com.IDS.ICON]: `%ICON%/icon_warning.svg`,
+            [com.IDS.ICON]: `warning`,
             [com.IDS.MESSAGE]: `${p_content.message}`,
             actions: [
                 { text: `Close` },

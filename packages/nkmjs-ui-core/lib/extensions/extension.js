@@ -42,6 +42,17 @@ class Extension extends com.pool.DisposableObjectEx {
         return p_ext;
     }
     
+    /**
+     * @description Called by the widget owner when it is cleaned up. You can call
+     * this method manually if you need to clean-up the extension.  
+     * Calls CleanUp on children.
+     */
+    CleanUp(){
+        if(!this._childExtensions){ return; }
+        for(let i = 0, n = this._childExtensions.length; i < n; i++){
+            this._childExtensions[i].CleanUp();
+        }
+    }
 
     // ----> Availability
 
