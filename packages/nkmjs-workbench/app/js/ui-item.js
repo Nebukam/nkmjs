@@ -62,9 +62,6 @@ class UIItem extends DisplayObjectContainer {
         }, super._Style());
     }
 
-    _OnPaintChange(p_value) {
-        //this.style.opacity = this._isPainted ? 1 : 0;
-    }
 
     _Render() {
         this._label = new manipulators.Text(u.dom.El(`p`, { class: `label` }, this));

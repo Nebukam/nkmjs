@@ -4,7 +4,6 @@ module.exports = {
 
     REQUEST: require(`./lib/request`),
 
-    badges: require(`./lib/badges`),
     bars: require(`./lib/bars`),
     buttons: require(`./lib/buttons`),
     cards: require(`./lib/cards`),
@@ -13,6 +12,8 @@ module.exports = {
     lists: require(`./lib/lists`),    
     dom: require(`./lib/dom`),
     views: require(`./lib/views`),
+    widgets: require(`./lib/widgets`),
+    
 }
 
 require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

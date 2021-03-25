@@ -57,7 +57,11 @@
 :host{
     order: var(--order);
 }
-  
+
+:host(.unpainted){
+    visibility: hidden !important;
+}
+
  /* Hide scrollbar for IE, Edge and Firefox */
 :host(.invisible-scrollbar){
 

@@ -159,7 +159,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 ], fn: this._Bind(this._FillToolbar)
             },
             {
-                cl: uilib.badges.Tag,
+                cl: uilib.widgets.Tag,
                 variants: [
                     {},
                     { size: ui.FLAGS.SIZE_XS, flavor: FLAGS.WARNING },

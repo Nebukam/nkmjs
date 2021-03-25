@@ -90,6 +90,7 @@ class SignalBroadcaster extends DisposableObject {
      * @description Remove all subscribers
      */
     RemoveAll() {
+        
         if (this._broadcasting) {
             this._removeAll = true;
             return;
@@ -100,6 +101,7 @@ class SignalBroadcaster extends DisposableObject {
         this._onceSlots.Clear();
         this._deprecatedKVP.length = 0;
         this._removeAll = false;
+
     }
 
     /**
@@ -118,10 +120,88 @@ class SignalBroadcaster extends DisposableObject {
         this._broadcasting = true;
         this._args = args;
 
+        let slots = this._slots._map,
+            keys = slots.keys();
+
         if (args === null || args === undefined) {
-            this._slots.internalMap.forEach(this.__BroadcastWithoutArgs, this);
+
+            // Broadcast without args
+            // this._slots.internalMap.forEach(this.__BroadcastWithoutArgs, this);
+
+            for (let si = 0, sn = slots.size; si < sn; si++) {
+
+                let watcher = keys.next().value,
+                    callbacks = slots.get(watcher),
+                    n = callbacks.length,
+                    onceList = this._onceSlots.Get(watcher);
+
+                if (watcher === SignalBroadcaster.BLANK) {
+                    if (onceList) {
+                        for (let i = 0; i < n; i++) {
+                            let fn = callbacks[i];
+                            fn.apply(null);
+                            if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
+                        }
+                    } else {
+                        for (let i = 0; i < n; i++) {
+                            callbacks[i].apply(null);
+                        }
+                    }
+                } else {
+                    if (onceList) {
+                        for (let i = 0; i < n; i++) {
+                            let fn = callbacks[i];
+                            fn.apply(watcher);
+                            if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
+                        }
+                    } else {
+                        for (let i = 0; i < n; i++) {
+                            callbacks[i].apply(watcher);
+                        }
+                    }
+                }
+            }
+
         } else {
-            this._slots.internalMap.forEach(this.__BroadcastWithArgs, this);
+
+            // Broadcast with args
+            // this._slots.internalMap.forEach(this.__BroadcastWithArgs, this);
+
+            for (let si = 0, sn = slots.size; si < sn; si++) {
+
+                let watcher = keys.next().value,
+                    callbacks = slots.get(watcher),
+                    n = callbacks.length,
+                    onceList = this._onceSlots.Get(watcher);
+
+                if (watcher === SignalBroadcaster.BLANK) {
+                    if (onceList) {
+                        for (let i = 0; i < n; i++) {
+                            let fn = callbacks[i];
+                            fn.apply(null, this._args);
+                            if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
+                        }
+                    } else {
+                        for (let i = 0; i < n; i++) {
+                            callbacks[i].apply(null, this._args);
+                        }
+                    }
+
+                } else {
+                    if (onceList) {
+                        for (let i = 0; i < n; i++) {
+                            let fn = callbacks[i];
+                            fn.apply(watcher, this._args);
+                            if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
+                        }
+                    } else {
+                        for (let i = 0; i < n; i++) {
+                            callbacks[i].apply(watcher, this._args);
+                        }
+                    }
+                }
+            }
+
         }
 
         this._PostDispatch();
@@ -155,6 +235,7 @@ class SignalBroadcaster extends DisposableObject {
     }
 
     /**
+     * Note : this has been inlined in _Broadcast.
      * @access private
      * @param {array} p_callbacks 
      * @param {*} p_listener 
@@ -192,6 +273,7 @@ class SignalBroadcaster extends DisposableObject {
     }
 
     /**
+     * Note : this has been inlined in _Broadcast
      * @access private
      * @param {array} p_callbacks 
      * @param {*} p_listener 

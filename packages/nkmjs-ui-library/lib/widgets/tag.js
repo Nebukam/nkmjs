@@ -10,7 +10,7 @@ class Tag extends ui.Widget {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/items/tag.css`]
+        css: [`@/widgets/tag.css`]
     }, ui.Widget, ['css']);
 
     _Init() {

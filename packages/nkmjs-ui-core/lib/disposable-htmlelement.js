@@ -4,7 +4,10 @@ const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
 const SIGNAL = require(`./signal`);
 
+const __unpainted = `unpainted`;
+
 let uinc = 0;
+
 
 /**
  * @typedef SignalReleasing
@@ -53,8 +56,6 @@ let uinc = 0;
  */
 class DisposableHTMLElement extends HTMLElement {
 
-    static __fouc_hidden = false;
-
     constructor() {
         super();
         this._Init();
@@ -71,6 +72,9 @@ class DisposableHTMLElement extends HTMLElement {
         this._released = false;
         this._isPainted = false;
         this._isFirstPaint = true;
+
+        if(this.constructor.__usePaintCallback){ this.classList.add(__unpainted); }
+
     }
 
     _PostInit() { }
@@ -119,11 +123,13 @@ class DisposableHTMLElement extends HTMLElement {
                 if (entry.isIntersecting) {
                     if (target._isPainted) { continue; }
                     target._isPainted = true;
+                    target.classList.remove(__unpainted);
                     if (target.constructor.__usePaintCallback) { target._OnPaintChange(); }
                     target._isFirstPaint = false;
                 } else {
                     if (!target._isPainted) { continue; }
                     target._isPainted = false;
+                    target.classList.add(__unpainted);
                     if (target.constructor.__usePaintCallback) { target._OnPaintChange(); }
                 }
             }

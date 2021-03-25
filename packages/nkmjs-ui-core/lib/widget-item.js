@@ -10,6 +10,7 @@ const FLAGS = require(`./flags`);
 const extensions = require(`./extensions`);
 const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
+const { DataBlock } = require("@nkmjs/data-core/lib/serialization/json");
 
 /**
  * @description TODO
@@ -29,7 +30,7 @@ class WidgetItem extends Widget {
 
         this._Bind(this._ExecuteCommand);
 
-        this._dataObserver.Hook(data.catalogs.SIGNAL.ITEM_DATA_CHANGED, this._OnItemDataChanged, this);
+        this._dataObserver.Hook(data.catalogs.SIGNAL.ITEM_DATA_CHANGED, this._OnCatalogItemDataChanged, this);
         this._itemData = null;
 
         this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
@@ -86,7 +87,7 @@ class WidgetItem extends Widget {
         if (!this._itemData) { this._UpdateInfos(); }
     }
 
-    _OnItemDataChanged(p_item, p_newData, p_oldData) {
+    _OnCatalogItemDataChanged(p_item, p_newData, p_oldData) {
         this.itemData = this._ExtractItemData(p_newData);
     }
 
@@ -96,8 +97,10 @@ class WidgetItem extends Widget {
      */
     _ExtractItemData(p_value) {
         if (!p_value) { return null; }
-        if (u.isInstanceOf(p_value, data.catalogs.CatalogItem)) { return p_value.GetOption(com.IDS.DATA, null); }
-        return null;
+        let candidate = null;
+        if (u.isInstanceOf(p_value, data.catalogs.CatalogItem)) { candidate = p_value.GetOption(com.IDS.DATA, null); }
+        if (!candidate && com.IDS.DATA in p_value) { candidate = p_value[com.IDS.DATA]; }
+        return candidate;
     }
 
     /**
@@ -114,6 +117,8 @@ class WidgetItem extends Widget {
         else { this._OnItemDataCleaned(p_itemData); }
     }
 
+    get itemData() { return this._itemData; }
+
     /**
      * @description TODO
      * @type {*}
@@ -127,18 +132,27 @@ class WidgetItem extends Widget {
 
         if (oldData) { this._itemDataObserver.Flush(); }
 
-        if (this._itemData) {
+        if (com.signals.isObservable(this._itemData)) {
             if (!this._itemDataObserver) {
                 // Create observer
                 this._itemDataObserver = com.Rent(com.signals.Observer);
                 this._HookItemDataSignals(this._itemDataObserver, this._itemData);
             }
             this._itemDataObserver.ObserveOnly(this._itemData);
-            this._OnItemDataUpdated(this._itemData);
-        } else if (this._itemDataObserver) {
-            this._itemDataObserver.Release();
-            this._itemDataObserver = null;
+
+        } else {
+            if (this._itemDataObserver) {
+                this._itemDataObserver.Release();
+                this._itemDataObserver = null;
+            }
         }
+
+        this._OnItemDataChanged(oldData);
+        if (this._itemData) { this._OnItemDataUpdated(this._itemData); }
+
+    }
+
+    _OnItemDataChanged(p_oldItemData) {
 
     }
 
