@@ -28,7 +28,7 @@ class PointerExtension extends Extension {
         this._hooks = {};
         this._using = {};
         this._buttons = {};
-        this._position = { x:0, y:0 };
+        this._position = { x: 0, y: 0 };
 
         this._isMouseOver = false;
         this._isAnyBtnDown = false;
@@ -39,8 +39,10 @@ class PointerExtension extends Extension {
         this._Bind(this._mUp);
         this._Bind(this._mUpOutside);
         this._Bind(this._mWheel);
+        this._Bind(this._mMove);
 
         this._focusFn = null;
+        this._moveFn = null;
 
         /*
 
@@ -134,7 +136,7 @@ class PointerExtension extends Extension {
 
     _mOver(p_evt) {
 
-        if(this._isMouseOver){ return; }
+        if (this._isMouseOver) { return; }
 
         this._isMouseOver = true;
 
@@ -146,12 +148,13 @@ class PointerExtension extends Extension {
         if (this._focusFn) { this._focusFn(true); }
 
         if (this._wheelFn) { this._element.addEventListener('wheel', this._mWheel); }
+        if (this._moveFn) { this._element.addEventListener('move', this._mMove); }
 
     }
 
     _mOut(p_evt) {
 
-        if(!this._isMouseOver){ return; }
+        if (!this._isMouseOver) { return; }
 
         this._isMouseOver = false;
 
@@ -163,6 +166,7 @@ class PointerExtension extends Extension {
         else if (this._focusFn) { this._focusFn(false); }
 
         if (this._wheelFn) { this._element.removeEventListener('wheel', this._mWheel); }
+        if (this._moveFn) { this._element.removeEventListener('move', this._mMove); }
 
     }
 
@@ -240,6 +244,11 @@ class PointerExtension extends Extension {
         if (this._wheelFn) { this._wheelFn(p_evt); }
     }
 
+    _mMove(p_evt) {
+        if (this._moveFn) { this._moveFn(p_evt); }
+    }
+
+
     // ----> Event hooks
 
     /**
@@ -305,9 +314,9 @@ class PointerExtension extends Extension {
 
     }
 
-    CleanUp(){
+    CleanUp() {
         super.CleanUp();
-        if(this._isMouseOver){ this._mOut(null); }
+        if (this._isMouseOver) { this._mOut(null); }
         this._buttons = {}; // Garbage, but more efficient than loop-delete...
     }
 

@@ -277,8 +277,8 @@ class POINTER extends com.helpers.SingletonEx {
      * @param {Event} p_evt 
      */
     _mDown(p_evt) {
-        if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
         this._Broadcast(POINTER.MOUSE_DOWN, p_evt);
+        if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
     }
 
     /**
@@ -286,8 +286,8 @@ class POINTER extends com.helpers.SingletonEx {
      * @param {Event} p_evt 
      */
     _mUp(p_evt) {
-        if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
         this._Broadcast(POINTER.MOUSE_UP, p_evt);
+        if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
     }
 
     /**

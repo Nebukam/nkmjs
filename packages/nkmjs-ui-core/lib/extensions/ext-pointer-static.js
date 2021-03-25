@@ -21,7 +21,7 @@ class PointerStaticExtension extends PointerExtension {
      * 
      * @param {*} p_element 
      */
-    constructor(p_element = null) { super(); }
+    constructor(p_element = null) { super(p_element); }
 
     set element(p_value) {
 
@@ -35,12 +35,14 @@ class PointerStaticExtension extends PointerExtension {
                 oldElement.removeEventListener(`mouseenter`, this._mOver);
                 oldElement.removeEventListener(`mousedown`, this._mDown);
                 oldElement.removeEventListener(`mouseup`, this._mUp);
+                if(this._moveFn){ this._element.addEventListener('move', this._mMove); }
                 if (this._wheelFn) { oldElement.removeEventListener('wheel', this._mWheel); }
             }
             if (this._element) {
                 this._element.addEventListener(`mouseenter`, this._mOver);
                 this._element.addEventListener(`mousedown`, this._mDown);
                 this._element.addEventListener(`mouseup`, this._mUp);
+                if(this._moveFn){ this._element.removeEventListener('move', this._mMove); }
                 if (this._wheelFn) { this._element.addEventListener('wheel', this._mWheel); }
             }
         }
@@ -58,6 +60,7 @@ class PointerStaticExtension extends PointerExtension {
             this._element.addEventListener(`mouseenter`, this._mOver);
             this._element.addEventListener(`mousedown`, this._mDown);
             this._element.addEventListener(`mouseup`, this._mUp);
+            if(this._moveFn){ this._element.addEventListener('move', this._mMove); }
             if (this._wheelFn) { this._element.addEventListener('wheel', this._mWheel); }
         }
         return true;
@@ -72,6 +75,7 @@ class PointerStaticExtension extends PointerExtension {
             this._element.removeEventListener(`mouseenter`, this._mOver);
             this._element.removeEventListener(`mousedown`, this._mDown);
             this._element.removeEventListener(`mouseup`, this._mUp);
+            if(this._moveFn){ this._element.removeEventListener('move', this._mMove); }
             if (this._wheelFn) { this._element.removeEventListener('wheel', this._mWheel); }
         }
         return true;

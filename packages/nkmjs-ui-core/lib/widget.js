@@ -95,6 +95,8 @@ class Widget extends DisplayObjectContainer {
 
     get extensions() { return this._extensions; }
 
+    get pointer(){ return this._pointer; }
+
     // ----> Placement & Orientation
 
     /**

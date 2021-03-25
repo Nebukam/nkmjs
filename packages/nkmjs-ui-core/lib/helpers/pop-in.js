@@ -1,15 +1,19 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 const FLAGS = require(`../flags`);
 const SIGNAL = require(`../signal`);
+const POINTER = require("../pointer");
+const extensions = require(`../extensions`);
+
 const DisplayObjectContainer = require(`../display-object-container`);
+const Widget = require(`../widget`);
 
 const FlagEnum = require(`./flag-enum`);
-
 
 
 /**
@@ -66,7 +70,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static LEFT = { x:-0.5, y:0 };
+    static LEFT = { x: -0.5, y: 0 };
 
     /**
      * @description TODO
@@ -74,7 +78,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static RIGHT = { x:0.5, y:0 };
+    static RIGHT = { x: 0.5, y: 0 };
 
     /**
      * @description TODO
@@ -82,7 +86,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static TOP = { x:0, y:-0.5 };
+    static TOP = { x: 0, y: -0.5 };
 
     /**
      * @description TODO
@@ -90,7 +94,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static BOTTOM = { x:0, y:0.5 };
+    static BOTTOM = { x: 0, y: 0.5 };
 
     /**
      * @description TODO
@@ -98,7 +102,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static TOP_LEFT = { x:-0.5, y:-0.5 };
+    static TOP_LEFT = { x: -0.5, y: -0.5 };
 
     /**
      * @description TODO
@@ -106,7 +110,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static TOP_RIGHT = { x:0.5, y:-0.5 };
+    static TOP_RIGHT = { x: 0.5, y: -0.5 };
 
     /**
      * @description TODO
@@ -114,7 +118,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static BOTTOM_LEFT = { x:-0.5, y:0.5 };
+    static BOTTOM_LEFT = { x: -0.5, y: 0.5 };
 
     /**
      * @description TODO
@@ -122,7 +126,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static BOTTOM_RIGHT = { x:0.5, y:0.5 };
+    static BOTTOM_RIGHT = { x: 0.5, y: 0.5 };
 
     /**
      * @description TODO
@@ -130,8 +134,7 @@ class PopIn extends DisplayObjectContainer {
      * @customtag read-only
      * @group Placement
      */
-    static CENTER = { x:0, y:0 };
-
+    static CENTER = { x: 0, y: 0 };
 
 
     /**
@@ -166,13 +169,40 @@ class PopIn extends DisplayObjectContainer {
         this._optionsHandler.Hook(`mode`);
         this._optionsHandler.Hook(`context`, null, document.body);
         this._optionsHandler.Hook(`anchor`);
+        this._optionsHandler.Hook(`static`, null, false);
         this._optionsHandler.Hook(`placement`, null, PopIn.CENTER);
         this._optionsHandler.Hook(`origin`, null, PopIn.CENTER);
 
+        this._pointer = new extensions.PointerStatic(this);
+
         this._ownsContent = false;
 
+        this._Bind(this._mUp);
+        this._Bind(this._mDown);
+        this._Bind(this.Close);
         this._Bind(this._UpdateAnchoredPosition);
 
+        this._parentPopin = null;
+        this._subPopins = new collections.List();
+
+    }
+
+    Wake(){
+        POINTER.Watch(POINTER.MOUSE_DOWN, this._mDown);
+        this._pointer.Enable();
+    }
+
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.PopIn}
+     */
+    get parentPopin() { return this._parentPopin; }
+    set parentPopin(p_value) {
+        if (this._parentPopin == p_value) { return; }
+        let oldParentPopin = this._parentPopin;
+        this._parentPopin = p_value;
+        if (oldParentPopin) { oldParentPopin._subPopins.Remove(this); }
+        if (this._parentPopin) { this._parentPopin._subPopins.Add(this); }
     }
 
     /**
@@ -212,6 +242,17 @@ class PopIn extends DisplayObjectContainer {
     set origin(p_value) { this._placement = p_value; }
 
     /**
+     * @description Point inside the pop-in to pin at position
+     * @type {object}
+     * @group Placement
+     */
+    get static() { return this._static; }
+    set static(p_value) {
+        if (this._static === p_value) { return; }
+        this._static = p_value;
+    }
+
+    /**
      * @description TODO
      * @type {function|ui.core.DisplayObject}
      */
@@ -220,23 +261,24 @@ class PopIn extends DisplayObjectContainer {
 
         if (this._content === p_value) { return; }
         if (this._content) {
-            if(this._ownsContent){ 
-                this._content.Release(); 
-            }else{
+            this._content.Unwatch(SIGNAL.CLOSE_REQUESTED, this.Close);
+            if (this._ownsContent) {
+                this._content.Release();
+            } else {
                 // Clear inline style properties
             }
             this._content = null;
         }
 
-        if (!p_value) { 
+        if (!p_value) {
             this._ownsContent = false;
-            return; 
+            return;
         }
 
         this._ownsContent = u.isFunc(p_value);
 
         this._content = this.Add(p_value, `content`);
-        this._content.Watch(SIGNAL.CLOSE_REQUESTED, () => { this.Release(); });
+        this._content.Watch(SIGNAL.CLOSE_REQUESTED, this.Close);
 
     }
 
@@ -260,8 +302,8 @@ class PopIn extends DisplayObjectContainer {
     set anchor(p_value) {
         if (this._anchor === p_value) { return; }
         this._anchor = p_value;
-        if(this._anchor){ com.time.TIME.Watch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
-        else{ com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
+        if (this._anchor) { com.time.TIME.Watch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
+        else { com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
     }
 
     /**
@@ -276,19 +318,19 @@ class PopIn extends DisplayObjectContainer {
 
     // ----> DOM
 
-    _Style(){
+    _Style() {
         return {
-            ':host':{
-                'position':'absolute',
-                'border':'2px solid #ff0000',
+            ':host': {
+                'position': 'absolute',
+                'border': '2px solid #ff0000',
                 //'width':'0', 'height':'0',
-                'display':'flex' // making sure things are properly sized
+                'display': 'flex' // making sure things are properly sized
             },
-            ':host(.mode-float-inside)':{
+            ':host(.mode-float-inside)': {
 
             },
-            ':host(.mode-anchor)':{
-                
+            ':host(.mode-anchor)': {
+
             },
             /*
             // Float inside
@@ -310,48 +352,83 @@ class PopIn extends DisplayObjectContainer {
      * @access private
      * @description TODO
      */
-    _UpdateAnchoredPosition(){
-        
+    _UpdateAnchoredPosition() {
+
         let rect = u.dom.Rect(this._anchor, this.parentElement),
-        centerX = rect.x + rect.width * 0.5,
-        centerY = rect.y + rect.height * 0.5,
-        x = centerX + rect.width * this._placement.x,
-        y = centerY + rect.height * this._placement.y;
+            centerX = rect.x + rect.width * 0.5,
+            centerY = rect.y + rect.height * 0.5,
+            x = centerX + rect.width * this._placement.x,
+            y = centerY + rect.height * this._placement.y;
 
 
-        if(this._placement.x < 0.5){
+        if (this._placement.x < 0.5) {
             // offset by pop-in width
-        }else{
-            // no re-positioning
-        }
-        
-        if(this._placement.y < 0.5){
-            // offset by pop-in width
-        }else{
+        } else {
             // no re-positioning
         }
 
-        this.style.left = `${x}px`;
-        this.style.top = `${y}px`;
+        if (this._placement.y < 0.5) {
+            // offset by pop-in width
+        } else {
+            // no re-positioning
+        }
 
+        this.style.transform = `translateX(${x}px) translateY(${y}px)`;
+
+    }
+
+    _mDown(p_evt) {
+        POINTER.Watch(POINTER.MOUSE_UP, this._mUp);
+    }
+
+    _mUp(p_evt) {
+
+        POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
+
+        if(this._static){ return; }
+
+        if (this._pointer.isMouseOver || this._pointer.isMouseDown()) { return; }
+
+        for (let i = 0, n = this._subPopins.count; i < n; i++) {
+            let child = this._subPopins.At(i);
+            if (child._pointer.isMouseOver || this._pointer.isMouseDown()) { return; }
+        }
+
+        this.Close();
+
+    }
+
+    Close() {
+
+        while (!this._subPopins.isEmpty) {
+            let child = this._subPopins.Pop();
+            child.Close();
+        }
+
+        this.Release();
     }
 
     _CleanUp() {
 
-        this._ownsContent = false;
+        POINTER.Unwatch(POINTER.MOUSE_DOWN, this._mDown);
+        POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
+        this._pointer.Disable();
+
+        this.parentPopin = null;
 
         this.context = null;
         this.content = null;
         this.anchor = null;
         this.mode = null;
+        this.static = false;
 
         this._options = null;
+
+        this._ownsContent = false;
 
         super._CleanUp();
 
     }
-
-
 
 }
 

@@ -33,11 +33,11 @@ class SingletonEx extends Singleton {
      * @param {*} p_fn 
      * @param {*} p_listener 
      */
-    static Watch(p_signalId, p_fn, p_listener) { 
+    static Watch(p_signalId, p_fn, p_listener = null) { 
         this.instance._signals.Add(p_signalId, p_fn, p_listener); 
         return this; 
     }
-    Watch(p_signalId, p_fn, p_listener) { 
+    Watch(p_signalId, p_fn, p_listener = null) { 
         this._signals.Add(p_signalId, p_fn, p_listener); 
         return this;
     }
@@ -48,11 +48,11 @@ class SingletonEx extends Singleton {
      * @param {*} p_fn 
      * @param {*} p_listener 
      */
-    static WatchOnce(p_signalId, p_fn, p_listener) { 
+    static WatchOnce(p_signalId, p_fn, p_listener = null) { 
         this.instance._signals.AddOnce(p_signalId, p_fn, p_listener); 
         return this;
     }
-    WatchOnce(p_signalId, p_fn, p_listener) { 
+    WatchOnce(p_signalId, p_fn, p_listener = null) { 
         this._signals.AddOnce(p_signalId, p_fn, p_listener); 
         return this;
     }
@@ -63,11 +63,11 @@ class SingletonEx extends Singleton {
      * @param {*} p_fn 
      * @param {*} p_listener 
      */
-    static Unwatch(p_signalId, p_fn, p_listener) { 
+    static Unwatch(p_signalId, p_fn, p_listener = null) { 
         this.instance._signals.Remove(p_signalId, p_fn, p_listener); 
         return this;
     }
-    Unwatch(p_signalId, p_fn, p_listener) { 
+    Unwatch(p_signalId, p_fn, p_listener = null) { 
         this._signals.Remove(p_signalId, p_fn, p_listener); 
         return this;
     }

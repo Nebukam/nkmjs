@@ -56,7 +56,7 @@ class StyleguideApp extends nkm.app.AppBase {
             { htitle: `htitle B text`, group: 'A', label: 'Label B', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF }, flavor: FLAGS.WARNING },
             { htitle: `htitle C text`, group: 'A', icon: 'download', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF } },
             { htitle: `htitle D text`, label: 'Popup', trigger: { fn: this._Dialog }, flavor: ui.FLAGS.CTA },
-            { htitle: `htitle E text`, icon: 'refresh', trigger: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF }, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING }
+            { htitle: `htitle E text`, icon: 'refresh', trigger: { thisArg: this, fn: this._Popin, arg: ui.FLAGS.SELF }, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING }
         ];
 
         let newData = (p_id, p_dirty = false) => {
@@ -314,6 +314,27 @@ class StyleguideApp extends nkm.app.AppBase {
 
     _TriggerTest(p_source) {
         console.log(`triggered : ${p_source}`);
+    }
+
+    _Popin(p_btn){
+
+
+        if (!this._popinOptions) {
+            this._popinOptions = [
+                { placement: ui.FLAGS.TOP_LEFT },
+            ];
+        }
+
+        let opts = this._popinOptions.pop();
+        if (this._popinOptions.length == 0) { this._popinOptions = null; }
+
+        let popin = ui.helpers.PopIn.Pop({
+            content: TestWidget,
+            anchor: p_btn,
+            static:true,
+            placement: opts.placement
+        });
+        
     }
 
     _Stretch(p_source) {
