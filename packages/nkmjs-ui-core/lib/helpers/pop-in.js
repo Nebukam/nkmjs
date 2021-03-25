@@ -34,6 +34,8 @@ const FlagEnum = require(`./flag-enum`);
 class PopIn extends DisplayObjectContainer {
     constructor() { super(); }
 
+    static popinStack = new collections.List();
+
     /**
      * @description TODO
      * @type {string}
@@ -151,6 +153,21 @@ class PopIn extends DisplayObjectContainer {
         return popin;
     }
 
+    /**
+     * @description TODO
+     * @param {*} p_options 
+     * @param {Element} p_options.context
+     * @param {function|ui.core.DisplayObject} p_options.content
+     * @param {Element} p_options.anchor
+     * @param {*} [p_parent] 
+     */
+    static PopChild(p_options, p_parent = null) {
+        if (!p_parent) { p_parent = this.popinStack.last; }
+        if (!p_parent) { return this.Pop(p_options); }
+        p_options.parent = p_parent;
+        return this.Pop(p_options);
+    }
+
     _Init() {
 
         super._Init();
@@ -165,7 +182,7 @@ class PopIn extends DisplayObjectContainer {
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
 
-        this._optionsHandler = new com.helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed));
+        this._optionsHandler = new com.helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed), this._Bind(this._OnOptionsWillUpdate));
         this._optionsHandler.Hook(`mode`);
         this._optionsHandler.Hook(`context`, null, document.body);
         this._optionsHandler.Hook(`anchor`);
@@ -187,9 +204,10 @@ class PopIn extends DisplayObjectContainer {
 
     }
 
-    Wake(){
+    Wake() {
         POINTER.Watch(POINTER.MOUSE_DOWN, this._mDown);
         this._pointer.Enable();
+        this.constructor.popinStack.Add(this);
     }
 
     /**
@@ -306,13 +324,21 @@ class PopIn extends DisplayObjectContainer {
         else { com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
     }
 
+    _OnOptionsWillUpdate(p_options) {
+        if (p_options.parent) { this.parentPopin = p_options.parent; }
+    }
+
     /**
      * @access protected
      * @description TODO
      * @param {object} p_options 
      */
     _OnOptionsProcessed(p_options) {
-
+        let callback = p_options.callback;
+        if (callback) {
+            if (callback.thisArg) { callback.fn.apply(callback.thisArg, this); }
+            else { callback.fn(this); }
+        }
     }
 
 
@@ -385,7 +411,7 @@ class PopIn extends DisplayObjectContainer {
 
         POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
 
-        if(this._static){ return; }
+        if (this._static) { return; }
 
         if (this._pointer.isMouseOver || this._pointer.isMouseDown()) { return; }
 
@@ -410,8 +436,11 @@ class PopIn extends DisplayObjectContainer {
 
     _CleanUp() {
 
+        this.constructor.popinStack.Remove(this);
+
         POINTER.Unwatch(POINTER.MOUSE_DOWN, this._mDown);
         POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
+
         this._pointer.Disable();
 
         this.parentPopin = null;
