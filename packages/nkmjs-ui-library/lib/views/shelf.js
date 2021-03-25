@@ -263,6 +263,7 @@ class Shelf extends ui.views.View {
         handle.Watch(ui.SIGNAL.CLOSE_REQUESTED, this._OnHandleCloseRequest, this);
 
         p_mappedView.Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnViewRequestDisplay, this);
+        p_mappedView.Watch(ui.SIGNAL.CLOSE_REQUESTED, this._OnViewRequestClose, this);
         p_mappedView.visible = false;
         p_mappedView.classList.add(ui.IDS.VIEW);
         this.Add(p_mappedView);
@@ -285,7 +286,7 @@ class Shelf extends ui.views.View {
      * @param {data.core.catalogs.CatalogItem} p_item 
      * @param {ui.core.View} p_mappedView 
      */
-    _OnCatalogItemRemoved(p_builder, p_item, p_mappedView) {
+    _OnCatalogItemRemoved(p_builder, p_item, p_mappedView, p_index) {
 
         let handle = this._nav.Remove(p_item);
         if (this.currentHandle === handle) { this.currentHandle = null; }
@@ -294,7 +295,12 @@ class Shelf extends ui.views.View {
             this.currentView = null;
             if (this._nav._handles.length === 0) { this._OnShelfEmpty(); }
             // TODO : Customize which view is set as default
-            else { this.currentHandle = this._nav._handles[0]; }
+            else { 
+                console.log(p_index);
+                let handles = this._nav._handles;
+                if(p_index >= handles.length){ p_index = handles.length -1; }
+                this.currentHandle = handles[p_index]; 
+            }
         }
 
     }
@@ -325,11 +331,20 @@ class Shelf extends ui.views.View {
      * @param {ui.core.Widget} p_handle 
      */
     _OnHandleCloseRequest(p_handle) {
-        //TODO : Find a way to make this behavior more configurable
-        //TODO : Check if there are change to apply to the open document, yada yada yada (in workspace cell, that is)
-        //TODO : Release the view contained in the catalogItem, if not created by the shelf (uh-oh)
-        let catalogItem = p_handle.data;
-        catalogItem.Release();
+        // Find related view and call CloseRequest on that view.
+        // this way we ensure the view is notified the user wants to close it, and can react to it.
+        // we only close a view from the signal broadcasted by the view itself, not the handle.
+        let catalogItem = p_handle.data,
+            p_view = this._catalogViewBuilder.Get(catalogItem);
+
+        if (p_view) {
+            // If a view exists, give it control over its release.
+            p_view.RequestClose();
+        } else {
+            // Otherwise force release the item.
+            catalogItem.Release();
+        }
+
     }
 
 
@@ -342,6 +357,11 @@ class Shelf extends ui.views.View {
      */
     _OnViewRequestDisplay(p_view) {
         this.currentView = p_view;
+    }
+
+    _OnViewRequestClose(p_view) {
+        let catalogItem = this._catalogViewBuilder._reverseMap.get(p_view);
+        if(catalogItem){ catalogItem.Release(); }
     }
 
     /**

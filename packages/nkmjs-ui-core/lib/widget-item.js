@@ -32,7 +32,7 @@ class WidgetItem extends Widget {
         this._dataObserver.Hook(data.catalogs.SIGNAL.ITEM_DATA_CHANGED, this._OnItemDataChanged, this);
         this._itemData = null;
 
-        this._flavorEnum = new FlagEnum(FLAGS.flavors, true);
+        this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
         this._pointer.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
@@ -105,10 +105,13 @@ class WidgetItem extends Widget {
      * @description TODO
      * @param {common.signals.Observer} p_observer 
      */
-    _HookItemDataSignals(p_observer) {
+    _HookItemDataSignals(p_observer, p_itemData) {
         p_observer.Hook(data.SIGNAL.DIRTY, this._OnItemDataDirty, this);
         p_observer.Hook(data.SIGNAL.DIRTY_CLEARED, this._OnItemDataCleaned, this);
         p_observer.Hook(com.SIGNAL.UPDATED, this._OnItemDataUpdated, this);
+
+        if (p_itemData.isDirty) { this._OnItemDataDirty(p_itemData); }
+        else { this._OnItemDataCleaned(p_itemData); }
     }
 
     /**
@@ -128,7 +131,7 @@ class WidgetItem extends Widget {
             if (!this._itemDataObserver) {
                 // Create observer
                 this._itemDataObserver = com.Rent(com.signals.Observer);
-                this._HookItemDataSignals(this._itemDataObserver);
+                this._HookItemDataSignals(this._itemDataObserver, this._itemData);
             }
             this._itemDataObserver.ObserveOnly(this._itemData);
             this._OnItemDataUpdated(this._itemData);

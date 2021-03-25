@@ -34,6 +34,7 @@ class SignalBox extends DisposableObject {
     get hasWatchers(){ return this._signals.count > 0; }
 
     isEmpty(p_signal) {
+        
         let s = this._signals;
         if (!s.Contains(p_signal)) {
             return true;

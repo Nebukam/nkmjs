@@ -49,6 +49,18 @@
         #{nth($size_varnames_third, $i + 1)}: nth($size_values_third, $i + 1); 
     }
 
+    $col: #1e1e1e;
+    --default-level-0-color: #{$col};
+    --default-level-0-color-rgb: red(#{$col}), green(#{$col}), blue(#{$col});
+
+    $col: #3b3b3b;
+    --default-level-1-color: #{$col};
+    --default-level-1-color-rgb: red(#{$col}), green(#{$col}), blue(#{$col});
+
+    $col: #505050;
+    --default-level-2-color: #{$col};
+    --default-level-2-color-rgb: red(#{$col}), green(#{$col}), blue(#{$col});
+
 }
 
 @include prefers_dark{

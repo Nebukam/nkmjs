@@ -10,6 +10,7 @@ class InputDirectory extends InputFile {
     _Init() {
         super._Init();
         this._openType = 'openDirectory';
+        this._iconID = `directory-search`;
     }
 
 }

@@ -48,6 +48,10 @@ $family_regular: 'Regular', apple-system, BlinkMacSystemFont, "Segoe UI", Roboto
 
 }
 
+.message{
+    font-size: calc(var(--font-size) * 1);
+}
+
 $family_title: 'Title', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 .title{

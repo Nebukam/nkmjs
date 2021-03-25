@@ -8,7 +8,7 @@ const { CSS } = nkm.style;
 class UIItem extends DisplayObjectContainer {
     constructor() { super(); }
 
-    static __NFO__ = { css: [`@/global-host.css`, `css/test.css`] }
+    static __NFO__ = { css: [`@/global-host.css`] }
 
     static __usePaintCallback = true;
 

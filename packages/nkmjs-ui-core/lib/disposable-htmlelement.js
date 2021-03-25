@@ -254,6 +254,7 @@ class DisposableHTMLElement extends HTMLElement {
         }
 
         this._released = true;
+        
         this._Broadcast(com.SIGNAL.RELEASED, this);
         this._CleanUp();
 

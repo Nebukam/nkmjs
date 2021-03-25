@@ -73,6 +73,9 @@ class LayerContainer extends Layer {
     }
 
     _OnLayerDisplayRequested(p_layer) {
+        if(!u.isInstanceOf(p_layer, Layer)){
+            throw new Error(`WTF`);
+        }
         p_layer.BringToFront();
         this._updateDepths.Schedule();
     }

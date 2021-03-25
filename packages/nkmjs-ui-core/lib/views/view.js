@@ -34,6 +34,13 @@ class View extends WidgetOrientable {
     }
 
     /**
+     * @description TODO
+     */
+    RequestClose(){
+        this._Broadcast(SIGNAL.CLOSE_REQUESTED, this);
+    }
+
+    /**
      * @description Callback when RequestDisplay has been handled.
      * @customtag override-me
      */

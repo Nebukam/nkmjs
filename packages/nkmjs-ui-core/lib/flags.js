@@ -161,6 +161,14 @@ class FLAGS {
      */
     static TOGGLED = `toggled`;
 
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Interactivity
+     */
+    static TOGGLABLE = `togglable`;
+
     // Placements
 
     /**

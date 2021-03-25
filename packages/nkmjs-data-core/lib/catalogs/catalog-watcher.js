@@ -205,12 +205,12 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
             for (let i = 0, n = list.length; i < n; i++) {
                 let item = list[i];
                 if (item.isDir) { this._RemoveCatalogContent(item, p_deep); }
-                else { this._OnCatalogItemRemoved(p_catalog, item); }
+                else { this._OnCatalogItemRemoved(p_catalog, item, i); }
             }
         } else {
             for (let i = 0, n = list.length; i < n; i++) {
                 let item = list[i];
-                this._OnCatalogItemRemoved(p_catalog, item);
+                this._OnCatalogItemRemoved(p_catalog, item, i);
             }
         }
     }
@@ -260,7 +260,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      * @param {data.core.catalogs.CatalogItem} p_item 
      * @customtag override-me
      */
-    _OnCatalogItemRemoved(p_catalog, p_item) {
+    _OnCatalogItemRemoved(p_catalog, p_item, p_index) {
 
         if (this._isDeepWatchEnabled) {
             if (p_item.isDir || p_item.rootDistance <= this._catalog.rootDistance) {

@@ -10,7 +10,7 @@ class Breadcrumb extends ui.WidgetBar{
     constructor(){super();}
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/items/breadcrum.css`]
+        css: [`@/lists/breadcrum.css`]
     }, ui.WidgetBar, ['css']);
 
     _Init(){

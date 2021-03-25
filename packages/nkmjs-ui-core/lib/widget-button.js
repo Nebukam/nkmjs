@@ -21,7 +21,7 @@ class WidgetButton extends Widget {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/buttons/shared.css`]
+        css: [`@/buttons/global-button.css`]
     }, Widget, ['css']);
 
     // ----> Init
@@ -60,12 +60,12 @@ class WidgetButton extends Widget {
         this._commandObserver = new com.signals.Observer();
         this._commandObserver.Hook(com.SIGNAL.UPDATED, this._OnCommandUpdated, this);
 
-        this._flags.Add(this, FLAGS.TOGGLED);
+        this._flags.Add(this, FLAGS.TOGGLABLE, FLAGS.TOGGLED);
 
         this._sizeEnum = new FlagEnum(FLAGS.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(FLAGS.flavors, true);
+        this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
         this._variantEnum = new FlagEnum(FLAGS.variants, true);
@@ -83,9 +83,9 @@ class WidgetButton extends Widget {
         this._optionsHandler.Hook(`alwaysVisible`, `alwaysDisplayCommand`);
         this._optionsHandler.Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } });
         this._optionsHandler.Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
-        this._optionsHandler.Hook(`size`, (p_value) => { this._sizeEnum.Set(p_value); });
-        this._optionsHandler.Hook(`flavor`, (p_value) => { this._flavorEnum.Set(p_value); });
-        this._optionsHandler.Hook(`variant`, (p_value) => { this._variantEnum.Set(p_value); });
+        this._optionsHandler.Hook(`size`);
+        this._optionsHandler.Hook(`flavor`);
+        this._optionsHandler.Hook(`variant`);
 
     }
 
@@ -302,7 +302,10 @@ class WidgetButton extends Widget {
      * @type {object}
      */
     get toggle() { return this._toggle; }
-    set toggle(p_value) { this._toggle = p_value; }
+    set toggle(p_value) { 
+        this._toggle = p_value;
+        this._flags.Set(FLAGS.TOGGLABLE, !!p_value );
+    }
 
     /**
      * @description TODO

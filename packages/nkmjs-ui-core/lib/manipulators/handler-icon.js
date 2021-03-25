@@ -77,7 +77,7 @@ class IconHandler extends ContentManipulator {
         if (p_variant) { this._element.setAttribute(__id_v, p_variant); }
         else { this._element.removeAttribute(__id_v); }
 
-        return this._Toggle(p_value === null ? false : true);
+        return this._Toggle(!!p_value);
 
     }
 

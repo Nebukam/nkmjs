@@ -79,13 +79,13 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
      * @param {data.core.catalogs.Catalog} p_catalog 
      * @param {data.core.catalogs.CatalogItem} p_item 
      */
-    _OnCatalogItemRemoved(p_catalog, p_item) {
+    _OnCatalogItemRemoved(p_catalog, p_item, p_index) {
 
-        let mappedView = super._OnCatalogItemRemoved(p_catalog, p_item);
+        let mappedView = super._OnCatalogItemRemoved(p_catalog, p_item, p_index);
         if (mappedView === false) { return false; }
 
         this._reverseMap.delete(mappedView);
-        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedView);
+        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedView, p_index);
         mappedView.Release();
 
         return mappedView;

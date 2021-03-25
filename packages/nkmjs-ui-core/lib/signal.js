@@ -134,7 +134,7 @@ class SIGNAL {
      * @type {symbol}
      * @customtag read-only
      */
-    static DISPLAY_REQUESTED = Symbol(`focusRequested`);
+    static DISPLAY_REQUESTED = Symbol(`displayRequested`);
 
     /**
      * @description TODO

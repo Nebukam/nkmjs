@@ -310,8 +310,6 @@ class Widget extends DisplayObjectContainer {
      */
     Focus(p_toggle) {
 
-        console.log(`${this}.Focus(${p_toggle}) / ${this._isFocused}`);
-
         if (!this._isFocusable) { return; }
 
         if (p_toggle && !this._isFocusable) { p_toggle = false; }

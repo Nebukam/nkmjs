@@ -74,7 +74,9 @@ class DataBlock extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     Dirty() {
-        if (this._isDirty) { return; } this._isDirty = true;
+        if (this._isDirty) { return; } 
+        console.log(`Data dirty !`);
+        this._isDirty = true;
         this._Broadcast(SIGNAL.DIRTY, this);
     }
 

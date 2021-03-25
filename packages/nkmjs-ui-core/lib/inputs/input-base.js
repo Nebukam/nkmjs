@@ -16,7 +16,7 @@ class BaseInput extends Widget {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/inputs/shared.css`]
+        css: [`@/inputs/global-input.css`]
     }, Widget, ['css']);
 
     // ----> Init
@@ -40,7 +40,7 @@ class BaseInput extends Widget {
         this._sizeEnum = new FlagEnum(FLAGS.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(FLAGS.flavors, true);
+        this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
     }

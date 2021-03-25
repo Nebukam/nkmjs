@@ -391,7 +391,7 @@ class Catalog extends CatalogItem {
         if (index === -1) { return; }
 
         this._items.splice(index, 1);
-        this._OnItemRemoved(p_item);
+        this._OnItemRemoved(p_item, index);
     }
 
     /**
@@ -399,11 +399,11 @@ class Catalog extends CatalogItem {
      * @description Callback when an item is removed from this catalog
      * @param {data.core.CatalogItem} p_item 
      */
-    _OnItemRemoved(p_item) {
-        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item);
+    _OnItemRemoved(p_item, p_index) {
+        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, p_index);
 
         if (this._rootCatalog) {
-            this._rootCatalog._Broadcast(SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item);
+            this._rootCatalog._Broadcast(SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item, p_index);
         }
 
         p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);

@@ -130,7 +130,7 @@ class DisposableObjectEx extends DisposableObject {
 
         this._Broadcast(SIGNAL.RELEASED, this);
         this._CleanUp();
-
+        
         if (this._returnFn != undefined) { this._returnFn(this); }
         this._isReleasing = false;
 

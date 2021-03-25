@@ -10,7 +10,7 @@ class BreadcrumbItem extends ui.WidgetButton {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/items/breadcrum-item.css`]
+        css: [`@/lists/breadcrum-item.css`]
     }, ui.WidgetButton, ['css']);
 
     _Init() {

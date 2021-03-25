@@ -96,7 +96,7 @@ class OverlayHandler extends LayerContainer {
         this._overlayList.Remove(overlay);
 
         overlay.Release();
-        console.log(`_OnOverlayOptionsConsumed`, p_overlayOptions);
+        p_overlayOptions.Release();
 
         if (this._overlayMap.count === 0) {
             // Hide overlay handler if empty stack

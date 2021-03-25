@@ -7,6 +7,8 @@ const env = require(`@nkmjs/environment`);
 const style = require('@nkmjs/style');
 const ui = require(`@nkmjs/ui-core`);
 
+const buttons = require(`../buttons`);
+
 const InputPath = require(`./input-path`);
 
 class InputFile extends InputPath {
@@ -22,6 +24,7 @@ class InputFile extends InputPath {
 
         this._openType = 'openFile';
         this._picker = null;
+        this._iconID = `document-search`;
 
         this._dropExt = this._pointer.Add(ui.extensions.Drop);
         this._dropExt.Hook({
@@ -54,11 +57,11 @@ class InputFile extends InputPath {
         super._Render();
 
         if (env.isNodeEnabled) {
-            this._picker = this.Add(ui.WidgetButton, `input-btn`);
+            this._picker = this.Add(buttons.Tool, `input-btn`);
             this._picker.options = {
-                [com.IDS.ICON]: `plus`,
+                [com.IDS.ICON]: this._iconID,
                 trigger: { fn: this._Pick, thisArg: this },
-                variant: ui.FLAGS.FRAME
+                variant: ui.FLAGS.MINIMAL
             };
 
             this._sizeEnum.Add(this._picker);

@@ -28,7 +28,7 @@ class Overlay extends Layer {
     _Init() {
 
         super._Init();
-        
+
         this._background = null;
         this._content = null;
         this._contentPlacement = null;
@@ -36,7 +36,7 @@ class Overlay extends Layer {
         this._dataObserver.Hook(com.SIGNAL.CONSUMED, this._Bind(this._OnDataConsumed));
         this._transitions = new extensions.AnimController();
 
-        this._closeBg = this._pointer.Add(extensions.Pointer);
+        this._closeBg = this._pointer.Add(extensions.PointerStatic);
         this._closeBg.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this._CloseRequest));
 
         this._options = null;
@@ -51,7 +51,7 @@ class Overlay extends Layer {
 
     _Style() {
         return style.Extends({
-            ':host':{
+            ':host': {
                 'transform': 'translateX(-100%)', // YES this is a terrible hack
                 'transition': 'transform 0s linear'
             },
@@ -155,6 +155,7 @@ class Overlay extends Layer {
         }
 
         this._content = this.Add(contentClass, 'content');
+        this._content.classList.add(FLAGS.SHOWN);
         this._content.data = contentData;
 
         // Feed data as options once the content is ready

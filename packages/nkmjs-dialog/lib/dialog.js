@@ -25,7 +25,6 @@ class DIALOG extends services.ServiceBase {
     _Init() {
         super._Init();
         this._dialogs = new collections.List();
-        this._ownedDialogData = new collections.Dictionary();
 
         this._Bind(this._ProcessNext);
         this._inDialog = false;
@@ -54,13 +53,10 @@ class DIALOG extends services.ServiceBase {
      */
     _Push(p_options) {
 
-        console.log(`DIALOG._Push`, p_options);
-
         let dialogOptions = null;
 
         if (!u.isInstanceOf(p_options, ui.overlays.OverlayOptions)) {
             dialogOptions = ui.overlays.OverlayOptions.Create(p_options);
-            this._ownedDialogData.Set(dialogOptions, true);
         } else {
             dialogOptions = p_options;
         }
@@ -118,18 +114,8 @@ class DIALOG extends services.ServiceBase {
         //this._Success();
     }
 
-    _OnDialogConsumed(p_dialog) {
-
-        let dialogOptions = p_dialog.options;
-
-        this._dialogs.Remove(p_dialog);
-        p_dialog.Release();
-
-        if (this._ownedDialogData.Get(dialogOptions)) {
-            this._ownedDialogData.Remove(dialogOptions);
-            dialogOptions.Release();
-        }
-
+    _OnDialogConsumed(p_dialogOptions) {
+        this._dialogs.Remove(p_dialogOptions);
         this._inDialog = false;
         this._ProcessNext();
     }

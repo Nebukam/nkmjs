@@ -32,8 +32,32 @@ class Editor extends ui.views.View{
 
         this._flags.Add(this, com.FLAGS.WARNING);
 
+        this._hasUnsavedModifications = false;
+
         this._Bind(this.Inspect);
 
+    }
+
+    /**
+     * @description TODO
+     * @type {boolean}
+     * @customtag read-only
+     */
+    get hasUnsavedModifications(){ return this._hasUnsavedModifications; }
+
+    /**
+     * @description TODO
+     * @param {boolean} p_value 
+     * @returns 
+     */
+    _SetUnsavedModifications(p_value){
+        if(this._hasUnsavedModifications === p_value){ return; }
+        this._hasUnsavedModifications = p_value;
+        if(p_value){
+            // TODO
+        }else{
+            // TODO
+        }
     }
 
     // ----> Data management

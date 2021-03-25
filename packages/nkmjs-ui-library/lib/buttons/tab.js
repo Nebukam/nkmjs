@@ -11,7 +11,7 @@ class Tab extends ui.WidgetItem {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/items/tab.css`]
+        css: [`@/buttons/tab.css`]
     }, ui.WidgetItem, ['css']);
 
     // ----> Init
@@ -24,6 +24,7 @@ class Tab extends ui.WidgetItem {
 
         this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
         this._closeBtn.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE, this._CloseRequest);
+
         this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
 
     }

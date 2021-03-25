@@ -2,6 +2,7 @@
 
 const nkm = require(`@nkmjs/core`);
 const u = nkm.utils;
+const com = nkm.common;
 const { AppBase, AutoUpdateDialogBox } = nkm.app;
 const { Request } = nkm.actions;
 const { pool, FLAGS } = nkm.common;
@@ -169,8 +170,8 @@ class StyleguideApp extends nkm.app.AppBase {
                 cl: DialogBox,
                 variants: [
                     {},
-                    { flavor: FLAGS.WARNING },
-                    { flavor: FLAGS.INFOS },
+                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME },
+                    { flavor: FLAGS.INFOS, variant: ui.FLAGS.MINIMAL },
                     { flavor: FLAGS.ERROR }
                 ], fn: this._Bind(this._FillDialog)
             },
@@ -186,7 +187,6 @@ class StyleguideApp extends nkm.app.AppBase {
             { cl: ui.WidgetItem, fn: this._Bind(this._FillTreeItem) },
         ]);
 
-        //for (let i = 0, n = keys.length; i < n; i++) {
         outerloop:
         for (let i = keys.length - 1; i >= 0; i--) {
             let key = keys[i];
@@ -210,19 +210,38 @@ class StyleguideApp extends nkm.app.AppBase {
         // Generate overlay request
         //setTimeout(this._Bind(this._Overlay), 1000);
 
-        this._firsttreeItem.scrollIntoView();
+        //this._firsttreeItem.scrollIntoView();
 
     }
 
     _Dialog() {
-        console.log(`_Dialog !`);
+
+        if (!this._dialogOptions) {
+            this._dialogOptions = [
+                { flavor: null, variant: null, title:`Hey there !`, msg:`This popup is the default template. No flavor nor variant set.` },
+                { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, title:`Nice.`, msg:`This popup uses the ERROR flavor, and FRAME variant.` },
+                { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, title:`Attention !`, msg:`This popup uses the WARNING flavor, and FRAME variant.` },
+                { flavor: FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, title:`Oh no !`, msg:`This popup uses the ERROR flavor, and MINIMAL variant.` },
+                { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, title:`Warning !`, msg:`This popup uses the WARNING flavor, and MINIMAL variant.` },
+                { flavor: FLAGS.ERROR, variant: ui.FLAGS.FRAME, title:`Something went wrong !`, msg:`This popup uses the ERROR flavor, and FRAME variant.` },
+                { flavor: ui.FLAGS.CTA, variant: ui.FLAGS.FRAME, title:`Do Something !`, msg:`This popup uses the ui.CTA flavor, and FRAME variant.` },
+            ];
+        }
+
+        let opts = this._dialogOptions.pop();
+        if (this._dialogOptions.length == 0) { this._dialogOptions = null; }
+        
         DIALOG.Push({
-            title: `Welcome to the NKMjs Workbench`,
+            title: opts.title,
+            message: opts.msg,
             actions: [
                 { label: `Open Drawer`, trigger: { fn: this._Overlay, thisArg: this } },
+                { label: `Again`, trigger: { fn: this._Dialog, thisArg: this }, flavor:opts.flavor },
                 { label: `Close` }
             ],
-            origin: this
+            origin: this,
+            flavor:opts.flavor,
+            variant:opts.variant
         });
     }
 
@@ -261,6 +280,7 @@ class StyleguideApp extends nkm.app.AppBase {
             message: `This is a message !`,
             content: [],
             flavor: p_variant ? p_variant.flavor : null,
+            variant: p_variant ? p_variant.variant : null,
             actions: this._buttonConfigs
         });
     }
@@ -288,6 +308,7 @@ class StyleguideApp extends nkm.app.AppBase {
 
     _OnButtonCreated(p_btn) {
         p_btn.trigger = { fn: (btn) => { btn._flags.Toggle(ui.FLAGS.TOGGLED); }, arg: ui.FLAGS.SELF };
+        p_btn.icon = `icon`;
         //this._PopInTag(p_btn);
     }
 

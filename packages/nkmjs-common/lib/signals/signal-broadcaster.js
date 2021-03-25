@@ -57,7 +57,7 @@ class SignalBroadcaster extends DisposableObject {
      * @param {*} p_fn 
      * @param {*} p_listener 
      */
-    AddOnce(p_fn, p_listener = null){
+    AddOnce(p_fn, p_listener = null) {
         if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
         if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
         this._slots.Set(p_listener, p_fn);
@@ -74,14 +74,14 @@ class SignalBroadcaster extends DisposableObject {
         if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
         if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
 
-        if (this._slots.Contains(p_listener)) { 
+        if (this._slots.Contains(p_listener)) {
             if (this._broadcasting) { this._deprecatedKVP.push([p_listener, p_fn]); }
-            else{ this._slots.Remove(p_listener, p_fn); }
+            else { this._slots.Remove(p_listener, p_fn); }
         }
 
-        if (this._onceSlots.Contains(p_listener)) { 
+        if (this._onceSlots.Contains(p_listener)) {
             if (this._broadcasting) { this._deprecatedKVP.push([p_listener, p_fn]); }
-            else{ this._onceSlots.Remove(p_listener, p_fn); }
+            else { this._onceSlots.Remove(p_listener, p_fn); }
         }
 
     }
@@ -165,27 +165,27 @@ class SignalBroadcaster extends DisposableObject {
         let onceList = this._onceSlots.Get(p_listener);
 
         if (p_listener === SignalBroadcaster.BLANK) {
-            if(onceList){
-                for (let i = 0, n = p_callbacks.length; i < n; i++) { 
+            if (onceList) {
+                for (let i = 0, n = p_callbacks.length; i < n; i++) {
                     let fn = p_callbacks[i];
                     fn.apply(null);
-                    if(onceList.includes(fn)){ this._deprecatedKVP.push([p_listener, fn]); }
+                    if (onceList.includes(fn)) { this._deprecatedKVP.push([p_listener, fn]); }
                 }
-            }else{
-                for (let i = 0, n = p_callbacks.length; i < n; i++) { 
-                    p_callbacks[i].apply(null); 
+            } else {
+                for (let i = 0, n = p_callbacks.length; i < n; i++) {
+                    p_callbacks[i].apply(null);
                 }
             }
         } else {
-            if(onceList){
+            if (onceList) {
                 for (let i = 0, n = p_callbacks.length; i < n; i++) {
                     let fn = p_callbacks[i];
                     fn.apply(p_listener);
-                    if(onceList.includes(fn)){ this._deprecatedKVP.push([p_listener, fn]); } 
+                    if (onceList.includes(fn)) { this._deprecatedKVP.push([p_listener, fn]); }
                 }
-            }else{
-                for (let i = 0, n = p_callbacks.length; i < n; i++) { 
-                    p_callbacks[i].apply(p_listener); 
+            } else {
+                for (let i = 0, n = p_callbacks.length; i < n; i++) {
+                    p_callbacks[i].apply(p_listener);
                 }
             }
         }
@@ -198,34 +198,60 @@ class SignalBroadcaster extends DisposableObject {
      * @param {Map} p_map 
      */
     __BroadcastWithArgs(p_callbacks, p_listener, p_map) {
-        
+
         let onceList = this._onceSlots.Get(p_listener);
         if (p_listener === SignalBroadcaster.BLANK) {
-            if(onceList){
+            if (onceList) {
                 for (let i = 0, n = p_callbacks.length; i < n; i++) {
                     let fn = p_callbacks[i];
                     fn.apply(null, this._args);
-                    if(onceList.includes(fn)){ this._deprecatedKVP.push([p_listener, fn]); }
+                    if (onceList.includes(fn)) { this._deprecatedKVP.push([p_listener, fn]); }
                 }
-            }else{
+            } else {
                 for (let i = 0, n = p_callbacks.length; i < n; i++) {
                     p_callbacks[i].apply(null, this._args);
                 }
             }
-            
+
         } else {
-            if(onceList){
+            if (onceList) {
                 for (let i = 0, n = p_callbacks.length; i < n; i++) {
                     let fn = p_callbacks[i];
                     fn.apply(p_listener, this._args);
-                    if(onceList.includes(fn)){ this._deprecatedKVP.push([p_listener, fn]); }
+                    if (onceList.includes(fn)) { this._deprecatedKVP.push([p_listener, fn]); }
                 }
-            }else{
+            } else {
                 for (let i = 0, n = p_callbacks.length; i < n; i++) {
                     p_callbacks[i].apply(p_listener, this._args);
                 }
             }
         }
+    }
+
+    /**
+     * @description list all functions watching this signal
+     * @customtag debug
+     */
+    ListCallbacks(p_indent = 1) {
+        let keys = this._slots.keys,
+            indent = ``,
+            report = ``;
+
+        for (let i = 0; i < p_indent; i++) { indent += `    `; }
+
+        for (let i = 0, n = keys.length; i < n; i++) {
+            let key = keys[i],
+                list = this._slots.Get(key),
+                ctr = null;
+
+            try { ctr = key.constructor; } catch (e) { }
+
+            for (let j = 0; j < list.length; j++) {
+                report += `${indent}(${ctr ? ctr.name : key}) => ${list[j].name}\n`;
+            }
+        }
+
+        console.log(report);
     }
 
     _CleanUp() {

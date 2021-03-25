@@ -45,9 +45,9 @@ class CatalogHandler extends CatalogWatcher {
      * @param {data.core.catalogs.Catalog} p_catalog 
      * @param {data.core.catalogs.CatalogItem} p_item 
      */
-    _OnCatalogItemRemoved(p_catalog, p_item) {
+    _OnCatalogItemRemoved(p_catalog, p_item, p_index) {
 
-        let mappedObject = super._OnCatalogItemRemoved(p_catalog, p_item);
+        let mappedObject = super._OnCatalogItemRemoved(p_catalog, p_item, p_index);
         if (mappedObject === false) { return false; }
 
         this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedObject);

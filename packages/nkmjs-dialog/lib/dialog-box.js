@@ -5,20 +5,18 @@ const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
-const uilib = require(`@nkmjs/ui-library`);
 
 class DialogBox extends ui.Widget {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({
-        css: [`@/dialogs/dialog-box.css`]
-    }, ui.Widget, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, ui.Widget, ['css']);
 
     /**
      * @description TODO
      * @type {string}
      */
     static __default_flavor = null;
+    static __default_variant = null;
 
     _Init() {
         super._Init();
@@ -28,11 +26,7 @@ class DialogBox extends ui.Widget {
             .Watch(ui.inputs.SIGNAL.FORM_INVALID, this._OnFormInvalid, this)
             .Watch(ui.inputs.SIGNAL.FORM_READY, this._OnFormReady, this);
 
-        this._header = null;
-        this._body = null;
-        this._footer = null;
-        this._title = null;
-        this._icon = null;
+        this._contentWrapper = null;
 
         this._hasInput = false;
 
@@ -42,95 +36,43 @@ class DialogBox extends ui.Widget {
         this._submitList = new collections.List();
 
         this._toolbarClass = ui.WidgetBar;
-        this._toolbarDefaultWidgetClass = uilib.buttons.Button;
         this._toolbar = null;
 
         this._optionsHandler = new com.helpers.OptionsHandler(
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavors, true);
-        this._flavorEnum.Add(this);
-
-        this._optionsHandler.Hook(`flavor`, (p_value) => { this._flavorEnum.Set(p_value); });
-        this._optionsHandler.Hook(`title`, null, `!!! MISSING TITLE !!!`);
-        this._optionsHandler.Hook(`icon`);
-        this._optionsHandler.Hook(`message`);
+        this._optionsHandler.Hook(ui.IDS.FLAVOR);
+        this._optionsHandler.Hook(ui.IDS.TITLE, null, `!!! MISSING TITLE !!!`);
+        this._optionsHandler.Hook(ui.IDS.MESSAGE);
         this._optionsHandler.Hook(`actions`, this._Bind(this.SetActions), null);
         this._optionsHandler.Hook(`content`, this._Bind(this.SetContent));
 
         this._Bind(this._Close);
         this._Bind(this._Submit);
 
+        this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
+        this._flavorEnum.Add(this);
+
+        this._variantEnum = new ui.helpers.FlagEnum(ui.FLAGS.variants, true);
+        this._variantEnum.Add(this);
+
+    }
+
+    _PostInit(){
+        super._PostInit();
+        if(!this._toolbar){ throw new Error(`DialogBox (${this}) doesn't have a toolbar !`); }
     }
 
     // ----> DOM
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     * @group Styling
-     */
-    set flavor(p_value) { this._flavorEnum.Set(p_value); }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     * @group Styling
-     */
-    get flavor() { return this._flavorEnum.currentFlag; }
 
     _Style() {
 
         return style.Extends({
             ':host': {
-                display: `flex`,
-                'flex-flow': `column`,
-                'align-content': `stretch`,
-                'align-items': `stretch`,
-                'justify-content': `center`,
-
                 overflow: 'hidden'
-            },
-            '.header': {
-
-            },
-            '.footer': {
-                display: `flex`,
-                'flex-flow': `column`,
-                'align-content': `flex-end`,
-                'align-items': `flex-end`,
-
-                flex: `0 0 auto`,
-            },
-            '.toolbar': {
-                flex: `0 0 auto`,
-            },
-            '.body': {
-                //'overflow-y':`overlay`,
-                flex: `1 1 auto`
             }
-
         }, super._Style());
-
-    }
-
-    _Render() {
-
-        this._icon = new ui.manipulators.Icon(u.dom.El('div', { class: `icon` }, this._host), false, true);
-
-        this._header = u.dom.El(`div`, { class: `group header` }, this._host);
-        this._body = u.dom.El(`div`, { class: `group body` }, this._host);
-        this._footer = u.dom.El(`div`, { class: `group footer` }, this._host);
-
-        this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._footer);
-        this._toolbar._defaultWidgetClass = this._toolbarDefaultWidgetClass;
-        this._toolbar.size = ui.FLAGS.SIZE_M;
-
-        this._title = new ui.manipulators.Text(u.dom.El(`span`, { class: `title ${style.FONT_FLAG.MEDIUM}` }, this._header), false);
-        this._messageElement = null;
 
     }
 
@@ -143,19 +85,47 @@ class DialogBox extends ui.Widget {
         if (this._hasInput) { this._formHandler.ValidateForm(); }
     }
 
-    get title() { return this._title; }
-    set title(p_title) { this._title.Set(p_title); }
-
-    get icon() { return this._icon; }
-    set icon(p_icon) { this._icon.Set(p_icon); }
-
     set message(p_message) {
         if (!this._messageElement) {
-            this._messageElement = u.dom.El(`span`, { class: `item message` }, this._body);
+            this._messageElement = u.dom.El(`span`, { class: `item message` }, this._contentWrapper);
         }
         this._messageElement.innerHTML = p_message;
         this._contents.push(this._messageElement);
     }
+
+    set title(p_value) { throw new Error(`dialog.title not implemented.`); }
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag write-only
+     * @group Styling
+     */
+     set flavor(p_value) { this._flavorEnum.Set(p_value); }
+
+     /**
+      * @description TODO
+      * @type {ui.core.helpers.FlagEnum}
+      * @customtag read-only
+      * @group Styling
+      */
+     get flavor() { return this._flavorEnum.currentFlag; }
+ 
+     /**
+      * @description TODO
+      * @type {string}
+      * @customtag write-only
+      * @group Styling
+      */
+     set variant(p_value) { this._variantEnum.Set(p_value); }
+ 
+     /**
+      * @description TODO
+      * @type {ui.core.helpers.FlagEnum}
+      * @customtag read-only
+      * @group Styling
+      */
+     get variant() { return this._variantEnum.currentFlag; }
 
     /**
      * 
@@ -194,7 +164,7 @@ class DialogBox extends ui.Widget {
                 throw new Error(`Cannot create item with unspecified class.`);
             }
 
-            let item = this.Add(itemClass, `item`, this._body);
+            let item = this.Add(itemClass, `item`, this._contentWrapper);
 
             if (u.isInstanceOf(itemClass, ui.inputs.InputBase)) {
 
@@ -328,7 +298,6 @@ class DialogBox extends ui.Widget {
         this._submitMap.Clear();
         this._submitList.Clear();
         this._formHandler.Clear();
-        this._flavorEnum.Set(this.constructor.__default_flavor);
         this._ClearHandles();
 
         for (let i = 0, n = this._contents.length; i < n; i++) {
@@ -337,8 +306,13 @@ class DialogBox extends ui.Widget {
             else { u.dom.Detach(item); }
         }
 
+        this._messageElement = null;
+
         this._hasInput = false;
         this._contents.length = 0;
+
+        this.flavor = this.constructor.__default_flavor;
+        this.variant = this.constructor.__default_variant;
 
     }
 
@@ -349,4 +323,3 @@ class DialogBox extends ui.Widget {
 }
 
 module.exports = DialogBox;
-ui.Register('nkmjs-dialog-box', DialogBox);

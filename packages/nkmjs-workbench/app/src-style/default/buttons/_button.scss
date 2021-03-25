@@ -101,9 +101,8 @@ $th: 4px;
 
 // ----> Toggled state :: after
 // visual marker
-
-:host(#{$FOCUSED})::after,
-:host(#{$TOGGLED})::after{
+:host(#{$TOGGLABLE}#{$FOCUSED})::after,
+:host(#{$TOGGLABLE}#{$TOGGLED})::after{
     content:"";
     position: absolute;
     width: $th;
@@ -117,25 +116,25 @@ $th: 4px;
 // ----> Horizontal placement
 // [  .  ][  '  ]
 
-:host(#{$TOP})::after{
+:host(#{$TOGGLABLE}#{$TOP})::after{
     top: auto;
     bottom: -$th/2;
 }
 
-:host(#{$BOTTOM})::after{
+:host(#{$TOGGLABLE}#{$BOTTOM})::after{
     top: -$th/2;
     bottom: auto;
 }
 
-:host(#{$FOCUSED})::after,
-:host(#{$FOCUSED}#{$TOP})::after,
-:host(#{$FOCUSED}#{$BOTTOM})::after{
+:host(#{$TOGGLABLE}#{$FOCUSED})::after,
+:host(#{$TOGGLABLE}#{$FOCUSED}#{$TOP})::after,
+:host(#{$TOGGLABLE}#{$FOCUSED}#{$BOTTOM})::after{
     left:calc(50% - #{$th/2});
 }
 
-:host(#{$TOGGLED})::after,
-:host(#{$TOGGLED}#{$TOP})::after, 
-:host(#{$TOGGLED}#{$BOTTOM})::after{
+:host(#{$TOGGLABLE}#{$TOGGLED})::after,
+:host(#{$TOGGLABLE}#{$TOGGLED}#{$TOP})::after, 
+:host(#{$TOGGLABLE}#{$TOGGLED}#{$BOTTOM})::after{
     left:3px;
     width: calc(100% - 6px);
 }
@@ -143,29 +142,28 @@ $th: 4px;
 
 // ----> Vertical placement
 
-:host(#{$LEFT})::after{
+:host(#{$TOGGLABLE}#{$LEFT})::after{
     left:auto;
     right: -$th/2;
 }
 
-:host(#{$RIGHT})::after{
+:host(#{$TOGGLABLE}#{$RIGHT})::after{
     left: -$th/2;
     right:auto;
 }
 
-:host(#{$FOCUSED}#{$LEFT})::after,
-:host(#{$FOCUSED}#{$RIGHT})::after{
+:host(#{$TOGGLABLE}#{$FOCUSED}#{$LEFT})::after,
+:host(#{$TOGGLABLE}#{$FOCUSED}#{$RIGHT})::after{
     bottom:calc(50% - #{$th/2});
 }
 
-:host(#{$TOGGLED}#{$LEFT})::after, 
-:host(#{$TOGGLED}#{$RIGHT})::after{
+:host(#{$TOGGLABLE}#{$TOGGLED}#{$LEFT})::after, 
+:host(#{$TOGGLABLE}#{$TOGGLED}#{$RIGHT})::after{
     bottom:3px;
     width: $th;
     height: calc(100% - 6px);
 }
 
-// ----> Vertical placement
 /*
 :host(#{$SIZE_XS+$TOGGLED})::after, 
 :host(#{$SIZE_S+$TOGGLED})::after{

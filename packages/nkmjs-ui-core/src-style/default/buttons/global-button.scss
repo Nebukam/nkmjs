@@ -6,8 +6,6 @@
 @import '../_variables';
 @import '../_mixins';
 
-/* Imported in @nkmjs/ui-core BaseButton */
-
 :host{
     cursor: pointer;
     @include no-select;

@@ -19,5 +19,15 @@
     min-width: var(--size);
     max-width: var(--size);
 
+    & .icon{
+        opacity: 0.8;
+    }
+
+}
+
+:host(#{$FOCUSED}){
+    & .icon{
+        opacity: 1;
+    }
 }
 

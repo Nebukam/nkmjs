@@ -1,6 +1,8 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+var checkValue = 0;
+
 /**
  * @description TODO
  * @class
