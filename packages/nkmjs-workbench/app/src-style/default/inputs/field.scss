@@ -10,7 +10,7 @@
 
 :host{
     position: relative;
-    --flavor_color: rgba(0,0,0,0.1);
+    --flavor-color: rgba(0,0,0,0.1);
 }
 
 .field{
@@ -25,7 +25,7 @@
     background-color: rgba(0,0,0,0.2);
     color: rgba(200,200,200,1);
     border: 1px solid;
-    border-color: var(--flavor_color);
+    border-color: var(--flavor-color);
 
     resize: vertical;
 

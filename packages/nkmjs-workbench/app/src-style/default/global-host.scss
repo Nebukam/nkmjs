@@ -27,9 +27,9 @@
 
 // Flavors
 @include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) using ($index, $val) {
-    --flavor_color: var(#{$val});
-    --flavor_color_rgb: var(#{$val+"-rgb"});
-    --flavor_contrast:var(#{$val+'-contrast'});
+    --flavor-color: var(#{$val});
+    --flavor-color-rgb: var(#{$val+"-rgb"});
+    --flavor-contrast:var(#{$val+'-contrast'});
 }
 
 // ----> Remove costly filters on (presumably) mobile
@@ -78,8 +78,8 @@
 @include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) 
 using ($index, $val){
 
-    --flavor_color: var(#{$val});
-    --flavor_contrast:var(#{$val+'-contrast'});
+    --flavor-color: var(#{$val});
+    --flavor-contrast:var(#{$val+'-contrast'});
 
     $val: str-replace($val, '--col-');
     $flavor_id: $index;

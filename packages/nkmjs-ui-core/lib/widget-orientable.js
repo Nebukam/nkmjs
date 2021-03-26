@@ -59,7 +59,7 @@ class WidgetOrientable extends Widget {
      * @type {string}
      * @group Placement & Orientation
      */
-    get orientation() { return this._orientation; }
+    get orientation() { return this._orientation._currentFlag; }
     set orientation(p_value) { this._orientation.Set(p_value); }
 
     /**

@@ -101,7 +101,7 @@ class FeaturesWidget extends ui.DisplayObjectContainer {
                     item.line.text.Set((item.title || item.id)); break;
             }
 
-            item.line._wrapper.setAttribute(`data-marker`, marker);
+            item.line.wrapper.setAttribute(`data-marker`, marker);
 
         });
 

@@ -10,6 +10,7 @@ const IDS = require(`./ids`);
 const __hide = `autoHide`;
 
 /**
+ * // Important note : when setting a custom owner, property are prefixed with an underscore. 
  * @description TODO
  * @class
  * @hideconstructor
@@ -41,6 +42,30 @@ class DOMTemplate {
 
     static AsTextStatic(node, opts, customOpts) {
         node = new manipulators.Text(node, u.tils.Get(opts, __hide, false));
+        node.Set(customOpts);
+        return node;
+    }
+
+    static AsBackground(node, opts, customOpts) {
+        node = new manipulators.Background(node, u.tils.Get(opts, __hide, true));
+        node.Set(customOpts);
+        return node;
+    }
+
+    static AsBackgroundStatic(node, opts, customOpts) {
+        node = new manipulators.Background(node, u.tils.Get(opts, __hide, false));
+        node.Set(customOpts);
+        return node;
+    }
+
+    static AsImage(node, opts, customOpts) {
+        node = new manipulators.Image(node, u.tils.Get(opts, __hide, true));
+        node.Set(customOpts);
+        return node;
+    }
+
+    static AsImageStatic(node, opts, customOpts) {
+        node = new manipulators.Image(node, u.tils.Get(opts, __hide, false));
         node.Set(customOpts);
         return node;
     }
@@ -102,7 +127,8 @@ class DOMTemplate {
 
         if (!owner) { owner = this; }
 
-        let tpl = this.constructor.__HTMLtemplate;
+        let tpl = this.constructor.__HTMLtemplate,
+            internal = owner === this;
 
         if (!tpl) {
             this.constructor.__HTMLtemplate = [];
@@ -115,7 +141,7 @@ class DOMTemplate {
             let nodeInfos = tpl[i],
                 nodeID = nodeInfos[IDS.UID],
                 node = nodeInfos.node.cloneNode(true),
-                customInfos = p_options[nodeID],
+                customInfos = p_options ? p_options[nodeID] : null,
                 writeNode = u.tils.Get(customInfos, `write`, u.tils.Get(nodeInfos, `write`, true));
 
             shelf[nodeID] = node;
@@ -132,13 +158,13 @@ class DOMTemplate {
                 if (writeNode) {
                     // Write using custom ID, or default one
                     let customID = customInfos[IDS.UID],
-                        propId = customID ? customID : nodeInfos._id,
+                        propId = customID ? customID : internal ? nodeID : nodeInfos._id,
                         processFn = nodeInfos.fn;
 
                     if (processFn) { node = processFn(node, nodeInfos, customInfos); };
 
                     owner[propId] = node;
-                    if (nodeID) { ids[nodeID] = customID ? customID : propId; }
+                    if (nodeID) { ids[nodeID] = propId; }
                 }
             } else {
                 if (writeNode && nodeID) {
@@ -147,7 +173,7 @@ class DOMTemplate {
                     let processFn = nodeInfos.fn;
                     if (processFn) { node = processFn(node, nodeInfos, customInfos); };
 
-                    let propId = nodeInfos._id;
+                    let propId = internal ? nodeID : nodeInfos._id;
                     ids[nodeID] = propId;
                     owner[propId] = node;
                 }

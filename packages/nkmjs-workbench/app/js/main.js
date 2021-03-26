@@ -114,7 +114,29 @@ class StyleguideApp extends nkm.app.AppBase {
     AppReady() {
         super.AppReady();
 
-        let keys = ui.UI.instance._uiTypes.keys;
+        let keys = ui.UI.instance._uiTypes.keys,
+            cardBtns = [
+                { htitle: `htitle A text`, label: 'Overlay', trigger: { fn: this._Overlay } },
+                { htitle: `htitle E text`, icon: 'refresh', trigger: { fn: this._Dialog } }
+            ],
+            cardOptAll = {
+                [ui.IDS.TITLE]: `Card title`,
+                [ui.IDS.SUBTITLE]: `This is the subtitle`,
+                [ui.IDS.LABEL]: `And so, look, here's an additional label for times of need.`,
+                actions: cardBtns
+            },
+            cardOptA = {
+                [ui.IDS.TITLE]: `Card title`,
+                [ui.IDS.SUBTITLE]: `This is the subtitle`,
+            },
+            cardOptB = {
+                [ui.IDS.TITLE]: `Card title`,
+                [ui.IDS.LABEL]: `And so, look, here's an additional label for times of need.`
+            },
+            cardOptC = {
+                [ui.IDS.TITLE]: `Card title`,
+                [ui.IDS.LABEL]: `And so, look, here's an additional label for times of need.`
+            };
 
         this._mainContainer.SetVariants([
             {
@@ -185,6 +207,23 @@ class StyleguideApp extends nkm.app.AppBase {
                 ], fn: this._Bind(this._FillShelf)
             },
             { cl: ui.WidgetItem, fn: this._Bind(this._FillTreeItem) },
+            {
+                cl: uilib.cards.Media,
+                variants: [
+                    { flavor: FLAGS.INFOS, ['media-placement']: ui.FLAGS.TOP, ...cardOptAll },
+                    { flavor: FLAGS.WARNING, ['media-placement']: ui.FLAGS.LEFT, ...cardOptAll },
+                    { flavor: FLAGS.ERROR, ['media-placement']: ui.FLAGS.BOTTOM, ...cardOptAll },
+                    { flavor: FLAGS.READY, ['media-placement']: ui.FLAGS.RIGHT, ...cardOptAll },
+                    { flavor: FLAGS.INFOS, variant: ui.FLAGS.FRAME, ['media-placement']: ui.FLAGS.TOP, ...cardOptA },
+                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, ['media-placement']: ui.FLAGS.LEFT, ...cardOptA },
+                    { flavor: FLAGS.ERROR, variant: ui.FLAGS.FRAME, ['media-placement']: ui.FLAGS.BOTTOM, ...cardOptA },
+                    { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, ['media-placement']: ui.FLAGS.RIGHT, ...cardOptA },
+                    { flavor: FLAGS.INFOS, ['media-placement']: ui.FLAGS.TOP, ...cardOptB },
+                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, ['media-placement']: ui.FLAGS.LEFT, ...cardOptB },
+                    { flavor: FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, ['media-placement']: ui.FLAGS.BOTTOM, ...cardOptB },
+                    { flavor: FLAGS.READY, variant: ui.FLAGS.MINIMAL, ['media-placement']: ui.FLAGS.RIGHT, ...cardOptB },
+                ], fn: this._Bind(this._OnCardCreated)
+            }
         ]);
 
         outerloop:
@@ -218,30 +257,30 @@ class StyleguideApp extends nkm.app.AppBase {
 
         if (!this._dialogOptions) {
             this._dialogOptions = [
-                { flavor: null, variant: null, title:`Hey there !`, msg:`This popup is the default template. No flavor nor variant set.` },
-                { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, title:`Nice.`, msg:`This popup uses the ERROR flavor, and FRAME variant.` },
-                { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, title:`Attention !`, msg:`This popup uses the WARNING flavor, and FRAME variant.` },
-                { flavor: FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, title:`Oh no !`, msg:`This popup uses the ERROR flavor, and MINIMAL variant.` },
-                { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, title:`Warning !`, msg:`This popup uses the WARNING flavor, and MINIMAL variant.` },
-                { flavor: FLAGS.ERROR, variant: ui.FLAGS.FRAME, title:`Something went wrong !`, msg:`This popup uses the ERROR flavor, and FRAME variant.` },
-                { flavor: ui.FLAGS.CTA, variant: ui.FLAGS.FRAME, title:`Do Something !`, msg:`This popup uses the ui.CTA flavor, and FRAME variant.` },
+                { flavor: null, variant: null, title: `Hey there !`, msg: `This popup is the default template. No flavor nor variant set.` },
+                { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, title: `Nice.`, msg: `This popup uses the ERROR flavor, and FRAME variant.` },
+                { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, title: `Attention !`, msg: `This popup uses the WARNING flavor, and FRAME variant.` },
+                { flavor: FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, title: `Oh no !`, msg: `This popup uses the ERROR flavor, and MINIMAL variant.` },
+                { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, title: `Warning !`, msg: `This popup uses the WARNING flavor, and MINIMAL variant.` },
+                { flavor: FLAGS.ERROR, variant: ui.FLAGS.FRAME, title: `Something went wrong !`, msg: `This popup uses the ERROR flavor, and FRAME variant.` },
+                { flavor: ui.FLAGS.CTA, variant: ui.FLAGS.FRAME, title: `Do Something !`, msg: `This popup uses the ui.CTA flavor, and FRAME variant.` },
             ];
         }
 
         let opts = this._dialogOptions.pop();
         if (this._dialogOptions.length == 0) { this._dialogOptions = null; }
-        
+
         DIALOG.Push({
             title: opts.title,
             message: opts.msg,
             actions: [
                 { label: `Open Drawer`, trigger: { fn: this._Overlay, thisArg: this } },
-                { label: `Again`, trigger: { fn: this._Dialog, thisArg: this }, flavor:opts.flavor },
+                { label: `Again`, trigger: { fn: this._Dialog, thisArg: this }, flavor: opts.flavor },
                 { label: `Close` }
             ],
             origin: this,
-            flavor:opts.flavor,
-            variant:opts.variant
+            flavor: opts.flavor,
+            variant: opts.variant
         });
     }
 
@@ -312,11 +351,16 @@ class StyleguideApp extends nkm.app.AppBase {
         //this._PopInTag(p_btn);
     }
 
+    _OnCardCreated(p_card, p_variant) {
+        p_card.data = p_variant;
+        p_card.scrollIntoView();
+    }
+
     _TriggerTest(p_source) {
         console.log(`triggered : ${p_source}`);
     }
 
-    _Popin(p_btn){
+    _Popin(p_btn) {
 
 
         if (!this._popinOptions) {
@@ -332,10 +376,10 @@ class StyleguideApp extends nkm.app.AppBase {
             content: TestWidget,
             anchor: p_btn,
             //context: p_btn,
-            static:true,
+            static: true,
             placement: opts.placement
         });
-        
+
     }
 
     _Stretch(p_source) {

@@ -206,6 +206,16 @@ class WidgetBar extends WidgetOrientable {
     }
 
     /**
+     * @description TODO
+     * @param  {...object} options 
+     */
+    CreateHandles(...options) {
+        let handles = [];
+        for (let i = 0, n = options.length; i < n; i++) { handles.push(this.CreateHandle(options[i])); }
+        return handles;
+    }
+
+    /**
      * @description Get a handle group, with the possibility of creating it on the fly if it does not exist.
      * @param {string} p_group 
      * @param {boolean} p_create 

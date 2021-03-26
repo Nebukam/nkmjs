@@ -30,7 +30,7 @@ class UIItemListLayer extends ui.views.Layer {
                 width: `100%`,
                 display: `flex`,
                 'flex-flow': `row wrap`,
-                'overflow-y':'scroll'
+                'overflow-y': 'scroll'
             },
             '.item': {
                 flex: `1 1 auto`,
@@ -61,8 +61,10 @@ class UIItemListLayer extends ui.views.Layer {
         let callback = null;
 
         for (let i = 0, n = this._variants.length; i < n; i++) {
-            let v = this._variants[i];
-            if (u.isInstanceOf(p_class, v.cl) && (!v.not || !v.not.includes(p_class))) {
+            let v = this._variants[i],
+                pass = (u.isInstanceOf(p_class, v.cl) && (!v.not || !v.not.includes(p_class)));
+
+            if (pass) {
                 variants = v.variants;
                 callback = v.fn;
             }
@@ -72,12 +74,12 @@ class UIItemListLayer extends ui.views.Layer {
             for (let i = 0, n = variants.length; i < n; i++) {
                 let item = this.Add(UIItem, `item`, this._itemContainer);
                 item.Display(p_id, p_class, variants[i]);
-                if(callback){ callback(item._sample, variants[i]); }
+                if (callback) { callback(item._sample, variants[i]); }
             }
         } else {
             let item = this.Add(UIItem, `item`, this._itemContainer);
             item.Display(p_id, p_class);
-            if(callback){ callback(item._sample, null); }
+            if (callback) { callback(item._sample, null); }
         }
 
     }

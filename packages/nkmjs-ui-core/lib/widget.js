@@ -95,7 +95,7 @@ class Widget extends DisplayObjectContainer {
 
     get extensions() { return this._extensions; }
 
-    get pointer(){ return this._pointer; }
+    get pointer() { return this._pointer; }
 
     // ----> Placement & Orientation
 
@@ -428,13 +428,15 @@ class Widget extends DisplayObjectContainer {
         let oldValue = this._data;
         this._data = p_value;
 
-        if (oldValue) { this._dataObserver.Unobserve(oldValue); }
+        if (oldValue) {
+            if (com.signals.isObservable(oldValue)) { this._dataObserver.Unobserve(oldValue); }
+        }
 
         this._OnDataChanged(oldValue);
         this._PostDataChanged(oldValue);
 
         if (p_value) {
-            this._dataObserver.Observe(p_value);
+            if (com.signals.isObservable(p_value)) { this._dataObserver.Observe(p_value); }
             this._OnDataUpdated(p_value);
         }
 

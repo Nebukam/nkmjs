@@ -33,10 +33,10 @@ $bg: rgb(70, 70, 70);
     padding-left: $padding*2;
     padding-right: $padding*2;
 
-    --flavor_color: #{$bg};
-    --flavor_contrast: #{ contrast-color($bg) }; 
+    --flavor-color: #{$bg};
+    --flavor-contrast: #{ contrast-color($bg) }; 
 
-    background-color: var(--flavor_color);
+    background-color: var(--flavor-color);
     border-radius: calc(var(--size) / 4);
 
 }
@@ -46,5 +46,5 @@ $bg: rgb(70, 70, 70);
 
     font-size:10px;
     text-transform: uppercase;    
-    color: var(--flavor_contrast);
+    color: var(--flavor-contrast);
 }

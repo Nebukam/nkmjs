@@ -10,11 +10,12 @@ const com = require("@nkmjs/common");
  * @memberof ui.core.helpers
  */
 class FlagEnum {
-    constructor(p_enum = null, p_staticEnum = false) {
+    constructor(p_enum = null, p_staticEnum = false, p_prefix = null) {
         this._elements = new Array(0);
         this._managed = new Array(0);
+        this._prefix = p_prefix;
         this._isStaticEnum = p_staticEnum;
-        this._enum = p_enum ? p_enum :new Array(0);
+        this._enum = p_enum ? p_enum : new Array(0);
         this._currentFlag = null;
 
         this._onFlagChanged = com.Rent(com.signals.SignalBroadcaster);
@@ -41,7 +42,7 @@ class FlagEnum {
      * @param  {...string} values 
      */
     AddEnum(...values) {
-        if(this._isStaticEnum){ throw new Error(`FlagEnum is using a static enum.`); }
+        if (this._isStaticEnum) { throw new Error(`FlagEnum is using a static enum.`); }
         if (values.length === 1 && u.isArray(values[0])) { values = values[0]; }
         for (let i = 0, n = values.length; i < n; i++) {
             if (!this._enum.includes(values[i])) { this._enum.push(values[i]); }
@@ -53,7 +54,7 @@ class FlagEnum {
      * @param  {...string} values 
      */
     RemoveEnum(...values) {
-        if(this._isStaticEnum){ throw new Error(`FlagEnum is using a static enum.`); }
+        if (this._isStaticEnum) { throw new Error(`FlagEnum is using a static enum.`); }
         if (values.length === 1 && u.isArray(values[0])) { values = values[0]; }
         let index;
         for (let i = 0, n = values.length; i < n; i++) {
@@ -92,7 +93,7 @@ class FlagEnum {
      * Flag set on the current flagEnum will be set on any managed flagEnums.
      * @param  {...FlagEnum} values 
      */
-    AddManaged(...values){
+    AddManaged(...values) {
         for (let i = 0, n = values.length; i < n; i++) {
             if (!this._managed.includes(values[i])) { this._managed.push(values[i]); }
         }
@@ -116,10 +117,10 @@ class FlagEnum {
      * @param {string} p_key 
      * @param {array} p_list 
      */
-    Apply(p_key, p_list){
+    Apply(p_key, p_list) {
         for (let i = 0, n = p_list.length; i < n; i++) {
             let item = p_list[i];
-            if(p_key in item){ item[p_key] = this._currentFlag; }
+            if (p_key in item) { item[p_key] = this._currentFlag; }
         }
     }
 
@@ -142,22 +143,26 @@ class FlagEnum {
 
         if (this._currentFlag === p_flag) { return; }
 
-        let oldFlag = this._currentFlag, el;
+        let oldFlag = this._currentFlag,
+            prefixed_oldFlag = oldFlag ? this._prefix ? `${this._prefix}-${oldFlag}` : oldFlag : null,
+            prefixed_flag = p_flag ? this._prefix ? `${this._prefix}-${p_flag}` : p_flag : null,
+            el;
+
         this._currentFlag = p_flag;
 
         if (!oldFlag && p_flag) {
             for (let i = 0, n = this._elements.length; i < n; i++) {
-                this._elements[i].classList.add(p_flag);
+                this._elements[i].classList.add(prefixed_flag);
             }
         } else if (oldFlag && !p_flag) {
             for (let i = 0, n = this._elements.length; i < n; i++) {
-                this._elements[i].classList.remove(oldFlag);
+                this._elements[i].classList.remove(prefixed_oldFlag);
             }
         } else {
             for (let i = 0, n = this._elements.length; i < n; i++) {
                 el = this._elements[i];
-                el.classList.add(p_flag);
-                el.classList.remove(oldFlag);
+                el.classList.add(prefixed_flag);
+                el.classList.remove(prefixed_oldFlag);
             }
         }
 
@@ -175,7 +180,7 @@ class FlagEnum {
         let currentIndex = this._enum.indexOf(this._currentFlag),
             bumpIndex = this._enum.indexOf(p_flag);
 
-        if(bumpIndex > currentIndex){ this.Set(p_flag); }
+        if (bumpIndex > currentIndex) { this.Set(p_flag); }
     }
 
     /**

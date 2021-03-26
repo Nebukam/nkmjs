@@ -68,7 +68,7 @@ class FLAGS {
      * @customtag read-only
      * @group Orientation
      */
-    static VERTICAL_AND_HORIZONTAL = `vertical horizontal`;
+    static VERTICAL_AND_HORIZONTAL = `${this.VERTICAL} ${this.HORIZONTAL}`;
 
     /**
      * @description TODO

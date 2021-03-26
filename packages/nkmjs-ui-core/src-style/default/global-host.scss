@@ -31,8 +31,8 @@
 @include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) 
 using ($index, $val){
 
-    --flavor_color: var(#{$val});
-    --flavor_contrast:var(#{$val+'-contrast'});
+    --flavor-color: var(#{$val});
+    --flavor-contrast:var(#{$val+'-contrast'});
 
     $val: str-replace($val, '--col-');
     $flavor_id: $index;
