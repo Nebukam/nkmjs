@@ -49,13 +49,13 @@ class WidgetItem extends Widget {
         this._optionsHandler.Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } });
         this._optionsHandler.Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
         this._optionsHandler.Hook(`flavor`);
-        
+
     }
 
     _PostInit() {
         super._PostInit();
         this._extDrag.Setup(this, this._dragActivator, this._dragFeedbackHost);
-        this._optionsHandler.Hook(`data`, `itemData`); // Make sure
+        this._optionsHandler.Hook(`data`, `itemData`); // Make sure this is registered last
     }
 
     _Wake() {
@@ -83,23 +83,8 @@ class WidgetItem extends Widget {
     // ----> DATA    
 
     _OnDataChanged(p_oldData) {
-
         super._OnDataChanged(p_oldData);
-
-        if (this._data) {
-
-            let options = null;
-
-            if (u.isInstanceOf(this._data, data.catalogs.CatalogItem)) { options = this._data.options; }
-            else { options = this._data; }
-
-            this._optionsHandler.Process(this, options);
-
-            if (this._isFocused) { this._BuildCommandHandles(); }
-
-        } else {
-            this.itemData = null;
-        }
+        if (!this._data) { this.itemData = null; }
     }
 
     _OnDataUpdated(p_data) {
@@ -112,6 +97,8 @@ class WidgetItem extends Widget {
         else { options = this._data; }
 
         this._optionsHandler.Process(this, options);
+
+        if (this._isFocused) { this._BuildCommandHandles(); }
 
     }
 

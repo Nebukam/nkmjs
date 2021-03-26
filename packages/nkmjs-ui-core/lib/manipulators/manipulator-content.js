@@ -103,6 +103,22 @@ class ContentManipulator extends Manipulator {
         return this._Toggle(result);
     }
 
+    TryReplace(p_value) {
+        
+        let oldContent = this.content,
+            result = this._Apply(this._element, p_value);
+
+        if (!result) { 
+            this._Apply(this._element, oldContent); 
+            return false;
+        }
+        else { 
+            this._Toggle(result); 
+            return true;
+        }
+
+    }
+
     _OnContentUpdate() {
         this._Toggle(this._Apply(this._element, this._content));
     }

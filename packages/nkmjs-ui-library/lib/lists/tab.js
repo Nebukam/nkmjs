@@ -131,20 +131,8 @@ class Tab extends ui.WidgetItem {
 
     _OnItemDataUpdated(p_data){
         super._OnItemDataUpdated(p_data);
-        this._label.Set(p_data);
-        this._icon.Set(com.NFOS.Get(this._itemData));
-    }
-
-    _UpdateInfos() {
-
-        if (this._itemData) {
-            if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
-            if (!this._icon.Set(this._itemData)) { if (!this._icon.Set(this._data.options)) { this._icon.Set(com.NFOS.Get(this._itemData)); } }
-        } else {
-            this._flavorEnum.Set(null);
-            this._label.Set(this._data.options);
-            this._icon.Set(this._data.options);
-        }
+        this._label.TryReplace(p_data);
+        this._icon.TryReplace(com.NFOS.Get(p_data));
     }
 
     // ----> Pooling

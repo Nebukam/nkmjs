@@ -26,6 +26,7 @@ class CatalogItem extends com.helpers.OptionsObject {
         this._rootCatalog = null;
         this._rootDistance = -1;
         this._autoRelease = true;
+        this._isFirstUpdate = true;
 
         this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._OnUpdate));
 
@@ -187,6 +188,7 @@ class CatalogItem extends com.helpers.OptionsObject {
         this._parent = null;
         this._rootCatalog = null;
         this._rootDistance = -1;
+        this._isFirstUpdate = true;
 
         this.data = null;
 
@@ -199,6 +201,11 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @description TODO
      */
     _OnUpdate() {
+        if(this._isFirstUpdate){ 
+            // Ignore first update ?
+            this._isFirstUpdate = false;
+            return; 
+        }
         this._Broadcast(com.SIGNAL.UPDATED, this);
     }
 

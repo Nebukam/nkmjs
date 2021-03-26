@@ -27,7 +27,7 @@ class IconHandler extends ContentManipulator {
         super(p_element, p_autoHide, p_sizeControl);
     }
 
-    get content() { return this._element ? this._element.icon : null; }
+    get content() { return this._element ? this._element.getAttribute(__id_i) : null; }
     get flavor() { return this._element ? this._element.icon : null; }
     get variant() { return this._element ? this._element.icon : null; }
 

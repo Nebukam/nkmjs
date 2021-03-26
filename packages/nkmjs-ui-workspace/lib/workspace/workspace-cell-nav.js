@@ -15,7 +15,7 @@ class WorkspaceCellNav extends uilib.views.ShelfNav {
 
     _Init() {
         super._Init();
-        this._defaultWidgetClass = uilib.buttons.Tab;
+        this._defaultWidgetClass = uilib.lists.Tab;
         this._cellOptionsBtn = null;
     }
 
