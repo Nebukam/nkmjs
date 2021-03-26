@@ -72,12 +72,6 @@ class Item extends WidgetItem {
         this.focusArea = this;
     }
 
-    // ----> Update infos   
-
-    _UpdateInfos() {
-        this._flavorEnum.Set((this._itemData && this._itemData.isDirty) ? com.FLAGS.WARNING : null);
-    }
-
     // ----> COMMANDS
 
     _BuildCommand(p_cmd) {

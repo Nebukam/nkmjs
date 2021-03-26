@@ -84,7 +84,7 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @access protected
      * @param {object} p_options 
      */
-    _OnOptionsUpdated(p_options) {
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
         this._delayedUpdate.Schedule();
     }
 

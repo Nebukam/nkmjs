@@ -10,7 +10,6 @@ const FLAGS = require(`./flags`);
 const extensions = require(`./extensions`);
 const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
-const { DataBlock } = require("@nkmjs/data-core/lib/serialization/json");
 
 /**
  * @description TODO
@@ -44,11 +43,19 @@ class WidgetItem extends Widget {
         this._dragActivator = null;
         this._dragFeedbackHost = this;
 
+        this._optionsHandler = new com.helpers.OptionsHandler();
+        this._optionsHandler.Setup(this);
+
+        this._optionsHandler.Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } });
+        this._optionsHandler.Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
+        this._optionsHandler.Hook(`flavor`);
+        
     }
 
     _PostInit() {
         super._PostInit();
         this._extDrag.Setup(this, this._dragActivator, this._dragFeedbackHost);
+        this._optionsHandler.Hook(`data`, `itemData`); // Make sure
     }
 
     _Wake() {
@@ -76,31 +83,40 @@ class WidgetItem extends Widget {
     // ----> DATA    
 
     _OnDataChanged(p_oldData) {
+
         super._OnDataChanged(p_oldData);
-        this.itemData = this._ExtractItemData(this._data);
-        if (this._data) { this._UpdateInfos(); }
-        if (this._isFocused) { this._BuildCommandHandles(); }
+
+        if (this._data) {
+
+            let options = null;
+
+            if (u.isInstanceOf(this._data, data.catalogs.CatalogItem)) { options = this._data.options; }
+            else { options = this._data; }
+
+            this._optionsHandler.Process(this, options);
+
+            if (this._isFocused) { this._BuildCommandHandles(); }
+
+        } else {
+            this.itemData = null;
+        }
     }
 
     _OnDataUpdated(p_data) {
+
         super._OnDataUpdated(p_data);
-        if (!this._itemData) { this._UpdateInfos(); }
+
+        let options = null;
+
+        if (u.isInstanceOf(this._data, data.catalogs.CatalogItem)) { options = this._data.options; }
+        else { options = this._data; }
+
+        this._optionsHandler.Process(this, options);
+
     }
 
     _OnCatalogItemDataChanged(p_item, p_newData, p_oldData) {
-        this.itemData = this._ExtractItemData(p_newData);
-    }
-
-    /**
-     * @access private
-     * @param {*} p_value 
-     */
-    _ExtractItemData(p_value) {
-        if (!p_value) { return null; }
-        let candidate = null;
-        if (u.isInstanceOf(p_value, data.catalogs.CatalogItem)) { candidate = p_value.GetOption(com.IDS.DATA, null); }
-        if (!candidate && com.IDS.DATA in p_value) { candidate = p_value[com.IDS.DATA]; }
-        return candidate;
+        this.itemData = p_newData;
     }
 
     /**
@@ -178,16 +194,10 @@ class WidgetItem extends Widget {
      * @param {*} p_data 
      * @customtag override-me
      */
-    _OnItemDataUpdated(p_data) { this._UpdateInfos(); }
-
-    // ----> Update infos
-
-    /**
-     * @access protected
-     * @description TODO
-     * @customtag override-me
-     */
-    _UpdateInfos() { }
+    _OnItemDataUpdated(p_data) {
+        if (p_data.isDirty) { this._OnItemDataDirty(p_data); }
+        else { this._OnItemDataCleaned(p_data); }
+    }
 
     // ---->
 

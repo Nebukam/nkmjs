@@ -59,9 +59,9 @@ class DialogBox extends ui.Widget {
 
     }
 
-    _PostInit(){
+    _PostInit() {
         super._PostInit();
-        if(!this._toolbar){ throw new Error(`DialogBox (${this}) doesn't have a toolbar !`); }
+        if (!this._toolbar) { throw new Error(`DialogBox (${this}) doesn't have a toolbar !`); }
     }
 
     // ----> DOM
@@ -76,11 +76,11 @@ class DialogBox extends ui.Widget {
 
     }
 
-    _OnOptionsWillUpdate(p_options) {
+    _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
 
     }
 
-    _OnOptionsUpdated(p_options) {
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
         this._hasInput = (this._formHandler._inputList.count > 0);
         if (this._hasInput) { this._formHandler.ValidateForm(); }
     }
@@ -101,31 +101,31 @@ class DialogBox extends ui.Widget {
      * @customtag write-only
      * @group Styling
      */
-     set flavor(p_value) { this._flavorEnum.Set(p_value); }
+    set flavor(p_value) { this._flavorEnum.Set(p_value); }
 
-     /**
-      * @description TODO
-      * @type {ui.core.helpers.FlagEnum}
-      * @customtag read-only
-      * @group Styling
-      */
-     get flavor() { return this._flavorEnum.currentFlag; }
- 
-     /**
-      * @description TODO
-      * @type {string}
-      * @customtag write-only
-      * @group Styling
-      */
-     set variant(p_value) { this._variantEnum.Set(p_value); }
- 
-     /**
-      * @description TODO
-      * @type {ui.core.helpers.FlagEnum}
-      * @customtag read-only
-      * @group Styling
-      */
-     get variant() { return this._variantEnum.currentFlag; }
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.FlagEnum}
+     * @customtag read-only
+     * @group Styling
+     */
+    get flavor() { return this._flavorEnum.currentFlag; }
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag write-only
+     * @group Styling
+     */
+    set variant(p_value) { this._variantEnum.Set(p_value); }
+
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.FlagEnum}
+     * @customtag read-only
+     * @group Styling
+     */
+    get variant() { return this._variantEnum.currentFlag; }
 
     /**
      * 

@@ -5,11 +5,15 @@ const collections = require(`@nkmjs/collections`);
 
 
 const __direct = Symbol(`direct`);
+const __null = Symbol(`null`);
 
 /**
  * A OptionHandler is an helper class to bind value update to callbacks & functions.
  * It is designed for objects that commonly accept an arbitrary set of options with
  * or without default values.
+ * 
+ * The OptionHandler uses a Map internally to ensure properties are processed in the order in
+ * which their are hooked. *e.g, hook order matters*.
  * @class
  * @memberof common.helpers
  */
@@ -26,6 +30,22 @@ class OptionsHandler {
         this._defaults = p_defaults;
         this._beginFn = p_beginFn;
         this._wrapUpFn = p_wrapUpFn;
+    }
+
+    Setup(p_obj, p_defaults = null) {
+
+        if (`_OnOptionsWillUpdate` in p_obj) {
+            if (`_Bind` in p_obj) { p_obj._Bind(p_obj._OnOptionsWillUpdate); }
+            else { p_obj._OnOptionsWillUpdate = p_obj._OnOptionsWillUpdate.bind(p_obj); }
+        }
+
+        if (`_OnOptionsUpdated` in p_obj) {
+            if (`_Bind` in p_obj) { p_obj._Bind(p_obj._OnOptionsUpdated); }
+            else { p_obj._OnOptionsUpdated = p_obj._OnOptionsUpdated.bind(p_obj); }
+        }
+
+        if (p_defaults) { this._defaults = p_defaults; }
+
     }
 
     /**
@@ -91,44 +111,73 @@ class OptionsHandler {
      * @param {object} p_options 
      * @param {object} p_altOptions an alternative set of options to forward to handlers (used when appending options)
      */
-    Process(p_target, p_options, p_altOptions = null) {
+    Process(p_target, p_options, p_altOptions = null, p_callBegin = true, p_callWrapUp = true) {
 
-        if (this._beginFn) { this._beginFn(p_options, p_altOptions); }
+        if (p_callBegin && this._beginFn) { this._beginFn(p_options, p_altOptions, this._defaults); }
 
-        if (this._defaults) {
-            for (let key in this._defaults) {
-                if (!(key in p_options)) { // Force defaults
-                    p_options[key] = this._defaults[key];
-                }
+        let map = this._hooks._map,
+            keys = map.keys(),
+            kn = map.size,
+            hooks;
+
+        for (let k = 0; k < kn; k++) {
+
+            let key = keys.next().value,
+                value = key in p_options ? p_options[key] : this._defaults && key in this._defaults ? this._defaults[key] : __null;
+
+            if (value === __null) { continue; }
+
+            hooks = map.get(key);
+
+            for (let i = 0, n = hooks.length; i < n; i++) {
+                let fn = hooks[i];
+                if (fn === __direct) { p_target[key] = value; }
+                else if (u.isString(fn)) { p_target[fn] = value; }
+                else { fn(value, p_altOptions); }
             }
+
         }
 
-        if(!p_altOptions){ p_altOptions = p_options; }
+        if (p_callWrapUp && this._wrapUpFn) { this._wrapUpFn(p_options, p_altOptions, this._defaults); }
+    }
 
-        for (let key in p_options) {
+    /**
+     * @description Process an option object and trigger associated callbacks with the option value
+     * as well as the options themselves. Process only existing properties and does not assign defaults.
+     * Lookup properties based on hooked values only. Does not trigger begin/end callbacks
+     * @param {*} p_target target object on which properties are set, and functions are called.
+     * @param {object} p_options 
+     * @param {object} p_altOptions an alternative set of options to forward to handlers (used when appending options)
+     */
+    ProcessExistingOnly(p_target, p_options, p_altOptions = null, p_callBegin = true, p_callWrapUp = true) {
 
-            let callList = this._hooks.Get(key),
-                value = p_options[key];
+        if (p_callBegin && this._beginFn) { this._beginFn(p_options, p_altOptions, this._defaults); }
 
-            if (!callList) { continue; }
+        let map = this._hooks._map,
+            keys = map.keys(),
+            kn = map.size,
+            hooks;
 
-            for (let i = 0, n = callList.length; i < n; i++) {
-                let fn = callList[i];
+        for (let k = 0; k < kn; k++) {
 
-                if (fn === __direct) {
-                    p_target[key] = value;
-                    continue;
-                }
+            let key = keys.next().value,
+                value = key in p_options ? p_options[key] : __null;
 
-                if (u.isString(fn)) { // Consider string property setters
-                    p_target[fn] = value;
-                } else {
-                    fn(value, p_altOptions);
-                }
+            if (value === __null) { continue; }
+
+            hooks = map.get(key);
+
+            for (let i = 0, n = hooks.length; i < n; i++) {
+                let fn = hooks[i];
+                if (fn === __direct) { p_target[key] = value; }
+                else if (u.isString(fn)) { p_target[fn] = value; }
+                else { fn(value, p_altOptions, this._defaults); }
             }
+
         }
 
-        if (this._wrapUpFn) { this._wrapUpFn.call(null, p_altOptions); }
+        if (p_callWrapUp && this._wrapUpFn) { this._wrapUpFn(p_options, p_altOptions, this._defaults); }
+
     }
 
     /**
@@ -160,7 +209,7 @@ class OptionsHandler {
             }
         }
 
-        if (p_wrapUp && this._wrapUpFn) { this._wrapUpFn.call(null, p_others); }
+        if (p_wrapUp && this._wrapUpFn) { this._wrapUpFn(p_others, null, this._defaults); }
 
     }
 
@@ -169,7 +218,7 @@ class OptionsHandler {
      * @param {*} p_options 
      */
     WrapUp(p_options) {
-        if (this._wrapUpFn) { this._wrapUpFn.call(null, p_options); }
+        if (this._wrapUpFn) { this._wrapUpFn(p_options, null, this._defaults); }
     }
 
     /**

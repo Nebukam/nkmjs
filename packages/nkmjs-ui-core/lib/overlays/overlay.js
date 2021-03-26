@@ -40,7 +40,10 @@ class Overlay extends Layer {
         this._closeBg.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this._CloseRequest));
 
         this._options = null;
-        this._optionsHandler = new com.helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed), this._Bind(this._OnOptionsWillUpdate));
+        this._optionsHandler = new com.helpers.OptionsHandler(
+            this._Bind(this._OnOptionsUpdated),
+            this._Bind(this._OnOptionsWillUpdate));
+
         this._optionsHandler.Hook(`orientation`);
         this._optionsHandler.Hook(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement);
         this._optionsHandler.Hook(`flavor`, `contentFlavor`);
@@ -84,7 +87,7 @@ class Overlay extends Layer {
      * @param {*} p_options 
      * @customtag override-me
      */
-    _OnOptionsWillUpdate(p_options) {
+    _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
         if (!p_options) { return; }
         // At that point, this._overlayContent exists and is initialized
     }
@@ -126,7 +129,7 @@ class Overlay extends Layer {
      * @description TODO
      * @param {object} p_options 
      */
-    _OnOptionsProcessed(p_options) {
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
 
     }
 

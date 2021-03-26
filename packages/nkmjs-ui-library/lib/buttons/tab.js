@@ -27,6 +27,9 @@ class Tab extends ui.WidgetItem {
 
         this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
 
+        this._optionsHandler.Hook(`name`, `label`);
+        this._optionsHandler.Hook(`icon`);
+
     }
 
     // ----> DOM
@@ -47,7 +50,10 @@ class Tab extends ui.WidgetItem {
     /**
      * @param {string} p_value
      */
-    set label(p_value) { this._label.Set(p_value); }
+    set label(p_value) { 
+        this._label.Set(p_value); 
+        this.htitle = p_value;
+    }
 
     /**
      * @returns {ui.core.manipulators.Icon}
@@ -119,10 +125,19 @@ class Tab extends ui.WidgetItem {
 
     // ----> DATA    
 
+    _OnDataUpdated(p_data){
+        super._OnDataUpdated(p_data);
+    }
+
+    _OnItemDataUpdated(p_data){
+        super._OnItemDataUpdated(p_data);
+        this._label.Set(p_data);
+        this._icon.Set(com.NFOS.Get(this._itemData));
+    }
+
     _UpdateInfos() {
 
         if (this._itemData) {
-            this._flavorEnum.Set(this._itemData.isDirty ? com.FLAGS.WARNING : null);
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
             if (!this._icon.Set(this._itemData)) { if (!this._icon.Set(this._data.options)) { this._icon.Set(com.NFOS.Get(this._itemData)); } }
         } else {

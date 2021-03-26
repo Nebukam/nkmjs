@@ -182,7 +182,10 @@ class PopIn extends DisplayObjectContainer {
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
 
-        this._optionsHandler = new com.helpers.OptionsHandler(this._Bind(this._OnOptionsProcessed), this._Bind(this._OnOptionsWillUpdate));
+        this._optionsHandler = new com.helpers.OptionsHandler(
+            this._Bind(this._OnOptionsUpdated),
+            this._Bind(this._OnOptionsWillUpdate));
+
         this._optionsHandler.Hook(`mode`);
         this._optionsHandler.Hook(`context`, null, document.body);
         this._optionsHandler.Hook(`anchor`);
@@ -324,7 +327,7 @@ class PopIn extends DisplayObjectContainer {
         else { com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
     }
 
-    _OnOptionsWillUpdate(p_options) {
+    _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
         if (p_options.parent) { this.parentPopin = p_options.parent; }
     }
 
@@ -333,7 +336,7 @@ class PopIn extends DisplayObjectContainer {
      * @description TODO
      * @param {object} p_options 
      */
-    _OnOptionsProcessed(p_options) {
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
         let callback = p_options.callback;
         if (callback) {
             if (callback.thisArg) { callback.fn.apply(callback.thisArg, this); }

@@ -71,7 +71,10 @@ class WidgetButton extends Widget {
         this._variantEnum = new FlagEnum(FLAGS.variants, true);
         this._variantEnum.Add(this);
 
-        this._optionsHandler = new com.helpers.OptionsHandler(null, this._Bind(this._OnOptionsWillUpdate));
+        this._optionsHandler = new com.helpers.OptionsHandler(
+            null, 
+            this._Bind(this._OnOptionsWillUpdate));
+
         this._optionsHandler.Hook(`data`);
         this._optionsHandler.Hook(`htitle`);
         this._optionsHandler.Hook(`trigger`);
@@ -249,7 +252,7 @@ class WidgetButton extends Widget {
      * @param {*} p_options 
      * @customtag override-me
      */
-    _OnOptionsWillUpdate(p_options) {
+    _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
         if (!p_options) { return; }
         p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
     }

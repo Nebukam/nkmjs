@@ -99,8 +99,8 @@ class DialogBox extends dialog.DialogBox {
     get icon() { return this._icon; }
     set icon(p_icon) { this._icon.Set(p_icon); }
 
-    _OnOptionsUpdated(p_options){
-        super._OnOptionsUpdated(p_options);
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults){
+        super._OnOptionsUpdated(p_options, p_altOptions, p_defaults);
         if(!p_options.icon){
             this._icon.Set((this.flavor || ``));
         }
