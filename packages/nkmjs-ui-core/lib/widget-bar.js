@@ -186,11 +186,21 @@ class WidgetBar extends WidgetOrientable {
 
             if (p_options && this._defaultWidgetOptions) {
                 for (var key in this._defaultWidgetOptions) {
-                    if (!p_options.hasOwnProperty(key)) { p_options[key] = this._defaultWidgetOptions[key]; }
+                    if (!p_options.hasOwnProperty(key)) { 
+                        p_options[key] = this._defaultWidgetOptions[key];
+                        if(!this.__tempKeys){ this.__tempKeys = []; }
+                        this.__tempKeys.push(key);
+                    }
                 }
             }
 
             handle.options = p_options;
+
+            if(this.__tempKeys){
+                for(let i = 0, n = this.__tempKeys.length; i < n; i++){ delete p_options[this.__tempKeys[i]]; }
+                this.__tempKeys.length = 0;
+                this.__tempKeys = null;
+            }
 
         }
 

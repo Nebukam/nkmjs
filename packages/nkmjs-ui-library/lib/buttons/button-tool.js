@@ -22,7 +22,7 @@ class ToolButton extends ui.WidgetButton {
 
         super._Init();
 
-        this._optionsHandler.Hook(ui.IDS.ICON, null, ``);
+        this._optionsHandler.Hook( ui.IDS.ICON );
         
         this._icon = null;
 

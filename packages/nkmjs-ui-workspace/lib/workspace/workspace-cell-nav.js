@@ -26,7 +26,7 @@ class WorkspaceCellNav extends uilib.views.ShelfNav {
         super._Render();
 
         this._cellOptionsBtn = this._toolbar.CreateHandle({
-            [ui.IDS.ICON]: `%ICON%/icon_more.svg`, text: `More Actions...`,
+            [ui.IDS.ICON]: `dots`, text: `More Actions...`,
             trigger: { thisArg: this, fn: this._OpenSettings },
             //request:{}
         });

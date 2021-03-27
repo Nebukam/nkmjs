@@ -123,19 +123,23 @@ class StyleguideApp extends nkm.app.AppBase {
                 [ui.IDS.TITLE]: `Card title`,
                 [ui.IDS.SUBTITLE]: `This is the subtitle`,
                 [ui.IDS.LABEL]: `And so, look, here's an additional label for times of need.`,
+                [ui.IDS.ICON]: `locked`,
                 actions: cardBtns
             },
             cardOptA = {
                 [ui.IDS.TITLE]: `Card title`,
                 [ui.IDS.SUBTITLE]: `This is the subtitle`,
+                [ui.IDS.ICON]: `locked`,
             },
             cardOptB = {
                 [ui.IDS.TITLE]: `Card title`,
-                [ui.IDS.LABEL]: `And so, look, here's an additional label for times of need.`
+                [ui.IDS.LABEL]: `And so, look, here's an additional label for times of need.`,
+                [ui.IDS.ICON]: `locked`,
             },
             cardOptC = {
                 [ui.IDS.TITLE]: `Card title`,
-                [ui.IDS.LABEL]: `And so, look, here's an additional label for times of need.`
+                [ui.IDS.LABEL]: `And so, look, here's an additional label for times of need.`,
+                [ui.IDS.ICON]: `locked`,
             };
 
         this._mainContainer.SetVariants([
@@ -208,20 +212,34 @@ class StyleguideApp extends nkm.app.AppBase {
             },
             { cl: ui.WidgetItem, fn: this._Bind(this._FillTreeItem) },
             {
-                cl: uilib.cards.Media,
+                cl: uilib.cards.BaseCard,
                 variants: [
-                    { flavor: FLAGS.INFOS, ['media-placement']: ui.FLAGS.TOP, ...cardOptAll },
-                    { flavor: FLAGS.WARNING, ['media-placement']: ui.FLAGS.LEFT, ...cardOptAll },
-                    { flavor: FLAGS.ERROR, ['media-placement']: ui.FLAGS.BOTTOM, ...cardOptAll },
-                    { flavor: FLAGS.READY, ['media-placement']: ui.FLAGS.RIGHT, ...cardOptAll },
-                    { flavor: FLAGS.INFOS, variant: ui.FLAGS.FRAME, ['media-placement']: ui.FLAGS.TOP, ...cardOptA },
-                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, ['media-placement']: ui.FLAGS.LEFT, ...cardOptA },
-                    { flavor: FLAGS.ERROR, variant: ui.FLAGS.FRAME, ['media-placement']: ui.FLAGS.BOTTOM, ...cardOptA },
-                    { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, ['media-placement']: ui.FLAGS.RIGHT, ...cardOptA },
-                    { flavor: FLAGS.INFOS, ['media-placement']: ui.FLAGS.TOP, ...cardOptB },
-                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, ['media-placement']: ui.FLAGS.LEFT, ...cardOptB },
-                    { flavor: FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, ['media-placement']: ui.FLAGS.BOTTOM, ...cardOptB },
-                    { flavor: FLAGS.READY, variant: ui.FLAGS.MINIMAL, ['media-placement']: ui.FLAGS.RIGHT, ...cardOptB },
+                    { flavor: FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptAll },
+                    { flavor: FLAGS.WARNING, ['header-placement']: ui.FLAGS.LEFT, ...cardOptAll },
+                    { flavor: FLAGS.ERROR, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptAll },
+                    { flavor: FLAGS.READY, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptAll },
+                    { flavor: FLAGS.INFOS, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.TOP, ...cardOptA },
+                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.LEFT, ...cardOptA },
+                    { flavor: FLAGS.ERROR, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptA },
+                    { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptA },
+                    { flavor: FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptB },
+                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.LEFT, ...cardOptB },
+                    { flavor: FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptB },
+                    { flavor: FLAGS.READY, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptB },
+                ], fn: this._Bind(this._OnCardCreated)
+            },
+            {
+                cl: uilib.cards.Icon,
+                variants: [
+                    { flavor: FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptAll },
+                    { flavor: FLAGS.WARNING, ['header-placement']: ui.FLAGS.LEFT, ...cardOptAll },
+                    { flavor: FLAGS.READY, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptAll },
+                    { flavor: FLAGS.INFOS, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.TOP, ...cardOptA },
+                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.LEFT, ...cardOptA },
+                    { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptA },
+                    { flavor: FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptB },
+                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.LEFT, ...cardOptB },
+                    { flavor: FLAGS.READY, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptB },
                 ], fn: this._Bind(this._OnCardCreated)
             }
         ]);
@@ -353,6 +371,7 @@ class StyleguideApp extends nkm.app.AppBase {
 
     _OnCardCreated(p_card, p_variant) {
         p_card.data = p_variant;
+        p_card.title = `I am a ${u.tils.CamelSplit(p_card.constructor.name)}`;
         p_card.scrollIntoView();
     }
 

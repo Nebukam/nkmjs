@@ -60,7 +60,7 @@ class ShelfNav extends ui.WidgetBar {
      * @type {ui.core.WidgetBar}
      * @customtag read-only
      */
-     get toolbar() { return this._toolbar; }
+    get toolbar() { return this._toolbar; }
 
     // ----> DOM
 
@@ -177,7 +177,14 @@ class ShelfNav extends ui.WidgetBar {
 
         if (handle) { return handle; }
 
-        handle = super.CreateHandle(p_item);
+        if (!p_item.options.flagOn) {
+            p_item.options.flagOn = [ui.FLAGS.TOGGLABLE];
+        } else if (!p_item.options.flagOn.includes(ui.FLAGS.TOGGLABLE)) {
+            p_item.options.flagOn.push(ui.FLAGS.TOGGLABLE);
+        }
+
+
+        handle = super.CreateHandle(p_item.options);
         this._handlesMap.Set(p_item, handle);
 
         handle.data = p_item;

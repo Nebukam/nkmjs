@@ -75,7 +75,7 @@ class EditorEx extends Editor {
         p_configList.push(
             {
                 [ui.IDS.NAME]: `Inspector`,
-                [ui.IDS.ICON]: `%ICON%/icon_parameters.svg`, //icon:`%ICON%/icon_more.svg`,
+                [ui.IDS.ICON]: `parameters`,
                 [ui.IDS.VIEW_CLASS]: this.constructor.__default_inspectorShellClass,
                 assign: `_inspector`
             }

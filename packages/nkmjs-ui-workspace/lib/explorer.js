@@ -53,7 +53,6 @@ class Explorer extends ui.views.View {
                 'overflow-y': `overlay`,
                 'min-width': 0,
                 flex: `1 1 1px`,
-                'box-shadow': `inset 0px 11px ${shadowSize}px -10px ${shadowColor}, inset 0px -11px ${shadowSize}px -10px ${shadowColor}`,
             }
         };
     }

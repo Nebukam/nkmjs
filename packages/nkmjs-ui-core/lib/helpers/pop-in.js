@@ -207,7 +207,8 @@ class PopIn extends DisplayObjectContainer {
 
     }
 
-    Wake() {
+    _Wake() {
+        super._Wake();
         POINTER.Watch(POINTER.MOUSE_DOWN, this._mDown);
         this._pointer.Enable();
         this.constructor.popinStack.Add(this);

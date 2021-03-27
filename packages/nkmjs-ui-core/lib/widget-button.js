@@ -7,6 +7,7 @@ const actions = require("@nkmjs/actions");
 const UI = require(`./ui`);
 const SIGNAL = require(`./signal`);
 const FLAGS = require(`./flags`);
+const IDS = require(`./ids`);
 const Widget = require(`./widget`);
 const FlagEnum = require("./helpers/flag-enum");
 
@@ -72,13 +73,13 @@ class WidgetButton extends Widget {
         this._variantEnum.Add(this);
 
         this._optionsHandler = new com.helpers.OptionsHandler(
-            null, 
+            null,
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler.Hook(`data`);
+        this._optionsHandler.Hook(IDS.DATA);
         this._optionsHandler.Hook(`htitle`);
         this._optionsHandler.Hook(`trigger`);
-        this._optionsHandler.Hook(`toggle`);
+        this._optionsHandler.Hook(`toggle`, null, null);
         this._optionsHandler.Hook(`request`);
         this._optionsHandler.Hook(`command`);
         this._optionsHandler.Hook(`isCommandTrigger`);
@@ -87,8 +88,8 @@ class WidgetButton extends Widget {
         this._optionsHandler.Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } });
         this._optionsHandler.Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
         this._optionsHandler.Hook(`size`);
-        this._optionsHandler.Hook(`flavor`);
-        this._optionsHandler.Hook(`variant`);
+        this._optionsHandler.Hook(IDS.FLAVOR);
+        this._optionsHandler.Hook(IDS.VARIANT);
 
     }
 
@@ -225,7 +226,7 @@ class WidgetButton extends Widget {
         let ripple = p_evt.target;
         ripple.removeEventListener('animationend', this._OnRippleAnimationEnd);
         u.dom.Detach(ripple);
-        if(!this._rippleWrapper.hasChildNodes()){
+        if (!this._rippleWrapper.hasChildNodes()) {
             u.dom.Detach(this._rippleWrapper);
             this._rippleWrapper = null;
         }
@@ -243,6 +244,18 @@ class WidgetButton extends Widget {
 
         this._optionsHandler.Process(this, p_value);
         this._flags.Set(FLAGS.NO_SCALE, p_value.noscale ? p_value.noscale : false);
+
+    }
+
+    /**
+     * @description TODO
+     * @type {object}
+     */
+    set altOptions(p_value) {
+
+        if (!p_value) { return; }
+
+        this._optionsHandler.ProcessExistingOnly(this, p_value, null, false, false);
 
     }
 
@@ -305,9 +318,9 @@ class WidgetButton extends Widget {
      * @type {object}
      */
     get toggle() { return this._toggle; }
-    set toggle(p_value) { 
+    set toggle(p_value) {
         this._toggle = p_value;
-        this._flags.Set(FLAGS.TOGGLABLE, !!p_value );
+        this._flags.Set(FLAGS.TOGGLABLE, !!p_value);
     }
 
     /**
