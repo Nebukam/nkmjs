@@ -22,7 +22,7 @@
       "../nkmjs-services/lib/",   
       "../nkmjs-style/lib/",
       "../nkmjs-ui-core/lib/",
-      "../nkmjs-ui-inputs/lib/",
+      "../nkmjs-ui-library/lib/",
       "../nkmjs-ui-workspace/lib/",
       "../nkmjs-utils/lib/"
     ],
