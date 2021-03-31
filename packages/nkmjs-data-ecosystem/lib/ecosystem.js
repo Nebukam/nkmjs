@@ -23,8 +23,11 @@ class Ecosystem extends data.DataBlock {
         super._Init();
 
         this._fields = new parts.Fields();
+        
         this._models = new parts.Models();
+
         this._entries = new parts.Entries();
+        this._entries.models = this._models;
 
     }
 

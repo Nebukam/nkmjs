@@ -1,6 +1,7 @@
 const ecosystem = require(`./index`);
 const fields = ecosystem.fields;
-// Create a new model
+
+// Create a new model from scratch
 var newModel = ecosystem.DataModel.CreateModel(
     {
         aNumber: fields.numbers.Float,
@@ -12,4 +13,5 @@ var newModel = ecosystem.DataModel.CreateModel(
     }
 );
 
-console.log(newModel);
+var newEcosystem = new ecosystem.Ecosystem();
+//newEcosystem.models.

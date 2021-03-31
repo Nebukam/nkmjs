@@ -37,8 +37,8 @@ class DataModel extends DataBlockExtendable {
      * 
      * @param {object} p_fields 
      */
-    static CreateModel(p_fields, p_model = DataModel) {
-        let model = u.isFunc(p_model) ? com.Rent(p_model) : p_model;
+    static CreateModel(p_fields, p_model = null) {
+        let model = com.Rent(p_model ? p_model : this.constructor);
         for (var fieldName in p_fields) {
             let fieldInfos = p_fields[fieldName];
             if (u.isFunc(fieldInfos)) { this.CreateField(model, fieldInfos, fieldName); }

@@ -1,5 +1,6 @@
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
+const DataModel = require("../data-model");
 
 const IDS = require(`../ids`);
 const FieldModelComposite = require(`./field-model-composite`);
