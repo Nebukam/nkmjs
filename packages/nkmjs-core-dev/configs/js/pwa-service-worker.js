@@ -19,6 +19,8 @@ function Broadcast(p_data) {
         });
 }
 
+//#region Installation & Activation
+
 // During the installation phase, you'll usually want to cache static assets.
 self.addEventListener('install', function (e) {
     // Once the service worker is installed, go ahead and fetch the resources to make this work offline.
@@ -69,7 +71,9 @@ self.addEventListener('fetch', function (event) {
     );
 });
 
-// ----> Misc
+//#endregion
+
+//#region Misc
 
 // listen to app messages
 self.addEventListener('message', function handler(event) {
@@ -81,3 +85,5 @@ self.addEventListener('message', function handler(event) {
         self.skipWaiting();
     }
 });
+
+//#endregion

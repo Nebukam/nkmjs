@@ -18,7 +18,7 @@ class InputIdentifier extends ui.inputs.InputField {
 
         super._Init();
 
-        this._issues = new Array(0);
+        this._issues = [];
         this._updatePreviewOnChange = false;
         this._submitOnChange = false;
 

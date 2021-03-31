@@ -260,7 +260,7 @@ class UTILS {
     static MergeArray(p_base, p_source) {
 
         if (!p_base) {
-            p_base = new Array(0);
+            p_base = [];
             if (!p_source) { return p_base; }
             p_base = [...p_source];
             return p_base;
@@ -303,7 +303,7 @@ class UTILS {
      */
     static CloneArray(p_base) {
         if (!CHECKS.isArray(p_base)) { throw new Error(`Cannot CloneArray the non-array '${p_base}'`); }
-        let arr = new Array(0);
+        let arr = [];
         for (let i = 0, n = p_base.length; i < n; i++) {
             let arrValue = p_base[i];
             if (arrValue != null) {

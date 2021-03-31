@@ -42,13 +42,15 @@ class FilterFieldValue extends Filter {
         return p_obj[this._checkName];
     }
 
-    // ----> Checks
+    //#region Checks
 
     Check(p_obj) {
         let value = this._FetchValue(p_obj);
         if (value === this._checkValue) { return this._Accept(p_obj); }
         else { return this._Deny(p_obj); }
     }   
+
+    //#endregion
 
     _CleanUp() {
         this._checkName = null;

@@ -10,8 +10,8 @@ module.exports = {
     ENV: __ENV,
 
     features: __ENV.instance._features,
-    get ARGV() { return __ENV.instance._app; },
-    get APP() { return __ENV.instance._config.argv; },
+    get APP() { return __ENV.instance._app; },
+    get ARGV() { return __ENV.instance._config.argv; },
     IF_NODE: (p_ifNodeIsEnabled, p_ifNodeIsDisabled) => { return __ENV.IF_NODE(p_ifNodeIsEnabled, p_ifNodeIsDisabled); },
 
     // features shortcuts

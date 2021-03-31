@@ -27,10 +27,10 @@ class BaseInput extends Widget {
         this._changedValue = null;
 
         this._invalidInput = false;
-        this._inputErrors = new Array(0);
-        this._externalValidationStack = new Array(0);
-        this._externalSanitizationStack = new Array(0);
-        this._errorFeedbacks = new Array(0);
+        this._inputErrors = [];
+        this._externalValidationStack = [];
+        this._externalSanitizationStack = [];
+        this._errorFeedbacks = [];
 
         this._updatePreviewOnChange = true;
         this._submitOnChange = true;

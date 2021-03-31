@@ -148,7 +148,7 @@ class ModelMockup extends com.pool.DisposableObjectEx {
                 p_value.catalogPath = `${this._modelClass.name}s/${this._id}/`;
                 /*
                 //Register to default path
-                let arr = new Array(0);
+                let arr = [];
                 let b = this._base;
                 while(b != null){
                     arr.push(b.id.name);

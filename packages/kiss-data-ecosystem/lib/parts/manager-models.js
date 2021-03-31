@@ -83,7 +83,7 @@ class ModelManager extends EcosystemPart {
     }
 
     GetDerivations(p_model, p_result = null) {
-        if (!p_result) { p_result = new Array(0); }
+        if (!p_result) { p_result = []; }
         let list = this._factory.itemList;
         for (let i = 0, n = list.length; i < n; i++) {
             let m = list[i];

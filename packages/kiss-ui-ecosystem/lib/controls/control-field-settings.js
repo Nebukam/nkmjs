@@ -52,7 +52,7 @@ class FieldSettingsControl extends InspectorGroup {
         this._extDrag.owner = this;
     }
 
-    // ----> DOM
+    //#region DOM
 
     _Style() {
         let h = 2;
@@ -108,6 +108,10 @@ class FieldSettingsControl extends InspectorGroup {
         super._Render();
     }
 
+    //#endregion
+
+    //#region Data handling
+
     _OnDataChanged(p_oldValue) {
         super._OnDataChanged(p_oldValue);
         if (this._data) {
@@ -131,7 +135,9 @@ class FieldSettingsControl extends InspectorGroup {
         return this._data;
     }
 
-    // ---->
+    //#endregion
+
+    //#region Re-order
 
     _AllowReorderDrop(p_data) {
         if (U.isInstanceOf(p_data, CatalogItem)) { p_data = p_data.data; }
@@ -180,6 +186,8 @@ class FieldSettingsControl extends InspectorGroup {
             index: this._reorderIndex
         });
     }
+
+    //#endregion
 
 }
 

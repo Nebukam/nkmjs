@@ -43,12 +43,12 @@ class DropExtension extends Extension {
         //TODO : Gotta emulate dragenter/leave
         //in order to neatly handle nested drop handlers
 
-        this._hooks = new Array(0);
+        this._hooks = [];
 
-        this._candidatesHooks = new Array(0);
-        this._allowedHooks = new Array(0);
-        this._onDragOverHooks = new Array(0);
-        this._onLeaveHooks = new Array(0);
+        this._candidatesHooks = [];
+        this._allowedHooks = [];
+        this._onDragOverHooks = [];
+        this._onLeaveHooks = [];
 
         this._isAcceptingCurrentData = false;
         this._isActive = false;

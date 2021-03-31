@@ -13,7 +13,7 @@ class Group extends ui.WidgetOrientable {
         this._footer = null;
 
         this._groupMap = new collections.Dictionary();
-        this._groupList = new Array(0);
+        this._groupList = [];
 
     }
 

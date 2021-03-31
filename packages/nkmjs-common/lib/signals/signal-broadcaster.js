@@ -21,8 +21,8 @@ class SignalBroadcaster extends DisposableObject {
         this._removeAll = false;
         this._slots = new collections.DictionaryList();
         this._onceSlots = new collections.DictionaryList();
-        this._deprecatedKVP = new Array(0);
-        this._queuedBroadcasts = new Array(0);
+        this._deprecatedKVP = [];
+        this._queuedBroadcasts = [];
     }
 
     /**

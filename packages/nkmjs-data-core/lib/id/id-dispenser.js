@@ -33,11 +33,11 @@ class IDDispenser extends com.pool.DisposableObjectEx {
 
     /**
      * @description TODO
-     * @param {string} p_stringID 
+     * @param {string} p_name 
      * @returns {boolean} True if the string ID is available, other false.
      */
-    IsAvailable(p_stringID) {
-        return !this._idMap.Contains(p_stringID);
+    IsNameAvailable(p_name) {
+        return !this._idMap.Contains(p_name);
     }
 
     /**
@@ -53,26 +53,42 @@ class IDDispenser extends com.pool.DisposableObjectEx {
     }
 
     /**
+     * @description Return whether or not the repertoire contains an ID associated with
+     * a given name
+     * @param {string} p_name 
+     * @returns {boolean} True if the Dispenser contains the given name, otherwise false.
+     */
+    ContainsName(p_name) { return this._idMap.Contains(p_name); }
+
+    /**
+     * @description Return whether or not the repertoire contains a given ID
+     * @param {data.core.ID} p_id 
+     * @returns {boolean} True if the Dispenser contains the given ID, otherwise false.
+     */
+    ContainsID(p_id) { return this._idList.Contains(p_id); }
+
+
+    /**
      * @description Return the ID associated with a given string, if any
-     * @param {string} p_string 
+     * @param {string} p_name 
      * @returns {data.core.ID} The ID, if any. Otherwise, null.
      */
-    Get(p_string) {
-        return this._idMap.Get(p_string);
+    Get(p_name) {
+        return this._idMap.Get(p_name);
     }
 
     /**
      * @description Create and return new ID with a given string.
-     * @param {string} p_string 
+     * @param {string} p_name 
      * @returns {data.core.ID} The newly created ID
      */
-    Create(p_string) {
+    Create(p_name) {
 
-        if (!this.IsAvailable(p_string)) { throw new Error(`ID ${p_string} is not available.`); }
+        if (!this.IsNameAvailable(p_name)) { throw new Error(`ID ${p_name} is not available.`); }
 
         let newID = com.Rent(ID);
-        newID.name = p_string;
-        this._idMap.Set(p_string, newID);
+        newID.name = p_name;
+        this._idMap.Set(p_name, newID);
         this._idList.Add(newID);
 
         newID

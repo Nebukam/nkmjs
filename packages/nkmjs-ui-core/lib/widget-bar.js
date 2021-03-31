@@ -43,7 +43,7 @@ class WidgetBar extends WidgetOrientable {
         this._defaultWidgetClass = WidgetButton;
         this._defaultWidgetOptions = null;
         this._optionsMap = new collections.Dictionary();
-        this._handles = new Array(0);
+        this._handles = [];
 
         this._groups = {};
         this._radioMap = {};

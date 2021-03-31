@@ -87,7 +87,7 @@ class DictionaryList {
         if (this._map.has(p_key)) {
             list = this._map.get(p_key);
         } else {
-            list = new Array(0);
+            list = [];
             this._map.set(p_key, list);
         }
 

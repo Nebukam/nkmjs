@@ -59,8 +59,8 @@ class BindingKit extends DisposableObjectEx {
     _Init() {
         super._Init();
         this._deployed = false;
-        this._KVPS = new Array(0);
-        this._CLASSES = new Array(0);
+        this._KVPS = [];
+        this._CLASSES = [];
         this._classDict = new collections.Dictionary();
 
         /* KVP Example

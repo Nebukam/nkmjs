@@ -24,7 +24,7 @@ const Command = require(`./Command`);
 class CommandFn extends Command {
     constructor() { super(); }
 
-    // ----> Static members
+    //#region Static members
 
     /**
      * @description TODO
@@ -43,7 +43,7 @@ class CommandFn extends Command {
         return cmd;
     }
 
-    // ----> Init
+    //#endregion
 
     _Init() {
 
@@ -54,6 +54,8 @@ class CommandFn extends Command {
         this._options = null;
 
     }
+
+    //#region Properties
 
     /**
      * @description TODO
@@ -90,6 +92,10 @@ class CommandFn extends Command {
 
     }
 
+    //#endregion
+
+    //#region Execution
+
     /**
      * @access protected
      * @description TODO
@@ -107,6 +113,8 @@ class CommandFn extends Command {
         }
 
     }
+
+    //#endregion
 
 }
 

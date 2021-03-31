@@ -266,7 +266,7 @@ class PointerExtension extends Extension {
         if (!this._using[p_button]) { this._using[p_button] = 1; }
         else { this._using[p_button]++; }
 
-        if (!fnList) { fnList = this._hooks[id] = new Array(0); }
+        if (!fnList) { fnList = this._hooks[id] = []; }
         else { fnList = this._hooks[id]; }
 
         if (fnList.includes(p_fn)) { return this; }

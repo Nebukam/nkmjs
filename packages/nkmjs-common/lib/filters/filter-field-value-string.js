@@ -49,7 +49,7 @@ class FilterFieldValueNumber extends FilterFieldValue {
         }
     }
 
-    // ----> Checks
+    //#region Checks
 
     /**
      * @access private
@@ -111,6 +111,8 @@ class FilterFieldValueNumber extends FilterFieldValue {
         }
         else { return this._Deny(p_obj); }
     }
+
+    //#endregion
 
     _CleanUp() {
         this._rangeStart = NaN;

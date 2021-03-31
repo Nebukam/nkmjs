@@ -24,12 +24,10 @@ const Command = require(`./command`);
 class CommandChain extends Command {
     constructor() { super(); }
 
-    // ----> Init
-
     _Init() {
         super._Init();
 
-        this._nodes = new Array(0);
+        this._nodes = [];
         this._currentIndex = 0;
         this._cmdObserver = new com.signals.Observer();
 
@@ -40,7 +38,7 @@ class CommandChain extends Command {
 
     }
 
-    // ----> Execution
+    //#region Execution
 
     _OnContextChanged() {
         super._OnContextChanged();
@@ -109,7 +107,9 @@ class CommandChain extends Command {
 
     }
 
-    // ----> Node events
+    //#endregion
+
+    //#region Node events
 
     /**
      * @access protected
@@ -147,7 +147,9 @@ class CommandChain extends Command {
 
     }
 
-    // ----> Default events
+    //#endregion
+
+    //#region Default events
 
     /**
      * @access protected
@@ -203,11 +205,15 @@ class CommandChain extends Command {
         this._Broadcast(com.SIGNAL.UPDATED, this);
     }
 
-    // ----> Pooling
+    //#endregion
+
+    //#region Pooling
 
     _CleanUp() {
         super._CleanUp();
     }
+
+    //#endregion
 
     toString() {
         return `[>>${this.constructor.name}]`;

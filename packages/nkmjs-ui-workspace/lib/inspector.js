@@ -18,7 +18,7 @@ class Inspector extends Control {
 
     _Init() {
         super._Init();
-        this._inspectors = new Array(0);
+        this._inspectors = [];
     }
 
     _Style() {

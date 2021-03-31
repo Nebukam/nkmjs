@@ -41,8 +41,6 @@ class OptionsObject extends DisposableObjectEx {
         this._optionHandler.Process(this, p_options);
     }
 
-    // ----> Options
-
     /**
      * @description TODO
      * @param {object} p_options 

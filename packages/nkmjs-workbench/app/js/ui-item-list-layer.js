@@ -14,7 +14,7 @@ class UIItemListLayer extends ui.views.Layer {
 
     _Init() {
         super._Init();
-        this._variants = new Array(0);
+        this._variants = [];
         this._itemContainer = null;
     }
 

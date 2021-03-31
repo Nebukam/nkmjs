@@ -88,6 +88,12 @@ class Palette extends com.pool.DisposableObject {
         return p_key;
     }
 
+    URLTheme(p_url){ return `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}")`; }
+
+    URLAssets(p_url){ return `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}")`; }
+
+    URLImgs(p_url){ return `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}")`; }
+
     /**
      * @description Register a font face that will be added in the header 
      * in the form `@font-face { font-family: 'p_family'; src: url('p_url');}`
@@ -179,7 +185,7 @@ class Palette extends com.pool.DisposableObject {
         if (!u.isVoid(style) && !p_invalidateCache) { return style; }
 
         if (style) { style.length = 0; }
-        else { style = new Array(0); }
+        else { style = []; }
 
         // Check if the class __NFO__ has any specific css imports
         let nfos = com.NFOS.Get(p_class);

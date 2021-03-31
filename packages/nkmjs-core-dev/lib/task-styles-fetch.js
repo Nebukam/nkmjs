@@ -50,7 +50,7 @@ class TaskFetchStyles extends ScriptBase {
 
         for (let i = 0, n = p_nkmConfig.sources.styles.length; i < n; i++) {
             c = count;
-            local = new Array(0);
+            local = [];
             let dirCopy = new DirCopy(
                 path.resolve(p_nkmConfig.__modulePath, p_nkmConfig.sources.styles[i]),
                 this.rootOutput, {

@@ -9,6 +9,9 @@ const SIGNAL = require(`../signal`);
 const DataBlock = require(`./data-block`);
 
 /**
+ * A Repertoire is used to manage & assign memory-based ids to data
+ * instead of string-based ids. (effectively making search & mapping fast, and allows 
+ * to rename data without breaking references)
  * @description TODO
  * @class
  * @hideconstructor
@@ -66,36 +69,43 @@ class Repertoire extends com.pool.DisposableObjectEx {
     /**
      * @description Return whether a given string is available to be used
      * to create a new ID
-     * @param {string} p_stringID 
+     * @param {string} p_name 
      * @returns {boolean} True if the ID is available, otherwise false.
      */
-    IsIDAvailable(p_stringID) { return this._idDispenser.IsAvailable(p_stringID); }
+    IsNameAvailable(p_name) { return this._idDispenser.IsNameAvailable(p_name); }
 
     /**
      * @description Return whether or not the repertoire contains the given ID
-     * @param {string|ID} p_id 
+     * @param {data.core.ID} p_id 
      * @returns {boolean} True if the ID is owned by this repertoire, otherwise false.
      */
     ContainsID(p_id) { return this._idDispenser.ContainsID(p_id); }
 
     /**
+     * @description Return whether or not the repertoire contains the given name
+     * @param {string} p_name 
+     * @returns {boolean} True if the name is owned by this repertoire, otherwise false.
+     */
+    ContainsName(p_name) { return this._idDispenser.ContainsName(p_name); }
+
+    /**
      * @description Return the ID associated with a given string, if any
-     * @param {string} p_stringID 
+     * @param {string} p_name 
      * @returns {ID} The ID associated to the p_stringID provided, otherwise null.
      */
-    GetID(p_stringID) { return this._idDispenser.Get(p_stringID); }
+    GetID(p_name) { return this._idDispenser.Get(p_name); }
 
     /**
      * @description Create and return new ID with a given string.
-     * @param {string} p_stringID 
+     * @param {string} p_name 
      */
-    ReserveID(p_stringID) {
+    ReserveID(p_name) {
 
-        if (!this._idDispenser.IsIDAvailable(p_stringID)) {
+        if (!this._idDispenser.IsNameAvailable(p_name)) {
             throw new Error("Cannot create an ID that already exists.");
         }
 
-        let newID = this._idDispenser.Create(p_stringID);
+        let newID = this._idDispenser.Create(p_name);
 
         newID
             .Watch(com.SIGNAL.RELEASED, this._OnIDReleased, this)
@@ -136,44 +146,34 @@ class Repertoire extends com.pool.DisposableObjectEx {
      */
     Register(p_item, p_id = null) {
 
-        if (u.isVoid(p_item)) { throw new Error(`Cannot register a null item.`); }
-        if (!u.isInstanceOf(p_item, DataBlock)) { throw new Error(`Cannot register a non-DataBlock item.`); }
-        if (!u.isVoid(p_item.id)) { throw new Error(`Cannot register an item with an ID already set.`); }
         if (this._itemList.Contains(p_item)) { throw new Error(`Cannot re-register an item.`); }
+        if (!u.isInstanceOf(p_item, DataBlock)) { throw new Error(`Cannot register a non-DataBlock item.`); }
+        if (p_item.id) { throw new Error(`Cannot register an item with an ID already set.`); }
 
         let itemID = null;
 
-        if (u.isVoid(p_id)) {
+        if (!p_id) {
             //No ID provided. Create a random one.
-            itemID = this.ReserveID(u.tils.unsafeUID);
+            itemID = this.ReserveID(u.tils.UUID);
         } else {
             //An ID has been provided.
-            let itemID = p_id;
-            if (u.isInstanceOf(p_id, ID)) {
-                //ID is an object of type ID.
-                if (this._idDispenser.GetID(p_id.name) === p_id) {
-                    //ID appear to be owned by this repertoire.
-                    if (this._itemMap.Contains(p_id)) { throw new Error(`ID(${p_id}) already in use.`); }
-                    else { /* ID exists but not in use. */ }
-                } else {
-                    //ID isn`t owned by this repertoire.
-                    throw new Error(`Cannot register an item with an ID(${p_id.name}) that hasn't been provided by this repertoire.`);
-                }
-                itemID = p_id;
-            } else {
-                //ID is a string. (Or should be)
-                if (!u.isString(p_id)) { throw new Error(`Cannot register an item with an ID that isn't an ID object nor a string.`); }
-                if (u.isEmpty(p_id)) { throw new Error(`Cannot use empty string as ID. Use null or undefined instead to generate a random one.`); }
-                let existingID = this._idDispenser.Get(p_id);
-                if (!u.isVoid(existingID)) {
-                    //An ID has already been created with this string
-                    if (this._itemMap.Contains(existingID)) {
-                        throw new Error(`ID(${p_id}) already in use.`);
-                    }
-                    itemID = existingID;
+            if (u.isString(p_id)) {
+                let existingId = this._idDispenser.Get(p_id);
+                if (existingId) {
+                    if (this._itemMap.Contains(existingId)) { throw new Error(`ID '${p_id}' already in use.`); }
+                    itemID = existingId; // Take ownership of the existing ID.
                 } else {
                     itemID = this.ReserveID(p_id);
                 }
+            } else if (u.isInstanceOf(p_id, ID)) {
+                if (this._idDispenser.ContainsID(p_id)) {
+                    if (this._itemMap.Contains(p_id)) { throw new Error(`ID '${p_id}' already in use.`); }
+                    itemID = p_id; // Take ownership of the existing ID.
+                } else {
+                    throw new Error(`ID '${p_id.name}' must be provided by local dispenser.`);
+                }
+            } else {
+                throw new Error(`'${p_id}' is neither a string identifier nor an ID instance.`);
             }
         }
 
@@ -241,21 +241,19 @@ class Repertoire extends com.pool.DisposableObjectEx {
 
     /**
      * @description TODO
-     * @param {string|data.core.ID} p_id 
+     * @param {data.core.ID} p_id 
      * @returns {data.core.DataBlock} Item mapped to this ID, if any. Otherwise, null.
      */
-    Get(p_id) {
+    Get(p_id) { return this._itemMap.Get(p_id); }
 
-        if (u.isVoid(p_id)) { throw new Error(`p_id cannot be null or undefined`); }
-        if (u.isString(p_id)) {
-            let id = this._idDispenser.Get(p_id);
-            if (u.isVoid(id)) { return null; }
-        }
-        else if (u.isInstanceOf(p_id, ID)) { }
-        else { throw new Error(`p_id must be either of type string or ID.`); }
-
-        return this._itemMap.Get(p_id);
-
+    /**
+     * @description TODO
+     * @param {string} p_name 
+     * @returns {data.core.DataBlock} Item mapped to this ID, if any. Otherwise, null.
+     */
+    GetByName(p_name) {
+        let id = this._idDispenser.Get(p_name);
+        return id ? this._itemMap.Get(id) : null;
     }
 
     /**
@@ -263,9 +261,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
      * @param {*} p_index 
      * @returns {data.core.DataBlock}
      */
-    At(p_index) {
-        return this._itemList.At(p_index); F
-    }
+    At(p_index) { return this._itemList.At(p_index); }
 
     /**
      * @description TODO

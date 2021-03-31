@@ -31,7 +31,7 @@ class MetaControlGroup extends InspectorGroup {
         this._staticContent = false;
         this._metaPath = '';
         this._metaID = '';
-        this._subCtrls = new Array(0);
+        this._subCtrls = [];
     }
 
     // ----> DOM

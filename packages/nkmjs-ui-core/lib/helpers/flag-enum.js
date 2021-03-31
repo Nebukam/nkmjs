@@ -11,11 +11,11 @@ const com = require("@nkmjs/common");
  */
 class FlagEnum {
     constructor(p_enum = null, p_staticEnum = false, p_prefix = null) {
-        this._elements = new Array(0);
-        this._managed = new Array(0);
+        this._elements = [];
+        this._managed = [];
         this._prefix = p_prefix;
         this._isStaticEnum = p_staticEnum;
-        this._enum = p_enum ? p_enum : new Array(0);
+        this._enum = p_enum ? p_enum : [];
         this._currentFlag = null;
 
         this._onFlagChanged = com.Rent(com.signals.SignalBroadcaster);

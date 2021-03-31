@@ -51,7 +51,7 @@ class DisposableObject {
      */
     _Bind(p_func) { return this[p_func.name] = p_func.bind(this); }
 
-    // ----> Pooling
+    //#region Pooling
 
     /**
      * Whether the object is currently in the process of being released or not.
@@ -99,6 +99,8 @@ class DisposableObject {
      * @group Pooling 
      */
     _CleanUp() { }
+
+    //#endregion
 
 
 

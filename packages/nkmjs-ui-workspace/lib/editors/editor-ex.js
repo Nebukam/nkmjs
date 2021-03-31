@@ -44,7 +44,7 @@ class EditorEx extends Editor {
     _PostInit() {
 
         super._PostInit();
-        let confs = new Array(0);
+        let confs = [];
         this._InitShelfCatalog(confs);
         this._shelf.catalog = this._shelfCatalog;
 

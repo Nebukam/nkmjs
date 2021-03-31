@@ -26,7 +26,7 @@ class CommandBox {
 
     }
 
-    // ----> Init
+    //#region Properties
 
     /**
      * @description TODO
@@ -48,7 +48,9 @@ class CommandBox {
         }
     }
 
-    // ----> Command registration
+    //#endregion
+
+    //#region Command management
 
     /**
      * @description TODO
@@ -120,6 +122,9 @@ class CommandBox {
     _OnCommandRemoved(p_cmd) {
         p_cmd.context = null;
     }
+
+
+    //#endregion
 
 }
 

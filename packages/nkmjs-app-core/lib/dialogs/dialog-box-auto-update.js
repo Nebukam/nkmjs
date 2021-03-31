@@ -30,7 +30,7 @@ class AutoUpdateDialogBox extends dialog.DialogBox {
 
     }
 
-    // ----> Event handling
+    //#region Message handling
 
     _OnAURequestHandled(p_evt, p_arg, p_err) {
         if (p_arg === APP_MESSAGES.AU_NO_SERVER) {
@@ -81,7 +81,7 @@ class AutoUpdateDialogBox extends dialog.DialogBox {
         this.CreateHandle({ text: `Later.`, trigger: { fn: this._Close } });
     }
 
-    // ---->
+    //#endregion
 
     _Clear() {
         super._Clear();

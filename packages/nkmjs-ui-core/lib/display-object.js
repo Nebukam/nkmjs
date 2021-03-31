@@ -535,7 +535,7 @@ class DisplayObject extends DisposableHTMLElement {
      */
     get displayPath() {
 
-        let arr = new Array(0),
+        let arr = [],
             p = this._parent;
 
         while (p != null) {

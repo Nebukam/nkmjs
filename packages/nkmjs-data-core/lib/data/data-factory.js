@@ -9,6 +9,8 @@ const DataBlock = require(`./data-block`);
 const Repertoire = require(`./repertoire`);
 
 /**
+ * A data factory allow for creation of uniquely identified DataBlocks
+ * using an internal Repertoire. Data must first be created using 
  * @description TODO
  * @class
  * @hideconstructor
@@ -67,10 +69,20 @@ class DataFactory extends com.pool.DisposableObjectEx {
 
     /**
      * @description Return whether an string ID already exists
-     * @param {string} p_stringID 
+     * @param {string} p_name 
      * @returns {boolean} True if the ID is available, otherwise false.
      */
-    IsIDAvailable(p_stringID) { return this._itemRep.IsIDAvailable(p_stringID); }
+    IsNameAvailable(p_name) { return this._itemRep.IsNameAvailable(p_name); }
+
+    /**
+     * @description Creates & registers a data item.
+     * @param {class} p_class 
+     * @param {ID|string} p_class
+     * @returns {*} Newly created item.
+     */
+    Create(p_id = null, p_class = null) {
+        return this.Register(this.CreateTemp(p_class), p_id ? p_id : u.tils.UUID);
+    }
 
     /**
      * @description Create a temp data item to be registered afterward.
@@ -81,13 +93,10 @@ class DataFactory extends com.pool.DisposableObjectEx {
 
         let cl = this._itemClass;
 
-        if (!u.isVoid(p_class)) {
-            if (!u.isInstanceOf(p_class, cl)) {
-                throw new Error(`CreateTemp custom constructor (${p_class}) does not extends factory constructor (${this._itemClass.name})`);
-            } else { cl = p_class; }
+        if (p_class) {
+            if (u.isInstanceOf(p_class, cl)) { cl = p_class; }
+            else { throw new Error(`CreateTemp custom constructor (${p_class}) does not extends factory constructor (${this._itemClass.name})`); }
         }
-
-        if (u.isVoid(cl)) { throw new Error(`Cannot create temp item with no itemClass set.`); }
 
         let newItem = com.Rent(cl);
         newItem._isTemp = true;

@@ -33,11 +33,13 @@ class FieldValueOverlay extends Control{
         });
     }
 
-    // ----> DOM
+    //#region DOM
 
     _Render(){
         this._wrapper = UDOM.New(`div`, {class:`body`}, this._host);
     }
+
+    //#endregion
 
     _CleanUp(){
         super._CleanUp();

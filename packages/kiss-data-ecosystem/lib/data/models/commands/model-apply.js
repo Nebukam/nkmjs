@@ -16,12 +16,12 @@ class ModelApply extends DataManipulationCommand {
 
         super._Init();
 
-        this._derivations = new Array(0);
-        this._libs = new Array(0);
-        this._toBeDeleted = new Array(0);
-        this._toBeAdded = new Array(0);
-        this._toBeModified = new Array(0);
-        this._toBeUntouched = new Array(0);
+        this._derivations = [];
+        this._libs = [];
+        this._toBeDeleted = [];
+        this._toBeAdded = [];
+        this._toBeModified = [];
+        this._toBeUntouched = [];
 
         this._Bind(this._OnDialogFail);
         this._Bind(this._OnDialogCancel);

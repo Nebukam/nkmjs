@@ -13,16 +13,14 @@ const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 class Observer extends DisposableObjectEx {
     constructor() { super(); }
 
-    // ----> Init
-
     _Init() {
         super._Init();
-        this._hooks = new Array(0);
-        this._targets = new Array(0);
+        this._hooks = [];
+        this._targets = [];
         this._isEnabled = true;
     }
 
-    // ----> Availability
+    //#region Availability
 
     /**
      * @description TODO
@@ -57,6 +55,10 @@ class Observer extends DisposableObjectEx {
         }
         return true;
     }
+
+    //#endregion
+
+    //#region Hooks
 
     /**
      * @description Register a signal subscription
@@ -189,6 +191,8 @@ class Observer extends DisposableObjectEx {
 
         this._targets.length = 0;
     }
+
+    //#endregion
 
     /**
      * @access protected

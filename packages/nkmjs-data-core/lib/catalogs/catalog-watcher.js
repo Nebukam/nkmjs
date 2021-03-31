@@ -340,7 +340,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
             let key = keys[i],
                 value = this._map.Get(key);
             if (value === p_value) {
-                if (!results) { results = new Array(1); }
+                if (!results) { results = []; }
                 results.push(key);
             }
         }

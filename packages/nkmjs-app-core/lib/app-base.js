@@ -111,6 +111,8 @@ class AppBase extends com.helpers.SingletonEx {
 
     }
 
+    //#region Setup
+
     /**
      * @type {LayerContainer}
      */
@@ -131,7 +133,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         if (env.isNodeEnabled) { this._RegisterIPCBindings(); }
 
-        // ----> At that point, the Service Manager has started.
+        // At that point, the Service Manager has started.
         // Initialize and start critical services.
 
         // TODO : Move what's below AFTER App Start.
@@ -200,6 +202,10 @@ class AppBase extends com.helpers.SingletonEx {
 
     }
 
+    //#endregion
+
+    //#region Start
+
     /**
      * Called by once the environment when the DOM
      * readyState === complete, after SetUp has been called.
@@ -226,6 +232,10 @@ class AppBase extends com.helpers.SingletonEx {
         );
 
     }
+
+    //#endregion
+
+    //#region Preferences
 
     _InitUserPreferences(p_userPreferences) { }
 
@@ -265,6 +275,8 @@ class AppBase extends com.helpers.SingletonEx {
 
     }
 
+    //#endregion
+
     AppReady(p_data) {
 
 
@@ -279,14 +291,15 @@ class AppBase extends com.helpers.SingletonEx {
 
     }
 
-    // ---->
+    //#region ENV Watch
 
     _OnColorschemeChange() {
 
     }
 
+    //#endregion
 
-    // ---->
+    //#region Electron & Node
 
     ReloadApp() { actions.RELAY.ipcSend(APP_MESSAGES.DO_RELOAD_APP); }
 
@@ -317,8 +330,6 @@ class AppBase extends com.helpers.SingletonEx {
 
     LoadAndPrint(p_options) { actions.RELAY.ipcSend(APP_MESSAGES.DO_OPEN_AND_PRINT_WINDOW, p_options); }
 
-    // ----> ELECTRON Message handling (error/warning/messages)
-
     _onNodeError(p_evt, p_content) {
         console.error(p_content.error);
         dialog.DIALOG.Push({
@@ -346,6 +357,8 @@ class AppBase extends com.helpers.SingletonEx {
     _onNodeMessage(p_evt, p_content) {
         console.log(p_content.message);
     }
+
+    //#endregion
 
 }
 

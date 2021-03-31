@@ -195,7 +195,7 @@ class Model extends DerivableDataBlock {
 
     GetInheritanceChain(p_includeSelf = false) {
 
-        let path = new Array(0);
+        let path = [];
         if (p_includeSelf) { path.push(this); }
 
         let b = this._base;
@@ -212,7 +212,7 @@ class Model extends DerivableDataBlock {
      * @param {string} p_id 
      */
     IsIDAvailable(p_id) {
-        return this._fieldRep.IsIDAvailable(p_id);
+        return this._fieldRep.IsNameAvailable(p_id);
     }
 
     Register(p_fieldSettings, p_id) {

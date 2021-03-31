@@ -17,7 +17,7 @@ class FilterBox extends Filter {
 
     _Init(){
         super._Init();
-        this._filters = new Array(0);
+        this._filters = [];
     }
 
     /**

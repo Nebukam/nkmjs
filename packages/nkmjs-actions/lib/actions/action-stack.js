@@ -24,7 +24,7 @@ class ActionStack {
     _Init() {
         this._maxCount = -1;
         this._headIndex = -1;
-        this._stack = new Array(0);
+        this._stack = [];
         this._isEnabled = true;
         this._groupingActive = false;
         this._group = null;

@@ -23,7 +23,7 @@ const COMMAND_SIGNAL = require(`./command-signal`);
 class Command extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
-    // ----> Static members
+    //#region Static members
 
     /**
      * @description TODO
@@ -38,7 +38,7 @@ class Command extends com.pool.DisposableObjectEx {
         return cmd;
     }
 
-    // ----> Init
+    //#endregion
 
     _Init() {
         super._Init();
@@ -50,6 +50,8 @@ class Command extends com.pool.DisposableObjectEx {
         this._order = 0;
         this._running = false;
     }
+
+    //#region Properties
 
     /**
      * @description TODO
@@ -101,11 +103,11 @@ class Command extends com.pool.DisposableObjectEx {
      * @description TODO
      * @param {*} p_emitter 
      */
-    _OnEmitterReleased(p_emitter) {
-        this.emitter = null;
-    }
+    _OnEmitterReleased(p_emitter) { this.emitter = null; }
 
-    // ----> Availability
+    //#endregion
+
+    //#region Availability
 
     /**
      * @description TODO
@@ -144,7 +146,9 @@ class Command extends com.pool.DisposableObjectEx {
         return true;
     }
 
-    // ----> Execution
+    //#endregion
+
+    //#region Execution
 
     /**
      * @description TODO
@@ -213,7 +217,9 @@ class Command extends com.pool.DisposableObjectEx {
 
     }
 
-    // ----> Default events
+    //#endregion
+
+    //#region Default events
 
     /**
      * @access protected
@@ -273,7 +279,9 @@ class Command extends com.pool.DisposableObjectEx {
         this._Broadcast(com.SIGNAL.UPDATED, this);
     }
 
-    // ----> Pooling
+    //#endregion
+
+    //#region Pooling
 
     _CleanUp() {
         this.Cancel();
@@ -284,6 +292,8 @@ class Command extends com.pool.DisposableObjectEx {
         this.order = 0;
         super._CleanUp();
     }
+
+    //#endregion
 
     toString() {
         return `[>>${this.constructor.name}]`;

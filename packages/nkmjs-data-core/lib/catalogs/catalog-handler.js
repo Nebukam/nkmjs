@@ -15,8 +15,6 @@ const CatalogWatcher = require(`./catalog-watcher`);
 class CatalogHandler extends CatalogWatcher {
     constructor() { super(); }
 
-    // ----> Init
-
     _Init() {
 
         super._Init();

@@ -120,7 +120,7 @@ class EntryManager extends EcosystemPart {
     }
 
     GetLibraries(p_models, p_result = null) {
-        if (!p_result) { p_result = new Array(0); }
+        if (!p_result) { p_result = []; }
         for (let i = 0, n = p_models.length; i < n; i++) {
             p_result.push(this._librariesMap.Get(p_models[i].id));
         }

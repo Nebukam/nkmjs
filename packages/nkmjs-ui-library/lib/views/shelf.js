@@ -336,7 +336,6 @@ class Shelf extends ui.views.View {
         // we only close a view from the signal broadcasted by the view itself, not the handle.
         let catalogItem = p_handle.data,
             p_view = this._catalogViewBuilder.Get(catalogItem);
-
         if (p_view) {
             // If a view exists, give it control over its release.
             p_view.RequestClose();
@@ -349,6 +348,21 @@ class Shelf extends ui.views.View {
 
 
     // ----> Views Management
+
+    RequestView(p_identifier){
+        if(u.isNumber(p_identifier)){
+            // by index
+            let list = this._nav._handles;
+            if(p_identifier < 0 || p_identifier > list.length-1 ){ return; }
+            this.currentHandle = list[p_identifier];
+        }else if(u.isString(p_identifier)){
+            // by data id name
+            // TODO
+        }else if(u.isInstanceOf(data.catalogs.CatalogItem)){
+            // by catalog item reference
+            // TODO
+        }
+    }
 
     /**
      * @access protected

@@ -20,7 +20,7 @@ class PathCreate extends com.pool.DisposableObject {
         this._Bind(this._OnNextStatsRead);
         this._Bind(this._OnNextDirRead);
 
-        this._pathArray = new Array(0);
+        this._pathArray = [];
 
         this._Reset();
 
@@ -35,7 +35,7 @@ class PathCreate extends com.pool.DisposableObject {
 
         this._endCallback = p_endCallback;
 
-        this._pathArray = new Array(0);
+        this._pathArray = [];
         this._splitPath = p_basePath.split(u.tils.DELIM_DIR);
 
         if (this._splitPath.length <= 1) { return this._OnEnd(new Error(`Invalid path : ${p_basePath}`)); }

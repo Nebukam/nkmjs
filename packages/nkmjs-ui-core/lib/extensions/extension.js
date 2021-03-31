@@ -23,7 +23,7 @@ class Extension extends com.pool.DisposableObjectEx {
      * @param {ui.core.extensions.ExtBase} p_ext 
      */
     Add(p_ext) {
-        if (!this._childExtensions) { this._childExtensions = new Array(0); }
+        if (!this._childExtensions) { this._childExtensions = []; }
         if (this._childExtensions.includes(p_ext)) { return p_ext; }
         if(u.isFunc(p_ext)){ p_ext = com.Rent(p_ext); }
         this._childExtensions.push(p_ext);

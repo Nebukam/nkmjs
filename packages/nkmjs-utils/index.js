@@ -3,6 +3,7 @@
 const __UTILS = require(`./lib/utils`);
 const __UTILS_DOM = require(`./lib/utils-dom`);
 const __CHECKS = require(`./lib/checks`);
+const __PATH = require(`./lib/path`);
 
 module.exports = {
     // Generic
@@ -32,7 +33,11 @@ module.exports = {
     El: __UTILS_DOM.El.bind(__UTILS_DOM),
 
     //
-    PATH: require(`./lib/path`),
+    PATH: __PATH,
+
+    FULL: __PATH.FULL.bind(__PATH),
+    SHORT: __PATH.SHORT.bind(__PATH),
+
     MIME: require(`./lib/mime`),
     LOG: require(`./lib/logger`),
     Argv: require(`./lib/argv`),

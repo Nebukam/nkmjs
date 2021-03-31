@@ -16,14 +16,12 @@ const SIGNAL = require(`../signal`);
 class DisposableObjectEx extends DisposableObject {
     constructor() { super(); }
 
-    // ----> Init
-
     _Init() {
         this._releasePrevented = false;
         this._signals = new SignalBox();
     }
 
-    // ----> Signals
+    //#region Signals
 
     /**
      * @access protected
@@ -83,7 +81,9 @@ class DisposableObjectEx extends DisposableObject {
         return this;
     }
 
-    // ----> Pooling
+    //#endregion
+
+    //#region Pooling
 
     /**
      * @description Interrupts the releasing process and prevents this object from being released : `_CleanUp` won't be called,
@@ -142,7 +142,7 @@ class DisposableObjectEx extends DisposableObject {
         this._signals.Clear();
     }
 
-
+    //#endregion
 
 }
 

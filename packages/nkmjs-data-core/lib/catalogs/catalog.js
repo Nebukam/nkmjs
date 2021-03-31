@@ -61,7 +61,7 @@ class Catalog extends CatalogItem {
             name = pathSplit[0];
         } else {
 
-            let pathArray = new Array();
+            let pathArray = [];
 
             for (let i = 0, n = pathSplit.length; i < n; i++) {
                 let current = pathSplit.shift();
@@ -155,7 +155,7 @@ class Catalog extends CatalogItem {
         this._isDir = true;
         this._expanded = false;
 
-        this._items = new Array(0);
+        this._items = [];
         this._rootCatalog = this;
 
         this._sortPending = false;
@@ -433,7 +433,7 @@ class Catalog extends CatalogItem {
      */
     FindDataHolders(p_data, p_results = null) {
 
-        if (!p_results) { p_results = new Array(0); }
+        if (!p_results) { p_results = []; }
 
         for (let i = 0, n = this._items.length; i < n; i++) {
             let item = this._items[i];

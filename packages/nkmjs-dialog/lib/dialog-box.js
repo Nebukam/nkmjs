@@ -30,8 +30,8 @@ class DialogBox extends ui.Widget {
 
         this._hasInput = false;
 
-        this._handles = new Array(0);
-        this._contents = new Array(0);
+        this._handles = [];
+        this._contents = [];
         this._submitMap = new collections.Dictionary();
         this._submitList = new collections.List();
 

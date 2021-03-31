@@ -11,7 +11,7 @@ const POINTER = require("../pointer");
 const Extension = require("./extension");
 
 
-let _dragDataContent = new Array(0);
+let _dragDataContent = [];
 
 /**
  * @description TODO

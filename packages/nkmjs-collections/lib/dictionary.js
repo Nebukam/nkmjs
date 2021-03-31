@@ -83,7 +83,7 @@ class Dictionary {
         for (let i = 0, n = keyList.length; i < n; i++) {
             let key = keyList[i];
             if (this._map.get(key) === p_value) {
-                if (result === null) { result = new Array(1); }
+                if (result === null) { result = []; }
                 result.push(key);
             }
         }

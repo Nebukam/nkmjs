@@ -17,7 +17,7 @@ class ActionGroup extends Action {
 
     _Init() {
         super._Init();
-        this._actions = new Array(0);
+        this._actions = [];
         this._last = null;
     }
 
