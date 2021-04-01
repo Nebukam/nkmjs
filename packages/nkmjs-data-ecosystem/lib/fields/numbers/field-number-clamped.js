@@ -1,3 +1,5 @@
+'use strict';
+
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
@@ -5,24 +7,30 @@ const IDS = require(`../../ids`);
 const FieldNumber = require("./field-number");
 
 /**
- * A field of type 'number', that is automatically clamped between a min & max value.
- * Whether the min & max parameters are exposed is based on more specific implementations
+ * @class
+ * @augments ecosystem.fields.numbers.FieldNumber
+ * @memberof ecosystem.fields.numbers
  */
 class FieldNumberClamped extends FieldNumber {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `field-number-clamped`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-number-clamped`
+    };
 
     _Init() {
         super._Init();
     }
 
-    InitSettings(p_settings) {
-        let settings = super.InitSettings(p_settings);
+    InitSettings(p_settings = null) {
+        let localSettings = super.InitSettings(p_settings);
 
-        settings.clamp = (settings.clamp || false);
-        settings.min = (settings.min || 0);
-        settings.max = (settings.max || 0);
+        localSettings.clamp = (localSettings.clamp || false);
+        localSettings.min = (localSettings.min || 0);
+        localSettings.max = (localSettings.max || 0);
 
-        return settings;
+        return localSettings;
     }
 
     InitValues(p_settings, p_dataObject) {

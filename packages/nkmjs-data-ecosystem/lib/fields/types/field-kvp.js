@@ -1,3 +1,5 @@
+'use strict';
+
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
@@ -8,12 +10,19 @@ const FieldModelTyped = require("../field-model-typed");
 const FieldType = require("./field-type");
 
 const __valueTypeID = data.ID.New(IDS.VALUE_TYPE);
+
 /**
- * A field of type 'number', with no particular settings. It is the base type of more
- * specific implementations such as fields.Int, fields.UInt, fields.Float etc
+ * @class
+ * @augments ecosystem.fields.FieldModelTyped
+ * @memberof ecosystem.fields
  */
 class FieldKVP extends FieldModelTyped {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `field-kvp`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-kvp`
+    };
 
     _Init() {
         super._Init();

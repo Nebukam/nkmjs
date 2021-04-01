@@ -1,3 +1,5 @@
+'use strict';
+
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 const DataModel = require("../data-model");
@@ -9,11 +11,17 @@ const FieldType = require("./types/field-type");
 const __typeID = data.ID.New(IDS.TYPE);
 
 /**
- * A field model 'typed' uses another field type as part of its low-level definition.
- * Primarily used to create lists & maps
+ * @class
+ * @augments ecosystem.fields.FieldModelComposite
+ * @memberof ecosystem.fields
  */
 class FieldModelTyped extends FieldModelComposite {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `field-typed`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-typed`
+    };
 
     static __default_typeClass = FieldType;
 

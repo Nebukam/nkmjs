@@ -1,3 +1,5 @@
+'use strict';
+
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
@@ -6,19 +8,25 @@ const IDS = require(`../../ids`);
 const FieldFloat3 = require("./field-float3");
 
 /**
- * A field of type 'number', with no particular settings. It is the base type of more
- * specific implementations such as fields.Int, fields.UInt, fields.Float etc
+ * @class
+ * @augments ecosystem.fields.numbers.FieldFloat3
+ * @memberof ecosystem.fields.numbers
  */
 class FieldFloat4 extends FieldFloat3 {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `field-float4`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-float4`
+    };
 
     _Init() {
         super._Init();
     }
 
-    InitSettings(p_settings) {
-        let settings = super.InitSettings(p_settings);
-        return settings;
+    InitSettings(p_settings = null) {
+        let localSettings = super.InitSettings(p_settings);
+        return localSettings;
     }
 
     InitValues(p_settings, p_dataObject) {

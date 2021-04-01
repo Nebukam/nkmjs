@@ -169,9 +169,16 @@ class DataFactory extends com.pool.DisposableObjectEx {
     /**
      * @description Return the item associated with the given ID.
      * Returns null if no ID or item is found.
-     * @param {string | ID} p_id 
+     * @param {ID} p_id 
      */
     Get(p_id) { return this._itemRep.Get(p_id); }
+
+    /**
+     * @description Return the item associated with the given ID.
+     * Returns null if no ID or item is found.
+     * @param {string} p_name 
+     */
+    GetByName(p_name) { return this._itemRep.GetByName(p_name); }
 
     /**
      * @description TODO

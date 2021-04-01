@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     EcosystemPart: require(`./ecosystem-part`),
     Fields: require(`./field-manager`),

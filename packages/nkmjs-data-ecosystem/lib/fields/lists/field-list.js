@@ -1,3 +1,5 @@
+'use strict';
+
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
@@ -6,30 +8,28 @@ const FieldModelTyped = require(`../field-model-typed`);
 
 
 /**
- * A field of type 'list' value is usually an iterable array.
- * Each value in the array is either a value constrainted by a specific type
+ * @class
+ * @augments ecosystem.fields.FieldModelTyped
+ * @memberof ecosystem.fields.lists
  */
 class FieldList extends FieldModelTyped {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `field-list`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-list`
+    };
 
     _Init() {
         super._Init();
     }
 
-    InitSettings(p_settings){ 
-        let details = super.InitSettings(p_settings);        
-        details.maxSize = (details.maxSize || -1);
-        return details;
+    InitSettings(p_settings = null) {
+        let localSettings = super.InitSettings(p_settings);
+        localSettings.maxSize = (localSettings.maxSize || -1);
+        return localSettings;
     }
 
-    /*
-    // InitValue must be implemented on a per-model basis
-    InitValues(p_settings, p_dataObject){ 
-        let values = super.InitValues(p_settings, p_dataObject);
-        if(!(IDS.VALUE in values)){ values[IDS.VALUE] = []; }
-        return values;
-    }
-    */
 }
 
 module.exports = FieldList;

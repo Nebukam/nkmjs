@@ -1,8 +1,20 @@
+'use strict';
+
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
+/**
+ * @class
+ * @augments data.DataBlock
+ * @memberof ecosystem
+ */
 class DataBlockExtendable extends data.DataBlock {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `data-block-extendable`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:data-block-extendable`
+    };
 
     _Init() {
         super._Init();
@@ -77,7 +89,7 @@ class DataBlockExtendable extends data.DataBlock {
      */
     GetInheritanceChain(p_includeSelf = false, p_chain = null) {
 
-        if(!p_chain){ p_chain = []; }
+        if (!p_chain) { p_chain = []; }
         if (p_includeSelf) { p_chain.push(this); }
 
         let b = this._base;

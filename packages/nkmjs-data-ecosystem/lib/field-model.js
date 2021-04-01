@@ -1,15 +1,24 @@
+'use strict';
+
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
 const DataBlocExtendable = require(`./data-block-extendable`);
 
 /**
- * Although labeled 'Model', each FieldModel is a unique implementation of a serializable
- * and customizable type.
+ * A FieldModel is a unique implementation of a serializable and customizable type.
+ * It defines a property inside a DataModel, which is then used as a reference to create entries from that model.
+ * @class
+ * @augments ecosystem.DataBlocExtendable
+ * @memberof ecosystem
  */
 class FieldModel extends DataBlocExtendable {
     constructor() { super(); }
 
+    static __NFO__ = {
+        [com.IDS.ICON]: `field-model`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-model`
+    };
 
     //#region Static methods
 
@@ -23,8 +32,19 @@ class FieldModel extends DataBlocExtendable {
         super._Init();
         this._model = null;
         this._fieldIndex = 0;
+        this._settings = null;
     }
 
+    ////#region Properties
+
+    /**
+     * @description Whether or not this field requires value to be sanitized
+     */
+    get requireSanitization() { return this.constructor.__requireSanitization; }
+
+    /**
+     * @description Parent model
+     */
     get model() { return this._model; }
     set model(p_value) {
         if (this._model === p_value) { return; }
@@ -32,15 +52,40 @@ class FieldModel extends DataBlocExtendable {
         this._model = p_value;
     }
 
+    /**
+     * @description Field index withing model. This is only for formatting & vizualisation purposes.
+     */
     get fieldIndex() { return this._fieldIndex; }
     set fieldIndex(p_value) { this._fieldIndex = p_value; }
 
-    get requireSanitization() { return this.constructor.__requireSanitization; }
+    /**
+     * @description Field instance settings
+     * @type {object}
+     */
+    get settings() { return this._settings; }
+    set settings(p_value) { this._settings = p_value; }
 
-    InitSettings(p_settings) {
-        let settings = p_settings[this._id._name];
-        if (!settings) { settings = {}; p_settings[this._id._name] = settings; }
-        return settings;
+    //#endregion
+
+    /**
+     * @description Initialize local settings to their default values.  
+     * Settings are used to validate & constraint field values in data entries.
+     * @param {object} [p_settings] 
+     * @returns 
+     */
+    InitSettings(p_settings = null) {
+
+        let localSettings = null;
+        if (p_settings) {
+            localSettings = p_settings[this._id._name];
+            if (!localSettings) { localSettings = {}; p_settings[this._id._name] = localSettings; }
+        } else {
+            localSettings = {};
+        }
+
+        this._settings = localSettings;
+        return localSettings;
+
     }
 
     InitValues(p_settings, p_dataObject) {
@@ -49,30 +94,10 @@ class FieldModel extends DataBlocExtendable {
         return values;
     }
 
-    /**
-     * @description Validate value based on specific field details.  
-     * This is implementation-specific.
-     * @param {data.ecosystem.FieldDetails} p_details 
-     * @param {*} p_value
-     * @returns 
-     */
-    ValidateValue(p_details, p_value) {
-        return true;
-    }
-
-    /**
-     * @description Sanitize a value according to specific field details.
-     * @param {data.ecosystem.FieldDetails} p_details
-     * @param {*} p_value  
-     * @returns 
-     */
-    SanitizeValue(p_details, p_value) {
-        return p_value;
-    }
-
     _CleanUp() {
         super._CleanUp();
         this._fieldIndex = 0;
+        this._settings = null;
         this.model = null;
     }
 

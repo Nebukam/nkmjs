@@ -1,8 +1,15 @@
+'use strict';
+
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
 const DataEntry = require("../data-entry");
 
+/**
+ * @class
+ * @augments common.pool.DisposableObjectEx
+ * @memberof ecosystem.parts
+ */
 class EntryLibrary extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
@@ -22,6 +29,11 @@ class EntryLibrary extends com.pool.DisposableObjectEx {
         this._model = p_value;
     }
 
+    /**
+     * 
+     * @param {string|data.core.ID} p_id 
+     * @param {Function} [p_class] 
+     */
     Create(p_id, p_class = null){
         let entry = this._factory.Create(p_id, p_class);
         entry.model = this._model;

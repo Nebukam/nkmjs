@@ -15,7 +15,7 @@ const SIGNAL = require(`../signal`);
 class Metadata extends com.pool.DisposableObjectEx {
 
     static __NFO__ = {
-        [com.IDS.ICON]: `data-block`,
+        [com.IDS.ICON]: `metadata`,
         [com.IDS.UID]: `@nkmjs/data-core:metadata`
     };
 

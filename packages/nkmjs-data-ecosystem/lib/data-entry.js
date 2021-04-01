@@ -1,10 +1,22 @@
+'use strict';
+
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
 const DataBlocExtendable = require(`./data-block-extendable`);
 
+/**
+ * @class
+ * @augments ecosystem.DataBlocExtendable
+ * @memberof ecosystem
+ */
 class DataEntry extends DataBlocExtendable {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `data-entry`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:data-entry`
+    };
 
     _Init() {
         super._Init();
@@ -19,9 +31,9 @@ class DataEntry extends DataBlocExtendable {
         this._model = p_value;
     }
 
-    get fieldValues(){ return this._fieldValues; }
+    get fieldValues() { return this._fieldValues; }
 
-    _CleanUp(){
+    _CleanUp() {
         super._CleanUp();
         this.model = null;
         this._fieldValues = {};

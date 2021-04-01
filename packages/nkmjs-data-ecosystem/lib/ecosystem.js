@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * The goal of an ecosystem is to isolate and encapsulate
  * all data-related functionalities in a closed ecosystem such as :
@@ -15,15 +17,24 @@ const actions = require("@nkmjs/actions");
 
 const parts = require(`./parts`);
 
-
+/**
+ * @class
+ * @augments data.DataBlock
+ * @memberof ecosystem
+ */
 class Ecosystem extends data.DataBlock {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `ecosystem`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:ecosystem`
+    };
 
     _Init() {
         super._Init();
 
         this._fields = new parts.Fields();
-        
+
         this._models = new parts.Models();
 
         this._entries = new parts.Entries();
@@ -34,7 +45,7 @@ class Ecosystem extends data.DataBlock {
     get fields() { return this._fields; }
 
     get models() { return this._models; }
-    
+
     get entries() { return this._entries; }
 
     get catalog() { return this._catalog; }

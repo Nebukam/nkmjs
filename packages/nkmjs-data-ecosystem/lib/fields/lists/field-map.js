@@ -1,3 +1,5 @@
+'use strict';
+
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
@@ -7,11 +9,17 @@ const FieldKVP = require("../types/field-kvp");
 
 
 /**
- * A field of type 'list' value is usually an iterable array.
- * Each value in the array is either a value constrainted by a specific type
+ * @class
+ * @augments ecosystem.fields.lists.FieldList
+ * @memberof ecosystem.fields.lists
  */
 class FieldMap extends FieldList {
     constructor() { super(); }
+
+    static __NFO__ = {
+        [com.IDS.ICON]: `field-map`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-map`
+    };
 
     static __default_typeClass = FieldKVP;
 
@@ -19,9 +27,9 @@ class FieldMap extends FieldList {
         super._Init();
     }
 
-    InitValues(p_details, p_dataObject){ 
+    InitValues(p_details, p_dataObject) {
         let values = super.InitValues(p_details, p_dataObject);
-        if(!(IDS.VALUE in values)){ values[IDS.VALUE] = new Map(); }
+        if (!(IDS.VALUE in values)) { values[IDS.VALUE] = new Map(); }
         return values;
     }
 

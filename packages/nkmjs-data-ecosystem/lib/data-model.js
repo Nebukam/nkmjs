@@ -1,3 +1,5 @@
+'use strict';
+
 const collections = require("@nkmjs/collections");
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
@@ -17,62 +19,21 @@ const DataBlockExtendable = require(`./data-block-extendable`);
  *  - FIELD ENTRY, model-specifics settings ( as per defined in FIELD MODEL )
  * 
  * @description TODO
+ * @class
+ * @augments ecosystem.DataBlocExtendable
+ * @memberof ecosystem
  */
 class DataModel extends DataBlockExtendable {
     constructor() { super(); }
 
+    static __NFO__ = {
+        [com.IDS.ICON]: `data-model`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:data-model`
+    };
+
     //#region Static methods
 
-    /**
-     * Create a model from a mockup field object formatted as :
-     * 
-     * { 
-     *      myField:fieldConstructor, 
-     *      myField:"fieldConstructorName",
-     *      anotherField:{ 
-     *          cl:fieldConstructor, 
-     *          settings:{ } 
-     *      }
-     * }
-     * 
-     * @param {object} p_fields 
-     */
-    static CreateModel(p_fields, p_model = null) {
-        let model = com.Rent(p_model ? p_model : this.constructor);
-        for (var fieldName in p_fields) {
-            let fieldInfos = p_fields[fieldName];
-            if (u.isFunc(fieldInfos)) { this.CreateField(model, fieldInfos, fieldName); }
-            else if (u.isString(fieldInfos)) { this.CreateField(model, com.BINDINGS.GetClass(fieldInfos), fieldName); }
-            else if (u.isObject(fieldInfos)) { this.CreateField(model, fieldInfos.cl, fieldName, fieldInfos.settings); }
-        }
-        return model;
-    }
 
-    static CreateField(p_model, p_fieldClass, p_id, p_settings = null) {
-
-        let fieldModel = com.Rent(u.isFunc(p_fieldClass) ? p_fieldClass : p_fieldClass.constructor);
-
-        if (p_settings) { u.tils.SetOverwrite(fieldModel._settings, p_settings); }
-        p_model.Register(fieldModel, p_id);
-
-        return fieldModel;
-
-    }
-
-    static IsFieldNameAvailable(p_model, p_name) {
-
-        while (p_model != null) {
-            if (!p_model._fieldRep.IsNameAvailable(p_name)) { return false; }
-            p_model = p_model._base;
-        }
-
-        return true;
-
-    }
-
-    static Owns(p_model, p_field) {
-        return p_model._fieldRep._itemList.Contains(p_field);
-    }
 
     //#endregion
 
@@ -92,7 +53,6 @@ class DataModel extends DataBlockExtendable {
             .Hook(SIGNAL.FIELD_RENAMED, this._OnBaseFieldRenamed, this);
 
         this._cachedFieldList = new collections.List();
-        this._fieldSettings = {};
 
     }
 
@@ -107,14 +67,26 @@ class DataModel extends DataBlockExtendable {
 
     //#region Local Field management
 
+    /**
+     * @description TODO
+     * @param {ecosystem.FieldModel} p_field 
+     * @param {data.core.ID} p_id 
+     * @returns 
+     */
     Register(p_field, p_id) {
         return this._fieldRep.Register(p_field, p_id);
     }
 
+    /**
+     * @access protected
+     * @description TODO
+     * @param {data.core.Repertoire} p_repertoire 
+     * @param {ecosystem.FieldModel} p_field 
+     */
     _OnFieldRegistered(p_repertoire, p_field) {
 
         p_field.model = this;
-        p_field.InitSettings(this._fieldSettings);
+        p_field.InitSettings();
 
         p_field.Watch(data.SIGNAL.DIRTY, this._OnFieldDirty, this);
 
@@ -133,20 +105,48 @@ class DataModel extends DataBlockExtendable {
 
     }
 
+    /**
+     * @access protected
+     * @description TODO
+     * @param {data.core.Repertoire} p_repertoire 
+     * @param {ecosystem.FieldModel} p_field 
+     */
     _OnFieldUnregistered(p_repertoire, p_field) {
         this._Broadcast(SIGNAL.FIELD_REMOVED, this, p_field);
     }
 
+    /**
+     * @access protected
+     * @description TODO
+     * @param {data.core.ID} p_id 
+     * @param {*} p_oldName 
+     */
     _OnFieldRenamed(p_id, p_oldName) {
         this._Broadcast(SIGNAL.FIELD_RENAMED, this, p_id, p_oldName);
     }
 
+    /**
+     * @access protected
+     * @description TODO
+     * @param {ecosystem.FieldModel} p_field 
+     */
     _OnFieldDirty(p_field) {
 
     }
 
-    //#endregion
+    /**
+     * @description TODO
+     * @param {ecosystem.FieldModel} p_field 
+     * @returns 
+     */
+    Owns(p_field) { return p_field.model === this; }
 
+    /**
+     * @description TODO
+     * @param {number} p_index 
+     * @param {boolean} [p_localOnly] 
+     * @returns 
+     */
     GetFieldAt(p_index, p_localOnly = true) {
         if (p_localOnly) { return this._fieldRep.At(p_index); }
 
@@ -154,43 +154,77 @@ class DataModel extends DataBlockExtendable {
         if (field || p_localOnly || !this._base) { return field; }
     }
 
+    /**
+     * @description TODO
+     * @param {data.core.ID} p_id 
+     * @param {boolean} [p_localOnly] 
+     * @returns 
+     */
     GetField(p_id, p_localOnly = true) {
         let field = this._fieldRep.GetByName(p_id);
         if (field || p_localOnly || !this._base) { return field; }
     }
 
+    /**
+     * @description TODO
+     * @param {string} p_name 
+     * @param {boolean} [p_localOnly] 
+     * @returns 
+     */
     GetFieldByName(p_name, p_localOnly = true) {
         let field = this._fieldRep.GetByName(p_name);
         if (field || p_localOnly || !this._base) { return field; }
     }
 
+
+    //#endregion
+
     //#region Extended fields management
 
-    _OnBaseFieldAdded(p_model, p_item) {
+    /**
+     * @access protected
+     * @description TODO
+     * @param {ecosystem.DataModel} p_model 
+     * @param {ecosystem.FieldModel} p_field 
+     */
+    _OnBaseFieldAdded(p_model, p_field) {
 
-        let existingField = this._fieldRep.Get(p_item.id.name);
+        let existingField = this._fieldRep.Get(p_field.id.name);
         if (existingField) {
             //A field with the same name already exists.
             //Override inherited member.
-            existingField.base = p_item;
+            existingField.base = p_field;
         } else {
-            this._Broadcast(SIGNAL.FIELD_ADDED, this, p_item);
+            this._Broadcast(SIGNAL.FIELD_ADDED, this, p_field);
         }
 
     }
 
-    _OnBaseFieldRemoved(p_model, p_item) {
+    /**
+     * @access protected
+     * @description TODO
+     * @param {ecosystem.DataModel} p_model 
+     * @param {ecosystem.FieldModel} p_field 
+     */
+    _OnBaseFieldRemoved(p_model, p_field) {
 
-        let existingField = this._fieldRep.Get(p_item.id.name);
+        let existingField = this._fieldRep.Get(p_field.id.name);
         if (existingField) {
             //A field with the same name already exists.
             existingField.base = null;
         } else {
-            this._Broadcast(SIGNAL.FIELD_REMOVED, this, p_item);
+            this._Broadcast(SIGNAL.FIELD_REMOVED, this, p_field);
         }
 
     }
 
+    /**
+     * @access protected
+     * @description TODO
+     * @param {ecosystem.DataModel} p_model 
+     * @param {data.core.ID} p_id 
+     * @param {string} p_oldName 
+     */
     _OnBaseFieldRenamed(p_model, p_id, p_oldName) {
 
         let existingFieldOld = this._fieldRep.Get(p_oldName),
@@ -219,6 +253,10 @@ class DataModel extends DataBlockExtendable {
 
     //#region Entry initialization
 
+    /**
+     * @description TODO
+     * @param {ecosystem.DataEntry} p_entry 
+     */
     InitEntry(p_entry) {
         // TODO : For each field in model, init
         let dataObject = p_entry._fieldValues,
