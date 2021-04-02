@@ -1,11 +1,11 @@
 {
-  "name": "@nkmjs/data-ecosystem",
+  "name": "@nkmjs/data-library",
   "version": "0.0.1",
   "description": "NKMjs Framework Data Ecosystem",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-data-ecosystem"
+    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-data-library"
   },
   "scripts": {
     "test": "node test.js"
