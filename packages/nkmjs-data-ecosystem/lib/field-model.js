@@ -52,6 +52,8 @@ class FieldModel extends DataBlocExtendable {
         this._model = p_value;
     }
 
+    get uri(){ return `${this._model.uri}/${this._id._name}`; }
+
     /**
      * @description Field index withing model. This is only for formatting & vizualisation purposes.
      */

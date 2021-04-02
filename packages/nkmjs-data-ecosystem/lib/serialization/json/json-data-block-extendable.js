@@ -1,34 +1,56 @@
 const u = require("@nkmjs/utils");
-const Metadata = require(`../../data/metadata`);
-const BaseSerializer = require(`../serializer-base`);
+const data = require("@nkmjs/data-core");
 
-class DataBlockExtendableJSONSerializer extends BaseSerializer {
+const ENV = require(`../../environment`);
+const IDS = require(`../../ids`);
+const DataBlockJSONSerializer = data.serialization.json.DataBlock;
+
+const __baseID = `base`;
+
+class DataBlockExtendableJSONSerializer extends DataBlockJSONSerializer {
     constructor() { super(); }
 
     /**
-     * @description Return the data as a JSON Object
-     * @param {ecosystem.DataBlockExtendable} p_data The object to serialize
-     * @param {object} p_options Serialization options
-     * @returns {object} Serialized object
+     * @description Serialize the data content into the serial object
+     * @param {object} p_serial 
+     * @param {data.core.DataBlock} p_data 
+     * @param {object} [p_options] 
+     * @returns 
      */
-    static Serialize(p_data, p_options = null) {
-        // TODO : Write base, if any.
-        return p_data._data;
+    static SerializeContent(p_serial, p_data, p_options = null) {
+        // Write base
+        if (p_data.base) { p_serial[__baseID] = p_data.base.uri; }
     }
 
     /**
-     * @description Return an entry object from the provided serial
-     * Or override available info in provided data.
-     * @param {object} p_serial The data to be deserialized
-     * @param {ecosystem.DataBlockExtendable} p_data The existing object to deserialize into
-     * @param {object} p_options Deserialization options
-     * @returns {ecosystem.DataBlockExtendable} Deserialized object (== p_data, if provided)
+     * @description Deserialize the data content.
+     * @param {data.core.DataBlock} p_data 
+     * @param {object} [p_options] 
+     * @returns 
      */
-    static Deserialize(p_serial, p_data = null, p_options = null) {
-        // TODO : Do the thing
-        // TODO : Need a way to access the ecosystem instance to resolve references
-        return p_data;
+    static DeserializeContent(p_serial, p_data, p_options = null) {
+        if (__baseID in p_serial) {
+            // Retrieve base & assign it
+            let baseURI = p_serial[__baseID],
+                ecosystem = u.tils.Get(p_options, `ecosystem`, null);
+
+            if (!ecosystem) { throw new Error(`Cannot resolve reference without an ecosystem set`); }
+
+            let baseRef = ecosystem.Resolve(baseURI);
+            if (!baseRef) {
+                ecosystem.RegisterUnresolvedReference(
+                    p_data,
+                    {
+                        uri: baseURI,
+                        set: IDS.BASE
+                    });
+            }else{
+                p_data.base = baseRef;
+            }
+        }
     }
+
+    
 
 }
 

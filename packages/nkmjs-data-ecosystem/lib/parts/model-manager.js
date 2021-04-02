@@ -45,6 +45,8 @@ class ModelManager extends EcosystemPart {
         let modelClass = (p_model || this._defaultModelClass),
             model = this._factory.CreateTemp(modelClass);
 
+        model.ecosystem = this._ecosystem;
+
         if (p_fields) {
             for (var fieldName in p_fields) {
                 let fieldInfos = p_fields[fieldName];
@@ -56,6 +58,11 @@ class ModelManager extends EcosystemPart {
 
         return this._factory.Register(model, p_name);
 
+    }
+
+    Clear() {
+        super.Clear();
+        this._factory.Clear();
     }
 
 }

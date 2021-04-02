@@ -3,6 +3,7 @@
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
+const IDS = require(`./ids`);
 const DataBlocExtendable = require(`./data-block-extendable`);
 
 /**
@@ -30,6 +31,8 @@ class DataEntry extends DataBlocExtendable {
         let oldModel = this._model;
         this._model = p_value;
     }
+
+    get uri(){ return `${IDS.ENTRY}/${this._model._id._name}/${this._id._name}`; }
 
     get fieldValues() { return this._fieldValues; }
 

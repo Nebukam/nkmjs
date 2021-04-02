@@ -58,6 +58,7 @@ class EntryManager extends EcosystemPart {
     _OnModelRegistered(p_factory, p_model) {
 
         let library = com.Rent(EntryLibrary);
+        library.ecosystem = this._ecosystem;
         library.model = p_model;
 
         this._libraryList.Add(library);
@@ -102,6 +103,18 @@ class EntryManager extends EcosystemPart {
         let item = library.Create(p_id, p_class);
         return item;
 
+    }
+
+    Clear(){
+        super.Clear();
+        
+        for(let i = 0, n = this._libraryList.count; i < n; i++){
+            let library = this._libraryList.At(i);
+            library.Release();
+        }
+        
+        this._libraryList.Clear();
+        this._libraryMap.Clear();
     }
 
 

@@ -95,16 +95,28 @@ class DataFactory extends com.pool.DisposableObjectEx {
 
         if (p_class) {
             if (u.isInstanceOf(p_class, cl)) { cl = p_class; }
-            else { throw new Error(`CreateTemp custom constructor (${p_class}) does not extends factory constructor (${this._itemClass.name})`); }
+            else { throw new Error(`custom constructor (${p_class}) does not inherit factory constructor (${this._itemClass.name})`); }
         }
 
-        let newItem = com.Rent(cl);
-        newItem._isTemp = true;
-        this._tempItemList.Add(newItem);
+        return RegisterTemp(com.Rent(cl));
 
-        newItem.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
+    }
 
-        return newItem;
+    /**
+     * Register an item as a temporary instance.
+     * While this is primarily used internally, it allows this data factory to
+     * take control of data created through other means.
+     * @param {*} p_item 
+     * @returns 
+     */
+    RegisterTemp(p_item) {
+
+        if (!this._tempItemList(p_item)) { return; }
+
+        p_item._isTemp = true;
+        p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
+
+        return p_item;
 
     }
 
@@ -179,6 +191,13 @@ class DataFactory extends com.pool.DisposableObjectEx {
      * @param {string} p_name 
      */
     GetByName(p_name) { return this._itemRep.GetByName(p_name); }
+
+    /**
+     * Release all instances created by this factory
+     */
+    Clear() {
+        this._itemRep.Clear();
+    }
 
     /**
      * @description TODO

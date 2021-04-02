@@ -4,8 +4,7 @@ const com = require("@nkmjs/common");
 const env = require(`@nkmjs/environment`);
 const data = require(`@nkmjs/data-core`);
 const io = require(`@nkmjs/io-core`);
-
-const DocumentEx = require(`./document-ex`);
+const documents = require(`@nkmjs/documents`);
 
 /**
  * A MetaDocument is a cross-plateform 'meta' file.
@@ -16,20 +15,28 @@ const DocumentEx = require(`./document-ex`);
  * @augments documents.Document
  * @memberof documents
  */
-class MetaDocument extends DocumentEx{
+class DataBlockExtendableDocument extends documents.DocumentEx{
     constructor(){super();}
+
+    _Init(){
+        super._Init();
+        this._ecosystem = null;
+    }
+
+    get ecosystem(){ return this._ecosystem; }
+    set ecosystem(p_value){ this._ecosystem = p_value; }
 
     static __NFO__ = com.NFOS.Ext({
         resource: io.resources.JSONResource,
         serializationContext: data.serialization.CONTEXT.JSON
-        }, DocumentEx.__NFO__);
+        }, documents.DocumentEx.__NFO__);
 
     _CheckOptions( p_options = null ){
-        p_options = p_options ? p_options : {};
-        p_options.io = env.ENV.IF_NODE(io.IO_TYPE.FILE_SYSTEM, io.IO_TYPE.LOCAL_STORAGE);
+        p_options = ( p_options || {} );
+        p_options.ecosystem = (p_options.ecosystem || this._ecosystem);
         return p_options;
     }
-    
+
 }
 
-module.exports = MetaDocument;
+module.exports = DataBlockExtendableDocument;

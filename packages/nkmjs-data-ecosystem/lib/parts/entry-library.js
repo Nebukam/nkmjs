@@ -15,9 +15,20 @@ class EntryLibrary extends com.pool.DisposableObjectEx {
 
     _Init(){
         super._Init();
+        this._ecosystem = null;
         this._factory = new data.DataFactory();
         this._factory.itemClass = DataEntry;
         this._model = null;
+    }
+
+    get ecosystem(){ return this._ecosystem; }
+    set ecosystem(p_value){ 
+        this._ecosystem = p_value; 
+        this._OnEcosystemChanged(this._ecosystem);
+    }
+
+    _OnEcosystemChanged(p_ecosystem){
+        
     }
 
     get factory(){ return this._factory; }
@@ -36,7 +47,12 @@ class EntryLibrary extends com.pool.DisposableObjectEx {
      */
     Create(p_id, p_class = null){
         let entry = this._factory.Create(p_id, p_class);
+        entry.ecosystem = this._ecosystem;
         entry.model = this._model;
+    }
+
+    Clear(){
+        this._factory.Clear();
     }
 
 }

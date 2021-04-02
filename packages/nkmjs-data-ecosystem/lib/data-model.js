@@ -6,6 +6,7 @@ const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
 const SIGNAL = require(`./signal`);
+const IDS = require(`./ids`);
 const CONTEXT = require(`./context`);
 const DataBlockExtendable = require(`./data-block-extendable`);
 
@@ -56,6 +57,7 @@ class DataModel extends DataBlockExtendable {
 
     }
 
+    get uri(){ return `${IDS.MODEL}/${this._id._name}`; }
 
     _OnBaseChanged(p_oldBase) {
 

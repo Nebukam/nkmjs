@@ -63,7 +63,7 @@ class IO_SIGNAL{
      * @customtag read-only
      * @group Operation.Write
      */
-    static WRITE_STAR = Symbol(`writeStart`);
+    static WRITE_START = Symbol(`writeStart`);
 
     /**
      * @description TODO

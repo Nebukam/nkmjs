@@ -38,7 +38,7 @@ class DataBlockJSONSerializer extends BaseSerializer {
     /**
      * @description Return the target as a JSON Object
      * @param {data.core.DataBlock} p_data The object to serialize
-     * @param {object} p_options Serialization options
+     * @param {object} [p_options] Serialization options
      * @returns {object} Serialized object
      */
     static Serialize(p_data, p_options = null) {
@@ -51,9 +51,21 @@ class DataBlockJSONSerializer extends BaseSerializer {
 
         let serial = p_data.Pack();
         serial[__metaID] = serializer.Serialize(metadata, p_options);
+        this.SerializeContent(p_serial, p_data, p_options);
 
         return serial;
 
+    }
+
+    /**
+     * @description Serialize the data content into the serial object
+     * @param {object} p_serial 
+     * @param {data.core.DataBlock} p_data 
+     * @param {object} [p_options] 
+     * @returns 
+     */
+    static SerializeContent(p_serial, p_data, p_options = null) {
+        
     }
 
     /**
@@ -61,10 +73,10 @@ class DataBlockJSONSerializer extends BaseSerializer {
      * Or override available info in provided target
      * @param {object} p_serial The data to be deserialized
      * @param {data.core.DataBlock} p_data The existing object to deserialize into
-     * @param {object} p_options Deserialization options
+     * @param {object} [p_options] Deserialization options
      * @returns {data.core.DataBlock} Deserialized object (== p_data, if provided)
      */
-    static Deserialize(p_serial, p_data = null, p_options = null) {
+    static Deserialize(p_serial, p_data, p_options = null) {
 
         if (!p_serial) { throw new Error(`Cannot unpack null data.`); }
         if (!p_data) { throw new Error(`Cannot unpack to null target.`); }
@@ -75,10 +87,20 @@ class DataBlockJSONSerializer extends BaseSerializer {
                 metadata);
 
         if (__metaID in p_serial) { serializer.Deserialize(p_serial[__metaID], metadata, p_options); }
-        p_data.Unpack(p_serial);
+        this.DeserializeContent(p_serial, p_data, p_options);
 
         return p_data;
 
+    }
+
+    /**
+     * @description Deserialize the data content.
+     * @param {data.core.DataBlock} p_data 
+     * @param {object} [p_options] 
+     * @returns 
+     */
+    static DeserializeContent(p_serial, p_data, p_options = null) {
+        p_data.Unpack(p_serial);
     }
 
 }

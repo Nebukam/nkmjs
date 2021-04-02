@@ -7,7 +7,9 @@ const io = require(`@nkmjs/io-core`);
 
 /**
  * A document is wrapper for a resource and a data object.
- * It aims at streamlining working with custom datatype & saving them.
+ * It aims at streamlining working with custom datatypes, reading & saving them.
+ * 
+ * It bridges a resource, a serializer and a data instance.
  * @class
  * @hideconstructor
  * @augments common.pool.DisposableObjectEx
@@ -31,6 +33,7 @@ class Document extends com.pool.DisposableObjectEx {
 
         this._currentPath = null;
         this._currentRsc = null;
+        this._options = null;
 
         this._callbacks = new com.helpers.Callbacks();
 
@@ -194,7 +197,7 @@ class Document extends com.pool.DisposableObjectEx {
             io: u.tils.Get(p_options, `io`, nfo.defaultIOType),
             error: this._OnLoadError
         })) {
-            //Plug events
+            this._options = p_options; // Store options to forward them to the serializer
             this._callbacks.Add(p_options);
             return true;
         } else {
@@ -225,6 +228,7 @@ class Document extends com.pool.DisposableObjectEx {
      * Use the serializer in __NFO__ to unserialize resource
      * @access protected
      * @param {*} p_content 
+     * @param {*} [p_data]
      */
     _Unpack(p_content, p_data = null) {
         // If data already exists, attempt to unserialize into existing data.
@@ -232,9 +236,8 @@ class Document extends com.pool.DisposableObjectEx {
         // SomeSerializer.Read( p_rsc.content )
         let serializer = com.BINDINGS.Get(
             data.serialization.CONTEXT.SERIALIZER,
-            com.NFOS.Get(this).serializationContext),
-
-            unpacked = serializer.Deserialize(p_content, p_data, null); //TODO : A way to provide deserialization options
+            com.NFOS.Get(this).serializationContext), // TODO : Fetch serialization context based on resource type instead ?
+            unpacked = serializer.Deserialize(p_content, p_data, this._options); 
 
         this.Dirty();
 
@@ -263,6 +266,7 @@ class Document extends com.pool.DisposableObjectEx {
             error: this._OnSaveError,
             success: this._OnSaveSuccess
         })) {
+            this._options = p_options; // Store options to forward them to the serializer
             this._callbacks.Add(p_options);
             return true;
         } else {
@@ -289,14 +293,15 @@ class Document extends com.pool.DisposableObjectEx {
     /**
      * @description Called when the ressource has started writing its data (not before)
      * Used as rsc._serializeFn
+     * @param {*} p_data 
      */
     _Pack(p_data) {
         //Pack document data into serializable data
         let serializer = com.BINDINGS.Get(
             data.serialization.CONTEXT.SERIALIZER,
-            com.NFOS.Get(this).serializationContext);
+            com.NFOS.Get(this).serializationContext); // TODO : Fetch serialization context based on resource type instead ?
 
-        return serializer.Serialize(p_data, null);
+        return serializer.Serialize(p_data, this._options);
     }
 
     // ----> Delete
@@ -313,6 +318,7 @@ class Document extends com.pool.DisposableObjectEx {
 
         this.currentRsc = null;
         this._currentPath = null;
+        this._options = null;
 
         super._CleanUp();
 

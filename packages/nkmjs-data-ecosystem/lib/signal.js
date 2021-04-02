@@ -35,7 +35,7 @@ class SIGNAL {
     * @type {symbol}
     * @customtag read-only
     */
-     static FIELD_RENAMED = Symbol(`fieldRenamed`);
+    static FIELD_RENAMED = Symbol(`fieldRenamed`);
 
     /**
     * @description TODO
@@ -43,6 +43,20 @@ class SIGNAL {
     * @customtag read-only
     */
     static FIELD_TYPE_CHANGED = Symbol(`fieldTypeChanged`);
+
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    */
+    static REFERENCE_SOLVED = Symbol(`referenceSolved`);
+
+    /**
+   * @description TODO
+   * @type {symbol}
+   * @customtag read-only
+   */
+    static DATA_REFERENCES_SOLVED = Symbol(`dataReferenceSolved`);
 
 }
 

@@ -3,6 +3,8 @@
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
+const ENV = require(`./environment`);
+
 /**
  * @class
  * @augments data.DataBlock
@@ -16,12 +18,22 @@ class DataBlockExtendable extends data.DataBlock {
         [com.IDS.UID]: `@nkmjs/ecosystem:data-block-extendable`
     };
 
+    static __uriPrefix = ``;
+
     _Init() {
         super._Init();
+        this._ecosystem = null;
         this._base = null;
         this._baseObserver = new com.signals.Observer();
         this._baseObserver.Hook(com.SIGNAL.UPDATED, this._OnBaseUpdated, this);
     }
+
+    get ecosystem(){ return this._ecosystem; }
+    set ecosystem(p_value){ this._ecosystem = p_value; }
+
+    get hasUnresolvedReferences(){ return this._ecosystem.HasUnresolvedReferences(this); }
+
+    get uri(){ throw new Error(`not implemented`); }
 
     /**
      * @description TODO
@@ -99,6 +111,17 @@ class DataBlockExtendable extends data.DataBlock {
         }
         return p_chain;
 
+    }
+
+    _CleanUp(){
+        super._CleanUp();
+        this.base = null;
+        this.ecosystem = null;
+    }
+
+    toString(){
+        if(this._id){ return `${this.uri}`; }
+        return super.toString();
     }
 
 }

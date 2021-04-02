@@ -8,11 +8,13 @@ const CONTEXT = require(`./context`);
     expected input/output :
 
     {
-        "__NFO__":{ 
-            "instanceOf":"class-system-uid",
+        "meta":{ 
+            "class":"class-string-id",
             ...
         },
-        ...
+        "data":{
+            ...
+        }
     }
 
 */
@@ -90,7 +92,7 @@ class JSONSerializer extends BaseSerializer {
             targetClass = com.BINDINGS.GetClass(metas[CONTEXT.JSON.CLASS]);
             if (!targetClass) { throw new Error(`Could not find constructor ${metas.instanceOf}`); }
 
-            p_data = com.POOL.Rent(targetClass);
+            p_data = com.Rent(targetClass);
         }
 
         let dataWrapper = null;

@@ -6,6 +6,7 @@ module.exports = {
     CONTEXT: require(`./lib/context`),
 
     Document: require(`./lib/document`),
+    DocumentEx: require(`./lib/documents/document-ex`),
     MetaDocument: require(`./lib/documents/document-meta`)
 }
 

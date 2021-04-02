@@ -267,7 +267,9 @@ class Repertoire extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     Clear() {
-        //TODO : Implement clearing the repertoire
+        while(!this._itemList.isEmpty){
+            this._itemList.last.Release();
+        }
     }
 
     _CleanUp() {
