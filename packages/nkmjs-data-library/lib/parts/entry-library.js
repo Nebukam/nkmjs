@@ -42,6 +42,8 @@ class EntryLibrary extends com.pool.DisposableObjectEx {
         this._model = p_value;
     }
 
+    get entryList(){ return this._factory._itemRep._itemList; }
+
     /**
      * 
      * @param {string|data.core.ID} p_id 

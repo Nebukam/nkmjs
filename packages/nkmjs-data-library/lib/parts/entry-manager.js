@@ -83,6 +83,8 @@ class EntryManager extends EcosystemPart {
 
     }
 
+    GetLibrary(p_model){ return this._libraryMap.Get(p_model); }
+
     /**
      * @description TODO
      * @param {string|core.data.ID} p_id 

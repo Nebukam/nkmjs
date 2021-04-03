@@ -31,6 +31,7 @@ class ModelManager extends EcosystemPart {
     }
 
     get factory() { return this._factory; }
+    get modelList(){ return this._factory._itemRep._itemList; }
 
     /**
      * @description TODO

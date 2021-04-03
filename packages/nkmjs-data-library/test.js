@@ -26,7 +26,7 @@ var newModel = ecosystem.utils.CreateModel(
 let mapField = newModel.GetFieldByName(fName_map);
 //console.log(mapField);
 //console.log(mapField.settings);
-var newEcosystem = new ecosystem.Ecosystem();
+var newEcosystem = new ecosystem.EcosystemBundle();
 
 let
     anotherModel = newEcosystem.models.Create(
@@ -56,6 +56,8 @@ anotherModel.base = thirdModel;
 assert.ok((newEcosystem.models._factory._itemRep._itemList.IndexOf(anotherModel) === 1), `Extending model has not moved after its base in the list.`);
 
 let entry = newEcosystem.entries.Create(`My sexy entry`, anotherModel),
-    serializedEntry = data.serialization.JSONSerializer.Serialize(entry, { ecosystem: entry.ecosystem });
+    serializedEntry = data.serialization.JSONSerializer.Serialize(entry),
+    serializedEcosystem = data.serialization.JSONSerializer.Serialize(newEcosystem);
 
 console.log(serializedEntry);
+console.log(serializedEcosystem);
