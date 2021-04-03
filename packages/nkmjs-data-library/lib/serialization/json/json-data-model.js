@@ -1,6 +1,4 @@
 const u = require("@nkmjs/utils");
-const Metadata = require(`../../data/metadata`);
-const BaseSerializer = require(`../serializer-base`);
 const DataBlockExtendableJSONSerializer = require(`./json-data-block-extendable`);
 
 class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {

@@ -5,6 +5,7 @@ const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 const utils = require(`../utils`);
 
+const DataFactoryEx = require(`../data-factory-ex`);
 const DataModel = require(`../data-model`);
 
 const EcosystemPart = require(`./ecosystem-part`);
@@ -19,7 +20,7 @@ class ModelManager extends EcosystemPart {
 
     _Init() {
         super._Init();
-        this._factory = new data.DataFactory();
+        this._factory = new DataFactoryEx();
         this.defaultModelClass = DataModel;
     }
 

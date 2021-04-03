@@ -16,8 +16,8 @@ class FieldFloat4 extends FieldFloat3 {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-float4`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-float4`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-float4`,
+        [com.IDS.ICON]: `field-float4`
     };
 
     _Init() {

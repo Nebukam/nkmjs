@@ -118,7 +118,6 @@ class SignalBroadcaster extends DisposableObject {
         }
 
         this._broadcasting = true;
-        this._args = args;
 
         let slots = this._slots._map,
             keys = slots.keys();
@@ -178,26 +177,22 @@ class SignalBroadcaster extends DisposableObject {
                     if (onceList) {
                         for (let i = 0; i < n; i++) {
                             let fn = callbacks[i];
-                            fn.apply(null, this._args);
+                            fn.apply(null, args);
                             if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
                         }
                     } else {
-                        for (let i = 0; i < n; i++) {
-                            callbacks[i].apply(null, this._args);
-                        }
+                        for (let i = 0; i < n; i++) { callbacks[i].apply(null, args); }
                     }
 
                 } else {
                     if (onceList) {
                         for (let i = 0; i < n; i++) {
                             let fn = callbacks[i];
-                            fn.apply(watcher, this._args);
+                            fn.apply(watcher, args);
                             if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
                         }
                     } else {
-                        for (let i = 0; i < n; i++) {
-                            callbacks[i].apply(watcher, this._args);
-                        }
+                        for (let i = 0; i < n; i++) { callbacks[i].apply(watcher, args); }
                     }
                 }
             }

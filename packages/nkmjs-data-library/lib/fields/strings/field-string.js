@@ -16,8 +16,8 @@ class FieldString extends FieldModel {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-string`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-string`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-string`,
+        [com.IDS.ICON]: `field-string`
     };
 
     _Init() {

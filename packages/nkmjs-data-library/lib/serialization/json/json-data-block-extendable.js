@@ -1,11 +1,8 @@
 const u = require("@nkmjs/utils");
 const data = require("@nkmjs/data-core");
 
-const ENV = require(`../../environment`);
 const IDS = require(`../../ids`);
 const DataBlockJSONSerializer = data.serialization.json.DataBlock;
-
-const __baseID = `base`;
 
 class DataBlockExtendableJSONSerializer extends DataBlockJSONSerializer {
     constructor() { super(); }
@@ -19,7 +16,7 @@ class DataBlockExtendableJSONSerializer extends DataBlockJSONSerializer {
      */
     static SerializeContent(p_serial, p_data, p_options = null) {
         // Write base
-        if (p_data.base) { p_serial[__baseID] = p_data.base.uri; }
+        if (p_data.base) { p_serial[IDS.BASE] = p_data.base.uri; }
     }
 
     /**
@@ -31,7 +28,7 @@ class DataBlockExtendableJSONSerializer extends DataBlockJSONSerializer {
     static DeserializeContent(p_serial, p_data, p_options = null) {
         if (__baseID in p_serial) {
             // Retrieve base & assign it
-            let baseURI = p_serial[__baseID],
+            let baseURI = p_serial[IDS.BASE],
                 ecosystem = u.tils.Get(p_options, `ecosystem`, null);
 
             if (!ecosystem) { throw new Error(`Cannot resolve reference without an ecosystem set`); }

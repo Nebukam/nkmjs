@@ -16,8 +16,8 @@ class FieldInt4 extends FieldInt3 {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-int4`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-int4`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-int4`,
+        [com.IDS.ICON]: `field-int4`
     };
 
     _Init() {

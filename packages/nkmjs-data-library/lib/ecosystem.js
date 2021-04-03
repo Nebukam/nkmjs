@@ -31,8 +31,8 @@ class Ecosystem extends data.DataBlock {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `ecosystem`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:ecosystem`
+        [com.IDS.UID]: `@nkmjs/ecosystem:ecosystem`,
+        [com.IDS.ICON]: `ecosystem`
     };
 
     _Init() {

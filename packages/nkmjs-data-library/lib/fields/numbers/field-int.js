@@ -16,8 +16,8 @@ class FieldInt extends FieldNumber {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-int`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-int`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-int`,
+        [com.IDS.ICON]: `field-int`
     };
 
     _Init() {

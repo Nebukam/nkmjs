@@ -3,7 +3,9 @@
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
+const DataFactoryEx = require(`../data-factory-ex`);
 const DataEntry = require("../data-entry");
+
 
 /**
  * @class
@@ -16,7 +18,7 @@ class EntryLibrary extends com.pool.DisposableObjectEx {
     _Init(){
         super._Init();
         this._ecosystem = null;
-        this._factory = new data.DataFactory();
+        this._factory = new DataFactoryEx();
         this._factory.itemClass = DataEntry;
         this._model = null;
     }
@@ -49,6 +51,7 @@ class EntryLibrary extends com.pool.DisposableObjectEx {
         let entry = this._factory.Create(p_id, p_class);
         entry.ecosystem = this._ecosystem;
         entry.model = this._model;
+        return entry;
     }
 
     Clear(){

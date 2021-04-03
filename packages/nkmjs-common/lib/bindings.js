@@ -97,8 +97,8 @@ class BINDINGS extends SingletonEx {
         let uid = this._classReverseLookup.Get(p_class);
 
         if (!uid) {
-            uid = u.tils.Get(NFOS.Get(p_class), IDS.uid, null);
-            if (!uid) { throw new Error(`No valid NFO found for ${p_class}`); }
+            uid = u.tils.Get(NFOS.Get(p_class), IDS.UID, null);
+            if (!uid) { throw new Error(`No valid NFO found for ${p_class.name}`); }
             this._SetClass(uid, p_class);
         }
 

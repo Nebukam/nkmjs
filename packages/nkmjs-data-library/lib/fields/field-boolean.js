@@ -16,8 +16,8 @@ class FieldBoolean extends FieldModel {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-boolean`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-boolean`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-boolean`,
+        [com.IDS.ICON]: `field-boolean`
     };
 
     _Init() {

@@ -14,6 +14,13 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
+     static ROAMING = `roaming`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
     static MODEL = `model`;
 
     /**

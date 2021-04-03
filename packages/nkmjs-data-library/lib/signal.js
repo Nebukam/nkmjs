@@ -14,6 +14,13 @@ class SIGNAL {
      * @type {symbol}
      * @customtag read-only
      */
+     static BASE_CHANGED = Symbol(`baseChanged`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     */
     static FIELD_ADDED = Symbol(`fieldAdded`);
 
     /**

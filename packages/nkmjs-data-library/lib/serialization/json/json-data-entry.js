@@ -1,6 +1,4 @@
 const u = require("@nkmjs/utils");
-const Metadata = require(`../../data/metadata`);
-const BaseSerializer = require(`../serializer-base`);
 const DataBlockExtendableJSONSerializer = require(`./json-data-block-extendable`);
 
 class DataEntryJSONSerializer extends DataBlockExtendableJSONSerializer {
@@ -14,7 +12,8 @@ class DataEntryJSONSerializer extends DataBlockExtendableJSONSerializer {
      */
     static Serialize(p_data, p_options = null) {
         // TODO : Write base, if any.
-        return p_data._data;
+        let serial = super.Serialize(p_data, p_options);
+        return serial;
     }
 
     /**

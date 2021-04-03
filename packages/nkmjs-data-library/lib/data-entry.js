@@ -15,8 +15,8 @@ class DataEntry extends DataBlocExtendable {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `data-entry`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:data-entry`
+        [com.IDS.UID]: `@nkmjs/ecosystem:data-entry`,
+        [com.IDS.ICON]: `data-entry`
     };
 
     _Init() {

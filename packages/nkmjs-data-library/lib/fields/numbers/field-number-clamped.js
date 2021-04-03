@@ -15,8 +15,8 @@ class FieldNumberClamped extends FieldNumber {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-number-clamped`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-number-clamped`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-number-clamped`,
+        [com.IDS.ICON]: `field-number-clamped`
     };
 
     _Init() {

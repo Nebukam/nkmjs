@@ -53,6 +53,9 @@ class DOCUMENTS extends com.helpers.SingletonEx {
         document = com.Rent(document);
         if (path) { document.currentPath = path; }
 
+        // Try to fetch default doc data, if any is set
+        if(!data){ data = com.BINDINGS.Get(CONTEXT.DOCUMENT_DEFAULT_DATA, data, null); }
+
         if (data) {
             if (u.isFunc(data)) { data = com.Rent(data); }
             document.currentData = data;

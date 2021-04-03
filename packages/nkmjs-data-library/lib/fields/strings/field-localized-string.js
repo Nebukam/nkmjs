@@ -16,8 +16,8 @@ class FieldLocalizedString extends FieldString {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-string-localized`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-string-localized`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-string-localized`,
+        [com.IDS.ICON]: `field-string-localized`
     };
 
     _Init() {

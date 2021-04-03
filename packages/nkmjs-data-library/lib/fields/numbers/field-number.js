@@ -16,8 +16,8 @@ class FieldNumber extends FieldModel {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-number`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-number`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-number`,
+        [com.IDS.ICON]: `field-number`
     };
 
     _Init() {

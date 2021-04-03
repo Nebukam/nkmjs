@@ -16,8 +16,8 @@ class FieldByte extends FieldNumber {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-byte`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-byte`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-byte`,
+        [com.IDS.ICON]: `field-byte`
     };
 
     _Init() {

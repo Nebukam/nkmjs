@@ -7,14 +7,14 @@ const io = require(`@nkmjs/io-core`);
 const documents = require(`@nkmjs/documents`);
 
 /**
- * Loading an ecosystem document will not load all of its content, only the 'header/configuration' file.
- * Once this document is loaded & parsed, then only its content can be loaded.
+ * An Ecosystem Bundle document store a complete ecosystem, its models, entry etc, in 
+ * a single file.
  * @class
  * @hideconstructor
  * @augments documents.Document
  * @memberof documents
  */
-class EcosystemDocument extends documents.Document {
+class EcosystemBundleDocument extends documents.Document {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
@@ -24,4 +24,4 @@ class EcosystemDocument extends documents.Document {
 
 }
 
-module.exports = EcosystemDocument;
+module.exports = EcosystemBundleDocument;

@@ -17,8 +17,8 @@ class FieldMap extends FieldList {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-map`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-map`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-map`,
+        [com.IDS.ICON]: `field-map`
     };
 
     static __default_typeClass = FieldKVP;

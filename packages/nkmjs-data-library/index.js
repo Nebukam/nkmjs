@@ -15,11 +15,13 @@ module.exports = {
     fields: require(`./lib/fields`),
     parts: require(`./lib/parts`),
 
+    DataFactoryEx: require(`./lib/data-factory-ex`),
     DataBlockExtendable: require(`./lib/data-block-extendable`),
     FieldModel: require(`./lib/field-model`),
     DataEntry: require(`./lib/data-entry`),
     DataModel: __DATA_MODEL,
     Ecosystem: require(`./lib/ecosystem`),
+    EcosystemBundle: require(`./lib/ecosystem-bundle`),
 
 }
 

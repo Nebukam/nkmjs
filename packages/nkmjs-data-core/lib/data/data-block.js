@@ -16,8 +16,8 @@ const ID = require(`../id/id`);
 class DataBlock extends com.pool.DisposableObjectEx {
 
     static __NFO__ = {
-        [com.IDS.ICON]: `data-block`,
-        [com.IDS.UID]: `@nkmjs/data-core:data-block`
+        [com.IDS.UID]: `@nkmjs/data-core:data-block`,
+        [com.IDS.ICON]: `data-block`
     };
 
     constructor() { super(); }
@@ -121,22 +121,6 @@ class DataBlock extends com.pool.DisposableObjectEx {
         this.Dirty();
         this._Broadcast(com.SIGNAL.UPDATED, this);
     }
-
-    /**
-     * @description Packs the object's data into a writable format. The result of Pack is what
-     * is meant to be provided to Unpack().
-     * @returns {object} packed DataObject
-     */
-    Pack() {
-        return { '!!!warning!!!': `you must re-implement the DataBlock.Pack() method in your data objects !` }
-    }
-
-    /**
-     * @description Unpack data contained in the provided p_object. p_object should have
-     * been created by the Pack() method.
-     * @param {object} p_object packaged data
-     */
-    Unpack(p_object) { }
 
     _CleanUp() {
 

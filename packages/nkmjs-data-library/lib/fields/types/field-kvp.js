@@ -20,8 +20,8 @@ class FieldKVP extends FieldModelTyped {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-kvp`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-kvp`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-kvp`,
+        [com.IDS.ICON]: `field-kvp`
     };
 
     _Init() {

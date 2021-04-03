@@ -28,8 +28,8 @@ class DataModel extends DataBlockExtendable {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `data-model`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:data-model`
+        [com.IDS.UID]: `@nkmjs/ecosystem:data-model`,
+        [com.IDS.ICON]: `data-model`
     };
 
     //#region Static methods

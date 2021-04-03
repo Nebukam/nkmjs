@@ -3,6 +3,7 @@
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
+const IDS = require(`./ids`);
 const DataBlocExtendable = require(`./data-block-extendable`);
 
 /**
@@ -16,8 +17,8 @@ class FieldModel extends DataBlocExtendable {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-model`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-model`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-model`,
+        [com.IDS.ICON]: `field-model`
     };
 
     //#region Static methods
@@ -52,7 +53,7 @@ class FieldModel extends DataBlocExtendable {
         this._model = p_value;
     }
 
-    get uri(){ return `${this._model.uri}/${this._id._name}`; }
+    get uri(){ return this._model ? `${this._model.uri}/${this._id._name}` : `${IDS.ROAMING}/${this._id._name}`; }
 
     /**
      * @description Field index withing model. This is only for formatting & vizualisation purposes.

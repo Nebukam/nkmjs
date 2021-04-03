@@ -181,11 +181,9 @@ class Repertoire extends com.pool.DisposableObjectEx {
         this._itemMap.Set(itemID, p_item);
         p_item.id = itemID;
 
-        //console.log(`Registered : ${p_item} with id ${p_item.id}`);
+        //console.log(`Registered : ${p_item.constructor.name} with id ${p_item.id}`);
 
         this._OnItemRegistered(p_item);
-
-        this._Broadcast(SIGNAL.ITEM_REGISTERED, this, p_item);
 
     }
 
@@ -196,6 +194,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
      */
     _OnItemRegistered(p_item) {
         p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
+        this._Broadcast(SIGNAL.ITEM_REGISTERED, this, p_item);
     }
 
     /**
@@ -213,7 +212,6 @@ class Repertoire extends com.pool.DisposableObjectEx {
 
         this._itemMap.Remove(itemID);
         this._OnItemUnregistered(p_item);
-        this._Broadcast(SIGNAL.ITEM_UNREGISTERED, this, p_item);
 
         //Free ID
         p_item.id = null;
@@ -228,6 +226,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
      */
     _OnItemUnregistered(p_item) {
         p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
+        this._Broadcast(SIGNAL.ITEM_UNREGISTERED, this, p_item);
     }
 
     /**

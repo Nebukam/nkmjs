@@ -15,24 +15,24 @@ const documents = require(`@nkmjs/documents`);
  * @augments documents.Document
  * @memberof documents
  */
-class DataBlockExtendableDocument extends documents.DocumentEx{
-    constructor(){super();}
-
-    _Init(){
-        super._Init();
-        this._ecosystem = null;
-    }
-
-    get ecosystem(){ return this._ecosystem; }
-    set ecosystem(p_value){ this._ecosystem = p_value; }
+class DataBlockExtendableDocument extends documents.DocumentEx {
+    constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         resource: io.resources.JSONResource,
         serializationContext: data.serialization.CONTEXT.JSON
-        }, documents.DocumentEx.__NFO__);
+    }, documents.DocumentEx.__NFO__);
 
-    _CheckOptions( p_options = null ){
-        p_options = ( p_options || {} );
+    _Init() {
+        super._Init();
+        this._ecosystem = null;
+    }
+
+    get ecosystem() { return this._ecosystem; }
+    set ecosystem(p_value) { this._ecosystem = p_value; }
+
+    _CheckOptions(p_options = null) {
+        p_options = (p_options || {});
         p_options.ecosystem = (p_options.ecosystem || this._ecosystem);
         return p_options;
     }

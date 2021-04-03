@@ -22,6 +22,7 @@
     "@nkmjs/utils": "^0.0.15",
     "@nkmjs/data-core": "^0.0.15",
     "@nkmjs/documents": "^0.0.15",
+    "@nkmjs/environment": "^0.1.6",
     "@nkmjs/io-core": "^0.1.6"
   },
   "gitHead": "98e1d17ca160f873616ef3d86de2b10c8e7a5fc1"

@@ -19,8 +19,8 @@ class FieldModelTyped extends FieldModelComposite {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-typed`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-typed`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-typed`,
+        [com.IDS.ICON]: `field-typed`
     };
 
     static __default_typeClass = FieldType;

@@ -17,8 +17,8 @@ class FieldArray extends FieldList {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-array`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-array`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-array`,
+        [com.IDS.ICON]: `field-array`
     };
 
     _Init() {

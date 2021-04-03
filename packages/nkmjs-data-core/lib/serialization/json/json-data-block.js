@@ -49,9 +49,9 @@ class DataBlockJSONSerializer extends BaseSerializer {
             CONTEXT.JSON,
             metadata);
 
-        let serial = p_data.Pack();
+        let serial = {};
         serial[__metaID] = serializer.Serialize(metadata, p_options);
-        this.SerializeContent(p_serial, p_data, p_options);
+        this.SerializeContent(serial, p_data, p_options);
 
         return serial;
 
@@ -65,7 +65,7 @@ class DataBlockJSONSerializer extends BaseSerializer {
      * @returns 
      */
     static SerializeContent(p_serial, p_data, p_options = null) {
-        
+        // Need specific implementation.
     }
 
     /**
@@ -100,7 +100,7 @@ class DataBlockJSONSerializer extends BaseSerializer {
      * @returns 
      */
     static DeserializeContent(p_serial, p_data, p_options = null) {
-        p_data.Unpack(p_serial);
+        // Need specific implementation.
     }
 
 }

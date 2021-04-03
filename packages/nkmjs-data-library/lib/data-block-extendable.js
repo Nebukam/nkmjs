@@ -3,7 +3,7 @@
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
-const ENV = require(`./environment`);
+const SIGNAL = require(`./signal`);
 
 /**
  * @class
@@ -14,8 +14,8 @@ class DataBlockExtendable extends data.DataBlock {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `data-block-extendable`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:data-block-extendable`
+        [com.IDS.UID]: `@nkmjs/ecosystem:data-block-extendable`,
+        [com.IDS.ICON]: `data-block-extendable`
     };
 
     static __uriPrefix = ``;
@@ -28,12 +28,12 @@ class DataBlockExtendable extends data.DataBlock {
         this._baseObserver.Hook(com.SIGNAL.UPDATED, this._OnBaseUpdated, this);
     }
 
-    get ecosystem(){ return this._ecosystem; }
-    set ecosystem(p_value){ this._ecosystem = p_value; }
+    get ecosystem() { return this._ecosystem; }
+    set ecosystem(p_value) { this._ecosystem = p_value; }
 
-    get hasUnresolvedReferences(){ return this._ecosystem.HasUnresolvedReferences(this); }
+    get hasUnresolvedReferences() { return this._ecosystem.HasUnresolvedReferences(this); }
 
-    get uri(){ throw new Error(`not implemented`); }
+    get uri() { throw new Error(`not implemented`); }
 
     /**
      * @description TODO
@@ -48,6 +48,7 @@ class DataBlockExtendable extends data.DataBlock {
         this._baseObserver.ObserveOnly(p_value);
         this._OnBaseChanged(oldBase);
         if (p_value) { this._OnBaseUpdated(this._base); }
+        this._Broadcast(SIGNAL.BASE_CHANGED, this, oldBase);
     }
 
     /**
@@ -113,14 +114,14 @@ class DataBlockExtendable extends data.DataBlock {
 
     }
 
-    _CleanUp(){
+    _CleanUp() {
         super._CleanUp();
         this.base = null;
         this.ecosystem = null;
     }
 
-    toString(){
-        if(this._id){ return `${this.uri}`; }
+    toString() {
+        //if (this._id) { return `${this.uri}`; }
         return super.toString();
     }
 

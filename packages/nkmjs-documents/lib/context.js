@@ -6,6 +6,9 @@
 
 class DOCUMENT { constructor() { } }
 
+class DOCUMENT_DEFAULT_DATA { constructor() { } }
+
 module.exports = {
-    DOCUMENT: DOCUMENT
+    DOCUMENT: DOCUMENT,
+    DOCUMENT_DEFAULT_DATA: DOCUMENT_DEFAULT_DATA
 };

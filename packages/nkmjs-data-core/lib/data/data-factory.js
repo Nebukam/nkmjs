@@ -98,7 +98,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
             else { throw new Error(`custom constructor (${p_class}) does not inherit factory constructor (${this._itemClass.name})`); }
         }
 
-        return RegisterTemp(com.Rent(cl));
+        return this.RegisterTemp(com.Rent(cl));
 
     }
 
@@ -111,7 +111,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
      */
     RegisterTemp(p_item) {
 
-        if (!this._tempItemList(p_item)) { return; }
+        if (!this._tempItemList.Add(p_item)) { return; }
 
         p_item._isTemp = true;
         p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);

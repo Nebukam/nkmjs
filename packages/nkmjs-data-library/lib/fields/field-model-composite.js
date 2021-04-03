@@ -14,8 +14,8 @@ class FieldModelComposite extends FieldModel {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-composite`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-composite`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-composite`,
+        [com.IDS.ICON]: `field-composite`
     };
 
     static __requireSanitization = false;

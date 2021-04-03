@@ -16,8 +16,8 @@ class FieldList extends FieldModelTyped {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-list`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-list`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-list`,
+        [com.IDS.ICON]: `field-list`
     };
 
     _Init() {

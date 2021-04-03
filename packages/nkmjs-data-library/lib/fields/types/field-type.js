@@ -15,8 +15,8 @@ class FieldType extends FieldModel {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.ICON]: `field-type`,
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-type`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-type`,
+        [com.IDS.ICON]: `field-type`
     };
 
     static FAMILY_FIELD = `field`;
