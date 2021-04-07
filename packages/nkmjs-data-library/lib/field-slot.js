@@ -1,24 +1,26 @@
 'use strict';
 
+const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
 const IDS = require(`./ids`);
+const SIGNAL = require(`./signal`);
 const DataBlocExtendable = require(`./data-block-extendable`);
 
 /**
- * A FieldModel is a unique implementation of a serializable and customizable type.
+ * A FieldDescriptor is a unique implementation of a serializable and customizable type.
  * It defines a property inside a DataModel, which is then used as a reference to create entries from that model.
  * @class
  * @augments ecosystem.DataBlocExtendable
  * @memberof ecosystem
  */
-class FieldModel extends DataBlocExtendable {
+class FieldSlot extends DataBlocExtendable {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-model`,
-        [com.IDS.ICON]: `field-model`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-slot`,
+        [com.IDS.ICON]: `field-slot`
     };
 
     //#region Static methods
@@ -31,9 +33,15 @@ class FieldModel extends DataBlocExtendable {
 
     _Init() {
         super._Init();
+
         this._model = null;
+        this._group = null;
         this._fieldIndex = 0;
         this._settings = null;
+        this._descriptor = null;
+
+        this._baseObserver.Hook(SIGNAL.SLOT_DESCRIPTOR_CHANGED, this._OnBaseDescriptorChanged, this);
+
     }
 
     ////#region Properties
@@ -53,7 +61,7 @@ class FieldModel extends DataBlocExtendable {
         this._model = p_value;
     }
 
-    get uri(){ return this._model ? `${this._model.uri}/${this._id._name}` : `${IDS.ROAMING}/${this._id._name}`; }
+    get uri() { return this._model ? `${this._model.uri}/${this._id._name}` : `${IDS.ROAMING}/${this._id._name}`; }
 
     /**
      * @description Field index withing model. This is only for formatting & vizualisation purposes.
@@ -68,6 +76,48 @@ class FieldModel extends DataBlocExtendable {
     get settings() { return this._settings; }
     set settings(p_value) { this._settings = p_value; }
 
+    /**
+     * @description Field display group
+     * @type {*}
+     */
+    get group() { return this._group; }
+    set group(p_value) {
+        if (this._group === p_value) { return; }
+        let oldGroup = this._group;
+        this._group = p_value;
+    }
+
+    //#endregion
+
+    //#region Descriptor
+
+    /**
+     * @description Field descriptor
+     * @type {object}
+     */
+    get descriptor() { return this._descriptor; }
+    set descriptor(p_value) {
+        if (this._descriptor === p_value) { return; }
+
+        let oldDescriptor = this._descriptor;
+        this._descriptor = p_value;
+
+        if (oldDescriptor) {
+            if (oldDescriptor._slot === this) { oldDescriptor.Release(); }
+        }
+
+        if (this._descriptor) {
+            this._descriptor.slot = this;
+            if (this._settings) { this._descriptor.InitSettings(this._settings); }
+        }
+
+        this._Broadcast(SIGNAL.SLOT_DESCRIPTOR_CHANGED, this, this._descriptor, oldDescriptor);
+    }
+
+    _OnBaseDescriptorChanged(p_slot, p_newDescriptor, p_oldDescriptor) {
+        // TODO : Oh hey, well, huh.
+    }
+
     //#endregion
 
     /**
@@ -77,18 +127,9 @@ class FieldModel extends DataBlocExtendable {
      * @returns 
      */
     InitSettings(p_settings = null) {
-
-        let localSettings = null;
-        if (p_settings) {
-            localSettings = p_settings[this._id._name];
-            if (!localSettings) { localSettings = {}; p_settings[this._id._name] = localSettings; }
-        } else {
-            localSettings = {};
-        }
-
-        this._settings = localSettings;
-        return localSettings;
-
+        if (!this._settings) { this._settings = {}; }
+        if (p_settings) { u.tils.SetOverwrite(this._settings, p_settings); }
+        if (this._descriptor) { this._descriptor.InitSettings(this._settings); }
     }
 
     InitValues(p_settings, p_dataObject) {
@@ -106,4 +147,4 @@ class FieldModel extends DataBlocExtendable {
 
 }
 
-module.exports = FieldModel;
+module.exports = FieldSlot;

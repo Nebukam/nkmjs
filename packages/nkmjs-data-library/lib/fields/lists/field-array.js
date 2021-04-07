@@ -21,10 +21,6 @@ class FieldArray extends FieldList {
         [com.IDS.ICON]: `field-array`
     };
 
-    _Init() {
-        super._Init();
-    }
-
     InitValues(p_details, p_dataObject) {
         let values = super.InitValues(p_details, p_dataObject);
         if (!(IDS.VALUE in values)) { values[IDS.VALUE] = []; }

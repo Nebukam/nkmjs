@@ -15,7 +15,6 @@ class DisposableObject {
 
     constructor() {
         this._isReleasing = false;
-        this._returnFn = null;
         this._Init();
         this._PostInit();
     }
@@ -74,7 +73,7 @@ class DisposableObject {
         this._isReleasing = true;
 
         this._CleanUp();
-        if (this._returnFn != undefined) { this._returnFn(this); }
+        if (this._returnFn) { this._returnFn(this); }
 
         this._isReleasing = false;
     }

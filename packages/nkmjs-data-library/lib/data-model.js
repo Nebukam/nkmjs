@@ -42,22 +42,30 @@ class DataModel extends DataBlockExtendable {
 
         super._Init();
 
-        this._fieldRep = new data.Repertoire();
-        this._fieldRep
-            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnFieldRegistered, this)
-            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this)
-            .Watch(com.SIGNAL.RENAMED, this._OnFieldRenamed, this);
+        this._slotRep = new data.Repertoire();
+        this._slotRep
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnSlotRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnSlotUnregistered, this)
+            .Watch(com.SIGNAL.RENAMED, this._OnSlotRenamed, this);
+
+        this._groupRep = new data.Repertoire();
+        this._groupRep
+            .Watch(data.SIGNAL.ITEM_REGISTERED, this._OnSlotGroupRegistered, this)
+            .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnSlotGroupUnregistered, this)
+            .Watch(com.SIGNAL.RENAMED, this._OnSlotGroupRenamed, this);
+
+        this._defaultGroup = null;
 
         this._baseObserver
-            .Hook(SIGNAL.FIELD_ADDED, this._OnBaseFieldAdded, this)
-            .Hook(SIGNAL.FIELD_REMOVED, this._OnBaseFieldRemoved, this)
-            .Hook(SIGNAL.FIELD_RENAMED, this._OnBaseFieldRenamed, this);
+            .Hook(SIGNAL.SLOT_ADDED, this._OnBaseFieldAdded, this)
+            .Hook(SIGNAL.SLOT_REMOVED, this._OnBaseFieldRemoved, this)
+            .Hook(SIGNAL.SLOT_RENAMED, this._OnBaseFieldRenamed, this);
 
-        this._cachedFieldList = new collections.List();
+        this._cachedSlotList = new collections.List();
 
     }
 
-    get uri(){ return `${IDS.MODEL}/${this._id._name}`; }
+    get uri() { return `${IDS.MODEL}/${this._id._name}`; }
 
     _OnBaseChanged(p_oldBase) {
 
@@ -69,40 +77,41 @@ class DataModel extends DataBlockExtendable {
 
     //#region Local Field management
 
+
     /**
      * @description TODO
-     * @param {ecosystem.FieldModel} p_field 
+     * @param {ecosystem.FieldDescriptor} p_slot 
      * @param {data.core.ID} p_id 
      * @returns 
      */
-    Register(p_field, p_id) {
-        return this._fieldRep.Register(p_field, p_id);
+    RegisterSlot(p_slot, p_id) {
+        return this._slotRep.Register(p_slot, p_id);
     }
 
     /**
      * @access protected
      * @description TODO
      * @param {data.core.Repertoire} p_repertoire 
-     * @param {ecosystem.FieldModel} p_field 
+     * @param {ecosystem.FieldDescriptor} p_slot 
      */
-    _OnFieldRegistered(p_repertoire, p_field) {
+    _OnSlotRegistered(p_repertoire, p_slot) {
 
-        p_field.model = this;
-        p_field.InitSettings();
+        p_slot.model = this;
+        p_slot.InitSettings();
 
-        p_field.Watch(data.SIGNAL.DIRTY, this._OnFieldDirty, this);
+        p_slot.Watch(data.SIGNAL.DIRTY, this._OnSlotDirty, this);
 
         //p_field.metadata.Clone(this._ecosystem.fields.metaTemplate);
 
-        let overloadField = this._base ? this._base.Get(p_field.id.name) : null;
+        let overloadField = this._base ? this._base.GetSlotByName(p_slot._id._name) : null;
         if (overloadField) {
-            p_field.base = overloadField;
-            p_field.fieldIndex = overloadField.fieldIndex;
+            p_slot.base = overloadField;
+            p_slot.fieldIndex = overloadField.fieldIndex;
         } else {
-            p_field.fieldIndex = this._fieldRep._itemList.count - 1;
+            p_slot.fieldIndex = this._slotRep._itemList.count - 1;
         }
 
-        this._Broadcast(SIGNAL.FIELD_ADDED, this, p_field);
+        this._Broadcast(SIGNAL.SLOT_ADDED, this, p_slot);
         this.Dirty();
 
     }
@@ -111,10 +120,10 @@ class DataModel extends DataBlockExtendable {
      * @access protected
      * @description TODO
      * @param {data.core.Repertoire} p_repertoire 
-     * @param {ecosystem.FieldModel} p_field 
+     * @param {ecosystem.FieldDescriptor} p_slot 
      */
-    _OnFieldUnregistered(p_repertoire, p_field) {
-        this._Broadcast(SIGNAL.FIELD_REMOVED, this, p_field);
+    _OnSlotUnregistered(p_repertoire, p_slot) {
+        this._Broadcast(SIGNAL.SLOT_REMOVED, this, p_slot);
     }
 
     /**
@@ -123,25 +132,25 @@ class DataModel extends DataBlockExtendable {
      * @param {data.core.ID} p_id 
      * @param {*} p_oldName 
      */
-    _OnFieldRenamed(p_id, p_oldName) {
-        this._Broadcast(SIGNAL.FIELD_RENAMED, this, p_id, p_oldName);
+    _OnSlotRenamed(p_id, p_oldName) {
+        this._Broadcast(SIGNAL.SLOT_RENAMED, this, p_id, p_oldName);
     }
 
     /**
      * @access protected
      * @description TODO
-     * @param {ecosystem.FieldModel} p_field 
+     * @param {ecosystem.FieldDescriptor} p_slot 
      */
-    _OnFieldDirty(p_field) {
+    _OnSlotDirty(p_slot) {
 
     }
 
     /**
      * @description TODO
-     * @param {ecosystem.FieldModel} p_field 
+     * @param {ecosystem.FieldDescriptor} p_slot 
      * @returns 
      */
-    Owns(p_field) { return p_field.model === this; }
+    Owns(p_slot) { return p_slot.model === this; }
 
     /**
      * @description TODO
@@ -149,11 +158,11 @@ class DataModel extends DataBlockExtendable {
      * @param {boolean} [p_localOnly] 
      * @returns 
      */
-    GetFieldAt(p_index, p_localOnly = true) {
-        if (p_localOnly) { return this._fieldRep.At(p_index); }
+    GetSlotAt(p_index, p_localOnly = true) {
+        if (p_localOnly) { return this._slotRep.At(p_index); }
 
-        let field = this._fieldRep.At(p_index);
-        if (field || p_localOnly || !this._base) { return field; }
+        let slot = this._slotRep.At(p_index);
+        if (slot || p_localOnly || !this._base) { return slot; }
     }
 
     /**
@@ -162,9 +171,9 @@ class DataModel extends DataBlockExtendable {
      * @param {boolean} [p_localOnly] 
      * @returns 
      */
-    GetField(p_id, p_localOnly = true) {
-        let field = this._fieldRep.GetByName(p_id);
-        if (field || p_localOnly || !this._base) { return field; }
+    GetSlot(p_id, p_localOnly = true) {
+        let slot = this._slotRep.GetByName(p_id);
+        if (slot || p_localOnly || !this._base) { return slot; }
     }
 
     /**
@@ -173,9 +182,9 @@ class DataModel extends DataBlockExtendable {
      * @param {boolean} [p_localOnly] 
      * @returns 
      */
-    GetFieldByName(p_name, p_localOnly = true) {
-        let field = this._fieldRep.GetByName(p_name);
-        if (field || p_localOnly || !this._base) { return field; }
+    GetSlotByName(p_name, p_localOnly = true) {
+        let slot = this._slotRep.GetByName(p_name);
+        if (slot || p_localOnly || !this._base) { return slot; }
     }
 
 
@@ -187,17 +196,17 @@ class DataModel extends DataBlockExtendable {
      * @access protected
      * @description TODO
      * @param {ecosystem.DataModel} p_model 
-     * @param {ecosystem.FieldModel} p_field 
+     * @param {ecosystem.FieldDescriptor} p_field 
      */
     _OnBaseFieldAdded(p_model, p_field) {
 
-        let existingField = this._fieldRep.Get(p_field.id.name);
+        let existingField = this._slotRep.Get(p_field.id.name);
         if (existingField) {
             //A field with the same name already exists.
             //Override inherited member.
             existingField.base = p_field;
         } else {
-            this._Broadcast(SIGNAL.FIELD_ADDED, this, p_field);
+            this._Broadcast(SIGNAL.SLOT_ADDED, this, p_field);
         }
 
     }
@@ -206,16 +215,16 @@ class DataModel extends DataBlockExtendable {
      * @access protected
      * @description TODO
      * @param {ecosystem.DataModel} p_model 
-     * @param {ecosystem.FieldModel} p_field 
+     * @param {ecosystem.FieldDescriptor} p_field 
      */
     _OnBaseFieldRemoved(p_model, p_field) {
 
-        let existingField = this._fieldRep.Get(p_field.id.name);
+        let existingField = this._slotRep.Get(p_field.id.name);
         if (existingField) {
             //A field with the same name already exists.
             existingField.base = null;
         } else {
-            this._Broadcast(SIGNAL.FIELD_REMOVED, this, p_field);
+            this._Broadcast(SIGNAL.SLOT_REMOVED, this, p_field);
         }
 
     }
@@ -229,8 +238,8 @@ class DataModel extends DataBlockExtendable {
      */
     _OnBaseFieldRenamed(p_model, p_id, p_oldName) {
 
-        let existingFieldOld = this._fieldRep.Get(p_oldName),
-            existingFieldNew = this._fieldRep.Get(p_id.name);
+        let existingFieldOld = this._slotRep.Get(p_oldName),
+            existingFieldNew = this._slotRep.Get(p_id.name);
 
         if (existingFieldOld) {
             //A field here was using the same name.
@@ -246,7 +255,7 @@ class DataModel extends DataBlockExtendable {
             //No link to old name, but link to the new one
             existingFieldNew.base = p_base.Get(p_id);
         } else {
-            this._Broadcast(SIGNAL.FIELD_RENAMED, this, p_id, p_oldName);
+            this._Broadcast(SIGNAL.SLOT_RENAMED, this, p_id, p_oldName);
         }
 
     }
@@ -262,13 +271,43 @@ class DataModel extends DataBlockExtendable {
     InitEntry(p_entry) {
         // TODO : For each field in model, init
         let dataObject = p_entry._fieldValues,
-            fieldList = this._cachedFieldList._array;
+            fieldList = this._cachedSlotList._array;
         for (let i = 0, n = fieldList.length; i < n; i++) {
             let fieldDetails = fieldList[i];
             fieldDetails._model.InitValues(fieldDetails, dataObject);
         }
 
     }
+
+    //#endregion
+
+    //#region Group management
+
+    get defaultGroup() { return this._defaultGroup; }
+    set defaultGroup(p_value) { this._defaultGroup = p_value; }
+
+    _OnSlotGroupRegistered(p_repertoire, p_group) {
+        if (!this._defaultGroup) { this.defaultGroup = p_group; }
+    }
+
+    _OnSlotGroupUnregistered(p_repertoire, p_group) {
+        if (this._defaultGroup === p_group) {
+            // TODO : Find a fallback default group ?
+            // Or this should not happen ?
+        }
+    }
+
+    _OnSlotGroupRenamed(p_id, p_oldName) {
+        // Well ok then
+    }
+
+    /**
+     * @description TODO
+     * @param {string} p_name 
+     * @param {boolean} [p_localOnly] 
+     * @returns 
+     */
+     GetSlotGroupByName(p_name) { return this._groupRep.GetByName(p_name); }
 
     //#endregion
 

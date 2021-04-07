@@ -1,5 +1,7 @@
 'use strict';
 
+const com = require("@nkmjs/common");
+
 /**
  * @description TODO
  * @class
@@ -8,6 +10,13 @@
  */
 class BaseSerializer {
     constructor() { }
+
+    static __context = null;
+    static __master = null;
+
+    static GetSerializer(p_key, p_fallback = null){
+        return com.BINDINGS.Get(this.__context, p_key, p_fallback);
+    }
 
     /**
      * 

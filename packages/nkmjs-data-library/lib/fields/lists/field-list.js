@@ -3,26 +3,21 @@
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
-const IDS = require(`../../ids`);
-const FieldModelTyped = require(`../field-model-typed`);
+const FieldDescriptorTyped = require(`../field-descriptor-typed`);
 
 
 /**
  * @class
- * @augments ecosystem.fields.FieldModelTyped
+ * @augments ecosystem.fields.FieldDescriptorTyped
  * @memberof ecosystem.fields.lists
  */
-class FieldList extends FieldModelTyped {
+class FieldList extends FieldDescriptorTyped {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-list`,
-        [com.IDS.ICON]: `field-list`
+        [com.IDS.ICON]: `field-list`,
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-list`
     };
-
-    _Init() {
-        super._Init();
-    }
 
     InitSettings(p_settings = null) {
         let localSettings = super.InitSettings(p_settings);

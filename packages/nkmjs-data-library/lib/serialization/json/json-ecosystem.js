@@ -7,28 +7,23 @@ const DataBlockJSONSerializer = data.serialization.json.DataBlock;
 class EcosystemJSONSerializer extends DataBlockJSONSerializer {
     constructor() { super(); }
 
-    /**
-     * @description Serialize the data content into the serial object
-     * @param {object} p_serial 
-     * @param {data.core.DataBlock} p_data 
-     * @param {object} [p_options] 
-     * @returns 
-     */
+    //#region Deserialization
+
     static SerializeContent(p_serial, p_data, p_options = null) {
         // TODO : Write ecosystem content
         // - high-level ecosystem settings
     }
 
-    /**
-     * @description Deserialize the data content.
-     * @param {data.core.DataBlock} p_data 
-     * @param {object} [p_options] 
-     * @returns 
-     */
-    static DeserializeContent(p_serial, p_data, p_options = null) {
+    //#endregion
+
+    //#region Deserialization
+
+    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
         // TODO : Load ecosystem settings
         // - high-level ecosystem settings
     }
+
+    //#endregion
 
 
 

@@ -17,7 +17,8 @@ module.exports = {
 
     DataFactoryEx: require(`./lib/data-factory-ex`),
     DataBlockExtendable: require(`./lib/data-block-extendable`),
-    FieldModel: require(`./lib/field-model`),
+    FieldSlot: require(`./lib/field-slot`),
+    FieldDescriptor: require(`./lib/field-descriptor`),
     DataEntry: require(`./lib/data-entry`),
     DataModel: __DATA_MODEL,
     Ecosystem: require(`./lib/ecosystem`),

@@ -5,24 +5,20 @@ const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
 const IDS = require(`../ids`);
-const FieldModel = require(`../field-model`);
+const FieldDescriptor = require(`../field-descriptor`);
 
 /**
  * @class
- * @augments ecosystem.FieldModel
+ * @augments ecosystem.FieldDescriptor
  * @memberof ecosystem.fields
  */
-class FieldBoolean extends FieldModel {
+class FieldBoolean extends FieldDescriptor {
     constructor() { super(); }
 
     static __NFO__ = {
         [com.IDS.UID]: `@nkmjs/ecosystem:field-boolean`,
         [com.IDS.ICON]: `field-boolean`
     };
-
-    _Init() {
-        super._Init();
-    }
 
     InitValues(p_details, p_dataObject) {
         let values = super.InitValues(p_details, p_dataObject);

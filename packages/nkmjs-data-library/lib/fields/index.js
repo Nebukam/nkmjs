@@ -2,8 +2,8 @@
 
 module.exports = {
 
-    FieldModelComposite: require(`./field-model-composite`),
-    FieldModelTyped: require(`./field-model-typed`),
+    FieldDescriptorComposite: require(`./field-descriptor-composite`),
+    FieldDescriptorTyped: require(`./field-descriptor-typed`),
 
     Boolean: require(`./field-boolean`),
 
@@ -11,5 +11,6 @@ module.exports = {
     lists: require(`./lists`),
     numbers: require(`./numbers`),
     strings: require(`./strings`),
+    transforms: require(`./transforms`),
 
 }

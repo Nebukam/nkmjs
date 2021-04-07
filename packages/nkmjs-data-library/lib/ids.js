@@ -14,7 +14,7 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
-     static ROAMING = `roaming`;
+    static ROAMING = `roaming`;
 
     /**
      * @description TODO
@@ -42,6 +42,20 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
+    static DESCRIPTOR = `descriptor`;
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    */
+    static SETTINGS = `settings`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
     static BASE = `base`;
 
     /**
@@ -49,7 +63,21 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
+    static GROUP = `group`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
     static KEY = `key`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
+    static SLOTS = `slots`;
 
     /**
      * @description TODO

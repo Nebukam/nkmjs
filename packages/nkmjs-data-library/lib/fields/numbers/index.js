@@ -19,4 +19,6 @@ module.exports = {
 
     UInt: require(`./field-uint`),
 
+    Color: require(`./field-color`),
+
 }

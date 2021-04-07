@@ -1,8 +1,7 @@
 const com = require("@nkmjs/common");
 
 const DataBlock = require(`../../data/data-block`);
-const CONTEXT = require(`../context`);
-const BaseSerializer = require(`../serializer-base`);
+const AbstractJSONSerializer = require(`./json-abstract-serializer`);
 
 
 /**
@@ -29,10 +28,10 @@ const __dataID = `data`;
  * @description TODO
  * @class
  * @hideconstructor
- * @augments data.core.serialization.BaseSerializer
+ * @augments data.core.serialization.AbstractJSONSerializer
  * @memberof data.core.serialization
  */
-class DataBlockJSONSerializer extends BaseSerializer {
+class DataBlockJSONSerializer extends AbstractJSONSerializer {
     constructor() { super(); }
 
     /**
@@ -45,12 +44,11 @@ class DataBlockJSONSerializer extends BaseSerializer {
 
         let metadata = p_data[__metaID];
 
-        let serializer = com.BINDINGS.Get(
-            CONTEXT.JSON,
-            metadata);
+        let serializer = this.GetSerializer(metadata);
 
         let serial = {};
         serial[__metaID] = serializer.Serialize(metadata, p_options);
+
         this.SerializeContent(serial, p_data, p_options);
 
         return serial;
@@ -76,18 +74,16 @@ class DataBlockJSONSerializer extends BaseSerializer {
      * @param {object} [p_options] Deserialization options
      * @returns {data.core.DataBlock} Deserialized object (== p_data, if provided)
      */
-    static Deserialize(p_serial, p_data, p_options = null) {
+    static Deserialize(p_serial, p_data, p_options = null, p_metas = null) {
 
         if (!p_serial) { throw new Error(`Cannot unpack null data.`); }
         if (!p_data) { throw new Error(`Cannot unpack to null target.`); }
 
         let metadata = p_data.metadata,
-            serializer = com.BINDINGS.Get(
-                CONTEXT.JSON,
-                metadata);
+            serializer = this.GetSerializer(metadata);
 
-        if (__metaID in p_serial) { serializer.Deserialize(p_serial[__metaID], metadata, p_options); }
-        this.DeserializeContent(p_serial, p_data, p_options);
+        if (__metaID in p_serial) { serializer.Deserialize(p_serial[__metaID], metadata, p_options, p_metas); }
+        this.DeserializeContent(p_serial, p_data, p_options, p_metas);
 
         return p_data;
 
@@ -99,7 +95,7 @@ class DataBlockJSONSerializer extends BaseSerializer {
      * @param {object} [p_options] 
      * @returns 
      */
-    static DeserializeContent(p_serial, p_data, p_options = null) {
+    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
         // Need specific implementation.
     }
 

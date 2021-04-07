@@ -5,7 +5,7 @@ const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
 const IDS = require(`../../ids`);
-const FieldModelTyped = require("../field-model-typed");
+const FieldDescriptorTyped = require("../field-descriptor-typed");
 
 const FieldType = require("./field-type");
 
@@ -13,10 +13,10 @@ const __valueTypeID = data.ID.New(IDS.VALUE_TYPE);
 
 /**
  * @class
- * @augments ecosystem.fields.FieldModelTyped
+ * @augments ecosystem.fields.FieldDescriptorTyped
  * @memberof ecosystem.fields
  */
-class FieldKVP extends FieldModelTyped {
+class FieldKVP extends FieldDescriptorTyped {
     constructor() { super(); }
 
     static __NFO__ = {

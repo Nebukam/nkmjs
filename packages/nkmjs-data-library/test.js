@@ -8,6 +8,7 @@ const data = require(`@nkmjs/data-core`);
 
 let fName_number = `A Number`,
     fName_vector = `A Vector`,
+    fName_transform = `A 3D Transform`,
     fName_map = `A Map`;
 
 // Create a new model from scratch
@@ -15,6 +16,7 @@ var newModel = ecosystem.utils.CreateModel(
     {
         [fName_number]: fields.numbers.Float,
         [fName_vector]: fields.numbers.Float4,
+        [fName_transform]: fields.transforms.Transform3D,
         [fName_map]: {
             cl: fields.lists.Map,
             settings: {}
@@ -23,7 +25,7 @@ var newModel = ecosystem.utils.CreateModel(
 );
 
 //console.log(newModel);
-let mapField = newModel.GetFieldByName(fName_map);
+let mapField = newModel.GetSlotByName(fName_transform);
 //console.log(mapField);
 //console.log(mapField.settings);
 var newEcosystem = new ecosystem.EcosystemBundle();
@@ -34,6 +36,7 @@ let
         {
             [fName_number]: fields.numbers.Float,
             [fName_vector]: fields.numbers.Float4,
+            [fName_transform]: fields.transforms.Transform3D,
             [fName_map]: {
                 cl: fields.lists.Map,
                 settings: {}
@@ -44,6 +47,7 @@ let
         "third model", null,
         {
             [fName_vector]: fields.numbers.Float4,
+            [fName_transform]: fields.transforms.Transform3D,
             [fName_map]: {
                 cl: fields.lists.Map,
                 settings: {}
@@ -55,9 +59,19 @@ assert.ok((newEcosystem.models._factory._itemRep._itemList.IndexOf(anotherModel)
 anotherModel.base = thirdModel;
 assert.ok((newEcosystem.models._factory._itemRep._itemList.IndexOf(anotherModel) === 1), `Extending model has not moved after its base in the list.`);
 
-let entry = newEcosystem.entries.Create(`My sexy entry`, anotherModel),
-    serializedEntry = data.serialization.JSONSerializer.Serialize(entry),
-    serializedEcosystem = data.serialization.JSONSerializer.Serialize(newEcosystem);
+let SJSON = data.serialization.JSONSerializer;
 
-console.log(serializedEntry);
+let entry = newEcosystem.entries.Create(`My sexy entry`, anotherModel),
+    serializedModel = SJSON.Serialize(anotherModel),
+    serializedEntry = SJSON.Serialize(entry),
+    serializedEcosystem = SJSON.Serialize(newEcosystem);
+
+//console.log(JSON.stringify(serializedEcosystem, null, 4));
+//console.log(serializedEntry);
 console.log(serializedEcosystem);
+
+let deserializedEcosystem = SJSON.Deserialize(serializedEcosystem),
+    reserializedEcosystem = SJSON.Serialize(deserializedEcosystem);
+    
+//console.log(deserializedEcosystem);
+console.log(JSON.stringify(reserializedEcosystem, null, 4));

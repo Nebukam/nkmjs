@@ -65,6 +65,21 @@ class UTILS {
     }
 
     /**
+     * Resolve a path
+     * @param {*} p_obj 
+     * @param  {...any} path 
+     * @returns 
+     */
+    static GetPath(p_obj, p_fallback, ...path) {
+        let value = null;
+        for (let i = 0, n = path.length; i < n; i++) {
+            value = p_obj[path[i]];
+            if (!value) { return p_fallback; }
+        }
+        return value ? value : p_fallback;
+    }
+
+    /**
      * @description Ensure a value is set on a object.
      * @param {object} p_obj The target object
      * @param {string} p_key The property's name

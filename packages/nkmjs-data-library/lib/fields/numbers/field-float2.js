@@ -20,15 +20,6 @@ class FieldFloat2 extends FieldFloat {
         [com.IDS.ICON]: `field-float2`
     };
 
-    _Init() {
-        super._Init();
-    }
-
-    InitSettings(p_settings = null) {
-        let localSettings = super.InitSettings(p_settings);
-        return localSettings;
-    }
-
     InitValues(p_settings, p_dataObject) {
         let values = super.InitValues(p_settings, p_dataObject);
         if (!(IDS.VALUE2 in values)) { values[IDS.VALUE2] = 0; }

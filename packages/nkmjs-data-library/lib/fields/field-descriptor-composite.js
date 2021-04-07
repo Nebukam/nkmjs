@@ -3,14 +3,14 @@
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
-const FieldModel = require(`../field-model`);
+const FieldDescriptor = require(`../field-descriptor`);
 
 /**
  * @class
- * @augments ecosystem.FieldModel
+ * @augments ecosystem.FieldDescriptor
  * @memberof ecosystem.fields
  */
-class FieldModelComposite extends FieldModel {
+class FieldDescriptorComposite extends FieldDescriptor {
     constructor() { super(); }
 
     static __NFO__ = {
@@ -27,18 +27,18 @@ class FieldModelComposite extends FieldModel {
 
     get composition() { return this._composition; }
 
-    _Add(p_fieldModelClass, p_id) {
-        let newFieldModel = new p_fieldModelClass();
-        newFieldModel.id = p_id;
-        this._composition.push(newFieldModel);
-        return newFieldModel;
+    _Add(p_fieldDescriptorClass, p_id) {
+        let newFieldDescriptor = new p_fieldDescriptorClass();
+        newFieldDescriptor.id = p_id;
+        this._composition.push(newFieldDescriptor);
+        return newFieldDescriptor;
     }
 
-    InitSettings(p_settings = null) {
+    InitSettings(p_settings) {
         let localSettings = super.InitSettings(p_settings);
         for (let i = 0, n = this._composition.length; i < n; i++) {
             let childField = this._composition[i];
-            childField.model = this._model;
+            childField.slot = this._slot;
             childField.InitSettings(localSettings);
         }
         return localSettings;
@@ -55,4 +55,4 @@ class FieldModelComposite extends FieldModel {
 
 }
 
-module.exports = FieldModelComposite;
+module.exports = FieldDescriptorComposite;

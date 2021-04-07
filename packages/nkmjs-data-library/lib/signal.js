@@ -21,35 +21,35 @@ class SIGNAL {
      * @type {symbol}
      * @customtag read-only
      */
-    static FIELD_ADDED = Symbol(`fieldAdded`);
+    static SLOT_ADDED = Symbol(`slotAdded`);
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static FIELD_REMOVED = Symbol(`fieldRemoved`);
+    static SLOT_REMOVED = Symbol(`slotRemoved`);
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     */
-    static FIELD_UPDATED = Symbol(`fieldUpdated`);
+    static SLOT_UPDATED = Symbol(`slotUpdated`);
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     */
-    static FIELD_RENAMED = Symbol(`fieldRenamed`);
+    static SLOT_RENAMED = Symbol(`slotRenamed`);
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     */
-    static FIELD_TYPE_CHANGED = Symbol(`fieldTypeChanged`);
+    static SLOT_DESCRIPTOR_CHANGED = Symbol(`slotDescriptorChanged`);
 
     /**
     * @description TODO

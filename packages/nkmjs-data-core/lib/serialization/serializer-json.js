@@ -29,6 +29,9 @@ const CONTEXT = require(`./context`);
 class JSONSerializer extends BaseSerializer {
     constructor() { super(); }
 
+    static __context = CONTEXT.JSON;
+    static __master = JSONSerializer;
+
     /**
      * @description TODO
      * @param {data.core.DataBlock} p_data The object to serialize
@@ -38,10 +41,7 @@ class JSONSerializer extends BaseSerializer {
     static Serialize(p_data, p_options = null) {
 
         // Retrieve serializer
-        let serializer = com.BINDINGS.Get(
-            CONTEXT.JSON,
-            p_data.constructor,
-            null);
+        let serializer = this.GetSerializer(p_data.constructor, null);
 
         if (!serializer) { throw new Error(`Could not find suitable serializer for target=${p_data}`); }
 
@@ -66,6 +66,7 @@ class JSONSerializer extends BaseSerializer {
         }
 
         metas[CONTEXT.JSON.CLASS] = com.BINDINGS.GetClassKey(p_data.constructor);
+        if (p_data._id) { metas[CONTEXT.JSON.UID] = p_data._id._name; }
 
         return serial;
 
@@ -80,13 +81,13 @@ class JSONSerializer extends BaseSerializer {
      */
     static Deserialize(p_serial, p_data = null, p_options = null) {
 
-        let targetClass = null;
+        let targetClass = null,
+            metas = p_serial[CONTEXT.JSON.META_KEY];
 
         // Retrieve reference constructor
         if (p_data != null) {
             targetClass = p_data.constructor;
         } else {
-            let metas = p_serial[CONTEXT.JSON.META_KEY];
             if (!metas) { throw new Error(`Cannot unserialize without nfos`); }
 
             targetClass = com.BINDINGS.GetClass(metas[CONTEXT.JSON.CLASS]);
@@ -100,15 +101,12 @@ class JSONSerializer extends BaseSerializer {
         else { dataWrapper = p_serial[CONTEXT.JSON.DATA_KEY]; }
 
         // Retrieve serializer
-        let serializer = com.BINDINGS.Get(
-            CONTEXT.JSON,
-            targetClass,
-            null);
+        let serializer = this.GetSerializer(targetClass, null);
 
-        if (!serializer) { throw new Error(`Could not find suitable de-serializer for target=${p_data}`); }
+        if (!serializer) { throw new Error(`Could not find suitable de-serializer for target=${targetClass ? targetClass.name : null}`); }
 
         // Deserialize !
-        return serializer.Deserialize(dataWrapper, p_data, p_options);
+        return serializer.Deserialize(dataWrapper, p_data, p_options, metas);
 
     }
 

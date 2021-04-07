@@ -20,11 +20,6 @@ class FieldUInt extends FieldNumber {
         [com.IDS.ICON]: `field-uint`
     };
 
-    _Init() {
-        super._Init();
-    }
-
-
 }
 
 module.exports = FieldUInt;

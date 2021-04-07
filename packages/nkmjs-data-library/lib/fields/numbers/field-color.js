@@ -5,21 +5,21 @@ const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
 const IDS = require(`../../ids`);
-const FieldNumber = require(`./field-number`);
+const FieldFloat4 = require("./field-float3");
 
 /**
  * @class
- * @augments ecosystem.fields.numbers.FieldNumber
+ * @augments ecosystem.fields.numbers.FieldFloat3
  * @memberof ecosystem.fields.numbers
  */
-class FieldInt extends FieldNumber {
+class FieldColor extends FieldFloat4 {
     constructor() { super(); }
 
     static __NFO__ = {
-        [com.IDS.UID]: `@nkmjs/ecosystem:field-int`,
-        [com.IDS.ICON]: `field-int`
+        [com.IDS.UID]: `@nkmjs/ecosystem:field-color`,
+        [com.IDS.ICON]: `field-color`
     };
 
 }
 
-module.exports = FieldInt;
+module.exports = FieldColor;

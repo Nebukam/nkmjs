@@ -131,7 +131,6 @@ class BindingKit extends DisposableObjectEx {
 
         if (this._deployed) { return; }
 
-        let b = BINDINGS.instance;
         for (let i = 0, n = this._KVPS.length; i < n; i++) {
 
             let assoc = this._KVPS[i],
@@ -140,14 +139,14 @@ class BindingKit extends DisposableObjectEx {
 
             for (let k = 0, n = kvps.length; k < n; k++) {
                 let kvp = kvps[k];
-                b._Set(context, kvp.key, kvp.binding);
+                BINDINGS.Set(context, kvp.key, kvp.binding);
 
                 if (true) {
                     // TODO : REMOVE, FOR DEV ONLY
                     let cName = u.isFunc(context) ? context.name : context,
                         kName = u.isFunc(kvp.key) ? kvp.key.name : kvp.key,
                         vName = u.isFunc(kvp.binding) ? kvp.binding.name : kvp.binding;
-                        u.LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
+                    u.LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
                 }
 
             }
@@ -160,7 +159,7 @@ class BindingKit extends DisposableObjectEx {
 
             if (!uid) { throw new Error(`No valid NFO found for ${this._CLASSES[i]}`); }
             this._classDict.Set(cl, uid);
-            b._SetClass(uid, cl);
+            BINDINGS.SetClass(uid, cl);
             u.LOG._(`⧉ ${uid} ⤞ ${cl.name}`, `#7f7f7f`);
         }
 
@@ -174,7 +173,6 @@ class BindingKit extends DisposableObjectEx {
 
         if (!this._deployed) { return; }
 
-        let b = BINDINGS.instance;
         for (let i = 0, n = this._KVPS.length; i < n; i++) {
 
             let assoc = this._KVPS[i],
@@ -183,13 +181,13 @@ class BindingKit extends DisposableObjectEx {
 
             for (let k = 0, n = kvps.length; k < n; k++) {
                 let kvp = kvps[k];
-                b._Remove(context, kvp.key, kvp.binding);
+                BINDINGS._Remove(context, kvp.key, kvp.binding);
             }
         }
 
         let kvps = this._classDict.keys;
         for (let i = 0, n = kvps.length; i < n; i++) {
-            b._RemoveClass(this._classDict.Get(kvps[i]));
+            BINDINGS._RemoveClass(this._classDict.Get(kvps[i]));
         }
 
         this._deployed = false;

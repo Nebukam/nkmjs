@@ -42,13 +42,12 @@ class POOL extends Singleton {
 
     /**
      * @access private
-     * Register custom element
+     * Register custom class
      * @param {DisposableObject} p_class 
      */
     _Register(p_class) {
 
         if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
-
         this._globalTypes.Set(p_class.name, p_class);
         //#LOG console.log(`%c+ ${p_class.name}`, 'color: #ff8a00');
     }

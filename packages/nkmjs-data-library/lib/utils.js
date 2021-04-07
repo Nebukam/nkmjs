@@ -3,6 +3,8 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+const FieldSlot = require(`./field-slot`);
+
 class UTILS {
     constructor() { }
 
@@ -27,9 +29,9 @@ class UTILS {
         let model = com.Rent(p_model ? u.isFunc(p_model) ? p_model : p_model.constructor : this.__default_modelClass);
         for (var fieldName in p_fields) {
             let fieldInfos = p_fields[fieldName];
-            if (u.isFunc(fieldInfos)) { this.CreateField(model, fieldInfos, fieldName); }
-            else if (u.isString(fieldInfos)) { this.CreateField(model, com.BINDINGS.GetClass(fieldInfos), fieldName); }
-            else if (u.isObject(fieldInfos)) { this.CreateField(model, fieldInfos.cl, fieldName, fieldInfos.settings); }
+            if (u.isFunc(fieldInfos)) { this.CreateSlot(model, fieldName, fieldInfos); }
+            else if (u.isString(fieldInfos)) { this.CreateSlot(model, fieldName, com.BINDINGS.GetClass(fieldInfos)); }
+            else if (u.isObject(fieldInfos)) { this.CreateSlot(model, fieldName, fieldInfos.cl, fieldInfos.settings); }
         }
         return model;
     }
@@ -37,21 +39,25 @@ class UTILS {
     /**
      * @description Create a field & registers it in a model
      * @param {ecosystem.DataModel} p_model 
-     * @param {function} p_fieldClass 
+     * @param {function} p_descriptorClass 
      * @param {string|data.core.ID} p_id 
      * @param {object} [p_settings] 
      * @returns 
      */
-    static CreateField(p_model, p_fieldClass, p_id, p_settings = null) {
+    static CreateSlot(p_model, p_id, p_descriptorClass = null, p_settings = null) {
 
-        let fieldModel = com.Rent(u.isFunc(p_fieldClass) ? p_fieldClass : p_fieldClass.constructor);
-        if (p_settings) { 
-            if(fieldModel._settings){ u.tils.SetOverwrite(fieldModel._settings, p_settings); }
-            else{ fieldModel._settings = p_settings; }
+        let fieldSlot = com.Rent(FieldSlot);
+
+        if (p_settings) {
+            if (fieldSlot._settings) { u.tils.SetOverwrite(fieldSlot._settings, p_settings); }
+            else { fieldSlot._settings = p_settings; }
         }
-        p_model.Register(fieldModel, p_id);
 
-        return fieldModel;
+        if (p_descriptorClass) { fieldSlot.descriptor = com.Rent(p_descriptorClass); }
+
+        p_model.RegisterSlot(fieldSlot, p_id);
+
+        return fieldSlot;
 
     }
 
@@ -75,14 +81,14 @@ class UTILS {
     /**
      * @description Checks whether using a model as a base for another model
      * would result in a circular reference.
-     * @param {ecosystem.FieldModel} p_model 
-     * @param {ecosystem.FieldModel} p_baseCandidate 
+     * @param {ecosystem.FieldDescriptor} p_model 
+     * @param {ecosystem.FieldDescriptor} p_baseCandidate 
      */
-    static IsCircularReference(p_model, p_baseCandidate){
-        if(p_model === p_baseCandidate){ return true; }
+    static IsCircularReference(p_model, p_baseCandidate) {
+        if (p_model === p_baseCandidate) { return true; }
         let parent = p_model.base;
-        while(parent){
-            if(parent === p_baseCandidate){ return true; }
+        while (parent) {
+            if (parent === p_baseCandidate) { return true; }
             parent = parent.base;
         }
         return false;

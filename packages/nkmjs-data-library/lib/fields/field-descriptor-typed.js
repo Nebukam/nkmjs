@@ -5,7 +5,7 @@ const data = require("@nkmjs/data-core");
 const DataModel = require("../data-model");
 
 const IDS = require(`../ids`);
-const FieldModelComposite = require(`./field-model-composite`);
+const FieldModelComposite = require(`./field-descriptor-composite`);
 
 const FieldType = require("./types/field-type");
 const __typeID = data.ID.New(IDS.TYPE);
@@ -15,7 +15,7 @@ const __typeID = data.ID.New(IDS.TYPE);
  * @augments ecosystem.fields.FieldModelComposite
  * @memberof ecosystem.fields
  */
-class FieldModelTyped extends FieldModelComposite {
+class FieldDescriptorTyped extends FieldModelComposite {
     constructor() { super(); }
 
     static __NFO__ = {
@@ -32,4 +32,4 @@ class FieldModelTyped extends FieldModelComposite {
 
 }
 
-module.exports = FieldModelTyped;
+module.exports = FieldDescriptorTyped;

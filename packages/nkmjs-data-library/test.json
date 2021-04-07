@@ -1,0 +1,121 @@
+{
+    "data": {
+        "metadata": {},
+        "model": [
+            {
+                "data": {
+                    "metadata": {},
+                    "slots": [
+                        {
+                            "data": {
+                                "metadata": {},
+                                "descriptor": "@nkmjs/ecosystem:field-float4",
+                                "settings": {}
+                            },
+                            "meta": {
+                                "class": "@nkmjs/ecosystem:field-slot",
+                                "uid": "8ff92193-8d05-48d0-95db-1b8101e5181d"
+                            }
+                        },
+                        {
+                            "data": {
+                                "metadata": {},
+                                "descriptor": "@nkmjs/ecosystem:field-transform-3d",
+                                "settings": {
+                                    "maxSize": -1
+                                }
+                            },
+                            "meta": {
+                                "class": "@nkmjs/ecosystem:field-slot",
+                                "uid": "80e14150-0ab3-42dc-91b1-61b8d758f1e6"
+                            }
+                        },
+                        {
+                            "data": {
+                                "metadata": {},
+                                "descriptor": "@nkmjs/ecosystem:field-map",
+                                "settings": {
+                                    "family": "field",
+                                    "maxSize": -1
+                                }
+                            },
+                            "meta": {
+                                "class": "@nkmjs/ecosystem:field-slot",
+                                "uid": "e60835c3-9e24-4934-9b39-effc856dc773"
+                            }
+                        }
+                    ]
+                },
+                "meta": {
+                    "class": "@nkmjs/ecosystem:data-model",
+                    "uid": "third model"
+                }
+            },
+            {
+                "data": {
+                    "metadata": {},
+                    "base": "model/third model",
+                    "slots": [
+                        {
+                            "data": {
+                                "metadata": {},
+                                "descriptor": "@nkmjs/ecosystem:field-float",
+                                "settings": {}
+                            },
+                            "meta": {
+                                "class": "@nkmjs/ecosystem:field-slot",
+                                "uid": "cdef6e5f-bbe7-4e03-b2db-1f38959f28ae"
+                            }
+                        },
+                        {
+                            "data": {
+                                "metadata": {},
+                                "descriptor": "@nkmjs/ecosystem:field-float4",
+                                "settings": {}
+                            },
+                            "meta": {
+                                "class": "@nkmjs/ecosystem:field-slot",
+                                "uid": "de8dce9c-bd83-4c56-8272-2b112eec721b"
+                            }
+                        },
+                        {
+                            "data": {
+                                "metadata": {},
+                                "descriptor": "@nkmjs/ecosystem:field-transform-3d",
+                                "settings": {
+                                    "maxSize": -1
+                                }
+                            },
+                            "meta": {
+                                "class": "@nkmjs/ecosystem:field-slot",
+                                "uid": "b248d6c9-1f58-4935-8c29-affb3880006b"
+                            }
+                        },
+                        {
+                            "data": {
+                                "metadata": {},
+                                "descriptor": "@nkmjs/ecosystem:field-map",
+                                "settings": {
+                                    "family": "field",
+                                    "maxSize": -1
+                                }
+                            },
+                            "meta": {
+                                "class": "@nkmjs/ecosystem:field-slot",
+                                "uid": "d5d1e150-be0f-40ae-bbeb-824c78a3c8c2"
+                            }
+                        }
+                    ]
+                },
+                "meta": {
+                    "class": "@nkmjs/ecosystem:data-model",
+                    "uid": "another model"
+                }
+            }
+        ],
+        "entry": {}
+    },
+    "meta": {
+        "class": "@nkmjs/ecosystem:ecosystem-bundle"
+    }
+}

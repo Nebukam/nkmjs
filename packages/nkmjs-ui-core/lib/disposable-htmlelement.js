@@ -65,9 +65,7 @@ class DisposableHTMLElement extends HTMLElement {
     _Init() {
         this._uinc = uinc++;
 
-        this._returnFn = null;
         this._releasing = false;
-        this._releasePrevented = false;
         this._signals = new com.signals.SignalBox();
         this._released = false;
         this._isPainted = false;
@@ -230,9 +228,6 @@ class DisposableHTMLElement extends HTMLElement {
      */
     get isReleasing() { return this._isReleasing; }
 
-    set returnFunc(value) { this._returnFn = value; }
-    set returnContext(value) { this._returnContext = value; }
-
     /**
      * @description Prevents the object from being released.
      * @group Pooling 
@@ -255,7 +250,7 @@ class DisposableHTMLElement extends HTMLElement {
 
         if (this._releasePrevented) {
             this._releasing = false;
-            this._releasePrevented = false;
+            delete this._releasePrevented;
             return;
         }
 
@@ -266,7 +261,7 @@ class DisposableHTMLElement extends HTMLElement {
 
         u.dom.Detach(this);
 
-        if (this._returnFn != undefined) { this._returnFn(this); }
+        if (this._returnFn) { this._returnFn(this); }
         this._releasing = false;
 
     }
@@ -281,7 +276,6 @@ class DisposableHTMLElement extends HTMLElement {
      */
     _CleanUp() {
 
-        this._releasePrevented = false;
         this._signals.Clear();
         this._isFirstPaint = true;
 

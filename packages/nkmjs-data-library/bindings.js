@@ -11,9 +11,11 @@ const documents = require(`./lib/documents`);
 
 const Ecosystem = require(`./lib/ecosystem`);
 const EcosystemBundle = require(`./lib/ecosystem-bundle`);
-const FieldModel = require(`./lib/field-model`);
+const FieldSlot = require(`./lib/field-slot`);
+const FieldDescriptor = require(`./lib/field-descriptor`);
 const DataModel = require(`./lib/data-model`);
 const DataEntry = require(`./lib/data-entry`);
+const DataBlockExtendable = require(`./lib/data-block-extendable`);
 
 class Bindings extends com.helpers.BindingKit {
     constructor() { super(); }
@@ -25,9 +27,11 @@ class Bindings extends com.helpers.BindingKit {
         this.Add({
             context: data.serialization.CONTEXT.JSON,
             kvps: [
+                { key: DataBlockExtendable, binding: serialization.json.DataBlockExtendable },
                 { key: Ecosystem, binding: serialization.json.Ecosystem },
                 { key: EcosystemBundle, binding: serialization.json.EcosystemBundle },
-                { key: FieldModel, binding: serialization.json.FieldModel },
+                { key: FieldSlot, binding: serialization.json.FieldSlot },
+                { key: FieldDescriptor, binding: serialization.json.FieldDescriptor },
                 { key: DataModel, binding: serialization.json.DataModel },
                 { key: DataEntry, binding: serialization.json.DataEntry }
             ]            

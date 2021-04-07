@@ -5,6 +5,7 @@
  */
 
 class FIELD_DETAILS { constructor() { } }
+class FIELD_DESCRIPTOR { constructor() { } }
 
 module.exports = {
     FIELD_DETAILS: FIELD_DETAILS

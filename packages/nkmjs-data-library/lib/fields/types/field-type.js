@@ -4,14 +4,14 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
-const FieldModel = require(`../../field-model`);
+const FieldDescriptor = require(`../../field-descriptor`);
 
 /**
  * @class
- * @augments ecosystem.FieldModel
+ * @augments ecosystem.FieldDescriptor
  * @memberof ecosystem.fields
  */
-class FieldType extends FieldModel {
+class FieldType extends FieldDescriptor {
     constructor() { super(); }
 
     static __NFO__ = {
@@ -23,11 +23,7 @@ class FieldType extends FieldModel {
     static FAMILY_MODEL = `model`;
     static FAMILY_ENTRY = `entry`;
 
-    _Init() {
-        super._Init();
-    }
-
-    InitSettings(p_settings = null) {
+    InitSettings(p_settings) {
         let localSettings = super.InitSettings(p_settings);
         localSettings.family = FieldType.FAMILY_FIELD;
         return localSettings;

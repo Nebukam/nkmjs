@@ -8,13 +8,8 @@ const DataBlockJSONSerializer = data.serialization.json.DataBlock;
 class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
     constructor() { super(); }
 
-    /**
-     * @description Serialize the data content into the serial object
-     * @param {object} p_serial 
-     * @param {data.core.DataBlock} p_data 
-     * @param {object} [p_options] 
-     * @returns 
-     */
+    //#region Serialization
+
     static SerializeContent(p_serial, p_data, p_options = null) {
         // TODO : Write ecosystem content
         // - high-level ecosystem settings.
@@ -28,11 +23,9 @@ class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
             let model = modelReferenceList.At(i),
                 library = p_data.entries.GetLibrary(model),
                 libraryList = library.entryList,
-                librarySize = libraryList.count,
-                serializer = com.BINDINGS.Get(data.serialization.CONTEXT.JSON, model, null);
+                librarySize = libraryList.count;
 
-            if (!serializer) { throw new Error(`Could not find valid serializer for model : ${model}.`); }
-            modelList.push(serializer.Serialize(model, p_options));
+            modelList.push(this.__master.Serialize(model, p_options));
 
             if (librarySize <= 0) { continue; }
 
@@ -42,10 +35,7 @@ class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
             // Serialize entries
             for (let e = 0, en = librarySize; e < en; e++) {
                 let entry = libraryList.At(e);
-                serializer = com.BINDINGS.Get(data.serialization.CONTEXT.JSON, entry, null);
-
-                if (!serializer) { throw new Error(`Could not find valid serializer for entry : ${entry}.`); }
-                localEntries.push(serializer.Serialize(entry, p_options));
+                localEntries.push(this.__master.Serialize(entry, p_options));
             }
 
         }
@@ -55,18 +45,35 @@ class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
 
     }
 
-    /**
-     * @description Deserialize the data content.
-     * @param {data.core.DataBlock} p_data 
-     * @param {object} [p_options] 
-     * @returns 
-     */
-    static DeserializeContent(p_serial, p_data, p_options = null) {
+    //#endregion
+
+    //#region Deserialization
+
+    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
+
+        if (!p_options || !p_options.ecosystem) {
+            if (p_options) { p_options.ecosystem = p_data; }
+            else { p_options = { ecosystem: p_data }; }
+        }
+
         // TODO : Load ecosystem settings
         // - high-level ecosystem settings
         // - then read models
         // - then read entries
+        let modelList = p_serial[IDS.MODEL],
+            entryList = p_serial[IDS.ENTRY];
+
+        if (modelList) {
+            for (let i = 0, n = modelList.length; i < n; i++) {
+                let modelSerial = modelList[i],
+                    model = this.__master.Deserialize(modelSerial, null, p_options);
+
+            }
+        }
+
     }
+
+    //#endregion
 
 
 

@@ -17,7 +17,6 @@ class DisposableObjectEx extends DisposableObject {
     constructor() { super(); }
 
     _Init() {
-        this._releasePrevented = false;
         this._signals = new SignalBox();
     }
 
@@ -124,7 +123,7 @@ class DisposableObjectEx extends DisposableObject {
 
         if (this._releasePrevented) {
             this._isReleasing = false;
-            this._releasePrevented = false;
+            delete this._releasePrevented;
             return;
         }
 
@@ -138,7 +137,6 @@ class DisposableObjectEx extends DisposableObject {
 
     _CleanUp() {
         super._CleanUp();
-        this._releasePrevented = false;
         this._signals.Clear();
     }
 

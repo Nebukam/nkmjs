@@ -26,24 +26,18 @@ const IDS = require(`./ids`);
  * @hideconstructor
  * @memberof common
  */
-class BINDINGS extends SingletonEx {
-    constructor() { super(); }
+class BINDINGS {
+    constructor() { }
 
-    _Init() {
+    static _classLookup = new collections.Dictionary();
+    static _classReverseLookup = new collections.Dictionary();
 
-        super._Init();
+    static _squashedAssocs = new collections.KDictionary();//Array of squashed associations (as kits get loaded and all)
 
-        this._classLookup = new collections.Dictionary();
-        this._classReverseLookup = new collections.Dictionary();
+    static _contextMap = new collections.KDictionary();
+    static _contextKeyLists = new collections.DictionaryList();
 
-        this._squashedAssocs = new collections.KDictionary();//Array of squashed associations (as kits get loaded and all)
-
-        this._contextMap = new collections.KDictionary();
-        this._contextKeyLists = new collections.DictionaryList();
-
-        this._distanceMap = new collections.KDictionary();
-
-    }
+    static _distanceMap = new collections.KDictionary();
 
 
     /**
@@ -68,8 +62,7 @@ class BINDINGS extends SingletonEx {
      * <div class="tip warning" data-title="About serialization">This is critical during the process of serialization/de-serialization, 
      * as serialized data store its string identifier to be deserialized afterward.</div>
      */
-    static SetClass(p_key, p_class) { this.instance._SetClass(p_key, p_class); }
-    _SetClass(p_key, p_class) {
+    static SetClass(p_key, p_class) {
         this._classLookup.Set(p_key, p_class);
         this._classReverseLookup.Set(p_class, p_key);
     }
@@ -80,8 +73,7 @@ class BINDINGS extends SingletonEx {
      * @returns {function}
      * @group Class repertoire
      */
-    static GetClass(p_key) { return this.instance._GetClass(p_key); }
-    _GetClass(p_key) { return this._classLookup.Get(p_key); }
+    static GetClass(p_key) { return this._classLookup.Get(p_key); }
 
     /**
      * Retrieve the string identifier associated with a given class constructor, if any.
@@ -91,15 +83,16 @@ class BINDINGS extends SingletonEx {
      * @returns {string} identifier if found, otherwise null
      * @group Class repertoire
      */
-    static GetClassKey(p_class) { return this.instance._GetClassKey(p_class); }
-    _GetClassKey(p_class) {
+    static GetClassKey(p_class) {
 
+        if (u.isObject(p_class)) { p_class = p_class.constructor; }
+        
         let uid = this._classReverseLookup.Get(p_class);
 
         if (!uid) {
             uid = u.tils.Get(NFOS.Get(p_class), IDS.UID, null);
             if (!uid) { throw new Error(`No valid NFO found for ${p_class.name}`); }
-            this._SetClass(uid, p_class);
+            this.SetClass(uid, p_class);
         }
 
         return uid;
@@ -111,8 +104,7 @@ class BINDINGS extends SingletonEx {
      * @returns {function}
      * @group Class repertoire
      */
-    static RemoveClass(p_key) { this.instance._RemoveClass(p_key); }
-    _RemoveClass(p_key) { this._classLookup.Remove(p_key); }
+    static RemoveClass(p_key) { this._classLookup.Remove(p_key); }
 
     /**
      * @description Registers an key-control pair within a given context.
@@ -129,16 +121,6 @@ class BINDINGS extends SingletonEx {
      * BINDINGS.Get(Kitchen, Ustensil) == Fork
      */
     static Set(p_context, p_key, p_binding) {
-        this.instance._Set(p_context, p_key, p_binding);
-    }
-
-    /**
-     * @access private
-     * @param {*} p_context Context where the key:binding will be set
-     * @param {*} p_key key
-     * @param {*} p_binding value to bound to p_key in p_context
-     */
-    _Set(p_context, p_key, p_binding) {
         //TODO : Check if a value is being squashed, and store it to restore it on kit concealing
         //console.log(`Set assoc ${p_context}=>${p_key}=${p_control}`);
         this._contextMap.Set(p_context, p_key, p_binding);
@@ -150,27 +132,16 @@ class BINDINGS extends SingletonEx {
      * Retrieve the value associated to a given key, within a given context.
      * @param {function} p_context 
      * @param {Function|Object} p_key 
-     * @param {*} p_fallback fallback value in case no existing binding is found
+     * @param {*} [p_fallback] fallback value in case no existing binding is found
      * @param {boolean} p_broad Whether or not to look for alternative matches
      * @group Global binding
      * @example // What's the Ustensil in the Kitchen ?
      * BINDINGS.Get(Kitchen, Ustensil) == Fork
      */
     static Get(p_context, p_key, p_fallback = null, p_broad = true) {
+
         p_key = u.isFunc(p_key) ? p_key : p_key.constructor;
         if (!u.isFunc(p_key)) { throw new Error(`p_key must be a constructor or have an accessible constructor.`); }
-        let result = this.instance._Get(p_context, p_key, p_broad);
-        if (!result) { return p_fallback; }
-        return result;
-    }
-
-    /**
-     * @access private
-     * @param {function} p_context 
-     * @param {Function|Object} p_key 
-     * @param {*} p_broad Whether or not to look for alternative matches
-     */
-    _Get(p_context, p_key, p_broad = true, p_eval = null) {
 
         let binding = this._contextMap.Get(p_context, p_key);
 
@@ -213,7 +184,7 @@ class BINDINGS extends SingletonEx {
             }
         }
 
-        return binding;
+        return binding ? binding : p_fallback;
 
     }
 
@@ -225,16 +196,6 @@ class BINDINGS extends SingletonEx {
      * @group Global binding
      */
     static Remove(p_context, p_key, p_binding) {
-        this.instance._Remove(p_context, p_key, p_binding);
-    }
-
-    /**
-     * @access private
-     * @param {*} p_key 
-     * @param {*} p_binding 
-     * @param {*} p_context 
-     */
-    _Remove(p_context, p_key, p_binding) {
         this._contextMap.Remove(p_context, p_key, p_binding);
         this._contextKeyLists.Remove(p_context, p_key);
         //TODO : Restore any squashed associations

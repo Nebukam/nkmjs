@@ -19,11 +19,7 @@ class FieldNumberClamped extends FieldNumber {
         [com.IDS.ICON]: `field-number-clamped`
     };
 
-    _Init() {
-        super._Init();
-    }
-
-    InitSettings(p_settings = null) {
+    InitSettings(p_settings) {
         let localSettings = super.InitSettings(p_settings);
 
         localSettings.clamp = (localSettings.clamp || false);

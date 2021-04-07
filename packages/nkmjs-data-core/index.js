@@ -8,6 +8,7 @@ module.exports = {
 
     // hoist ./lib/data/
     DataBlock: require(`./lib/data/data-block`),
+    SimpleDataBlock: require(`./lib/data/simple-data-block`),
     DataFactory: require(`./lib/data/data-factory`),
     Metadata: require(`./lib/data/metadata`),
     Repertoire: require(`./lib/data/repertoire`),

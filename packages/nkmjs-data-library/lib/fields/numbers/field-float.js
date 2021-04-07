@@ -20,11 +20,6 @@ class FieldFloat extends FieldNumber {
         [com.IDS.ICON]: `field-float`
     };
 
-    _Init() {
-        super._Init();
-    }
-
-
 }
 
 module.exports = FieldFloat;

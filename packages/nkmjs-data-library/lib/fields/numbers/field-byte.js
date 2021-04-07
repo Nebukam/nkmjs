@@ -20,11 +20,6 @@ class FieldByte extends FieldNumber {
         [com.IDS.ICON]: `field-byte`
     };
 
-    _Init() {
-        super._Init();
-    }
-
-
 }
 
 module.exports = FieldByte;

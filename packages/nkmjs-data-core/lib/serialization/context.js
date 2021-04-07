@@ -56,6 +56,13 @@ class JSON extends com.helpers.CSYMBOL{ constructor() { super(); }
      * @customtag read-only
      */
     static CLASS = 'class';
+
+    /**
+     * @description NKMjs JSON Identifier for storing class string identifier
+     * @type {string}
+     * @customtag read-only
+     */
+     static UID = com.IDS.UID;
 }
 
 module.exports = {

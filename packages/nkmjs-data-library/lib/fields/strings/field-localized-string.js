@@ -19,11 +19,7 @@ class FieldLocalizedString extends FieldString {
         [com.IDS.UID]: `@nkmjs/ecosystem:field-string-localized`,
         [com.IDS.ICON]: `field-string-localized`
     };
-
-    _Init() {
-        super._Init();
-    }
-
+    
 }
 
 module.exports = FieldLocalizedString;

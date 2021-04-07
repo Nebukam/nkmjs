@@ -31,7 +31,7 @@ class ModelManager extends EcosystemPart {
     }
 
     get factory() { return this._factory; }
-    get modelList(){ return this._factory._itemRep._itemList; }
+    get modelList() { return this._factory._itemRep._itemList; }
 
     /**
      * @description TODO
@@ -52,9 +52,9 @@ class ModelManager extends EcosystemPart {
         if (p_fields) {
             for (var fieldName in p_fields) {
                 let fieldInfos = p_fields[fieldName];
-                if (u.isFunc(fieldInfos)) { utils.CreateField(model, fieldInfos, fieldName); }
-                else if (u.isString(fieldInfos)) { utils.CreateField(model, com.BINDINGS.GetClass(fieldInfos), fieldName); }
-                else if (u.isObject(fieldInfos)) { utils.CreateField(model, fieldInfos.cl, fieldName, fieldInfos.settings); }
+                if (u.isFunc(fieldInfos)) { utils.CreateSlot(model, fieldName, fieldInfos); }
+                else if (u.isString(fieldInfos)) { utils.CreateSlot(model, fieldName, com.BINDINGS.GetClass(fieldInfos)); }
+                else if (u.isObject(fieldInfos)) { utils.CreateSlot(model, fieldName, fieldInfos.cl, fieldInfos.settings); }
             }
         }
 
