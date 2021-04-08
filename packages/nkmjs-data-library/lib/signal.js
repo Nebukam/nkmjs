@@ -49,7 +49,7 @@ class SIGNAL {
     * @type {symbol}
     * @customtag read-only
     */
-    static SLOT_DESCRIPTOR_CHANGED = Symbol(`slotDescriptorChanged`);
+    static DESCRIPTOR_CHANGED = Symbol(`slotDescriptorChanged`);
 
     /**
     * @description TODO

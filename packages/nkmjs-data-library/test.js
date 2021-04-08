@@ -59,6 +59,8 @@ assert.ok((newEcosystem.models._factory._itemRep._itemList.IndexOf(anotherModel)
 anotherModel.base = thirdModel;
 assert.ok((newEcosystem.models._factory._itemRep._itemList.IndexOf(anotherModel) === 1), `Extending model has not moved after its base in the list.`);
 
+console.log(thirdModel.GetSlotByName(fName_map).descriptor);
+
 let SJSON = data.serialization.JSONSerializer;
 
 let entry = newEcosystem.entries.Create(`My sexy entry`, anotherModel),
@@ -68,10 +70,11 @@ let entry = newEcosystem.entries.Create(`My sexy entry`, anotherModel),
 
 //console.log(JSON.stringify(serializedEcosystem, null, 4));
 //console.log(serializedEntry);
-console.log(serializedEcosystem);
+//console.log(serializedEcosystem);
 
 let deserializedEcosystem = SJSON.Deserialize(serializedEcosystem),
     reserializedEcosystem = SJSON.Serialize(deserializedEcosystem);
+  
     
 //console.log(deserializedEcosystem);
-console.log(JSON.stringify(reserializedEcosystem, null, 4));
+//console.log(JSON.stringify(reserializedEcosystem, null, 4));

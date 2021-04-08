@@ -28,6 +28,7 @@ class Root extends ListItemGroup {
         this._searchBtn = null;
         this._InitSelectionStack();
 
+        this.style.setProperty(`--tree_size`, `var(--size_s)`);
         // TODO : If 'flattened', make directories non-expandable items
 
     }
@@ -44,11 +45,6 @@ class Root extends ListItemGroup {
                 });
                 this._searchBtn.order = 99;
         */
-    }
-
-    _Render() {
-        super._Render();
-        this.style.setProperty(`--tree_size`, `var(--size_s)`);
     }
 
     _OpenFind() {

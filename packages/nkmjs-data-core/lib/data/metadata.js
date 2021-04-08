@@ -53,16 +53,16 @@ class Metadata extends com.pool.DisposableObjectEx {
     /**
      * @description TODO
      */
-    Dirty(){
-        if(this._isDirty){return;} this._isDirty = true;
+    Dirty() {
+        if (this._isDirty) { return; } this._isDirty = true;
         this._Broadcast(SIGNAL.DIRTY, this);
     }
 
     /**
      * @description TODO
      */
-    ClearDirty(){
-        if(!this._isDirty){return;} this._isDirty = false;
+    ClearDirty() {
+        if (!this._isDirty) { return; } this._isDirty = false;
         this._Broadcast(SIGNAL.DIRTY_CLEARED, this);
     }
 
@@ -73,19 +73,17 @@ class Metadata extends com.pool.DisposableObjectEx {
      */
     Set(p_path, p_value) {
 
-        let path = null;
-        if (Array.isArray(p_path)) {
-            path = p_path;
-        } else if (typeof p_path === 'string') {
-            path = p_path.split('.');
-        } else { throw new Error(`Path ${p_path} is invalid.`); }
+        let path = null,
+            isString = false;
 
-        let element = this._data,
-            lastElement = element,
-            i = 0,
+        if (u.isArray(p_path)) { path = p_path; }
+        else if (u.isString(p_path)) { path = p_path.split('.'); isString = true; }
+        else { throw new Error(`Path ${p_path} is invalid.`); }
+
+        let lastElement = this._data,
+            index = 0,
             n = path.length,
-            countMinusOne = n - 1,
-            dispatch = false,
+            lastIndex = n - 1,
             created = false,
             previousValue = null;
 
@@ -96,48 +94,52 @@ class Metadata extends com.pool.DisposableObjectEx {
         //update 0 - 1 - 2 - 3
         //dispatch 3 - 2 - 1 - 0
 
-        while (i < n) {
-            let id = path[i];
+        while (index < n) {
 
-            if (i === countMinusOne) {
-                let existingValue = lastElement[id];
+            let key = path[index];
 
-                if (u.isVoid(existingValue)) { created = true; }
-                if (existingValue === p_value) {
-                    return p_value;
+            if (index === lastIndex) {
+
+                let existingValue = null;
+
+                if (!lastElement.hasOwnProperty(key)) {
+
+                    lastElement[key] = p_value;
+                    lastElement = p_value;
+
+                    this._Broadcast(SIGNAL.META_ADDED, this, p_path, lastElement);
+
+                } else {
+                    existingValue = lastElement[key];
+                    if (existingValue === p_value) { return p_value; }
+
+                    previousValue = existingValue;
+                    lastElement[key] = p_value;
+                    lastElement = p_value;
+
                 }
 
-                dispatch = true;
-                previousValue = existingValue;
-                lastElement[id] = p_value;
-                lastElement = p_value;
             } else {
-                element = lastElement[id];
 
-                if (u.isVoid(element)) {
-                    element = {};
-                    lastElement[id] = element;
-                }
+                if (!lastElement.hasOwnProperty(key)) { lastElement = lastElement[key] = {}; }
+                else { lastElement = lastElement[key]; }
 
-                lastElement = element;
             }
 
-            i++;
+            index++;
         }
 
-        if (dispatch) {
-
-            if (created) { this._Broadcast(SIGNAL.META_ADDED, this, p_path, lastElement); }
-
-            n -= 1;
-            for (let p = 0; p < n; p++) {
-                this._Broadcast(SIGNAL.META_MID_UPDATE, this, u.tils.Join(path, '.', 0, p));
-            }
-
-            this._Broadcast(SIGNAL.META_UPDATED, this, p_path, lastElement, previousValue);
-            this._Broadcast(com.SIGNAL.UPDATED, this);
-            this.Dirty();
+        n -= 1;
+        for (let p = 0; p < n; p++) {
+            this._Broadcast(SIGNAL.META_MID_UPDATE, this, u.tils.Join(path, '.', 0, p));
         }
+
+        this._Broadcast(SIGNAL.META_UPDATED, this, p_path, lastElement, previousValue);
+        this._Broadcast(com.SIGNAL.UPDATED, this);
+
+        this.Dirty();
+
+        if (isString) { path.length = 0; }
 
         return lastElement;
 
@@ -150,39 +152,58 @@ class Metadata extends com.pool.DisposableObjectEx {
      */
     Get(p_path, p_fallback = null) {
 
-        let path = null;
+        let path = null,
+            isString = false;
 
-        if (Array.isArray(p_path)) {
-            path = p_path;
-        } else if (u.isString(p_path)) {
-            path = p_path.split('.');
-        } else { throw new Error(`Path ${p_path} is invalid.`); }
+        if (u.isArray(p_path)) { path = p_path; }
+        else if (u.isString(p_path)) { path = p_path.split('.'); isString = true; }
+        else { throw new Error(`Path ${p_path} is invalid.`); }
 
-        let element = null;
+        let index = 0,
+            n = path.length,
+            lastElement = this._data;
 
-        if (u.isVoid(p_fallback)) {
-            element = this._data;
-            while (!u.isVoid(element) && path.length != 0) {
-                element = element[path.shift()];
-            }
-            path.length = 0;
-            return element;
-        } else {
-            element = this._data;
-            let lastElement = element;
-            while (path.length != 0) {
-                element = lastElement[path.shift()];
-                if (u.isVoid(element)) {
-                    path.length = 0;
-                    this._signals.silent = true;
-                    element = this.Set(p_path, p_fallback);
-                    this._signals.silent = false; // This was causing a lot of signal loops.
-                    return element;
-                }
-                lastElement = element;
-            }
-            return element;
+        while (index < n) {
+            let key = path[index];
+            if (!lastElement.hasOwnProperty(key)) { return p_fallback; }
+            else { lastElement = lastElement[key]; }
+            index++;
         }
+
+        if (isString) { path.length = 0; }
+
+        return lastElement;
+
+    }
+
+    /**
+     * @description TODO
+     * @param {string} p_path 
+     * @param {*} p_fallback
+     */
+    GetOrSet(p_path, p_fallback) {
+
+        let path = null,
+            isString = false;
+
+        if (u.isArray(p_path)) { path = p_path; }
+        else if (u.isString(p_path)) { path = p_path.split('.'); isString = true; }
+        else { throw new Error(`Path ${p_path} is invalid.`); }
+
+        let index = 0,
+            n = path.length,
+            lastElement = this._data;
+
+        while (index < n) {
+            let key = path[index];
+            if (!lastElement.hasOwnProperty(key)) { return this.Set(path, p_fallback); }
+            else { lastElement = lastElement[key]; }
+            index++;
+        }
+
+        if (isString) { path.length = 0; }
+
+        return lastElement;
 
     }
 
@@ -207,7 +228,7 @@ class Metadata extends com.pool.DisposableObjectEx {
             } else {
                 return;
             }
-            if(!p_silent){ this.Dirty(); }
+            if (!p_silent) { this.Dirty(); }
             else { this.ClearDirty(); }
         } else {
             return Metadata.Copy(this);

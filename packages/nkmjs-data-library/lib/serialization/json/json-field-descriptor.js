@@ -23,7 +23,7 @@ class FieldDescriptorJSONSerializer extends data.serialization.json.Base {
 
     //#region Deserialization
 
-    static Deserialize(p_serial, p_data, p_options = null, p_metas = null) {
+    static Deserialize(p_serial, p_data, p_options = null, p_meta = null) {
         //p_data === slot
         p_data._settings = p_serial;
     }

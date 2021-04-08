@@ -40,7 +40,7 @@ class FieldSlot extends DataBlocExtendable {
         this._settings = null;
         this._descriptor = null;
 
-        this._baseObserver.Hook(SIGNAL.SLOT_DESCRIPTOR_CHANGED, this._OnBaseDescriptorChanged, this);
+        this._baseObserver.Hook(SIGNAL.DESCRIPTOR_CHANGED, this._OnBaseDescriptorChanged, this);
 
     }
 
@@ -111,7 +111,7 @@ class FieldSlot extends DataBlocExtendable {
             if (this._settings) { this._descriptor.InitSettings(this._settings); }
         }
 
-        this._Broadcast(SIGNAL.SLOT_DESCRIPTOR_CHANGED, this, this._descriptor, oldDescriptor);
+        this._Broadcast(SIGNAL.DESCRIPTOR_CHANGED, this, this._descriptor, oldDescriptor);
     }
 
     _OnBaseDescriptorChanged(p_slot, p_newDescriptor, p_oldDescriptor) {

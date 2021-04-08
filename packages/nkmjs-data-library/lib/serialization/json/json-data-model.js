@@ -9,6 +9,9 @@ const FieldSlotJSONSerializer = require("./json-field-slot");
 const FieldDescriptorJSONSerializer = require("./json-field-descriptor");
 const { CONTEXT } = require("@nkmjs/data-core/lib/serialization");
 
+const __id_groups = `groups`;
+const __id_slots = `slots`;
+
 class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
     constructor() { super(); }
 
@@ -24,9 +27,7 @@ class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
             slots = [];
 
         for (let i = 0, n = groupList.count; i < n; i++) {
-            let group = groupList.At(i),
-                serializer = this.GetSerializer(group, data.serialization.json.SimpleDataBlock);
-            groups.push(serializer.Serialize(group, serializer));
+            groups.push(this.__master.Serialize(groupList.At(i), p_options));
         }
 
         for (let i = 0, n = slotList.count; i < n; i++) {
@@ -34,7 +35,8 @@ class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
             slots.push(this.__master.Serialize(slot, p_options));
         }
 
-        p_serial[IDS.SLOTS] = slots;
+        p_serial[__id_slots] = slots;
+        p_serial[__id_groups] = groups;
 
     }
 
@@ -42,16 +44,20 @@ class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
 
     //#region Deserialization
 
-    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
+    static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
 
         super.DeserializeContent(p_serial, p_data, p_options);
 
-        let slots = p_serial[IDS.SLOTS],
-            groups = p_serial[IDS.GROUP];
+        let slots = p_serial[__id_slots],
+            groups = p_serial[__id_groups];
 
         if (groups && groups.length) {
             for (let i = 0, n = groups.length; i < n; i++) {
+                let groupSerial = groups[i],
+                    groupUID = slotSerial[CONTEXT.JSON.META_KEY] ? slotSerial[CONTEXT.JSON.META_KEY][com.IDS.UID] : null,
+                    group = serializer.Deserialize(groupSerial, group, p_options);
 
+                p_data._groupRep.Register(group, groupUID);
             }
         }
 
@@ -59,8 +65,9 @@ class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
             for (let i = 0, n = slots.length; i < n; i++) {
 
                 let slotSerial = slots[i],
-                    slotGroupID = u.tils.GetPath(slotSerial, null, CONTEXT.JSON.DATA_KEY, IDS.GROUP),
-                    existingSlot = slotUID ? p_data.GetSlotByName(u.tils.GetPath(slotSerial, null, CONTEXT.JSON.META_KEY, com.IDS.UID)) : null,
+                    slotGroupID = slotSerial[CONTEXT.JSON.DATA_KEY] ? slotSerial[CONTEXT.JSON.DATA_KEY][IDS.GROUP] : null,
+                    slotUID =  slotSerial[CONTEXT.JSON.META_KEY] ? slotSerial[CONTEXT.JSON.META_KEY][com.IDS.UID] : null,
+                    existingSlot = slotUID ? p_data.GetSlotByName(slotUID) : null,
                     slot = this.__master.Deserialize(slotSerial, existingSlot, p_options);
 
                 if (slotGroupID) { slot.group = p_data.GetSlotGroupByName(slotGroupID); }
@@ -74,17 +81,15 @@ class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
 
     }
 
-    static TryGetExisting(p_ecosystem, p_serial, p_metas = null) {
-        let modelUID = ((p_metas && p_metas[com.IDS.UID]) || p_serial[com.IDS.UID]);
+    static TryGetExisting(p_ecosystem, p_serial, p_meta = null) {
+        let modelUID = ((p_meta && p_meta[com.IDS.UID]) || p_serial[com.IDS.UID]);
         if (!modelUID) { return null; }
         return p_ecosystem.models._factory.GetByName(modelUID);
     }
 
-    static RegisterToEcosystem(p_ecosystem, p_data, p_serial, p_metas = null) {
+    static RegisterToEcosystem(p_ecosystem, p_data, p_serial, p_meta = null) {
         let factory = p_ecosystem.models._factory,
-            modelUID = ((p_metas && p_metas[com.IDS.UID]) || p_serial[com.IDS.UID]);
-
-        console.log(`huh : ${modelUID}`);
+            modelUID = ((p_meta && p_meta[com.IDS.UID]) || p_serial[com.IDS.UID]);
 
         if (!modelUID) { return false; };
 

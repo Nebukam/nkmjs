@@ -71,9 +71,9 @@ class UTILS {
      * @returns 
      */
     static GetPath(p_obj, p_fallback, ...path) {
-        let value = null;
+        let value = p_obj;
         for (let i = 0, n = path.length; i < n; i++) {
-            value = p_obj[path[i]];
+            value = value[path[i]];
             if (!value) { return p_fallback; }
         }
         return value ? value : p_fallback;
@@ -270,9 +270,10 @@ class UTILS {
      * @description Add missing content from p_source into p_base (no duplicates)
      * @param {array} p_base 
      * @param {array} p_source 
+     * @param {int} p_mode <0 unshift, >=0 push
      * @returns {array}
      */
-    static MergeArray(p_base, p_source) {
+    static MergeArray(p_base, p_source, p_mode = 1) {
 
         if (!p_base) {
             p_base = [];
@@ -281,11 +282,20 @@ class UTILS {
             return p_base;
         }
 
-        if (!p_source) { return p_base; }
+        if (!p_source || p_source.length === 0) { return p_base; }
 
-        for (let i = 0, n = p_source.length; i < n; i++) {
-            if (!p_base.includes(p_source[i])) { p_base.push(p_source[i]); }
+        if(p_mode >= 0){
+            for (let i = 0, n = p_source.length; i < n; i++) {
+                let sourceValue = p_source[i];
+                if (!p_base.includes(sourceValue)) { p_base.push(sourceValue); }
+            }
+        }else{
+            for (let i = 0, n = p_source.length; i < n; i++) {
+                let sourceValue = p_source[i];
+                if (!p_base.includes(sourceValue)) { p_base.unshift(sourceValue); }
+            }
         }
+        
 
         return p_base;
     }

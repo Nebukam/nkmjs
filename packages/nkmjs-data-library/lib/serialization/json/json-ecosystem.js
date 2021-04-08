@@ -18,7 +18,7 @@ class EcosystemJSONSerializer extends DataBlockJSONSerializer {
 
     //#region Deserialization
 
-    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
+    static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
         // TODO : Load ecosystem settings
         // - high-level ecosystem settings
     }

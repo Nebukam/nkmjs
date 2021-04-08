@@ -17,7 +17,6 @@ class Control extends ui.WidgetOrientable{
         this._metadataObserver = new data.helpers.MetadataObserver();
 
         this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
-        this._dataObserver.Hook(com.SIGNAL.UPDATED, this._OnDataUpdated, this);
     }
 
     get context(){ return this._context; }

@@ -66,7 +66,8 @@ class JSONSerializer extends BaseSerializer {
         }
 
         metas[CONTEXT.JSON.CLASS] = com.BINDINGS.GetClassKey(p_data.constructor);
-        if (p_data._id) { metas[CONTEXT.JSON.UID] = p_data._id._name; }
+        let uid = p_data.id;
+        if (uid) { metas[com.IDS.UID] = uid.toString(); }
 
         return serial;
 

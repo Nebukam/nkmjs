@@ -30,11 +30,19 @@ class FieldDescriptor extends com.pool.DisposableObjectEx {
     static __requireSanitization = false;
 
     _Init() {
+        
         super._Init();
+        this._parent = null;
+        this._id = null;
         this._slot = null;
+        this._localSettings = null;
+
     }
 
     ////#region Properties
+
+    get id(){ return this._id; }
+    set id(p_value){ this._id = p_value; }
 
     /**
      * @description Whether or not this field requires value to be sanitized
@@ -70,6 +78,7 @@ class FieldDescriptor extends com.pool.DisposableObjectEx {
             localSettings = p_settings;
         }
 
+        this._localSettings = localSettings;
         return localSettings;
 
     }
@@ -82,9 +91,11 @@ class FieldDescriptor extends com.pool.DisposableObjectEx {
 
     _CleanUp() {
         super._CleanUp();
+        this._parent = null;
         this._fieldIndex = 0;
-        this._settings = null;
+        this._localSettings = null;
         this.slot = null;
+        this.id = null;
     }
 
 }

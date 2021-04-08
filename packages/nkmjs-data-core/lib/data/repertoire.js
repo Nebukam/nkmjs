@@ -181,7 +181,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
         this._itemMap.Set(itemID, p_item);
         p_item.id = itemID;
 
-        //console.log(`Registered : ${p_item.constructor.name} with id ${p_item.id}`);
+        //console.log(`Registered : ${p_item.constructor.name} with id '${p_item.id}'`);
 
         this._OnItemRegistered(p_item);
 

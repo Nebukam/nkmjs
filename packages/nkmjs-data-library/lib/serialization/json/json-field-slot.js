@@ -30,7 +30,7 @@ class FieldSlotJSONSerializer extends DataBlockExtendableJSONSerializer {
 
     //#region Deserialization
 
-    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
+    static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
 
         let descriptorClassKey = p_serial[IDS.DESCRIPTOR];
         
@@ -39,7 +39,7 @@ class FieldSlotJSONSerializer extends DataBlockExtendableJSONSerializer {
             let descriptor = com.Rent(descriptorClass),
                 serializer = this.GetSerializer(descriptor, FieldDescriptorJSONSerializer);
 
-            p_data.settings = serializer.Deserialize(p_serial[IDS.SETTINGS], p_data, p_options, p_metas);
+            p_data.settings = serializer.Deserialize(p_serial[IDS.SETTINGS], p_data, p_options, p_meta);
             p_data.descriptor = descriptor;
         }
 

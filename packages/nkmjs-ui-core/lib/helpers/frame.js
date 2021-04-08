@@ -19,7 +19,7 @@ class Frame extends DisplayObject {
 
     _Init() {
         super._Init();
-        this._imgManipulator = null;
+        this._imgManipulator = new manipulators.Image(this, false);
     }
 
     // ----> DOM
@@ -45,10 +45,6 @@ class Frame extends DisplayObject {
 
             }
         };
-    }
-
-    _Render() {
-        this._imgManipulator = new manipulators.Image(this, false);
     }
 
     /**

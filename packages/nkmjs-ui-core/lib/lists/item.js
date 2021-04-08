@@ -35,7 +35,7 @@ class Item extends WidgetItem {
 
         this._toolbarClass = WidgetBar;
         this._toolbar = null;
-        this._toolbarCtnr = null;
+        this._toolbarCtnr = this;
 
         this._depth = 0;
 

@@ -29,6 +29,7 @@ class FieldDescriptorComposite extends FieldDescriptor {
 
     _Add(p_fieldDescriptorClass, p_id) {
         let newFieldDescriptor = new p_fieldDescriptorClass();
+        newFieldDescriptor._parent = this;
         newFieldDescriptor.id = p_id;
         this._composition.push(newFieldDescriptor);
         return newFieldDescriptor;

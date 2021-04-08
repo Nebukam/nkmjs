@@ -74,7 +74,7 @@ class DataBlockJSONSerializer extends AbstractJSONSerializer {
      * @param {object} [p_options] Deserialization options
      * @returns {data.core.DataBlock} Deserialized object (== p_data, if provided)
      */
-    static Deserialize(p_serial, p_data, p_options = null, p_metas = null) {
+    static Deserialize(p_serial, p_data, p_options = null, p_meta = null) {
 
         if (!p_serial) { throw new Error(`Cannot unpack null data.`); }
         if (!p_data) { throw new Error(`Cannot unpack to null target.`); }
@@ -82,8 +82,8 @@ class DataBlockJSONSerializer extends AbstractJSONSerializer {
         let metadata = p_data.metadata,
             serializer = this.GetSerializer(metadata);
 
-        if (__metaID in p_serial) { serializer.Deserialize(p_serial[__metaID], metadata, p_options, p_metas); }
-        this.DeserializeContent(p_serial, p_data, p_options, p_metas);
+        if (__metaID in p_serial) { serializer.Deserialize(p_serial[__metaID], metadata, p_options, p_meta); }
+        this.DeserializeContent(p_serial, p_data, p_options, p_meta);
 
         return p_data;
 
@@ -95,7 +95,7 @@ class DataBlockJSONSerializer extends AbstractJSONSerializer {
      * @param {object} [p_options] 
      * @returns 
      */
-    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
+    static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
         // Need specific implementation.
     }
 

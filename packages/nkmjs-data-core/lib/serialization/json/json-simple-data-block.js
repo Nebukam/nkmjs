@@ -50,7 +50,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      * @param {object} [p_options] 
      * @returns 
      */
-    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
+    static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
         // Need specific implementation.
         p_data._data = (p_serial[CONTEXT.JSON.DATA_KEY] || {});
     }

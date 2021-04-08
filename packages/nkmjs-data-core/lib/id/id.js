@@ -72,7 +72,7 @@ class ID extends com.pool.DisposableObjectEx {
     }
 
     toString() {
-        return `[ID::${this.name}]`;
+        return this._name;
     }
 
 }

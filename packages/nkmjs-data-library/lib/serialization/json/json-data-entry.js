@@ -18,8 +18,8 @@ class DataEntryJSONSerializer extends DataBlockExtendableJSONSerializer {
 
     //#region Deserialization
 
-    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
-        super.DeserializeContent(p_serial, p_data, p_options, p_metas);
+    static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
+        super.DeserializeContent(p_serial, p_data, p_options, p_meta);
     }
 
     static TryGetExisting(p_ecosystem, p_serial, p_metas) {

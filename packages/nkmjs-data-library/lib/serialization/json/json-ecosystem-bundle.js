@@ -5,6 +5,9 @@ const data = require("@nkmjs/data-core");
 const IDS = require(`../../ids`);
 const DataBlockJSONSerializer = data.serialization.json.DataBlock;
 
+const __id_models = `models`;
+const __id_entries = `entries`;
+
 class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
     constructor() { super(); }
 
@@ -40,8 +43,8 @@ class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
 
         }
 
-        p_serial[IDS.MODEL] = modelList;
-        p_serial[IDS.ENTRY] = entriesList;
+        p_serial[__id_models] = modelList;
+        p_serial[__id_entries] = entriesList;
 
     }
 
@@ -49,7 +52,7 @@ class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
 
     //#region Deserialization
 
-    static DeserializeContent(p_serial, p_data, p_options = null, p_metas = null) {
+    static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
 
         if (!p_options || !p_options.ecosystem) {
             if (p_options) { p_options.ecosystem = p_data; }
@@ -60,14 +63,20 @@ class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
         // - high-level ecosystem settings
         // - then read models
         // - then read entries
-        let modelList = p_serial[IDS.MODEL],
-            entryList = p_serial[IDS.ENTRY];
+        let modelList = p_serial[__id_models],
+            entryList = p_serial[__id_entries];
 
         if (modelList) {
             for (let i = 0, n = modelList.length; i < n; i++) {
-                let modelSerial = modelList[i],
-                    model = this.__master.Deserialize(modelSerial, null, p_options);
+                // Model serializer is in charge of ecosystem registration
+                this.__master.Deserialize(modelList[i], null, p_options);
+            }
+        }
 
+        if(entryList){
+            for (let i = 0, n = entryList.length; i < n; i++) {
+                // Entry serializer is in charge of ecosystem registration
+                this.__master.Deserialize(entryList[i], null, p_options);
             }
         }
 
