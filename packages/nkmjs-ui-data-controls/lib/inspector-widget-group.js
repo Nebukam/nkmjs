@@ -52,6 +52,10 @@ class InspectorWidgetGroup extends InspectorWidget {
      */
     Expand() { this._extExpand.Expand(); }
     _Expand() {
+        this._BuildContent();
+    }
+
+    _BuildContent(){
         let controlList = this.constructor.__controls;
         if (controlList) { this._builder.Build(controlList); }
     }
@@ -61,6 +65,10 @@ class InspectorWidgetGroup extends InspectorWidget {
      */
     Collapse() { this._extExpand.Collapse(); }
     _Collapse() {
+        this._ClearContent();
+    }
+
+    _ClearContent(){
         this._builder.Clear();
     }
 

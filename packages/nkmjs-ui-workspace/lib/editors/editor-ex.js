@@ -6,14 +6,14 @@ const style = require("@nkmjs/style");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const uilib = require(`@nkmjs/ui-library`);
+const uidatacontrols = require(`@nkmjs/ui-data-controls`);
 
 const InspectorShell = require(`../inspectors/inspector-shell`);
 const HistoryInspectorShell = require(`../inspectors/history-inspector-shell`);
 
 const EditorShelf = require(`./editor-shelf`);
-const Editor = require(`../editor`);
 
-class EditorEx extends Editor {
+class EditorEx extends uidatacontrols.Editor {
     constructor() { super(); }
 
     static __default_shelfClass = EditorShelf;

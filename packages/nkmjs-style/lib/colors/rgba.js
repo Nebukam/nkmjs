@@ -23,6 +23,21 @@ class RGBA extends ColorBase {
         return color;
     }
 
+    static HexToRGBString(p_hex){
+        
+            let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(p_hex),
+            r = 0, g = 0, b = 0;
+            
+            if (result) {
+                r = parseInt(result[1], 16);
+                g = parseInt(result[2], 16);
+                b = parseInt(result[3], 16);
+            }
+
+            return `${r},${g},${b}`;
+
+    }
+
     /**
      * @description TODO
      * @param {number} p_r 0-255

@@ -2,8 +2,6 @@
 
 module.exports = {
 
-    Editor: require(`../editor`),
-
     EditorEx: require(`./editor-ex`),
     EditorShelfNav: require(`./editor-shelf-nav`),
     EditorShelf: require(`./editor-shelf`),

@@ -1,29 +1,23 @@
 
 'use strict';
 
-const __DATA_MODEL = require(`./lib/data-model`);
-const __UTILS = require(`./lib/utils`);
-__UTILS.__default_modelClass = __DATA_MODEL;
-
 module.exports = {
 
     CONTEXT: require(`./lib/context`),
     SIGNAL: require(`./lib/signal`),
     IDS: require(`./lib/ids`),
+    META_IDS: require(`./lib/meta-ids`),
 
-    utils: __UTILS,
-    fields: require(`./lib/fields`),
-    parts: require(`./lib/parts`),
+    ControlView: require(`./lib/control-view`),
+    ControlWidget: require(`./lib/control-widget`),
 
-    DataFactoryEx: require(`./lib/data-factory-ex`),
-    DataBlockExtendable: require(`./lib/data-block-extendable`),
-    FieldSlot: require(`./lib/field-slot`),
-    FieldDescriptor: require(`./lib/field-descriptor`),
-    DataEntry: require(`./lib/data-entry`),
-    DataModel: __DATA_MODEL,
-    Ecosystem: require(`./lib/ecosystem`),
-    EcosystemBundle: require(`./lib/ecosystem-bundle`),
+    Editor: require(`./lib/editor`),
+
+    InspectorShell: require(`./lib/inspector-shell`),
+    InspectorView: require(`./lib/inspector-view`),
+    InspectorWidgetGroup: require(`./lib/inspector-widget-group`),
+    InspectorWidget: require(`./lib/inspector-widget`)
 
 }
 
-require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));
+//require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

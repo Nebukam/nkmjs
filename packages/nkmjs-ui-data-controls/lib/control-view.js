@@ -7,6 +7,7 @@ const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
+const META_IDS = require(`./meta-ids`);
 const Editor = require(`./editor`);
 
 class ControlView extends ui.views.View {
@@ -14,12 +15,28 @@ class ControlView extends ui.views.View {
 
     static __clearBuilderOnRelease = false;
     static __controls = null;
+    static __useMetaObserver = false;
 
     _Init() {
         super._Init();
-        this._metadataObserver = new data.helpers.MetadataObserver();
+
         this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
         this._builder = new helpers.ControlBuilder(this);
+
+        if (this.constructor.__useMetaPresentation) {
+            this._metadataObserver = new data.helpers.MetadataObserver();
+            this._metadataObserver.Hook(
+                data.SIGNAL.META_MID_UPDATE,
+                META_IDS.PRESENTATION,
+                this._UpdateMetaPresentation, this);
+            this._metadata = null;
+        }
+
+    }
+
+    _PostInit() {
+        super._PostInit();
+        this._ResetMetaPresentation();
     }
 
     //#region Context
@@ -69,13 +86,44 @@ class ControlView extends ui.views.View {
 
     _OnDataChanged(p_oldValue) {
         super._OnDataChanged(p_oldValue);
-        if (u.isInstanceOf(this._data, data.DataBlock)) { this._metadataObserver.target = this._data.metadata; }
-        else { this._metadataObserver.target = null; }
+
+        if (this._metadataObserver) {
+            if (u.isInstanceOf(this._data, data.DataBlock)) {
+                this._metadata = this._data.metadata;
+                this._metadataObserver.target = this._metadata;
+                this._UpdateMetaPresentation();
+            }
+            else {
+                this._metadata = null;
+                this._metadataObserver.target = null;
+                this._ResetMetaPresentation();
+            }
+        }
+
         this._builder.data = this._data;
     }
 
     _OnDataDirty(p_data) {
         this._OnDataUpdated(p_data); // <- Overkill much ?
+    }
+
+    //#endregion
+
+    //#region Meta presentation
+
+    _ResetMetaPresentation() {
+        this.style.setProperty(META_IDS.P_PRES_COLOR.varname, `#000000`);
+        this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, `0,0,0`);
+        this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, 0);
+    }
+
+    _UpdateMetaPresentation() {
+
+        let color = this._metadata.Get(META_IDS.P_PRES_COLOR.path, `#000000`);
+
+        this.style.setProperty(META_IDS.P_PRES_COLOR.varname, color);
+        this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, style.colors.RGBA.HexToRGBString(color));
+        this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, this._metadata.Get(META_IDS.P_PRES_WEIGHT.path, 0));
     }
 
     //#endregion

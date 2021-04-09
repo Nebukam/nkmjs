@@ -27,6 +27,7 @@
     "@nkmjs/services": "^0.0.15",
     "@nkmjs/style": "^0.0.17",
     "@nkmjs/ui-core": "^0.0.18",
+    "@nkmjs/ui-data-controls": "^0.0.1",
     "@nkmjs/ui-library": "^0.0.2",
     "@nkmjs/utils": "^0.0.15"
   },

@@ -8,6 +8,7 @@ const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
 const CONTEXT = require(`./context`);
+const ControlView = require(`./control-view`);
 
 class InspectorShell extends ControlView {
     constructor() { super(); }
@@ -33,6 +34,8 @@ class InspectorShell extends ControlView {
     //#region Data
 
     _OnDataChanged(p_oldData) {
+
+        // TODO : Check whether we can re-use the existing inspector instead of creating a new one
 
         this._inspector = null;
         this._builder.Clear();

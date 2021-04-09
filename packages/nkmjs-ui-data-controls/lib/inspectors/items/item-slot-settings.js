@@ -1,6 +1,10 @@
-/*
+// Extendable Data block BASE editor
 
-Field value control extends field descriptor 
-sets & get value of a field inside a DataEntry
+const SlotInspectorItem = require(`./item-slot`);
 
-*/
+class SlotSettingsInspectorItem extends SlotInspectorItem {
+    constructor() { super(); }
+
+}
+
+module.exports = SlotSettingsInspectorItem;

@@ -1,14 +1,12 @@
 /*
-
 Field Descriptor Control 
-
 This manipulate a slot -- whether in the context of a slot, or setting a value.
-
 */
 
 const datalib = require("@nkmjs/data-library");
+const InspectorWidget = require("../../inspector-widget");
 
-class SlotInspectorItem {
+class SlotInspectorItem extends InspectorWidget{
     constructor(){super();}
 
     _Init(){
@@ -27,4 +25,4 @@ class SlotInspectorItem {
 
 }
 
-module.exports = SlotControl;
+module.exports = SlotInspectorItem;

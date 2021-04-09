@@ -8,11 +8,7 @@ module.exports = {
 
     FONT_FLAG: require(`./lib/font-flag`),
 
-    ColorBase: require(`./lib/colors/color-base`),
-    RGBA: require(`./lib/colors/rgba`),
-    HSLA: require(`./lib/colors/hsla`),
-
-    COLOR: require(`./lib/colors/color`),
+    colors: require(`./lib/colors`),
 
     CSS: __CSS,
     STYLE: __STYLE,
