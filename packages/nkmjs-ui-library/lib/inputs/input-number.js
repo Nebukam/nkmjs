@@ -13,9 +13,6 @@ class InputNumber extends ui.inputs.InputField {
         css: [`@/inputs/number.css`]
     }, ui.inputs.InputField, ['css']);
 
-    _Init() {
-        super._Init();
-    }
 
     SetSliderData(m_min = 0, m_max = 0, m_step = null) {
         if (m_min != m_max) {

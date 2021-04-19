@@ -9,6 +9,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
@@ -17,8 +18,12 @@ const ControlWidget = require("./control-widget");
 class InspectorWidget extends ControlWidget {
     constructor() { super(); }
 
+    static __NFO__ = com.NFOS.Ext({
+        css: [`@/inspectors/inspector-widget.css`]
+    }, ControlWidget, ['css']);
+
     _Init() {
-        super._Init();        
+        super._Init();
     }
 
     _Style() {

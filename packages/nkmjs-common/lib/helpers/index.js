@@ -8,6 +8,7 @@ module.exports = {
     Callbacks: require(`./callbacks`),
 
     CSYMBOL: require(`./class-symbol`),
+    CKEY: require(`./class-key`),
 
     OptionsHandler: require(`./options-handler`),
     OptionsObject: require(`./options-object`),

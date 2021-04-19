@@ -16,7 +16,11 @@ module.exports = {
     InspectorShell: require(`./lib/inspector-shell`),
     InspectorView: require(`./lib/inspector-view`),
     InspectorWidgetGroup: require(`./lib/inspector-widget-group`),
-    InspectorWidget: require(`./lib/inspector-widget`)
+    InspectorWidget: require(`./lib/inspector-widget`),
+
+    editors: require(`./lib/editors`),
+    helpers: require(`./lib/helpers`),
+    inspectors: require(`./lib/inspectors`),
 
 }
 

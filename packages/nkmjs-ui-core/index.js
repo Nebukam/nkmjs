@@ -12,6 +12,7 @@ module.exports = {
     FLAGS: require(`./lib/flags`),
     IDS: require(`./lib/ids`),
     REQUEST: require(`./lib/request`),
+    CONTEXT: require(`./lib/context`),
 
     UI: __UI,
 

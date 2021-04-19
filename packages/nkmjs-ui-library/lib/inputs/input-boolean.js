@@ -42,9 +42,7 @@ class InputBoolean extends ui.inputs.InputField {
         this._inputField = u.dom.El(`input`, { class: 'field', type: 'checkbox' }, this._host);
     }
 
-    _GrabValue() {
-        return this._inputField.checked;
-    }
+    _GrabValue() { return this._inputField.checked; }
 
     _UpdatePreview() {
         this._inputField.checked = this._changedValue;

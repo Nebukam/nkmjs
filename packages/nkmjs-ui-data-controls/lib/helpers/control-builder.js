@@ -1,5 +1,7 @@
 'use strict';
 
+const com = require("@nkmjs/common");
+
 class ControlBuilder {
 
     constructor(p_owner, p_defaultCSS = `group`) {
@@ -54,8 +56,13 @@ class ControlBuilder {
         for (let i = 0, n = p_controls.length; i < n; i++) {
 
             let config = p_controls[i],
-                control = this.Add(config.cl, config.css);
+                control = null,
+                cl = null;
 
+            if (config.context) { cl = com.BINDINGS.Get(config.context, (config.key || config.cl), config.cl); }
+            else { cl = config.cl; }
+
+            control = this.Add(config.cl, config.css);
             if (config.name) { this._owner[config.name] = control; }
 
         }
@@ -78,6 +85,12 @@ class ControlBuilder {
 
         return control;
 
+    }
+
+    Fetch(p_context, p_key, p_fallbackClass = null, p_css = null) {
+        let cl = com.BINDINGS.Get(p_context, p_key, p_fallbackClass);
+        if (!cl) { return null; }
+        return this.Add(cl, p_css);
     }
 
     /**

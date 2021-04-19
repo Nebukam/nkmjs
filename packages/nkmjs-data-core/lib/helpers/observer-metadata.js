@@ -1,5 +1,6 @@
 'use strict';
 
+const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const SIGNAL = require(`../signal`);
 
@@ -33,8 +34,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      * @description TODO
      * @type {*}
      */
-    get target() { return this._observer._target; }
-    set target(p_value) { this._observer.target = p_value; }
+    set target(p_value) { this._observer.ObserveOnly(p_value); }
 
     /**
      * @access protected
@@ -60,6 +60,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      * @param {*} [p_subscriber] 
      */
     Hook(p_evt, p_path, p_fn, p_subscriber = null) {
+        if(u.isArray(p_path)){ p_path = p_path.join('.'); }
         let evt = `${this._GetPrefix(p_evt)}@${p_path}`;
         this.Watch(evt, p_fn, p_subscriber);
     }
@@ -72,6 +73,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      * @param {*} [p_subscriber] 
      */
     Unhook(p_evt, p_path, p_fn, p_subscriber = null) {
+        if(u.isArray(p_path)){ p_path = p_path.join('.'); }
         let evt = `${this._GetPrefix(p_evt)}@${p_path}`;
         this.Unwatch(evt, p_fn, p_subscriber);
     }

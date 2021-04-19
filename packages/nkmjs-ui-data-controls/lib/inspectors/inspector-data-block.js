@@ -1,13 +1,14 @@
 'use strict';
 
-const workspace = require("@nkmjs/ui-workspace");
 const items = require(`./items`);
+const CONTEXT = require(`./context`);
+const InspectorView = require(`../inspector-view`);
 
-class DataBlockInspector extends workspace.inspectors.Inspector {
+class DataBlockInspector extends InspectorView {
     constructor() { super(); }
 
     static __controls = [
-        { cl:items.Identifier }
+        { context:CONTEXT.INSPECTOR_ITEM, cl:items.Identifier }
     ];
 
 }

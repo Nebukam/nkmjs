@@ -7,6 +7,7 @@ const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
+const helpers = require(`./helpers`);
 const META_IDS = require(`./meta-ids`);
 const Editor = require(`./editor`);
 

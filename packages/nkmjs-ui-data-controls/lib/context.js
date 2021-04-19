@@ -1,11 +1,15 @@
 'use strict';
 
+const com = require("@nkmjs/common");
+
 /**
  * Using Class as key in order to support @nkmjs-common BINDINGS
  */
 
-class INSPECTOR { constructor() { } }
+class EDITOR extends com.helpers.CSYMBOL { constructor() { super(); } }
 
 module.exports = {
-    INSPECTOR: INSPECTOR
+
+    EDITOR: EDITOR,
+
 };

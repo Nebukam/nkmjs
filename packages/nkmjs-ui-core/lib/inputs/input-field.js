@@ -63,21 +63,13 @@ class InputField extends InputBase {
         this._inputField.setAttribute(`placeholder`, p_value);
     }
 
-    _onInput(p_evt) {
-        this.changedValue = this._GrabValue();
-    }
+    _onInput(p_evt) { this._handler.changedValue = this._GrabValue(); }
 
-    _onChange(p_evt) {
-        this.changedValue = this._GrabValue();
-    }
+    _onChange(p_evt) { this._handler.changedValue = this._GrabValue(); }
 
-    _GrabValue() {
-        return this._inputField.value;
-    }
+    _GrabValue() { return this._inputField.value; }
 
-    _FIn() {
-        this._inputField.focus();
-    }
+    _FIn() { this._inputField.focus(); }
 
     _FOut(p_evt) {
         if (INPUT.shift) { return; }

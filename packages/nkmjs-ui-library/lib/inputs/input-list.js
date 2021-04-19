@@ -13,9 +13,6 @@ const style = require("@nkmjs/style");
 class InputList extends ui.inputs.InputBase {
     constructor() { super(); }
 
-    _Init() {
-        super._Init();
-    }
 
     // ----> DOM
 

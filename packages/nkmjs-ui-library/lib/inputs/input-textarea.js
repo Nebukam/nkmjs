@@ -13,8 +13,8 @@ class InputTextarea extends ui.inputs.InputField {
 
     _Init() {
         super._Init();
-        this._updatePreviewOnChange = false;
-        this._submitOnChange = false;
+        this._handler._updatePreviewOnChange = false;
+        this._handler._submitOnChange = false;
     }
 
     // ----> DOM

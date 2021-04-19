@@ -23,6 +23,9 @@ module.exports = {
     helpers: require(`./lib/helpers`),
     serialization: require(`./lib/serialization`),
 
+    validate: require(`./lib/validation`),
+    sanitize: require(`./lib/sanitization`),
+
 }
 
 require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

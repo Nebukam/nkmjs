@@ -16,6 +16,10 @@ const ui = require(`@nkmjs/ui-core`);
 class Editor extends ui.views.View{
     constructor(){super();}
 
+    static __NFO__ = com.NFOS.Ext({
+        css: [`@/views/global-editor.css`]
+    }, ui.views.View, ['css']);
+
     _Init(){
 
         super._Init();

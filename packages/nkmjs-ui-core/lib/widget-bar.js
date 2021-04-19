@@ -345,4 +345,4 @@ class WidgetBar extends WidgetOrientable {
 }
 
 module.exports = WidgetBar;
-UI.Register(`nkmjs-widget-bar`, WidgetBar);
+//UI.Register(`nkmjs-widget-bar`, WidgetBar);

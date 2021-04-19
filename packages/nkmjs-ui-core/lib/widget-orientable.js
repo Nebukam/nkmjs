@@ -105,4 +105,4 @@ class WidgetOrientable extends Widget {
 }
 
 module.exports = WidgetOrientable;
-UI.Register(`nkmjs-widget-orientable`, WidgetOrientable);
+//UI.Register(`nkmjs-widget-orientable`, WidgetOrientable);

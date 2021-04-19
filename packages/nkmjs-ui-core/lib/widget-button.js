@@ -475,4 +475,4 @@ class WidgetButton extends Widget {
 }
 
 module.exports = WidgetButton;
-UI.Register(`nkmjs-widget-button`, WidgetButton);
+//UI.Register(`nkmjs-widget-button`, WidgetButton);
