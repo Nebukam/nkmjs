@@ -6,13 +6,15 @@ const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 
 /**
- * An editor is an abstract implementation of the generic "editor" concept.
- * It is designed to edit & inspects a single piece of data (no matter how complex).
+ * @description An abstract implementation of the concept of "data editor". It is designed to edit
+ * a complex data object, as well as inspecting selection of that data object' components (no matter how complex).
  * 
- * It has an 'inspectedData' property that allows specific parts or components of the 
- * edited data to be inspected further, and selected more specifically, based on Editor's implementation.
+ * An editor is different from a basic controller as it has its own action stack in order to support undo/redo.
+ * @class
+ * @hideconstructor
+ * @augments ui.core.Widget
+ * @memberof ui.datacontrols
  */
-
 class Editor extends ui.views.View{
     constructor(){super();}
 
@@ -99,6 +101,11 @@ class Editor extends ui.views.View{
     // ----> Data
 
 
+    /**
+     * @description The Editor currently inspected data. Drives available controls, actions, commands,
+     * as well as this Editor' main inspector.
+     * @type {data.core.DataBlock}
+     */
     get inspectedData(){ return this._inspectedData; }
     set inspectedData(p_value){
 
@@ -124,8 +131,8 @@ class Editor extends ui.views.View{
     }
 
     /**
-     * Set data to be inspected
-     * @param {*} p_data 
+     * @description Set data to be inspected
+     * @param {data.core.DataBlock} p_data 
      */
     Inspect(p_data)
     {
@@ -134,12 +141,30 @@ class Editor extends ui.views.View{
 
     // ----> Actions
 
-    Do(p_actionClass, p_options){
-        //Group drag-related actions
-        this._actionStack.ToggleGrouping( UI.dragLength > 1 );
-        this._actionStack.Do( p_actionClass, p_options ); 
+    /**
+     * @access public
+     * @description Registers & executes an action in the local ActionStack.
+     * @param {constructor} p_actionClass Action class to be executed
+     * @param {object} p_operation Action' operation parameters
+     * @group Actions
+     */
+    Do(p_actionClass, p_operation){
+        this._actionStack.ToggleGrouping( ui.POINTER.DRAG_MULTIPLE ); //Group drag-related actions
+        this._actionStack.Do( p_actionClass, p_operation ); 
     }
+    
+    /**
+     * @access public
+     * @description Undo the last action in the local ActionStack.
+     * @group Actions
+     */
     Undo(){ this._actionStack.Undo(); }
+
+    /**
+     * @access public
+     * @description Redo the last undo'd action in the local ActionStack.
+     * @group Actions
+     */
     Redo(){ this._actionStack.Redo(); }
 
 }

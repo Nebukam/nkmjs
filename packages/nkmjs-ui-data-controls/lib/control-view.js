@@ -11,6 +11,13 @@ const helpers = require(`./helpers`);
 const META_IDS = require(`./meta-ids`);
 const Editor = require(`./editor`);
 
+/**
+ * @description A Controller interface based on ui.views.View
+ * @class
+ * @hideconstructor
+ * @augments ui.core.views.View
+ * @memberof ui.datacontrols
+ */
 class ControlView extends ui.views.View {
     constructor() { super(); }
 
@@ -42,6 +49,11 @@ class ControlView extends ui.views.View {
 
     //#region Context
 
+    /**
+     * @description Data context of the currently controlled data (can be that widget' data parent, holder, or else)
+     * @type {ui.data.DataBlock}
+     * @group Data
+     */
     get context() { return this._context; }
     set context(p_value) {
         if (this._context === p_value) { return; }
@@ -51,12 +63,25 @@ class ControlView extends ui.views.View {
         this._builder.context = p_value;
     }
 
+    /**
+     * @access protected
+     * @description Called whenever the current control widget' context has changed.
+     * @param {ui.data.DataBlock} p_oldValue The value of this.context before its update (cleanup and tracking purposes)
+     * @group Data 
+     * @customtag override-me
+     */
     _OnContextChanged(p_oldValue) {
 
     }
 
     //#endregion
 
+    /**
+     * @description The high-level editor in which this widget is used, if any.
+     * This function recursively looks in the widget' parent until it finds one of Editor type, and returns it.
+     * @type {ui.datacontrols.Editor}
+     * @customtag read-only
+     */
     get editor() {
         let p = this._parent;
         while (p != null) {
@@ -104,6 +129,12 @@ class ControlView extends ui.views.View {
         this._builder.data = this._data;
     }
 
+    /**
+     * @access protected
+     * @description Called whenever this controller' data is flaggued Dirty.
+     * @group Data
+     * @customtag override-me
+     */
     _OnDataDirty(p_data) {
         this._OnDataUpdated(p_data); // <- Overkill much ?
     }
@@ -112,12 +143,23 @@ class ControlView extends ui.views.View {
 
     //#region Meta presentation
 
+    /**
+     * @access protected
+     * @description Called to reset any user-set presentation params
+     * @group Presentation
+     */
     _ResetMetaPresentation() {
         this.style.setProperty(META_IDS.P_PRES_COLOR.varname, `#000000`);
         this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, `0,0,0`);
         this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, 0);
     }
 
+    /**
+     * @access protected
+     * @description Called to force an update of any user-set presentation params
+     * @group Presentation
+     * @customtag override-me
+     */
     _UpdateMetaPresentation() {
 
         let color = this._metadata.Get(META_IDS.P_PRES_COLOR.path, `#000000`);
@@ -129,6 +171,13 @@ class ControlView extends ui.views.View {
 
     //#endregion
 
+    /**
+     * @access protected
+     * @description Registers & executes an action.
+     * @param {constructor} p_actionClass Action class to be executed
+     * @param {object} p_operation Action' operation parameters
+     * @group Actions
+     */
     _Do(p_actionClass, p_operation) {
         actions.CommandAction.Do(this, p_actionClass, p_operation);
     }

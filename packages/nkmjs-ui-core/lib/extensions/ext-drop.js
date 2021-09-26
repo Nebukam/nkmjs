@@ -11,9 +11,16 @@ const Extension = require("./extension");
 let _activeTarget = null;
 
 /**
- * @description TODO
+ * @description The DropExtension enable drop capabilities to a widget.
  * @class
  * @hideconstructor
+ * @example //Basic setup
+ * dropHandler = this._extensions.Add(ui.extensions.Drop);
+ * dropHandler.Hook({
+ *      check: { fn: (p_data) => { return true; } }, // Required
+ *      drop: { fn: (p_data) => { } }, // Required
+ *      dropCandidate:{ fn:(p_isDropCandidate) => { } ) } // Optional (force watchGlobalBroadcasts = true if set)
+ * });
  * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
@@ -97,15 +104,15 @@ class DropExtension extends Extension {
 
     /**
      * @description TODO
-     * @param {*} p_target 
-     * @param {*} [p_feedback] 
+     * @param {*} p_target The target object that will be listening to drop events
+     * @param {*} [p_feedbackHost] HTML element that will host drop feedback/highlights
      */
-    Setup(p_target, p_feedback = null) {
+    Setup(p_target, p_feedbackHost = null) {
 
         let oldTarget = this._target;
         this.target = p_target;
 
-        this._feedbackHost = p_feedback ? p_feedback : p_target;
+        this._feedbackHost = p_feedbackHost ? p_feedbackHost : p_target;
 
         if (oldTarget) { oldTarget.flags.Remove(oldTarget, FLAGS.ALLOW_DROP); }
         if (p_target) { p_target.flags.Add(p_target, FLAGS.ALLOW_DROP); }
@@ -139,8 +146,6 @@ class DropExtension extends Extension {
 
         this._candidatesHooks.length = 0;
 
-        let dragLength = POINTER.dragLength;
-
         // Look for 'candidate' hooks with a 'check' hook
         outerloop:
         for (let i = 0, n = this._hooks.length; i < n; i++) {
@@ -149,7 +154,9 @@ class DropExtension extends Extension {
                 pass = false;
 
             if (hook.check && hook.dropCandidate) {
-                if (dragLength > 0) {
+                if (POINTER.DRAG_MULTIPLE > 0) {
+
+                    let dragLength = POINTER.dragLength;
 
                     innerloop:
                     for (let d = 0, n2 = dragData.length; d < n2; d++) {
@@ -199,53 +206,69 @@ class DropExtension extends Extension {
         }
     }
 
+    _getDragData(p_evt) {
+
+        if(POINTER.DRAG_DATA){
+            POINTER.EXTERNAL_DRAG = false;
+            return POINTER.DRAG_DATA;
+        }else{
+            POINTER.EXTERNAL_DRAG = true;
+            return p_evt.dataTransfer;
+        }
+        
+    }
+
     _mDragEnter(p_evt) {
 
         this._allowedHooks.length = 0;
         this._onDragOverHooks.length = 0;
         this._onLeaveHooks.length = 0;
 
-        let dragData = POINTER.DRAG_DATA,
-            dragLength = POINTER.dragLength;
+        let dragData = this._getDragData(p_evt);
 
-        outerloop:
-        for (let i = 0, n = this._hooks.length; i < n; i++) {
+        if (dragData) {
 
-            let hook = this._hooks[i],
-                pass = false;
+            outerloop:
+            for (let i = 0, n = this._hooks.length; i < n; i++) {
 
-            if (hook.check) {
+                let hook = this._hooks[i],
+                    pass = false;
 
-                if (dragLength > 0) {
+                if (hook.check) {
 
-                    innerloop:
-                    for (let d = 0, n2 = dragData.length; d < n2; d++) {
+                    if (POINTER.DRAG_MULTIPLE) {
 
-                        let dataItem = dragData[d];
+                        let dragLength = POINTER.dragLength;
 
-                        if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dataItem); }
-                        else { pass = hook.check.fn(dataItem); }
+                        innerloop:
+                        for (let d = 0; d < dragLength; d++) {
 
-                        if (pass) { break innerloop; }
+                            let dataItem = dragData[d];
+
+                            if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dataItem); }
+                            else { pass = hook.check.fn(dataItem); }
+
+                            if (pass) { break innerloop; }
+                        }
+
+                    } else {
+
+                        if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dragData); }
+                        else { pass = hook.check.fn(dragData); }
+
                     }
 
                 } else {
-
-                    if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dragData); }
-                    else { pass = hook.check.fn(dragData); }
-
+                    pass = true;
                 }
 
-            } else {
-                pass = true;
-            }
+                if (pass) {
+                    this._allowedHooks.push(hook);
+                    if (hook.dragOver) { this._onDragOverHooks.push(hook.dragOver); }
+                    if (hook.dragLeave) { this._onLeaveHooks.push(hook.dragLeave); }
+                }
 
-            if (pass) {
-                this._allowedHooks.push(hook);
-                if (hook.dragOver) { this._onDragOverHooks.push(hook.dragOver); }
-                if (hook.dragLeave) { this._onLeaveHooks.push(hook.dragLeave); }
             }
-
         }
 
         if (this._allowedHooks.length === 0) {
@@ -271,7 +294,8 @@ class DropExtension extends Extension {
 
     _mDragOver(p_evt) {
 
-        if (this._draggingOver) { return; }
+
+        //if (this._draggingOver) { return; }
         this._draggingOver = true;
 
         if (p_evt.defaultPrevented) {
@@ -284,7 +308,7 @@ class DropExtension extends Extension {
             p_evt.preventDefault();
             this._Activate(true);
 
-            let dragData = POINTER.DRAG_DATA;
+            let dragData = this._getDragData(p_evt);
 
             for (let i = 0, n = this._onDragOverHooks.length; i < n; i++) {
                 let hook = this._onDragOverHooks[i];
@@ -297,33 +321,38 @@ class DropExtension extends Extension {
 
     _mDrop(p_evt) {
 
-        let dragList = POINTER.DRAG_DATA,
-            pass = false;
+        let dragData = this._getDragData(p_evt);
 
-        for (let d = 0, n = dragList.length; d < n; d++) {
-
-            let dragData = dragList[d];
-
-            for (let i = 0, n2 = this._allowedHooks.length; i < n2; i++) {
-
-                let hook = this._allowedHooks[i];
-
-                if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dragData); }
-                else { pass = hook.check.fn(dragData); }
-
-                if (!pass) { continue; }
-
-                if (hook.drop) { hook.drop.fn.call(hook.drop.thisArg, dragData); }
-                else { hook.drop.fn(dragData); }
-
-            }
-        }
+        if (POINTER.DRAG_MULTIPLE) {
+            for (let d = 0, n = dragData.length; d < n; d++) { this._DropSingleDataItem(dragData[d]); }
+        } else { this._DropSingleDataItem(dragData); }
 
         if (POINTER.DRAG_TARGET) {
             POINTER.DRAG_TARGET._Broadcast(SIGNAL.DROPPED, POINTER.DRAG_TARGET);
         }
 
         this._Clear();
+
+    }
+
+    _DropSingleDataItem(p_dragDataItem) {
+
+        // Process drop hooks for a single data item
+
+        for (let i = 0, n = this._allowedHooks.length; i < n; i++) {
+
+            let hook = this._allowedHooks[i],
+                pass = false;
+
+            if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, p_dragDataItem); }
+            else { pass = hook.check.fn(p_dragDataItem); }
+
+            if (!pass) { continue; }
+
+            if (hook.drop.thisArg) { hook.drop.fn.call(hook.drop.thisArg, p_dragDataItem); }
+            else { hook.drop.fn(p_dragDataItem); }
+
+        }
 
     }
 

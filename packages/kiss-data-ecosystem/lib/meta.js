@@ -45,7 +45,6 @@ class META {
             return result;
         } else {
             // Try to go up the __proto__ chain
-            //console.log(cstr.constructor);
 
             // Fallback to assumed model relationship
             return META.ETA(p_obj.model);

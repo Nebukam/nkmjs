@@ -37,6 +37,8 @@ class StyleguideApp extends nkm.app.AppBase {
             { id: `_mainContainer`, cl: UIItemListLayer }
         ];
 
+        console.log(nkm);
+
         this._ignore = [
             nkm.app.AutoUpdateDialogBox,
             UIItem,

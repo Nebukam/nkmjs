@@ -1,6 +1,6 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
-const ui= require(`@nkmjs/ui-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 class Group extends ui.WidgetOrientable {
     constructor() { super(); }

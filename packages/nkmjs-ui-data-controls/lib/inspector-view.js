@@ -16,6 +16,13 @@ const ui = require(`@nkmjs/ui-core`);
 const helpers = require(`./helpers`);
 const ControlView = require("./control-view");
 
+/**
+ * @description TODO
+ * @class
+ * @hideconstructor
+ * @augments ui.datacontrols.ControlView
+ * @memberof ui.datacontrols
+ */
 class InspectorView extends ControlView {
     constructor() { super(); }
 

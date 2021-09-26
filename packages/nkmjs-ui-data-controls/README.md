@@ -5,6 +5,14 @@
 
 ![NKMjs][logo]
 
+This package is designed to work with [nkmjs-data-core](https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-data-core/) & [nkmjs-data-library](https://github.com/Nebukam/nkmjs/raw/main/packages/nkmjs-data-library/).  
+There are two main base component to build on top of :  
+- ControlWidget (extends ui.Widget)
+- ControlView (extends ui.views.View)  
+
+As well as an less abstract Editor component
+- Editor (extends ui.views.View)
+ 
 
 
 

@@ -43,7 +43,11 @@ class Bundler {
             if (id == this.moduleID) { continue; }
             b.exclude(id);
         }
-
+/*
+        b.transform(require("babelify"), {
+            presets: [NKMjs.InCoreModules('@babel/preset-env')],
+            plugins: [NKMjs.InCoreModules('@babel/plugin-proposal-class-properties')]});
+*/
         b.bundle(this._OnBrowserifyied.bind(this));
 
     }
@@ -98,7 +102,7 @@ class Bundler {
         try { localTerserConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`terser.config.json`))); } catch (e) { }
 
         minify(babeled.code, terserConfig).then(this._OnTerseryfied.bind(this));
-
+        //this._OnTerseryfied(babeled);
     }
 
     _OnTerseryfied(p_response) {

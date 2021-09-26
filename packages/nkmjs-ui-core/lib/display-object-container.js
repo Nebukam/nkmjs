@@ -119,7 +119,7 @@ class DisplayObjectContainer extends DisplayObject {
             p_displayObject = UI.Rent(p_displayObject);
         }
 
-        if (!p_displayObject) { throw new Error(`Cannot Add an empty display object.`); }
+        if (!p_displayObject) { throw new Error(`Cannot Add an empty display object (${p_displayObject}).`); }
 
         if (this._displayList.Contains(p_displayObject)) {
             if (p_index === -1) { return p_displayObject; }
@@ -128,6 +128,7 @@ class DisplayObjectContainer extends DisplayObject {
         }
 
         if (!p_container || p_container === this) {
+            
             p_container = this._wrapper;
         } else if (u.isInstanceOf(p_container, DisplayObjectContainer)) {
             p_container = p_container.wrapper;

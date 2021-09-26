@@ -3,9 +3,21 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 
-const SingletonEx = require(`./helpers/singleton-ex`);
 const NFOS = require(`./nfos`);
 const IDS = require(`./ids`);
+
+////
+// Had to make these const instead of embedded static for reason unknown :(
+const _classLookup = new collections.Dictionary();
+const _classReverseLookup = new collections.Dictionary();
+
+const _squashedAssocs = new collections.KDictionary();//Array of squashed associations (as kits get loaded and all)
+
+const _contextMap = new collections.KDictionary();
+const _contextKeyLists = new collections.DictionaryList();
+
+const _distanceMap = new collections.KDictionary();
+////
 
 /**
  * <div class="tip infos" data-title="Important note">The BINDINGS Singleton is a critical
@@ -21,7 +33,7 @@ const IDS = require(`./ids`);
  * (more infos : {@tutorial 02-Extending-NKMjs})
  * 
  * Non-exhaustive context list :  
- * * {@link data.core.}
+ * @description TODO
  * @class
  * @hideconstructor
  * @memberof common
@@ -29,19 +41,8 @@ const IDS = require(`./ids`);
 class BINDINGS {
     constructor() { }
 
-    static _classLookup = new collections.Dictionary();
-    static _classReverseLookup = new collections.Dictionary();
-
-    static _squashedAssocs = new collections.KDictionary();//Array of squashed associations (as kits get loaded and all)
-
-    static _contextMap = new collections.KDictionary();
-    static _contextKeyLists = new collections.DictionaryList();
-
-    static _distanceMap = new collections.KDictionary();
-
-
     /**
-     * 
+     * @description TODO
      * @param {common.helpers.BindingKit} p_bindings
      * @example //This is what you'll do most of the time in your module's index.js
      * BINDINGS.Expand(require(`./my-module-bindings`));
@@ -63,8 +64,8 @@ class BINDINGS {
      * as serialized data store its string identifier to be deserialized afterward.</div>
      */
     static SetClass(p_key, p_class) {
-        this._classLookup.Set(p_key, p_class);
-        this._classReverseLookup.Set(p_class, p_key);
+        _classLookup.Set(p_key, p_class);
+        _classReverseLookup.Set(p_class, p_key);
     }
 
     /**
@@ -73,7 +74,7 @@ class BINDINGS {
      * @returns {function}
      * @group Class repertoire
      */
-    static GetClass(p_key) { return this._classLookup.Get(p_key); }
+    static GetClass(p_key) { return _classLookup.Get(p_key); }
 
     /**
      * Retrieve the string identifier associated with a given class constructor, if any.
@@ -86,8 +87,8 @@ class BINDINGS {
     static GetClassKey(p_class) {
 
         if (u.isObject(p_class)) { p_class = p_class.constructor; }
-        
-        let uid = this._classReverseLookup.Get(p_class);
+
+        let uid = _classReverseLookup.Get(p_class);
 
         if (!uid) {
             uid = u.tils.Get(NFOS.Get(p_class), IDS.UID, null);
@@ -104,7 +105,7 @@ class BINDINGS {
      * @returns {function}
      * @group Class repertoire
      */
-    static RemoveClass(p_key) { this._classLookup.Remove(p_key); }
+    static RemoveClass(p_key) { _classLookup.Remove(p_key); }
 
     /**
      * @description Registers an key-control pair within a given context.
@@ -123,9 +124,9 @@ class BINDINGS {
     static Set(p_context, p_key, p_binding) {
         //TODO : Check if a value is being squashed, and store it to restore it on kit concealing
         //console.log(`Set assoc ${p_context}=>${p_key}=${p_control}`);
-        this._contextMap.Set(p_context, p_key, p_binding);
-        //console.log(`= ${this._contextMap.Get(p_context, p_key)}`);
-        this._contextKeyLists.Set(p_context, p_key);
+        _contextMap.Set(p_context, p_key, p_binding);
+        //console.log(`= ${_contextMap.Get(p_context, p_key)}`);
+        _contextKeyLists.Set(p_context, p_key);
     }
 
     /**
@@ -143,13 +144,13 @@ class BINDINGS {
         p_key = u.isFunc(p_key) ? p_key : p_key.constructor;
         if (!u.isFunc(p_key)) { throw new Error(`p_key must be a constructor or have an accessible constructor.`); }
 
-        let binding = this._contextMap.Get(p_context, p_key);
+        let binding = _contextMap.Get(p_context, p_key);
 
         if (!binding) {
             if (p_broad) { //&& typeof p_context === 'function'
                 //p_borad === true, look for other associations in this context that would fit
                 //Ensure we're looking at a constructor context first
-                let keyList = this._contextKeyLists.Get(p_context);
+                let keyList = _contextKeyLists.Get(p_context);
 
                 if (!keyList) {
                     //console.warn(`No association found for key:${p_key.name}, context:${p_context.name ? p_context.name : p_context}`);
@@ -161,14 +162,14 @@ class BINDINGS {
 
                 for (let i = 0, n = keyList.length; i < n; i++) {
                     let otherKey = keyList[i];
-                    distance = this._distanceMap.Get(p_key, otherKey);
+                    distance = _distanceMap.Get(p_key, otherKey);
                     if (u.isVoid(distance)) {
                         distance = u.tils.InheritanceDistance(p_key, otherKey);
-                        this._distanceMap.Set(p_key, otherKey, distance);
+                        _distanceMap.Set(p_key, otherKey, distance);
                     }
                     if (distance === -1) { continue; }
                     if (distance < closestDistance) {
-                        let tResult = this._contextMap.Get(p_context, otherKey);
+                        let tResult = _contextMap.Get(p_context, otherKey);
                         if (tResult) {
                             closestDistance = distance;
                             binding = tResult;
@@ -196,8 +197,8 @@ class BINDINGS {
      * @group Global binding
      */
     static Remove(p_context, p_key, p_binding) {
-        this._contextMap.Remove(p_context, p_key, p_binding);
-        this._contextKeyLists.Remove(p_context, p_key);
+        _contextMap.Remove(p_context, p_key, p_binding);
+        _contextKeyLists.Remove(p_context, p_key);
         //TODO : Restore any squashed associations
     }
 

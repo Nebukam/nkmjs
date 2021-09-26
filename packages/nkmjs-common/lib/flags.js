@@ -7,8 +7,8 @@
  * @hideconstructor
  * @memberof common
  */
-class FLAGS{
-    constructor() {}
+class FLAGS {
+    constructor() { }
 
     /**
      * @description Semantic for anything related to general information.

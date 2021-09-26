@@ -10,6 +10,14 @@ const actions = require("@nkmjs/actions");
 const CONTEXT = require(`./context`);
 const ControlView = require(`./control-view`);
 
+/**
+ * @description An InspectorShell is primarily designed to be used by an Editor. 
+ * It's a simple wrapper that will fetch the right inspector from global bindings based on the data it is given.
+ * @class
+ * @hideconstructor
+ * @augments ui.datacontrols.ControlView
+ * @memberof ui.datacontrols
+ */
 class InspectorShell extends ControlView {
     constructor() { super(); }
 

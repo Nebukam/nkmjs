@@ -1,11 +1,3 @@
-/**
- * Inspector role is :
- * - list the content of a data-block
- * - provide a single controls for each exposed data-block element
- * - provide a context for registering specific sub-inspectors
- * It's very basic implementation of a controller
- * It's supposed to offer editing capability for an active selection inside an editor.
- */
 'use strict';
 
 const u = require("@nkmjs/utils");
@@ -13,6 +5,14 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
+/**
+ * @description An InspectorWidget is a ControlWidget designed to be used inside an InspectorView or an Editor.
+ * 80% of an app UI & editor contents is likely to be InspectorWidgets.
+ * @class
+ * @hideconstructor
+ * @augments ui.datacontrols.ControlWidget
+ * @memberof ui.datacontrols
+ */
 const ControlWidget = require("./control-widget");
 
 class InspectorWidget extends ControlWidget {

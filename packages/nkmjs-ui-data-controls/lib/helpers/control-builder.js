@@ -2,6 +2,13 @@
 
 const com = require("@nkmjs/common");
 
+/**
+ * @description A ControlBuilder is a simple helper that streamlines
+ * maintenance and updates for a list of ControlWidgets.
+ * @class
+ * @hideconstructor
+ * @memberof ui.datacontrols.helpers
+ */
 class ControlBuilder {
 
     constructor(p_owner, p_defaultCSS = `group`) {
@@ -60,6 +67,7 @@ class ControlBuilder {
                 cl = null;
 
             if (config.context) { cl = com.BINDINGS.Get(config.context, (config.key || config.cl), config.cl); }
+            
             else { cl = config.cl; }
 
             control = this.Add(config.cl, config.css);

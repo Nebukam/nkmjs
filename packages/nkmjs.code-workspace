@@ -19,7 +19,16 @@
 			"path": "nkmjs-common"
 		},
 		{
+			"path": "nkmjs-core"
+		},
+		{
+			"path": "nkmjs-core-dev"
+		},
+		{
 			"path": "nkmjs-data-core"
+		},
+		{
+			"path": "nkmjs-data-library"
 		},
 		{
 			"path": "nkmjs-dialog"
@@ -37,10 +46,13 @@
 			"path": "nkmjs-io-core"
 		},
 		{
+			"path": "nkmjs-localisation"
+		},
+		{
 			"path": "nkmjs-io-electron"
 		},
 		{
-			"path": "nkmjs-quick-start"
+			"path": "nkmjs-metrics"
 		},
 		{
 			"path": "nkmjs-services"
@@ -49,10 +61,13 @@
 			"path": "nkmjs-style"
 		},
 		{
-			"path": "nkmjs-test-ground"
+			"path": "nkmjs-ui-core"
 		},
 		{
-			"path": "nkmjs-ui-core"
+			"path": "nkmjs-ui-data-controls"
+		},
+		{
+			"path": "nkmjs-ui-library"
 		},
 		{
 			"path": "nkmjs-ui-workspace"
@@ -64,7 +79,7 @@
 			"path": "nkmjs-workbench"
 		},
 		{
-			"path": "nkmjs-core"
+			"path": "..\\..\\nkmjs-toolbox"
 		}
 	]
 }

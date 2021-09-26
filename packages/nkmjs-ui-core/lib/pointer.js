@@ -349,7 +349,7 @@ class POINTER extends com.helpers.SingletonEx {
     // ----> Data drag handling    
 
 
-    static _dragLength = 0;
+    static _dragLength = -1;
     static _dragData = null;
     static _dragDataExternal = null;
     static _dragTarget = null;
@@ -367,6 +367,20 @@ class POINTER extends com.helpers.SingletonEx {
      * @type {*}
      * @group Drag and drop
      */
+    static get EXTERNAL_DRAG() { return this._dragDataExternal; }
+    static set EXTERNAL_DRAG(p_value) { this._dragDataExternal = p_value; }
+    /**
+     * @description TODO
+     * @type {boolean}
+     * @group Drag and drop
+     */
+    static get DRAG_MULTIPLE() { return (this._dragLength > -1); }
+
+    /**
+     * @description TODO
+     * @type {*}
+     * @group Drag and drop
+     */
     static get DRAG_TARGET() { return this._dragTarget; }
     static set DRAG_TARGET(p_target) { this._dragTarget = p_target; }
 
@@ -376,28 +390,40 @@ class POINTER extends com.helpers.SingletonEx {
      * @group Drag and drop
      */
     static get dragLength() { return this._dragLength; }
-    static set dragLength(p_value) { this._dragLength = p_value; }
 
     /**
      * @description TODO
      * @param {*} p_data 
      * @param {*} p_target 
+     * @param {*} [p_multiple] Whether to flag this drag as multiple or not
      * @group Drag and drop
      */
-    static DragStarted(p_data, p_target) {
+    static DragStarted(p_data, p_target, p_multiple = false, p_external = false) {
 
-        let dLength = 0;
-        if (p_data) {
-            if (Array.isArray(p_data)) {
-                dLength = p_data.length;
+        this.DRAG_DATA = null;
+        this.EXTERNAL_DRAG = p_external;
+        
+        this._dragMultiple = p_multiple;
+
+        let dLength = -1;
+
+        if (!p_external) {
+
+            if (p_data) {
+                if (p_multiple && Array.isArray(p_data)) {
+                    dLength = p_data.length;
+                }
             }
+
+            this.DRAG_DATA = p_data;
+
         }
 
-        this.dragLength = dLength;
+        this._dragLength = dLength;
 
-        this.DRAG_DATA = p_data;
         this.DRAG_TARGET = p_target;
         this.instance._Broadcast(SIGNAL.DRAG_STARTED, p_data);
+        
     }
 
     /**
@@ -408,7 +434,7 @@ class POINTER extends com.helpers.SingletonEx {
         this.instance._Broadcast(SIGNAL.DRAG_ENDED);
         this.DRAG_DATA = null;
         this.DRAG_TARGET = null;
-        this.dragLength = 0;
+        this._dragLength = -1;
     }
 
 
@@ -417,8 +443,7 @@ class POINTER extends com.helpers.SingletonEx {
     _mExternalDragEnter(p_evt) {
         if (POINTER.DRAG_DATA) { return; } // Internal drag
 
-        POINTER.DRAG_DATA = p_evt.dataTransfer;
-        POINTER.DragStarted(POINTER.DRAG_DATA, null);
+        POINTER.DragStarted(p_evt.dataTransfer, null, false, true);
 
         document.addEventListener('dragleave', this._mExternalDragLeave);
         document.addEventListener('dragover', this._mExternalDragOver);
@@ -432,16 +457,19 @@ class POINTER extends com.helpers.SingletonEx {
     }
 
     _mExternalDragOver(p_evt) {
+        //p_evt.dataTransfer;
         p_evt.preventDefault(); // Prevent default browser behavior
     }
 
     _mExternalDrop(p_evt) {
+        // TODO : Broadcast p_evt.dataTransfer
         p_evt.preventDefault(); // Prevent default browser behavior
         this._ClearExternalDragDrop();
     }
 
     _ClearExternalDragDrop() {
         POINTER.DragEnded();
+        POINTER.EXTERNAL_DRAG = false;
         POINTER.DRAG_DATA = null;
         document.removeEventListener('dragleave', this._mExternalDragLeave);
         document.removeEventListener('dragover', this._mExternalDragOver);

@@ -26,8 +26,11 @@ class BaseInput extends Widget {
     _Init() {
         super._Init();
 
-        this._signals.Release();
-        this._signals = null;
+
+        //The SignalBox from the InputHandler is redundant with the BaseInput's one.
+        //TODO : Need to redesign the relationship with the InputHandler object.
+        //this._signals.Release();
+        //this._signals = null;
 
         this._handler = new InputHandler();
         this._handler.owner = this;
