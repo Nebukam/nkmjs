@@ -4,8 +4,9 @@ class ReplaceVars {
         this.Replace = this.Replace.bind(this);
     }
 
-    Replace(p_content) {
+    Replace(p_content, p_allowNumbers = false) {
 
+        this._allowNumbers = p_allowNumbers;
         for (let i = 0; i < 10; i++) {
             p_content = this.__replacePass(p_content);
         }
@@ -27,7 +28,13 @@ class ReplaceVars {
     __process(p_content, keys) {
         for (var key in keys) {
             let value = keys[key];
-            if (typeof value !== 'string') { continue; }
+            if (typeof value !== 'string') { 
+                if(this._allowNumbers){
+                    if(typeof value != 'number'){ continue; }
+                }else{
+                    continue;
+                }
+             }
             p_content = p_content.split(`%${key}%`).join(value);
         }
         return p_content;

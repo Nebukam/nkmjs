@@ -19,7 +19,8 @@ class TaskBuildExt extends ScriptBase {
         this._Bind(this.Entry);
         this._Bind(this.BroadEntry);
 
-        let manifestVersion = (NKMjs.shortargs.manifestVersion || 2);
+        let extensionConfig = NKMjs.projectConfig.extension,
+            manifestVersion = (extensionConfig.manifest_version || 2);
 
         this.manifestPreper = `./task-prepare-ext-v${manifestVersion}`;
         this.manifestBuilder = `./task-build-ext-manifest-v${manifestVersion}`;

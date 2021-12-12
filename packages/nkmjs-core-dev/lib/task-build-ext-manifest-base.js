@@ -12,7 +12,6 @@ class TaskBuildWebmanifestBase extends ScriptBase {
 
         super(p_id, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
-
         this.Run([
             `./task-prepare-icons`,
             `./task-audit-visible-urls`,
@@ -34,7 +33,9 @@ class TaskBuildWebmanifestBase extends ScriptBase {
 
         // ----> mandatory
 
-        manifest.manifest_version = 2;
+        let extensionConfig = NKMjs.projectConfig.extension;
+
+        manifest.manifest_version = (extensionConfig.manifest_version || 2);
         manifest.name = NKMjs.projectConfig.longName;
         manifest.short_name = NKMjs.projectConfig.shortName;
         manifest.description = NKMjs.projectConfig.description;
@@ -44,7 +45,7 @@ class TaskBuildWebmanifestBase extends ScriptBase {
 
         manifest.icons = this.inconList;
 
-        manifest.minimum_chrome_version = `88`;
+        manifest.minimum_chrome_version = `93`;
 
         let author = (NKMjs.projectConfig.__packagejson.author || `MissingAuthorData`);
         if (typeof author === `object`) { author = (author.name || `InvalidAuthorData`); }
@@ -84,6 +85,7 @@ class TaskBuildWebmanifestBase extends ScriptBase {
 
         // TODO
 
+        this.Finalize(manifest);
         NKMjs.WriteTempSync(NKMjs.InExtBuildRsc(`manifest.json`), JSON.stringify(manifest, null, 4));
 
         this.End();
@@ -94,6 +96,10 @@ class TaskBuildWebmanifestBase extends ScriptBase {
     }
 
     PreparePermissions(p_manifest) {
+
+    }
+
+    Finalize(p_manifest){
 
     }
 

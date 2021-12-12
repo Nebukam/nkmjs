@@ -19,7 +19,7 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
         let extensionConfig = NKMjs.projectConfig.extension,
             browser_action = {
                 default_icon: this.inconList,
-                default_title: projectInfos.shortName
+                default_title: NKMjs.projectConfig.shortName
             };
 
         if (!extensionConfig || extensionConfig.display === 'popup') {
@@ -28,8 +28,9 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
 
         } else {
 
+            //TODO: This needs to be tweaked on a per-browser basis
             let vars = {
-                action_api_name: `browserAction`,
+                action_api_name: `action`,
                 context_api: `chrome`
             },
                 replacer = new ReplaceVars(vars);
@@ -45,9 +46,11 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
             }
 
             // Need to alter entry point to specify the app has a service-worker
+            // which will open a new tab that will load the extension.
+            p_manifest.background = { service_worker:"service-worker.js" };
 
         }
-
+        
         p_manifest.action = browser_action;
 
     }
@@ -56,14 +59,25 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
 
         let permissions = [],
             host_permissions = [],
-            extPerm = NKMjs.projectConfig.extension.permissions,
-            extHostPerm = NKMjs.projectConfig.extension.hostPermissions;
+            extensionConfig = NKMjs.projectConfig.extension,
+            extPerm = extensionConfig.permissions,
+            extHostPerm = extensionConfig.hostPermissions;
+
+        // Add unlimited storage permission by default
+        // as it is not supported as "optional"
+        permissions.push('unlimitedStorage');
+
+        if (!extensionConfig || extensionConfig.display === 'popup') {
+
+        } else {
+            
+        }
 
         if (extPerm) {
             for (let i = 0, n = extPerm.length; i < n; i++) {
                 let perm = extPerm[i];
                 if (permissions.includes(perm)) { continue; }
-                permissions.push(extPerm[i]);
+                permissions.push(perm);
             }
         }
 
@@ -71,7 +85,7 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
             for (let i = 0, n = extHostPerm.length; i < n; i++) {
                 let perm = extHostPerm[i];
                 if (host_permissions.includes(perm)) { continue; }
-                host_permissions.push(extHostPerm);
+                host_permissions.push(perm);
             }
         }
         /*
@@ -83,11 +97,21 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
                     if (!host_permissions.includes(perm)) { host_permissions.push(perm); };
                 }
         */
-        if (permissions.length != 0) { p_manifest.permissions = permissions; }
-        if (host_permissions.length != 0) { p_manifest.host_permissions = host_permissions; }
 
-        p_manifest.optional_permissions = ['unlimitedStorage'];
+        if (permissions.length != 0) { 
+            p_manifest.permissions = permissions; 
+        }
 
+        if (host_permissions.length != 0) { 
+            p_manifest.host_permissions = host_permissions; 
+        }
+
+    }
+
+    Finalize(p_manifest){
+        super.Finalize(p_manifest);
+        //Delete popup reference, unsupported in manifest v3
+        delete p_manifest.popup;
     }
 
 }
