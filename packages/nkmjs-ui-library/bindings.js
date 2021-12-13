@@ -30,23 +30,23 @@ class Bindings extends com.helpers.BindingKit {
             {
                 context: ui.CONTEXT.STANDALONE_INPUT,
                 kvps: [
-                    { key: ui.inputs.KEYS.STRING, binding: inputs.InputText },
-                    { key: ui.inputs.KEYS.STRING_TEXT, binding: inputs.InputTextarea },
-                    { key: ui.inputs.KEYS.STRING_PATH, binding: inputs.InputPath },
-                    { key: ui.inputs.KEYS.STRING_PATH_DIR, binding: inputs.InputDirectory },
-                    { key: ui.inputs.KEYS.STRING_IDENTIFIER, binding: inputs.InputIdentifier },
+                    { key: ui.inputs.KEYS.STRING, binding: inputs.Text },
+                    { key: ui.inputs.KEYS.STRING_TEXT, binding: inputs.Textarea },
+                    { key: ui.inputs.KEYS.STRING_PATH, binding: inputs.Path },
+                    { key: ui.inputs.KEYS.STRING_PATH_DIR, binding: inputs.Directory },
+                    { key: ui.inputs.KEYS.STRING_IDENTIFIER, binding: inputs.Identifier },
 
-                    { key: ui.inputs.KEYS.FILE, binding: inputs.InputFile },
-                    { key: ui.inputs.KEYS.DIRECTORY, binding: inputs.InputDirectory },
+                    { key: ui.inputs.KEYS.FILE, binding: inputs.File },
+                    { key: ui.inputs.KEYS.DIRECTORY, binding: inputs.Directory },
 
-                    { key: ui.inputs.KEYS.NUMBER, binding: inputs.InputNumber },
-                    { key: ui.inputs.KEYS.NUMBER_SLIDER, binding: inputs.InputNumber },
-                    { key: ui.inputs.KEYS.NUMBER_ANGLE, binding: inputs.InputNumber },
+                    { key: ui.inputs.KEYS.NUMBER, binding: inputs.Number },
+                    { key: ui.inputs.KEYS.NUMBER_SLIDER, binding: inputs.Number },
+                    { key: ui.inputs.KEYS.NUMBER_ANGLE, binding: inputs.Number },
 
-                    { key: ui.inputs.KEYS.COLOR, binding: inputs.InputColor },
+                    { key: ui.inputs.KEYS.COLOR, binding: inputs.Color },
 
-                    { key: ui.inputs.KEYS.BOOLEAN, binding: inputs.InputBoolean },
-                    { key: ui.inputs.KEYS.BOOLEAN_CHECK, binding: inputs.InputBoolean },
+                    { key: ui.inputs.KEYS.BOOLEAN, binding: inputs.Boolean },
+                    { key: ui.inputs.KEYS.BOOLEAN_CHECK, binding: inputs.Boolean },
                 ]
             },
 

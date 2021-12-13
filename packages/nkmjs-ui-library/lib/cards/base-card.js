@@ -123,6 +123,7 @@ class BaseCard extends ui.WidgetItem {
         }
 
     }
+
 }
 
 module.exports = BaseCard;

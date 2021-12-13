@@ -11,6 +11,7 @@ const SIGNAL = require('./signal');
 const WidgetOrientable = require(`./widget-orientable`);
 const WidgetButton = require(`./widget-button`);
 const FlagEnum = require('./helpers/flag-enum');
+const InputBase = require(`./inputs/input-base`);
 
 const _flag_STRETCH = `stretch`;
 const _flag_STRETCH_SAME = `stretch-same`;
@@ -203,6 +204,29 @@ class WidgetBar extends WidgetOrientable {
             }
 
         }
+
+        if (u.isInstanceOf(handle, InputBase)) {
+            if(p_options){
+                if(`currentValue` in p_options){ handle.currentValue = p_options.currentValue; }
+                if(`inputId` in p_options){ handle.inputId = p_options.inputId; }
+            }
+        }
+
+        if(p_options){
+            if(p_options.member){
+                let member = p_options.member;
+                member.owner[member.id] = handle;
+            }
+    
+            if(p_options.watchers && Array.isArray(p_options.watchers)){
+                for(var i = 0; i < p_options.watchers.length; i++){
+                    let signal = p_options.watchers[i];
+                    handle.Watch(signal.signal, signal.fn, signal.thisArg);
+                }
+            }
+        }
+
+        
 
         handle.flags.Set(this._orientation, true);
 

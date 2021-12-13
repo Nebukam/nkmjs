@@ -53,10 +53,11 @@ class SignalBox extends DisposableObject {
     Broadcast(p_signalId, ...args) {
 
         if (this._silent || this._signals.isEmpty ) { return; }
-
+        if(!p_signalId){ 
+            throw new Error(`Signal may not be undefined or null.`); 
+        }
         let signal = this._signals.Get(p_signalId);
-        if (u.isVoid(signal)) { return; }
-
+        if(!signal){return;}
         signal.Broadcast(...args);
     }
 

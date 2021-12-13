@@ -37,7 +37,7 @@ class InputColor extends ui.inputs.InputField {
 
     _UpdatePreview() {
         super._UpdatePreview();
-        this._body.style['background-color'] = this._changedValue;
+        this._body.style['background-color'] = this.changedValue;
     }
 
 }

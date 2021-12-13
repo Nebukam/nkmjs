@@ -244,7 +244,9 @@ class InputHandler extends com.pool.DisposableObjectEx {
         if (this._onInputErrorFn) { this._onInputErrorFn(this._inputErrors); }
     }
 
-    _AddFeedback(p_item) { this._errorFeedbacks.push(feedback); }
+    _AddFeedback(p_item) { 
+        this._errorFeedbacks.push(feedback); 
+    }
 
     /**
      * @access protected
@@ -310,7 +312,10 @@ class InputHandler extends com.pool.DisposableObjectEx {
             this.SoftReset();
             return false;
         }
-
+            
+        this.currentValue = this._changedValue;
+        this._changedValue = this._currentValue;
+        
         this._Broadcast(SIGNAL.VALUE_SUBMITTED, this, this._changedValue);
         this._RequestPreviewUpdate();
         return true;

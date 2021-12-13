@@ -88,7 +88,7 @@ class InputField extends InputBase {
     }
 
     _UpdatePreview() {
-        this._inputField.value = this._currentValue;
+        this._inputField.value = this.changedValue;
     }
 
 }

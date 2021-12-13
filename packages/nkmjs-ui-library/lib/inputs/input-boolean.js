@@ -18,8 +18,11 @@ class InputBoolean extends ui.inputs.InputField {
     _Init() {
         super._Init();
 
+        this._handler.submitOnChange = true;
+
         this._flags.Add(this, _flag_CHECKED);
         this._label = null;
+        this._currentValue = this._changedValue = false;
 
     }
 
@@ -40,13 +43,23 @@ class InputBoolean extends ui.inputs.InputField {
         let body = u.dom.El(`div`, { class: `body` }, this._host);
         this._handle = u.dom.El(`div`, { class: `handle` }, body);
         this._inputField = u.dom.El(`input`, { class: 'field', type: 'checkbox' }, this._host);
+
+        this.focusArea = body;
     }
 
     _GrabValue() { return this._inputField.checked; }
 
     _UpdatePreview() {
-        this._inputField.checked = this._changedValue;
-        this._flags.Set(_flag_CHECKED, this._changedValue);
+        this._inputField.checked = this.changedValue;
+        this._flags.Set(_flag_CHECKED, this.changedValue);
+    }
+
+    // ----> Mouse events
+
+    Activate(p_evt) {
+        if(!super.Activate(p_evt)){ return false; }
+        this.changedValue = !this.changedValue;
+        return true;
     }
 
 }
