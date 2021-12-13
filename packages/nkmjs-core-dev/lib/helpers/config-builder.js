@@ -18,7 +18,12 @@ class ConfigBuilder {
 
         switch (p_context) {
             case ConfigBuilder.EXT:
+
+                let extensionConfig = NKMjs.projectConfig.extension,
+                    manifestVersion = (extensionConfig.manifest_version || 2);
+
                 config += `\tisExtension:true,\n`;
+                config += `\tmanifestVersion:${manifestVersion},\n`;
                 // TODO : If manifest V3, register service-worker instead of background.js
                 break;
             case ConfigBuilder.PWA:

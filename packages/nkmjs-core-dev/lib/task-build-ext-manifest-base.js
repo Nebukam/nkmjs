@@ -100,7 +100,7 @@ class TaskBuildWebmanifestBase extends ScriptBase {
     }
 
     Finalize(p_manifest){
-
+        delete p_manifest.popup;
     }
 
 }

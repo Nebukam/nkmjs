@@ -61,7 +61,7 @@ class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
             for (let i = 0, n = extPerm.length; i < n; i++) {
                 let perm = extPerm[i];
                 if (permissions.includes(perm)) { continue; }
-                permissions.push(extPerm[i]);
+                permissions.push(perm);
             }
         }
 
@@ -69,7 +69,7 @@ class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
             for (let i = 0, n = extHostPerm.length; i < n; i++) {
                 let perm = extHostPerm[i];
                 if (permissions.includes(perm)) { continue; }
-                permissions.push(extHostPerm);
+                permissions.push(perm);
             }
         }
 

@@ -90,7 +90,15 @@ class ENV extends com.helpers.SingletonEx {
 
         this._onStart = new com.helpers.CallList();
 
+        this._useFetchRequestAsDefault = false;
+        this._manifestVersion = 0;
+
     }
+
+    set useFetchRequestAsDefault(p_value){ this._useFetchRequestAsDefault = p_value; }
+    get useFetchRequestAsDefault(){ return this._useFetchRequestAsDefault; }
+
+    get manifestVersion(){return this._manifestVersion;}
 
     /**
      * @description TODO
@@ -155,7 +163,14 @@ class ENV extends com.helpers.SingletonEx {
         if (this._started) { throw new Error(`Cannot ENV.Start more than once.`); }
         this._started = true;
 
+        this._manifestVersion = p_config ? (p_config.manifestVersion || 0) : 0;
+        ENV.instance._features._manifestVersion = this._manifestVersion;
+        
+        // Use service worker to handle HTTP requests if extension manifest v3
+        if(this._manifestVersion == 3){ this._useFetchRequestAsDefault = true; }
+
         u.LOG._(`ENV : START`, `#33979b`, `#212121`);
+        
         ENV.instance._features.List();
 
         if (ENV.instance._features.isBrowser) {

@@ -111,8 +111,6 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
 
     Finalize(p_manifest){
         super.Finalize(p_manifest);
-        //Delete popup reference, unsupported in manifest v3
-        delete p_manifest.popup;
     }
 
 }

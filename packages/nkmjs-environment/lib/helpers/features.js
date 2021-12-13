@@ -18,6 +18,7 @@ class Features extends com.pool.DisposableObjectEx {
 
         super();
 
+        this._manifestVersion = 0;
         this._isNodeEnabled = false; // <-- Electron or Nodejs context ?
         this._isBrowser = false;
         this._displayType = ENV_DISPLAY.DESKTOP;
@@ -419,7 +420,7 @@ class Features extends com.pool.DisposableObjectEx {
         let g = `✔`, b = `🞫`, gt = `889000`, bt = `d86100`, bg = `#171717`;
         u.LOG._(`${this._isBrowser ? g : b} isBrowser`, `#${this._isBrowser ? gt : bt}`, bg);
         u.LOG._(`${this._isMobile ? g : b} isMobile`, `#${this._isMobile ? gt : bt}`, bg);
-        u.LOG._(`${this._isExtension ? g : b} isExtension`, `#${this._isExtension ? gt : bt}`, bg);
+        u.LOG._(`${this._isExtension ? g : b} isExtension (v${this._isExtension ? this._manifestVersion : 0 })`, `#${this._isExtension ? gt : bt}`, bg);
         u.LOG._(`${this._isTouchEnabled ? g : b} isToucheEnabled`, `#${this._isTouchEnabled ? gt : bt}`, bg);
         u.LOG._(`${this._hasStorageArea ? g : b} hasStorageArea`, `#${this._hasStorageArea ? gt : bt}`, bg);
         u.LOG._(`${this._isCORSEnabled ? g : b} isCORSEnabled`, `#${this._isCORSEnabled ? gt : bt}`, bg);
