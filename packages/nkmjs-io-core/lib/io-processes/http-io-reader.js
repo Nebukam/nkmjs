@@ -18,7 +18,6 @@ class HTTPIOReader extends IOProcess {
 
     _Init() {
         super._Init();
-        this._Bind(this._OnProgress);
         this._Bind(this._OnRequestSuccess);
     }
 

@@ -19,6 +19,13 @@ class IOProcess extends com.pool.DisposableObjectEx {
         this._operation = null;
         this._running = false;
         this._globalResourceMap = null;
+
+        this._Bind(this._OnStart);
+        this._Bind(this._OnProgress);
+        this._Bind(this._OnError);
+        this._Bind(this._OnSuccess);
+        this._Bind(this._OnComplete);
+        
     }
 
     /**
