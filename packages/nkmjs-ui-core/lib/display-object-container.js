@@ -96,18 +96,18 @@ class DisplayObjectContainer extends DisplayObject {
      * @param {number} [p_index] Index inside the display list at which the item should be inserted
      * @example //Working with existing objects 
      * 
-     * var myDisplayObject = ... ; // Any existing DisplayObject
-     * var myContainer = ... ; // Any existing DisplayObjectContainer
+     * let myDisplayObject = ... ; // Any existing DisplayObject
+     * let myContainer = ... ; // Any existing DisplayObjectContainer
      * myContainer.Add(myDisplayObject);
      * @example //Working with an existing container
      * 
-     * var myContainer = ... ; // Any existing DisplayObjectContainer
+     * let myContainer = ... ; // Any existing DisplayObjectContainer
      * myContainer.Add(DisplayObjectConstructor, 'css-class1 css-class2');
      * @example //Working with an existing container
      * //and adding the child to a specific DOM element
      * 
-     * var myContainer = ... ; // Any existing DisplayObjectContainer
-     * var myDomElement = ... ; // Any existing DOM Element
+     * let myContainer = ... ; // Any existing DisplayObjectContainer
+     * let myDomElement = ... ; // Any existing DOM Element
      * myContainer.Add(DisplayObjectConstructor, 'css-class1 css-class2', myDomElement);
      * @group Child Management
      */

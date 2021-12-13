@@ -9,6 +9,8 @@
 
 :host{
     order: var(--order);
+    min-height:0;
+    min-width: 0;
 }
 
 :host(.unpainted){

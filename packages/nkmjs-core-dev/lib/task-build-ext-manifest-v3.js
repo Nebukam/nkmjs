@@ -30,8 +30,9 @@ class TaskBuildWebmanifestV3 extends TaskBuildWebmanifestBase {
 
             //TODO: This needs to be tweaked on a per-browser basis
             let vars = {
+                context_api: `chrome`,
                 action_api_name: `action`,
-                context_api: `chrome`
+                runtime_api_name: `runtime`
             },
                 replacer = new ReplaceVars(vars);
 

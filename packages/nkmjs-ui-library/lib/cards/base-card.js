@@ -88,6 +88,7 @@ class BaseCard extends ui.WidgetItem {
 
     _Render() {
         super._Render();
+        this.focusArea = this;
         this._frame = ui.DOMTemplate.Render(this.constructor.__cardTemplate, this, this.constructor.__cardOptions);
     }
 

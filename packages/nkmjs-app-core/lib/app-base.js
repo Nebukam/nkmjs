@@ -252,9 +252,9 @@ class AppBase extends com.helpers.SingletonEx {
             }
         }
 
-        this.AppReady();
-
         u.LOG._(`${this._APPID} : READY`, `#030107`, `#339a6e`);
+        
+        this.AppReady();
 
         // Loading container
 

@@ -21,6 +21,13 @@ class IO_TYPE {
      * @type {string}
      * @customtag read-only
      */
+     static FETCH = `fetch`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
     static REMOTE = `remote`;
 
     /**

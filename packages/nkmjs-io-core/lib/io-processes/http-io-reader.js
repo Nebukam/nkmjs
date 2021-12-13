@@ -20,7 +20,6 @@ class HTTPIOReader extends IOProcess {
         super._Init();
         this._Bind(this._OnProgress);
         this._Bind(this._OnRequestSuccess);
-        this._Bind(this._OnError);
     }
 
     Process() {
@@ -29,23 +28,27 @@ class HTTPIOReader extends IOProcess {
 
         let options = {
             onDownloadProgress: this._OnProgress,
-            responseType: this.rsc.type
+            responseType: this.rsc.type,
+            headers:{ 'Access-Control-Allow-Origin': '*' }
         };
 
-        if (this.rsc.mime) { options.headers = { 'Content-Type': this.rsc.mime }; }
+
+        if (this.rsc.mime) { 
+            options.headers['Content-Type'] = this.rsc.mime; 
+        }
 
         super._OnProgress(0);
 
         axios.get(this._operation.fullPath, options)
             .then(this._OnRequestSuccess)
             .catch(this._OnError);
-
+        
     }
 
     _OnProgress(p_evt) {
 
-        let totalLength = p_evt.lengthComputable ? p_evt.total : p_evt.target.getResponseHeader('content-length') || p_evt.target.getResponseHeader('x-decompressed-content-length');
-        console.log("onDownloadProgress", p_evt.loaded, totalLength);
+        let totalLength = p_evt.lengthComputable ? p_evt.total : p_evt.target.getResponseHeader('x-decompressed-content-length') || p_evt.target.getResponseHeader('content-length');
+        //console.log(`onDownloadProgress ${p_evt.loaded} / ${totalLength}`);
         let progress = 1;
         if (totalLength !== null) { progress = p_evt.loaded / totalLength; }
 

@@ -27,6 +27,14 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
+    static STATIC = com.IDS.STATIC;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Common
+     */
     static NAME = com.IDS.NAME;
 
     /**

@@ -39,8 +39,7 @@ class Explorer extends ui.views.View {
                 'align-items': `stretch`,
             },
             '.group': {
-                position: `relative`,
-                flex: `1 0 auto`,
+                position: `relative`
             },
             '.header': {
                 flex: `0 0 auto`,

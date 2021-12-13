@@ -16,6 +16,7 @@ const IO_TYPE = require(`./io-type`);
 const ResourceOperation = require(`./resource-operation`);
 const IOProcess = require(`./io-process`);
 
+const axios = require(`axios`);
 
 /**
  * @description TODO
@@ -49,6 +50,12 @@ class RESOURCES extends services.ServiceBase {
             rename: ioprocesses.HTTPIORename,
             delete: ioprocesses.HTTPIODelete
         };
+        this._io[IO_TYPE.FETCH] = {
+            read: ioprocesses.FetchIOReader,
+            write: ioprocesses.FetchIOWriter,
+            rename: ioprocesses.FetchIORename,
+            delete: ioprocesses.FetchIODelete
+        };
 
         if (env.isExtension) {
             if (env.isChromium) {
@@ -75,9 +82,7 @@ class RESOURCES extends services.ServiceBase {
             };
         }
 
-
-
-
+        axios.defaults.withCredentials = true;
 
         this._IOQueue = new IOQueue();
 
@@ -100,6 +105,25 @@ class RESOURCES extends services.ServiceBase {
      * @returns {io.core.Resource}
      */
     static Get(p_path, p_options = null) { return this.instance._Get(p_path, p_options); }
+
+    /**
+     * @description TODO
+     * @param {string} p_path 
+     * @param {object} [p_options]
+     * @param {function} [p_options.cl]
+     * @param {io.core.ENCODING} [p_options.encoding]
+     * @param {io.core.RESPONSE_TYPE} [p_options.type]
+     * @param {object} [p_hooks]
+     * @param {function} [p_hooks.success]
+     * @param {function} [p_hooks.error]
+     * @param {function} [p_hooks.any]
+     * @returns {io.core.Resource}
+     */
+     static GetAndRead(p_path, p_options = null, p_hooks = null) {
+        let rsc = this.instance._Get(p_path, p_options);
+        rsc.Read(p_hooks);
+        return rsc;
+    }
 
     /**
      * @description TODO
@@ -144,7 +168,10 @@ class RESOURCES extends services.ServiceBase {
         //Rule of thumb : resources are mapped using SHRINKED path.
 
         let shortPath = u.PATH.SHORT(p_path),
-            rsc = this._resources.Get(shortPath);
+            rsc = this._resources.Get(shortPath),
+            rscClass = u.tils.Get(p_options, `cl`, null),
+            stats = null,
+            fullPath = u.PATH.FULL(p_path);
 
         if (rsc) {
             if (rscClass && !u.isInstanceOf(rsc, rscClass)) {
@@ -152,10 +179,6 @@ class RESOURCES extends services.ServiceBase {
             }
             return rsc;
         }
-
-        let rscClass = u.tils.Get(p_options, `cl`, null),
-            stats = null,
-            fullPath = u.PATH.FULL(p_path);
 
         try { stats = this._GetStats(fullPath); } catch (err) { stats = null; }
 
@@ -229,7 +252,10 @@ class RESOURCES extends services.ServiceBase {
      * @returns {string}
      */
     _IOID(p_ioId, p_operation) {
-        if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) { return IO_TYPE.DEFAULT; }
+        if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) { 
+            if(env.isExtension){ return IO_TYPE.FETCH; }
+            else{ return IO_TYPE.DEFAULT; }
+        }
         return p_ioId;
     }
 

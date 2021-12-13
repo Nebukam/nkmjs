@@ -190,7 +190,7 @@ class Shelf extends ui.views.View {
                 'grid-template-columns': 'auto max-content'
             },
             ':host(.vertical) .view': {
-                'flex-flow': `column nowrap`,
+                //'flex-flow': `column nowrap`,//should be managed by the view
 
                 'overflow-x': `overlay`,
                 'overflow-y': `overlay`,
@@ -212,7 +212,7 @@ class Shelf extends ui.views.View {
                 'grid-template-rows': 'auto max-content'
             },
             ':host(.horizontal) .view': {
-                'flex-flow': `row nowrap`,
+                //'flex-flow': `row nowrap`,//should be managed by the view
 
                 'overflow-x': `overlay`,
                 'overflow-y': `overlay`,

@@ -7,6 +7,11 @@ module.exports = {
     HTTPIORename: require(`./http-io-rename`),
     HTTPIODelete: require(`./http-io-delete`),
 
+    FetchIOReader: require(`./fetch-io-reader`),
+    FetchIOWriter: require(`./fetch-io-writer`),
+    FetchIORename: require(`./fetch-io-rename`),
+    FetchIODelete: require(`./fetch-io-delete`),
+
     LocalStorageIOReader: require(`./localstorage-io-reader`),
     LocalStorageIOWriter: require(`./localstorage-io-writer`),
     LocalStorageIORename: require(`./localstorage-io-rename`),

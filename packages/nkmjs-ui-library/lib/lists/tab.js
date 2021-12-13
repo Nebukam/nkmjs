@@ -1,6 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const u = require("@nkmjs/utils");
 const env = require(`@nkmjs/environment`);
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
@@ -22,13 +23,25 @@ class Tab extends ui.WidgetItem {
 
         this._Bind(this._CloseRequest);
 
+        this._isStaticTab = false;
+
         this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
         this._closeBtn.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE, this._CloseRequest);
 
         this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
 
-        this._optionsHandler.Hook(`name`, `label`);
-        this._optionsHandler.Hook(`icon`);
+        this._optionsHandler.Hook(ui.IDS.NAME, `label`);
+        this._optionsHandler.Hook(ui.IDS.ICON);
+        this._optionsHandler.Hook(ui.IDS.STATIC, (p_value) => { 
+            this._isStaticTab = p_value;
+            if(this._closeBtn.element){ 
+                if(p_value){
+                    this._closeBtn.element.style.display = `none`;
+                }else{
+                    delete this._closeBtn.element.style.display;
+                }                    
+            }
+         });
 
     }
 
@@ -88,8 +101,8 @@ class Tab extends ui.WidgetItem {
             closeIcon: { htitle: `Close` }
         });
 
-        if (!env.isTouchEnabled) {
-            this._closeIcon.element.style.opacity = 0;
+        if (!env.isTouchEnabled) { 
+            this._closeIcon.element.style.opacity = 0; // ???
         }
 
         this.focusArea = this;

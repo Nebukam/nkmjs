@@ -27,8 +27,9 @@ class TaskBuildWebmanifestV2 extends TaskBuildWebmanifestBase {
         } else {
 
             let vars = {
+                context_api: `chrome`,
                 action_api_name: `browserAction`,
-                context_api: `chrome`
+                runtime_api_name: `runtime`
             },
                 replacer = new ReplaceVars(vars);
 

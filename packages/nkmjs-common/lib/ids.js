@@ -88,6 +88,12 @@ class IDS {
      */
     static OWNER = `owner`;
 
+    /**
+     * @type {string}
+     * @customtag read-only
+     */
+     static STATIC = `static`;
+
 }
 
 module.exports = IDS;

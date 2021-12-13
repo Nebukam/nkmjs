@@ -1,6 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const style = require("@nkmjs/style");
 const actions = require("@nkmjs/actions");
 
 const UI = require(`../ui`);
@@ -18,6 +19,15 @@ const WidgetOrientable = require(`../widget-orientable`);
 */
 class View extends WidgetOrientable {
     constructor() { super(); }
+
+    _Style() {
+        return style.Extends({
+            ':host': {
+                'min-width':'0',
+                'min-height':'0'
+            }
+        }, super._Style());
+    }
 
     // ----> Resizing
 

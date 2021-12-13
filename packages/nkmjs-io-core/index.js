@@ -22,4 +22,8 @@ module.exports = {
     resources: require(`./lib/resources`),
     ioprocesses: require(`./lib/io-processes`),
 
+    // Shortcut to RESOURCES.Get
+    Get:__RESOURCES.Get.bind(__RESOURCES),
+    Read:__RESOURCES.GetAndRead.bind(__RESOURCES),
+
 }
