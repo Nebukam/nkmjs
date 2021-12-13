@@ -26,7 +26,7 @@ class TextResource extends Resource {
 
         if (u.isString(this._raw)) {
             return this._raw;
-        } else if (u.tils.isArrayBuffer(this._raw)) {
+        } else if (u.isArrayBuffer(this._raw)) {
             let decoder = new TextDecoder(this._encoding);
             return decoder.decode(ArrayBuffer.isView(this._raw) ? this._raw : new DataView(this._raw, 0));
         }

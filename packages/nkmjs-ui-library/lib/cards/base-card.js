@@ -15,6 +15,8 @@ class BaseCard extends ui.WidgetItem {
     static __cardTemplate = null;
     static __cardOptions = {};
 
+    static __default_headerPlacement = ui.FLAGS.TOP;
+
     _Init() {
         super._Init();
 
@@ -34,7 +36,7 @@ class BaseCard extends ui.WidgetItem {
             (p_value) => {
                 this._mediaPlacement.Set(p_value);
                 this._orientation.Set(ui.FLAGS.Orientation(p_value, true));
-            }, ui.FLAGS.TOP);
+            }, this.constructor.__default_headerPlacement);
         this._optionsHandler.Hook(`variant`, (p_value) => { this._variantEnum.Set(p_value); });
         this._optionsHandler.Hook(ui.IDS.TITLE, null, ``);
         this._optionsHandler.Hook(ui.IDS.SUBTITLE, null, ``);

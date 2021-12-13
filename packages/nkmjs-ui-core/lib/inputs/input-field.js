@@ -84,8 +84,7 @@ class InputField extends InputBase {
 
     _onFocusOut(p_evt) {
         INPUT.OFFKeyDown(KEYBOARD._enter, this._FOut);
-        this.SubmitValue();
-        //this.SoftReset();
+        this._handler.SubmitValue();
     }
 
     _UpdatePreview() {

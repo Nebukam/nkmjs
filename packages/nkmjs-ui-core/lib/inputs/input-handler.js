@@ -278,7 +278,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
      */
     _ClearFeedbacks() {
 
-        this._flavorEnum.Set(null);
+        this._owner.flavor = null;
 
         for (let i = 0, n = this._errorFeedbacks.length; i < n; i++) {
             this._errorFeedbacks[i].Release();
