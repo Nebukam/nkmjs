@@ -210,6 +210,51 @@ class Metadata extends com.pool.DisposableObjectEx {
     }
 
     /**
+     * 
+     * @param {*} p_path 
+     * @returns 
+     */
+    Delete(p_path){
+        let path = null,
+            isString = false;
+
+        if (u.isArray(p_path)) { path = p_path; }
+        else if (u.isString(p_path)) { path = p_path.split('.'); isString = true; }
+        else { throw new Error(`Path ${p_path} is invalid.`); }
+
+        let index = 0,
+            n = path.length,
+            lastElement = this._data,
+            lastKey = path[n-1];
+
+        while (index < n-1) {
+            let key = path[index];
+            if (!lastElement.hasOwnProperty(key)) { return; }
+            else { lastElement = lastElement[key]; }
+            index++;
+        }
+
+        if(lastElement){
+            delete lastElement[lastKey];
+            this._Broadcast(com.SIGNAL.UPDATED, this);
+            this.Dirty();
+        }
+
+        if (isString) { path.length = 0; }
+
+    }
+
+    /**
+     * Broadcast an update signal and set the object to dirty.
+     * This should only be used when doing manual modifications of the
+     * inner data holder -- granular updates will be ignored.
+     */
+    BroadcastUpdate(){
+        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Dirty();
+    }
+
+    /**
      * @description TODO
      */
     Clear() {
