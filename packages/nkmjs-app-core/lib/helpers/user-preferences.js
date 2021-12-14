@@ -56,6 +56,7 @@ class UserPreferences extends com.pool.DisposableObjectEx {
     }
 
     _OnDocumentLoadSuccess() {
+        u.LOG._(`PREFS >> Successfully loaded.`, `#c862e3`);
         // Force an initialization of parameters, so if any has been added
         // to the app, they will be present.
         this.Init();
@@ -63,6 +64,7 @@ class UserPreferences extends com.pool.DisposableObjectEx {
     }
 
     _OnDocumentLoadError(e) {
+        u.LOG._(`PREFS >> Could not be found.`, `#c862e3`);
         this.Init();
     }
 
@@ -70,6 +72,7 @@ class UserPreferences extends com.pool.DisposableObjectEx {
         if (this._defaults) { u.tils.SetMissing(this._document.currentData._data, this._defaults); }
         this._initFn(this._document.currentData);
         this._document.Dirty();
+        u.LOG._(`PREFS >> Ready.`, `#c862e3`);
     }
 
     Save() {
@@ -80,11 +83,14 @@ class UserPreferences extends com.pool.DisposableObjectEx {
     }
 
     _OnDocumentSaveSuccess() {
+        u.LOG._(`PREFS >> Saved`, `#c862e3`);
         this._Then();
     }
 
     // Definitely something wrong going on.
-    _OnDocumentSaveError(p_err) { throw p_err; }
+    _OnDocumentSaveError(p_err) { 
+        throw p_err; 
+    }
 
     _Then() {
         if (this._waitForThen) { this._thenFn(this._document.currentData); }

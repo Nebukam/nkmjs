@@ -129,7 +129,7 @@ class DataBlock extends com.pool.DisposableObjectEx {
             this._id = null;
         }
 
-        this._metadata._dirty = false;
+        this._metadata._isDirty = false;
         this._metadirty = false;
         this._isDirty = false;
 

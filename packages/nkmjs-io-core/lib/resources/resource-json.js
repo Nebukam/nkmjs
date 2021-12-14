@@ -23,7 +23,21 @@ class JSONResource extends TextResource {
     }
 
     _Decode() {
-        return JSON.parse(super._Decode());
+        if(u.isObject(this._raw)){ 
+            return this._raw; 
+        }else if(u.isString(this._raw)){
+            return JSON.parse(this._raw)
+        }else{
+            var decoded = super._Decode();
+            if(u.isObject(decoded)){
+                return decoded;
+            }else if(u.isString(decoded)){
+                if(u.isEmpty(decoded)){
+                    return {};
+                }
+                return JSON.parse(super._Decode());
+            }
+        }
     }
 
 }

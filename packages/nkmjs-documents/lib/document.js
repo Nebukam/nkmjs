@@ -34,6 +34,7 @@ class Document extends com.pool.DisposableObjectEx {
         this._currentPath = null;
         this._currentRsc = null;
         this._options = null;
+        this._isDirty = false;
 
         this._callbacks = new com.helpers.Callbacks();
 
@@ -140,7 +141,8 @@ class Document extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     Dirty() {
-        if (this._isDirty) { return; } this._isDirty = true;
+        if (this._isDirty) { return; }
+        this._isDirty = true;
         this._Broadcast(data.SIGNAL.DIRTY, this);
     }
 
@@ -148,7 +150,8 @@ class Document extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     ClearDirty() {
-        if (!this._isDirty) { return; } this._isDirty = false;
+        if (!this._isDirty) { return; }
+        this._isDirty = false;
         this._Broadcast(data.SIGNAL.DIRTY_CLEARED, this);
     }
 
@@ -175,9 +178,13 @@ class Document extends com.pool.DisposableObjectEx {
 
     _OnDataReleased(p_data) { this.data = null; }
 
-    _OnDataDirty(p_data) { this.Dirty(); }
+    _OnDataDirty(p_data) {
+        this.Dirty();
+    }
 
-    _OnDataCleaned(p_data) { this.ClearDirty(); }
+    _OnDataCleaned(p_data) {
+        this.ClearDirty();
+    }
 
     // ----> Load
 
@@ -237,7 +244,7 @@ class Document extends com.pool.DisposableObjectEx {
         let serializer = com.BINDINGS.Get(
             data.serialization.CONTEXT.SERIALIZER,
             com.NFOS.Get(this).serializationContext), // TODO : Fetch serialization context based on resource type instead ?
-            unpacked = serializer.Deserialize(p_content, p_data, this._options); 
+            unpacked = serializer.Deserialize(p_content, p_data, this._options);
 
         this.Dirty();
 
@@ -253,14 +260,19 @@ class Document extends com.pool.DisposableObjectEx {
      */
     Save(p_options = null) {
 
-        if (!this._currentData) { throw new Error(`No data.`); }
+        if (!this._currentData) {
+            throw new Error(`No data.`);
+        }
 
         let nfo = com.NFOS.Get(this),
             rsc = this._GetRsc(
                 u.tils.Get(p_options, `path`, null),
                 { cl: nfo.resource, encoding: nfo.encoding });
 
-        if (!rsc) { throw new Error(`No resource set.`); }
+        if (!rsc) {
+            throw new Error(`No resource set.`);
+        }
+
         if (rsc.Write({
             io: u.tils.Get(p_options, `io`, nfo.defaultIOType),
             error: this._OnSaveError,
@@ -283,7 +295,11 @@ class Document extends com.pool.DisposableObjectEx {
      */
     _OnWriteStart(p_rsc) { p_rsc.content = this._Pack(this._currentData); }
 
-    _OnSaveSuccess() { this._callbacks.OnSuccess(this).Clear(); }
+    _OnSaveSuccess() {
+        if (this._currentData) { this._currentData.ClearDirty(); }
+        this.ClearDirty();
+        this._callbacks.OnSuccess(this).Clear();
+    }
 
     _OnSaveError(p_err) {
         p_err.document = this;

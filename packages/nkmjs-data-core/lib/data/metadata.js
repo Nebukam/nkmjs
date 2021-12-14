@@ -23,7 +23,7 @@ class Metadata extends com.pool.DisposableObjectEx {
         super();
         this._owner = null;
         this._data = {};
-        this._dirty = false;
+        this._isDirty = false;
     }
 
     /**
@@ -54,7 +54,8 @@ class Metadata extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     Dirty() {
-        if (this._isDirty) { return; } this._isDirty = true;
+        if (this._isDirty) { return; }
+        this._isDirty = true;
         this._Broadcast(SIGNAL.DIRTY, this);
     }
 
@@ -62,7 +63,8 @@ class Metadata extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     ClearDirty() {
-        if (!this._isDirty) { return; } this._isDirty = false;
+        if (!this._isDirty) { return; }
+        this._isDirty = false;
         this._Broadcast(SIGNAL.DIRTY_CLEARED, this);
     }
 
