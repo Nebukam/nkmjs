@@ -165,7 +165,7 @@ class ENV extends com.helpers.SingletonEx {
 
         this._manifestVersion = p_config ? (p_config.manifestVersion || 0) : 0;
         ENV.instance._features._manifestVersion = this._manifestVersion;
-        
+
         // Use service worker to handle HTTP requests if extension manifest v3
         if(this._manifestVersion == 3){ this._useFetchRequestAsDefault = true; }
 
@@ -238,9 +238,6 @@ class ENV extends com.helpers.SingletonEx {
 
         let paths = this._config.paths;
         if (paths) { for (let member in paths) { u.PATH.SET(member, paths[member]); } }
-
-        u.PATH.SET(`%ICON%`, `img/icons`);
-        u.PATH.SET(`%PATTERN%`, `img/patterns`);
 
         // Initialize app, if any.
         let appClass = u.tils.Get(this._config, `renderer`, null);

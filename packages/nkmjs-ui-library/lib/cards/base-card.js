@@ -47,6 +47,20 @@ class BaseCard extends ui.WidgetItem {
 
     // ----> DOM
 
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag write-only
+     */
+     set variant(p_value) { this._variantEnum.Set(p_value); }
+
+     /**
+      * @description TODO
+      * @type {ui.core.helpers.FlagEnum}
+      * @customtag read-only
+      */
+     get variant() { return this._variantEnum.currentFlag; }
+
     set title(p_value) { this._frame[ui.IDS.TITLE].Set(p_value); }
     set subtitle(p_value) { this._frame[ui.IDS.SUBTITLE].Set(p_value); }
     set label(p_value) { this._frame[ui.IDS.LABEL].Set(p_value); }
@@ -69,6 +83,8 @@ class BaseCard extends ui.WidgetItem {
 
                 'display': 'flex',
                 'flex-flow': 'column nowrap',
+                'min-width':0,
+                'min-height':0,
                 //'justify-content': `flex-start`,
                 //'align-items': `stretch`,
             },

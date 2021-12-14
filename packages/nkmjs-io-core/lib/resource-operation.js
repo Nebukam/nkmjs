@@ -20,6 +20,8 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._ioType = null;
         this._cancelled = false;
         this._fullPath = null;
+        this._important = false;
+        this._parallel = false;
         this._Reset();
     }
 
@@ -47,6 +49,20 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
      */
     get fullPath() { return this._fullPath; }
 
+    /**
+     * @description TODO
+     * @type {boolean}
+     * @customtag read-only
+     */
+    get isImportant() { return this._important; }
+
+    /**
+     * @description TODO
+     * @type {boolean}
+     * @customtag read-only
+     */
+     get isParallel() { return this._parallel; }
+
     _Reset() {
         this._rsc = null; // Ressource
         this._originalState = null;
@@ -54,6 +70,8 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._states = null;
         this._ioType = null;
         this._fullPath = null;
+        this._important = false;
+        this._parallel = false;
     }
 
     /*
@@ -105,6 +123,8 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._states = p_states;
         this._originalState = this._rsc._state.currentState;
         this._rsc._state.currentState = this._states.prepare.state;
+        this._important = u.tils.Get(p_options, `important`, false);
+        this._parallel = u.tils.Get(p_options, `parallel`, false);
         args.unshift(this);
         p_fn.apply(null, args);
     }

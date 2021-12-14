@@ -1,7 +1,6 @@
 'use strict';
 
 const ContentURLManipulator = require(`./manipulator-content-url`);
-
 /**
  * @description TODO
  * @class

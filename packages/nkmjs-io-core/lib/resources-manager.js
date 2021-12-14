@@ -113,15 +113,17 @@ class RESOURCES extends services.ServiceBase {
      * @param {function} [p_options.cl]
      * @param {io.core.ENCODING} [p_options.encoding]
      * @param {io.core.RESPONSE_TYPE} [p_options.type]
-     * @param {object} [p_hooks]
-     * @param {function} [p_hooks.success]
-     * @param {function} [p_hooks.error]
-     * @param {function} [p_hooks.any]
+     * @param {object} [p_IOOptions]
+     * @param {function} [p_IOOptions.success]
+     * @param {function} [p_IOOptions.error]
+     * @param {function} [p_IOOptions.any]
+     * @param {boolean} [p_IOOptions.important]
+     * @param {boolean} [p_IOOptions.parallel]
      * @returns {io.core.Resource}
      */
-     static GetAndRead(p_path, p_options = null, p_hooks = null) {
+     static GetAndRead(p_path, p_options = null, p_IOOptions = null) {
         let rsc = this.instance._Get(p_path, p_options);
-        rsc.Read(p_hooks);
+        rsc.Read(p_IOOptions);
         return rsc;
     }
 
@@ -307,8 +309,20 @@ class RESOURCES extends services.ServiceBase {
      */
     _PushIOProcess(p_ioProcess) {
         p_ioProcess._globalResourceMap = this._resources;
-        this._IOQueue.Add(p_ioProcess);
-        this._tick.Schedule();
+        if(p_ioProcess.operation.isParallel){
+            p_ioProcess.Process();
+        }else{
+            this._IOQueue.Add(p_ioProcess, p_ioProcess.operation.isImportant);
+            this._tick.Schedule();
+        }
+    }
+
+    /**
+     * 
+     * @param {io.core.ResourceOperation|io.core.IOProcess} p_operation 
+     */
+    _BumpOperation(p_operation){
+        this._IOQueue.Bump(p_operation);
     }
 
     /**

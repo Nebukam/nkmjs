@@ -88,11 +88,20 @@ class Palette extends com.pool.DisposableObject {
         return p_key;
     }
 
-    URLTheme(p_url){ return `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}")`; }
+    URLTheme(p_url, p_wrap = false){ 
+        return p_wrap ? `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}")`
+        : `${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}`; 
+    }
 
-    URLAssets(p_url){ return `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}")`; }
+    URLAssets(p_url, p_wrap = false){ 
+        return p_wrap ? `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}")`
+        : `${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}`; 
+    }
 
-    URLImgs(p_url){ return `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}")`; }
+    URLImgs(p_url, p_wrap = false){ 
+        return p_wrap ? `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}")`
+        : `${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}`; 
+    }
 
     /**
      * @description Register a font face that will be added in the header 

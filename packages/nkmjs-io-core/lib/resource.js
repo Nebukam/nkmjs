@@ -262,6 +262,8 @@ class Resource extends com.pool.DisposableObjectEx {
      * @param {function} p_options.success
      * @param {function} p_options.error
      * @param {function} p_options.any
+     * @param {boolean} p_options.important
+     * @param {boolean} p_options.parallel
      */
     Read(p_options = null) {
         return this._PrepareOperation(
@@ -298,6 +300,7 @@ class Resource extends com.pool.DisposableObjectEx {
      * @param {function} p_options.success
      * @param {function} p_options.error
      * @param {function} p_options.any
+     * @param {boolean} p_options.important
      */
     Write(p_options = null) {
         return this._PrepareOperation(

@@ -23,4 +23,3 @@ module.exports = {
     URLImgs:(p_url) =>{ return __STYLE.instance.current.URLImgs(p_url); },
 
 }
-

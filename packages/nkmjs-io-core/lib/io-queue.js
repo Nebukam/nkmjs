@@ -1,7 +1,10 @@
 'use strict';
 
+const utils = require(`@nkmjs/utils`);
 const com = require("@nkmjs/common");
 const collections = require(`@nkmjs/collections`);
+
+const ResourceOperation = require(`./resource-operation`);
 
 /**
  * @description TODO
@@ -60,9 +63,13 @@ class IOQueue extends com.pool.DisposableObjectEx {
      * @description TODO
      * @param {io.core.IOProcess} p_process 
      */
-    Add(p_process) {
+    Add(p_process, p_first = false) {
         if (p_process === this._currentItem) { return; }
-        this._queue.Add(p_process);
+        if(p_first){
+            this._queue.Unshift(p_process);
+        }else{
+            this._queue.Add(p_process);
+        }
     }
 
     /**
@@ -72,6 +79,28 @@ class IOQueue extends com.pool.DisposableObjectEx {
     Remove(p_process) {
         if (p_process === this._currentItem) { return; }
         this._queue.Remove(p_process);
+    }
+
+    Bump(p_process){
+        
+        let array = this._queue.internalArray;
+        if(utils.isInstanceOf(p_process, ResourceOperation)){
+            // Find process of operation in queue
+            let op = p_process;
+            p_process = null;
+            for(var i = 0; i < array.length; i++){
+                let p = array[i];
+                if(p.operation == op){
+                    p_process = p;
+                    break;
+                }
+            }
+        }
+
+        if(!p_process){return;}
+
+        this._queue.Unshift(p_process);
+
     }
 
     /**

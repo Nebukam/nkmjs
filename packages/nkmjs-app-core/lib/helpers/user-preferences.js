@@ -95,6 +95,14 @@ class UserPreferences extends com.pool.DisposableObjectEx {
         this._delayedSave.Schedule();
     }
 
+    ////
+
+    Set(p_path, p_value) { return this._document.currentData.Set(p_path, p_value); }
+
+    Get(p_path, p_fallback = null) { return this._document.currentData.Get(p_path, p_fallback); }
+
+    GetOrSet(p_path, p_fallback) { return this._document.currentData.GetOrSet(p_path, p_fallback); }
+
 }
 
 module.exports = UserPreferences;
