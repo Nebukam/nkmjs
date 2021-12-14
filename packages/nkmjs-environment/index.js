@@ -31,4 +31,6 @@ module.exports = {
     get prefersColorScheme(){ return __ENV.instance._features.prefersColorScheme; },
     get displayType(){ return __ENV.instance._features.displayType; },
 
+    get prefs(){ return __ENV.instance._app.userPreferences; },
+
 }

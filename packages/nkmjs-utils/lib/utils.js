@@ -598,7 +598,7 @@ class UTILS {
      * @param {number} p_toIndex End join index
      * @returns {string} The joined result
      */
-    static Join(p_array, p_joinStr, p_fromIndex = 0, p_toIndex = -1) {
+    static Join(p_array, p_join, p_fromIndex = 0, p_toIndex = -1) {
         if (p_toIndex === -1) { p_toIndex = p_array.length - 1; }
         let str = `${p_array[p_fromIndex]}`;
         p_fromIndex++;

@@ -6,7 +6,7 @@
 
 // Use a cacheUID for cache versioning
 const cacheUID = '%build-uid%';
-const cacheURLs = % cacheURLs %;
+const cacheURLs = %cacheURLs%;
 
 function Broadcast(p_data) {
     const msg = p_data;
@@ -83,6 +83,37 @@ self.addEventListener('message', function handler(event) {
         caches.delete(cacheUID);
     } else if (event.data.command === 'skipWaiting') {
         self.skipWaiting();
+    }else if(event.data.url){
+            event.respondWith(
+                fetch(event.data.url, { mode: 'no-cors' })
+                .then((response) => {
+                    response = response.clone();
+                    if (!event.data.type || event.data.type == 'text') {
+                        return response.text();
+                    } else if (event.data.type == 'blob') {
+                        return response.blob();
+                    } else if (event.data.type == 'json') {
+                        return response.json();
+                    } else if (event.data.type == 'arrayBuffer') {
+                        return response.arrayBuffer();
+                    }
+                })
+                .then((data) => {
+                    if (event.data.type == 'blob') {
+                        var reader = new FileReader();
+                        data = reader.readAsDataURL(data);
+                    } else if (event.data.type == 'arrayBuffer') {
+                        var enc = new TextEncoder();
+                        data = enc.decode(data);
+                    } else {
+                        data = data;
+                    }
+                    return { data: data };
+                })
+                .catch(error => {
+                    return { error: error };
+                })
+            );
     }
 });
 

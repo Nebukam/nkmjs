@@ -109,6 +109,8 @@ class UserPreferences extends com.pool.DisposableObjectEx {
 
     GetOrSet(p_path, p_fallback) { return this._document.currentData.GetOrSet(p_path, p_fallback); }
 
+    Delete(p_path){ this._document.currentData.Delete(p_path); }
+
 }
 
 module.exports = UserPreferences;
