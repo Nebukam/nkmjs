@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/collections",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "NKMjs Framework Collections",
   "main": "index.js",
   "repository": {
@@ -15,5 +15,5 @@
     "email": "nebukam@gmail.com"
   },
   "license": "MIT",
-  "gitHead": "f4dc4107ecb888966f694b8ce70dd13110ac47fc"
+  "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }
