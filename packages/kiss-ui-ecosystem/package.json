@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/kiss-ui-ecosystem",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "NKMjs / KISS UI Ecosystem",
   "main": "index.js",
   "private": true,
