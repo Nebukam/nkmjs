@@ -1,9 +1,5 @@
-const { execSync } = require('child_process');
 const fs = require(`fs`);
-const path = require(`path`);
-const ScriptBase = require(`./script-base`);
 const NKMjs = require(`./nkm.js`);
-const chalk = require('chalk');
 const ReplaceVars = require(`./helpers/replace-vars`);
 const TaskBuildWebmanifestBase = require('./task-build-ext-manifest-base');
 

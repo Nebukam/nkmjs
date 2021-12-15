@@ -1,15 +1,7 @@
-const { exec } = require('child_process');
 const fs = require(`fs`);
 const path = require(`path`);
-const readline = require("readline");
 const ScriptBase = require(`./script-base`);
 const NKMjs = require(`./nkm.js`);
-
-const DirCopy = require(`./helpers/dir-copy`);
-const ForEachModule = require(`./helpers/foreach-module`);
-const NKMJSPackageConfig = require(`./helpers/nkmjs-package-config`);
-const DirRead = require(`./helpers/dir-read`);
-const UserInput = require(`./helpers/user-input`);
 const FSUTILS = require(`./helpers/fsutils`);
 const ReplaceVars = require(`./helpers/replace-vars`);
 

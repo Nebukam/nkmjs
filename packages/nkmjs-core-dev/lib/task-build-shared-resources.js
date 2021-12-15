@@ -4,8 +4,6 @@ const fs = require(`fs`);
 const path = require(`path`);
 const ScriptBase = require("./script-base");
 const NKMjs = require(`./nkm.js`);
-const chalk = require('chalk');
-const FSUTILS = require("./helpers/fsutils");
 const DirCopy = require(`./helpers/dir-copy`);
 
 class TaskBuildSharedResources extends ScriptBase {

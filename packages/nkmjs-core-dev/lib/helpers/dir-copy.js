@@ -1,6 +1,5 @@
 'use strict';
 
-const { UV_FS_O_FILEMAP } = require("constants");
 const fs = require(`fs`);
 const path = require(`path`);
 

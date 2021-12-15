@@ -1,13 +1,7 @@
 'use strict';
 
-const fs = require(`fs`);
-const { exec, execSync } = require('child_process');
-const path = require(`path`);
 const ScriptBase = require("./script-base");
 const NKMjs = require(`./nkm.js`);
-const chalk = require('chalk');
-const FSUTILS = require(`./helpers/fsutils`);
-const builder = require(`electron-builder`);
 
 class TaskExtractBuildConfigs extends ScriptBase {
 

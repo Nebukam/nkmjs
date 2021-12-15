@@ -1,8 +1,5 @@
 'use strict';
 
-const fs = require(`fs`);
-const path = require(`path`);
-const NKMJSPackageConfig = require("./helpers/nkmjs-package-config");
 const NKMjs = require(`./nkm`);
 const chalk = require('chalk');
 const RunList = require(`./helpers/run-list`);

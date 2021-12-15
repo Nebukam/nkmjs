@@ -1,10 +1,3 @@
-const { execSync } = require('child_process');
-const fs = require(`fs`);
-const path = require(`path`);
-const ScriptBase = require(`./script-base`);
-const NKMjs = require(`./nkm.js`);
-const chalk = require('chalk');
-const ReplaceVars = require(`./helpers/replace-vars`);
 const TaskPrepareExtBase = require('./task-prepare-ext-base');
 
 class TaskPrepareExtBaseV3 extends TaskPrepareExtBase {

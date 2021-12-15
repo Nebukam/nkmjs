@@ -2,13 +2,10 @@
 
 const fs = require(`fs`);
 const path = require(`path`);
-const chalk = require('chalk');
 const ScriptBase = require(`./script-base`);
 const NKMjs = require(`./nkm.js`);
 
 const DirRead = require(`./helpers/dir-read`);
-const SwapURLtoURI = require(`./helpers/swap-url-to-uri`);
-const sass = require('sass');
 const FileBackup = require('./helpers/file-backup');
 
 /**
