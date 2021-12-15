@@ -121,7 +121,7 @@ class RESOURCES extends services.ServiceBase {
      * @param {boolean} [p_IOOptions.parallel]
      * @returns {io.core.Resource}
      */
-     static GetAndRead(p_path, p_options = null, p_IOOptions = null) {
+    static GetAndRead(p_path, p_options = null, p_IOOptions = null) {
         let rsc = this.instance._Get(p_path, p_options);
         rsc.Read(p_IOOptions);
         return rsc;
@@ -207,7 +207,7 @@ class RESOURCES extends services.ServiceBase {
 
         rsc.path = shortPath;
         rsc.encoding = u.tils.Get(p_options, `encoding`, ENCODING.UTF8);
-        rsc.type = u.tils.Get(p_options, `type`, RESPONSE_TYPE.TEXT);
+        rsc.type = u.tils.Get(p_options, `type`, rsc.type); //RESPONSE_TYPE.TEXT);
         rsc.stats = stats;
         rsc.exists = stats != null;
 
@@ -254,9 +254,9 @@ class RESOURCES extends services.ServiceBase {
      * @returns {string}
      */
     _IOID(p_ioId, p_operation) {
-        if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) { 
-            if(env.useFetchRequestAsDefault){ return IO_TYPE.FETCH; }
-            else{ return IO_TYPE.DEFAULT; }
+        if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
+            if (env.useFetchRequestAsDefault) { return IO_TYPE.FETCH; }
+            else { return IO_TYPE.DEFAULT; }
         }
         return p_ioId;
     }
@@ -309,9 +309,9 @@ class RESOURCES extends services.ServiceBase {
      */
     _PushIOProcess(p_ioProcess) {
         p_ioProcess._globalResourceMap = this._resources;
-        if(p_ioProcess.operation.isParallel){
+        if (p_ioProcess.operation.isParallel) {
             p_ioProcess.Process();
-        }else{
+        } else {
             this._IOQueue.Add(p_ioProcess, p_ioProcess.operation.isImportant);
             this._tick.Schedule();
         }
@@ -321,7 +321,7 @@ class RESOURCES extends services.ServiceBase {
      * 
      * @param {io.core.ResourceOperation|io.core.IOProcess} p_operation 
      */
-    _BumpOperation(p_operation){
+    _BumpOperation(p_operation) {
         this._IOQueue.Bump(p_operation);
     }
 

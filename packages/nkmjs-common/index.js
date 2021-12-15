@@ -18,5 +18,6 @@ module.exports = {
     
     // Shortcut to pool.POOL.Rent
     Rent:__POOL.Rent.bind(__POOL),
+    Preload:__POOL.Preload.bind(__POOL),
 
 }

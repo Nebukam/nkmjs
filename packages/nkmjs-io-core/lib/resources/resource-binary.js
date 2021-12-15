@@ -14,7 +14,7 @@ class BinaryResource extends Resource {
 
     constructor() { super(); }
 
-    static defaultType = RESPONSE_TYPE.ARRAYBUFFER;
+    static __defaultType = RESPONSE_TYPE.ARRAYBUFFER;
 
     //TODO : Implement this
 

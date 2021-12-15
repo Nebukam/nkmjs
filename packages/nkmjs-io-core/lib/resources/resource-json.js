@@ -16,7 +16,7 @@ class JSONResource extends TextResource {
 
     constructor() { super(); }
 
-    static defaultType = RESPONSE_TYPE.JSON;
+    static __defaultType = RESPONSE_TYPE.JSON;
 
     _Encode() {
         return u.isObject(this._content) ? JSON.stringify(this._content, null, `     `) : `{}`;

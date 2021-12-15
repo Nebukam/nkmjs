@@ -1,11 +1,12 @@
 'use strict';
 
 const __RELAY = require(`./lib/relay`);
+const __REQUEST = require(`./lib/request`);
 
 module.exports = {
 
     RELAY: __RELAY,
-    Request: require(`./lib/request`),
+    Request: __REQUEST,
     REQUEST: require(`./lib/action-request`),
 
     Action : require(`./lib/actions/action`),
@@ -19,5 +20,7 @@ module.exports = {
     CommandBox : require(`./lib/commands/command-box`),
     CommandChain : require(`./lib/commands/command-chain`),
     CommandAction : require(`./lib/commands/command-action`),
+
+    Emit:__REQUEST.Emit.bind(__REQUEST),
 
 }

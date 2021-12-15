@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 
-const BinaryResource = require(`./resource-text`);
+const BinaryResource = require(`./resource-binary`);
 const RESPONSE_TYPE = require(`../response-type`);
 
 /**
@@ -16,7 +16,7 @@ class BlobResource extends BinaryResource {
 
     constructor() { super(); }
 
-    static defaultType = RESPONSE_TYPE.BLOB;
+    static __defaultType = RESPONSE_TYPE.BLOB;
 
     _Init() {
         super._Init();
@@ -26,6 +26,7 @@ class BlobResource extends BinaryResource {
     get objectURL() {
         if (this._objectURL) { return this._objectURL; }
         this._objectURL = URL.createObjectURL(this._content);
+        return this._objectURL;
     }
 
     _Encode() {
@@ -35,6 +36,7 @@ class BlobResource extends BinaryResource {
     }
 
     _Decode() {
+        if(this._objectURL){ URL.revokeObjectURL(this._objectURL); }
         this._objectURL = null;
         if (u.isInstanceOf(this._raw, Blob)) { return this._raw; }
         else if (this._mime) { return new Blob([this._raw], { type: this._mime.type }); }

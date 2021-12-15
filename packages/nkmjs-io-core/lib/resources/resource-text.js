@@ -16,7 +16,7 @@ class TextResource extends Resource {
 
     constructor() { super(); }
 
-    static defaultType = RESPONSE_TYPE.TEXT;
+    static __defaultType = RESPONSE_TYPE.TEXT;
 
     _Encode() {
         return this._content ? this._content : '';

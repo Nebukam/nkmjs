@@ -209,6 +209,14 @@ class WidgetBar extends WidgetOrientable {
             if(p_options){
                 if(`currentValue` in p_options){ handle.currentValue = p_options.currentValue; }
                 if(`inputId` in p_options){ handle.inputId = p_options.inputId; }
+
+                if(p_options.inputWatchers && Array.isArray(p_options.inputWatchers)){
+                    for(var i = 0; i < p_options.inputWatchers.length; i++){
+                        let signal = p_options.inputWatchers[i];
+                        handle.handler.Watch(signal.signal, signal.fn, signal.thisArg);
+                    }
+                }
+
             }
         }
 

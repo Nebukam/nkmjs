@@ -24,7 +24,7 @@ class Resource extends com.pool.DisposableObjectEx {
      * @description TODO
      * @customtag static
      */
-    static defaultType = RESPONSE_TYPE.TEXT;
+    static __defaultType = RESPONSE_TYPE.TEXT;
 
     _Init() {
 
@@ -33,7 +33,7 @@ class Resource extends com.pool.DisposableObjectEx {
         this._name = null;
         this._path = null;
         this._mime = null;
-        this._type = this.constructor.defaultType;
+        this._type = this.constructor.__defaultType;
         this._encoding = null;
 
         this._stats = null;
