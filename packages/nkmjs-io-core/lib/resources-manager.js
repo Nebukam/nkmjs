@@ -255,8 +255,11 @@ class RESOURCES extends services.ServiceBase {
      */
     _IOID(p_ioId, p_operation) {
         if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
+            return IO_TYPE.DEFAULT;
+            /*
             if (env.useFetchRequestAsDefault) { return IO_TYPE.FETCH; }
             else { return IO_TYPE.DEFAULT; }
+            */
         }
         return p_ioId;
     }

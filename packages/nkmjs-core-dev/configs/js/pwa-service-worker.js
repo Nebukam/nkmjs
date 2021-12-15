@@ -83,7 +83,9 @@ self.addEventListener('message', function handler(event) {
         caches.delete(cacheUID);
     } else if (event.data.command === 'skipWaiting') {
         self.skipWaiting();
-    }else if(event.data.url){
+    }
+    /*
+    else if(event.data.url){
             event.respondWith(
                 fetch(event.data.url, { mode: 'no-cors' })
                 .then((response) => {
@@ -115,6 +117,7 @@ self.addEventListener('message', function handler(event) {
                 })
             );
     }
+    */
 });
 
 //#endregion

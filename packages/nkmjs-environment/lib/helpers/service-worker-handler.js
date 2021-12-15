@@ -103,6 +103,7 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
             if (this._installedWorker) {
                 this._Broadcast(SW_SIGNAL.SW_UPDATE_AVAILABLE, this);
             } else {
+                this._installedWorker = this._newWorker;
                 this._Ready();
             }
         }
@@ -125,6 +126,7 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
     }
 
     Send(p_data) {
+        console.log(`Send ${p_data} to this._installedWorker = ${this._installedWorker}`, p_data);
         this._installedWorker.postMessage(p_data);
     }
 

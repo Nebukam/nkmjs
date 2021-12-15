@@ -93,7 +93,9 @@ class NKMjs {
         //console.log(`dirnameProject : ${this.dirnameProject}`);
         //console.log(`dirnameCore : ${this.dirnameCore}`);
 
-        this.projectConfig.__keys[`build-uid`] = this.buildUID;
+        if(this.shortargs[`print-build-guid`]){
+            this.projectConfig.__keys[`build-uid`] = this.buildUID;
+        }
 
     }
 

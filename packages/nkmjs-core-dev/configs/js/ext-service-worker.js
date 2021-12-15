@@ -1,4 +1,9 @@
 var appTab = null;
+
+self.addEventListener('fetch', function (event) {
+    event.respondWith( fetch(event.request, { mode: 'no-cors' }));// fetch as normal
+});
+
 %context_api%.%action_api_name%.onClicked.addListener(
     (activeTab) => {
         if (appTab) {
@@ -22,11 +27,12 @@ var appTab = null;
         }
     });
 
-chrome.runtime.onMessage.addListener(
+/*
+%context_api%.%runtime_api_name%.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.url) {
             var url = request.url;
-            fetch(url, { mode: 'no-cors' })
+            return fetch(url, { mode: 'no-cors' });
                 .then((response) => {
                     response = response.clone();
                     if (!request.type || request.type == 'text') {
@@ -56,3 +62,4 @@ chrome.runtime.onMessage.addListener(
             return true;  // Will respond asynchronously.
         }
     });
+*/
