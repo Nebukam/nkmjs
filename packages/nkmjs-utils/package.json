@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/utils",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "NKMjs Framework Utils",
   "main": "index.js",
   "repository": {
@@ -18,5 +18,5 @@
   "dependencies": {
     "uuid": "^8.3.2"
   },
-  "gitHead": "a1c0ba6de2bd53a676b5492c044a05dbed66aae5"
+  "gitHead": "f4dc4107ecb888966f694b8ce70dd13110ac47fc"
 }
