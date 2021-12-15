@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-core"
   },
-  "author": {
+  "author": { 
     "name": "Timothé Lapetite",
     "email": "nebukam@gmail.com"
   },
