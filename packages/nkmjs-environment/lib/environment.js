@@ -167,7 +167,7 @@ class ENV extends com.helpers.SingletonEx {
         ENV.instance._features._manifestVersion = this._manifestVersion;
 
         // Use service worker to handle HTTP requests if extension manifest v3
-        if(this._manifestVersion == 3){ this._useFetchRequestAsDefault = true; }
+        //if(this._manifestVersion == 3){ this._useFetchRequestAsDefault = true; }
 
         u.LOG._(`ENV : START`, `#33979b`, `#212121`);
         
