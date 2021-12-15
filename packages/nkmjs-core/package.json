@@ -1,10 +1,10 @@
 {
   "name": "@nkmjs/core",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "NKMjs Framework Core Assembly",
   "main": "./lib/core.js",
   "repository": {
-    "type": "git", 
+    "type": "git",
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-core"
   },
   "author": {
@@ -17,14 +17,14 @@
   },
   "dependencies": {
     "@nkmjs/actions": "^0.0.27",
-    "@nkmjs/app-core": "^0.1.20",
+    "@nkmjs/app-core": "^0.1.21",
     "@nkmjs/collections": "^0.1.13",
     "@nkmjs/common": "^0.1.18",
     "@nkmjs/data-core": "^0.0.27",
     "@nkmjs/data-library": "^0.0.13",
-    "@nkmjs/dialog": "^0.0.28",
+    "@nkmjs/dialog": "^0.0.29",
     "@nkmjs/documents": "^0.0.27",
-    "@nkmjs/electron-core": "^0.0.32",
+    "@nkmjs/electron-core": "^0.0.33",
     "@nkmjs/environment": "^0.1.18",
     "@nkmjs/io-core": "^0.1.18",
     "@nkmjs/io-electron": "^0.0.27",
@@ -32,10 +32,10 @@
     "@nkmjs/metrics": "^0.0.20",
     "@nkmjs/services": "^0.0.27",
     "@nkmjs/style": "^0.0.29",
-    "@nkmjs/ui-core": "^0.0.30",
-    "@nkmjs/ui-data-controls": "^0.0.13",
-    "@nkmjs/ui-library": "^0.0.14",
-    "@nkmjs/ui-workspace": "^0.0.30",
+    "@nkmjs/ui-core": "^0.0.31",
+    "@nkmjs/ui-data-controls": "^0.0.14",
+    "@nkmjs/ui-library": "^0.0.15",
+    "@nkmjs/ui-workspace": "^0.0.31",
     "@nkmjs/utils": "^0.0.27"
   },
   "gitHead": "b96328252355b497cb854dafe25dcfc2cee53c3f"

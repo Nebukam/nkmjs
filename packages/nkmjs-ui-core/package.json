@@ -1,10 +1,10 @@
 {
   "name": "@nkmjs/ui-core",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "NKMjs Framework UI Core",
   "browser": "index.js",
   "repository": {
-    "type": "git", 
+    "type": "git",
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-ui-core"
   },
   "scripts": {
