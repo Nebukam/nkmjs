@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/io-electron",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "NKMjs Framework IO Electron",
   "main": "index.js",
   "repository": {
@@ -16,10 +16,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "^0.1.7",
-    "@nkmjs/common": "^0.1.12",
-    "@nkmjs/io-core": "^0.1.12",
-    "@nkmjs/utils": "^0.0.21"
+    "@nkmjs/collections": "^0.1.8",
+    "@nkmjs/common": "^0.1.13",
+    "@nkmjs/io-core": "^0.1.13",
+    "@nkmjs/utils": "^0.0.22"
   },
-  "gitHead": "0a46650e712e70cb8b2647d2954f6de2f104485b"
+  "gitHead": "3c530bf34305126b3b0ad78211da805f91112b99"
 }
