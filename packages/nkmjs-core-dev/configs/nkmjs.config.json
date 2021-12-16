@@ -29,7 +29,7 @@
         "app": "app",
         "src": "js",
         "src-electron":"js-electron",
-        "src-node":"js-node",
+        "src-server":"js-server",
         "styleSource": "src-style",
         "style": "style",
         "assets": "assets",

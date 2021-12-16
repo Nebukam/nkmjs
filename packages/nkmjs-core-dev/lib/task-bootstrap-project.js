@@ -33,7 +33,7 @@ class TaskBootstrapProject extends ScriptBase {
         // + JS folders in under
         let srcDir = FSUTILS.ensuredir(NKMjs.InApp(conf.dirs[`src`])), // for app
             srcElectronDir = FSUTILS.ensuredir(NKMjs.InApp(conf.dirs[`src-electron`])), // for electron
-            srcNodeDir = FSUTILS.ensuredir(NKMjs.InApp(conf.dirs[`src-node`])); // for server-side node
+            srcServerDir = FSUTILS.ensuredir(NKMjs.InApp(conf.dirs[`src-server`])); // for server-side node
 
         // + JS app main.js, ONLY IF THEY DON'T ALREADY EXIST
         // src/main.js
@@ -48,10 +48,10 @@ class TaskBootstrapProject extends ScriptBase {
             NKMjs.InCore(`configs`,`js`,`main-js-process.js`),
             replacer.Replace);
 
-        // src-node/main.js
+        // src-server/main.js
         FSUTILS.ensurefile(
-            path.resolve(srcNodeDir, NKMjs.JS_MAIN),
-            NKMjs.InCore(`configs`,`js`,`main-js-node.js`),
+            path.resolve(srcServerDir, NKMjs.JS_MAIN),
+            NKMjs.InCore(`configs`,`js`,`main-js-server.js`),
             replacer.Replace);
 
         // Fetch styles

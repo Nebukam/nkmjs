@@ -21,7 +21,7 @@ class EntrySave extends DataManipulationCommand {
         console.log(`Stringifyied and packed ${this._context} =`);
         console.log(JSON.stringify(this._context.Pack(), u.tils.JSONStripEmpty, '  '));
 
-        actions.Request.Emit(actions.REQUEST.SAVE,
+        actions.Emit(actions.REQUEST.SAVE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

@@ -3,8 +3,6 @@
 const nkm = require(`@nkmjs/core`);
 const u = nkm.utils;
 const com = nkm.common;
-const { AppBase, AutoUpdateDialogBox } = nkm.app;
-const { Request } = nkm.actions;
 const { pool, FLAGS } = nkm.common;
 const { DIALOG, DialogBox } = nkm.dialog;
 const w = nkm.uiworkspace;
@@ -157,14 +155,14 @@ class StyleguideApp extends nkm.app.AppBase {
                     { size: ui.FLAGS.SIZE_M, flavor: FLAGS.ERROR },
                     { size: ui.FLAGS.SIZE_M, flavor: ui.FLAGS.CTA },
                     { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL },
-                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: FLAGS.INFOS },
-                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: FLAGS.WARNING },
-                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: FLAGS.ERROR },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: com.FLAGS.INFOS },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: com.FLAGS.WARNING },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: com.FLAGS.ERROR },
                     { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.MINIMAL, flavor: ui.FLAGS.CTA },
                     { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME },
-                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: FLAGS.INFOS },
-                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING },
-                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: FLAGS.ERROR },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: com.FLAGS.INFOS },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: com.FLAGS.WARNING },
+                    { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: com.FLAGS.ERROR },
                     { size: ui.FLAGS.SIZE_M, variant: ui.FLAGS.FRAME, flavor: ui.FLAGS.CTA },
                 ], fn: this._Bind(this._OnButtonCreated)
             },
@@ -191,17 +189,17 @@ class StyleguideApp extends nkm.app.AppBase {
                 cl: uilib.widgets.Tag,
                 variants: [
                     {},
-                    { size: ui.FLAGS.SIZE_XS, flavor: FLAGS.WARNING },
-                    { size: ui.FLAGS.SIZE_S, flavor: FLAGS.ERROR }
+                    { size: ui.FLAGS.SIZE_XS, flavor: com.FLAGS.WARNING },
+                    { size: ui.FLAGS.SIZE_S, flavor: com.FLAGS.ERROR }
                 ], fn: this._Bind(this._PopInTag)
             },
             {
                 cl: DialogBox,
                 variants: [
                     {},
-                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME },
-                    { flavor: FLAGS.INFOS, variant: ui.FLAGS.MINIMAL },
-                    { flavor: FLAGS.ERROR }
+                    { flavor: com.FLAGS.WARNING, variant: ui.FLAGS.FRAME },
+                    { flavor: com.FLAGS.INFOS, variant: ui.FLAGS.MINIMAL },
+                    { flavor: com.FLAGS.ERROR }
                 ], fn: this._Bind(this._FillDialog)
             },
             {
@@ -217,32 +215,32 @@ class StyleguideApp extends nkm.app.AppBase {
             {
                 cl: uilib.cards.BaseCard,
                 variants: [
-                    { flavor: FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptAll },
-                    { flavor: FLAGS.WARNING, ['header-placement']: ui.FLAGS.LEFT, ...cardOptAll },
-                    { flavor: FLAGS.ERROR, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptAll },
-                    { flavor: FLAGS.READY, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptAll },
-                    { flavor: FLAGS.INFOS, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.TOP, ...cardOptA },
-                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.LEFT, ...cardOptA },
-                    { flavor: FLAGS.ERROR, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptA },
-                    { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptA },
-                    { flavor: FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptB },
-                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.LEFT, ...cardOptB },
-                    { flavor: FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptB },
-                    { flavor: FLAGS.READY, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptB },
+                    { flavor: com.FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptAll },
+                    { flavor: com.FLAGS.WARNING, ['header-placement']: ui.FLAGS.LEFT, ...cardOptAll },
+                    { flavor: com.FLAGS.ERROR, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptAll },
+                    { flavor: com.FLAGS.READY, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptAll },
+                    { flavor: com.FLAGS.INFOS, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.TOP, ...cardOptA },
+                    { flavor: com.FLAGS.WARNING, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.LEFT, ...cardOptA },
+                    { flavor: com.FLAGS.ERROR, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptA },
+                    { flavor: com.FLAGS.READY, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptA },
+                    { flavor: com.FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptB },
+                    { flavor: com.FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.LEFT, ...cardOptB },
+                    { flavor: com.FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.BOTTOM, ...cardOptB },
+                    { flavor: com.FLAGS.READY, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptB },
                 ], fn: this._Bind(this._OnCardCreated)
             },
             {
                 cl: uilib.cards.Icon,
                 variants: [
-                    { flavor: FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptAll },
-                    { flavor: FLAGS.WARNING, ['header-placement']: ui.FLAGS.LEFT, ...cardOptAll },
-                    { flavor: FLAGS.READY, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptAll },
-                    { flavor: FLAGS.INFOS, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.TOP, ...cardOptA },
-                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.LEFT, ...cardOptA },
-                    { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptA },
-                    { flavor: FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptB },
-                    { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.LEFT, ...cardOptB },
-                    { flavor: FLAGS.READY, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptB },
+                    { flavor: com.FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptAll },
+                    { flavor: com.FLAGS.WARNING, ['header-placement']: ui.FLAGS.LEFT, ...cardOptAll },
+                    { flavor: com.FLAGS.READY, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptAll },
+                    { flavor: com.FLAGS.INFOS, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.TOP, ...cardOptA },
+                    { flavor: com.FLAGS.WARNING, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.LEFT, ...cardOptA },
+                    { flavor: com.FLAGS.READY, variant: ui.FLAGS.FRAME, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptA },
+                    { flavor: com.FLAGS.INFOS, ['header-placement']: ui.FLAGS.TOP, ...cardOptB },
+                    { flavor: com.FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.LEFT, ...cardOptB },
+                    { flavor: com.FLAGS.READY, variant: ui.FLAGS.MINIMAL, ['header-placement']: ui.FLAGS.RIGHT, ...cardOptB },
                 ], fn: this._Bind(this._OnCardCreated)
             }
         ]);
@@ -279,11 +277,11 @@ class StyleguideApp extends nkm.app.AppBase {
         if (!this._dialogOptions) {
             this._dialogOptions = [
                 { flavor: null, variant: null, title: `Hey there !`, msg: `This popup is the default template. No flavor nor variant set.` },
-                { flavor: FLAGS.READY, variant: ui.FLAGS.FRAME, title: `Nice.`, msg: `This popup uses the ERROR flavor, and FRAME variant.` },
-                { flavor: FLAGS.WARNING, variant: ui.FLAGS.FRAME, title: `Attention !`, msg: `This popup uses the WARNING flavor, and FRAME variant.` },
-                { flavor: FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, title: `Oh no !`, msg: `This popup uses the ERROR flavor, and MINIMAL variant.` },
-                { flavor: FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, title: `Warning !`, msg: `This popup uses the WARNING flavor, and MINIMAL variant.` },
-                { flavor: FLAGS.ERROR, variant: ui.FLAGS.FRAME, title: `Something went wrong !`, msg: `This popup uses the ERROR flavor, and FRAME variant.` },
+                { flavor: com.FLAGS.READY, variant: ui.FLAGS.FRAME, title: `Nice.`, msg: `This popup uses the ERROR flavor, and FRAME variant.` },
+                { flavor: com.FLAGS.WARNING, variant: ui.FLAGS.FRAME, title: `Attention !`, msg: `This popup uses the WARNING flavor, and FRAME variant.` },
+                { flavor: com.FLAGS.ERROR, variant: ui.FLAGS.MINIMAL, title: `Oh no !`, msg: `This popup uses the ERROR flavor, and MINIMAL variant.` },
+                { flavor: com.FLAGS.WARNING, variant: ui.FLAGS.MINIMAL, title: `Warning !`, msg: `This popup uses the WARNING flavor, and MINIMAL variant.` },
+                { flavor: com.FLAGS.ERROR, variant: ui.FLAGS.FRAME, title: `Something went wrong !`, msg: `This popup uses the ERROR flavor, and FRAME variant.` },
                 { flavor: ui.FLAGS.CTA, variant: ui.FLAGS.FRAME, title: `Do Something !`, msg: `This popup uses the ui.CTA flavor, and FRAME variant.` },
             ];
         }
@@ -321,7 +319,7 @@ class StyleguideApp extends nkm.app.AppBase {
 
         opts.title = `Drawer Title`;
 
-        Request.Emit(uilib.REQUEST.DRAWER, opts, this);
+        nkm.actions.Emit(uilib.REQUEST.DRAWER, opts, this);
     }
 
 

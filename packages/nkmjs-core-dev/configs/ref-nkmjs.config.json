@@ -45,14 +45,19 @@
             "platform": "www"
         },
         {
-            "platform": "chrome"
+            "platform": "chrome",
+            "manifestVersion":3
         },
         {
-            "platform": "firefox"
+            "platform": "firefox",
+            "manifestVersion":2
         },
         {
             "platform": "windows",
             "arch": "x64"
+        },
+        {
+            "platform": "node"
         }
     ]
 }

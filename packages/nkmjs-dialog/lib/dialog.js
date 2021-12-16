@@ -97,7 +97,7 @@ class DIALOG extends services.ServiceBase {
         this._inDialog = true;
         next.Watch(com.SIGNAL.CONSUMED, this._OnDialogConsumed, this);
 
-        actions.Request.Emit(REQUEST.DIALOG,
+        actions.Emit(REQUEST.DIALOG,
             next,
             this,
             this._OnRequestSuccess,

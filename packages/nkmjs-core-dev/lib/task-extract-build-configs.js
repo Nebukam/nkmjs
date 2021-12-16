@@ -26,11 +26,13 @@ class TaskExtractBuildConfigs extends ScriptBase {
             extensionPlatforms = ["chrome", "firefox", "edge"],
             wwwPlatforms = ["www"],
             pwaPlatforms = ["pwa"],
+            serverPlatforms = ["node"],
             electronArch = ["x64", "ia32", "armv7l", "arm64"],
             electronConfigs = [],
             extensionsConfigs = [],
             wwwConfigs = [],
-            pwaConfigs = [];
+            pwaConfigs = [],
+            serverConfigs = [];
 
         for (let i = 0, n = allConfigs.length; i < n; i++) {
 
@@ -53,19 +55,26 @@ class TaskExtractBuildConfigs extends ScriptBase {
                 && !pwaConfigs.includes(platform)) {
                 pwaConfigs.push(conf);
             }
+            else if (serverPlatforms.includes(platform)
+                && !serverConfigs.includes(platform)) {
+                    serverConfigs.push(conf);
+            }
         }
 
         if (NKMjs.shortargs.Has(`electron-only`)) {
-            extensionsConfigs = wwwConfigs = pwaConfigs = [];
+            serverConfigs = extensionsConfigs = wwwConfigs = pwaConfigs = [];
         } else if (NKMjs.shortargs.Has(`ext-only`)) {
-            electronConfigs = wwwConfigs = pwaConfigs = [];
+            serverConfigs = electronConfigs = wwwConfigs = pwaConfigs = [];
         } else if (NKMjs.shortargs.Has(`www-only`)) {
-            electronConfigs = extensionsConfigs = pwaConfigs = [];
+            serverConfigs = electronConfigs = extensionsConfigs = pwaConfigs = [];
         } else if (NKMjs.shortargs.Has(`pwa-only`)) {
-            electronConfigs = extensionsConfigs = wwwConfigs = [];
+            serverConfigs = electronConfigs = extensionsConfigs = wwwConfigs = [];
+        }else if (NKMjs.shortargs.Has(`server-only`)) {
+            electronConfigs = extensionsConfigs = wwwConfigs = pwaConfigs = [];
         }
 
         NKMjs.Set(`buildconf-electron`, electronConfigs);
+        NKMjs.Set(`buildconf-server`, serverConfigs);
         NKMjs.Set(`buildconf-ext`, extensionsConfigs);
         NKMjs.Set(`buildconf-www`, wwwConfigs);
         NKMjs.Set(`buildconf-pwa`, pwaConfigs);

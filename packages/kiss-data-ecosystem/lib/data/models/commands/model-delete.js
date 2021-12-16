@@ -18,7 +18,7 @@ class ModelDelete extends DataManipulationCommand {
             data: this._context
         };
 
-        actions.Request.Emit(actions.REQUEST.DELETE,
+        actions.Emit(actions.REQUEST.DELETE,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

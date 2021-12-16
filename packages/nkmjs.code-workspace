@@ -80,6 +80,9 @@
 		},
 		{
 			"path": "..\\..\\nkmjs-toolbox"
+		},
+		{
+			"path": "nkmjs-server-core"
 		}
 	]
 }

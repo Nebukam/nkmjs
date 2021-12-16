@@ -29,7 +29,7 @@ class TaskPrepareExtBase extends ScriptBase {
         }
 
         let extensionConfig = NKMjs.projectConfig.extension,
-            ignoreKeys = ["platform", "arch", "display", "hostPermissions", "permissions"],
+            ignoreKeys = ["platform", "arch", "display", "hostPermissions", "permissions", "manifestVersion"],
             specifics = {};
 
         if (extensionConfig) {

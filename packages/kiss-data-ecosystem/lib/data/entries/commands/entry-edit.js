@@ -17,7 +17,7 @@ class EntryEdit extends DataManipulationCommand {
             data: this._context
         };
 
-        actions.Request.Emit(actions.REQUEST.EDIT,
+        actions.Emit(actions.REQUEST.EDIT,
             options, this,
             this._OnRequestSuccess,
             this._OnRequestFail);

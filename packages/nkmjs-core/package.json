@@ -30,6 +30,7 @@
     "@nkmjs/io-electron": "^0.0.31",
     "@nkmjs/localisation": "^0.0.24",
     "@nkmjs/metrics": "^0.0.24",
+    "@nkmjs/server-core": "^0.0.1",
     "@nkmjs/services": "^0.0.31",
     "@nkmjs/style": "^0.0.34",
     "@nkmjs/ui-core": "^0.0.36",

@@ -233,7 +233,7 @@ class DisplayObject extends DisposableHTMLElement {
         p_onFail = null,
         p_timeout = 0,
         p_requestClass = actions.Request) {
-        this._HandleLocalRequest(actions.Request.Emit(
+        this._HandleLocalRequest(actions.Emit(
             p_requestType,
             p_options,
             this,
@@ -254,7 +254,7 @@ class DisplayObject extends DisposableHTMLElement {
         p_onFail = null,
         p_timeout = 0,
         p_requestClass = actions.Request) {
-        actions.Request.Emit(
+        actions.Emit(
             p_requestType,
             p_options,
             this,

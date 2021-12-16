@@ -5,6 +5,7 @@ class ConfigBuilder {
     static PWA = `pwa`;
     static WWW = `www`;
     static ELECTRON = `electron`;
+    static SERVER = `server`;
     static EXT = `ext`;
 
     constructor(p_context, p_contextDetail = null) {

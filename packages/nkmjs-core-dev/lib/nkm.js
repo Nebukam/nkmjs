@@ -30,6 +30,8 @@ class NKMjs {
     static BUNDLE_MIN = `bundle-min.js`;
     static BUNDLE_DIR = `.bundles`;
 
+    static SERVER_ENTRY_POINT = `index.js`;
+
     static HTML_INDEX = `index.html`;
     static JS_MAIN = `main.js`;
     static GENERATED_RSC = `.build.rsc`;

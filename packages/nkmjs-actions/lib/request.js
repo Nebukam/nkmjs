@@ -5,7 +5,9 @@ const com = require("@nkmjs/common"); //{ POOL, DisposableObject }
 const RELAY = require(`./relay`);
 
 /**
- * @description TODO
+ * @description
+ * A Request object to be consumed by whatever object is listening to its request type.
+ * You can use ```nkm.actions.Emit()``` to create & dispatch an app-wide request.
  * @class
  * @hideconstructor
  * @augments common.pool.DisposableObject

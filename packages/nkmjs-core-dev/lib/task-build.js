@@ -23,6 +23,7 @@ class TaskBuild extends ScriptBase {
     _OnPreparationComplete() {
 
         let electronConfigs = NKMjs.Get(`buildconf-electron`, []),
+            serverConfigs = NKMjs.Get(`buildconf-server`, []),
             extensionsConfigs = NKMjs.Get(`buildconf-ext`, []),
             wwwConfigs = NKMjs.Get(`buildconf-www`, []),
             pwaConfigs = NKMjs.Get(`buildconf-pwa`, []),
@@ -32,10 +33,11 @@ class TaskBuild extends ScriptBase {
         if (pwaConfigs.length > 0) { scripts.push(`./task-build-pwa`); }
         if (extensionsConfigs.length > 0) { scripts.push(`./task-build-ext`); }
         if (electronConfigs.length > 0) { scripts.push(`./task-build-electron`); }
+        if (serverConfigs.length > 0) { scripts.push(`./task-build-server`); }
 
-        if(scripts.length > 0){
+        if (scripts.length > 0) {
             this.Run(scripts, this.End);
-        }else{
+        } else {
             this.End();
         }
 
