@@ -2,6 +2,7 @@ const u = require("@nkmjs/utils");
 const style = require(`@nkmjs/style`);
 const com = require("@nkmjs/common");
 
+const dom = require(`../utils-dom`);
 const UI = require(`../ui`);
 const FLAGS = require(`../flags`);
 const POINTER = require("../pointer");
@@ -68,7 +69,7 @@ class Overlay extends Layer {
 
     _Render() {
         super._Render();
-        this._bg = u.dom.El(`div`, { class: `bg` }, this);
+        this._bg = dom.El(`div`, { class: `bg` }, this);
         this._closeBg.element = this._bg;
     }
 

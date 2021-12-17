@@ -1,8 +1,9 @@
 'use strict';
 
 const com = require(`@nkmjs/common`);
+const HandlerBase = require(`./handler-base`);
 
-class APIObject extends com.pool.DisposableObjectEx {
+class HandlerGet extends HandlerBase {
 
     constructor() { super(); }
 
@@ -16,4 +17,4 @@ class APIObject extends com.pool.DisposableObjectEx {
 
 }
 
-module.exports = APIObject;
+module.exports = HandlerGet;

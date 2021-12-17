@@ -112,10 +112,7 @@ class TaskBuildElectronApp extends ScriptBase {
                 name: shared.name,
                 main: shared.main,
                 description: shared.description,
-                author: {
-                    name: 'author_name',
-                    email: 'email@email.com'
-                },
+                author: { ...NKMjs.author },
                 platform: conf.platform,
                 [conf.arch]: true,
                 build: {

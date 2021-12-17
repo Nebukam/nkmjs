@@ -22,15 +22,17 @@ class TaskBundleMainWWW extends ScriptBase {
 
     _OnPreparationComplete() {
 
-        let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT_WWW),
+        let buildConfig = NKMjs.Get(`active-buildconf-www`, null),
+            jsConfig = buildConfig ? buildConfig.config : null,
+            entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT_WWW),
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
                 {
                     js_main: `./${NKMjs.projectConfig.dirs.src}/main`,
-                    config: (new ConfigBuilder(ConfigBuilder.WWW)).toString()
+                    config: (new ConfigBuilder(ConfigBuilder.WWW, jsConfig)).toString()
                 }
             ),
-            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-bundle.js`), 'utf8'));
+            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`, `js`, `entry-bundle.js`), 'utf8'));
 
         NKMjs.WriteTempSync(entryPoint, templateContent);
         this._logFwd(NKMjs.Shorten(entryPoint), `+`);

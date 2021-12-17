@@ -2,11 +2,11 @@
 
 const nkm = require(`@nkmjs/core`);
 const u = nkm.utils;
-const com = nkm.common;
-const { pool, FLAGS } = nkm.common;
+const com = nkm.com;
+const { pool, FLAGS } = nkm.com;
+const data = nkm.data;
 const { DIALOG, DialogBox } = nkm.dialog;
 const w = nkm.uiworkspace;
-const data = nkm.data;
 const ui = nkm.ui;
 const uilib = nkm.uilib;
 const uicontrols = nkm.uicontrols;
@@ -61,8 +61,8 @@ class StyleguideApp extends nkm.app.AppBase {
         ];
 
         let newData = (p_id, p_dirty = false) => {
-            let newData = pool.POOL.Rent(data.DataBlock);
-            newData.id = data.ID.New(p_id);
+            let newData = nkm.com.Rent(nkm.data.DataBlock);
+            newData.id = nkm.data.ID.New(p_id);
             if (p_dirty) { newData.Dirty(); }
             return newData;
         };
@@ -75,7 +75,7 @@ class StyleguideApp extends nkm.app.AppBase {
             newData(`Data E`)
         ]
 
-        this._catalogSample = data.catalogs.CreateFrom({
+        this._catalogSample = nkm.data.catalogs.CreateFrom({
             name: `I'm a Catalog !`
         }, [
             { name: `item 0` },
@@ -99,7 +99,7 @@ class StyleguideApp extends nkm.app.AppBase {
         ]);
 
         this._shelfCatalog = () => {
-            return data.catalogs.CreateFrom({
+            return nkm.data.catalogs.CreateFrom({
                 name: `Shelf Catalog`
             }, [
                 { name: `View`, [ui.IDS.VIEW_CLASS]: ui.views.View, data: this._fakeData[0] },

@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+const dom = require(`../utils-dom`);
 const INPUT = require(`../input`);
 const FLAGS = require(`../flags`);
 const SIGNAL = require(`../signal`);
@@ -204,13 +205,13 @@ class DragExtension extends Extension {
 
     _ShowHint() {
         if (this._feedbackHost) {
-            if (this._hintElement) { u.dom.Attach(this._hintElement, this._feedbackHost); }
-            else { this._hintElement = u.dom.El(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
+            if (this._hintElement) { dom.Attach(this._hintElement, this._feedbackHost); }
+            else { this._hintElement = dom.El(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
         }
     }
 
     _HideHint() {
-        if (this._hintElement) { u.dom.Detach(this._hintElement); }
+        if (this._hintElement) { dom.Detach(this._hintElement); }
     }
 
     // ----> Pooling

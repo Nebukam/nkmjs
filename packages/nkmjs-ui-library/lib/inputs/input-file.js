@@ -67,7 +67,7 @@ class InputFile extends InputPath {
             this._sizeEnum.Add(this._picker);
 
         } else {
-            this._picker = u.dom.El(`input`, { class: 'input-btn', type: 'file' }, this._host);
+            this._picker = ui.dom.El(`input`, { class: 'input-btn', type: 'file' }, this._host);
             this._picker.addEventListener(`change`, this._onPickerChange);
         }
 

@@ -11,6 +11,20 @@ class TaskBuildWWW extends ScriptBase {
         super(`build-www`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
+        this.Run(`./task-extract-build-configs`, this._Bind(this._ConfigExtractionComplete));
+
+    }
+
+    _ConfigExtractionComplete(){
+
+        let buildConfigs = NKMjs.Get(`buildconf-www`, []);
+        if (!buildConfigs || buildConfigs.length == 0) { 
+            this._logWarn(`no config found for www`)
+            return this.End(); 
+        }
+        
+        NKMjs.Set(`active-buildconf-www`, buildConfigs[0]);
+
         this._Bind(this.Entry);
 
         this.Run([

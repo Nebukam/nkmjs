@@ -28,15 +28,15 @@ class TPLFacadeTitles extends ui.DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.El(`div`, { class: ui.IDS.ICON }), {
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.ICON }), {
             [ui.IDS.UID]: __icon,
             fn: this.AsIcon
         });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.TITLE }), {
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.TITLE }), {
             [ui.IDS.UID]: __title,
             fn: this.AsText
         });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.SUBTITLE }), {
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.SUBTITLE }), {
             [ui.IDS.UID]: __subtitle,
             fn: this.AsText
         });

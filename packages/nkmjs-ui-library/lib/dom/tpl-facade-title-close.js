@@ -26,15 +26,15 @@ class TPLFacadeLabelClose extends ui.DOMTemplate {
     */
 
     static _CreateTemplate() {
-        this._Add(u.dom.El(`div`, { class: ui.IDS.ICON }), {
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.ICON }), {
             [ui.IDS.UID]: __icon,
             fn: this.AsIcon
         });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.TITLE }), {
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.TITLE }), {
             [ui.IDS.UID]: __title,
             fn: this.AsTextStatic
         });
-        this._Add(u.dom.El(`div`, { class: `${ui.IDS.ICON} close` }), {
+        this._Add(ui.dom.El(`div`, { class: `${ui.IDS.ICON} close` }), {
             [ui.IDS.UID]: __closeIcon,
             fn: (node, opts, customOpts) =>{
                 let icon = this.AsIconStatic(node, opts, customOpts);

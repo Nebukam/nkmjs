@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const collections = require("@nkmjs/collections");
 
+const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
 const SIGNAL = require(`./signal`);
 const DisplayObject = require(`./display-object`);
@@ -207,7 +208,7 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (removedDisplayObject.parent === this) {
             removedDisplayObject.parent = null;
-            u.dom.Detach(removedDisplayObject);
+            dom.Detach(removedDisplayObject);
         }
 
         this._OnChildRemoved(removedDisplayObject, p_index);

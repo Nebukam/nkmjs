@@ -1,7 +1,6 @@
 'use strict';
 
 const __UTILS = require(`./lib/utils`);
-const __UTILS_DOM = require(`./lib/utils-dom`);
 const __CHECKS = require(`./lib/checks`);
 const __PATH = require(`./lib/path`);
 
@@ -12,6 +11,8 @@ module.exports = {
     helpers: require(`./lib/helpers`),
 
     check: __CHECKS,
+
+    //TODO: Move DOM utils to ui-core
 
     // CHECKS Shortcuts
     isArray:__CHECKS.isArray.bind(__CHECKS),
@@ -26,11 +27,6 @@ module.exports = {
     isVoid:__CHECKS.isVoid.bind(__CHECKS),
     isInstanceOf:__CHECKS.isInstanceOf.bind(__CHECKS),
     isEmpty:__CHECKS.isEmpty.bind(__CHECKS),
-
-    dom: __UTILS_DOM,
-
-    // UTILS_DOM Shortcuts
-    El: __UTILS_DOM.El.bind(__UTILS_DOM),
 
     //
     PATH: __PATH,

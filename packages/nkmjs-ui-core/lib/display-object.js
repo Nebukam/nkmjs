@@ -5,6 +5,7 @@ const actions = require("@nkmjs/actions");
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 
+const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
 const FLAGS = require("./flags");
 const DisposableHTMLElement = require(`./disposable-htmlelement`);
@@ -133,7 +134,7 @@ class DisplayObject extends DisposableHTMLElement {
 
         this._styles = style.STYLE.Get(this.constructor, this._Bind(this._Style), p_invalidateCache);
         for (let i = 0, n = this._styles.length; i < n; i++) {
-            u.dom.Attach(this._styles[i].cloneNode(true), this._host);
+            dom.Attach(this._styles[i].cloneNode(true), this._host);
         }
     }
 
@@ -158,7 +159,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @group Hierarchy
      */
     BringToFront() {
-        u.dom.ToFront(this);
+        dom.ToFront(this);
         if (this._parent) { this._parent._displayList.ToEnd(this); }
     }
 
@@ -522,7 +523,7 @@ class DisplayObject extends DisposableHTMLElement {
         super._CleanUp();
 
         //Workaround shadow dom leaving webcomponents floating around.
-        u.dom.Detach(this);
+        dom.Detach(this);
         //UI.GRAVEYARD.appendChild(this);
 
     }

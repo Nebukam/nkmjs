@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
+const dom = require("./utils-dom");
 const CSS_UTILS = require(`./css`);
 
 const __DELIM_KVP = `|`;
@@ -202,7 +203,7 @@ class Palette extends com.pool.DisposableObject {
 
             if (nfos.css) {
                 for (let i = nfos.css.length - 1; i >= 0; i--) {
-                    style.push(u.dom.El(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
+                    style.push(dom.El(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
                 }
             }
 
@@ -225,7 +226,7 @@ class Palette extends com.pool.DisposableObject {
             for (let el in styleObject) { this._ProcessSuffixes(el, styleObject[el], styleObject); }
             for (let el in styleObject) { styleString += CSS_UTILS.CSS(el, this._ProcessSingleRuleset(el, styleObject[el])); }
 
-            let styleElement = u.dom.El(`style`);
+            let styleElement = dom.El(`style`);
             styleElement.innerText = styleString;
             style.push(styleElement);
 

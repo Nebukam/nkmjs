@@ -42,7 +42,7 @@ class UIItemListLayer extends ui.views.Layer {
 
     _Render() {
 
-        this._itemContainer = u.dom.El(`div`, { class: `list-ctnr` }, this);
+        this._itemContainer = ui.dom.El(`div`, { class: `list-ctnr` }, this);
 
     }
 

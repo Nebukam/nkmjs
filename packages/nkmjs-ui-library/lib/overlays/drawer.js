@@ -92,8 +92,8 @@ class Drawer extends ui.views.View {
 
     _Render() {
 
-        this._header = u.dom.El(`div`, { class: `header` }, this);
-        this._body = u.dom.El(`div`, { class: `body` }, this);
+        this._header = ui.dom.El(`div`, { class: `header` }, this);
+        this._body = ui.dom.El(`div`, { class: `body` }, this);
 
         ui.DOMTemplate.Render(this.constructor.__default_facadeTPL, this._header, {
             [ui.IDS.OWNER]: this,

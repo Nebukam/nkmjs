@@ -515,7 +515,7 @@ class Shelf extends ui.views.View {
 
     _CleanUp() {
         // Move the nav back in if it has been taken out
-        if (this._nav.parentElement != this._host) { u.dom.AttachFirst(this._nav, this._host, false); }
+        if (this._nav.parentElement != this._host) { ui.dom.AttachFirst(this._nav, this._host, false); }
         this._catalogViewBuilder.catalog = null;
         this.classList.remove(`nav-end`);
         this.classList.remove(`nav-start`);

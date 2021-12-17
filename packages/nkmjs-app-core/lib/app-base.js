@@ -84,7 +84,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         this._loadingOverlay = document.getElementById(`__loading__`);
         if (this._loadingOverlay && env.ENV.ARGV.Has(`no-loading`)) {
-            u.dom.Detach(this._loadingOverlay);
+            ui.dom.Detach(this._loadingOverlay);
         }
 
         this._Bind(this._CheckIsDisplayReady);
@@ -146,8 +146,8 @@ class AppBase extends com.helpers.SingletonEx {
         this._layersWrapper.setAttribute(`id`, `app`);
 
         // Insert global.css in ShadowDom so all subsequent elements benefit from it
-        u.dom.AttachFirst(
-            u.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
+        ui.dom.AttachFirst(
+            ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
             this._layersWrapper._host);
 
         let layerCount = this._layers ? this._layers.length : 0;
@@ -223,8 +223,8 @@ class AppBase extends com.helpers.SingletonEx {
         u.LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
 
         // Push the app wrapper to the DOM
-        u.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
-        u.dom.Attach(this._layersWrapper, document.body);
+        ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
+        ui.dom.Attach(this._layersWrapper, document.body);
 
         this._userPreferences.Load(
             `${this._APPID}Preferences`,
@@ -276,14 +276,14 @@ class AppBase extends com.helpers.SingletonEx {
     _CheckIsDisplayReady(){
         if(!this._IsReadyForDisplay()){
 
-            com.time.NEXT_TICK = this._CheckIsDisplayReady;
+            com.NextTick(this._CheckIsDisplayReady);
 
         }else{
             
             if (this._loadingOverlay) {
 
                 this._loadingOverlay.addEventListener(`animationend`, (p_evt) => {
-                    u.dom.Detach(p_evt.target);
+                    ui.dom.Detach(p_evt.target);
                 });
     
                 let delay = `250ms`,

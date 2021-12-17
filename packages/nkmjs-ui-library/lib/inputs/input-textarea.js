@@ -20,7 +20,7 @@ class InputTextarea extends ui.inputs.InputField {
     // ----> DOM
 
     _Render() {
-        this._inputField = u.dom.El(`textarea`, { class: 'field', rows: 3 }, this._host);
+        this._inputField = ui.dom.El(`textarea`, { class: 'field', rows: 3 }, this._host);
     }
     
 }

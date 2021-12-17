@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 
+const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
 const SIGNAL = require(`./signal`);
 const FLAGS = require(`./flags`);
@@ -203,12 +204,12 @@ class WidgetButton extends Widget {
     CreateRipple() {
 
         if (!this._rippleWrapper) {
-            this._rippleWrapper = u.dom.El('div', { class: `ripple-wrapper` });
-            u.dom.AttachFirst(this._rippleWrapper, this._wrapper, false);
+            this._rippleWrapper = dom.El('div', { class: `ripple-wrapper` });
+            dom.AttachFirst(this._rippleWrapper, this._wrapper, false);
         }
 
-        let rect = u.dom.Rect(this._rippleWrapper),
-            ripple = u.dom.El('span', {}, this._rippleWrapper),
+        let rect = dom.Rect(this._rippleWrapper),
+            ripple = dom.El('span', {}, this._rippleWrapper),
             w = rect.width,
             h = rect.height,
             diameter = Math.max(w, h),
@@ -225,9 +226,9 @@ class WidgetButton extends Widget {
     _OnRippleAnimationEnd(p_evt) {
         let ripple = p_evt.target;
         ripple.removeEventListener('animationend', this._OnRippleAnimationEnd);
-        u.dom.Detach(ripple);
+        dom.Detach(ripple);
         if (!this._rippleWrapper.hasChildNodes()) {
-            u.dom.Detach(this._rippleWrapper);
+            dom.Detach(this._rippleWrapper);
             this._rippleWrapper = null;
         }
     }
@@ -446,7 +447,7 @@ class WidgetButton extends Widget {
     _CleanUp() {
 
         if (this._rippleWrapper) {
-            u.dom.Detach(this._rippleWrapper);
+            dom.Detach(this._rippleWrapper);
             this._rippleWrapper = null;
         }
 

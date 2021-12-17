@@ -26,7 +26,7 @@ class TPLFacadeExpandTitle extends ui.DOMTemplate {
     */
 
     static _CreateTemplate() {
-        this._Add(u.dom.El(`div`, { class: `${ui.IDS.ICON} expand` }), {
+        this._Add(ui.dom.El(`div`, { class: `${ui.IDS.ICON} expand` }), {
             [ui.IDS.UID]: __expandIcon,
             fn: (node, opts, customOpts) =>{
                 let icon = this.AsIconStatic(node, opts, customOpts);
@@ -34,11 +34,11 @@ class TPLFacadeExpandTitle extends ui.DOMTemplate {
                 return icon;
             }
         });
-        this._Add(u.dom.El(`div`, { class: ui.IDS.ICON }), {
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.ICON }), {
             [ui.IDS.UID]: __icon,
             fn: this.AsIcon
         });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.TITLE }), {
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.TITLE }), {
             [ui.IDS.UID]: __title,
             fn: this.AsText
         });

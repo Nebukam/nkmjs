@@ -30,7 +30,7 @@ class NKMjs {
     static BUNDLE_MIN = `bundle-min.js`;
     static BUNDLE_DIR = `.bundles`;
 
-    static SERVER_ENTRY_POINT = `index.js`;
+    static SERVER_ENTRY_POINT = `server.js`;
 
     static HTML_INDEX = `index.html`;
     static JS_MAIN = `main.js`;
@@ -81,6 +81,26 @@ class NKMjs {
             this.validProject = true;
         }
 
+        let
+            projectPackageJson = NKMjs.projectConfig.__packagejson,
+            author = { name: `author_name`, email: `mail@mail.com` };
+
+        if (projectPackageJson) {
+            if (projectPackageJson.author) {
+                if(u.isString(projectPackageJson.author)){
+                    //TODO : Try parse format such as "name <email@email.com> (url)"
+                    author.name = projectPackageJson.author;
+                }else{
+                    author.name = u.tils.Get(projectPackageJson.author, `name`, `author_name`);
+                    author.email = u.tils.Get(projectPackageJson.author, `email`, `mail@mail.com`);
+                }
+            }
+
+            author.email = u.tils.Get(projectPackageJson, `email`, author.email);
+        }
+
+        console.log(`author ${chalk.white(`» `)} ${chalk.green(author.name)} / ${chalk.green(author.email)}`);
+
         process.argv = process.argv.splice(2);
         this.shortargs = new u.Argv(process.argv);
 
@@ -95,9 +115,11 @@ class NKMjs {
         //console.log(`dirnameProject : ${this.dirnameProject}`);
         //console.log(`dirnameCore : ${this.dirnameCore}`);
 
-        if(this.shortargs[`print-build-guid`]){
+        if (this.shortargs[`print-build-guid`]) {
             this.projectConfig.__keys[`build-uid`] = this.buildUID;
         }
+
+        
 
     }
 
@@ -254,23 +276,23 @@ class NKMjs {
     }
 
     static ModuleOwner(p_filePath) {
-        
+
         p_filePath = p_filePath.split(path.sep).join(`/`);
         if (!p_filePath.includes(`node_modules/`)) { return null; }
 
-        try{
+        try {
             let splitPath = p_filePath.split(`node_modules/`),
                 lastBitParts = splitPath.pop().split(`/`),
                 firstBit = lastBitParts[0];
 
-            if(firstBit[0] === `@`){
+            if (firstBit[0] === `@`) {
                 // namespace
                 return `${firstBit}/${lastBitParts[1]}`;
-            }else{
+            } else {
                 return firstBit;
             }
 
-        }catch(e){
+        } catch (e) {
             return null;
         }
 

@@ -21,6 +21,12 @@ class TIME extends helpers.SingletonEx {
      */
     static set NEXT_TICK(p_fn) { TIME.instance.NextTickAdd(p_fn); }
 
+    /**
+     * @description TODO
+     * @type {function}
+     */
+    static NextTick(p_fn){ TIME.instance.NextTickAdd(p_fn); }
+
     _Init() {
 
         super._Init();

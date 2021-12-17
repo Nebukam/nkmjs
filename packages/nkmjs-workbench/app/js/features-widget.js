@@ -11,13 +11,13 @@ class FeatureLine extends ui.DOMTemplate {
 
     static _CreateTemplate() {
         let wrapper = `wrapper`;
-        this._Add(u.dom.El(`li`, { class: `item` }), {
+        this._Add(ui.dom.El(`li`, { class: `item` }), {
             [ui.IDS.UID]: wrapper
         });
-        this._Add(u.dom.El(`div`, { class: ui.IDS.ICON }), {
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.ICON }), {
             [ui.IDS.UID]: ui.IDS.ICON, parent: wrapper, fn: this.AsIcon
         });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.LABEL }), {
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.LABEL }), {
             [ui.IDS.UID]: ui.IDS.LABEL, parent: wrapper, fn: this.AsTextStatic
         });
     }

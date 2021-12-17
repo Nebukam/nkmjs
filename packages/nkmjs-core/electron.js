@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-    electron : require(`@nkmjs/electron-core`),
+    core : require(`@nkmjs/electron-core`),
     io : require(`@nkmjs/io-electron`),
 }

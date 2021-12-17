@@ -11,6 +11,11 @@ class TaskBuildExt extends ScriptBase {
 
         super(`build-ext`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
+        this.Run(`./task-extract-build-configs`, this._Bind(this._ConfigExtractionComplete));
+
+    }
+
+    _ConfigExtractionComplete(){
 
         this._Bind(this.Entry);
         this._Bind(this.BroadEntry);
@@ -40,6 +45,7 @@ class TaskBuildExt extends ScriptBase {
         this.configs = NKMjs.Get(`web-ext-configs`, null);
 
         if (!this.configs || this.configs.length == 0) {
+            this._logWarn(`no config found for web-ext`);
             this.End();
             return;
         }

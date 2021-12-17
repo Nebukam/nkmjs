@@ -9,7 +9,7 @@ const { POOL } = require('./lib/pool');
 function testFn(){ console.log(`nextTick fn called.`); }
 
 assert.ok(!TIME.instance.isBrowser);
-TIME.NEXT_TICK = testFn;
+TIME.NextTick(testFn);
 
 // Rudimentary SignalBroadcaster test
 

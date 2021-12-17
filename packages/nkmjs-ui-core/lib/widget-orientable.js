@@ -2,6 +2,7 @@
 
 const u = require("@nkmjs/utils");
 
+const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
 
 const FLAGS = require(`./flags`);
@@ -87,7 +88,7 @@ class WidgetOrientable extends Widget {
      * @group Placement & Orientation
      */
     _HorizontalScroll(p_evt) {
-        if(!u.dom.OverflowsX(this._wrapper)){ return; }
+        if(!dom.OverflowsX(this._wrapper)){ return; }
         let delta = Math.sign(p_evt.deltaY);
         this._wrapper.scrollBy({ 
             top: 0, // could be negative value

@@ -8,7 +8,7 @@
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-server"
   },
   "scripts": {
-    
+    "test":"node ./test/test-server.js"
   },
   "author": {
     "name": "Timothé Lapetite",
@@ -17,6 +17,8 @@
   "license": "MIT",
   "dependencies": {
     "@nkmjs/collections": "^0.1.17",
-    "@nkmjs/common": "^0.1.22"
+    "@nkmjs/common": "^0.1.22",
+    "axios": "^0.24.0",
+    "express": "^4.17.1"
   }
 }

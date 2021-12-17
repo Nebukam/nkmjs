@@ -43,7 +43,7 @@ A more visually customized version :
         { label: `Ok` }
     ],
     icon: `warning`,
-    flavor: nkm.common.FLAGS.WARNING,
+    flavor: nkm.com.FLAGS.WARNING,
     variant: ui.FLAGS.FRAME
 });</code></pre>
 

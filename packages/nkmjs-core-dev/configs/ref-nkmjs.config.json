@@ -11,9 +11,9 @@
         "colorTheme": "#1e1e1e",
         "theme": "default"
     },
-    "metrics":{
-        "id":"G-BJV6GJZWN1",
-        "script":"assets/metrics.html"
+    "metrics": {
+        "id": "G-BJV6GJZWN1",
+        "script": "assets/metrics.html"
     },
     "extension": {
         "popup": {
@@ -42,22 +42,26 @@
     },
     "builds": [
         {
-            "platform": "www"
+            "platform": "www",
+            "config": {}
         },
         {
             "platform": "chrome",
-            "manifestVersion":3
+            "manifestVersion": 3,
+            "config": {}
         },
         {
             "platform": "firefox",
-            "manifestVersion":2
+            "manifestVersion": 2,
+            "config": {}
         },
         {
             "platform": "windows",
             "arch": "x64"
         },
         {
-            "platform": "node"
+            "platform": "node",
+            "config": {}
         }
     ]
 }

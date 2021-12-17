@@ -15,6 +15,19 @@ class TaskBuildPWA extends ScriptBase {
 
         super(`build-pwa`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
+        this.Run(`./task-extract-build-configs`, this._Bind(this._ConfigExtractionComplete));
+
+    }
+
+    _ConfigExtractionComplete(){
+
+        let buildConfigs = NKMjs.Get(`buildconf-pwa`, []);
+        if (!buildConfigs || buildConfigs.length == 0) { 
+            this._logWarn(`no config found for pwa`);
+            return this.End();
+        }
+        
+        NKMjs.Set(`active-buildconf-pwa`, buildConfigs[0]);
 
         this._Bind(this.Entry);
 

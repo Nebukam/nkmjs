@@ -3,6 +3,8 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+const dom = require("./utils-dom");
+
 const __media = `@media `;
 
 /**
@@ -22,7 +24,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @returns {Element}
      */
     static CSSImport(p_import_path) {
-        let element = u.dom.El(`style`, { type: `text/css` });
+        let element = dom.El(`style`, { type: `text/css` });
         element.innerText = `@import url("${p_import_path}")`;
         return element;
     }
@@ -34,7 +36,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @returns {Element}
      */
     static Style(p_properties) {
-        let element = u.dom.El(`style`);
+        let element = dom.El(`style`);
 
         let css = null;
         if (u.tils.IsString(p_properties)) {

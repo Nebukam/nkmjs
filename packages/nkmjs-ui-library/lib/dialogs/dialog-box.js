@@ -76,17 +76,17 @@ class DialogBox extends dialog.DialogBox {
 
     _Render() {
 
-        this._icon = new ui.manipulators.Icon(u.dom.El('div', { class: `corner-icon` }, this._host), false, true);
+        this._icon = new ui.manipulators.Icon(ui.dom.El('div', { class: `corner-icon` }, this._host), false, true);
 
-        this._header = u.dom.El(`div`, { class: `group header` }, this._host);
-        this._body = u.dom.El(`div`, { class: `group body` }, this._host);
-        this._footer = u.dom.El(`div`, { class: `group footer` }, this._host);
+        this._header = ui.dom.El(`div`, { class: `group header` }, this._host);
+        this._body = ui.dom.El(`div`, { class: `group body` }, this._host);
+        this._footer = ui.dom.El(`div`, { class: `group footer` }, this._host);
 
         this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._footer);
         this._toolbar._defaultWidgetClass = this._toolbarDefaultWidgetClass;
         this._toolbar.size = ui.FLAGS.SIZE_M;
 
-        this._title = new ui.manipulators.Text(u.dom.El(`span`, { class: `title ${style.FONT_FLAG.MEDIUM}` }, this._header), false);
+        this._title = new ui.manipulators.Text(ui.dom.El(`span`, { class: `title ${style.FONT_FLAG.MEDIUM}` }, this._header), false);
         this._messageElement = null;
 
         this._contentWrapper = this._body;

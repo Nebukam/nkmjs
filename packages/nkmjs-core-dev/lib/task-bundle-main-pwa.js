@@ -21,12 +21,15 @@ class TaskBundleMainPWA extends ScriptBase {
 
     _OnPreparationComplete() {
 
-        let entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT_PWA),
+        let 
+            buildConfig = NKMjs.Get(`active-buildconf-pwa`, null),
+            jsConfig = buildConfig ? buildConfig.config : null,
+            entryPoint = NKMjs.InApp(NKMjs.BUNDLE_ENTRY_POINT_PWA),
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,
                 {
                     js_main: `./${NKMjs.projectConfig.dirs.src}/main`,
-                    config: (new ConfigBuilder(ConfigBuilder.PWA)).toString()
+                    config: (new ConfigBuilder(ConfigBuilder.PWA, jsConfig)).toString()
                 }
             ),
             templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-bundle.js`), 'utf8'));

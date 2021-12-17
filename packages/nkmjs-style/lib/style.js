@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+const dom = require("./utils-dom");
 const ColorBase = require("./colors/color-base");
 const COLOR = require("./colors/color");
 const Palette = require("./palette");
@@ -116,7 +117,7 @@ class STYLE extends com.helpers.Singleton {
         if (u.isVoid(this._headerStyle)) {
             this._headerStyle = document.createElement('style');
             this._headerStyle.innerText = css;
-            u.dom.Attach(this._headerStyle, document.head);
+            dom.Attach(this._headerStyle, document.head);
         } else {
             this._headerStyle.innerText = css;
         }

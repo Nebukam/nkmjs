@@ -16,8 +16,8 @@ class TPLBodyExpand extends TPLFacadeExpandLabel {
 
     static _CreateTemplate() {
 
-        this._Add(u.dom.El(`div`, { class: ui.IDS.HEADER }), { [ui.IDS.UID]: __header });
-        this._Add(u.dom.El(`div`, { class: `${ui.IDS.ICON} expand` }), {
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.HEADER }), { [ui.IDS.UID]: __header });
+        this._Add(ui.dom.El(`div`, { class: `${ui.IDS.ICON} expand` }), {
             [ui.IDS.UID]: __expandIcon, parent: __header,
             fn: (node, opts, customOpts) =>{
                 let icon = this.AsIconStatic(node, opts, customOpts);
@@ -25,15 +25,15 @@ class TPLBodyExpand extends TPLFacadeExpandLabel {
                 return icon;
             }
         });
-        this._Add(u.dom.El(`div`, { class: ui.IDS.ICON }), {
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.ICON }), {
             [ui.IDS.UID]: __icon, parent: __header,
             fn: this.AsIcon
         });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.LABEL }), {
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.LABEL }), {
             [ui.IDS.UID]: __label, parent: __header,
             fn: this.AsTextStatic
         });
-        this._Add(u.dom.El(`div`, { class: ui.IDS.BODY }), { [ui.IDS.UID]: __body });
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.BODY }), { [ui.IDS.UID]: __body });
 
     }
 

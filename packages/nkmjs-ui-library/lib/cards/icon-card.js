@@ -12,12 +12,12 @@ const BaseCard = require(`./base-card`);
 class CardTemplate extends ui.DOMTemplate {
     constructor() { super(); }
     static _CreateTemplate() {
-        this._Add(u.dom.El(`div`, { class: ui.IDS.HEADER }), { [ui.IDS.UID]: ui.IDS.HEADER });
-        this._Add(u.dom.El(`div`, { class: `floating-${ui.IDS.ICON}` }), { [ui.IDS.UID]: ui.IDS.ICON, parent: ui.IDS.HEADER, fn: this.AsIconStatic });
-        this._Add(u.dom.El(`div`, { class: ui.IDS.BODY }), { [ui.IDS.UID]: ui.IDS.BODY });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.TITLE }), { [ui.IDS.UID]: ui.IDS.TITLE, parent: ui.IDS.BODY, fn: this.AsText });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.SUBTITLE }), { [ui.IDS.UID]: ui.IDS.SUBTITLE, parent: ui.IDS.BODY, fn: this.AsText });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.LABEL }), { [ui.IDS.UID]: ui.IDS.LABEL, parent: ui.IDS.BODY, fn: this.AsText });
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.HEADER }), { [ui.IDS.UID]: ui.IDS.HEADER });
+        this._Add(ui.dom.El(`div`, { class: `floating-${ui.IDS.ICON}` }), { [ui.IDS.UID]: ui.IDS.ICON, parent: ui.IDS.HEADER, fn: this.AsIconStatic });
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.BODY }), { [ui.IDS.UID]: ui.IDS.BODY });
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.TITLE }), { [ui.IDS.UID]: ui.IDS.TITLE, parent: ui.IDS.BODY, fn: this.AsText });
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.SUBTITLE }), { [ui.IDS.UID]: ui.IDS.SUBTITLE, parent: ui.IDS.BODY, fn: this.AsText });
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.LABEL }), { [ui.IDS.UID]: ui.IDS.LABEL, parent: ui.IDS.BODY, fn: this.AsText });
     }
 }
 

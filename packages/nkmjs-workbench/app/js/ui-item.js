@@ -2,10 +2,9 @@
 
 const nkm = require(`@nkmjs/core`);
 const u = nkm.utils;
-const { UI, manipulators, DisplayObjectContainer } = nkm.ui;
-const { CSS } = nkm.style;
+const ui = nkm.ui;
 
-class UIItem extends DisplayObjectContainer {
+class UIItem extends ui.DisplayObjectContainer {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
@@ -24,7 +23,7 @@ class UIItem extends DisplayObjectContainer {
     // ----> DOM
 
     _Style() {
-        return CSS.Extends({
+        return nkm.style.Extends({
             ':host': {
                 //opacity: 0,
                 margin: `5px`,
@@ -64,9 +63,9 @@ class UIItem extends DisplayObjectContainer {
 
 
     _Render() {
-        this._label = new manipulators.Text(u.dom.El(`p`, { class: `label` }, this));
-        this._wrapper = u.dom.El(`div`, { class: `item-wrapper` }, this);
-        this._errorTf = new manipulators.Text(u.dom.El(`p`, { class: `error` }, this));
+        this._label = new ui.manipulators.Text(ui.dom.El(`p`, { class: `label` }, this));
+        this._wrapper = ui.dom.El(`div`, { class: `item-wrapper` }, this);
+        this._errorTf = new ui.manipulators.Text(ui.dom.El(`p`, { class: `error` }, this));
     }
 
     Display(p_id, p_class, p_variant) {
@@ -106,4 +105,4 @@ class UIItem extends DisplayObjectContainer {
 }
 
 module.exports = UIItem;
-UI.Register(`nkmjs-ui-item`, UIItem);
+ui.Register(`nkmjs-ui-item`, UIItem);

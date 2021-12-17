@@ -1,8 +1,8 @@
 'use strict';
 
-const nkmjs = require(`@nkmjs/core`);
+const nkm = require(`@nkmjs/core`);
 
-class App extends nkmjs.app.AppBase {
+class App extends nkm.app.AppBase {
 
     constructor() { super(); }
 

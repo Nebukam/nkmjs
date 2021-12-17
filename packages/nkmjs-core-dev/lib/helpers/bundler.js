@@ -42,12 +42,13 @@ class Bundler {
             if (id == this.moduleID) { continue; }
             b.exclude(id);
         }
-/*
-        b.transform(require("babelify"), {
-            presets: [NKMjs.InCoreModules('@babel/preset-env')],
-            plugins: [NKMjs.InCoreModules('@babel/plugin-proposal-class-properties')]});
-*/
-        b.bundle(this._OnBrowserifyied.bind(this));
+        /*
+                b.transform(require("babelify"), {
+                    presets: [NKMjs.InCoreModules('@babel/preset-env')],
+                    plugins: [NKMjs.InCoreModules('@babel/plugin-proposal-class-properties')]});
+        */
+        this._OnBrowserifyied = this._OnBrowserifyied.bind(this);
+        b.bundle(this._OnBrowserifyied);
 
     }
 
@@ -55,7 +56,7 @@ class Bundler {
 
         // ----> Babel
         if (p_err) {
-            this.script._logErr(p_err);
+            this.script._logError(p_err);
             this.doneFn(this);
             return;
         }
@@ -86,7 +87,7 @@ class Bundler {
                 toplevel: true,
                 parse: { bare_returns: true },
                 mangle: {
-                    reserved:[`require`],
+                    reserved: [`require`],
                     //keep_classnames : true,
                     keep_fnames: true,
                     //module : true,

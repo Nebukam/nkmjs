@@ -34,7 +34,7 @@ class InputNumber extends ui.inputs.InputField {
     // ----> DOM
 
     _Render() {
-        this._inputField = u.dom.El(`input`, { class: 'field', type: 'number' }, this._host);
+        this._inputField = ui.dom.El(`input`, { class: 'field', type: 'number' }, this._host);
         this._flags.Add(this._inputField, __slider);
         //this.SetSliderData(0,1,0.01);
     }

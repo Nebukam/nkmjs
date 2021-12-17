@@ -1,6 +1,7 @@
 'use strict';
 
 const __POOL = require(`./lib/pool/pool`);
+const __time = require(`./lib/time`);
 
 module.exports = {
 
@@ -14,10 +15,11 @@ module.exports = {
     helpers: require(`./lib/helpers`),
     pool: require(`./lib/pool`),
     signals: require(`./lib/signals`),
-    time: require(`./lib/time`),  
+    time: __time,  
     
     // Shortcut to pool.POOL.Rent
     Rent:__POOL.Rent.bind(__POOL),
     Preload:__POOL.Preload.bind(__POOL),
+    NextTick:__time.NextTick,
 
 }

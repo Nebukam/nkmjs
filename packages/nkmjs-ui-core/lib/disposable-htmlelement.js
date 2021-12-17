@@ -2,6 +2,8 @@
 
 const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
+
+const dom = require(`./utils-dom`);
 const SIGNAL = require(`./signal`);
 
 const __unpainted = `unpainted`;
@@ -259,7 +261,7 @@ class DisposableHTMLElement extends HTMLElement {
         this._Broadcast(com.SIGNAL.RELEASED, this);
         this._CleanUp();
 
-        u.dom.Detach(this);
+        dom.Detach(this);
 
         if (this._returnFn) { this._returnFn(this); }
         this._releasing = false;

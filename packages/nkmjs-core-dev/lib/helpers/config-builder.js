@@ -32,6 +32,12 @@ class ConfigBuilder {
                 break;
         }
 
+        if(p_contextDetail){
+            for(var p in p_contextDetail){
+                config += `\t${p}:'${JSON.stringify(p_contextDetail[p], null, '    ')}',\n`;
+            }
+        }
+
         this.string = config;
     }
 

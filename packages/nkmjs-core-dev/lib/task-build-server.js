@@ -22,6 +22,8 @@ class TaskBuildServer extends ScriptBase {
             this.End();
         }
 
+        NKMjs.Set(`active-buildconf-server`, configs[0]);
+
         this._Bind(this.Entry);
 
         this._log(`server-builder » ${configs[0].platform}`);
@@ -45,7 +47,7 @@ class TaskBuildServer extends ScriptBase {
         try { FSUTILS.rmdir(outputSrc); } catch (e) { }
         FSUTILS.ensuredir(outputSrc);
 
-        //Copy source files to output location
+        //Copy server source files to output location
         new DirCopy(NKMjs.InApp(srcDirName), outputSrc, { 'any': this.Entry });
 
         this.Run(`./task-build-server-main`, this._Bind(this.End));

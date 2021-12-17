@@ -2,7 +2,7 @@
   "name": "@nkmjs/core",
   "version": "0.1.26",
   "description": "NKMjs Framework Core Assembly",
-  "main": "./lib/core.js",
+  "main": "./nkm.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-core"

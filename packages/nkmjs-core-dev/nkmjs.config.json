@@ -76,7 +76,8 @@
                     "replace": true,
                     "append": true
                 }
-            ]
+            ],
+            "task-cleanup"
         ],
         "fetch-and-build-styles": [
             [
@@ -86,10 +87,12 @@
                     "append": true
                 }
             ],
-            "task-styles-build"
+            "task-styles-build",
+            "task-cleanup"
         ],
         "post-install": [
-            "task-post-install"
+            "task-post-install",
+            "task-cleanup"
         ]
     },
     "externals": [

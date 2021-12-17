@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const collections = require(`@nkmjs/collections`);
 
+const dom = require(`./utils-dom`);
 const UI = require(`./ui.js`);
 const FLAGS = require('./flags');
 const SIGNAL = require('./signal');
@@ -268,7 +269,7 @@ class WidgetBar extends WidgetOrientable {
         if (!p_create) { return null; }
 
         let group = {
-            element: u.dom.El(`span`, { class: `group` }, this),
+            element: dom.El(`span`, { class: `group` }, this),
             handles: []
         };
 
@@ -337,7 +338,7 @@ class WidgetBar extends WidgetOrientable {
 
             //Delete if empty
             if (group.handles.length === 0) {
-                u.dom.Detach(group.element);
+                dom.Detach(group.element);
                 group.element = null;
                 group.handles.length = 0;
                 delete this._groups[groupId];

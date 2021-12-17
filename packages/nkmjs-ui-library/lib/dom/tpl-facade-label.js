@@ -23,11 +23,11 @@ class TPLFacadeLabel extends ui.DOMTemplate {
 
     static _CreateTemplate() {
         super._CreateTemplate();
-        this._Add(u.dom.El(`div`, { class: ui.IDS.ICON }), {
+        this._Add(ui.dom.El(`div`, { class: ui.IDS.ICON }), {
             [ui.IDS.UID]: __icon,
             fn: this.AsIcon
         });
-        this._Add(u.dom.El(`span`, { class: ui.IDS.LABEL }), {
+        this._Add(ui.dom.El(`span`, { class: ui.IDS.LABEL }), {
             [ui.IDS.UID]: __label,
             fn: this.AsText
         });

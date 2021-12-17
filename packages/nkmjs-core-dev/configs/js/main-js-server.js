@@ -1,6 +1,6 @@
-const { ServerBase } = require(`@nkmjs/core/lib/core-server`).electron;
+const server = require(`@nkmjs/core/server`);
 
-class ServerProcess extends ServerBase{
+class ServerProcess extends server.core.ServerBase{
     constructor(p_config){super(p_config);}
 
     _Boot(){

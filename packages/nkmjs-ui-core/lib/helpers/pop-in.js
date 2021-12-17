@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
+const dom = require(`../utils-dom`);
 const UI = require(`../ui`);
 const FLAGS = require(`../flags`);
 const SIGNAL = require(`../signal`);
@@ -311,9 +312,9 @@ class PopIn extends DisplayObjectContainer {
     get context() { return this._context; }
     set context(p_value) {
         if (this._context === p_value) { return; }
-        if (this._context) { u.dom.Detach(this); }
+        if (this._context) { dom.Detach(this); }
         this._context = p_value;
-        if (this._context) { u.dom.Attach(this, this._context); }
+        if (this._context) { dom.Attach(this, this._context); }
     }
 
     /**
@@ -384,7 +385,7 @@ class PopIn extends DisplayObjectContainer {
      */
     _UpdateAnchoredPosition() {
 
-        let rect = u.dom.Rect(this._anchor, this.parentElement),
+        let rect = dom.Rect(this._anchor, this.parentElement),
             centerX = rect.x + rect.width * 0.5,
             centerY = rect.y + rect.height * 0.5,
             x = centerX + rect.width * this._placement.x,

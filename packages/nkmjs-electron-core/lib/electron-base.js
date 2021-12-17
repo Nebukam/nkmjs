@@ -163,7 +163,7 @@ class ElectronBase {
 
         this._mainWindow.webContents.executeJavaScript(`
             let nkmjs = require('@nkmjs/core'),
-                nkmElectron = require('@nkmjs/core/lib/core-electron');
+                nkmElectron = require('@nkmjs/core/electron');
             let LOG = nkmjs.utils.LOG;
             LOG.toggle(true);
 
@@ -174,7 +174,7 @@ class ElectronBase {
             let IOElectron = nkmElectron.io.IOElectron;
             (new IOElectron()).Deploy();
 
-            let IPCElectron = nkmElectron.electron.IPCElectron;
+            let IPCElectron = nkmElectron.core.IPCElectron;
             (new IPCElectron()).Deploy();
 
             ENV.instance.Start({

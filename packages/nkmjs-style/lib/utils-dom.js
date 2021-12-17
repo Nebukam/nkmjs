@@ -1,17 +1,10 @@
 
 'use strict';
 
-const UTILS = require(`./utils`);
-const CHECKS = require(`./checks`);
+const u = require(`@nkmjs/utils`);
 
-/**
- * UTILS_DOM is a wrapper class that contains a bunch of utilitary static methods to manipulate the DOM.
- * Since the NKMjs library isn't heavy on DOM manipulation, these are mostly shortcut to common operations such
- * as additions & deletions
- * @class
- * @hideconstructor
- * @memberof utils
- */
+/// This is a copy of ui-core/utils-dom to avoid circular deps
+/// Style only needs it to create style tags.
 class UTILS_DOM {
 
     constructor() { }
@@ -28,11 +21,11 @@ class UTILS_DOM {
 
         let element = document.createElement(p_element);
 
-        if (!CHECKS.isVoid(p_attributes)) {
+        if (!u.isVoid(p_attributes)) {
             for (let att in p_attributes) { element.setAttribute(att, p_attributes[att]); }
         }
 
-        if (!CHECKS.isVoid(p_container)) { this.Attach(element, p_container); }
+        if (!u.isVoid(p_container)) { this.Attach(element, p_container); }
 
         return element;
     }
@@ -44,7 +37,7 @@ class UTILS_DOM {
      */
     static ElClone(p_element, p_container = null) {
         let element = p_element.cloneNode(true);
-        if (!CHECKS.isVoid(p_container)) { this.Attach(element, p_container); }
+        if (!u.isVoid(p_container)) { this.Attach(element, p_container); }
         return element;
     }
 
@@ -81,7 +74,7 @@ class UTILS_DOM {
      * @param {Node} p_element 
      */
     static Detach(p_element) {
-        if (!CHECKS.isVoid(p_element.parentNode)) {
+        if (!u.isVoid(p_element.parentNode)) {
             p_element.parentNode.removeChild(p_element);
         }
     }
@@ -93,7 +86,7 @@ class UTILS_DOM {
      * @param {boolean} [p_frontOfNode] If true, move the node at the front of the last child. Otherwise last childElement.
      */
     static ToFront(p_node, p_frontOfNode = false) {
-        if (!CHECKS.isVoid(p_node.parentNode)) {
+        if (!u.isVoid(p_node.parentNode)) {
             if(p_node.parentNode.lastChild != p_node){
                 p_node.parentNode.appendChild(p_node);
             }
@@ -121,7 +114,7 @@ class UTILS_DOM {
      * @param {boolean} [p_backOfNode] If true, move the node at the back of the first child. Otherwise first childElement.
      */
     static ToBack(p_node, p_backOfNode = false) {
-        if (!CHECKS.isVoid(p_node.parentNode)) {
+        if (!u.isVoid(p_node.parentNode)) {
             if (p_backOfNode) {
                 if (p_node.parentNode.firstChild) {
                     p_node.parentNode.insertBefore(p_node, p_node.parentNode.firstChild);

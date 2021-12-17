@@ -1,5 +1,6 @@
 'use strict';
 
+const __UTILS_DOM = require(`./lib/utils-dom`);
 const __UI = require(`./lib/ui`);
 const __INPUT = require(`./lib/input`);
 __INPUT.instance._Prepare();
@@ -38,6 +39,10 @@ module.exports = {
     lists: require(`./lib/lists`),
     views: require(`./lib/views`),
     overlays: require(`./lib/overlays`),
+
+    dom: __UTILS_DOM,
+    // UTILS_DOM Shortcuts
+    El: __UTILS_DOM.El.bind(__UTILS_DOM),
 
     // Templates
 

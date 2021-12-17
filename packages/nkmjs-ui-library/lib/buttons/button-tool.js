@@ -52,7 +52,7 @@ class ToolButton extends ui.WidgetButton {
 
     _Render() {
         super._Render();
-        this._icon = new ui.manipulators.Icon(u.dom.El(`div`, { class: ui.IDS.ICON }, this._host), false);
+        this._icon = new ui.manipulators.Icon(ui.dom.El(`div`, { class: ui.IDS.ICON }, this._host), false);
     }
 
     _PostRender(){

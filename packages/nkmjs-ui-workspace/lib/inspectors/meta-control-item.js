@@ -50,7 +50,7 @@ class MetaControlItem extends InspectorItem {
 
     _Render() {
         super._Render();
-        this._label = new ui.manipulators.Text(u.dom.El(`span`, { class: ui.IDS.LABEL }, this._host));
+        this._label = new ui.manipulators.Text(ui.dom.El(`span`, { class: ui.IDS.LABEL }, this._host));
     }
 
     get metaPath() { return this._metaPath; }

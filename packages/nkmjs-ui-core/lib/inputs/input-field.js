@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 
+const dom = require(`../utils-dom`);
 const UI = require(`../ui`);
 const INPUT = require(`../input`);
 const KEYBOARD = require(`../keyboard`);
@@ -56,7 +57,7 @@ class InputField extends InputBase {
     }
 
     _Render() {
-        this._inputField = u.dom.El(`input`, { class: 'field' }, this._host); //, type:'search'
+        this._inputField = dom.El(`input`, { class: 'field' }, this._host); //, type:'search'
     }
 
     set placeholderValue(p_value) {

@@ -33,7 +33,7 @@ class ENV extends com.helpers.SingletonEx {
 
     /**
      * @description TODO
-     * @type {app.core.AppBase}
+     * @type {nkm.app.AppBase}
      * @customtag read-only
      */
     static get APP() { return this.instance._app; }
@@ -111,7 +111,7 @@ class ENV extends com.helpers.SingletonEx {
 
     /**
      * @description TODO
-     * @type {app.core.AppBase}
+     * @type {nkm.app.AppBase}
      * @customtag read-only
      */
     get app() { return this._app; }

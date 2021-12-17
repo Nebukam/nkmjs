@@ -1,7 +1,5 @@
 'use strict';
 
-const com = require("@nkmjs/common");
-
 /**
  * @description TODO
  * @class
@@ -10,26 +8,6 @@ const com = require("@nkmjs/common");
  */
 class FLAGS {
     constructor() { }
-
-
-    // API Types
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     * @group API Type
-     */
-    static GET = new Symbol(`get`);
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     * @group API Type
-     */
-     static POST = new Symbol(`post`);
-
 
 }
 

@@ -57,9 +57,9 @@ class Explorer extends ui.views.View {
     }
 
     _Render() {
-        this._header = u.dom.El(`div`, { class: `header group` }, this._host);
-        this._body = u.dom.El(`div`, { class: `body group` }, this._host);
-        this._footer = u.dom.El(`div`, { class: `footer group` }, this._host);
+        this._header = ui.dom.El(`div`, { class: `header group` }, this._host);
+        this._body = ui.dom.El(`div`, { class: `body group` }, this._host);
+        this._footer = ui.dom.El(`div`, { class: `footer group` }, this._host);
         this._wrapper = this._body;
     }
 

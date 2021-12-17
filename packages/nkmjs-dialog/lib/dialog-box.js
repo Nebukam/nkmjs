@@ -87,7 +87,7 @@ class DialogBox extends ui.Widget {
 
     set message(p_message) {
         if (!this._messageElement) {
-            this._messageElement = u.dom.El(`span`, { class: `item message` }, this._contentWrapper);
+            this._messageElement = ui.dom.El(`span`, { class: `item message` }, this._contentWrapper);
         }
         this._messageElement.innerHTML = p_message;
         this._contents.push(this._messageElement);
@@ -303,7 +303,7 @@ class DialogBox extends ui.Widget {
         for (let i = 0, n = this._contents.length; i < n; i++) {
             let item = this._contents[i];
             if (`Release` in item) { this._contents[i].Release(); }
-            else { u.dom.Detach(item); }
+            else { ui.dom.Detach(item); }
         }
 
         this._messageElement = null;
