@@ -8,39 +8,47 @@ class HandlerBase extends com.pool.DisposableObjectEx {
 
     _Init(){
         super._Init();
-        this._request = null;
-        this._response = null;
+        this._req = null;
+        this._res = null;
     }
 
-    get request(){ return this._request; }
-    set request(p_value){ this._request = p_value; }
+    get req(){ return this._req; }
+    set req(p_value){ this._req = p_value; }
 
-    get response(){ return this._response; }
-    set response(p_value){ this._response = p_value; }
+    get res(){ return this._res; }
+    set res(p_value){ this._res = p_value; }
 
-    _InternalHandle(p_request, p_response){
-        this._request = p_request;
-        this._response = p_response;
+    _InternalHandle(p_req, p_res){
+        if(!this._SanitizeRequest(p_req)){
+            p_res.sendStatus(400);
+            return;
+        }
+        this._req = p_req;
+        this._res = p_res;
         this.Handle();
+    }
+
+    _SanitizeRequest(p_req){
+        return true;
     }
 
     Handle(){
 
     }
 
-    _Handled(){
+    _OnHandled(){
         this.Release();
     }
 
     Cancel(){
-        if(this._response){ this._response.sendStatus(404); }
+        if(this._res){ this._res.sendStatus(444); }
         this.Release();
     }
 
     _Cleanup(){
         super._Cleanup();
-        this._request = null;
-        this._response = null;
+        this._req = null;
+        this._res = null;
     }
 
 }

@@ -46,6 +46,7 @@ class TaskBuildServerMain extends ScriptBase {
         serverPackageJson.version = packageJson.version;
         serverPackageJson.description = packageJson.description;
         serverPackageJson.main = NKMjs.SERVER_ENTRY_POINT;
+        serverPackageJson.dependencies = packageJson.dependencies;
         serverPackageJson.scripts = {
             start: NKMjs.SERVER_ENTRY_POINT
         };
@@ -56,6 +57,7 @@ class TaskBuildServerMain extends ScriptBase {
                 serverPackageJson[key] = buildConfig[key];
             }
         }
+        
 
         fs.writeFileSync(NKMjs.InVersionedBuilds(`server`, `package.json`), 
         JSON.stringify(serverPackageJson, null, '    '));

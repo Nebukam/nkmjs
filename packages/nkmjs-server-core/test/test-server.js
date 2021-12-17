@@ -3,10 +3,13 @@ const server = require(`../index`);
 class TestHandler extends server.handlers.Fetch{
     constructor(){super();}
     
-    Handle(){ this.Fetch(this._request.params.url); }
+    Handle(){ 
+        console.log(this._req.query.url);
+        this.Fetch(this._req.query.url); 
+    }
     
     _OnFetchSuccess(p_response){
-        this._response.send(p_response.data);
+        this._res.send(p_response.data);
         super._OnFetchSuccess(p_response);
     }
 }
@@ -18,7 +21,7 @@ class TestServer extends server.ServerBase{
         super._Init();
         this._RegisterAPIs({
             testFetchHandler:{
-                route:`/route/:url`,
+                route:`/route/`,
                 handler:TestHandler,
                 owner:this
             },
