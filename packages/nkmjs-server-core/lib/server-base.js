@@ -49,7 +49,7 @@ class ServerBase {
 
         if (p_config.owner) { p_config.owner[p_identifier] = api; }
 
-        if (api.start) { api.Start(); }
+        if (p_config.start) { api.Start(); }
 
         return api;
 
