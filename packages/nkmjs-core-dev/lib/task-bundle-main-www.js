@@ -45,7 +45,8 @@ class TaskBundleMainWWW extends ScriptBase {
             input:entryPoint,
             output:NKMjs.InWWWBuildRsc(`${NKMjs.projectConfig.name}.js`),
             script:this,
-            done:this.End
+            done:this.End,
+            define:define
         });
 
     }
