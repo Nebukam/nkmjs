@@ -48,7 +48,10 @@ class TaskBuildServerMain extends ScriptBase {
         serverPackageJson.main = NKMjs.SERVER_ENTRY_POINT;
         serverPackageJson.dependencies = packageJson.dependencies;
         serverPackageJson.scripts = {
-            start: NKMjs.SERVER_ENTRY_POINT
+            start: `node ${NKMjs.SERVER_ENTRY_POINT}`
+        };
+        serverPackageJson.engines = {
+            node: process.versions.node // might not be the best approach
         };
 
         if (buildConfig) {

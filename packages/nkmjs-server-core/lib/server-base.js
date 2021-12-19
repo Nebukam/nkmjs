@@ -22,7 +22,7 @@ class ServerBase {
     }
 
     _Init() {
-        
+
     }
 
     _RegisterAPIs(p_apis, p_start = false) {
@@ -47,7 +47,9 @@ class ServerBase {
 
         this._apiMap.Set(p_identifier, api);
 
-        if(p_config.owner){ p_config.owner[p_identifier] = api; }
+        if (p_config.owner) { p_config.owner[p_identifier] = api; }
+
+        if (api.start) { api.Start(); }
 
         return api;
 
@@ -58,13 +60,13 @@ class ServerBase {
 
     }
 
-    _InternalBoot(){
+    _InternalBoot() {
         console.log("Listening on port %s", this._server.address().port);
         this._Boot();
     }
 
-    _Boot(){
-        
+    _Boot() {
+
     }
 
 }
