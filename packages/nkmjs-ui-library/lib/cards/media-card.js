@@ -35,6 +35,7 @@ class MediaCard extends BaseCard {
     // ----> DOM
 
     set media(p_value) { this._frame[ui.IDS.HEADER].Set(p_value); }
+    set mediaDirect(p_value) { this._frame[ui.IDS.HEADER].Set(p_value, true); }
 
     static __cardTemplate = CardTemplate;
     static __cardOptions = {

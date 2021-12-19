@@ -60,7 +60,7 @@ class Manipulator {
         return this._Apply(this._element, p_value);
     }
 
-    _Apply(p_element, p_value) {
+    _Apply(p_element, p_value, p_direct = false) {
         return true;
     }
 

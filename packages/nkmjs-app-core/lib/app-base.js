@@ -76,8 +76,8 @@ class AppBase extends com.helpers.SingletonEx {
             { evt: APP_MESSAGES.NODE_MESSAGE, fn: this._Bind(this._onNodeMessage) },
             { evt: APP_MESSAGES.NODE_ERROR, fn: this._Bind(this._onNodeError) },
             { evt: APP_MESSAGES.NODE_WARNING, fn: this._Bind(this._onNodeWarning) },
+            { evt: APP_MESSAGES.CONTEXT_MENU_COMMAND, fn: this._Bind(this._onContextMenuCommand) },
         ];
-
 
         env.features.Watch(env.SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
         env.ENV.Watch(env.SIGNAL.PWA_UPDATE_AVAILABLE, this._OnPWAUpdateAvailable, this);
@@ -380,6 +380,10 @@ class AppBase extends com.helpers.SingletonEx {
 
     _onNodeMessage(p_evt, p_content) {
         console.log(p_content.message);
+    }
+
+    _onContextMenuCommand(p_evt, p_command){
+        
     }
 
     //#endregion

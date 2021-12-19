@@ -45,26 +45,12 @@
 <!-- DEFAULT SCRIPT -->
 <script>
 
-    const { remote } = require('electron');
-    remote.app.commandLine.appendSwitch("js-flags", "--max-old-space-size=8192"); //Upgrade memory limit
+const electron = window.require('electron');
+const ipcRenderer  = electron.ipcRenderer;
 
-    const { Menu, MenuItem } = remote;
-
-    let rightClickPosition = null
-
-    const menu = new Menu()
-    const menuItem = new MenuItem({
-        label: 'Inspect Element',
-        click: () => {
-            remote.getCurrentWindow().inspectElement(rightClickPosition.x, rightClickPosition.y)
-        }
-    });
-    menu.append(menuItem);
-
-    window.addEventListener('contextmenu', (e) => {
-        e.preventDefault()
-        rightClickPosition = {x: e.x, y: e.y}
-        menu.popup({ window: remote.getCurrentWindow() })
+window.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        ipcRenderer.send('show-context-menu', {x: e.x, y: e.y});
     }, false);
 
 </script>

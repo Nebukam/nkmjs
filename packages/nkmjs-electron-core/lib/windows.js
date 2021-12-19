@@ -53,7 +53,25 @@ class WINDOWS extends com.helpers.SingletonEx {
         ipcMain.on(APP_MESSAGES.DO_PRINT_WINDOW, this._OnRequestWindowPrint);
         ipcMain.on(APP_MESSAGES.DO_OPEN_AND_PRINT_WINDOW, this._OnRequestWindowAndPrint);
 
+        //https://www.electronjs.org/docs/latest/api/menu#render-process
+        ipcMain.on('show-context-menu', (event, p_data) => {
+            const template = [
+                {
+                    label: 'Inspect',
+                    click: () => { BrowserWindow.fromWebContents(event.sender).inspectElement(p_data.x, p_data.y); }
+                },
+                {
+                    label: 'Template menu item',
+                    click: () => { event.sender.send('context-menu-command', 'menu-item-1') }
+                }
+            ]
+            const menu = Menu.buildFromTemplate(template)
+            menu.popup(BrowserWindow.fromWebContents(event.sender))
+        })
+
     }
+
+
 
     /**
      * @description TODO

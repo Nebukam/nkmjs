@@ -21,7 +21,7 @@ class ImageHandler extends ContentURLManipulator {
 
     get content() { return this._element ? this._element.src : null; }
 
-    _ApplyPath(p_element, p_path = false) {
+    _ApplyPath(p_element, p_path = false, p_direct = false) {
         if (!p_path) { p_element.src = ``; }
         else { p_element.src = p_path; }
     }

@@ -99,7 +99,7 @@ class TextHandler extends ContentManipulator {
      * @param {*} p_element 
      * @param {string} p_value 
      */
-     _Apply(p_element, p_value) {
+     _Apply(p_element, p_value, p_direct = false) {
 
         if (u.isVoid(p_value)) {
             p_element.innerHTML = ``;

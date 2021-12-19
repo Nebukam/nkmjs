@@ -28,6 +28,9 @@ class APP_MESSAGES{
     static DO_PRINT_WINDOW = `request-window-print`;
     static DO_OPEN_AND_PRINT_WINDOW = `request-window-and-print`;
 
+    static CONTEXT_MENU_SHOW = `show-context-menu`;
+    static CONTEXT_MENU_COMMAND = `context-menu-command`;
+
 }
 
 module.exports = APP_MESSAGES;

@@ -28,7 +28,7 @@ class ContentURLManipulator extends ContentManipulator {
      * @param {*} p_element 
      * @param {*} p_value string or BlobResource
      */
-    _Apply(p_element, p_value) {
+    _Apply(p_element, p_value, p_direct = false) {
 
         if (u.isVoid(p_value)) {
             this._ApplyPath(p_element, false);
@@ -47,7 +47,7 @@ class ContentURLManipulator extends ContentManipulator {
 
             path = u.PATH.FULL(path);
 
-            this._ApplyPath(p_element, path);
+            this._ApplyPath(p_element, path, p_direct);
 
             return true;
 
@@ -55,7 +55,7 @@ class ContentURLManipulator extends ContentManipulator {
 
     }
 
-    _ApplyPath(p_element, p_path = false) { }
+    _ApplyPath(p_element, p_path = false, p_direct = false) { }
 
 }
 

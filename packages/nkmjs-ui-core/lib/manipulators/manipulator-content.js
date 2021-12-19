@@ -79,9 +79,9 @@ class ContentManipulator extends Manipulator {
      * @param {*} p_value 
      * @returns {boolean} True if the content is valid & visible, otherwise false.
      */
-    Set(p_value) {
+    Set(p_value, p_direct = false) {
 
-        let result = this._Apply(this._element, p_value);
+        let result = this._Apply(this._element, p_value, p_direct);
 
         let oldContent = this._content;
         if (oldContent && u.isInstanceOf(oldContent, com.pool.DisposableObjectEx)) {
@@ -103,13 +103,13 @@ class ContentManipulator extends Manipulator {
         return this._Toggle(result);
     }
 
-    TryReplace(p_value) {
+    TryReplace(p_value, p_direct = false) {
         
         let oldContent = this.content,
-            result = this._Apply(this._element, p_value);
+            result = this._Apply(this._element, p_value, p_direct);
 
         if (!result) { 
-            this._Apply(this._element, oldContent); 
+            this._Apply(this._element, oldContent, p_direct); 
             return false;
         }
         else { 
