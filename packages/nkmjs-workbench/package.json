@@ -18,7 +18,7 @@
     },
     "devDependencies": {
         "@nkmjs/core-dev": "../nkmjs-core-dev",
-        "electron": "^11.3.0"
+        "electron": "^16.0.2"
     },
     "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }

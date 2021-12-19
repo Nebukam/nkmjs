@@ -32,17 +32,23 @@ class TaskBundleMainPWA extends ScriptBase {
                     config: (new ConfigBuilder(ConfigBuilder.PWA, jsConfig)).toString()
                 }
             ),
-            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-bundle.js`), 'utf8'));
+            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-bundle.js`), 'utf8')),
+            define = {
+                [NKMjs.DEFINE_BUILD] : `PWA`
+            };
 
         NKMjs.WriteTempSync(entryPoint, templateContent);
         this._logFwd(NKMjs.Shorten(entryPoint), `+`);
 
-        new Bundler(`${NKMjs.projectConfig.name} (pwa)`,
-            entryPoint,
-            NKMjs.InPWABuildRsc(`${NKMjs.projectConfig.name}.js`),
-            this.End,
-            this
-        );
+        
+        new Bundler({
+            id:`${NKMjs.projectConfig.name} (pwa)`,
+            input:entryPoint,
+            output:NKMjs.InPWABuildRsc(`${NKMjs.projectConfig.name}.js`),
+            script:this,
+            done:this.End,
+            define:define
+        });
 
     }
 

@@ -21,7 +21,7 @@
     "@nkmjs/environment": "^0.1.23",
     "@nkmjs/services": "^0.0.32",
     "@nkmjs/utils": "^0.0.32",
-    "axios": "^0.21.1"
+    "axios": "^0.24.0"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }

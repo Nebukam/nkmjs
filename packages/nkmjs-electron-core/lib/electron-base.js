@@ -42,7 +42,7 @@ class ElectronBase {
 
         //DEV_MODE = process.argv.includes('dev');
 
-        this._dirname =(p_constants.dirname || __dirname);
+        this._dirname = (p_constants.dirname || __dirname);
         this._appindex = (p_constants.html || "");
 
         if (!p_constants.renderer) { this._rendererDeclaration = ``; }
@@ -84,7 +84,7 @@ class ElectronBase {
         ipcMain.on(APP_MESSAGES.DO_RELOAD_APP, this._OnRequestReload);
 
     }
-    
+
     /**
      * @access protected
      * @description Bind the given function to this object and returns it.
@@ -110,6 +110,7 @@ class ElectronBase {
             id: WINDOWS.ID_MAIN,
             webPreferences: {
                 nodeIntegration: true,
+                contextIsolation: false,
                 experimentalFeatures: true,
                 webSecurity: false,
                 enableRemoteModule: true
@@ -159,7 +160,7 @@ class ElectronBase {
         console.log(`Boot app`);
 
         // Compute style path
-        let stylePath = this._constants.style ?  this._constants.style : `style`;
+        let stylePath = this._constants.style ? this._constants.style : `style`;
 
         this._mainWindow.webContents.executeJavaScript(`
             let nkmjs = require('@nkmjs/core'),
@@ -200,13 +201,13 @@ class ElectronBase {
             });            
         `);
 
-        
+
     }
 
 
     _OnRequestReload() {
         console.log(`RELOAD_REQUEST`);
-        this._mainWindow.reload(); 
+        this._mainWindow.reload();
         this._mainWindow.webContents.session.clearCache();
     }
 

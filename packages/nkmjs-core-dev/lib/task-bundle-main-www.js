@@ -32,17 +32,21 @@ class TaskBundleMainWWW extends ScriptBase {
                     config: (new ConfigBuilder(ConfigBuilder.WWW, jsConfig)).toString()
                 }
             ),
-            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`, `js`, `entry-bundle.js`), 'utf8'));
+            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`, `js`, `entry-bundle.js`), 'utf8')),
+            define = {
+                [NKMjs.DEFINE_BUILD] : `WWW`
+            };
 
         NKMjs.WriteTempSync(entryPoint, templateContent);
         this._logFwd(NKMjs.Shorten(entryPoint), `+`);
 
-        new Bundler(`${NKMjs.projectConfig.name} (www)`,
-            entryPoint,
-            NKMjs.InWWWBuildRsc(`${NKMjs.projectConfig.name}.js`),
-            this.End,
-            this
-        );
+        new Bundler({
+            id:`${NKMjs.projectConfig.name} (www)`,
+            input:entryPoint,
+            output:NKMjs.InWWWBuildRsc(`${NKMjs.projectConfig.name}.js`),
+            script:this,
+            done:this.End
+        });
 
     }
 

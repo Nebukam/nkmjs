@@ -15,15 +15,24 @@ const browserify = require('browserify');
 
 class Bundler {
 
-    constructor(p_moduleID, p_in, p_out, p_doneFn, p_script) {
-
+    /**
+     * 
+     * @param {*} p_options
+     * @param {string} p_options.module 
+     * @param {string} p_options.input
+     * @param {string} p_options.output
+     * @param {function} p_options.done
+     * @param {ScriptBase} p_options.script
+     */
+    constructor(p_options) {
 
         // Create a bundle file in the build folder
-        this.moduleID = p_moduleID;
-        this.entryPoint = p_in;
-        this.output = p_out;
-        this.doneFn = p_doneFn;
-        this.script = p_script;
+        this.moduleID = p_options.id;
+        this.entryPoint = p_options.input;
+        this.output = p_options.output;
+        this.doneFn = p_options.done;
+        this.script = p_options.script;
+        this.define = p_options.define;
 
         this.shrinkMap = {};
 
@@ -65,13 +74,22 @@ class Bundler {
 
         this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
 
+        let babelPlugins = [];
+        babelPlugins.push(NKMjs.InCoreModules('@babel/plugin-proposal-class-properties'));
+
+        if (this.define) {
+            babelPlugins.push([
+                NKMjs.InCoreModules("babel-plugin-conditional-compile"),
+                { define: this.define }]);
+        }
+
         let code = p_src.toString(),
             localBabelConfig = null,
             babelConfig = {
                 compact: true,
                 comments: false,
                 presets: [NKMjs.InCoreModules('@babel/preset-env')],
-                plugins: [NKMjs.InCoreModules('@babel/plugin-proposal-class-properties')]
+                plugins: babelPlugins
             };
 
         try { localBabelConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`babel.config.json`))); } catch (e) { }

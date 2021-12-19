@@ -83,9 +83,10 @@ class WINDOWS extends com.helpers.SingletonEx {
 
             let webPreferences = u.tils.Get(p_options, `webPreferences`, {
                 nodeIntegration: true,
+                contextIsolation: false,
+                enableRemoteModule: true,
                 experimentalFeatures: true,
-                webSecurity: false,
-                enableRemoteModule: true
+                webSecurity: false
             }),
                 winOptions = {
                     webPreferences: webPreferences,

@@ -40,6 +40,8 @@ class NKMjs {
 
     static LOCALES_DIR = `_locales`;
 
+    static DEFINE_BUILD = `DEF_BUILD`;
+
     static Init() {
         if (this.__initialized) { return; }
         this.__initialized = true;

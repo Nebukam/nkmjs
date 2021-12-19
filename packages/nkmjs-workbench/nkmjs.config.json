@@ -6,7 +6,7 @@
     "lang": "en",
     "homepage": "https://homepage",
     "app": {
-        "display": "standalone", 
+        "display": "standalone",
         "orientation": "portrait",
         "colorTheme": "#1e1e1e",
         "theme": "default",

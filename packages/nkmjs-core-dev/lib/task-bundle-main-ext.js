@@ -49,17 +49,22 @@ class TaskBundleMainExt extends ScriptBase {
                     config: (new ConfigBuilder(ConfigBuilder.EXT, conf)).toString()
                 }
             ),
-            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-bundle.js`), 'utf8'));
+            templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-bundle.js`), 'utf8')),
+            define = {
+                [NKMjs.DEFINE_BUILD] : `EXT`
+            };
 
         NKMjs.WriteTempSync(entryPoint, templateContent);
         this._logFwd(NKMjs.Shorten(entryPoint), `+`);
 
-        new Bundler(`${NKMjs.projectConfig.name} (ext)`,
-            entryPoint,
-            NKMjs.InExtBuildRsc(`.${conf.platform}`, `${NKMjs.projectConfig.name}.js`),
-            this.BundleNext,
-            this
-        );
+        new Bundler({
+            id:`${NKMjs.projectConfig.name} (ext)`,
+            input:entryPoint,
+            output:NKMjs.InExtBuildRsc(`.${conf.platform}`, `${NKMjs.projectConfig.name}.js`),
+            script:this,
+            done:this.BundleNext,
+            define:define
+        });
 
     }
 

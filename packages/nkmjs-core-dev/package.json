@@ -1,46 +1,48 @@
 {
-  "name": "@nkmjs/core-dev",
-  "version": "0.1.37",
-  "description": "NKMjs Framework Core Dev Tools",
-  "main": "lib.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-core"
-  },
-  "author": {
-    "name": "Timothé Lapetite",
-    "email": "nebukam@gmail.com"
-  },
-  "license": "MIT",
-  "scripts": {
-    "bundle-core": "node ./lib/task-build-core-bundle.js",
-    "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README-jsdoc.md",
-    "postinstall": "node ./lib/script-post-install.js"
-  },
-  "bin": {
-    "nkmjs": "./bin/cli.js"
-  },
-  "dependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.15.5",
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "@nkmjs/core": "^0.1.27",
-    "@nkmjs/utils": "^0.0.32",
-    "adm-zip": "^0.5.3",
-    "axios": "^0.21.1",
-    "browserify": "^17.0.0",
-    "chalk": "^4.1.0",
-    "csso": "^4.2.0",
-    "electron": "^11.3.0",
-    "electron-builder": "^22.9.1",
-    "image-size": "^0.9.4",
-    "jsdoc": "^3.6.6",
-    "jsdoc-to-markdown": "^6.0.1",
-    "png-to-ico": "^2.1.2",
-    "sass": "^1.32.5",
-    "sharp": "^0.27.2",
-    "terser": "^5.5.1"
-  },
-  "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
+    "name": "@nkmjs/core-dev",
+    "version": "0.1.37",
+    "description": "NKMjs Framework Core Dev Tools",
+    "main": "lib.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-core"
+    },
+    "author": {
+        "name": "Timothé Lapetite",
+        "email": "nebukam@gmail.com"
+    },
+    "license": "MIT",
+    "scripts": {
+        "bundle-core": "node ./lib/task-build-core-bundle.js",
+        "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README-jsdoc.md",
+        "postinstall": "node ./lib/script-post-install.js",
+        "nkmjs": "nkmjs"
+    },
+    "bin": {
+        "nkmjs": "./bin/cli.js"
+    },
+    "dependencies": {
+        "@babel/cli": "^7.12.10",
+        "@babel/core": "^7.15.5",
+        "@babel/plugin-proposal-class-properties": "^7.12.1",
+        "@babel/preset-env": "^7.12.11",
+        "@nkmjs/core": "^0.1.27",
+        "@nkmjs/utils": "^0.0.32",
+        "adm-zip": "^0.5.3",
+        "axios": "^0.24.0",
+        "babel-plugin-conditional-compile": "^0.0.5",
+        "browserify": "^17.0.0",
+        "chalk": "^4.1.0",
+        "csso": "^4.2.0",
+        "electron": "^16.0.2",
+        "electron-builder": "^22.14.5",
+        "image-size": "^0.9.4",
+        "jsdoc": "^3.6.6",
+        "jsdoc-to-markdown": "^6.0.1",
+        "png-to-ico": "^2.1.2",
+        "sass": "^1.32.5",
+        "sharp": "^0.27.2",
+        "terser": "^5.5.1"
+    },
+    "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }

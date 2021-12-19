@@ -19,7 +19,7 @@ class TaskBundleExternals extends ScriptBase {
         this._Bind(this.BundleNext);
 
         this.eIndex = 0;
-        this.templateContent = fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-external.js`), 'utf8');
+        this.templateContent = fs.readFileSync(NKMjs.InCore(`configs`, `js`, `entry-external.js`), 'utf8');
 
         this.Run(`./task-prepare-externals`, this._Bind(this._OnPreparationComplete));
 
@@ -36,7 +36,7 @@ class TaskBundleExternals extends ScriptBase {
         let module = this.modules.shift();
 
         // Cache previous bundle, if any
-        if(this.prevBundleOutput){
+        if (this.prevBundleOutput) {
             this._log(chalk.blue.italic(`caching ${path.basename(this.prevBundleOutput)}...`), 2);
             FSUTILS.ensuredir(path.dirname(this.prevBundleCachedOutput));
             fs.copyFileSync(this.prevBundleOutput, this.prevBundleCachedOutput);
@@ -55,7 +55,7 @@ class TaskBundleExternals extends ScriptBase {
             entryPoint = NKMjs.InApp(moduleName),
             output = NKMjs.InSharedWebBuildRsc(moduleName),
             cachedOutput = path.resolve(NKMjs.CORE_CACHE_DIR, moduleName);
-            
+
         // Check cache first
         try {
             fs.statSync(cachedOutput);
@@ -66,19 +66,20 @@ class TaskBundleExternals extends ScriptBase {
             this.prevBundleOutput = null;
             this.BundleNext();
             return;
-        } catch (e) { 
+        } catch (e) {
             this.prevBundleOutput = output;
             this.prevBundleCachedOutput = cachedOutput;
         }
 
         NKMjs.WriteTempSync(entryPoint, replacer.Replace(this.templateContent));
 
-        new Bundler(module,
-            entryPoint,
-            output,
-            this.BundleNext,
-            this
-        );
+        new Bundler({
+            id: module,
+            input: entryPoint,
+            output: output,
+            script: this,
+            done: this.BundleNext
+        });
 
     }
 
