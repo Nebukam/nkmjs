@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/core",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "description": "NKMjs Framework Core Assembly",
   "main": "./nkm.js",
   "repository": {
@@ -30,7 +30,7 @@
     "@nkmjs/io-electron": "^0.0.33",
     "@nkmjs/localisation": "^0.0.25",
     "@nkmjs/metrics": "^0.0.25",
-    "@nkmjs/server-core": "^0.0.2",
+    "@nkmjs/server-core": "^0.0.3",
     "@nkmjs/services": "^0.0.32",
     "@nkmjs/style": "^0.0.36",
     "@nkmjs/ui-core": "^0.0.38",
