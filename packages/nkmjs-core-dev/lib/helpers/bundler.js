@@ -79,8 +79,8 @@ class Bundler {
 
         if (this.define) {
             babelPlugins.push([
-                NKMjs.InCoreModules("babel-plugin-conditional-compile"),
-                { define: this.define }]);
+                NKMjs.InCoreModules("babel-plugin-conditional-compilation"),
+                this.define]);
         }
 
         let code = p_src.toString(),

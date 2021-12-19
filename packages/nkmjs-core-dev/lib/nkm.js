@@ -40,7 +40,12 @@ class NKMjs {
 
     static LOCALES_DIR = `_locales`;
 
-    static DEFINE_BUILD = `DEF_BUILD`;
+    static DEFINE_BUILD = `BUILD`;
+    static DEFINE_PWA = `PWA`;
+    static DEFINE_WWW = `WWW`;
+    static DEFINE_EXT = `EXT`;
+    static DEFINE_WEB = `WEB`;
+    static DEFINE_NODE = `NODE`;
 
     static Init() {
         if (this.__initialized) { return; }

@@ -34,7 +34,12 @@ class TaskBundleMainPWA extends ScriptBase {
             ),
             templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`,`js`,`entry-bundle.js`), 'utf8')),
             define = {
-                [NKMjs.DEFINE_BUILD] : `PWA`
+                [NKMjs.DEFINE_BUILD] : `PWA`,
+                [NKMjs.DEFINE_EXT] : false,
+                [NKMjs.DEFINE_PWA] : true,
+                [NKMjs.DEFINE_WWW] : false,
+                [NKMjs.DEFINE_WEB] : true,
+                [NKMjs.DEFINE_NODE] : false
             };
 
         NKMjs.WriteTempSync(entryPoint, templateContent);

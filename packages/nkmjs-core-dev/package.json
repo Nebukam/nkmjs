@@ -30,7 +30,7 @@
         "@nkmjs/utils": "^0.0.32",
         "adm-zip": "^0.5.3",
         "axios": "^0.24.0",
-        "babel-plugin-conditional-compile": "^0.0.5",
+        "babel-plugin-conditional-compilation": "^0.0.1",
         "browserify": "^17.0.0",
         "chalk": "^4.1.0",
         "csso": "^4.2.0",

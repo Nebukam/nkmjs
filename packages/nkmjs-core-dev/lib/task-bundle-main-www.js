@@ -34,7 +34,12 @@ class TaskBundleMainWWW extends ScriptBase {
             ),
             templateContent = replacer.Replace(fs.readFileSync(NKMjs.InCore(`configs`, `js`, `entry-bundle.js`), 'utf8')),
             define = {
-                [NKMjs.DEFINE_BUILD] : `WWW`
+                [NKMjs.DEFINE_BUILD] : `WWW`,
+                [NKMjs.DEFINE_EXT] : false,
+                [NKMjs.DEFINE_PWA] : false,
+                [NKMjs.DEFINE_WWW] : true,
+                [NKMjs.DEFINE_WEB] : true,
+                [NKMjs.DEFINE_NODE] : false
             };
 
         NKMjs.WriteTempSync(entryPoint, templateContent);
