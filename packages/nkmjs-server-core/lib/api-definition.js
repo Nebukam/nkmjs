@@ -66,7 +66,7 @@ class APIDefinition extends com.pool.DisposableObjectEx {
 
     }
 
-    _Handle(p_request, p_response) {
+    _Handle(p_request, p_response) {        
         let newHandler = com.Rent(this._handlerClass);
         this._activeHandlers.Add(newHandler);
         newHandler.Watch(com.SIGNAL.RELEASED, this._OnHandlerReleased, this);

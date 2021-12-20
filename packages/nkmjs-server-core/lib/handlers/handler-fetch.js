@@ -29,7 +29,7 @@ class HandlerFetch extends HandlerGet {
         if (p_err.response) {
             this._res.status(p_err.response.status);
         } else {
-            this._res.status(404);
+            this._res.status(404).end();
         }
         this._OnHandled();
     }

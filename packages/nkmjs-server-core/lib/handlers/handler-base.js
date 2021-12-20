@@ -20,7 +20,7 @@ class HandlerBase extends com.pool.DisposableObjectEx {
 
     _InternalHandle(p_req, p_res){
         if(!this._SanitizeRequest(p_req)){
-            p_res.sendStatus(400);
+            p_res.sendStatus(400).end();
             return;
         }
         this._req = p_req;
@@ -33,7 +33,8 @@ class HandlerBase extends com.pool.DisposableObjectEx {
     }
 
     Handle(){
-
+        p_res.sendStatus(400).end();
+        throw new Error(`Handle not implemented.`);
     }
 
     _OnHandled(){
@@ -41,7 +42,7 @@ class HandlerBase extends com.pool.DisposableObjectEx {
     }
 
     Cancel(){
-        if(this._res){ this._res.sendStatus(444); }
+        if(this._res){ this._res.sendStatus(444).end(); }
         this.Release();
     }
 

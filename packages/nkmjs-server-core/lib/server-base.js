@@ -4,6 +4,7 @@ const com = require(`@nkmjs/common`);
 const collections = require(`@nkmjs/collections`);
 const express = require(`express`);
 const APIDefinition = require("./api-definition");
+const { send } = require("express/lib/response");
 
 class ServerBase {
 
@@ -48,7 +49,6 @@ class ServerBase {
         this._apiMap.Set(p_identifier, api);
 
         if (p_config.owner) { p_config.owner[p_identifier] = api; }
-
         if (p_config.start) { api.Start(); }
 
         return api;
