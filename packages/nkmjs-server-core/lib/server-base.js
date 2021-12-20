@@ -15,7 +15,10 @@ class ServerBase {
         this._whitelist = p_constants.whitelist;
         this._express = express();
 
-        this._express.use(cors({ origin: this._CheckCors }));
+        this._express.use(cors({
+            origin: this._CheckCors,
+            credentials: true
+        }));
         this._apiMap = new collections.Dictionary();
         this._port = null;
 
