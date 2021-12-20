@@ -19,6 +19,7 @@
     "@nkmjs/collections": "^0.1.17",
     "@nkmjs/common": "^0.1.23",
     "axios": "^0.24.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1"
   }
 }

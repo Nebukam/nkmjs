@@ -1,10 +1,9 @@
 'use strict';
 
-const com = require(`@nkmjs/common`);
 const collections = require(`@nkmjs/collections`);
 const express = require(`express`);
+const cors = require("cors");
 const APIDefinition = require("./api-definition");
-const { send } = require("express/lib/response");
 
 class ServerBase {
 
@@ -12,7 +11,11 @@ class ServerBase {
 
         this.p_constants = p_constants;
 
+        this._CheckCors = this._CheckCors.bind(this);
+        this._whitelist = p_constants.whitelist;
         this._express = express();
+
+        this._express.use(cors({ origin: this._CheckCors }));
         this._apiMap = new collections.Dictionary();
         this._port = null;
 
@@ -20,9 +23,25 @@ class ServerBase {
 
         this._InternalBoot = this._InternalBoot.bind(this);
         this._server = this._express.listen(process.env.PORT || this._port || 8080, this._InternalBoot);
+
     }
 
     _Init() {
+
+    }
+
+    _CheckCors(p_origin, p_callback) {
+
+        if (!this._whitelist) {
+            p_callback(null, true);
+            return;
+        }
+
+        if (this._whitelist.indexOf(p_origin) !== -1) {
+            p_callback(null, true);
+        } else {
+            p_callback(new Error('Not allowed by CORS'));
+        }
 
     }
 

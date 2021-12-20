@@ -37,6 +37,7 @@ class TaskBuildServerMain extends ScriptBase {
             templateContent = replacer.Replace(
                 fs.readFileSync(NKMjs.InCore(`configs`, `js`, `entry-server.js`), 'utf8')),
             packageJson = JSON.parse(fs.readFileSync(NKMjs.InProject(`package.json`), 'utf8')),
+            corePackageJson = JSON.parse(fs.readFileSync(NKMjs.InCore(`package.json`), 'utf8')),
             serverPackageJson = {};
 
         fs.writeFileSync(serverEntry, templateContent);
@@ -53,6 +54,8 @@ class TaskBuildServerMain extends ScriptBase {
         serverPackageJson.engines = {
             node: process.versions.node // might not be the best approach
         };
+
+        serverPackageJson.dependencies[`@nkmjs/core`] = corePackageJson.dependencies[`@nkmjs/core`];
 
         if (buildConfig) {
             for (var key in buildConfig) {
