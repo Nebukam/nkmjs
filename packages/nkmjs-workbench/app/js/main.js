@@ -178,6 +178,16 @@ class StyleguideApp extends nkm.app.AppBase {
                 ]
             },
             {
+                cl:ui.inputs.InputNumberBase,
+                variants: [
+                    { min: -5, max: 5, step: 0.1, currentValue:1 },
+                    { min: -5, max: 5, step: 1, currentValue:1 },
+                    { min: -5, max: 5, step: 0.1, currentValue:1 , size: ui.FLAGS.SIZE_XS },
+                    { min: -5, max: 5, step: 1, currentValue:1, size: ui.FLAGS.SIZE_XS },
+                ],
+                fn: this._Bind(this._OnInputCreated)
+            },
+            {
                 cl: ui.WidgetBar, not: [w.WorkspaceCellNav, ui.views.ShelfNav],
                 variants: [
                     { size: ui.FLAGS.SIZE_XS },
@@ -373,7 +383,11 @@ class StyleguideApp extends nkm.app.AppBase {
     _OnCardCreated(p_card, p_variant) {
         p_card.data = p_variant;
         p_card.title = `I am a ${u.tils.CamelSplit(p_card.constructor.name)}`;
-        p_card.scrollIntoView();
+        //p_card.scrollIntoView();
+    }
+
+    _OnInputCreated(p_input){
+        p_input.scrollIntoView();
     }
 
     _TriggerTest(p_source) {

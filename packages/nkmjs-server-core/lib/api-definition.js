@@ -77,8 +77,8 @@ class APIDefinition extends com.pool.DisposableObjectEx {
         this._activeHandlers.Remove(p_handler);
     }
 
-    _Cleanup() {
-        super._Cleanup();
+    _CleanUp() {
+        super._CleanUp();
         this.Stop();
     }
 

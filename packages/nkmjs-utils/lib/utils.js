@@ -774,6 +774,11 @@ class UTILS {
             .toLowerCase();
     }
 
+    static Map(p_value, p_oMin, p_oMax, p_nMin, p_nMax)
+    {
+        return p_nMin + (p_value - p_oMin) * (p_nMax - p_nMin) / (p_oMax - p_oMin);
+    }
+
 }
 
 module.exports = UTILS;

@@ -3,40 +3,50 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const ui = require(`@nkmjs/ui-core`);
+const style = require(`@nkmjs/style`);
 
 const __slider = `slider`;
+const _flag_noArrows = `no-arrows`;
 
-class InputNumber extends ui.inputs.InputField {
+class InputNumber extends ui.inputs.InputNumberBase {
     constructor() { super(); }
+
+    static __inputProperties = { type: `number` };
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/number.css`]
-    }, ui.inputs.InputField, ['css']);
+    }, ui.inputs.InputNumberBase, ['css']);
 
+    _Init(){
+        super._Init();
+        this._flags.Add(this, _flag_noArrows);
+    }
 
-    SetSliderData(m_min = 0, m_max = 0, m_step = null) {
-        if (m_min != m_max) {
-            if (!m_step) { m_step = (m_max - m_min) / 100; }
-            this._inputField.setAttribute('type', `range`);
-            this._inputField.setAttribute('min', m_min);
-            this._inputField.setAttribute('max', m_max);
-            this._inputField.setAttribute('step', m_step);
-            this._flags.Set(__slider, true);
-        } else {
-            this._inputField.setAttribute('type', `number`);
-            this._inputField.removeAttribute('min');
-            this._inputField.removeAttribute('max');
-            this._inputField.removeAttribute('step');
-            this._flags.Set(__slider, false);
-        }
+    set hideArrow(p_value){
+        this._flags.Set(_flag_noArrows, p_value);
     }
 
     // ----> DOM
 
-    _Render() {
-        this._inputField = ui.dom.El(`input`, { class: 'field', type: 'number' }, this._host);
-        this._flags.Add(this._inputField, __slider);
-        //this.SetSliderData(0,1,0.01);
+    _Style() {
+        return style.Extends({
+            ':host': {
+                'height': `var(--size)`,
+                'display': 'flex',
+                'flex-flow': 'row nowrap',
+                'align-items': 'center'
+            },
+            ':host(.no-arrows) .field': {
+                'text-align': 'center'
+            },
+            ':host(.no-arrows) input[type=number]': {
+                '-moz-appearance': 'textfield'
+            },
+            ':host(.no-arrows) input::-webkit-outer-spin-button, :host(.no-arrows) input::-webkit-inner-spin-button': {
+                '-webkit-appearance': 'none',
+                'margin': '0'
+            }
+        }, super._Style());
     }
 
     _GrabValue() {
@@ -45,7 +55,7 @@ class InputNumber extends ui.inputs.InputField {
     }
 
     _CleanUp() {
-        this.SetSliderData();
+        this.hideArrow = false;
         super._CleanUp();
     }
 

@@ -46,8 +46,8 @@ class HandlerBase extends com.pool.DisposableObjectEx {
         this.Release();
     }
 
-    _Cleanup(){
-        super._Cleanup();
+    _CleanUp(){
+        super._CleanUp();
         this._req = null;
         this._res = null;
     }

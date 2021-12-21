@@ -93,7 +93,7 @@ class UTILS_DOM {
      */
     static ToFront(p_node, p_frontOfNode = false) {
         if (!u.isVoid(p_node.parentNode)) {
-            if(p_node.parentNode.lastChild != p_node){
+            if (p_node.parentNode.lastChild != p_node) {
                 p_node.parentNode.appendChild(p_node);
             }
             return;
@@ -163,6 +163,38 @@ class UTILS_DOM {
         });
 
     }
+
+    /**
+     * Set a group or unique attribute value to element
+     * @param {HTMLElement} p_element 
+     * @param {string|object} p_att 
+     * @param {*} p_value 
+     */
+    static SAtt(p_element, p_att, p_value) {
+        if(u.isObject(p_att)){
+            for (let att in p_attributes) { 
+                p_element.setAttribute(att, p_attributes[att]); 
+            }
+        }else{
+            p_element.setAttribute(p_att, p_value);
+        }
+    }
+
+    /**
+     * Remove a group or unique attribute from element
+     * @param {HTMLElement} p_element 
+     * @param {string|object} p_att 
+     */
+    static RAtt(p_element, p_att) {
+        if(u.isObject(p_att)){
+            for (let att in p_attributes) { 
+                p_element.removeAttribute(att); 
+            }
+        }else{
+            p_element.removeAttribute(p_att);
+        }
+    }
+
 
     // ----> Scrolling
 

@@ -14,6 +14,8 @@ const InputBase = require(`./input-base`);
 class InputField extends InputBase {
     constructor() { super(); }
 
+    static __inputProperties = { };
+
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/field.css`]
     }, InputBase, ['css']);
@@ -46,7 +48,8 @@ class InputField extends InputBase {
                 position: `relative`,
                 display: `flex`,
                 'align-content': `stretch`,
-                'align-items': `stretch`
+                'align-items': `center`,
+                'min-height': `28px !important` //min height for input field
             },
             '.field': {
                 flex: `1 1 auto`,
@@ -57,7 +60,7 @@ class InputField extends InputBase {
     }
 
     _Render() {
-        this._inputField = dom.El(`input`, { class: 'field' }, this._host); //, type:'search'
+        this._inputField = dom.El(`input`, { class: 'field', ...this.constructor.__inputProperties }, this._host); //, type:'search'
     }
 
     set placeholderValue(p_value) {

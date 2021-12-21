@@ -8,11 +8,11 @@ const ui = require(`@nkmjs/ui-core`);
 
 const _flag_CHECKED = `checked`;
 
-class InputBoolean extends ui.inputs.InputField {
+class InputCheckbox extends ui.inputs.InputField {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/inputs/boolean.css`]
+        css: [`@/inputs/checkbox.css`]
     }, ui.inputs.InputField, ['css']);
 
     _Init() {
@@ -33,7 +33,6 @@ class InputBoolean extends ui.inputs.InputField {
 
     _Style() {
         return style.Extends({
-            ':host':{ 'min-height': `0` }, //min height for input field
             '.field': { '@': [`invisible-fill`] }
         }, super._Style());
     }
@@ -65,5 +64,5 @@ class InputBoolean extends ui.inputs.InputField {
 
 }
 
-module.exports = InputBoolean;
-ui.Register(`nkmjs-input-boolean`, InputBoolean);
+module.exports = InputCheckbox;
+ui.Register(`nkmjs-input-checkbox`, InputCheckbox);

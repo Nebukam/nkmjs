@@ -42,6 +42,11 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this._updatePreviewFn = null;
         this._onInputErrorFn = null;
 
+        this._managed = new collections.List();
+        this._manager = null;
+
+        this._delayedPreviewUpdate = new com.time.DelayedCall(this._Bind(this._RequestPreviewUpdate));
+
     }
 
     set owner(p_value) {
@@ -87,7 +92,12 @@ class InputHandler extends com.pool.DisposableObjectEx {
      * @param {*} p_oldValue 
      */
     _OnCurrentValueChanged(p_oldValue) {
-        this._RequestPreviewUpdate();
+
+        for (let i = 0; i < this._managed.count; i++) {
+            this._managed.At(i).currentValue = this._currentValue;
+        }
+
+        this._delayedPreviewUpdate.Schedule();
     }
 
     // ----> Edited value
@@ -110,7 +120,12 @@ class InputHandler extends com.pool.DisposableObjectEx {
     _OnValueChanged(p_oldValue) {
         this._internalValidateChangedValue();
         this._Broadcast(SIGNAL.VALUE_CHANGED, this, this._changedValue);
-        if (this._updatePreviewOnChange) { this._RequestPreviewUpdate(); }
+
+        for (let i = 0; i < this._managed.count; i++) {
+            this._managed.At(i).changedValue = this._changedValue;
+        }
+
+        if (this._updatePreviewOnChange) { this._delayedPreviewUpdate.Schedule(); }
         if (this._submitOnChange) { this.SubmitValue(); }
     }
 
@@ -128,8 +143,13 @@ class InputHandler extends com.pool.DisposableObjectEx {
     _SanitizeValue(p_value) {
         //Check external validation callbacks
         let obj = null;
-        for (let i = 0, n = this._externalSanitizationStack.count; i < n; i++) {
-            obj = this._externalSanitizationStack.At(i);
+
+        let stack = this._manager
+            ? this._manager._externalSanitizationStack
+            : this._externalSanitizationStack;
+
+        for (let i = 0, n = stack.count; i < n; i++) {
+            obj = stack.At(i);
 
             if (obj.arg) { p_value = obj.fn.call(obj.thisArg, p_value, obj.arg); }
             else if (obj.args) { p_value = obj.fn.call(obj.thisArg, p_value, ...obj.args); }
@@ -161,10 +181,14 @@ class InputHandler extends com.pool.DisposableObjectEx {
 
         this._ClearErrors();
 
-        //Check external validation callbacks
-        for (let i = 0, n = this._externalValidationStack.count; i < n; i++) {
+        let stack = this._manager
+            ? this._manager._externalValidationStack
+            : this._externalValidationStack;
 
-            let obj = this._externalValidationStack.At(i),
+        //Check external validation callbacks
+        for (let i = 0, n = stack.count; i < n; i++) {
+
+            let obj = stack.At(i),
                 result = null;
 
             if (obj.arg) { result = obj.fn.call(obj.thisArg, cValue, obj.arg); }
@@ -191,7 +215,24 @@ class InputHandler extends com.pool.DisposableObjectEx {
         let item = null;
         if (u.isObject(p_fn)) { item = p_fn; }
         else { item = { fn: p_fn, thisArg: p_thisArg }; }
+
+        if (this.__GetInternalListItemIndex(item, this._externalSanitizationStack) != -1) { return; }
+
         this._externalSanitizationStack.Add(item);
+    }
+
+    /**
+     * Removes a sanitization callback
+     * @param {*} p_fn 
+     * @param {*} p_thisArg 
+     */
+    RemoveSanitization(p_fn, p_thisArg = null) {
+        let item = null;
+        if (u.isObject(p_fn)) { item = p_fn; }
+        else { item = { fn: p_fn, thisArg: p_thisArg }; }
+        let index = this.__GetInternalListItemIndex(item, this._externalSanitizationStack);
+        if (index == -1) { return; }
+        this._externalSanitizationStack.RemoveAt(index);
     }
 
     /**
@@ -203,7 +244,32 @@ class InputHandler extends com.pool.DisposableObjectEx {
         let item = null;
         if (u.isObject(p_fn)) { item = p_fn; }
         else { item = { fn: p_fn, thisArg: p_thisArg }; }
+
+        if (this.__GetInternalListItemIndex(item, this._externalValidationStack) != -1) { return; }
+
         this._externalValidationStack.Add(item);
+    }
+
+    /**
+     * Removes a validation callback
+     * @param {*} p_fn 
+     * @param {*} p_thisArg 
+     */
+    RemoveValidation(p_fn, p_thisArg = null) {
+        let item = null;
+        if (u.isObject(p_fn)) { item = p_fn; }
+        else { item = { fn: p_fn, thisArg: p_thisArg }; }
+        let index = this.__GetInternalListItemIndex(item, this._externalValidationStack);
+        if (index == -1) { return; }
+        this._externalValidationStack.RemoveAt(index);
+    }
+
+    __GetInternalListItemIndex(p_item, p_list) {
+        for (let i = 0; i < p_list.count; i++) {
+            let existingItem = p_list.At(i);
+            if (existingItem.fn == p_item.fn && existingItem.thisArg == p_item.thisArg) { return i; }
+        }
+        return -1;
     }
 
     /**
@@ -244,8 +310,8 @@ class InputHandler extends com.pool.DisposableObjectEx {
         if (this._onInputErrorFn) { this._onInputErrorFn(this._inputErrors); }
     }
 
-    _AddFeedback(p_item) { 
-        this._errorFeedbacks.push(feedback); 
+    _AddFeedback(p_item) {
+        this._errorFeedbacks.push(feedback);
     }
 
     /**
@@ -312,12 +378,12 @@ class InputHandler extends com.pool.DisposableObjectEx {
             this.SoftReset();
             return false;
         }
-            
+
         this.currentValue = this._changedValue;
         this._changedValue = this._currentValue;
-        
+
         this._Broadcast(SIGNAL.VALUE_SUBMITTED, this, this._changedValue);
-        this._RequestPreviewUpdate();
+        this._delayedPreviewUpdate.Schedule();
         return true;
 
     }
@@ -330,7 +396,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
     SoftReset() {
         this.changedValue = this.currentValue;
         this._ClearErrors();
-        this._RequestPreviewUpdate();
+        this._delayedPreviewUpdate.Schedule();
     }
 
     Clear() {
@@ -341,9 +407,66 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this._currentValue = null;
     }
 
+    // ----> Managed
+
+    set manager(p_value) {
+
+        if (this._manager == p_value) { return; }
+
+        let oldManager = this._manager;
+        this._manager = p_value;
+
+        if (oldManager) {
+            oldManager.Unwatch(SIGNAL.VALUE_CHANGED, this._OnManagerValueChanged, this);
+            oldManager.Unwatch(SIGNAL.VALUE_SUBMITTED, this._OnManagerValueSubmitted, this);
+            oldManager.RemoveManaged(this);
+        }
+
+        if (this._manager) {
+            this.changedValue = this._manager.changedValue;
+            this.currentValue = this._manager.currentValue;
+            this._manager.Watch(SIGNAL.VALUE_CHANGED, this._OnManagerValueChanged, this);
+            this._manager.Watch(SIGNAL.VALUE_SUBMITTED, this._OnManagerValueSubmitted, this);
+            this._manager.AddManaged(this);
+        }
+
+    }
+    get manager() { return this._manager; }
+
+    AddManaged(p_handler) {
+        if (!this._managed.Add(p_handler)) { return; }
+        p_handler.manager = this;
+        p_handler.Watch(SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
+        p_handler.Watch(SIGNAL.VALUE_SUBMITTED, this._OnManagedValueSubmitted, this);
+    }
+
+    RemoveManaged(p_handler) {
+        if (!this._managed.Remove(p_handler)) { return; }
+        if (p_handler.manager == this) { p_handler.manager = null; }
+        p_handler.Unwatch(SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
+        p_handler.Unwatch(SIGNAL.VALUE_SUBMITTED, this._OnManagedValueSubmitted, this);
+    }
+
+    _OnManagedValueChanged(p_managed, p_value) {
+        this.changedValue = p_value;
+    }
+
+    _OnManagedValueSubmitted(p_managed, p_value) {
+        this.currentValue = p_value;
+    }
+
+    _OnManagerValueChanged(p_manager, p_value) {
+        this.changedValue = p_value;
+    }
+
+    _OnManagerValueSubmitted(p_manager, p_value) {
+        this.currentValue = p_value;
+    }
+
     // ----> Pooling
 
     _CleanUp() {
+        this.manager = null;
         super._CleanUp();
         this._externalValidationStack.Clear();
         this._externalSanitizationStack.Clear();
