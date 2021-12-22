@@ -28,9 +28,10 @@ class InputSliderOnly extends ui.inputs.InputNumberBase {
         return style.Extends({
             ':host': {
                 'height': `var(--size)`,
+                'min-height': `var(--size)`,
                 'display': 'flex',
                 'flex-flow': 'row nowrap',
-                'align-items': 'center'
+                'align-items': 'center',
             },
             '.slider-ctnr': {
                 'position': 'relative',
