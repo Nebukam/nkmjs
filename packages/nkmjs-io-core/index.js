@@ -19,6 +19,7 @@ module.exports = {
     ResourceOperation: require(`./lib/resource-operation`),
 
     // namespaces
+    helpers: require(`./lib/helpers`),
     resources: require(`./lib/resources`),
     ioprocesses: require(`./lib/io-processes`),
 

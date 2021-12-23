@@ -108,9 +108,9 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
      * @param {object} p_states.end
      * 
      * @param {object} p_options
-     * @param {function} p_callbacks.success
-     * @param {function} p_callbacks.error
-     * @param {function} p_callbacks.any
+     * @param {function} p_options.success
+     * @param {function} p_options.error
+     * @param {function} p_options.any
      * 
      * @param {array} args to be passed to p_fn
      */

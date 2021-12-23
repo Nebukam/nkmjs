@@ -123,6 +123,16 @@ class RESOURCES extends services.ServiceBase {
      */
     static GetAndRead(p_path, p_options = null, p_IOOptions = null) {
         let rsc = this.instance._Get(p_path, p_options);
+
+        if(rsc.loaded){
+            if(p_options && !p_options.forceRead){
+                if(p_options.success){ p_options.success(rsc); }
+                if(p_options.any){ p_options.any(rsc); }
+            }else{
+                return rsc;
+            }
+        }
+
         rsc.Read(p_IOOptions);
         return rsc;
     }

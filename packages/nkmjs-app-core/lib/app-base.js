@@ -87,7 +87,7 @@ class AppBase extends com.helpers.SingletonEx {
             ui.dom.Detach(this._loadingOverlay);
         }
 
-        this._Bind(this._CheckIsDisplayReady);
+        this._Bind(this._InternalDisplayReadyCheck);
 
     }
 
@@ -257,7 +257,7 @@ class AppBase extends com.helpers.SingletonEx {
         u.LOG._(`${this._APPID} : READY`, `#030107`, `#339a6e`);
         
         this.AppReady();
-        this._CheckIsDisplayReady();
+        this._InternalDisplayReadyCheck();
 
     }
 
@@ -273,10 +273,10 @@ class AppBase extends com.helpers.SingletonEx {
      * Checks if the app is ready to be displayed to the user
      * and call AppDisplay as soon as _IsReadyForDisplay returns true.
      */
-    _CheckIsDisplayReady(){
+    _InternalDisplayReadyCheck(){
         if(!this._IsReadyForDisplay()){
 
-            com.NextTick(this._CheckIsDisplayReady);
+            com.NextTick(this._InternalDisplayReadyCheck);
 
         }else{
             
