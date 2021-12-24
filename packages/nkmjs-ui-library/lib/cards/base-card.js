@@ -15,6 +15,28 @@ class BaseCard extends ui.WidgetItem {
     static __cardTemplate = null;
     static __cardOptions = {};
 
+    /**
+     * @description TODO
+     * @type {string}
+     */
+    static __default_size = ui.FLAGS.SIZE_M;
+
+    /**
+     * @description TODO
+     * @type {string}
+     */
+    static __default_flavor = null;
+
+    /**
+     * @description TODO
+     * @type {string}
+     */
+    static __default_variant = null;
+
+    /**
+     * @description TODO
+     * @type {string}
+     */
     static __default_headerPlacement = ui.FLAGS.TOP;
 
     _Init() {
@@ -23,26 +45,37 @@ class BaseCard extends ui.WidgetItem {
         this._actions = null;
         this._handles = null;
 
-        this._orientation = new ui.helpers.FlagEnum(ui.FLAGS.orientations, true);
-        this._orientation.Add(this);
-
         this._variantEnum = new ui.helpers.FlagEnum(ui.FLAGS.variants, true);
         this._variantEnum.Add(this);
 
+        this._sizeEnum = new ui.helpers.FlagEnum(ui.FLAGS.sizes, true);
+        this._sizeEnum.Add(this);
+
         this._mediaPlacement = new ui.helpers.FlagEnum(ui.FLAGS.placementSimplified, true, `header`);
         this._mediaPlacement.Add(this);
+
+        this._orientation = new ui.helpers.FlagEnum(ui.FLAGS.orientations, true);
+        this._orientation.Add(this);
 
         this._optionsHandler.Hook(`header-placement`,
             (p_value) => {
                 this._mediaPlacement.Set(p_value);
                 this._orientation.Set(ui.FLAGS.Orientation(p_value, true));
             }, this.constructor.__default_headerPlacement);
-        this._optionsHandler.Hook(`variant`, (p_value) => { this._variantEnum.Set(p_value); });
+        this._optionsHandler.Hook(ui.IDS.VARIANT);
         this._optionsHandler.Hook(ui.IDS.TITLE, null, ``);
         this._optionsHandler.Hook(ui.IDS.SUBTITLE, null, ``);
         this._optionsHandler.Hook(ui.IDS.LABEL, null, ``);
+        this._optionsHandler.Hook(ui.IDS.SIZE);
         this._optionsHandler.Hook(`actions`);
 
+    }
+
+    _PostInit() {
+        super._PostInit();
+        this._sizeEnum.Set(this.constructor.__default_size);
+        this._flavorEnum.Set(this.constructor.__default_flavor);
+        this._variantEnum.Set(this.constructor.__default_variant);
     }
 
     // ----> DOM
@@ -52,14 +85,31 @@ class BaseCard extends ui.WidgetItem {
      * @type {string}
      * @customtag write-only
      */
-     set variant(p_value) { this._variantEnum.Set(p_value); }
+    set variant(p_value) { this._variantEnum.Set(p_value); }
 
-     /**
-      * @description TODO
-      * @type {ui.core.helpers.FlagEnum}
-      * @customtag read-only
-      */
-     get variant() { return this._variantEnum.currentFlag; }
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.FlagEnum}
+     * @customtag read-only
+     */
+    get variant() { return this._variantEnum.currentFlag; }
+
+    /**
+    * @description TODO
+    * @type {ui.core.helpers.FlagEnum}
+    * @customtag read-only
+    * @group Styling
+    */
+    get size() { return this._sizeEnum.currentFlag; }
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag write-only
+     * @group Styling
+     */
+    set size(p_value) { this._sizeEnum.Set(p_value); }
+
 
     set title(p_value) { this._frame[ui.IDS.TITLE].Set(p_value); }
     set subtitle(p_value) { this._frame[ui.IDS.SUBTITLE].Set(p_value); }
@@ -83,8 +133,8 @@ class BaseCard extends ui.WidgetItem {
 
                 'display': 'flex',
                 'flex-flow': 'column nowrap',
-                'min-width':0,
-                'min-height':0,
+                'min-width': 0,
+                'min-height': 0,
                 //'justify-content': `flex-start`,
                 //'align-items': `stretch`,
             },

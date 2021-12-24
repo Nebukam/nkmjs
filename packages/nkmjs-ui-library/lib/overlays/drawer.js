@@ -101,7 +101,7 @@ class Drawer extends ui.views.View {
             closeIcon: { htitle: `Close` }
         });
 
-        this._closeIcon.element.style[`--size`] = `var(--size_m)`;
+        this._closeIcon.element.style[`--size`] = `var(--size-m)`;
         this._closeBtn.element = this._closeIcon.element;
 
         this._wrapper = this._body;

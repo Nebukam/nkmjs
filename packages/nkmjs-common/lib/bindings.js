@@ -154,7 +154,7 @@ class BINDINGS {
 
                 if (!keyList) {
                     //console.warn(`No association found for key:${p_key.name}, context:${p_context.name ? p_context.name : p_context}`);
-                    return null;
+                    return p_fallback;
                 }
 
                 let distance = -1,

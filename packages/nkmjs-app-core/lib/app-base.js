@@ -145,7 +145,8 @@ class AppBase extends com.helpers.SingletonEx {
         this._layersWrapper = ui.UI.Rent(this._layersWrapperClass);
         this._layersWrapper.setAttribute(`id`, `app`);
 
-        // Insert global.css in ShadowDom so all subsequent elements benefit from it
+        // Insert global.css inside the app shadow dom once so all subsequent elements inherit from it
+        // Import in the head is not enough for the styles to 'pierce' through
         ui.dom.AttachFirst(
             ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
             this._layersWrapper._host);
@@ -222,8 +223,10 @@ class AppBase extends com.helpers.SingletonEx {
 
         u.LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
 
+        // Insert global.css (again) outside of the shadow dom this time
+        // NOTE : Should be added in regular css imports
+        //ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
         // Push the app wrapper to the DOM
-        ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
         ui.dom.Attach(this._layersWrapper, document.body);
 
         this._userPreferences.Load(

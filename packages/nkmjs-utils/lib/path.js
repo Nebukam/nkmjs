@@ -94,7 +94,7 @@ class PATH {
      * @param {string} p_path 
      * @returns {string} Shrinked path
      * @order 2
-     * @example PATH.FULL('./style/default/global.css') == '%STYLE%/global.css'
+     * @example PATH.SHORT('./style/default/global.css') == '%STYLE%/global.css'
      */
     static SHORT(p_path) {
         p_path = this.Sanitize(p_path);

@@ -28,7 +28,7 @@ class Root extends ListItemGroup {
         this._searchBtn = null;
         this._InitSelectionStack();
 
-        this.style.setProperty(`--tree_size`, `var(--size_s)`);
+        this.style.setProperty(`--tree_size`, `var(--size-s)`);
         // TODO : If 'flattened', make directories non-expandable items
 
     }

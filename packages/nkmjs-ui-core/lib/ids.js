@@ -86,6 +86,14 @@ class IDS {
     static VARIANT = `variant`;
 
     /**
+   * @description TODO
+   * @type {string}
+   * @customtag read-only
+   * @group Common
+   */
+     static SIZE = `size`;
+
+    /**
      * @description TODO
      * @type {string}
      * @customtag read-only
@@ -187,7 +195,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-     static VIEW_CLASS = `viewClass`;
+    static VIEW_CLASS = `viewClass`;
 
     /**
      * @description TODO
@@ -211,7 +219,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-     static TRIGGER = `trigger`;
+    static TRIGGER = `trigger`;
 
 }
 

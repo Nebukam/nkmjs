@@ -10,6 +10,7 @@ const FLAGS = require(`./flags`);
 const extensions = require(`./extensions`);
 const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
+const IDS = require(`./ids`);
 
 /**
  * @description TODO
@@ -48,7 +49,7 @@ class WidgetItem extends Widget {
 
         this._optionsHandler.Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } });
         this._optionsHandler.Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
-        this._optionsHandler.Hook(`flavor`);
+        this._optionsHandler.Hook(IDS.FLAVOR);
 
     }
 

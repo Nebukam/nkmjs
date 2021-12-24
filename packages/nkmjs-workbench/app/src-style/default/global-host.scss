@@ -43,7 +43,6 @@
 }
 
 @include scrollbar("", 4px);
-@include scrollbar(":host", 4px);
 
 /*----------------------------*/
 /*<!---- @nkmjs/ui-core ----!>*/
@@ -58,6 +57,15 @@
     order: var(--order);
     min-height:0;
     min-width: 0;
+
+    & a{
+        color:var(--flavor-contrast-idle)
+    }
+
+    & a:hover{
+        color:var(--flavor-contrast-focused)
+    }
+    
 }
 
 :host(.unpainted){

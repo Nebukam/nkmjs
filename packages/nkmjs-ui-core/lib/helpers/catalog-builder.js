@@ -44,6 +44,8 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
 
         let mappedObject = null;
 
+        console.log(`${this._defaultItemClass.name} || ${this._defaultGroupClass.name}`);
+
         if (u.isInstanceOf(p_item, data.catalogs.Catalog)) {
             mappedObject = this._owner.Add(
                 com.BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
@@ -53,6 +55,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
                 com.BINDINGS.Get(this._owner, p_item, this._defaultItemClass),
                 `item`, this._host);
         }
+
 
         this._map.set(p_item, mappedObject);
         mappedObject.data = p_item;
