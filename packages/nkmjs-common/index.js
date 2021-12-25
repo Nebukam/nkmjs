@@ -21,5 +21,6 @@ module.exports = {
     Rent:__POOL.Rent.bind(__POOL),
     Preload:__POOL.Preload.bind(__POOL),
     NextTick:__time.NextTick,
+    DelayedCall:(p_fn = null, p_delay = -1) => { return new __time.DelayedCall(p_fn, p_delay); }
 
 }

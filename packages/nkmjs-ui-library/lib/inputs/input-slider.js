@@ -32,7 +32,9 @@ class InputSlider extends ui.inputs.InputNumberBase {
                 'height': `var(--size)`,
                 'display': 'flex',
                 'flex-flow': 'row nowrap',
-                'align-items': 'center'
+                'align-items': 'center',
+                '--thumbSize':'var(--size)',
+                'min-width':'calc(var(--size) * 2)'
             },
             '.item': {
                 'position': 'relative'
@@ -43,7 +45,9 @@ class InputSlider extends ui.inputs.InputNumberBase {
             },
             '.slider-ctnr': {
                 'flex': '1 1 auto',
-                'height': 'var(--size)'
+                'height': 'var(--size)',
+                'margin-left': 'calc(var(--thumbSize) * 0.5)',
+                'margin-right': 'calc(var(--thumbSize) * 0.5)'
             },
             '.slider': {
                 'cursor': 'pointer',
@@ -51,11 +55,11 @@ class InputSlider extends ui.inputs.InputNumberBase {
                 'width': `100%`,
                 'height': `var(--size)`,
                 'outline': 'none',
-                'background-color': 'transparent'
+                'background-color': 'transparent',
             },
             '.slider-assets': {
                 'position': 'absolute',
-                'width': `calc(100% - var(--hh))`,
+                'width': `calc(100% - var(--thumbSize))`,
                 'height': `var(--size)`,
             },
             '.slider::-webkit-slider-thumb, .slider::-moz-range-thumb': {

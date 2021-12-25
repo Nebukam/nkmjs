@@ -32,6 +32,8 @@ class InputSliderOnly extends ui.inputs.InputNumberBase {
                 'display': 'flex',
                 'flex-flow': 'row nowrap',
                 'align-items': 'center',
+                '--thumbSize':'var(--size)',
+                'min-width':'calc(var(--size) * 2)'
             },
             '.slider-ctnr': {
                 'position': 'relative',
@@ -48,7 +50,7 @@ class InputSliderOnly extends ui.inputs.InputNumberBase {
             },
             '.slider-assets': {
                 'position': 'absolute',
-                'width': `calc(100% - var(--hh))`,
+                'width': `calc(100% - var(--thumbSize))`,
                 'height': `var(--size)`,
             },
             '.slider::-webkit-slider-thumb, .slider::-moz-range-thumb': {
