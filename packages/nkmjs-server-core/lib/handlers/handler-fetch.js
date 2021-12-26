@@ -12,11 +12,16 @@ class HandlerFetch extends HandlerGet {
         super._Init();
         this._Bind(this._OnFetchSuccess);
         this._Bind(this._OnFetchError);
+        this._requestOptions = {};
     }
 
     Fetch(p_url) {
         axios
-            .get(p_url)
+            .request({
+                url: p_url,
+                method: "get",
+                ...this._requestOptions
+            })
             .then(this._OnFetchSuccess)
             .catch(this._OnFetchError);
     }
