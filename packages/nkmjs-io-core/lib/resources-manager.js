@@ -82,7 +82,7 @@ class RESOURCES extends services.ServiceBase {
             };
         }
 
-        axios.defaults.withCredentials = true;
+        //axios.defaults.withCredentials = true;
 
         this._IOQueue = new IOQueue();
 

@@ -40,10 +40,11 @@ class HTTPIOReader extends IOProcess {
             options.headers['Content-Type'] = this.rsc.mime;
         }
 
-        if (options.headers.Cookie
-            || this._operation.GetOption(`withCredentials`, null)) {
-            options.withCredentials = true;
-        }
+        
+        let creds = this._operation.GetOption(`withCredentials`, -1);
+
+        if (options.headers.Cookie) { options.withCredentials = true; }
+        if (creds != -1) { options.withCredentials = creds; }
 
         super._OnProgress(0);
 
