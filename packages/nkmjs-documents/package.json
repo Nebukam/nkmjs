@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/documents",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "NKMjs Framework Documents management",
   "main": "index.js",
   "repository": {
@@ -20,7 +20,7 @@
     "@nkmjs/common": "^0.1.25",
     "@nkmjs/data-core": "^0.0.34",
     "@nkmjs/environment": "^0.1.25",
-    "@nkmjs/io-core": "^0.1.27",
+    "@nkmjs/io-core": "^0.1.28",
     "@nkmjs/utils": "^0.0.34"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
