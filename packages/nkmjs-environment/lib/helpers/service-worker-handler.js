@@ -48,8 +48,8 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
 
     _OnRegistered(p_registration) {
 
-        this._Broadcast(SW_SIGNAL.SW_REGISTERED, this);
         console.log(`_OnRegistered(${p_registration})`, p_registration);
+        this._Broadcast(SW_SIGNAL.SW_REGISTERED, this);
 
         this._registration = p_registration;
 
@@ -133,7 +133,7 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
     //
 
     _Ready() {
-        this.Send({command:`YOLO`});
+        //this.Send({command:`YOLO`});
         this._Broadcast(SW_SIGNAL.SW_READY, this);
     }
 
