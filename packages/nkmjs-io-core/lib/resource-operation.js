@@ -22,6 +22,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._fullPath = null;
         this._important = false;
         this._parallel = false;
+        this._preparationOptions = null;
         this._Reset();
     }
 
@@ -72,6 +73,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._fullPath = null;
         this._important = false;
         this._parallel = false;
+        this._preparationOptions = null;
     }
 
     /*
@@ -115,6 +117,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
      * @param {array} args to be passed to p_fn
      */
     Prepare(p_rsc, p_fn, p_states, p_options = null, args = []) {
+        this._preparationOptions = p_options;
         this._cancelled = false;
         this._rsc = p_rsc;
         this._fullPath = u.PATH.FULL(p_rsc.path);
@@ -123,10 +126,15 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._states = p_states;
         this._originalState = this._rsc._state.currentState;
         this._rsc._state.currentState = this._states.prepare.state;
-        this._important = u.tils.Get(p_options, `important`, false);
-        this._parallel = u.tils.Get(p_options, `parallel`, false);
+        this._important = this.GetOption(`important`, false);
+        this._parallel = this.GetOption(`parallel`, false);
+        
         args.unshift(this);
         p_fn.apply(null, args);
+    }
+
+    GetOption(p_id, p_fallback){
+        return u.tils.Get(this._preparationOptions, p_id, p_fallback);
     }
 
     /**

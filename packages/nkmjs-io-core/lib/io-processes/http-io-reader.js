@@ -25,15 +25,24 @@ class HTTPIOReader extends IOProcess {
 
         this._OnStart();
 
+        let additionalHeaders = this._operation.GetOption(`headers`, {});
+
         let options = {
             onDownloadProgress: this._OnProgress,
             responseType: this.rsc.type,
-            headers:{ 'Access-Control-Allow-Origin': '*' }
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                ...additionalHeaders
+            }
         };
 
+        if (this.rsc.mime) {
+            options.headers['Content-Type'] = this.rsc.mime;
+        }
 
-        if (this.rsc.mime) { 
-            options.headers['Content-Type'] = this.rsc.mime; 
+        if (options.headers.Cookie
+            || this._operation.GetOption(`withCredentials`, null)) {
+            options.withCredentials = true;
         }
 
         super._OnProgress(0);
@@ -41,7 +50,7 @@ class HTTPIOReader extends IOProcess {
         axios.get(this._operation.fullPath, options)
             .then(this._OnRequestSuccess)
             .catch(this._OnError);
-        
+
     }
 
     _OnProgress(p_evt) {
