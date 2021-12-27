@@ -66,7 +66,7 @@ self.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request).then(function (response) {
             if (response) { return response; } // retrieve from cache
-            return fetch(event.request, { credentials: 'include' });// fetch as normal
+            return fetch(event.request);// fetch as normal
         })
     );
 });
