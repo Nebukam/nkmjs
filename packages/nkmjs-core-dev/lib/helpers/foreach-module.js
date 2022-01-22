@@ -16,7 +16,7 @@ class ForEachModule {
         this._moduleRoot = p_module_dir;
         this._seen = [];
         this._list = [];
-        this.Explore(p_module_dir, p_callback, this._list);
+        this.Explore(p_module_dir, this._list, p_callback);
         
         if(this._list.length == 0){ return; }
 
