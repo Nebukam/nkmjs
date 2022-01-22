@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-workspace",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "description": "NKMjs Framework Workspace",
   "browser": "index.js",
   "repository": {
@@ -16,19 +16,19 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^0.0.34",
+    "@nkmjs/actions": "^0.0.35",
     "@nkmjs/collections": "^0.1.17",
     "@nkmjs/common": "^0.1.25",
-    "@nkmjs/data-core": "^0.0.34",
-    "@nkmjs/dialog": "^0.0.40",
-    "@nkmjs/documents": "^0.0.37",
-    "@nkmjs/environment": "^0.1.25",
-    "@nkmjs/io-core": "^0.1.28",
+    "@nkmjs/data-core": "^0.0.35",
+    "@nkmjs/dialog": "^0.0.41",
+    "@nkmjs/documents": "^0.0.38",
+    "@nkmjs/environment": "^0.1.26",
+    "@nkmjs/io-core": "^0.1.29",
     "@nkmjs/services": "^0.0.34",
     "@nkmjs/style": "^0.0.38",
-    "@nkmjs/ui-core": "^0.0.42",
-    "@nkmjs/ui-data-controls": "^0.0.25",
-    "@nkmjs/ui-library": "^0.0.26",
+    "@nkmjs/ui-core": "^0.0.43",
+    "@nkmjs/ui-data-controls": "^0.0.26",
+    "@nkmjs/ui-library": "^0.0.27",
     "@nkmjs/utils": "^0.0.34"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"

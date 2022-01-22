@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/environment",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "description": "NKMjs Framework Environment / Globals",
   "main": "index.js",
   "repository": {

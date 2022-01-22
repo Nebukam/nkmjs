@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/metrics",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "NKMjs Framework Metrics",
   "main": "index.js",
   "repository": {
@@ -18,7 +18,7 @@
   "dependencies": {
     "@nkmjs/collections": "^0.1.17",
     "@nkmjs/common": "^0.1.25",
-    "@nkmjs/environment": "^0.1.25",
+    "@nkmjs/environment": "^0.1.26",
     "@nkmjs/services": "^0.0.34",
     "@nkmjs/utils": "^0.0.34"
   },
