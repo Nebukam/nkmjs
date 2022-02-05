@@ -173,10 +173,10 @@ class Shelf extends ui.views.View {
                 'display': 'none'
             },
             '.navigation': {
-                //  'flex': `0 0 auto`
+                'flex': `0 0 auto` // was commented out but can't remember why
             },
             '.view': {
-                //   'flex': `1 1 auto`,
+                'flex': `1 1 auto`, // was commented out but can't remember why
             },
 
             // Vertical ( nav on the left or right )
@@ -243,7 +243,7 @@ class Shelf extends ui.views.View {
      */
     get nav() { return this._nav; }
 
-    // ----> Catalog Management
+    //#region Catalog Management
 
     /**
      * @description TODO
@@ -346,8 +346,9 @@ class Shelf extends ui.views.View {
 
     }
 
+    //#endregion
 
-    // ----> Views Management
+    //#region Views Management
 
     RequestView(p_identifier){
         if(u.isNumber(p_identifier)){
@@ -400,7 +401,9 @@ class Shelf extends ui.views.View {
         this._Broadcast(ui.SIGNAL.NON_EMPTY, this);
     }
 
-    // ----> Shelf
+    //#endregion
+
+    //#region Shelf
 
     /**
      * @description TODO
@@ -511,7 +514,9 @@ class Shelf extends ui.views.View {
 
     }
 
-    // ----> Pooling
+    //#endregion
+
+    //#region Pooling
 
     _CleanUp() {
         // Move the nav back in if it has been taken out
@@ -521,6 +526,8 @@ class Shelf extends ui.views.View {
         this.classList.remove(`nav-start`);
         super._CleanUp();
     }
+
+    //#endregion
 
 
 
