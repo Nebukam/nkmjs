@@ -136,8 +136,8 @@ class View extends WidgetOrientable {
      */
     DisplayLost() {
         if (!this._isDisplayed) { return false; }
-        this._flags.Set(FLAGS.SHOWN, false);
         this._isDisplayed = false;
+        this._flags.Set(FLAGS.SHOWN, false);
         this._Broadcast(SIGNAL.DISPLAY_LOST, this);
         this._OnDisplayLost();
         return true;
