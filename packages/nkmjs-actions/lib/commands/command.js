@@ -217,6 +217,8 @@ class Command extends com.pool.DisposableObjectEx {
 
         let contextBefore = this._context;
         
+        //TODO : Make this cleaner ;_;
+
         if (!p_context) { p_context = this._FetchContext(); }
         if (!p_context) { p_context = this._context; } // Try to fallback to an existing value
 
