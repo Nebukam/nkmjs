@@ -219,7 +219,7 @@ class Command extends com.pool.DisposableObjectEx {
         
         //TODO : Make this cleaner ;_;
 
-        if (!p_context) { p_context = this._FetchContext(); }
+        if (!p_context) { p_context = this._FetchContext(); } // Try to dynamically fetch context value if provided value is empty
         if (!p_context) { p_context = this._context; } // Try to fallback to an existing value
 
         this.context = p_context;

@@ -16,11 +16,16 @@ class ControlBuilder {
         this._owner = p_owner;
 
         this._context = null;
+        this._host = p_owner;
         this._data = null;
         this._defaultCSS = p_defaultCSS;
 
         this._controls = [];
 
+    }
+
+    set host(p_value){
+        this._host = p_value;
     }
 
     set context(p_value) {
@@ -85,7 +90,7 @@ class ControlBuilder {
      */
     Add(p_class, p_css = null) {
 
-        let control = this._owner.Add(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS);
+        let control = this._owner.Add(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, this._host);
         this._controls.push(control);
 
         control.context = this._context;

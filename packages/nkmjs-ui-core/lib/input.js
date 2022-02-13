@@ -122,6 +122,7 @@ class INPUT extends com.helpers.SingletonEx {
         this._running = false;
 
         this._down = new collections.Dictionary();
+        this._kcodes = {};
 
         this._Bind(this._KHandle);
         this._Bind(this._KBlur);
@@ -160,7 +161,7 @@ class INPUT extends com.helpers.SingletonEx {
         window.addEventListener('blur', this._KBlur);
 
         POINTER.instance._Start();
-        
+
         this._running = true;
 
     }
@@ -243,22 +244,49 @@ class INPUT extends com.helpers.SingletonEx {
 
         if (type === 'keydown') {
             if (p_evt.repeat) {
-                this._Broadcast(INPUT.KEY_REPEAT);
-                this._Broadcast(`R_${which}`);
+                this._processKeyRepeat(which, p_evt.keyCode);
             } else {
-                this._down.Set(which, true);
-                this._Broadcast(INPUT.KEY_DOWN);
-                this._Broadcast(`D_${which}`);
-                KB.instance._Push(p_evt.keyCode);
+                this._processKeyDown(which, p_evt.keyCode);
             }
         } else if (type === 'keyup') {
-            this._down.Remove(which);
-            this._Broadcast(INPUT.KEY_UP, which);
-            this._Broadcast(`U_${which}`);
-            KB.instance._Pull(p_evt.keyCode);
+            this._processKeyUp(which, p_evt.keyCode);
         }
 
         this._currentKeyEvent = null;
+    }
+
+    _processKeyDown(p_name, p_keyCode) {
+
+        this._kcodes[p_name] = p_keyCode;
+
+        this._down.Set(p_name, true);
+
+        this._Broadcast(INPUT.KEY_DOWN);
+        this._Broadcast(`D_${p_name}`);
+        KB.instance._Push(p_keyCode);
+
+    }
+
+    _processKeyRepeat(p_name, p_keyCode) {
+
+        if (!this._down.Get(p_name)) {
+            this._processKeyDown(p_name, p_keyCode);
+        }
+
+        this._Broadcast(INPUT.KEY_REPEAT);
+        this._Broadcast(`R_${p_name}`);
+
+    }
+
+    _processKeyUp(p_name, p_keyCode) {
+
+        if (!this._down.Get(p_name)) { return; }
+
+        this._down.Remove(p_name);
+        this._Broadcast(INPUT.KEY_UP, p_name);
+        this._Broadcast(`U_${p_name}`);
+        KB.instance._Pull(p_keyCode);
+
     }
 
     /**
@@ -266,14 +294,17 @@ class INPUT extends com.helpers.SingletonEx {
      * @param {*} p_evt 
      */
     _KBlur(p_evt) {
+
         let keys = this._down.keys;
 
-        // Broadcast up events for all keys currently down.
+        // Broadcast up events for all keys currently pressed.
         for (let i = 0, n = keys.length; i < n; i++) {
-            this._Broadcast(INPUT.KEY_UP, null);
-            this._Broadcast(`U_${keys[i]}`, null);
+            let name = keys[i];
+            this._processKeyUp(name, this._kcodes[name]);
         }
+
         this._down.Clear();
+
     }
 
 }

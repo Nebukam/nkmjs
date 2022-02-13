@@ -111,6 +111,7 @@ class ControlView extends ui.views.View {
     //#region Data
 
     _OnDataChanged(p_oldValue) {
+
         super._OnDataChanged(p_oldValue);
 
         if (this._metadataObserver) {
@@ -127,6 +128,7 @@ class ControlView extends ui.views.View {
         }
 
         this._builder.data = this._data;
+
     }
 
     /**

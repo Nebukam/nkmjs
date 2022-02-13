@@ -466,7 +466,9 @@ class Shelf extends ui.views.View {
                 oldValue.classList.remove(ui.IDS.VIEW);
                 this.Remove(oldValue);
             }
+
         }
+
         if (this._currentView) {
 
             if (this._catalogViewBuilder.Owns(this._currentView)) {
@@ -499,6 +501,10 @@ class Shelf extends ui.views.View {
      * @param {*} p_oldView 
      */
     _OnCurrentViewChanged(p_oldView) {
+
+        if(p_oldView){
+            p_oldView.DisplayLost();
+        }
 
         if (!this._currentView) {
             this.currentHandle = null;

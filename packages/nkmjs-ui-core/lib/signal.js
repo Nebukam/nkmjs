@@ -136,12 +136,27 @@ class SIGNAL {
      */
     static DISPLAY_REQUESTED = Symbol(`displayRequested`);
 
+
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
     static CLOSE_REQUESTED = Symbol(`closeRequested`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     */
+    static DISPLAY_GAIN = Symbol(`displayGain`);
+
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    */
+    static DISPLAY_LOST = Symbol(`displayLost`);
 
     /**
      * @description TODO

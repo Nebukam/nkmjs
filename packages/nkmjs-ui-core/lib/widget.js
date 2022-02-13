@@ -423,6 +423,7 @@ class Widget extends DisplayObjectContainer {
 
         if ('_PreprocessData' in this) { p_value = this._PreprocessData(p_value); }
 
+
         if (this._data === p_value) { return; }
 
         let oldValue = this._data;

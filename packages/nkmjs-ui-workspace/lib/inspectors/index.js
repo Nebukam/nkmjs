@@ -2,7 +2,6 @@
 
 module.exports = {
 
-    HistoryInspectorShell: require(`./history-inspector-shell`),
     //InspectorShell: require(`./inspector-shell`),
     //InspectorGroup: require(`./inspector-group`),
     //InspectorItem: require(`./inspector-item`),

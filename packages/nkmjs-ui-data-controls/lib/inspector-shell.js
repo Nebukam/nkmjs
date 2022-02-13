@@ -44,11 +44,12 @@ class InspectorShell extends ControlView {
     _OnDataChanged(p_oldData) {
 
         // TODO : Check whether we can re-use the existing inspector instead of creating a new one
-
+        
         this._inspector = null;
         this._builder.Clear();
 
         super._OnDataChanged(p_oldData);
+
 
         if (this._data) {
             let inspectorClass = com.BINDINGS.Get(CONTEXT.INSPECTOR, this._data, null);
@@ -66,7 +67,11 @@ class InspectorShell extends ControlView {
 
     _OnInspectorRequestDisplay() { this.RequestDisplay(); }
 
-    DisplayGranted() { if (this._inspector) { this._inspector.DisplayGranted(); } }
+    _OnDisplayGain() {
+        if (this._inspector) {
+            this._inspector.DisplayGranted();
+        }
+    }
 
     //#endregion
 

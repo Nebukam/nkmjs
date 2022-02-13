@@ -20,14 +20,22 @@ const WidgetOrientable = require(`../widget-orientable`);
 class View extends WidgetOrientable {
     constructor() { super(); }
 
+    _Init() {
+        super._Init();
+        this._isDisplayed = false;
+        this._flags.Add(this, FLAGS.SHOWN);
+    }
+
     _Style() {
         return style.Extends({
             ':host': {
-                'min-width':'0',
-                'min-height':'0'
+                'min-width': '0',
+                'min-height': '0'
             }
         }, super._Style());
     }
+
+    get displayed() { return this._isDisplayed; }
 
     // ----> Resizing
 
@@ -107,11 +115,39 @@ class View extends WidgetOrientable {
 
     /**
      * @description Callback when RequestDisplay has been handled.
-     * @customtag override-me
      */
     DisplayGranted() {
-
+        if (this._isDisplayed) { return false; }
+        this._isDisplayed = true;
+        this._flags.Set(FLAGS.SHOWN, true);
+        this._Broadcast(SIGNAL.DISPLAY_GAIN, this);
+        this._OnDisplayGain();
+        return true;
     }
+
+    /**
+     * @description Callback when the view handler granted display to another view.
+     * @customtag override-me
+     */
+    _OnDisplayGain() { }
+
+    /**
+     * @description Called when the view handler granted display to another view.
+     */
+    DisplayLost() {
+        if (!this._isDisplayed) { return false; }
+        this._flags.Set(FLAGS.SHOWN, false);
+        this._isDisplayed = false;
+        this._Broadcast(SIGNAL.DISPLAY_LOST, this);
+        this._OnDisplayLost();
+        return true;
+    }
+
+    /**
+     * @description Callback when the view handler granted display to another view.
+     * @customtag override-me
+     */
+    _OnDisplayLost() { }
 
     /**
      * @access protected
@@ -122,6 +158,7 @@ class View extends WidgetOrientable {
     }
 
     _CleanUp() {
+        this.DisplayLost();
         super._CleanUp();
         if (this.constructor.__useResizeCallback) {
             this.constructor.__resizeObserver.unobserve(this);

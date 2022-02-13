@@ -8,8 +8,8 @@ const ui = require(`@nkmjs/ui-core`);
 const uilib = require(`@nkmjs/ui-library`);
 const uidatacontrols = require(`@nkmjs/ui-data-controls`);
 
-const InspectorShell = require(`../inspectors/inspector-shell`);
-const HistoryInspectorShell = require(`../inspectors/history-inspector-shell`);
+const InspectorShellEx = require(`./inspector-shell-ex`);
+const EditorHistoryView = require(`./editor-history-view`);
 
 const EditorShelf = require(`./editor-shelf`);
 
@@ -17,8 +17,8 @@ class EditorEx extends uidatacontrols.Editor {
     constructor() { super(); }
 
     static __default_shelfClass = EditorShelf;
-    static __default_inspectorShellClass = InspectorShell;
-    static __default_historyInspectorClass = HistoryInspectorShell;
+    static __default_inspectorShellClass = InspectorShellEx;
+    static __default_historyViewClass = EditorHistoryView;
     static __default_viewportClass = ui.views.View;
 
     _Init() {
@@ -196,7 +196,7 @@ class EditorEx extends uidatacontrols.Editor {
 
     _OnInspectedDataChanged(p_oldData) {
         super._OnInspectedDataChanged(p_oldData);
-
+        
         if (this._inspectedData) {
             this._inspectorShell.data = this._inspectedData;
         }

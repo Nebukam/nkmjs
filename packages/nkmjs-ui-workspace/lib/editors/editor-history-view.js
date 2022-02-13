@@ -4,9 +4,7 @@ const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
-const InspectorShell = require(`./inspector-shell`);
-
-class HistoryInspectorShell extends InspectorShell{
+class EditorHistoryView extends ui.views.View{
     constructor(){super();}
     
     _Init(){
@@ -15,9 +13,9 @@ class HistoryInspectorShell extends InspectorShell{
 
     _PostInit(){
         super._PostInit();
-        this._icon.Set(null);
-        this._title.Set(`HISTORY`);
-        this._subtitle.Set(`Editor`);
+        //this._icon.Set(null);
+        //this._title.Set(`HISTORY`);
+        //this._subtitle.Set(`Editor`);
     }
 
     // ----> DOM
@@ -42,5 +40,5 @@ class HistoryInspectorShell extends InspectorShell{
 
 }
 
-module.exports = HistoryInspectorShell;
-ui.Register(`nkmjs-history-inspector-shell`, HistoryInspectorShell);
+module.exports = EditorHistoryView;
+ui.Register(`nkmjs-editor-history-view`, EditorHistoryView);

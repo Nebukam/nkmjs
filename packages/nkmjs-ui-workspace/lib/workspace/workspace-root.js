@@ -6,8 +6,9 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
+const uidatacontrols = require(`@nkmjs/ui-data-controls`);
 
-const CONTEXT = require(`../context`);
+const CONTEXT = uidatacontrols.CONTEXT;
 const Workspace = require(`./workspace`);
 
 class RootWorkspace extends Workspace {

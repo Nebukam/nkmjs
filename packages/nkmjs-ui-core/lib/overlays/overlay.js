@@ -141,6 +141,8 @@ class Overlay extends Layer {
         super._OnDataChanged(p_oldData);
 
         if (this._content) {
+            this._content.classList.remove(FLAGS.SHOWN);
+            if (this._content._flags) { this._content._flags.Set(FLAGS.SHOWN, false); }
             this._content.Release();
             this._content = null;
         }
@@ -160,6 +162,7 @@ class Overlay extends Layer {
 
         this._content = this.Add(contentClass, 'content');
         this._content.classList.add(FLAGS.SHOWN);
+        if (this._content._flags) { this._content._flags.Set(FLAGS.SHOWN, true); }
         this._content.data = contentData;
 
         // Feed data as options once the content is ready
@@ -215,10 +218,16 @@ class Overlay extends Layer {
     }
 
     DisplayGranted() {
+
+        if (this._isDisplayed) { return false; }
+
         this.style.setProperty(`transform`, `translateX(0%)`);
         this._bg.style.setProperty(`transform`, `translateY(0%)`);
+
         super.DisplayGranted();
-        this.classList.add(FLAGS.SHOWN);
+
+        return true;
+
     }
 
     /**
@@ -233,7 +242,6 @@ class Overlay extends Layer {
     _CleanUp() {
         this.style.removeProperty(`transform`);
         this._bg.style.removeProperty(`transform`);
-        this.classList.remove(FLAGS.SHOWN);
         super._CleanUp();
     }
 

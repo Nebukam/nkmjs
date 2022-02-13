@@ -11,8 +11,8 @@ const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 const uilib = require(`@nkmjs/ui-library`);
+const uidatacontrols = require(`@nkmjs/ui-data-controls`);
 
-const CONTEXT = require(`../context`);
 
 /**
  * An inspector provide micro controls for a given piece of data.
@@ -21,7 +21,7 @@ const CONTEXT = require(`../context`);
  * 
  * The InspectorShell looks for the most suitable inspector and displays it.
  */
-class InspectorShell extends ui.views.View {
+class InspectorShellEx extends uidatacontrols.InspectorShell {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
@@ -32,9 +32,6 @@ class InspectorShell extends ui.views.View {
 
         super._Init();
 
-        this._context = null;
-        this._inspector = null;
-
         this._flags.Add(this, ui.FLAGS.FIXED_SIZE);
         this._flags.Set(ui.FLAGS.FIXED_SIZE, true);
 
@@ -44,22 +41,6 @@ class InspectorShell extends ui.views.View {
         this._header = null;
         this._body = null;
 
-    }
-
-    /**
-     * Context data when inspector is given a selection to work with.
-     * The context is always the data bound to the editor in which the inspector is displayed, if any.
-     */
-    get context() { return this._context; }
-    set context(p_value) {
-        if (this._context === p_value) { return; }
-        let oldValue = this._context;
-        this._context = p_value;
-        this._OnContextDataChanged(oldValue);
-    }
-
-    _OnContextDataChanged(p_oldValue) {
-        if (this._inspector) { this._inspector.context = this._context; }
     }
 
     // ----> DOM
@@ -94,12 +75,11 @@ class InspectorShell extends ui.views.View {
             '.body': {
                 'flex': '1 1 auto',
                 'min-width': '0',
-
                 'display': `flex`,
                 'flex-flow': `column nowrap`,
                 'justify-content': `flex-start`,
                 'align-items': `stretch`,
-
+                'overflow':'auto',
             },
             '.inspector': {
                 'flex': '1 1 auto',
@@ -113,18 +93,17 @@ class InspectorShell extends ui.views.View {
             [ui.IDS.ICON]: { [ui.IDS.CSS_CL]: ui.FLAGS.SIZE_S },
             [ui.IDS.SUBTITLE]: { [ui.IDS.CSS_CL]: style.FONT_FLAG.SMALL }
         });
+
+        this._builder.host = this._body;
+
+        super._Render();
+
     }
 
     //
 
     _OnDataChanged(p_oldValue) {
         super._OnDataChanged(p_oldValue);
-
-        if (this._inspector) {
-            // Get rid of the current inspector
-            this._inspector.Release();
-            this._inspector = null;
-        }
 
         if (!this._data) {
             // TODO : Fall back to context ?
@@ -146,17 +125,9 @@ class InspectorShell extends ui.views.View {
             this._icon.Set(null); //TODO : Swap for a '?' icon
         }
 
-        let cl = com.BINDINGS.Get(CONTEXT.DEFAULT_INSPECTOR, ctr);
-
-        if (!cl) { return; }
-
-        this._inspector = this.Add(cl, `inspector`, this._body);
-        this._inspector.context = this._context;
-        this._inspector.data = this._data;
-
     }
 
 }
 
-module.exports = InspectorShell;
-ui.Register('nkmjs-inspector-shell', InspectorShell);
+module.exports = InspectorShellEx;
+ui.Register('nkmjs-inspector-shell-ex', InspectorShellEx);

@@ -124,7 +124,6 @@ class Editor extends ui.views.View{
     get inspectedData(){ return this._inspectedData; }
     set inspectedData(p_value){
 
-        
         if(this._inspectedData === p_value){return;}
 
         let oldValue = this._inspectedData;
