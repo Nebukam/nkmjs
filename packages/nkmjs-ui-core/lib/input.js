@@ -3,9 +3,11 @@
 const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const env = require(`@nkmjs/environment`);
+const actions = require(`@nkmjs/actions`);
 
 const POINTER = require("./pointer");
 const UI = require("./ui");
+const KB = actions.KEYBOARD;
 
 
 /**
@@ -247,11 +249,13 @@ class INPUT extends com.helpers.SingletonEx {
                 this._down.Set(which, true);
                 this._Broadcast(INPUT.KEY_DOWN);
                 this._Broadcast(`D_${which}`);
+                KB.instance._Push(p_evt.keyCode);
             }
         } else if (type === 'keyup') {
             this._down.Remove(which);
             this._Broadcast(INPUT.KEY_UP, which);
             this._Broadcast(`U_${which}`);
+            KB.instance._Pull(p_evt.keyCode);
         }
 
         this._currentKeyEvent = null;

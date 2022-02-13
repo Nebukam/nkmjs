@@ -8,6 +8,11 @@ module.exports = {
     RELAY: __RELAY,
     Request: __REQUEST,
     REQUEST: require(`./lib/action-request`),
+    SIGNAL: require(`./lib/signal`),
+    
+    KEYBOARD: require(`./lib/keyboard`),
+    Keystroke: require(`./lib/keystroke`),
+    KeystrokeEx: require(`./lib/keystroke-ex`),
 
     Action : require(`./lib/actions/action`),
     ActionGroup : require(`./lib/actions/action-group`),
@@ -22,5 +27,6 @@ module.exports = {
     CommandAction : require(`./lib/commands/command-action`),
 
     Emit:__REQUEST.Emit.bind(__REQUEST),
+
 
 }

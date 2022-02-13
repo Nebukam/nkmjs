@@ -42,6 +42,10 @@ class Editor extends ui.views.View{
 
         this._Bind(this.Inspect);
 
+        this._selectionStack = new ui.helpers.WidgetSelection();
+        this._selectionStack
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackItemAdded, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackItemRemoved, this);
     }
 
     /**
@@ -98,9 +102,20 @@ class Editor extends ui.views.View{
 
     }
 
-    // ----> Data
+    //#region Selection stack
 
+    _OnSelectionStackItemAdded(p_widget){
+        if(p_widget.data){ this.Inspect(p_widget.data); }
+    }
 
+    _OnSelectionStackItemRemoved(p_widget){
+        if(this._inspectedData == p_widget.data){ this.Inspect(null); }
+    }
+
+    //#endregion
+
+    //#region Inspection
+    
     /**
      * @description The Editor currently inspected data. Drives available controls, actions, commands,
      * as well as this Editor' main inspector.
@@ -136,11 +151,13 @@ class Editor extends ui.views.View{
      */
     Inspect(p_data)
     {
+        //TODO : Handle multiple selection editing
         this.inspectedData = p_data;
     }
 
-    // ----> Actions
+    //#endregion
 
+    //#region Actions
     /**
      * @access public
      * @description Registers & executes an action in the local ActionStack.
@@ -166,6 +183,8 @@ class Editor extends ui.views.View{
      * @group Actions
      */
     Redo(){ this._actionStack.Redo(); }
+
+    //#endregion
 
 }
 

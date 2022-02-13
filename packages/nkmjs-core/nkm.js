@@ -26,7 +26,8 @@ module.exports = {
     documents : require(`@nkmjs/documents`),
     data : require(`@nkmjs/data-core`),
     datalib : require(`@nkmjs/data-library`),
-
+    datacontrols : require(`@nkmjs/ui-data-controls`),
+    
     //#endregion
 
     //#region renderer

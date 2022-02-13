@@ -19,7 +19,6 @@ module.exports = {
 
     INPUT: __INPUT,
     POINTER: require(`./lib/pointer`),
-    KEYBOARD: require(`./lib/keyboard`),
 
     DisposableHTMLElement: require(`./lib/disposable-htmlelement`),
     DisplayObject: require(`./lib/display-object`),

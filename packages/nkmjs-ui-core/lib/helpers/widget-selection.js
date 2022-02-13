@@ -45,6 +45,60 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
     }
 
     /**
+     * @description TODO
+     * @type {ui.Widget}
+     */
+    get lastItem() { return this._stack.last; }
+    /**
+     * @description TODO
+     * @type {ui.Widget}
+     */
+    get firstItem() { return this._stack.first; }
+    /**
+     * @description TODO
+     * @type {*}
+     */
+    get lastData() {
+        let lastItem = this._stack.last;
+        if(lastItem){ return lastItem.data; }
+        else{ return null; }
+    }
+    /**
+     * @description TODO
+     * @type {*}
+     */
+    get firstData() {
+        let firstItem = this._stack.first;
+        if(firstItem){ return firstItem.data; }
+        else{ return null; }
+    }
+    /**
+     * @description TODO
+     * @type {array}
+     */
+    get dataStack(){
+        let result = [];
+        for(let i = 0, n = this._stack.count; i < n; i++){
+            let data = this._stack.At(i).data;
+            if(data){ result.push(data); }
+        }
+        return result;
+    }
+
+    /**
+     * Adds the selection's data objects to the given array.
+     * Does not add duplicates.
+     * @param {array} p_array 
+     */
+    PushData(p_array, p_allowDuplicates = false){
+        for(let i = 0, n = this._stack.count; i < n; i++){
+            let data = this._stack.At(i).data;
+            if(data && (p_allowDuplicates || !p_array.includes(data))){ 
+                p_array.push(data); }
+        }
+    }
+
+    /**
      * @description Adds an item to the selection
      * @param {*} p_item 
      * @returns {boolean} True if the object was added for the first time, otherwise false

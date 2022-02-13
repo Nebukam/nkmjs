@@ -23,6 +23,8 @@ let _COMMAND_ACTION = null;
 class CommandAction extends Command {
     constructor() { super(); }
 
+    static __default_actionClass = null;
+
     /**
      * @description TODO
      * @param {*} p_emitter 
@@ -45,7 +47,7 @@ class CommandAction extends Command {
 
     _Init() {
         super._Init();
-        this._actionClass = null;
+        this._actionClass = this.constructor.__default_actionClass;
     }
 
     /**
@@ -65,6 +67,12 @@ class CommandAction extends Command {
      * @description TODO
      */
     _InternalExecute() {
+
+        if(!this.CanExecute(this._context)){ 
+            this._Fail("Invalid context/operation");
+            return; 
+        }
+
         //TODO : Check whether or not there is an ongoing drag'n drop action
         //and concatenate all resulting actions
         let editor = null;

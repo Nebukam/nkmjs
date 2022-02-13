@@ -3,11 +3,12 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
+const actions = require("@nkmjs/actions");
 
 const dom = require(`../utils-dom`);
 const UI = require(`../ui`);
 const INPUT = require(`../input`);
-const KEYBOARD = require(`../keyboard`);
+const KB = actions.KEYBOARD;
 
 const InputField = require(`./input-field`);
 

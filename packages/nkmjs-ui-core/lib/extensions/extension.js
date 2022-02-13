@@ -36,8 +36,10 @@ class Extension extends com.pool.DisposableObjectEx {
      * @param {ui.core.extensions.ExtBase} p_ext 
      */
     Remove(p_ext) {
-        if (!this._childExtensions || this._childExtensions.includes(p_ext)) { return null; }
-        this._childExtensions.push(p_ext);
+        if (!this._childExtensions) { return null; }
+        let index =  this._childExtensions.indexOf(p_ext);
+        if(index == -1){ return null; }
+        this._childExtensions.splice(index, 1);
         p_ext.Disable();
         return p_ext;
     }

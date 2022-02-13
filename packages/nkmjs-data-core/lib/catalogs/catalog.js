@@ -126,13 +126,19 @@ class Catalog extends CatalogItem {
      * @param {boolean} [p_forceCatalog] 
      * @returns {constructor}
      */
-    static GetItemClass(p_itemOptions, p_forceCatalog = false) {
+    static GetItemClass(p_itemOptions, p_forceCatalog = false, p_parentCatalog = null) {
 
         let itemClass = null;
 
         if (u.isObject(p_itemOptions)) {
+
             let data = u.tils.Get(p_itemOptions, `data`, null);
-            if (data) { itemClass = com.BINDINGS.Get(Catalog, data, null); }
+            
+            if (data) { 
+                let context = p_parentCatalog ? p_parentCatalog : Catalog;
+                if(u.isObject(context)){ context = context.constructor; }
+                itemClass = com.BINDINGS.Get(context, data, null); 
+            }
 
             if (!itemClass) {
                 if (p_forceCatalog || u.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = this.__default_catalogClass; }
@@ -293,7 +299,7 @@ class Catalog extends CatalogItem {
 
         //If no valid path is provided, simply create and return a new CatalogItem
         if (!pathInfos.valid || !pathInfos.path) {
-            let item = com.Rent(Catalog.GetItemClass(p_itemInfos));
+            let item = com.Rent(Catalog.GetItemClass(p_itemInfos, false, this));
             item.options = u.tils.EnsureMultiple(p_itemInfos, {
                 [com.IDS.NAME]: pathInfos.name,
                 [com.IDS.ICON]: `document`
@@ -319,7 +325,7 @@ class Catalog extends CatalogItem {
             });
             return catalog;
         } else {
-            let item = com.Rent(Catalog.GetItemClass(p_itemInfos));
+            let item = com.Rent(Catalog.GetItemClass(p_itemInfos, false, catalog));
             item.options = u.tils.EnsureMultiple(p_itemInfos, {
                 [com.IDS.NAME]: pathInfos.name,
                 [com.IDS.ICON]: `document`

@@ -75,9 +75,9 @@ class EditorEx extends uidatacontrols.Editor {
         p_configList.push(
             {
                 [ui.IDS.NAME]: `Inspector`,
-                [ui.IDS.ICON]: `parameters`,
+                [ui.IDS.ICON]: `icon`,
                 [ui.IDS.VIEW_CLASS]: this.constructor.__default_inspectorShellClass,
-                assign: `_inspector`
+                assign: `_inspectorShell`
             }
         );
     }
@@ -120,7 +120,9 @@ class EditorEx extends uidatacontrols.Editor {
                 'align-items': `stretch`,
                 'align-content': `stretch`,
 
-                flex: `1 1 auto`
+                flex: `1 1 auto`,
+                'min-height': `0`,
+                'min-width': `0`
             },
             '.viewport': {
                 position: `relative`,
@@ -128,9 +130,9 @@ class EditorEx extends uidatacontrols.Editor {
                 flex: `1 1 auto`,
             },
             '.shelf': {
-                position: `relative`,
-                display: `flex`,
-                flex: `0 0 auto`,
+                //position: `relative`,
+                //display: `flex`,
+                //flex: `0 0 auto`,
             },
             '.topstatus': {
                 position: `absolute`,
@@ -143,13 +145,11 @@ class EditorEx extends uidatacontrols.Editor {
 
         ui.Render(uilib.dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
 
-        this._shelf = this.Add(this.constructor.__default_shelfClass, `shelf`, this._body);
         this._viewport = this.Add(this.constructor.__default_viewportClass, `viewport`, this._body);
-
-        this._inspectorShell = this.Add(this.constructor.__default_inspectorShellClass, `inspector`, this._body);
-        this._inspectorShell.orientation = ui.FLAGS.HORIZONTAL;
+        this._shelf = this.Add(this.constructor.__default_shelfClass, `shelf`, this._body);
 
         this._shelf.orientation = ui.FLAGS.HORIZONTAL;
+        this._shelf.navPlacement = ui.FLAGS.TOP;
 
     }
 

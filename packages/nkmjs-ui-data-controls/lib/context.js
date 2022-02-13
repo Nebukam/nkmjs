@@ -7,9 +7,11 @@ const com = require("@nkmjs/common");
  */
 
 class EDITOR extends com.helpers.CSYMBOL { constructor() { super(); } }
+class INSPECTOR extends com.helpers.CSYMBOL { constructor() { super(); } }
 
 module.exports = {
 
     EDITOR: EDITOR,
-
+    INSPECTOR: INSPECTOR,
+        
 };

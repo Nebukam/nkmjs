@@ -12,6 +12,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
 const COMMAND_SIGNAL = require(`./command-signal`);
+const SIGNAL = require(`../signal`);
 
 /**
  * @description TODO
@@ -49,6 +50,15 @@ class Command extends com.pool.DisposableObjectEx {
         this._emitter = null;
         this._order = 0;
         this._running = false;
+        this._shortcut = null;
+    }
+
+    _PostInit() {
+        super._PostInit();
+        if (this._shortcut) {
+            this._shortcut.Watch(SIGNAL.ACTIVATED, this._OnShortcutActivated, this);
+            if(this._isEnabled){ this._shortcut.Enable(); }
+        }
     }
 
     //#region Properties
@@ -121,7 +131,7 @@ class Command extends com.pool.DisposableObjectEx {
      * @type {boolean}
      * @customtag write-only
      */
-    set enabled(p_value){
+    set enabled(p_value) {
         if (p_value) { this.Enable(); }
         else { this.Disable(); }
     }
@@ -132,7 +142,9 @@ class Command extends com.pool.DisposableObjectEx {
     Enable() {
         if (this._isEnabled) { return false; }
         this._isEnabled = true;
+        if (this._shortcut) { this._shortcut.Enable(); }
         this._Broadcast(com.SIGNAL.UPDATED, this);
+        this._Broadcast(SIGNAL.ENABLED, this);
         return true;
     }
 
@@ -142,7 +154,9 @@ class Command extends com.pool.DisposableObjectEx {
     Disable() {
         if (!this._isEnabled) { return false; }
         this._isEnabled = false;
+        if (this._shortcut) { this._shortcut.Disable(); }
         this._Broadcast(com.SIGNAL.UPDATED, this);
+        this._Broadcast(SIGNAL.DISABLED, this);
         return true;
     }
 
@@ -156,12 +170,15 @@ class Command extends com.pool.DisposableObjectEx {
      */
     get context() { return this._context; }
     set context(p_value) {
+        if (this._context === p_value) { return; }
         let sanitizedValue = this._SanitizeContext(p_value);
         if (this._context === sanitizedValue) { return; }
         this._context = sanitizedValue;
         this._OnContextChanged();
         this.enabled = this.CanExecute(this._context);
     }
+
+    _FetchContext() { return null; }
 
     /**
      * @access protected
@@ -191,10 +208,27 @@ class Command extends com.pool.DisposableObjectEx {
      * @description Execute the command within a given context
      * @param {*} p_context 
      */
-    Execute(p_context) {
+    Execute(p_context = null) {
         if (this._running) { return; }
-        this.context = (p_context || this._context);
-        if (!this._isEnabled) { return; }
+
+        let enabledBefore = this._isEnabled;
+
+        if(!enabledBefore){ return; }
+
+        let contextBefore = this._context;
+        
+        if (!p_context) { p_context = this._FetchContext(); }
+        if (!p_context) { p_context = this._context; } // Try to fallback to an existing value
+
+        this.context = p_context;
+
+        if (!this._isEnabled) {
+            // Got disabled by context update
+            this.context = contextBefore;
+            this.enabled = enabledBefore;
+            return; 
+        }
+
         this._Start();
         this._InternalExecute();
     }
@@ -259,6 +293,7 @@ class Command extends com.pool.DisposableObjectEx {
         if (!this._running) { return; }
         this._Cancel();
     }
+
     /**
      * @access protected
      * @description TODO
@@ -277,6 +312,10 @@ class Command extends com.pool.DisposableObjectEx {
         this._running = false;
         this._Broadcast(COMMAND_SIGNAL.END, this);
         this._Broadcast(com.SIGNAL.UPDATED, this);
+    }
+
+    _OnShortcutActivated() {
+        this.Execute();
     }
 
     //#endregion

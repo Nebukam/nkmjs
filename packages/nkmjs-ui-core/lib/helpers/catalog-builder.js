@@ -44,7 +44,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
 
         let mappedObject = null;
 
-        console.log(`${this._defaultItemClass.name} || ${this._defaultGroupClass.name}`);
+        //console.log(`${this._defaultItemClass.name} || ${this._defaultGroupClass.name}`);
 
         if (u.isInstanceOf(p_item, data.catalogs.Catalog)) {
             mappedObject = this._owner.Add(

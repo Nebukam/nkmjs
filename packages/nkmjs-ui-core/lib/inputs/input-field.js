@@ -3,11 +3,12 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
+const actions = require("@nkmjs/actions");
 
 const dom = require(`../utils-dom`);
 const UI = require(`../ui`);
 const INPUT = require(`../input`);
-const KEYBOARD = require(`../keyboard`);
+const KB = actions.KEYBOARD;
 
 const InputBase = require(`./input-base`);
 
@@ -83,11 +84,11 @@ class InputField extends InputBase {
     }
 
     _onFocusIn(p_evt) {
-        INPUT.ONKeyDown(KEYBOARD._enter, this._FOut);
+        INPUT.ONKeyDown(KB._enter, this._FOut);
     }
 
     _onFocusOut(p_evt) {
-        INPUT.OFFKeyDown(KEYBOARD._enter, this._FOut);
+        INPUT.OFFKeyDown(KB._enter, this._FOut);
         this._handler.SubmitValue();
     }
 
