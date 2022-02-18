@@ -21,9 +21,10 @@ class ButtonEx extends ui.WidgetButton {
     _Init() {
         super._Init();
 
-        this._optionsHandler.Hook( ui.IDS.ICON, null, ``);
-        this._optionsHandler.Hook( ui.IDS.LABEL, null, ``);
-        this._optionsHandler.Hook(`uppercaseText`);
+        this._optionsHandler
+            .Hook(ui.IDS.ICON, null, ``)
+            .Hook(ui.IDS.LABEL, null, ``)
+            .Hook(`uppercaseText`);
 
         this._icon = null;
         this._label = null;
@@ -69,7 +70,7 @@ class ButtonEx extends ui.WidgetButton {
      * @customtag write-only
      * @group Components
      */
-    set label(p_value) {  this._flags.Set(ui.FLAGS.NO_LABEL, !this._label.Set(p_value)); }
+    set label(p_value) { this._flags.Set(ui.FLAGS.NO_LABEL, !this._label.Set(p_value)); }
 
     _Render() {
         super._Render();

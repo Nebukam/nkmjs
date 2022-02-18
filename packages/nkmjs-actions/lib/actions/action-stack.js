@@ -18,7 +18,6 @@ class ActionStack {
         this._PostInit();
     }
 
-
     // ----> Init
 
     _Init() {

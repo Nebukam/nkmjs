@@ -63,9 +63,10 @@ class Model extends DerivableDataBlock {
             .Watch(data.SIGNAL.ITEM_UNREGISTERED, this._OnFieldUnregistered, this)
             .Watch(com.SIGNAL.RENAMED, this._OnFieldRenamed, this);
 
-        this._baseObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnBaseFieldAdded, this);
-        this._baseObserver.Hook(FIELD_EVENT.FIELD_REMOVED, this._OnBaseFieldRemoved, this);
-        this._baseObserver.Hook(FIELD_EVENT.FIELD_RENAMED, this._OnBaseFieldRenamed, this);
+        this._baseObserver
+            .Hook(FIELD_EVENT.FIELD_ADDED, this._OnBaseFieldAdded, this)
+            .Hook(FIELD_EVENT.FIELD_REMOVED, this._OnBaseFieldRemoved, this)
+            .Hook(FIELD_EVENT.FIELD_RENAMED, this._OnBaseFieldRenamed, this);
 
     }
 

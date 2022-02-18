@@ -21,8 +21,9 @@ class FieldSettingsProxy extends FieldSettings {
         this._isFresh = false;
 
         this._refObserver = new com.signals.Observer();
-        this._refObserver.Hook(ECOSYSTEM_EVENT.BASE_CHANGED, this._OnRefBaseChanged, this);
-        this._refObserver.Hook(FIELD_EVENT.FIELD_CLASS_CHANGED, this._OnRefClassChanged, this);
+        this._refObserver
+            .Hook(ECOSYSTEM_EVENT.BASE_CHANGED, this._OnRefBaseChanged, this)
+            .Hook(FIELD_EVENT.FIELD_CLASS_CHANGED, this._OnRefClassChanged, this);
 
     }
 

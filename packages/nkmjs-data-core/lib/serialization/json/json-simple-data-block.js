@@ -41,7 +41,11 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      * @returns 
      */
     static SerializeContent(p_serial, p_data, p_options = null) {
-        p_serial[CONTEXT.JSON.DATA_KEY] = p_data._data;
+        let valuesOnly = {};
+        for(var p in p_data._values){
+            valuesOnly[p] = p_data._values[p].value;
+        }
+        p_serial[CONTEXT.JSON.DATA_KEY] = p_data._values;
     }
 
     /**
@@ -52,7 +56,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      */
     static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
         // Need specific implementation.
-        p_data._data = (p_serial[CONTEXT.JSON.DATA_KEY] || {});
+        p_data.BatchSet((p_serial[CONTEXT.JSON.DATA_KEY] || {}));
     }
 
 }

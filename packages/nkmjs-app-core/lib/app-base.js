@@ -258,7 +258,7 @@ class AppBase extends com.helpers.SingletonEx {
         }
 
         u.LOG._(`${this._APPID} : READY`, `#030107`, `#339a6e`);
-        
+
         this.AppReady();
         this._InternalDisplayReadyCheck();
 
@@ -276,29 +276,28 @@ class AppBase extends com.helpers.SingletonEx {
      * Checks if the app is ready to be displayed to the user
      * and call AppDisplay as soon as _IsReadyForDisplay returns true.
      */
-    _InternalDisplayReadyCheck(){
-        if(!this._IsReadyForDisplay()){
-
+    _InternalDisplayReadyCheck() {
+        if (!this._IsReadyForDisplay()) {
             com.NextTick(this._InternalDisplayReadyCheck);
+        } else {
 
-        }else{
-            
             if (this._loadingOverlay) {
+
+                this.AppDisplay();
 
                 this._loadingOverlay.addEventListener(`animationend`, (p_evt) => {
                     ui.dom.Detach(p_evt.target);
                 });
-    
+
                 let delay = `250ms`,
                     duration = `250ms`,
                     transition = `cubic-bezier(0.885, 0.025, 0.960, 0.030)`,
                     name = this.constructor.__loading_cssAnimationOut;
-    
+
                 this._loadingOverlay.style.animation = `${name} ${delay} ${duration} ${transition}`;
-    
+
             }
 
-            this.AppDisplay();
         }
     }
 
@@ -306,9 +305,9 @@ class AppBase extends com.helpers.SingletonEx {
      * Return true by default. This is where you can test for server readyness and things like that.
      * @returns true if the app is ready for display, false otherwise
      */
-    _IsReadyForDisplay(){ return true; }
+    _IsReadyForDisplay() { return true; }
 
-    AppDisplay(){ }
+    AppDisplay() { }
 
     _HandleDialogRequest(p_request) {
         this._overlayHandler.HandleOverlayRequest(p_request);
@@ -385,8 +384,8 @@ class AppBase extends com.helpers.SingletonEx {
         console.log(p_content.message);
     }
 
-    _onContextMenuCommand(p_evt, p_command){
-        
+    _onContextMenuCommand(p_evt, p_command) {
+
     }
 
     //#endregion

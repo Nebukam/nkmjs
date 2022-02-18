@@ -21,6 +21,9 @@ class EditorEx extends uidatacontrols.Editor {
     static __default_historyViewClass = EditorHistoryView;
     static __default_viewportClass = ui.views.View;
 
+    static __default_headerClass = null;
+    static __default_footerClass = null;
+
     _Init() {
 
         super._Init();
@@ -39,6 +42,17 @@ class EditorEx extends uidatacontrols.Editor {
         this._topStatus = null;
         this._bottomStatus = null;
 
+    }
+
+    _InitShelfCatalog(p_configList) {
+        p_configList.push(
+            {
+                [ui.IDS.NAME]: `Inspector`,
+                [ui.IDS.ICON]: `icon`,
+                [ui.IDS.VIEW_CLASS]: this.constructor.__default_inspectorShellClass,
+                assign: `_inspectorShell`
+            }
+        );
     }
 
     _PostInit() {
@@ -69,17 +83,6 @@ class EditorEx extends uidatacontrols.Editor {
 
         }
 
-    }
-
-    _InitShelfCatalog(p_configList) {
-        p_configList.push(
-            {
-                [ui.IDS.NAME]: `Inspector`,
-                [ui.IDS.ICON]: `icon`,
-                [ui.IDS.VIEW_CLASS]: this.constructor.__default_inspectorShellClass,
-                assign: `_inspectorShell`
-            }
-        );
     }
 
     // TODO : An editor offer streamlined way to 'edit' a datablock and
@@ -143,7 +146,15 @@ class EditorEx extends uidatacontrols.Editor {
 
     _Render() {
 
-        ui.Render(uilib.dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
+        if(this.constructor.__default_headerClass){ this.Add(this.constructor.__default_headerClass, ui.IDS.HEADER, this._host);}
+        else{ this._header = ui.dom.El(`div`, {class:ui.IDS.HEADER}, this._host); }
+
+        this._body = ui.dom.El(`div`, {class:ui.IDS.BODY}, this._host);
+
+        if(this.constructor.__default_footerClass){ this.Add(this.constructor.__default_footerClass, ui.IDS.FOOTER, this._host); }
+        else{ this._footer = ui.dom.El(`div`, {class:ui.IDS.FOOTER}, this._host); }
+        
+        //ui.Render(uilib.dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
 
         this._viewport = this.Add(this.constructor.__default_viewportClass, `viewport`, this._body);
         this._shelf = this.Add(this.constructor.__default_shelfClass, `shelf`, this._body);

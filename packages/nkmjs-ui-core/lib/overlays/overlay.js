@@ -45,9 +45,10 @@ class Overlay extends Layer {
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler.Hook(`orientation`);
-        this._optionsHandler.Hook(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement);
-        this._optionsHandler.Hook(`flavor`, `contentFlavor`);
+        this._optionsHandler
+            .Hook(`orientation`)
+            .Hook(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement)
+            .Hook(`flavor`, `contentFlavor`);
 
     }
 

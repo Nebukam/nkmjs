@@ -31,10 +31,11 @@ class CommandChain extends Command {
         this._currentIndex = 0;
         this._cmdObserver = new com.signals.Observer();
 
-        this._cmdObserver.Hook(COMMAND_SIGNAL.START, this._NodeStart, this);
-        this._cmdObserver.Hook(COMMAND_SIGNAL.END, this._NodeEnd, this);
-        this._cmdObserver.Hook(COMMAND_SIGNAL.SUCCESS, this._NodeSuccess, this);
-        this._cmdObserver.Hook(COMMAND_SIGNAL.FAIL, this._NodeFail, this);
+        this._cmdObserver
+            .Hook(COMMAND_SIGNAL.START, this._NodeStart, this)
+            .Hook(COMMAND_SIGNAL.END, this._NodeEnd, this)
+            .Hook(COMMAND_SIGNAL.SUCCESS, this._NodeSuccess, this)
+            .Hook(COMMAND_SIGNAL.FAIL, this._NodeFail, this);
 
     }
 

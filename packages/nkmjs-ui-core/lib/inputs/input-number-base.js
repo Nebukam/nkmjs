@@ -113,7 +113,9 @@ class InputNumberBase extends InputField {
 
     //#endregion
 
-    set options(p_options) {
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
+
+        super._OnOptionsUpdated(p_options, p_altOptions, p_defaults);
 
         this.useMin = p_options.min ? true : false;
         if (this._useMin) { this.min = p_options.min; }
@@ -123,7 +125,7 @@ class InputNumberBase extends InputField {
 
         this.useStep = p_options.step ? true : false;
         if (this._useStep) { this.step = p_options.step; }
-
+        
     }
 
     // ----> DOM
@@ -145,7 +147,7 @@ class InputNumberBase extends InputField {
 
     }
 
-    _Render(){
+    _Render() {
         super._Render();
         this.useMin = this.constructor.__default_useMin;
         this.useMax = this.constructor.__default_useMax;

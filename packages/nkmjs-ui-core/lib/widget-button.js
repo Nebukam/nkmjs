@@ -77,20 +77,21 @@ class WidgetButton extends Widget {
             null,
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler.Hook(IDS.DATA);
-        this._optionsHandler.Hook(`htitle`);
-        this._optionsHandler.Hook(`trigger`);
-        this._optionsHandler.Hook(`toggle`, null, null);
-        this._optionsHandler.Hook(`request`);
-        this._optionsHandler.Hook(`command`);
-        this._optionsHandler.Hook(`isCommandTrigger`);
-        this._optionsHandler.Hook(`isCommandContext`);
-        this._optionsHandler.Hook(`alwaysVisible`, `alwaysDisplayCommand`);
-        this._optionsHandler.Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } });
-        this._optionsHandler.Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
-        this._optionsHandler.Hook(`size`);
-        this._optionsHandler.Hook(IDS.FLAVOR);
-        this._optionsHandler.Hook(IDS.VARIANT);
+        this._optionsHandler
+            .Hook(IDS.DATA)
+            .Hook(`htitle`)
+            .Hook(`trigger`)
+            .Hook(`toggle`, null, null)
+            .Hook(`request`)
+            .Hook(`command`)
+            .Hook(`isCommandTrigger`)
+            .Hook(`isCommandContext`)
+            .Hook(`alwaysVisible`, `alwaysDisplayCommand`)
+            .Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
+            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
+            .Hook(`size`)
+            .Hook(IDS.FLAVOR)
+            .Hook(IDS.VARIANT);
 
     }
 

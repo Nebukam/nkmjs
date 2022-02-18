@@ -284,18 +284,18 @@ class UTILS {
 
         if (!p_source || p_source.length === 0) { return p_base; }
 
-        if(p_mode >= 0){
+        if (p_mode >= 0) {
             for (let i = 0, n = p_source.length; i < n; i++) {
                 let sourceValue = p_source[i];
                 if (!p_base.includes(sourceValue)) { p_base.push(sourceValue); }
             }
-        }else{
+        } else {
             for (let i = 0, n = p_source.length; i < n; i++) {
                 let sourceValue = p_source[i];
                 if (!p_base.includes(sourceValue)) { p_base.unshift(sourceValue); }
             }
         }
-        
+
 
         return p_base;
     }
@@ -774,9 +774,21 @@ class UTILS {
             .toLowerCase();
     }
 
-    static Map(p_value, p_oMin, p_oMax, p_nMin, p_nMax)
-    {
+    static Map(p_value, p_oMin, p_oMax, p_nMin, p_nMax) {
         return p_nMin + (p_value - p_oMin) * (p_nMax - p_nMin) / (p_oMax - p_oMin);
+    }
+
+    static ArrayBufferToBase64(buffer) {
+        return this.BytesToBase64(new Uint8Array(buffer));
+    }
+
+    static BytesToBase64(bytes) {
+        let binary = '';
+        let len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
     }
 
 }

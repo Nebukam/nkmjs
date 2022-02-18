@@ -187,12 +187,13 @@ class PopIn extends DisplayObjectContainer {
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler.Hook(`mode`);
-        this._optionsHandler.Hook(`context`, null, document.body);
-        this._optionsHandler.Hook(`anchor`);
-        this._optionsHandler.Hook(`static`, null, false);
-        this._optionsHandler.Hook(`placement`, null, PopIn.CENTER);
-        this._optionsHandler.Hook(`origin`, null, PopIn.CENTER);
+        this._optionsHandler
+            .Hook(`mode`)
+            .Hook(`context`, null, document.body)
+            .Hook(`anchor`)
+            .Hook(`static`, null, false)
+            .Hook(`placement`, null, PopIn.CENTER)
+            .Hook(`origin`, null, PopIn.CENTER);
 
         this._pointer = new extensions.PointerStatic(this);
 

@@ -28,12 +28,12 @@ class DataLibrary extends data.DataFactory {
         this._itemClass = DataEntry;
 
         this._modelObserver = new com.signals.Observer();
-        this._modelObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnModelFieldAdded, this);
-        this._modelObserver.Hook(FIELD_EVENT.FIELD_REMOVED, this._OnModelFieldRemoved, this);
-        this._modelObserver.Hook(FIELD_EVENT.FIELD_UPDATED, this._OnModelFieldUpdated, this);
-        this._modelObserver.Hook(FIELD_EVENT.FIELD_RENAMED, this._OnModelFieldRenamed, this);
-
-        this._modelObserver.Hook(data.SIGNAL.DIRTY, this._OnModelDirty, this);
+        this._modelObserver
+            .Hook(FIELD_EVENT.FIELD_ADDED, this._OnModelFieldAdded, this)
+            .Hook(FIELD_EVENT.FIELD_REMOVED, this._OnModelFieldRemoved, this)
+            .Hook(FIELD_EVENT.FIELD_UPDATED, this._OnModelFieldUpdated, this)
+            .Hook(FIELD_EVENT.FIELD_RENAMED, this._OnModelFieldRenamed, this)
+            .Hook(data.SIGNAL.DIRTY, this._OnModelDirty, this);
 
     }
 

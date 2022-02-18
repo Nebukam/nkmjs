@@ -375,6 +375,14 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
+    static SIZE_XXS = `size-xxs`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Sizes
+     */
     static SIZE_XS = `size-xs`;
 
     /**
@@ -416,6 +424,7 @@ class FLAGS {
      * @group Sizes
      */
     static sizes = [
+        this.SIZE_XXS,
         this.SIZE_XS,
         this.SIZE_S,
         this.SIZE_M,

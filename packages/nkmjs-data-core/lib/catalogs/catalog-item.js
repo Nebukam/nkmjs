@@ -31,8 +31,9 @@ class CatalogItem extends com.helpers.OptionsObject {
         this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._OnUpdate));
 
         this._optionHandler.wrapUpFn = this._Bind(this._OnOptionsUpdated);
-        this._optionHandler.Hook(com.IDS.DATA);
-        this._optionHandler.Hook(IDS.BOUND);
+        this._optionHandler
+            .Hook(com.IDS.DATA)
+            .Hook(IDS.BOUND);
 
     }
 
@@ -201,10 +202,10 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @description TODO
      */
     _OnUpdate() {
-        if(this._isFirstUpdate){ 
+        if (this._isFirstUpdate) {
             // Ignore first update ?
             this._isFirstUpdate = false;
-            return; 
+            return;
         }
         this._Broadcast(com.SIGNAL.UPDATED, this);
     }

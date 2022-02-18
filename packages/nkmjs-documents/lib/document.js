@@ -39,14 +39,16 @@ class Document extends com.pool.DisposableObjectEx {
         this._callbacks = new com.helpers.Callbacks();
 
         this._resourceObserver = new com.signals.Observer();
-        this._resourceObserver.Hook(com.SIGNAL.RELEASED, this._OnRscReleased, this);
-        this._resourceObserver.Hook(io.IO_SIGNAL.READ_COMPLETE, this._OnReadComplete, this);
-        this._resourceObserver.Hook(io.IO_SIGNAL.WRITE_START, this._OnWriteStart, this);
+        this._resourceObserver
+            .Hook(com.SIGNAL.RELEASED, this._OnRscReleased, this)
+            .Hook(io.IO_SIGNAL.READ_COMPLETE, this._OnReadComplete, this)
+            .Hook(io.IO_SIGNAL.WRITE_START, this._OnWriteStart, this);
 
         this._dataObserver = new com.signals.Observer();
-        this._dataObserver.Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this);
-        this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
-        this._dataObserver.Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
+        this._dataObserver
+            .Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this)
+            .Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this)
+            .Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
 
         this._Bind(this._OnLoadError);
         this._Bind(this._OnSaveError);

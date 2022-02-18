@@ -37,9 +37,10 @@ class DragExtension extends Extension {
         this._grabDataCallback = null;
 
         this._ownerObserver = new com.signals.Observer();
-        this._ownerObserver.Hook(SIGNAL.DRAG_STARTED, this._OnOwnerDragStarted, this);
-        this._ownerObserver.Hook(SIGNAL.DRAG_ENDED, this._OnOwnerDragEnded, this);
-        this._ownerObserver.Hook(com.SIGNAL.RELEASED, this._OnOwnerReleased, this);
+        this._ownerObserver
+            .Hook(SIGNAL.DRAG_STARTED, this._OnOwnerDragStarted, this)
+            .Hook(SIGNAL.DRAG_ENDED, this._OnOwnerDragEnded, this)
+            .Hook(com.SIGNAL.RELEASED, this._OnOwnerReleased, this);
 
         this._Bind(this._mUp);
         this._Bind(this._mDown);

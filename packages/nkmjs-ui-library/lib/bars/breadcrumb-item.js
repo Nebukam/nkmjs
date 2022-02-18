@@ -16,8 +16,9 @@ class BreadcrumbItem extends ui.WidgetButton {
     _Init() {
         super._Init();
 
-        this._optionsHandler.Hook(ui.IDS.ICON, null, ``);
-        this._optionsHandler.Hook(ui.IDS.LABEL, null, ``);
+        this._optionsHandler
+            .Hook(ui.IDS.ICON, null, ``)
+            .Hook(ui.IDS.LABEL, null, ``);
 
         this._alwaysDisplayCommand = true;
         this._icon = null;
@@ -33,7 +34,7 @@ class BreadcrumbItem extends ui.WidgetButton {
     set label(p_value) { this._flags.Set(ui.FLAGS.NO_LABEL, !this._label.Set(p_value)); }
 
     _Render() {
-        
+
         ui.Render(dom.FacadeLabel, this, {
             [ui.IDS.OWNER]: this,
             [ui.IDS.LABEL]: { [ui.IDS.CSS_CL]: style.FONT_FLAG.REGULAR }

@@ -15,22 +15,23 @@ const ui = require(`@nkmjs/ui-core`);
  * @augments ui.core.Widget
  * @memberof ui.datacontrols
  */
-class Editor extends ui.views.View{
-    constructor(){super();}
+class Editor extends ui.views.View {
+    constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/global-editor.css`]
     }, ui.views.View, ['css']);
 
-    _Init(){
+    _Init() {
 
         super._Init();
 
         //TODO : Find a way to invalidate action stacks // <--- WTF ?
         this._actionStack = new actions.ActionStack();
 
-        this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
-        this._dataObserver.Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
+        this._dataObserver
+            .Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this)
+            .Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
 
         this._inspectedData = null;
         this._inspectedObserver = new com.signals.Observer();
@@ -53,26 +54,26 @@ class Editor extends ui.views.View{
      * @type {boolean}
      * @customtag read-only
      */
-    get hasUnsavedModifications(){ return this._hasUnsavedModifications; }
+    get hasUnsavedModifications() { return this._hasUnsavedModifications; }
 
     /**
      * @description TODO
      * @param {boolean} p_value 
      * @returns 
      */
-    _SetUnsavedModifications(p_value){
-        if(this._hasUnsavedModifications === p_value){ return; }
+    _SetUnsavedModifications(p_value) {
+        if (this._hasUnsavedModifications === p_value) { return; }
         this._hasUnsavedModifications = p_value;
-        if(p_value){
+        if (p_value) {
             // TODO
-        }else{
+        } else {
             // TODO
         }
     }
 
     // ----> Data management
 
-    _OnDataChanged(p_oldData){
+    _OnDataChanged(p_oldData) {
 
         this._actionStack.Clear();
         this._commands.context = this._data;
@@ -83,64 +84,64 @@ class Editor extends ui.views.View{
 
     }
 
-    _PostDataChanged(p_oldData){
+    _PostDataChanged(p_oldData) {
         super._PostDataChanged(p_oldData);
 
-        if(!this._data){
+        if (!this._data) {
 
-        }else{
-            if(this._data.isDirty){  this._OnDataDirty(this._data); }
-            else{ this._OnDataCleaned(this._data); }
+        } else {
+            if (this._data.isDirty) { this._OnDataDirty(this._data); }
+            else { this._OnDataCleaned(this._data); }
         }
     }
 
-    _OnDataDirty(p_data){
+    _OnDataDirty(p_data) {
 
     }
 
-    _OnDataCleaned(p_data){
+    _OnDataCleaned(p_data) {
 
     }
 
     //#region Selection stack
 
-    _OnSelectionStackItemAdded(p_widget){
-        if(p_widget.data){ this.Inspect(p_widget.data); }
+    _OnSelectionStackItemAdded(p_widget) {
+        if (p_widget.data) { this.Inspect(p_widget.data); }
     }
 
-    _OnSelectionStackItemRemoved(p_widget){
-        if(this._inspectedData == p_widget.data){ this.Inspect(null); }
+    _OnSelectionStackItemRemoved(p_widget) {
+        if (this._inspectedData == p_widget.data) { this.Inspect(null); }
     }
 
     //#endregion
 
     //#region Inspection
-    
+
     /**
      * @description The Editor currently inspected data. Drives available controls, actions, commands,
      * as well as this Editor' main inspector.
      * @type {data.core.DataBlock}
      */
-    get inspectedData(){ return this._inspectedData; }
-    set inspectedData(p_value){
+    get inspectedData() { return this._inspectedData; }
+    set inspectedData(p_value) {
 
-        if(this._inspectedData === p_value){return;}
+        if (this._inspectedData === p_value) { return; }
 
         let oldValue = this._inspectedData;
         this._inspectedData = p_value;
 
-        if(oldValue){ this._inspectedObserver.Unobserve(oldValue); }
-        if(p_value){ this._inspectedObserver.Observe(p_value); }
+        if (oldValue) { this._inspectedObserver.Unobserve(oldValue); }
+        if (p_value) { this._inspectedObserver.Observe(p_value); }
 
         this._OnInspectedDataChanged(oldValue);
 
     }
 
-    _OnInspectedDataChanged(p_oldData){
-        
+    _OnInspectedDataChanged(p_oldData) {
+
     }
 
-    _OnInspectedDataReleased(){
+    _OnInspectedDataReleased() {
         this.inspectedData = null;
     }
 
@@ -148,8 +149,7 @@ class Editor extends ui.views.View{
      * @description Set data to be inspected
      * @param {data.core.DataBlock} p_data 
      */
-    Inspect(p_data)
-    {
+    Inspect(p_data) {
         //TODO : Handle multiple selection editing
         this.inspectedData = p_data;
     }
@@ -164,24 +164,24 @@ class Editor extends ui.views.View{
      * @param {object} p_operation Action' operation parameters
      * @group Actions
      */
-    Do(p_actionClass, p_operation){
-        this._actionStack.ToggleGrouping( ui.POINTER.DRAG_MULTIPLE ); //Group drag-related actions
-        this._actionStack.Do( p_actionClass, p_operation ); 
+    Do(p_actionClass, p_operation) {
+        this._actionStack.ToggleGrouping(ui.POINTER.DRAG_MULTIPLE); //Group drag-related actions
+        this._actionStack.Do(p_actionClass, p_operation);
     }
-    
+
     /**
      * @access public
      * @description Undo the last action in the local ActionStack.
      * @group Actions
      */
-    Undo(){ this._actionStack.Undo(); }
+    Undo() { this._actionStack.Undo(); }
 
     /**
      * @access public
      * @description Redo the last undo'd action in the local ActionStack.
      * @group Actions
      */
-    Redo(){ this._actionStack.Redo(); }
+    Redo() { this._actionStack.Redo(); }
 
     //#endregion
 

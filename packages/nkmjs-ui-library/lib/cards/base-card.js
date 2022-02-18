@@ -57,17 +57,18 @@ class BaseCard extends ui.WidgetItem {
         this._orientation = new ui.helpers.FlagEnum(ui.FLAGS.orientations, true);
         this._orientation.Add(this);
 
-        this._optionsHandler.Hook(`header-placement`,
-            (p_value) => {
-                this._mediaPlacement.Set(p_value);
-                this._orientation.Set(ui.FLAGS.Orientation(p_value, true));
-            }, this.constructor.__default_headerPlacement);
-        this._optionsHandler.Hook(ui.IDS.VARIANT);
-        this._optionsHandler.Hook(ui.IDS.TITLE, null, ``);
-        this._optionsHandler.Hook(ui.IDS.SUBTITLE, null, ``);
-        this._optionsHandler.Hook(ui.IDS.LABEL, null, ``);
-        this._optionsHandler.Hook(ui.IDS.SIZE);
-        this._optionsHandler.Hook(`actions`);
+        this._optionsHandler
+            .Hook(`header-placement`,
+                (p_value) => {
+                    this._mediaPlacement.Set(p_value);
+                    this._orientation.Set(ui.FLAGS.Orientation(p_value, true));
+                }, this.constructor.__default_headerPlacement)
+            .Hook(ui.IDS.VARIANT)
+            .Hook(ui.IDS.TITLE, null, ``)
+            .Hook(ui.IDS.SUBTITLE, null, ``)
+            .Hook(ui.IDS.LABEL, null, ``)
+            .Hook(ui.IDS.SIZE)
+            .Hook(`actions`);
 
     }
 
@@ -122,7 +123,7 @@ class BaseCard extends ui.WidgetItem {
                 'justify-content': `stretch`,
                 'align-items': `stretch`,
             },
-
+            
             '.header': {
                 'flex': '0 1 auto',
                 'min-height': '100px',

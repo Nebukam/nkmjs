@@ -54,6 +54,7 @@ class DefaultStylesheet extends PaletteBuilder{
             'scroll-size': '4px',
             'color-warning': COLOR.RGBA().rgba,
 
+            'size-xxs': '8px',
             'size-xs': '16px',
             'size-s': '24px',
             'size-m': '32px',

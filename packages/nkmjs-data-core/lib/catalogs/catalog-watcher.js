@@ -4,14 +4,14 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./catalog-signal`);
 
- /**
- * @description A CatalogWatcher observe a catalog's additions and removals.
- * It's an abstract class, look for actual implementations in `CatalogHandler` & `CatalogBuilder`
- * @class
- * @hideconstructor
- * @augments common.pool.DisposableObjectEx
- * @memberof data.core.catalog
- */
+/**
+* @description A CatalogWatcher observe a catalog's additions and removals.
+* It's an abstract class, look for actual implementations in `CatalogHandler` & `CatalogBuilder`
+* @class
+* @hideconstructor
+* @augments common.pool.DisposableObjectEx
+* @memberof data.core.catalog
+*/
 class CatalogWatcher extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
@@ -28,9 +28,10 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         this._isDeepWatchEnabled = false;
 
         this._catalogObserver = new com.signals.Observer();
-        this._catalogObserver.Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-        this._catalogObserver.Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
-        this._catalogObserver.Hook(SIGNAL.SORTED, this._OnCatalogSorted, this);
+        this._catalogObserver
+            .Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
+            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this)
+            .Hook(SIGNAL.SORTED, this._OnCatalogSorted, this);
 
         // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
         //both filtered AND flagged as 'flatten catalog'
@@ -60,8 +61,8 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         if (this._catalog === p_value) { return; }
         let oldValue = this._catalog;
         this._catalog = p_value;
-        if(oldValue){ this._catalogObserver.Unobserve(oldValue); }
-        if(p_value){ this._catalogObserver.Observe(p_value); }
+        if (oldValue) { this._catalogObserver.Unobserve(oldValue); }
+        if (p_value) { this._catalogObserver.Observe(p_value); }
         this._OnCatalogChanged(oldValue);
     }
 
@@ -131,13 +132,15 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         if (this._isDeepWatchEnabled) {
 
             // Unkook regular signals
-            this._catalogObserver.Unhook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-            this._catalogObserver.Unhook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
-            this._catalogObserver.Unhook(SIGNAL.SORTED, this._OnCatalogSorted, this);
+            this._catalogObserver
+                .Unhook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
+                .Unhook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this)
+                .Unhook(SIGNAL.SORTED, this._OnCatalogSorted, this);
 
             // Hook root signals
-            this._catalogObserver.Hook(SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this);
-            this._catalogObserver.Hook(SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+            this._catalogObserver
+                .Hook(SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this)
+                .Hook(SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
             if (this._isEnabled && this._catalog) {
                 this._RemoveCatalogContent(this._catalog);
@@ -147,13 +150,15 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         } else {
 
             // Unkook root signals
-            this._catalogObserver.Unhook(SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this);
-            this._catalogObserver.Unhook(SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+            this._catalogObserver
+                .Unhook(SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this)
+                .Unhook(SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
             // Hook regular signals
-            this._catalogObserver.Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this);
-            this._catalogObserver.Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
-            this._catalogObserver.Hook(SIGNAL.SORTED, this._OnCatalogSorted, this);
+            this._catalogObserver
+                .Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
+                .Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this)
+                .Hook(SIGNAL.SORTED, this._OnCatalogSorted, this);
 
             if (this._isEnabled && this._catalog) {
                 this._RemoveCatalogContent(this._catalog, true);
@@ -243,7 +248,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
             }
         }
 
-        this._itemCount ++;
+        this._itemCount++;
 
         if (this._filters && !this._filters.Check(p_item)) { return false; }
 
@@ -268,7 +273,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
             }
         }
 
-        this._itemCount --;
+        this._itemCount--;
 
         if (!p_item.isReleasing) {
             p_item.Unwatch(SIGNAL.ITEM_DATA_RELEASED, this._OnItemDataReleased, this);

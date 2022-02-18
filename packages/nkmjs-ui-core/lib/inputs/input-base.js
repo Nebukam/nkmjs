@@ -7,6 +7,7 @@ const u = require("@nkmjs/utils");
 const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
+const IDS = require(`../ids`);
 const FLAGS = require(`../flags`);
 const Widget = require(`../widget`);
 const FlagEnum = require(`../helpers/flag-enum`);
@@ -44,9 +45,22 @@ class BaseInput extends Widget {
         this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
+        this._optionsHandler = new com.helpers.OptionsHandler(
+            this._Bind(this._OnOptionsUpdated),
+            this._Bind(this._OnOptionsWillUpdate));
+
+        this._optionsHandler
+            .Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
+            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
+            .Hook(`size`)
+            .Hook(`currentValue`)
+            .Hook(IDS.FLAVOR)
+            .Hook(IDS.VARIANT)
+            .Hook(`handerOptions`);
+
     }
 
-    get handler(){ return this._handler; }
+    get handler() { return this._handler; }
 
     set size(p_value) { this._sizeEnum.Set(p_value); }
     get size() { return this._sizeEnum.currentFlag; }
@@ -73,6 +87,57 @@ class BaseInput extends Widget {
      */
     get inputId() { return this._handler.inputId; }
     set inputId(p_value) { this._handler.inputId = p_value; }
+
+    //#endregion
+
+    //#region options handling
+
+    /**
+     * @description TODO
+     * @type {object}
+     */
+     set options(p_value) {
+        if (!p_value) { return; }
+        this._optionsHandler.Process(this, p_value);
+    }
+
+    /**
+     * @description TODO
+     * @type {object}
+     */
+    set altOptions(p_value) {
+        if (!p_value) { return; }
+        this._optionsHandler.ProcessExistingOnly(this, p_value, null, false, false);
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {*} p_options 
+     * @customtag override-me
+     */
+    _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
+        if (!p_options) { return; }
+        p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {*} p_options 
+     * @customtag override-me
+     */
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
+
+        this._handler.submitOnChange = u.tils.Get(p_options, `submitOnChange`, this._handler.submitOnChange);
+
+        let onSubmit = p_options.onSubmit;
+        if (onSubmit) { this._handler.Watch(SIGNAL.VALUE_SUBMITTED, onSubmit.fn, onSubmit.thisArg || null ); }
+
+        let onChange = p_options.onChange;
+        if (onChange) { this._handler.Watch(SIGNAL.VALUE_CHANGED, onChange.fn, onChange.thisArg || null); }
+
+    }
 
     //#endregion
 
@@ -103,8 +168,8 @@ class BaseInput extends Widget {
      * @param {*} p_err 
      * @customtag override-me
      */
-    _RequestFeedback(p_err) { 
-        return null; 
+    _RequestFeedback(p_err) {
+        return null;
     }
 
     //#endregion

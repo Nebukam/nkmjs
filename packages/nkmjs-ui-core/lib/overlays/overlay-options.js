@@ -12,7 +12,7 @@ var checkValue = 0;
  */
 class OverlayOptions extends com.pool.DisposableObjectEx {
 
-    static Create( p_options ){
+    static Create(p_options) {
         let overlayOptions = com.Rent(OverlayOptions);
         overlayOptions.options = p_options;
         return overlayOptions;
@@ -24,12 +24,13 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
         super._Init();
 
         this._optionsHandler = new com.helpers.OptionsHandler();
-        this._optionsHandler.Hook(`overlayClass`, `_overlayClass`);
-        this._optionsHandler.Hook(`contentClass`, `_contentClass`);
-        this._optionsHandler.Hook(`origin`, `_origin`);
+        this._optionsHandler
+            .Hook(`overlayClass`, `_overlayClass`)
+            .Hook(`contentClass`, `_contentClass`)
+            .Hook(`origin`, `_origin`)
     }
 
-    _PostInit(){
+    _PostInit() {
         super._PostInit();
         this._Reset();
     }
@@ -46,18 +47,18 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
      * @description TODO
      * @type {object}
      */
-     get options() { return this._options; }
-     set options(p_value) {
- 
-         this._options = p_value;
-         this._optionsHandler.Process(this, p_value);
- 
-         //TODO : Add support for custom popup content request
-         // = when displaying popup, callback to some function providing both dialog & dialog info
- 
-         this._Broadcast(com.SIGNAL.UPDATED, this);
- 
-     }
+    get options() { return this._options; }
+    set options(p_value) {
+
+        this._options = p_value;
+        this._optionsHandler.Process(this, p_value);
+
+        //TODO : Add support for custom popup content request
+        // = when displaying popup, callback to some function providing both dialog & dialog info
+
+        this._Broadcast(com.SIGNAL.UPDATED, this);
+
+    }
 
     /**
      * @description The overlay class to be instanciated by the OverlayHandler
@@ -70,8 +71,8 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
      * @description The content class to be instanciated by the overlay
      * @type {*}
      */
-     get contentClass() { return this._contentClass; }
-     set contentClass(p_value) { this._contentClass = p_value; }
+    get contentClass() { return this._contentClass; }
+    set contentClass(p_value) { this._contentClass = p_value; }
 
     /**
      * @description The origin of the overlay request that created this OverlayInfos

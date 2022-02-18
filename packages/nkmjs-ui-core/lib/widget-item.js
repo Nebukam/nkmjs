@@ -47,9 +47,10 @@ class WidgetItem extends Widget {
         this._optionsHandler = new com.helpers.OptionsHandler();
         this._optionsHandler.Setup(this);
 
-        this._optionsHandler.Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } });
-        this._optionsHandler.Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
-        this._optionsHandler.Hook(IDS.FLAVOR);
+        this._optionsHandler
+            .Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
+            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
+            .Hook(IDS.FLAVOR);
 
     }
 
@@ -113,9 +114,10 @@ class WidgetItem extends Widget {
      * @param {common.signals.Observer} p_observer 
      */
     _HookItemDataSignals(p_observer, p_itemData) {
-        p_observer.Hook(data.SIGNAL.DIRTY, this._OnItemDataDirty, this);
-        p_observer.Hook(data.SIGNAL.DIRTY_CLEARED, this._OnItemDataCleaned, this);
-        p_observer.Hook(com.SIGNAL.UPDATED, this._OnItemDataUpdated, this);
+        p_observer
+            .Hook(data.SIGNAL.DIRTY, this._OnItemDataDirty, this)
+            .Hook(data.SIGNAL.DIRTY_CLEARED, this._OnItemDataCleaned, this)
+            .Hook(com.SIGNAL.UPDATED, this._OnItemDataUpdated, this);
 
         if (p_itemData.isDirty) { this._OnItemDataDirty(p_itemData); }
         else { this._OnItemDataCleaned(p_itemData); }

@@ -42,11 +42,12 @@ class DialogBox extends ui.Widget {
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler.Hook(ui.IDS.FLAVOR);
-        this._optionsHandler.Hook(ui.IDS.TITLE, null, `!!! MISSING TITLE !!!`);
-        this._optionsHandler.Hook(ui.IDS.MESSAGE);
-        this._optionsHandler.Hook(`actions`, this._Bind(this.SetActions), null);
-        this._optionsHandler.Hook(`content`, this._Bind(this.SetContent));
+        this._optionsHandler
+            .Hook(ui.IDS.FLAVOR)
+            .Hook(ui.IDS.TITLE, null, `!!! MISSING TITLE !!!`)
+            .Hook(ui.IDS.MESSAGE)
+            .Hook(`actions`, this._Bind(this.SetActions), null)
+            .Hook(`content`, this._Bind(this.SetContent));
 
         this._Bind(this._Close);
         this._Bind(this._Submit);

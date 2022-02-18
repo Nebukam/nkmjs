@@ -25,8 +25,9 @@ class IOQueue extends com.pool.DisposableObjectEx {
         this._running = false;
 
         this._itemObserver = new com.signals.Observer();
-        this._itemObserver.Hook(com.SIGNAL.FAIL, this._OnCurrentRscProcessingFailed, this);
-        this._itemObserver.Hook(com.SIGNAL.COMPLETE, this._OnCurrentRscProcessingComplete, this);
+        this._itemObserver
+            .Hook(com.SIGNAL.FAIL, this._OnCurrentRscProcessingFailed, this)
+            .Hook(com.SIGNAL.COMPLETE, this._OnCurrentRscProcessingComplete, this);
 
     }
 
@@ -65,9 +66,9 @@ class IOQueue extends com.pool.DisposableObjectEx {
      */
     Add(p_process, p_first = false) {
         if (p_process === this._currentItem) { return; }
-        if(p_first){
+        if (p_first) {
             this._queue.Unshift(p_process);
-        }else{
+        } else {
             this._queue.Add(p_process);
         }
     }
@@ -81,23 +82,23 @@ class IOQueue extends com.pool.DisposableObjectEx {
         this._queue.Remove(p_process);
     }
 
-    Bump(p_process){
-        
+    Bump(p_process) {
+
         let array = this._queue.internalArray;
-        if(utils.isInstanceOf(p_process, ResourceOperation)){
+        if (utils.isInstanceOf(p_process, ResourceOperation)) {
             // Find process of operation in queue
             let op = p_process;
             p_process = null;
-            for(var i = 0; i < array.length; i++){
+            for (var i = 0; i < array.length; i++) {
                 let p = array[i];
-                if(p.operation == op){
+                if (p.operation == op) {
                     p_process = p;
                     break;
                 }
             }
         }
 
-        if(!p_process){return;}
+        if (!p_process) { return; }
 
         this._queue.Unshift(p_process);
 

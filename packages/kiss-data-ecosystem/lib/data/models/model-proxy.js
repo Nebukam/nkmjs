@@ -23,8 +23,9 @@ class ModelProxy extends Model {
         this._proxyMap = new collections.Dictionary();
 
         this._refObserver = new com.signals.Observer();
-        this._refObserver.Hook(FIELD_EVENT.FIELD_ADDED, this._OnRefModelFieldAdded, this);
-        this._refObserver.Hook(FIELD_EVENT.FIELD_REMOVED, this._OnRefModelFieldRemoved, this);
+        this._refObserver
+            .Hook(FIELD_EVENT.FIELD_ADDED, this._OnRefModelFieldAdded, this)
+            .Hook(FIELD_EVENT.FIELD_REMOVED, this._OnRefModelFieldRemoved, this);
 
     }
 

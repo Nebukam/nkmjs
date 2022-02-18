@@ -30,18 +30,18 @@ class Tab extends ui.WidgetItem {
 
         this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
 
-        this._optionsHandler.Hook(ui.IDS.NAME, `label`);
-        this._optionsHandler.Hook(ui.IDS.ICON);
-        this._optionsHandler.Hook(ui.IDS.STATIC, (p_value) => { 
-            this._isStaticTab = p_value;
-            if(this._closeBtn.element){ 
-                if(p_value){
-                    this._closeBtn.element.style.display = `none`;
-                }else{
-                    delete this._closeBtn.element.style.display;
-                }                    
-            }
-         });
+        this._optionsHandler.Hook(ui.IDS.NAME, `label`)
+            .Hook(ui.IDS.ICON)
+            .Hook(ui.IDS.STATIC, (p_value) => {
+                this._isStaticTab = p_value;
+                if (this._closeBtn.element) {
+                    if (p_value) {
+                        this._closeBtn.element.style.display = `none`;
+                    } else {
+                        delete this._closeBtn.element.style.display;
+                    }
+                }
+            });
 
     }
 
@@ -63,8 +63,8 @@ class Tab extends ui.WidgetItem {
     /**
      * @param {string} p_value
      */
-    set label(p_value) { 
-        this._label.Set(p_value); 
+    set label(p_value) {
+        this._label.Set(p_value);
         this.htitle = p_value;
     }
 
@@ -101,7 +101,7 @@ class Tab extends ui.WidgetItem {
             closeIcon: { htitle: `Close` }
         });
 
-        if (!env.isTouchEnabled) { 
+        if (!env.isTouchEnabled) {
             this._closeIcon.element.style.opacity = 0; // ???
         }
 
@@ -138,11 +138,11 @@ class Tab extends ui.WidgetItem {
 
     // ----> DATA    
 
-    _OnDataUpdated(p_data){
+    _OnDataUpdated(p_data) {
         super._OnDataUpdated(p_data);
     }
 
-    _OnItemDataUpdated(p_data){
+    _OnItemDataUpdated(p_data) {
         super._OnItemDataUpdated(p_data);
         this._label.TryReplace(p_data);
         this._icon.TryReplace(com.NFOS.Get(p_data));

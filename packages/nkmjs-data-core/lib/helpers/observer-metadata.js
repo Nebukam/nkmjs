@@ -24,12 +24,13 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
     _Init() {
         super._Init();
         this._observer = new com.signals.Observer();
-        this._observer.Hook(SIGNAL.META_ADDED, this._OnMetaAdded, this);
-        this._observer.Hook(SIGNAL.META_REMOVED, this._OnMetaRemoved, this);
-        this._observer.Hook(SIGNAL.META_UPDATED, this._OnMetaUpdated, this);
-        this._observer.Hook(SIGNAL.META_MID_UPDATE, this._OnMetaMidUpdate, this);
+        this._observer
+            .Hook(SIGNAL.META_ADDED, this._OnMetaAdded, this)
+            .Hook(SIGNAL.META_REMOVED, this._OnMetaRemoved, this)
+            .Hook(SIGNAL.META_UPDATED, this._OnMetaUpdated, this)
+            .Hook(SIGNAL.META_MID_UPDATE, this._OnMetaMidUpdate, this);
     }
-    
+
     /**
      * @description TODO
      * @type {*}
@@ -60,7 +61,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      * @param {*} [p_subscriber] 
      */
     Hook(p_evt, p_path, p_fn, p_subscriber = null) {
-        if(u.isArray(p_path)){ p_path = p_path.join('.'); }
+        if (u.isArray(p_path)) { p_path = p_path.join('.'); }
         let evt = `${this._GetPrefix(p_evt)}@${p_path}`;
         this.Watch(evt, p_fn, p_subscriber);
     }
@@ -73,7 +74,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      * @param {*} [p_subscriber] 
      */
     Unhook(p_evt, p_path, p_fn, p_subscriber = null) {
-        if(u.isArray(p_path)){ p_path = p_path.join('.'); }
+        if (u.isArray(p_path)) { p_path = p_path.join('.'); }
         let evt = `${this._GetPrefix(p_evt)}@${p_path}`;
         this.Unwatch(evt, p_fn, p_subscriber);
     }

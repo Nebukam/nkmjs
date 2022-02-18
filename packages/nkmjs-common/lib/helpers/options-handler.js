@@ -92,6 +92,7 @@ class OptionsHandler {
             this._defaults[p_optionID] = p_default;
         }
 
+        return this;
     }
 
     /**
@@ -102,6 +103,8 @@ class OptionsHandler {
     UnHook(p_optionID, p_fn = null) {
         if (p_fn === null) { p_fn = __direct; }
         this._hooks.Remove(p_optionID, p_fn);
+
+        return this;
     }
 
     /**

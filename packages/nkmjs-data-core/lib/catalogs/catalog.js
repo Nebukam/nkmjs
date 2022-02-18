@@ -133,11 +133,11 @@ class Catalog extends CatalogItem {
         if (u.isObject(p_itemOptions)) {
 
             let data = u.tils.Get(p_itemOptions, `data`, null);
-            
-            if (data) { 
+
+            if (data) {
                 let context = p_parentCatalog ? p_parentCatalog : Catalog;
-                if(u.isObject(context)){ context = context.constructor; }
-                itemClass = com.BINDINGS.Get(context, data, null); 
+                if (u.isObject(context)) { context = context.constructor; }
+                itemClass = com.BINDINGS.Get(context, data, null);
             }
 
             if (!itemClass) {
@@ -462,14 +462,16 @@ class Catalog extends CatalogItem {
      * @param {*} p_data 
      * @group Searching
      */
-    FindFirstDataHolder(p_data) {
+    FindFirstDataHolder(p_data, p_recursive = false) {
 
         for (let i = 0, n = this._items.length; i < n; i++) {
             let item = this._items[i];
             if (item.data === p_data) { return item; }
-            if (u.isInstanceOf(item, Catalog)) {
-                item = item.FindDataHolders(p_data);
-                if (item) { return item; }
+            if (p_recursive) {
+                if (u.isInstanceOf(item, Catalog)) {
+                    item = item.FindDataHolders(p_data);
+                    if (item) { return item; }
+                }
             }
         }
 
@@ -482,7 +484,7 @@ class Catalog extends CatalogItem {
      * @param {string} p_stringID 
      * @group Searching
      */
-    FindFirstDataByStringID(p_stringID) {
+    FindFirstDataByStringID(p_stringID, p_recursive = false) {
 
         for (let i = 0, n = this._items.length; i < n; i++) {
             let item = this._items[i],
@@ -500,18 +502,24 @@ class Catalog extends CatalogItem {
      * @description TODO // Replace with Filter
      * @param {string} p_key 
      * @param {*} p_value 
+     * @param {number} p_recursive
      * @group Searching
      */
-    FindFirstByOptionValue(p_key, p_value) {
+    FindFirstByOptionValue(p_key, p_value, p_recursive = false) {
 
         for (let i = 0, n = this._items.length; i < n; i++) {
 
             let item = this._items[i],
                 opt = item._options[p_key];
 
-            if (opt && opt === p_value) {
-                return item;
+            if (opt && opt === p_value) { return item; }
+            if (p_recursive) {
+                if (u.isInstanceOf(item, Catalog)) {
+                    let result = item.FindFirstByOptionValue(p_key, p_value, true);
+                    if (result) { return result; }
+                }
             }
+
         }
 
         return null;
