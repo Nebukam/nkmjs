@@ -19,6 +19,7 @@ class InputSliderOnly extends ui.inputs.InputNumberBase {
 
     _Init() {
         super._Init();
+        this._handler._submitOnChange = true;
         this._handler._updatePreviewOnChange = true;
     }
 

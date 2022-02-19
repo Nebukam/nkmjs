@@ -105,7 +105,7 @@ class InputNumberBase extends InputField {
     get step() { return this._step; }
     set step(p_value) {
         this._step = p_value;
-        if (this._useMax) {
+        if (this._useStep) {
             dom.SAtt(this._inputField, `step`, this._step);
             // TODO : Add validation
         }

@@ -85,11 +85,13 @@ class InputField extends InputBase {
 
     _onFocusIn(p_evt) {
         INPUT.ONKeyDown(KB._enter, this._FOut);
+        // TODO : Prevent keystrokes from being triggered while an input is in focus
     }
 
     _onFocusOut(p_evt) {
         INPUT.OFFKeyDown(KB._enter, this._FOut);
         this._handler.SubmitValue();
+        // TODO : Release keystroke lock if current input locker is self
     }
 
     _UpdatePreview() {

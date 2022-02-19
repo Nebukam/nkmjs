@@ -10,7 +10,11 @@ class SimpleDataBlock extends DataBlock {
 
     Set(p_id, p_value, p_silent = false) {
         if (!(p_id in this._values)) { this._values[p_id] = { value: p_value }; }
-        else { this._values[p_id].value = p_value; }
+        else { 
+            let valueObject = this._values[p_id];
+            valueObject.value = p_value; 
+            if(valueObject.setter){ this[valueObject.setter] = p_value; }
+        }
         if (!p_silent) { this.CommitUpdate(); }
         return p_value;
     }

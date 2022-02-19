@@ -50,12 +50,12 @@ module.exports = {
     // Shortcuts
 
     // to UI.Register
-    Register:__UI.Register.bind(__UI),
+    Register: __UI.Register.bind(__UI),
     // to UI.RegisterGroup
-    RegisterGroup:__UI.RegisterGroup.bind(__UI),
+    RegisterGroup: __UI.RegisterGroup.bind(__UI),
     // to DOMTemplate.Render
-    Render:__DOMtemplate.Render.bind(__DOMtemplate),
-    
+    Render: __DOMtemplate.Render.bind(__DOMtemplate),
+
 }
 
 require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

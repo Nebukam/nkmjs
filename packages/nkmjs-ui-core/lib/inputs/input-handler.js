@@ -35,7 +35,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this._errorFeedbacks = [];
 
         this._updatePreviewOnChange = true;
-        this._submitOnChange = true;
+        this._submitOnChange = false;
 
         this._inputId = ``;
 

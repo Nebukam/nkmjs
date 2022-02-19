@@ -142,7 +142,7 @@ class Catalog extends CatalogItem {
 
             if (!itemClass) {
                 if (p_forceCatalog || u.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = this.__default_catalogClass; }
-                else { itemClass = this.__default_itemClass; }
+                else { itemClass = u.tils.Get(p_itemOptions, `itemClass`, this.__default_itemClass); }
             }
         } else {
             itemClass = p_forceCatalog ? this.__default_catalogClass : this.__default_itemClass;
