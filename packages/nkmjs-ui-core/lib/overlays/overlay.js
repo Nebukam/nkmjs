@@ -143,12 +143,14 @@ class Overlay extends Layer {
 
         if (this._content) {
             this._content.classList.remove(FLAGS.SHOWN);
+            this._content.style.removeProperty(`transform`);
             if (this._content._flags) { this._content._flags.Set(FLAGS.SHOWN, false); }
             this._content.Release();
             this._content = null;
         }
 
         if (!this._data) { return; }
+
 
         if (!u.isInstanceOf(this._data, OverlayOptions)) {
             throw new Error(`Overlay expect data of type OverlayOptions, got ${this._data.constructor.name} instead.`);
@@ -163,6 +165,8 @@ class Overlay extends Layer {
 
         this._content = this.Add(contentClass, 'content');
         this._content.classList.add(FLAGS.SHOWN);
+        this._content.style.setProperty(`transform`, `translateX(0%)`);
+
         if (this._content._flags) { this._content._flags.Set(FLAGS.SHOWN, true); }
         this._content.data = contentData;
 
@@ -217,18 +221,11 @@ class Overlay extends Layer {
     _CloseRequest() {
         if (`_CloseRequest` in this._content) { this._content._CloseRequest(); }
     }
-
-    DisplayGranted() {
-
-        if (this._isDisplayed) { return false; }
-
+    
+    _OnDisplayGain() { 
+        super._OnDisplayGain();
         this.style.setProperty(`transform`, `translateX(0%)`);
         this._bg.style.setProperty(`transform`, `translateY(0%)`);
-
-        super.DisplayGranted();
-
-        return true;
-
     }
 
     /**

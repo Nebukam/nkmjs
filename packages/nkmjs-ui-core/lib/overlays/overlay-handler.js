@@ -65,6 +65,7 @@ class OverlayHandler extends LayerContainer {
 
         // Check if overlayOptions aren't in use already
         let existingOverlay = this._overlayMap.Get(overlayOptions);
+        
         if (existingOverlay) {
             existingOverlay.RequestDisplay();
             return;
@@ -84,6 +85,8 @@ class OverlayHandler extends LayerContainer {
         this._overlayMap.Set(overlayOptions, newOverlay);
         overlayOptions.Watch(com.SIGNAL.CONSUMED, this._OnOverlayOptionsConsumed);
         newOverlay.data = overlayOptions;
+
+        newOverlay.RequestDisplay();
 
         p_request.HandleSuccess(this);
 

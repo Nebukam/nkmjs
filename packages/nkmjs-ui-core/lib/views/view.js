@@ -20,8 +20,13 @@ const WidgetOrientable = require(`../widget-orientable`);
 class View extends WidgetOrientable {
     constructor() { super(); }
 
+    static __default_iState = null;
+    
     _Init() {
         super._Init();
+        
+        this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister));
+
         this._isDisplayed = false;
         this._flags.Add(this, FLAGS.SHOWN);
     }
@@ -90,14 +95,6 @@ class View extends WidgetOrientable {
 
     //
 
-
-    static __default_iState = null;
-
-    _Init() {
-        super._Init();
-        this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister));
-    }
-
     /**
      * @description TODO
      */
@@ -120,8 +117,8 @@ class View extends WidgetOrientable {
         if (this._isDisplayed) { return false; }
         this._isDisplayed = true;
         this._flags.Set(FLAGS.SHOWN, true);
-        this._Broadcast(SIGNAL.DISPLAY_GAIN, this);
         this._OnDisplayGain();
+        this._Broadcast(SIGNAL.DISPLAY_GAIN, this);
         return true;
     }
 
@@ -138,8 +135,8 @@ class View extends WidgetOrientable {
         if (!this._isDisplayed) { return false; }
         this._isDisplayed = false;
         this._flags.Set(FLAGS.SHOWN, false);
-        this._Broadcast(SIGNAL.DISPLAY_LOST, this);
         this._OnDisplayLost();
+        this._Broadcast(SIGNAL.DISPLAY_LOST, this);
         return true;
     }
 

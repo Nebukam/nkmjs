@@ -89,7 +89,7 @@ class DisposableHTMLElement extends HTMLElement {
      */
     _Bind(p_func) { return this[p_func.name] = p_func.bind(this); }
 
-    // ----> Painting
+    //#region Painting
 
     /**
      * @access protected
@@ -160,7 +160,9 @@ class DisposableHTMLElement extends HTMLElement {
         }
     }
 
-    // ----> Signals
+    //#endregion
+
+    //#region Signals
 
     /**
      * @access protected
@@ -220,7 +222,9 @@ class DisposableHTMLElement extends HTMLElement {
         return this;
     }
 
-    // ----> Pooling
+    //#endregion
+
+    //#region Pooling
 
     /**
      * @description Whether the object is currently in the process of being released or not.
@@ -307,6 +311,8 @@ class DisposableHTMLElement extends HTMLElement {
      */
     _Wake() { }
     _PostWake() { }
+
+    //#endregion
 
     toString() { return `<${this.constructor.name}>`; }
 }

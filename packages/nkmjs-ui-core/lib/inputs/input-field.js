@@ -24,6 +24,7 @@ class InputField extends InputBase {
     _Init() {
         super._Init();
         this._inputField = null;
+        this._preventTabIndexing = false;
 
         this._Bind(this._onInput);
         this._Bind(this._onChange);
@@ -39,6 +40,8 @@ class InputField extends InputBase {
         this._inputField.addEventListener('focusout', this._onFocusOut);
         this._inputField.addEventListener(`input`, this._onInput);
         this._inputField.addEventListener(`change`, this._onChange);
+        
+        if(this._preventTabIndexing){ this.preventTabIndexing = true; }
     }
 
     // ----> DOM
@@ -66,6 +69,12 @@ class InputField extends InputBase {
 
     set placeholderValue(p_value) {
         this._inputField.setAttribute(`placeholder`, p_value);
+    }
+
+    set preventTabIndexing(p_value){
+        this._preventTabIndexing = p_value;
+        if(p_value){this._inputField.setAttribute(`tabindex`, -1);}
+        else{this._inputField.removeAttribute(`tabindex`);}
     }
 
     _onInput(p_evt) { this._handler.changedValue = this._GrabValue(); }

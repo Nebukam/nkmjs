@@ -147,6 +147,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         // Insert global.css inside the app shadow dom once so all subsequent elements inherit from it
         // Import in the head is not enough for the styles to 'pierce' through
+        
         ui.dom.AttachFirst(
             ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
             this._layersWrapper._host);

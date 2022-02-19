@@ -38,7 +38,7 @@ class DisplayObject extends DisposableHTMLElement {
 
 
 
-    // ----> Init
+    //#region  Init
 
     _Init() {
 
@@ -67,7 +67,7 @@ class DisplayObject extends DisposableHTMLElement {
 
         super._PostInit();
 
-        this._BuildHost();
+        this._host = this.attachShadow(this._shadowConfig);
         this._wrapper = this._host;
 
         this._PrintStyle();
@@ -77,7 +77,7 @@ class DisplayObject extends DisposableHTMLElement {
 
     }
 
-    // ---->
+    //#endregion
 
     /**
      * @description TODO
@@ -90,6 +90,8 @@ class DisplayObject extends DisposableHTMLElement {
         if (p_value === null) { this.style.removeProperty(`--order`); }
         else { this.style.setProperty(`--order`, p_value); }
     }
+
+    //#region DOM
 
     /**
      * @description TODO
@@ -105,10 +107,6 @@ class DisplayObject extends DisposableHTMLElement {
      */
     get wrapper() { return this._wrapper; }
 
-    _BuildHost() { this._host = this.attachShadow(this._shadowConfig); }
-
-
-    // ----> DOM
 
     /**
      * @access protected
@@ -163,7 +161,29 @@ class DisplayObject extends DisposableHTMLElement {
         if (this._parent) { this._parent._displayList.ToEnd(this); }
     }
 
-    // ----> Hierarchy
+    /**
+     * @description TODO
+     * @type {boolean}
+     * @group Rendering
+     */
+    get visible() { return this._visible; }
+    set visible(p_value) {
+        if (this._visible === p_value) { return; }
+        this._visible = p_value;
+        if (!p_value) { this.style.display = `none`; }
+        else { this.style.removeProperty(`display`); }
+    }
+
+    /**
+     * @description TODO
+     * @customtag read-only
+     * @returns {ui.core.FlagEnum}
+     */
+    get flags() { return this._flags; }
+
+    //#endregion
+
+    //#region Hierarchy
 
     /**
      * @description The parent of this DisplayObject.
@@ -181,7 +201,7 @@ class DisplayObject extends DisposableHTMLElement {
         this._parent = p_value;
 
         if (oldParent) { oldParent.Remove(this); }
-        if (this._parent) { this._parent.Add(this); }
+        //if (this._parent) { this._parent.Add(this); }
 
         this._OnParentChanged(oldParent);
 
@@ -196,33 +216,9 @@ class DisplayObject extends DisposableHTMLElement {
      */
     _OnParentChanged(p_oldParent) { }
 
+    //#endregion
 
-    // ----> DOM
-
-    /**
-     * @description TODO
-     * @type {boolean}
-     * @group Rendering
-     */
-    get visible() { return this._visible; }
-    set visible(p_value) {
-        if (this._visible === p_value) { return; }
-        this._visible = p_value;
-        if (!p_value) { this.style.display = `none`; }
-        else { this.style.removeProperty(`display`); }
-    }
-
-
-    // ----> Flags
-
-    /**
-     * @description TODO
-     * @customtag read-only
-     * @returns {ui.core.FlagEnum}
-     */
-    get flags() { return this._flags; }
-
-    // ----> Request Handling
+    //#region Requests
 
     /**
      * @access protected
@@ -305,7 +301,9 @@ class DisplayObject extends DisposableHTMLElement {
         this._requestSignalBox.Remove(p_requestType, p_fn, this);
     }
 
-    // ----> Transforms
+    //#endregion
+
+    //#region Transforms
 
     /**
      * @description TODO
@@ -508,11 +506,14 @@ class DisplayObject extends DisposableHTMLElement {
     set widthRel(p_value) { this.style.width = u.isEmpty(p_value) ? `` : `${p_value}%`; }
     set heightRel(p_value) { this.style.height = u.isEmpty(p_value) ? `` : `${p_value}%`; }
 
-    // ----> Pooling
+    //#endregion
+
+    //#region Pooling
 
     _CleanUp() {
 
         this.visible = true;
+        
         this.parent = null;
 
         this.order = null;
@@ -527,6 +528,8 @@ class DisplayObject extends DisposableHTMLElement {
         //UI.GRAVEYARD.appendChild(this);
 
     }
+
+    //#endregion
 
     /**
      * @description TODO

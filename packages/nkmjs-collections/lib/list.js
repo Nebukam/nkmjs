@@ -193,7 +193,7 @@ class List {
         if (isVoid(p_item)) { return false; }
         let index = this._array.indexOf(p_item);
         if (index == -1) { return false; }
-        this._array.splice(index, 0);
+        this._array.splice(index, 1);
         this._array.push(p_item);
         return p_item;
     }

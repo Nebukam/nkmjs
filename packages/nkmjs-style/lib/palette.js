@@ -199,18 +199,23 @@ class Palette extends com.pool.DisposableObject {
 
         // Check if the class __NFO__ has any specific css imports
         let nfos = com.NFOS.Get(p_class);
+        let imports = ``;
         if (nfos) {
+
+            // Change <link> to @import --> less nodes in DOM, no FOUC
 
             if (nfos.css) {
                 for (let i = nfos.css.length - 1; i >= 0; i--) {
-                    style.push(dom.El(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
+                    //style.push(dom.El(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
+                    imports += `@import url(${this.GetCSSLink(nfos.css[i])}); `;
                 }
             }
-
+/*
             if (nfos.ignoreLocal) {
                 this._cache.Set(p_class, style);
                 return style;
             }
+            */
         }
 
 
@@ -226,11 +231,13 @@ class Palette extends com.pool.DisposableObject {
             for (let el in styleObject) { this._ProcessSuffixes(el, styleObject[el], styleObject); }
             for (let el in styleObject) { styleString += CSS_UTILS.CSS(el, this._ProcessSingleRuleset(el, styleObject[el])); }
 
-            let styleElement = dom.El(`style`);
-            styleElement.innerText = styleString;
-            style.push(styleElement);
+            imports += styleString;
 
         }
+
+        let styleElement = dom.El(`style`);
+            styleElement.innerText = imports;
+            style.push(styleElement);
 
         this._cache.Set(p_class, style);
 

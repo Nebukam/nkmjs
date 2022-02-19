@@ -138,7 +138,7 @@ $font_size_values:
     $font_size_xl;
 $font_size_varnames: 
     $varname_font_size_tag, 
-    $varname_font_size_xxs, 
+    $varname_font_size_xxs,
     $varname_font_size_xs, 
     $varname_font_size_s, 
     $varname_font_size_m, 
@@ -148,12 +148,14 @@ $font_size_varnames:
 // ----> Sizes Presets
 
 $size_values: 
+    $size_xxs, 
     $size_xs, 
     $size_s, 
     $size_m, 
     $size_l, 
     $size_xl;
 $size_varnames: 
+    $varname_size_xxs, 
     $varname_size_xs, 
     $varname_size_s, 
     $varname_size_m, 
@@ -162,6 +164,7 @@ $size_varnames:
 
 // Halves
 
+$size_xxs_half: _round($size_xxs*0.5);
 $size_xs_half: _round($size_xs*0.5);
 $size_s_half: _round($size_s*0.5);
 $size_m_half: _round($size_m*0.5);
@@ -169,6 +172,7 @@ $size_l_half: _round($size_l*0.5);
 $size_xl_half: _round($size_xl*0.5);
 
 $suffix: '-half';
+$varname_size_xxs_half: $varname_size_xxs+$suffix;
 $varname_size_xs_half: $varname_size_xs+$suffix;
 $varname_size_s_half: $varname_size_s+$suffix;
 $varname_size_m_half: $varname_size_m+$suffix;
@@ -176,12 +180,14 @@ $varname_size_l_half: $varname_size_l+$suffix;
 $varname_size_xl_half: $varname_size_xl+$suffix;
 
 $size_values_half: 
+    $size_xxs_half, 
     $size_xs_half, 
     $size_s_half, 
     $size_m_half, 
     $size_l_half, 
     $size_xl_half;
 $size_varnames_half: 
+    $varname_size_xxs_half, 
     $varname_size_xs_half, 
     $varname_size_s_half, 
     $varname_size_m_half, 
@@ -190,6 +196,7 @@ $size_varnames_half:
 
 // Thirds
 
+$size_xxs_third: _round($size_xxs*0.333);
 $size_xs_third: _round($size_xs*0.333);
 $size_s_third: _round($size_s*0.333);
 $size_m_third: _round($size_m*0.333);
@@ -197,6 +204,7 @@ $size_l_third: _round($size_l*0.333);
 $size_xl_third: _round($size_xl*0.333);
 
 $suffix: '-third';
+$varname_size_xxs_third: $varname_size_xxs+$suffix;
 $varname_size_xs_third: $varname_size_xs+$suffix;
 $varname_size_s_third: $varname_size_s+$suffix;
 $varname_size_m_third: $varname_size_m+$suffix;
@@ -204,12 +212,14 @@ $varname_size_l_third: $varname_size_l+$suffix;
 $varname_size_xl_third: $varname_size_xl+$suffix;
 
 $size_values_third: 
+    $size_xxs_third, 
     $size_xs_third, 
     $size_s_third, 
     $size_m_third, 
     $size_l_third, 
     $size_xl_third;
 $size_varnames_third: 
+    $varname_size_xxs_third, 
     $varname_size_xs_third, 
     $varname_size_s_third, 
     $varname_size_m_third, 

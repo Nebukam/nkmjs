@@ -28,6 +28,7 @@ class Layer extends View {
     set layerIndex(p_value) { 
         this._layerIndex = p_value; 
         this.style.setProperty(`--layer-depth`, p_value);
+        this._OnLayerIndexUpdated();
     }
 
     get isBackLayer() { return this._layerIndex == 0; }
@@ -42,6 +43,10 @@ class Layer extends View {
                 'overflow': 'hidden'
             }
         }
+    }
+
+    _OnLayerIndexUpdated(){
+
     }
 
     // ----> Pooling
