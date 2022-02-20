@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const ui = require(`@nkmjs/ui-core`);
 const style = require(`@nkmjs/style`);
+const actions = require("@nkmjs/actions");
 
 const __slider = `slider`;
 const _flag_noArrows = `no-arrows`;
@@ -20,6 +21,7 @@ class InputNumber extends ui.inputs.InputNumberBase {
     _Init(){
         super._Init();
         this._flags.Add(this, _flag_noArrows);
+        this._Bind(this._ToggleBoost);
     }
 
     set hideArrow(p_value){
@@ -47,6 +49,21 @@ class InputNumber extends ui.inputs.InputNumberBase {
                 'margin': '0'
             }
         }, super._Style());
+    }
+
+    _onFocusIn(p_evt) {
+        ui.INPUT.ONKeyToggle(actions.KEYBOARD._shift, this._ToggleBoost);
+        super._onFocusIn(p_evt);
+    }
+
+    _onFocusOut(p_evt) {
+        ui.INPUT.OFFKeyToggle(actions.KEYBOARD._shift, this._ToggleBoost);
+        this._ToggleBoost(false);
+        super._onFocusOut(p_evt);
+    }
+
+    _ToggleBoost(p_toggle){ 
+        ui.dom.SAtt(this._inputField, `step`, this._step * (p_toggle ? 10 : 1)); 
     }
 
     _GrabValue() {

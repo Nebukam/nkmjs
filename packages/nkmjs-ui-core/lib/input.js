@@ -95,6 +95,20 @@ class INPUT extends com.helpers.SingletonEx {
     static OFFKeyDown(p_key, p_fn) { this.Unwatch(`D_${p_key}`, p_fn); }
 
     /**
+     * @description TODO
+     * @param {*} p_key 
+     * @param {*} p_fn 
+     */
+    static ONKeyToggle(p_key, p_fn) { this.Watch(`T_${p_key}`, p_fn); }
+
+    /**
+    * @description TODO
+    * @param {*} p_key 
+    * @param {*} p_fn 
+    */
+    static OFFKeyToggle(p_key, p_fn) { this.Unwatch(`T_${p_key}`, p_fn); }
+
+    /**
          * @description TODO
          * @param {*} p_key 
          * @param {*} p_fn 
@@ -263,6 +277,7 @@ class INPUT extends com.helpers.SingletonEx {
 
         this._Broadcast(INPUT.KEY_DOWN);
         this._Broadcast(`D_${p_name}`);
+        this._Broadcast(`T_${p_name}`, true);
         KB.instance._Push(p_keyCode);
 
     }
@@ -285,6 +300,7 @@ class INPUT extends com.helpers.SingletonEx {
         this._down.Remove(p_name);
         this._Broadcast(INPUT.KEY_UP, p_name);
         this._Broadcast(`U_${p_name}`);
+        this._Broadcast(`T_${p_name}`, false);
         KB.instance._Pull(p_keyCode);
 
     }

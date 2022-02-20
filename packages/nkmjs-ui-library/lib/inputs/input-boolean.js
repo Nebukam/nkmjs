@@ -15,6 +15,8 @@ class InputBoolean extends ui.inputs.InputField {
         css: [`@/inputs/boolean.css`]
     }, ui.inputs.InputField, ['css']);
 
+    static __inputProperties = { type: 'checkbox' };
+
     _Init() {
         super._Init();
 
@@ -43,7 +45,8 @@ class InputBoolean extends ui.inputs.InputField {
         this._label = new ui.manipulators.Text(ui.dom.El(`span`, { class: `label` }, this._host));
         let body = ui.dom.El(`div`, { class: `body` }, this._host);
         this._handle = ui.dom.El(`div`, { class: `handle` }, body);
-        this._inputField = ui.dom.El(`input`, { class: 'field', type: 'checkbox' }, this._host);
+
+        super._Render();
 
         this.focusArea = body;
     }

@@ -28,10 +28,14 @@ class InputNumberBase extends InputField {
         this._useStep = false;
         this._min = 0;
         this._max = 0;
-        this._step = 0;
+        this._step = 1;
 
         this._Bind(this._SanitizeMin);
         this._Bind(this._SanitizeMax);
+
+        this._handler._updatePreviewOnInput = false;
+
+        this._pointer._wheelFn = this._Bind(this._OnWheel);
 
     }
 
@@ -128,6 +132,14 @@ class InputNumberBase extends InputField {
         
     }
 
+    _OnWheel(p_evt){
+        let increase = p_evt.deltaY < 0 ? this._step : -this._step;
+        if(INPUT.shift){ increase *= 10; }
+        let value = this._GrabValue() + increase;
+        this._handler.changedValue = value;
+        this._handler.SubmitValue();
+    }
+
     // ----> DOM
 
     _Style() {
@@ -152,6 +164,7 @@ class InputNumberBase extends InputField {
         this.useMin = this.constructor.__default_useMin;
         this.useMax = this.constructor.__default_useMax;
         this.useStep = this.constructor.__default_useStep;
+        this.focusArea = this;
     }
 
     _CleanUp() {

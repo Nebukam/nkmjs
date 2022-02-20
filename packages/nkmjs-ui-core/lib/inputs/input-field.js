@@ -15,7 +15,7 @@ const InputBase = require(`./input-base`);
 class InputField extends InputBase {
     constructor() { super(); }
 
-    static __inputProperties = { };
+    static __inputProperties = {};
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/field.css`]
@@ -40,8 +40,8 @@ class InputField extends InputBase {
         this._inputField.addEventListener('focusout', this._onFocusOut);
         this._inputField.addEventListener(`input`, this._onInput);
         this._inputField.addEventListener(`change`, this._onChange);
-        
-        if(this._preventTabIndexing){ this.preventTabIndexing = true; }
+
+        if (this._preventTabIndexing) { this.preventTabIndexing = true; }
     }
 
     // ----> DOM
@@ -56,6 +56,7 @@ class InputField extends InputBase {
                 'min-height': `28px !important` //min height for input field
             },
             '.field': {
+                display: 'none',
                 flex: `1 1 auto`,
                 'min-width': 0
             }
@@ -64,20 +65,24 @@ class InputField extends InputBase {
     }
 
     _Render() {
-        this._inputField = dom.El(`input`, { class: 'field', ...this.constructor.__inputProperties }, this._host); //, type:'search'
+        this._inputField = dom.El(`input`, { class: 'field', ...this.constructor.__inputProperties }, this._host);
     }
 
     set placeholderValue(p_value) {
         this._inputField.setAttribute(`placeholder`, p_value);
     }
 
-    set preventTabIndexing(p_value){
+    set preventTabIndexing(p_value) {
         this._preventTabIndexing = p_value;
-        if(p_value){this._inputField.setAttribute(`tabindex`, -1);}
-        else{this._inputField.removeAttribute(`tabindex`);}
+        if (p_value) { this._inputField.setAttribute(`tabindex`, -1); }
+        else { this._inputField.removeAttribute(`tabindex`); }
     }
 
-    _onInput(p_evt) { this._handler.changedValue = this._GrabValue(); }
+    _onInput(p_evt) {
+        this._handler.inputValue = this._GrabValue(); 
+        //TODO: Need to refactor handler in order to dissociate check methods from "change" event
+        //so we can have checks on current input without overriding it if it doesn't pass validation.
+    }
 
     _onChange(p_evt) { this._handler.changedValue = this._GrabValue(); }
 

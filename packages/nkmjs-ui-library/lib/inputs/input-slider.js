@@ -21,8 +21,12 @@ class InputSlider extends ui.inputs.InputNumberBase {
 
     _Init() {
         super._Init();
-        this._handler._submitOnChange = true;
+
+        this._handler._updatePreviewOnInput = true;
+        this._handler._changeOnInput = true;
         this._handler._updatePreviewOnChange = true;
+        this._handler._submitOnChange = true;
+
     }
 
     // ----> DOM
@@ -99,7 +103,7 @@ class InputSlider extends ui.inputs.InputNumberBase {
 
     _UpdatePreview() {
         super._UpdatePreview();
-        this.style.setProperty(`--fill`, `${u.tils.Map(this.currentValue, this._min, this._max, 0, 100)}%`);
+        this.style.setProperty(`--fill`, `${u.tils.Map(this.inputValue, this._min, this._max, 0, 100)}%`);
     }
 
 

@@ -55,8 +55,7 @@ class BaseInput extends Widget {
             .Hook(`size`)
             .Hook(`currentValue`)
             .Hook(IDS.FLAVOR)
-            .Hook(IDS.VARIANT)
-            .Hook(`handerOptions`);
+            .Hook(IDS.VARIANT);
 
     }
 
@@ -81,6 +80,8 @@ class BaseInput extends Widget {
      */
     get changedValue() { return this._handler.changedValue; }
     set changedValue(p_value) { this._handler.changedValue = p_value; }
+
+    get inputValue() { return this._handler.inputValue; }
 
     /**
      * @type {string}
@@ -129,6 +130,7 @@ class BaseInput extends Widget {
      */
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
 
+        this._handler.changeOnInput = u.tils.Get(p_options, `changeOnInput`, this._handler.changeOnInput);
         this._handler.submitOnChange = u.tils.Get(p_options, `submitOnChange`, this._handler.submitOnChange);
 
         let onSubmit = p_options.onSubmit;
@@ -136,6 +138,9 @@ class BaseInput extends Widget {
 
         let onChange = p_options.onChange;
         if (onChange) { this._handler.Watch(SIGNAL.VALUE_CHANGED, onChange.fn, onChange.thisArg || null); }
+
+        let onInput = p_options.onInput;
+        if (onInput) { this._handler.Watch(SIGNAL.VALUE_INPUT_CHANGED, onInput.fn, onInput.thisArg || null); }
 
     }
 

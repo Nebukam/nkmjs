@@ -27,6 +27,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
 
         this._currentValue = null;
         this._changedValue = null;
+        this._inputValue = null;
 
         this._invalidInput = false;
         this._inputErrors = [];
@@ -34,8 +35,10 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this._externalSanitizationStack = new collections.List();
         this._errorFeedbacks = [];
 
+        this._updatePreviewOnInput = true;
+        this._changeOnInput = false;
         this._updatePreviewOnChange = true;
-        this._submitOnChange = false;
+        this._submitOnChange = true;
 
         this._inputId = ``;
 
@@ -58,8 +61,14 @@ class InputHandler extends com.pool.DisposableObjectEx {
     /**
      * @type {boolean}
      */
-    get submitOnChange() { return this._submitOnChange; }
-    set submitOnChange(p_value) { this._submitOnChange = p_value; }
+    get changeOnInput() { return this._changeOnInput; }
+    set changeOnInput(p_value) { this._changeOnInput = p_value; }
+
+    /**
+     * @type {boolean}
+     */
+     get submitOnChange() { return this._submitOnChange; }
+     set submitOnChange(p_value) { this._submitOnChange = p_value; }
 
     /**
      * @type {*}
@@ -73,6 +82,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         let oldValue = this._currentValue;
         this._currentValue = p_value;
         this._changedValue = p_value; //Setting current value override the edited value.
+        this._inputValue = p_value;
         this._OnCurrentValueChanged(oldValue);
     }
 
@@ -109,6 +119,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
     set changedValue(p_value) {
         if (this._changedValue === p_value) { return; }
         let oldValue = this._changedValue;
+        this._inputValue = p_value;
         this._changedValue = p_value;
         this._OnValueChanged(oldValue);
     }
@@ -158,6 +169,15 @@ class InputHandler extends com.pool.DisposableObjectEx {
         }
 
         return p_value;
+    }
+
+    get inputValue(){ return this._inputValue; }
+    set inputValue(p_value){
+        if (this._inputValue === p_value) { return; }
+        this._inputValue = p_value;
+        this._Broadcast(SIGNAL.VALUE_INPUT_CHANGED, this, this._inputValue);
+        if(this._changeOnInput){ this.changedValue = p_value; }
+        if(this._updatePreviewOnInput){ this._delayedPreviewUpdate.Schedule(); }
     }
 
     /**

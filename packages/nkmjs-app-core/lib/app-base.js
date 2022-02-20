@@ -227,9 +227,7 @@ class AppBase extends com.helpers.SingletonEx {
         // Insert global.css (again) outside of the shadow dom this time
         // NOTE : Should be added in regular css imports
         //ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
-        // Push the app wrapper to the DOM
-        ui.dom.Attach(this._layersWrapper, document.body);
-
+        
         this._userPreferences.Load(
             `${this._APPID}Preferences`,
             this._defaultUserPreferences,
@@ -285,6 +283,9 @@ class AppBase extends com.helpers.SingletonEx {
             if (this._loadingOverlay) {
 
                 this.AppDisplay();
+                
+                // Push the app wrapper to the DOM
+                ui.dom.Attach(this._layersWrapper, document.body);
 
                 this._loadingOverlay.addEventListener(`animationend`, (p_evt) => {
                     ui.dom.Detach(p_evt.target);

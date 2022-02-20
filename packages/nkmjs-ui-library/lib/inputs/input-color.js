@@ -25,7 +25,8 @@ class InputColor extends ui.inputs.InputField {
 
     _Style() {
         return style.Extends({
-            '.field': { '@': [`invisible-fill`] }
+            '.field': { '@': [`invisible-fill`] },
+            '.body':{ 'pointer-events':'none' }
         }, super._Style());
     }
 
