@@ -39,6 +39,11 @@ class InputNumberBase extends InputField {
 
     }
 
+    _PostInit(){
+        super._PostInit();
+        this.focusArea = this;
+    }
+
     //#region min
 
     get useMin() { return this._useMin; }
@@ -164,7 +169,6 @@ class InputNumberBase extends InputField {
         this.useMin = this.constructor.__default_useMin;
         this.useMax = this.constructor.__default_useMax;
         this.useStep = this.constructor.__default_useStep;
-        this.focusArea = this;
     }
 
     _CleanUp() {
