@@ -13,6 +13,7 @@ module.exports = {
     InputFormHandler: require(`./input-form-handler`),
     InputListHandler: require(`./input-list-handler`),
     InputGroup: require(`./input-group`),
+    InputCatalogBase: require(`./input-catalog-base`),
 
     MovableHandle: require(`./movable-handle`),
 

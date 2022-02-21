@@ -40,12 +40,52 @@ class ControlView extends ui.views.View {
             this._metadata = null;
         }
 
+        this._optionsHandler = new com.helpers.OptionsHandler(
+            null,
+            this._Bind(this._OnOptionsWillUpdate));
+
+        this._optionsHandler
+            .Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
+            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
+
     }
 
     _PostInit() {
         super._PostInit();
         this._ResetMetaPresentation();
     }
+
+    //#region Options handling
+
+    /**
+     * @description TODO
+     * @type {object}
+     */
+    set options(p_value) {
+        if (!p_value) { return; }
+        this._optionsHandler.Process(this, p_value);
+    }
+
+    /**
+     * @description TODO
+     * @type {object}
+     */
+    set altOptions(p_value) {
+        if (!p_value) { return; }
+        this._optionsHandler.ProcessExistingOnly(this, p_value, null, false, false);
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {*} p_options 
+     * @customtag override-me
+     */
+    _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
+        if (!p_options) { return; }
+    }
+
+    //#endregion
 
     //#region Context
 

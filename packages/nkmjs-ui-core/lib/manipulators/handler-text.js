@@ -109,6 +109,7 @@ class TextHandler extends ContentManipulator {
             let text = ``;
 
             if (u.isString(p_value)) { text = p_value; }
+            else if (`label` in p_value) { text = p_value.label; }
             else if (`name` in p_value) { text = p_value.name; }
             else if (`title` in p_value) { text = p_value.title }
             else if (`objectURL` in p_value) { text = p_value.objectURL; }

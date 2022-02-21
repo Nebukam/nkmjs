@@ -18,13 +18,13 @@ const Editor = require(`./editor`);
  * @augments ui.core.Widget
  * @memberof ui.datacontrols
  */
-class ControlWidget extends ui.Widget{
-    constructor(){super();}
+class ControlWidget extends ui.Widget {
+    constructor() { super(); }
 
     static __clearBuilderOnRelease = false;
     static __useMetaObserver = false;
 
-    _Init(){
+    _Init() {
         super._Init();
 
         this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
@@ -33,17 +33,60 @@ class ControlWidget extends ui.Widget{
         if (this.constructor.__useMetaPresentation) {
             this._metadataObserver = new data.helpers.MetadataObserver();
             this._metadataObserver.Hook(
-                data.SIGNAL.META_MID_UPDATE, 
+                data.SIGNAL.META_MID_UPDATE,
                 META_IDS.PRESENTATION,
                 this._UpdateMetaPresentation, this);
             this._metadata = null;
         }
+
+        this._optionsHandler = new com.helpers.OptionsHandler(
+            null,
+            this._Bind(this._OnOptionsWillUpdate));
+
+        this._optionsHandler
+            .Hook(`htitle`)
+            .Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
+            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
+
     }
 
-    _PostInit(){
+    _PostInit() {
         super._PostInit();
         this._ResetMetaPresentation();
     }
+
+    //#region Options handling
+
+    /**
+     * @description TODO
+     * @type {object}
+     */
+    set options(p_value) {
+        if (!p_value) { return; }
+        this._optionsHandler.Process(this, p_value);
+    }
+
+    /**
+     * @description TODO
+     * @type {object}
+     */
+    set altOptions(p_value) {
+        if (!p_value) { return; }
+        this._optionsHandler.ProcessExistingOnly(this, p_value, null, false, false);
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {*} p_options 
+     * @customtag override-me
+     */
+    _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
+        if (!p_options) { return; }
+        p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
+    }
+
+    //#endregion
 
     //#region Context
 
@@ -52,9 +95,9 @@ class ControlWidget extends ui.Widget{
      * @type {ui.data.DataBlock}
      * @group Data
      */
-    get context(){ return this._context; }
-    set context(p_value){
-        if(this._context === p_value){ return; }
+    get context() { return this._context; }
+    set context(p_value) {
+        if (this._context === p_value) { return; }
         let oldValue = this._context;
         this._context = p_value;
         this._OnContextChanged(oldValue);
@@ -68,7 +111,7 @@ class ControlWidget extends ui.Widget{
      * @group Data 
      * @customtag override-me
      */
-    _OnContextChanged( p_oldValue ){
+    _OnContextChanged(p_oldValue) {
 
     }
 
@@ -80,10 +123,10 @@ class ControlWidget extends ui.Widget{
      * @type {ui.datacontrols.Editor}
      * @customtag read-only
      */
-    get editor(){
+    get editor() {
         let p = this._parent;
-        while(p != null){
-            if(u.isInstanceOf(p, Editor)){return p;}
+        while (p != null) {
+            if (u.isInstanceOf(p, Editor)) { return p; }
             p = p._parent;
         }
         return null;
@@ -91,35 +134,35 @@ class ControlWidget extends ui.Widget{
 
     //#region DOM
 
-    _Style(){
+    _Style() {
         return style.Extends({
-            ':host':{
+            ':host': {
             }
         }, super._Style());
     }
 
-    _Render(){
+    _Render() {
         super._Render();
         let controlList = this.constructor.__controls;
-        if(controlList){ this._builder.Build(controlList); }
+        if (controlList) { this._builder.Build(controlList); }
     }
 
     //#endregion
 
     //#region Data
 
-    _OnDataChanged(p_oldValue){
+    _OnDataChanged(p_oldValue) {
         super._OnDataChanged(p_oldValue);
-        
+
         if (this._metadataObserver) {
-            if (u.isInstanceOf(this._data, data.DataBlock)) { 
+            if (u.isInstanceOf(this._data, data.DataBlock)) {
                 this._metadata = this._data.metadata;
-                this._metadataObserver.target = this._metadata; 
+                this._metadataObserver.target = this._metadata;
                 this._UpdateMetaPresentation();
             }
-            else { 
+            else {
                 this._metadata = null;
-                this._metadataObserver.target = null; 
+                this._metadataObserver.target = null;
                 this._ResetMetaPresentation();
             }
         }
@@ -133,7 +176,7 @@ class ControlWidget extends ui.Widget{
      * @group Data
      * @customtag override-me
      */
-    _OnDataDirty(p_data){
+    _OnDataDirty(p_data) {
         this._OnDataUpdated(p_data); // <- Overkill much ?
     }
 
@@ -173,11 +216,11 @@ class ControlWidget extends ui.Widget{
      * @param {object} p_operation Action' operation parameters
      * @group Actions
      */
-    _Do(p_actionClass, p_operation){
+    _Do(p_actionClass, p_operation) {
         actions.CommandAction.Do(this, p_actionClass, p_operation);
     }
 
-    _CleanUp(){
+    _CleanUp() {
         if (this.constructor.__clearBuilderOnRelease) { this._builder.Clear(); }
         this.context = null;
         super._CleanUp();

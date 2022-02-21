@@ -32,6 +32,11 @@ class TreeItem extends ui.lists.Item {
         this._toolbarClass = ui.WidgetBar;
     }
 
+    _PostInit(){
+        super._PostInit();
+        this._optionsHandler.Hook(`data`, `itemData`); // Make sure this is registered last
+    }
+
     // ----> DOM
 
     /**
@@ -82,9 +87,7 @@ class TreeItem extends ui.lists.Item {
     // ----> Update infos   
 
     _UpdateInfos() {
-
-        super._UpdateInfos();
-
+        
         if (this._itemData) {
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
             if (!this._icon.Set(this._itemData)) { this._icon.Set(this._data.options); }

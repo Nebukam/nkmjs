@@ -82,6 +82,8 @@ class UTILS_DOM {
     static Detach(p_element) {
         if (!u.isVoid(p_element.parentNode)) {
             p_element.parentNode.removeChild(p_element);
+        }else{
+            p_element.remove();
         }
     }
 

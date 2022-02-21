@@ -25,6 +25,7 @@ class StyleguideApp extends nkm.app.AppBase {
     _Init() {
         super._Init();
         this._mainContainer = null;
+        this._delayedScrollIntoView = nkm.com.DelayedCall(this._Bind(this._ScrollToTarget));
 
         this._Bind(this._Dialog);
         this._Bind(this._Overlay);
@@ -114,6 +115,7 @@ class StyleguideApp extends nkm.app.AppBase {
 
     AppReady() {
         super.AppReady();
+        this._scrollTarget = null;
 
         let keys = ui.UI.instance._uiTypes.keys,
             cardBtns = [
@@ -178,14 +180,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 ]
             },
             {
-                cl:ui.inputs.InputNumberBase,
-                variants: [
-                    { min: -5, max: 5, step: 0.1, currentValue:1 },
-                    { min: -5, max: 5, step: 1, currentValue:1 },
-                    { min: -5, max: 5, step: 0.1, currentValue:1 , size: ui.FLAGS.SIZE_XS },
-                    { min: -5, max: 5, step: 1, currentValue:1, size: ui.FLAGS.SIZE_XS },
-                ],
-                fn: this._Bind(this._OnInputCreated)
+                cl:ui.inputs.InputCatalogBase, fn: this._Bind(this._FillCatalogInput)
             },
             {
                 cl: ui.WidgetBar, not: [w.WorkspaceCellNav, ui.views.ShelfNav],
@@ -278,8 +273,18 @@ class StyleguideApp extends nkm.app.AppBase {
         // Generate overlay request
         //setTimeout(this._Bind(this._Overlay), 1000);
 
-        //this._firsttreeItem.scrollIntoView();
+        //this._scrollTarget = this._firsttreeItem;
 
+    }
+
+    AppDisplay(){
+        super.AppDisplay();
+        this._delayedScrollIntoView.Schedule();
+    }
+
+    _ScrollToTarget(){
+        console.log(`scrollTarget`, this._scrollTarget);
+        if(this._scrollTarget){ this._scrollTarget.scrollIntoView(); }
     }
 
     _Dialog() {
@@ -363,6 +368,12 @@ class StyleguideApp extends nkm.app.AppBase {
         p_citem.data = this._catalogSample;
     }
 
+    _FillCatalogInput(p_input){
+        p_input.data = this._shelfCatalog();
+        this._scrollTarget = p_input;
+        p_input.currentValue = p_input.data._items[p_input.data._items.length-1];
+    }
+
     _PopInTag(p_tagItem) {
         return;
         ui.helpers.PopIn.Pop({
@@ -383,11 +394,11 @@ class StyleguideApp extends nkm.app.AppBase {
     _OnCardCreated(p_card, p_variant) {
         p_card.data = p_variant;
         p_card.title = `I am a ${u.tils.CamelSplit(p_card.constructor.name)}`;
-        //p_card.scrollIntoView();
+        //this._scrollTarget = p_card;
     }
 
     _OnInputCreated(p_input){
-        p_input.scrollIntoView();
+        //this._scrollTarget = p_input;
     }
 
     _TriggerTest(p_source) {

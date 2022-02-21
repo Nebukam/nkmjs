@@ -26,7 +26,9 @@ class InputField extends InputBase {
         this._inputField = null;
         this._preventTabIndexing = false;
 
-        this._optionsHandler.Hook(`preventTabIndexing`);
+        this._optionsHandler
+            .Hook(`preventTabIndexing`)
+            .Hook(`placeholder`, `placeholderValue`);
 
         this._Bind(this._onInput);
         this._Bind(this._onChange);
@@ -81,7 +83,7 @@ class InputField extends InputBase {
     }
 
     _onInput(p_evt) {
-        this._handler.inputValue = this._GrabValue(); 
+        this._handler.inputValue = this._GrabValue();
         //TODO: Need to refactor handler in order to dissociate check methods from "change" event
         //so we can have checks on current input without overriding it if it doesn't pass validation.
     }

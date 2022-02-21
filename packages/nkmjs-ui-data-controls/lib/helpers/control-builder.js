@@ -19,14 +19,21 @@ class ControlBuilder {
         this._host = p_owner;
         this._data = null;
         this._defaultCSS = p_defaultCSS;
+        this._defaultControlClass = null;
+
+        this._preProcessDataFn = null;
 
         this._controls = [];
 
     }
 
-    set host(p_value){
-        this._host = p_value;
-    }
+    set host(p_value) { this._host = p_value; }
+
+    set preProcessDataFn(p_value) { this._preProcessDataFn = p_value; }
+
+    set defaultControlClass(p_value) { this._defaultControlClass = p_value; }
+
+    set defaultCSS(p_value){ this._defaultCSS = p_value; }
 
     set context(p_value) {
 
@@ -39,7 +46,7 @@ class ControlBuilder {
 
     set data(p_value) {
 
-        this._data = p_value;
+        this._data = this._preProcessDataFn ? this._preProcessDataFn(p_value) : p_value;
         for (let i = 0, n = this._controls.length; i < n; i++) {
             this._controls[i].data = p_value;
         }
@@ -49,7 +56,7 @@ class ControlBuilder {
     Set(p_context, p_data) {
 
         this._context = p_context;
-        this._data = p_data;
+        this._data = this._preProcessDataFn ? this._preProcessDataFn(p_value) : p_value;
 
         for (let i = 0, n = this._controls.length; i < n; i++) {
             let control = this._controls[i];
@@ -60,7 +67,7 @@ class ControlBuilder {
     }
 
     /**
-     * { cl:class, css:'class', name:'name' }
+     * { cl:class, css:'class', name:'name', options:{} }
      * @param {array} p_controls 
      */
     Build(p_controls) {
@@ -72,10 +79,11 @@ class ControlBuilder {
                 cl = null;
 
             if (config.context) { cl = com.BINDINGS.Get(config.context, (config.key || config.cl), config.cl); }
-            
             else { cl = config.cl; }
 
-            control = this.Add(config.cl, config.css);
+            if(!cl){ cl = this._defaultControlClass; }
+
+            control = this.Add(cl, config.css, config.options);
             if (config.name) { this._owner[config.name] = control; }
 
         }
@@ -88,10 +96,12 @@ class ControlBuilder {
      * @param {string} [p_css] 
      * @returns 
      */
-    Add(p_class, p_css = null) {
+    Add(p_class, p_css = null, p_options = null) {
 
         let control = this._owner.Add(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, this._host);
         this._controls.push(control);
+
+        if (p_options) { control.options = p_options; }
 
         control.context = this._context;
         control.data = this._data;

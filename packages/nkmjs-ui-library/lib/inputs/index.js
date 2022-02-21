@@ -14,6 +14,6 @@ module.exports = {
     Path: require(`./input-path`),
     File: require(`./input-file`),
     Directory: require(`./input-directory`),
-    List: require(`./input-list`),
+    Select: require(`./input-select`),
     
 }
