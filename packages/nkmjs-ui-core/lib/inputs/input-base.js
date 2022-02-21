@@ -132,6 +132,7 @@ class BaseInput extends Widget {
 
         this._handler.changeOnInput = u.tils.Get(p_options, `changeOnInput`, this._handler.changeOnInput);
         this._handler.submitOnChange = u.tils.Get(p_options, `submitOnChange`, this._handler.submitOnChange);
+        this._handler.preventTabIndexing = u.tils.Get(p_options, `preventTabIndexing`, this._handler.preventTabIndexing);        
 
         let onSubmit = p_options.onSubmit;
         if (onSubmit) { this._handler.Watch(SIGNAL.VALUE_SUBMITTED, onSubmit.fn, onSubmit.thisArg || null ); }

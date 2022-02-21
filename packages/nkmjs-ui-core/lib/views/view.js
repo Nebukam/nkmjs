@@ -34,8 +34,7 @@ class View extends WidgetOrientable {
     _Style() {
         return style.Extends({
             ':host': {
-                'min-width': '0',
-                'min-height': '0'
+                
             }
         }, super._Style());
     }

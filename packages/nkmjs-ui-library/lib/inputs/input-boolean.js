@@ -35,7 +35,7 @@ class InputBoolean extends ui.inputs.InputField {
 
     _Style() {
         return style.Extends({
-            ':host':{ 'min-height': `0` }, //min height for input field
+            ':host':{ 'min-height': `var(--size)` }, //min height for input field
             '.field': { '@': [`invisible-fill`] }
         }, super._Style());
     }

@@ -26,6 +26,8 @@ class InputField extends InputBase {
         this._inputField = null;
         this._preventTabIndexing = false;
 
+        this._optionsHandler.Hook(`preventTabIndexing`);
+
         this._Bind(this._onInput);
         this._Bind(this._onChange);
         this._Bind(this._onFocusIn);

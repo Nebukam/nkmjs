@@ -9,7 +9,7 @@ const style = require(`@nkmjs/style`);
 class InputSliderOnly extends ui.inputs.InputNumberBase {
     constructor() { super(); }
 
-    static __inputProperties = { type: `range`, class: `slider` };
+    static __inputProperties = { type: `range` };
     static __default_useMin = true;
     static __default_useMax = true;
 
@@ -37,8 +37,8 @@ class InputSliderOnly extends ui.inputs.InputNumberBase {
                 'display': 'flex',
                 'flex-flow': 'row nowrap',
                 'align-items': 'center',
-                '--thumbSize':'var(--size)',
-                'min-width':'calc(var(--size) * 2)'
+                '--thumbSize': 'var(--size)',
+                'min-width': 'calc(var(--size) * 2)'
             },
             '.slider-ctnr': {
                 'position': 'relative',
@@ -75,7 +75,7 @@ class InputSliderOnly extends ui.inputs.InputNumberBase {
         let sliderCtnr = dom.El(`div`, { class: `slider-ctnr item` }, this._host);
 
         dom.El(`div`, { class: `slider-assets` }, sliderCtnr);
-        this._inputField = dom.El(`input`, { class: 'field', ...this.constructor.__inputProperties }, sliderCtnr);
+        this._inputField = dom.El(`input`, { class: 'slider', ...this.constructor.__inputProperties }, sliderCtnr);
 
         this.useMin = true;
         this.useMax = true;

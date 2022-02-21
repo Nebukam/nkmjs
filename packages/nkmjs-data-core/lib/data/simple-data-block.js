@@ -1,4 +1,5 @@
 const DataBlock = require(`./data-block`);
+const SIGNAL = require(`../signal`);
 
 class SimpleDataBlock extends DataBlock {
     constructor() { super(); }
@@ -9,13 +10,17 @@ class SimpleDataBlock extends DataBlock {
     }
 
     Set(p_id, p_value, p_silent = false) {
-        if (!(p_id in this._values)) { this._values[p_id] = { value: p_value }; }
+        let valueObject;
+        if (!(p_id in this._values)) { 
+            valueObject =  { value: p_value };
+            this._values[p_id] = valueObject; 
+        }
         else { 
-            let valueObject = this._values[p_id];
+            valueObject = this._values[p_id];
             valueObject.value = p_value; 
             if(valueObject.setter){ this[valueObject.setter] = p_value; }
         }
-        if (!p_silent) { this.CommitUpdate(); }
+        this.CommitValueUpdate(p_id, valueObject, p_silent);
         return p_value;
     }
 
@@ -28,9 +33,9 @@ class SimpleDataBlock extends DataBlock {
         return value;
     }
 
-    GetOrSet(p_id, p_fallback = null) {
+    GetOrSet(p_id, p_fallback = null, p_silent = false) {
         if (!(p_id in this._values)) {
-            this.Set(p_id, p_fallback);
+            this.Set(p_id, p_fallback, p_silent);
             return p_fallback;
         }
         return this._values[p_id].value;
@@ -39,6 +44,11 @@ class SimpleDataBlock extends DataBlock {
     BatchSet(p_values) {
         for (var p in p_values) { this.Set(p, p_values[p], true); }
         this.CommitUpdate();
+    }
+
+    CommitValueUpdate(p_id, p_valueObj, p_silent = false){
+        this._Broadcast(SIGNAL.VALUE_CHANGED, this, p_id, p_valueObj);
+        if(!p_silent){ this.CommitUpdate(); }
     }
 
     _CleanUp() {
