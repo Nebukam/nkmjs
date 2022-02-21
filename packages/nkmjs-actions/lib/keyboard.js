@@ -292,13 +292,12 @@ class KEYBOARD extends com.helpers.SingletonEx {
 
         if (this._activeKeystrokes.count == 0) { this._BuildActiveKeystrokes(); }
 
-        let n = this._activeKeystrokes.count;
-        for (let i = 0; i < n; i++) {
+        for (let i = 0; i < this._activeKeystrokes.count; i++) {
 
-            let k = this._keystrokes.At(i),
+            let k = this._activeKeystrokes.At(i),
                 match = k.GetMatch(this._activeChain);
 
-            if (match < 0) { this._activeKeystrokes.Remove(k); }
+            if (match < 0) { this._activeKeystrokes.Remove(k); i--; }
             else if (match == 1) { k.Activate(); }
 
         }
