@@ -10,6 +10,7 @@ const UI = require(`../ui`);
 const FLAGS = require(`../flags`);
 const SIGNAL = require(`../signal`);
 const POINTER = require("../pointer");
+const ANCHORING = require(`../anchoring`);
 const extensions = require(`../extensions`);
 
 const DisplayObjectContainer = require(`../display-object-container`);
@@ -70,79 +71,6 @@ class Modal extends DisplayObjectContainer {
 
     /**
      * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static LEFT = { x: -0.5, y: 0 };
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static RIGHT = { x: 0.5, y: 0 };
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static TOP = { x: 0, y: -0.5 };
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static BOTTOM = { x: 0, y: 0.5 };
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static TOP_LEFT = { x: -0.5, y: -0.5 };
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static TOP_RIGHT = { x: 0.5, y: -0.5 };
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static BOTTOM_LEFT = { x: -0.5, y: 0.5 };
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static BOTTOM_RIGHT = { x: 0.5, y: 0.5 };
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     * @group Placement
-     */
-    static CENTER = { x: 0, y: 0 };
-
-
-    /**
-     * @description TODO
      * @param {object} p_options
      * @param {Element} p_options.context
      * @param {function|ui.core.DisplayObject} p_options.content
@@ -180,9 +108,9 @@ class Modal extends DisplayObjectContainer {
         this._content = null;
         this._options = null;
         this._placement = null;
-
-        this._placementEnum = new FlagEnum(FLAGS.placements);
-        this._placementEnum.Add(this);
+        this._origin = null;
+        this._keepWithinScreen = true;
+        this._margins = { x:0, y:0 };
 
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
@@ -195,9 +123,11 @@ class Modal extends DisplayObjectContainer {
             .Hook(`mode`)
             .Hook(`context`, null, env.APP.body || document.body)
             .Hook(`anchor`)
+            .Hook(`margins`)
+            .Hook(`keepWithinScreen`, null, true)
             .Hook(`static`, null, false)
-            .Hook(`placement`, null, Modal.CENTER)
-            .Hook(`origin`, null, Modal.CENTER);
+            .Hook(`placement`, null, ANCHORING.BOTTOM_LEFT)
+            .Hook(`origin`, null, ANCHORING.TOP_LEFT);
 
         this._pointer = new extensions.PointerStatic(this);
 
@@ -265,6 +195,14 @@ class Modal extends DisplayObjectContainer {
     }
 
     /**
+     * @description Whether the modal must be kept within screen
+     * @type {object}
+     * @group Placement
+     */
+    get keepWithinScreen() { return this._keepWithinScreen; }
+    set keepWithinScreen(p_value) { this._keepWithinScreen = p_value; }
+
+    /**
      * @description TODO
      * @type {string}
      * @group Mode
@@ -273,7 +211,7 @@ class Modal extends DisplayObjectContainer {
     set mode(p_value) { this._modeEnum.Set(p_value); }
 
     /**
-     * @description TODO
+     * @description Point around the anchor where the origin point will be pinned
      * @type {object}
      * @group Placement
      */
@@ -281,18 +219,24 @@ class Modal extends DisplayObjectContainer {
     set placement(p_value) { this._placement = p_value; }
 
     /**
-     * @description Point inside the pop-in to pin at position
+     * @description Point around the anchor where the origin point will be pinned
      * @type {object}
      * @group Placement
      */
-    get origin() { return this._placement; }
-    set origin(p_value) { this._placement = p_value; }
+     get margins() { return this._margins; }
+     set margins(p_value) { this._margins = p_value; }
 
     /**
      * @description Point inside the pop-in to pin at position
      * @type {object}
      * @group Placement
      */
+    get origin() { return this._origin; }
+    set origin(p_value) {
+        let o = { x: (p_value.x || 0) + 0.5, y: (p_value.y || 0) + 0.5 };
+        this._origin = o;
+    }
+
     get static() { return this._static; }
     set static(p_value) {
         if (this._static === p_value) { return; }
@@ -397,7 +341,9 @@ class Modal extends DisplayObjectContainer {
                 'position': 'absolute',
                 'border': '1px solid red',
                 //'width':'0', 'height':'0',
-                'display': 'flex' // making sure things are properly sized
+                'display': 'flex', // making sure things are properly sized,
+                'max-width': 'var(--screen-width)',
+                'max-height': 'var(--screen-height)',
             },
             ':host(.mode-float-inside)': {
 
@@ -427,26 +373,45 @@ class Modal extends DisplayObjectContainer {
      */
     _UpdateAnchoredPosition() {
 
-        let rect = dom.Rect(this._anchor, this.parentElement),
-            centerX = rect.x + rect.width * 0.5,
-            centerY = rect.y + rect.height * 0.5,
-            x = centerX + rect.width * this._placement.x,
-            y = centerY + rect.height * this._placement.y;
+        let anchorRect = dom.Rect(this._anchor, this.parentElement),
+            selfRect = dom.Rect(this),
+            anchorCX = anchorRect.x + anchorRect.width * 0.5,
+            anchorCY = anchorRect.y + anchorRect.height * 0.5,
+            x = anchorCX + anchorRect.width * this._placement.x,
+            y = anchorCY + anchorRect.height * this._placement.y;
+
+        x -= this._origin.x * selfRect.width;
+        y -= this._origin.y * selfRect.height;
+
+        x += this._margins.x * this._placement.x;
+        y += this._margins.y * this._placement.y;
+
+        if (this._keepWithinScreen) {
+
+            let
+                screenW = window.innerWidth,
+                screenH = window.innerHeight,
+                diffX = screenW - (x + selfRect.width),
+                diffY = screenH - (y + selfRect.height);
+
+            // lazy temp fix
+
+            if (diffX < 0) { x += diffX; }
+            else if (x < 0) { x = 0; }
+
+            if (diffY < 0) { y += diffY; }
+            else if (y < 0) { y = 0; }
 
 
-        if (this._placement.x < 0.5) {
-            // offset by pop-in width
-        } else {
-            // no re-positioning
+            //First, move on the opposite side
+
+
+            //Then, if still outside of boundaries
+            //Force within window boundaries
+
         }
 
-        if (this._placement.y < 0.5) {
-            // offset by pop-in width
-        } else {
-            // no re-positioning
-        }
-
-        this.style.transform = `translateX(${x}px) translateY(${y}px)`;
+        this.style.setProperty(`transform`, `translateX(${x}px) translateY(${y}px)`);
 
     }
 
@@ -506,6 +471,7 @@ class Modal extends DisplayObjectContainer {
         this.anchor = null;
         this.mode = null;
         this.static = false;
+        this.keepWithinScreen = true;
 
         this._options = null;
 
@@ -518,4 +484,4 @@ class Modal extends DisplayObjectContainer {
 }
 
 module.exports = Modal;
-UI.Register(`nkmjs-pop-in`, Modal);
+UI.Register(`nkmjs-modal`, Modal);

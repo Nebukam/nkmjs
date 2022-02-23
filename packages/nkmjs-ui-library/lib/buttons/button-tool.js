@@ -19,13 +19,13 @@ class ToolButton extends ui.WidgetButton {
     }, ui.WidgetButton, ['css']);
 
     _Init() {
-
         super._Init();
+        this._optionsHandler
+            .Hook(ui.IDS.ICON, null, ``);
 
-        this._optionsHandler.Hook( ui.IDS.ICON );
-        
         this._icon = null;
 
+        this._flags.Add(this, ui.FLAGS.NO_ICON, ui.FLAGS.NO_LABEL);
     }
 
     _OnDataUpdated(p_data) {
@@ -33,7 +33,7 @@ class ToolButton extends ui.WidgetButton {
     }
 
     // ----> DOM
-    
+
     /**
      * @description TODO
      * @type {ui.core.manipulators.Icon}
@@ -48,14 +48,19 @@ class ToolButton extends ui.WidgetButton {
      * @customtag write-only
      * @group Components
      */
-    set icon(p_value) { this._icon.Set(p_value); }
+    set icon(p_value) { this._flags.Set(ui.FLAGS.NO_ICON, !this._icon.Set(p_value)); }
+
+    _OnCommandUpdated(p_command) {
+        super._OnCommandUpdated(p_command);
+        this.icon = p_command.icon;
+    }
 
     _Render() {
         super._Render();
         this._icon = new ui.manipulators.Icon(ui.dom.El(`div`, { class: ui.IDS.ICON }, this._host), false);
     }
 
-    _PostRender(){
+    _PostRender() {
         this._icon.Set(null);
     }
 

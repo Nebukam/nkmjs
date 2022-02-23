@@ -180,7 +180,7 @@ class StyleguideApp extends nkm.app.AppBase {
                 ]
             },
             {
-                cl:ui.inputs.InputCatalogBase, fn: this._Bind(this._FillCatalogInput)
+                cl: ui.inputs.InputCatalogBase, fn: this._Bind(this._FillCatalogInput)
             },
             {
                 cl: ui.WidgetBar, not: [w.WorkspaceCellNav, ui.views.ShelfNav],
@@ -277,14 +277,14 @@ class StyleguideApp extends nkm.app.AppBase {
 
     }
 
-    AppDisplay(){
+    AppDisplay() {
         super.AppDisplay();
         this._delayedScrollIntoView.Schedule();
     }
 
-    _ScrollToTarget(){
+    _ScrollToTarget() {
         console.log(`scrollTarget`, this._scrollTarget);
-        if(this._scrollTarget){ this._scrollTarget.scrollIntoView(); }
+        if (this._scrollTarget) { this._scrollTarget.scrollIntoView(); }
     }
 
     _Dialog() {
@@ -368,10 +368,10 @@ class StyleguideApp extends nkm.app.AppBase {
         p_citem.data = this._catalogSample;
     }
 
-    _FillCatalogInput(p_input){
+    _FillCatalogInput(p_input) {
         p_input.data = this._shelfCatalog();
         this._scrollTarget = p_input;
-        p_input.currentValue = p_input.data._items[p_input.data._items.length-1];
+        p_input.currentValue = p_input.data._items[p_input.data._items.length - 1];
     }
 
     _PopInTag(p_tagItem) {
@@ -397,7 +397,7 @@ class StyleguideApp extends nkm.app.AppBase {
         //this._scrollTarget = p_card;
     }
 
-    _OnInputCreated(p_input){
+    _OnInputCreated(p_input) {
         //this._scrollTarget = p_input;
     }
 
@@ -410,7 +410,10 @@ class StyleguideApp extends nkm.app.AppBase {
 
         if (!this._popinOptions) {
             this._popinOptions = [
-                { placement: ui.FLAGS.TOP_LEFT },
+                {
+                    placement: ui.ANCHORING.BOTTOM,
+                    origin: ui.ANCHORING.TOP_LEFT
+                },
             ];
         }
 
@@ -422,7 +425,8 @@ class StyleguideApp extends nkm.app.AppBase {
             anchor: p_btn,
             //context: p_btn,
             //static: true,
-            placement: opts.placement
+            placement: opts.placement,
+            origin: opts.origin
         });
 
     }

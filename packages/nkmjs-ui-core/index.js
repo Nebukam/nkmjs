@@ -14,6 +14,7 @@ module.exports = {
     IDS: require(`./lib/ids`),
     REQUEST: require(`./lib/request`),
     CONTEXT: require(`./lib/context`),
+    ANCHORING: require(`./lib/anchoring`),
 
     UI: __UI,
 

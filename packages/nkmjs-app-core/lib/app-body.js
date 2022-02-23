@@ -13,6 +13,36 @@ class AppBody extends ui.views.LayerContainer {
         css: [`@/global.css`]
     }, ui.views.LayerContainer, ['css']);
 
+    _Init() {
+        super._Init();
+        this._screenWidth = window.innerWidth;
+        this._screenHeight = window.innerHeight;
+
+        com.time.TIME.Watch(com.SIGNAL.TICK, this._OnTick, this);
+
+        this.style.setProperty(`--screen-width`, this._screenWidt);
+        this.style.setProperty(`--screen-height`, this._screenHeight);
+
+    }
+
+    _OnTick() {
+
+        let
+            w = window.innerWidth,
+            h = window.innerHeight;
+
+        if (this._screenWidth != w) {
+            this.style.setProperty(`--screen-width`, w);
+            this._screenWidth = w;
+        }
+
+        if (this._screenHeight != h) {
+            this.style.setProperty(`--screen-height`, h);
+            this._screenHeight = h;
+        }
+
+    }
+
 }
 
 module.exports = AppBody;
