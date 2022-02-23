@@ -201,6 +201,7 @@ class DisplayObject extends DisposableHTMLElement {
         this._parent = p_value;
 
         if (oldParent) { oldParent.Remove(this); }
+        if (!this._parent) { this.remove(); }
         //if (this._parent) { this._parent.Add(this); }
 
         this._OnParentChanged(oldParent);

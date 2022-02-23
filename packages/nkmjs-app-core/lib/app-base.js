@@ -24,6 +24,7 @@ const dialog = require(`@nkmjs/dialog`);
 const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);
 const GlobalOverlayHandler = require(`./global-overlay-handler`);
+const AppBody = require(`./app-body`);
 
 /**
  * @typedef LayerDefinition
@@ -62,8 +63,8 @@ class AppBase extends com.helpers.SingletonEx {
         this._userPreferences = com.Rent(UserPreferences);
         this._defaultUserPreferences = {};
 
-        this._layersWrapperClass = ui.views.LayerContainer;
-        this._layersWrapper = null;
+        this._appBodyClass = AppBody;
+        this._appBody = null;
 
         this._layers = [];
 
@@ -103,12 +104,12 @@ class AppBase extends com.helpers.SingletonEx {
             dialog.DIALOG
         );
 
-        if (!this._layersWrapperClass) {
-            throw new Error(`No app wrapper constructor defined.`);
+        if (!this._appBodyClass) {
+            throw new Error(`No app body constructor defined.`);
         }
 
-        if (!u.isInstanceOf(this._layersWrapperClass, ui.views.LayerContainer)) {
-            throw new Error(`App wrapper constructor (${this._layersWrapperClass.name}) must implement ui.views.LayerContainer.`);
+        if (!u.isInstanceOf(this._appBodyClass, AppBody)) {
+            throw new Error(`App body constructor (${this._appBodyClass.name}) must extend AppBody.`);
         }
 
     }
@@ -118,7 +119,7 @@ class AppBase extends com.helpers.SingletonEx {
     /**
      * @type {LayerContainer}
      */
-    get mainWrapper() { return this._layersWrapper; }
+    get body() { return this._appBody; }
 
     /**
      * @type {data.Metadata}
@@ -142,22 +143,24 @@ class AppBase extends com.helpers.SingletonEx {
 
         style.STYLE.instance.defaultPalette._themeId = (env.ENV.instance.config.theme || `default`);
 
-        this._layersWrapper = ui.UI.Rent(this._layersWrapperClass);
-        this._layersWrapper.setAttribute(`id`, `app`);
+        this._appBody = ui.UI.Rent(this._appBodyClass);
+        this._appBody.setAttribute(`id`, `app`);
 
         // Insert global.css inside the app shadow dom once so all subsequent elements inherit from it
         // Import in the head is not enough for the styles to 'pierce' through
         
+        /*
         ui.dom.AttachFirst(
             ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
-            this._layersWrapper._host);
+            this._appBody._host);
+        */
 
         let layerCount = this._layers ? this._layers.length : 0;
         if (layerCount > 0) {
 
             for (let i = 0, n = layerCount; i < n; i++) {
                 let conf = this._layers[i],
-                    layer = this._layersWrapper.Add(conf.cl);
+                    layer = this._appBody.Add(conf.cl);
 
                 conf.layer = layer;
                 if (conf.id) { this[conf.id] = layer; }
@@ -165,7 +168,7 @@ class AppBase extends com.helpers.SingletonEx {
             }
 
             // Push overlay before postFn on layers
-            this._overlayHandler = this._layersWrapper.Add(this._overlayHandlerClass);
+            this._overlayHandler = this._appBody.Add(this._overlayHandlerClass);
 
             for (let i = 0, n = layerCount; i < n; i++) {
                 let conf = this._layers[i];
@@ -173,7 +176,7 @@ class AppBase extends com.helpers.SingletonEx {
             }
 
         } else {
-            this._overlayHandler = this._layersWrapper.Add(this._overlayHandlerClass);
+            this._overlayHandler = this._appBody.Add(this._overlayHandlerClass);
         }
 
     }
@@ -285,7 +288,7 @@ class AppBase extends com.helpers.SingletonEx {
                 this.AppDisplay();
                 
                 // Push the app wrapper to the DOM
-                ui.dom.Attach(this._layersWrapper, document.body);
+                ui.dom.Attach(this._appBody, document.body);
 
                 this._loadingOverlay.addEventListener(`animationend`, (p_evt) => {
                     ui.dom.Detach(p_evt.target);

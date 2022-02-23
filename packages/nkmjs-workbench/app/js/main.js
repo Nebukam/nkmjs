@@ -376,7 +376,7 @@ class StyleguideApp extends nkm.app.AppBase {
 
     _PopInTag(p_tagItem) {
         return;
-        ui.helpers.PopIn.Pop({
+        ui.helpers.Modal.Pop({
             content: TestWidget,
             anchor: p_tagItem,
             placement: ui.FLAGS.TOP_LEFT
@@ -417,11 +417,11 @@ class StyleguideApp extends nkm.app.AppBase {
         let opts = this._popinOptions.pop();
         if (this._popinOptions.length == 0) { this._popinOptions = null; }
 
-        let popin = ui.helpers.PopIn.Pop({
+        let popin = ui.helpers.Modal.Pop({
             content: TestWidget,
             anchor: p_btn,
             //context: p_btn,
-            static: true,
+            //static: true,
             placement: opts.placement
         });
 

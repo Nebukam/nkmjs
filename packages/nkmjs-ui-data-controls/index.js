@@ -28,6 +28,7 @@ module.exports = {
     FindEditor: (p_displayObject) => {
         let p = p_displayObject._parent;
         while (p != null) {
+            p = p.editor;
             if (u.isInstanceOf(p, Editor)) { return p; }
             p = p._parent;
         }

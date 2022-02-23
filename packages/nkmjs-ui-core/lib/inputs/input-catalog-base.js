@@ -89,7 +89,6 @@ class InputCatalogBase extends InputBase {
 
     _OnDataChanged(p_oldData) {
         super._OnDataChanged(p_oldData);
-        console.log(this._data);
         this._catalogHandler.catalog = this._data;
     }
 

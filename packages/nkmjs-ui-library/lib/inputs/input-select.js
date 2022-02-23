@@ -53,7 +53,10 @@ class InputSelect extends ui.inputs.InputCatalogBase {
             '.field': {
                 display: 'none',
                 flex: `1 1 auto`,
-                'min-width': 0
+                'min-width': 0,
+                'height': 'var(--size)',
+                'min-height': `28px !important` //min height for input field
+                
             }
         }, super._Style());
     }

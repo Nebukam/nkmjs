@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
+const env = require("@nkmjs/environment");
 
 const dom = require(`../utils-dom`);
 const UI = require(`../ui`);
@@ -18,24 +19,24 @@ const FlagEnum = require(`./flag-enum`);
 
 
 /**
- * A PopIn is a lightweight container with absolute positioning added to an object.
+ * A Modal is a lightweight container with absolute positioning added to an object.
  * It is attached to a specific position in parent screen-space, and can follow an object if attached to one.
  * Use cases :
  * - input field feedback
  * - overlay search box (closable)
- * - informational popins
+ * - informational modals
  * - contextual menu
  * 
- * If used at document level, the PopIn will attempt to find the best possible placement to stay visible (moving left/right/up/down)
+ * If used at document level, the Modal will attempt to find the best possible placement to stay visible (moving left/right/up/down)
  * @class
  * @hideconstructor
  * @augments ui.core.DisplayObjectContainer
  * @memberof ui.core.helpers
  */
-class PopIn extends DisplayObjectContainer {
+class Modal extends DisplayObjectContainer {
     constructor() { super(); }
 
-    static popinStack = new collections.List();
+    static modalStack = new collections.List();
 
     /**
      * @description TODO
@@ -149,9 +150,12 @@ class PopIn extends DisplayObjectContainer {
      * 
      */
     static Pop(p_options) {
-        let popin = UI.Rent(PopIn);
-        popin.options = p_options;
-        return popin;
+        let cl = p_options.modalClass;
+        //console.log(this);
+        if (!u.isInstanceOf(cl, Modal)) { cl = this; }
+        let modal = UI.Rent(cl);
+        modal.options = p_options;
+        return modal;
     }
 
     /**
@@ -163,7 +167,7 @@ class PopIn extends DisplayObjectContainer {
      * @param {*} [p_parent] 
      */
     static PopChild(p_options, p_parent = null) {
-        if (!p_parent) { p_parent = this.popinStack.last; }
+        if (!p_parent) { p_parent = this.modalStack.last; }
         if (!p_parent) { return this.Pop(p_options); }
         p_options.parent = p_parent;
         return this.Pop(p_options);
@@ -189,11 +193,11 @@ class PopIn extends DisplayObjectContainer {
 
         this._optionsHandler
             .Hook(`mode`)
-            .Hook(`context`, null, document.body)
+            .Hook(`context`, null, env.APP.body || document.body)
             .Hook(`anchor`)
             .Hook(`static`, null, false)
-            .Hook(`placement`, null, PopIn.CENTER)
-            .Hook(`origin`, null, PopIn.CENTER);
+            .Hook(`placement`, null, Modal.CENTER)
+            .Hook(`origin`, null, Modal.CENTER);
 
         this._pointer = new extensions.PointerStatic(this);
 
@@ -204,8 +208,8 @@ class PopIn extends DisplayObjectContainer {
         this._Bind(this.Close);
         this._Bind(this._UpdateAnchoredPosition);
 
-        this._parentPopin = null;
-        this._subPopins = new collections.List();
+        this._parentModal = null;
+        this._subModals = new collections.List();
 
     }
 
@@ -213,20 +217,20 @@ class PopIn extends DisplayObjectContainer {
         super._Wake();
         POINTER.Watch(POINTER.MOUSE_DOWN, this._mDown);
         this._pointer.Enable();
-        this.constructor.popinStack.Add(this);
+        this.constructor.modalStack.Add(this);
     }
 
     /**
      * @description TODO
-     * @type {ui.core.helpers.PopIn}
+     * @type {ui.core.helpers.Modal}
      */
-    get parentPopin() { return this._parentPopin; }
-    set parentPopin(p_value) {
-        if (this._parentPopin == p_value) { return; }
-        let oldParentPopin = this._parentPopin;
-        this._parentPopin = p_value;
-        if (oldParentPopin) { oldParentPopin._subPopins.Remove(this); }
-        if (this._parentPopin) { this._parentPopin._subPopins.Add(this); }
+    get parentModal() { return this._parentModal; }
+    set parentModal(p_value) {
+        if (this._parentModal == p_value) { return; }
+        let oldParentModal = this._parentModal;
+        this._parentModal = p_value;
+        if (oldParentModal) { oldParentModal._subModals.Remove(this); }
+        if (this._parentModal) { this._parentModal._subModals.Add(this); }
     }
 
     /**
@@ -237,8 +241,27 @@ class PopIn extends DisplayObjectContainer {
     set options(p_options) {
         this._options = p_options;
         this.content = p_options.content;
-        if (this._content) { this._optionsHandler.Process(this, this._options); }
-        else { throw new Error(`PopIn options has no content set.`); }
+        if (this._content) {
+            this._optionsHandler.Process(this, this._options);
+            if (`options` in this._content) {
+                let o = null;
+
+                if (`contentOptions` in p_options) {
+                    o = p_options.contentOptions;
+                } else if (`contentOptionsGetter` in p_options) {
+                    let
+                        oGet = p_options.contentOptionsGetter,
+                        thisArg = u.tils.Get(oGet, `thisArg`, null);
+
+                    if (oGet.args) { o = oGet.fn.call(thisArg, ...oGet.args); }
+                    else if (oGet.arg) { o = oGet.fn.call(thisArg, oGet.arg); }
+                    else { o = oGet.fn.call(thisArg); }
+                }
+
+                if (o) { this._content.options = o; }
+            }
+
+        } else { throw new Error(`Modal options has no content set.`); }
     }
 
     /**
@@ -289,7 +312,11 @@ class PopIn extends DisplayObjectContainer {
             if (this._ownsContent) {
                 this._content.Release();
             } else {
-                // Clear inline style properties
+                // TODO : Clear inline style properties
+                if (`DisplayLost` in this._content) { this._content.DisplayLost(); }
+                if (this._content.parent == this) {
+                    this._content.parent = null;
+                }
             }
             this._content = null;
         }
@@ -303,6 +330,7 @@ class PopIn extends DisplayObjectContainer {
 
         this._content = this.Add(p_value, `content`);
         this._content.Watch(SIGNAL.CLOSE_REQUESTED, this.Close);
+        if (`DisplayGranted` in this._content) { this._content.DisplayGranted(); }
 
     }
 
@@ -328,10 +356,23 @@ class PopIn extends DisplayObjectContainer {
         this._anchor = p_value;
         if (this._anchor) { com.time.TIME.Watch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
         else { com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
+
+        // Guess parent modal from anchor
+        if (this._anchor && !this._parentModal) {
+            let a = this._anchor;
+            while (a) {
+                if (u.isInstanceOf(a, Modal)) {
+                    this.parentModal = a;
+                    return;
+                }
+                a = a._parent;
+            }
+        }
+
     }
 
     _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
-        if (p_options.parent) { this.parentPopin = p_options.parent; }
+        if (p_options.parentModal) { this.parentModal = p_options.parentModal; }
     }
 
     /**
@@ -354,7 +395,7 @@ class PopIn extends DisplayObjectContainer {
         return {
             ':host': {
                 'position': 'absolute',
-                'border': '2px solid #ff0000',
+                'border': '1px solid red',
                 //'width':'0', 'height':'0',
                 'display': 'flex' // making sure things are properly sized
             },
@@ -370,7 +411,7 @@ class PopIn extends DisplayObjectContainer {
             ':host(.mode-float-inside.bottom)':{ 'bottom':'0px' },
             ':host(.mode-float-inside.left)':{ 'left':'0px' },
             ':host(.mode-float-inside.right)':{ 'right':'0px' },
-
+    
             // Float outside
             ':host(.mode-float-outside.top)':{ 'top':'0px' },
             ':host(.mode-float-outside.bottom)':{ 'bottom':'0px' },
@@ -417,39 +458,48 @@ class PopIn extends DisplayObjectContainer {
 
         POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
 
-        if (this._static) { return; }
-
-        if (this._pointer.isMouseOver || this._pointer.isMouseDown()) { return; }
-
-        for (let i = 0, n = this._subPopins.count; i < n; i++) {
-            let child = this._subPopins.At(i);
-            if (child._pointer.isMouseOver || this._pointer.isMouseDown()) { return; }
-        }
+        if (this._static || this.ChecksPointer()) { return; }
 
         this.Close();
 
     }
 
+    ChecksPointer() {
+
+        if (this._pointer.isMouseOver
+            || this._pointer.isMouseDown()) {
+            return true;
+        }
+
+        for (let i = 0, n = this._subModals.count; i < n; i++) {
+            if (this._subModals.At(i).ChecksPointer()) { return true; }
+        }
+
+        return false;
+
+    }
+
     Close() {
 
-        while (!this._subPopins.isEmpty) {
-            let child = this._subPopins.Pop();
+        while (!this._subModals.isEmpty) {
+            let child = this._subModals.Pop();
             child.Close();
         }
+
 
         this.Release();
     }
 
     _CleanUp() {
 
-        this.constructor.popinStack.Remove(this);
+        this.constructor.modalStack.Remove(this);
 
         POINTER.Unwatch(POINTER.MOUSE_DOWN, this._mDown);
         POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
 
         this._pointer.Disable();
 
-        this.parentPopin = null;
+        this.parentModal = null;
 
         this.context = null;
         this.content = null;
@@ -467,5 +517,5 @@ class PopIn extends DisplayObjectContainer {
 
 }
 
-module.exports = PopIn;
-UI.Register(`nkmjs-pop-in`, PopIn);
+module.exports = Modal;
+UI.Register(`nkmjs-pop-in`, Modal);

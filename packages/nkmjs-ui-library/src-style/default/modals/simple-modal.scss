@@ -2,14 +2,14 @@
 /*<!---- @nkmjs/ui-library ----!>*/
 /*-------------------------------*/
 
-@import '../_constants';
 @import '../_variables';
 @import '../_mixins';
+@import '../_functions';
+@import '../_constants';
 
-:host{
-    
-}
+$br: 5px;
 
-.field{
-    
+:host {
+    border-radius: $br;
+    background-color: var(--default-level-1-color);
 }

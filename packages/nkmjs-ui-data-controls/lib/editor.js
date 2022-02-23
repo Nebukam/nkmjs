@@ -4,6 +4,7 @@ const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
+const collections = require(`@nkmjs/collections`);
 
 /**
  * @description An abstract implementation of the concept of "data editor". It is designed to edit
@@ -47,6 +48,28 @@ class Editor extends ui.views.View {
         this._selectionStack
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackItemRemoved, this);
+
+        this._dataInspectors = new collections.List();
+        this._dataControllers = new collections.List();
+
+    }
+
+    _PostInit(){
+        super._PostInit();
+        this._RegisterEditorBits();
+
+        for (let i = 0, n = this._dataControllers.count; i < n; i++) {
+            this._dataControllers.At(i).editor = this;
+        }
+
+        for (let i = 0, n = this._dataInspectors.count; i < n; i++) {
+            this._dataInspectors.At(i).editor = this;
+        }
+
+    }
+
+    _RegisterEditorBits(){
+
     }
 
     /**
@@ -79,6 +102,14 @@ class Editor extends ui.views.View {
         this._commands.context = this._data;
 
         super._OnDataChanged(p_oldData);
+
+        for (let i = 0, n = this._dataControllers.count; i < n; i++) {
+            this._dataControllers.At(i).data = this._data;
+        }
+
+        for (let i = 0, n = this._dataInspectors.count; i < n; i++) {
+            this._dataInspectors.At(i).context = this._data;
+        }
 
         this.inspectedData = null;
 
@@ -137,8 +168,15 @@ class Editor extends ui.views.View {
 
     }
 
-    _OnInspectedDataChanged(p_oldData) {
+    _OnChildAdded(p_displayObject, p_index) {
+        if (`editor` in p_displayObject) { p_displayObject.editor = this; }
+        super._OnChildAdded(p_displayObject, p_index);
+    }
 
+    _OnInspectedDataChanged(p_oldData) {
+        for (let i = 0, n = this._dataInspectors.count; i < n; i++) {
+            this._dataInspectors.At(i).data = this._inspectedData;
+        }
     }
 
     _OnInspectedDataReleased() {

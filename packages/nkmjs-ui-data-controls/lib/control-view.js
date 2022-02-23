@@ -46,13 +46,39 @@ class ControlView extends ui.views.View {
 
         this._optionsHandler
             .Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
-            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } });
+            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
+            .Hook(`editor`)
+            .Hook(`data`);
+
+        this._editor = null;
 
     }
 
     _PostInit() {
         super._PostInit();
         this._ResetMetaPresentation();
+    }
+
+    /**
+     * @description The high-level editor in which this widget is used, if any.
+     * This function recursively looks in the widget' parent until it finds one of Editor type, and returns it.
+     * @type {ui.datacontrols.Editor}
+     */
+    get editor() {
+        if (this._editor) { return this._editor; }
+        let p = this._parent;
+        while (p != null) {
+            p = p.editor;
+            if (u.isInstanceOf(p, Editor)) { return p; }
+            p = p._parent;
+        }
+        return null;
+    }
+    set editor(p_value) { 
+        if(this._editor == p_value){return;}
+        let oldEditor = this._editor;
+        this._editor = p_value; 
+        if(`_OnEditorChanged` in this){ this._OnEditorChanged(oldEditor); }
     }
 
     //#region Options handling
@@ -115,21 +141,6 @@ class ControlView extends ui.views.View {
     }
 
     //#endregion
-
-    /**
-     * @description The high-level editor in which this widget is used, if any.
-     * This function recursively looks in the widget' parent until it finds one of Editor type, and returns it.
-     * @type {ui.datacontrols.Editor}
-     * @customtag read-only
-     */
-    get editor() {
-        let p = this._parent;
-        while (p != null) {
-            if (u.isInstanceOf(p, Editor)) { return p; }
-            p = p._parent;
-        }
-        return null;
-    }
 
     //#region DOM
 
@@ -227,6 +238,7 @@ class ControlView extends ui.views.View {
     _CleanUp() {
         if (this.constructor.__clearBuilderOnRelease) { this._builder.Clear(); }
         this.context = null;
+        this.editor = null;
         super._CleanUp();
     }
 

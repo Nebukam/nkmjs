@@ -6,11 +6,29 @@
 @import '../_mixins';
 @import '../_constants';
 
-select {
+:host::after{
+
+    content:"";
+    position: absolute;
+    width: var(--size);
+    height: 100%;
+    right: 0;
+
     background: url(../assets/icons/icon_expand.svg) no-repeat;
     background-size: 50% 50%;
     background-position: center;
-    background-position-x: 140%;
+
+    pointer-events: none;
+
+}
+
+.field{
+    padding-right: var(--size);
+    height:calc(100% - 10px);
+}
+
+select {
+    height: 100%;
 }
 
 .field-option {

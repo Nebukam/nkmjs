@@ -74,7 +74,7 @@ class WidgetButton extends Widget {
         this._variantEnum.Add(this);
 
         this._optionsHandler = new com.helpers.OptionsHandler(
-            null,
+            this._Bind(this._OnOptionsUpdateComplete),
             this._Bind(this._OnOptionsWillUpdate));
 
         this._optionsHandler
@@ -83,7 +83,6 @@ class WidgetButton extends Widget {
             .Hook(`trigger`)
             .Hook(`toggle`, null, null)
             .Hook(`request`)
-            .Hook(`command`)
             .Hook(`isCommandTrigger`)
             .Hook(`isCommandContext`)
             .Hook(`alwaysVisible`, `alwaysDisplayCommand`)
@@ -270,6 +269,10 @@ class WidgetButton extends Widget {
     _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
         if (!p_options) { return; }
         p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
+    }
+
+    _OnOptionsUpdateComplete(p_options, p_altOptions, p_defaults) {
+        if (`command` in p_options) { this.command = p_options.command; }
     }
 
     /**

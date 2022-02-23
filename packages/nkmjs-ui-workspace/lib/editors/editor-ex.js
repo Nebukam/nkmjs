@@ -55,10 +55,10 @@ class EditorEx extends uidatacontrols.Editor {
         );
     }
 
-    _PostInit() {
+    _RegisterEditorBits(){
 
-        super._PostInit();
         let confs = [];
+
         this._InitShelfCatalog(confs);
         this._shelf.catalog = this._shelfCatalog;
 
@@ -77,11 +77,19 @@ class EditorEx extends uidatacontrols.Editor {
 
             //console.log(`${assign} >> ${view}`);
 
-            if (view && assign) {
-                this[assign] = view;
+            if (view) {
+                if(conf.isInspector){this._dataInspectors.Add(view);}
+                else{this._dataControllers.Add(view);}
+                if(assign){ this[assign] = view; }
             }
 
         }
+
+        if(this._header){ this._dataControllers.Add(this._header); }
+        if(this._viewport){ this._dataControllers.Add(this._viewport); }
+        if(this._footer){ this._dataControllers.Add(this._footer); }
+
+        if(this._inspectorShell){ this._dataInspectors.Add(this._inspectorShell); }
 
     }
 
@@ -165,12 +173,6 @@ class EditorEx extends uidatacontrols.Editor {
     }
 
     // ----> Data management
-
-    _OnDataChanged(p_oldData) {
-        super._OnDataChanged(p_oldData);
-        this._inspectorShell.data = this._data;
-        this._inspectorShell.context = this._data;
-    }
 
     _OnDataDirty(p_data) {
         super._OnDataDirty(p_data);

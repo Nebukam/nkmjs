@@ -2,14 +2,11 @@
 /*<!---- @nkmjs/ui-library ----!>*/
 /*-------------------------------*/
 
-@import '../_constants';
 @import '../_variables';
 @import '../_mixins';
+@import '../_functions';
+@import '../_constants';
 
-:host{
-    
-}
-
-.field{
-    
+:host {
+    @include box-shadow(20px, 0,50px,20px, rgba(0,0,0,0.2));
 }

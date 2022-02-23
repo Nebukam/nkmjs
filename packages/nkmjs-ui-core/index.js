@@ -31,6 +31,7 @@ module.exports = {
     WidgetBar: require(`./lib/widget-bar`),
 
     // namespaces
+    commands: require(`./lib/commands`),
     extensions: require(`./lib/extensions`),
     helpers: require(`./lib/helpers`),
     inputs: require(`./lib/inputs`),

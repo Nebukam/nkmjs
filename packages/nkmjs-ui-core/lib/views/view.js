@@ -21,10 +21,10 @@ class View extends WidgetOrientable {
     constructor() { super(); }
 
     static __default_iState = null;
-    
+
     _Init() {
         super._Init();
-        
+
         this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister));
 
         this._isDisplayed = false;
@@ -34,9 +34,14 @@ class View extends WidgetOrientable {
     _Style() {
         return style.Extends({
             ':host': {
-                
+
             }
         }, super._Style());
+    }
+
+    _OnDataChanged(p_oldData) {
+        super._OnDataChanged(p_oldData);
+        this._commands.context = this._data;
     }
 
     get displayed() { return this._isDisplayed; }

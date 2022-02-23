@@ -10,6 +10,7 @@ module.exports = {
     InputBase: require(`./input-base`),
     InputField: require(`./input-field`),
     InputNumberBase: require(`./input-number-base`),
+    InputTextBase: require(`./input-text-base`),
     InputFormHandler: require(`./input-form-handler`),
     InputListHandler: require(`./input-list-handler`),
     InputGroup: require(`./input-group`),

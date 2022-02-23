@@ -128,8 +128,7 @@ class DisplayObjectContainer extends DisplayObject {
             return p_displayObject;
         }
 
-        if (!p_container || p_container === this) {
-            
+        if (!p_container || p_container === this) {            
             p_container = this._wrapper;
         } else if (u.isInstanceOf(p_container, DisplayObjectContainer)) {
             p_container = p_container.wrapper;

@@ -51,7 +51,7 @@ class UI extends com.helpers.SingletonEx {
     _Register(p_id, p_class, p_extends = `div`) {
 
         if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
-        console.log(p_id);
+        //console.log(p_id);
         this._uiTypes.Set(p_class, p_id);
         customElements.define(p_id, p_class);//, { extends: p_extends });
         //#LOG console.log(`%c+ ${p_class.name} %c<${p_id}>`, 'color: #9000ff', 'color: #b4b4b4');

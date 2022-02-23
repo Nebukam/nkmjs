@@ -10,6 +10,7 @@ module.exports = {
     inputs: require(`./lib/inputs`),
     overlays: require(`./lib/overlays`),
     lists: require(`./lib/lists`),    
+    modals: require(`./lib/modals`),
     dom: require(`./lib/dom`),
     views: require(`./lib/views`),
     widgets: require(`./lib/widgets`),
