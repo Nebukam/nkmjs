@@ -32,8 +32,6 @@ class InputTextBase extends InputField {
 
         this._handler._updatePreviewOnInput = false;
         this._handler._changeOnInput = false;
-        this._handler._updatePreviewOnChange = true;
-        this._handler._submitOnChange = true;
 
     }
 

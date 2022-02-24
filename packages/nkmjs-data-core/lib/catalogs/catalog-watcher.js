@@ -4,6 +4,8 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./catalog-signal`);
 
+const filters = require(`./filters`);
+
 /**
 * @description A CatalogWatcher observe a catalog's additions and removals.
 * It's an abstract class, look for actual implementations in `CatalogHandler` & `CatalogBuilder`
@@ -21,10 +23,19 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         this._owner = null;
         this._catalog = null;
         this._map = new Map();
-        this._filters = null;
+
+        this._validItems = null;
+        this._invalidItems = null;
+
+        this._filtersHandler = new filters.CatalogFilterListHandler();
+        this._filtersHandler
+            .Watch(filters.SIGNAL.PASSED, this._OnFilterPassedItem, this)
+            .Watch(filters.SIGNAL.REJECTED, this._OnFiltersRejectedItem, this);
+
         this._itemCount = 0;
 
         this._isEnabled = true;
+        this._ignoreFilters = false;
         this._isDeepWatchEnabled = false;
 
         this._catalogObserver = new com.signals.Observer();
@@ -35,6 +46,8 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
         // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
         //both filtered AND flagged as 'flatten catalog'
+
+
 
     }
 
@@ -171,6 +184,38 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
     // ---->
 
+    set filters(p_value) {
+        if (this._filtersHandler._filters == p_value) { return; }
+
+        this._filtersHandler.filters = p_value;
+
+        if (!this._catalog) { return; }
+
+        // This is the most expensive way to handle the situation
+        let c = this._catalog;
+        this.catalog = null;
+        this.catalog = c;
+
+    }
+    get filters() { return this._filtersHandler._filters; }
+
+
+    _OnFilterPassedItem(p_handler, p_item) {
+        // Callback when a previously invalidated item is now valid
+        this._ignoreFilters = true;
+        this._OnCatalogItemAdded(p_item.parent, p_item);
+        this._ignoreFilters = false;
+    }
+
+    _OnFiltersRejectedItem(p_handler, p_item) {
+        // Callback when a previously valid item is now invalid
+        this._ignoreFilters = true;
+        this._OnCatalogItemRemoved(p_item.parent, p_item);
+        this._ignoreFilters = false;
+    }
+
+    // ---->
+
     /**
      * @access protected
      * @description Goes over the content of a given catalog and calls _OnCatalogItemAdded
@@ -248,12 +293,16 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
             }
         }
 
+        if (!this._ignoreFilters) {
+            if (this._filtersHandler._filters
+                && !this._filtersHandler.Pass(p_item)) {
+                return false;
+            }
+        }
+
+
         this._itemCount++;
-
-        if (this._filters && !this._filters.Check(p_item)) { return false; }
-
         p_item.Watch(SIGNAL.ITEM_DATA_RELEASED, this._OnItemDataReleased, this);
-
         return true;
 
     }
@@ -269,6 +318,13 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
         if (this._isDeepWatchEnabled) {
             if (p_item.isDir || p_item.rootDistance <= this._catalog.rootDistance) {
+                return false;
+            }
+        }
+
+        if (!this._ignoreFilters) {
+            if (this._filtersHandler._filters
+                && !this._filtersHandler.Clear(p_item)) {
                 return false;
             }
         }
@@ -358,6 +414,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
         this.flattened = false;
         this.catalog = null;
+        this.filters = null;
 
         this._owner = null;
         this._isEnabled = true;

@@ -33,13 +33,14 @@ class InputNumberBase extends InputField {
         this._Bind(this._SanitizeMin);
         this._Bind(this._SanitizeMax);
 
-        this._handler._updatePreviewOnInput = false;
-
         this._pointer._wheelFn = this._Bind(this._OnWheel);
+
+        this._handler._updatePreviewOnInput = false;
+        this._handler._changeOnInput = false;
 
     }
 
-    _PostInit(){
+    _PostInit() {
         super._PostInit();
         this.focusArea = this;
     }
@@ -134,13 +135,17 @@ class InputNumberBase extends InputField {
 
         this.useStep = p_options.step ? true : false;
         if (this._useStep) { this.step = p_options.step; }
-        
+
     }
 
-    _OnWheel(p_evt){
+    _OnWheel(p_evt) {
         let increase = p_evt.deltaY < 0 ? this._step : -this._step;
-        if(INPUT.shift){ increase *= 10; }
+        if (INPUT.shift) { increase *= 10; }
         let value = this._GrabValue() + increase;
+
+        if (this._useMin && value < this._min) { value = this._min; }
+        if (this._useMax && value > this._max) { value = this._max; }
+
         this._handler.changedValue = value;
         this._handler.SubmitValue();
     }

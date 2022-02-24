@@ -24,7 +24,15 @@ class InputField extends InputBase {
     _Init() {
         super._Init();
         this._inputField = null;
+        this._inFocus = false;
         this._preventTabIndexing = false;
+        this._updatePreviewWhenFocused = false;
+        this._restoreUpdatePreviewOnFocus = false;
+
+        this._handler._updatePreviewOnInput = false;
+        this._handler._changeOnInput = false;
+        this._handler._updatePreviewOnChange = true;
+        this._handler._submitOnChange = true;
 
         this._optionsHandler
             .Hook(`preventTabIndexing`)
@@ -102,18 +110,23 @@ class InputField extends InputBase {
     }
 
     _onFocusIn(p_evt) {
+        this._inFocus = true;
         INPUT.ONKeyDown(KB._enter, this._FOut);
+        this._restoreUpdatePreviewOnFocus = this._handler._updatePreviewOnInput;
+        this._handler._updatePreviewOnInput = this._updatePreviewWhenFocused;
         // TODO : Prevent keystrokes from being triggered while an input is in focus
     }
 
     _onFocusOut(p_evt) {
+        this._inFocus = false;
         INPUT.OFFKeyDown(KB._enter, this._FOut);
+        this._handler._updatePreviewOnInput = this._restoreUpdatePreviewOnFocus;
         this._handler.SubmitValue();
         // TODO : Release keystroke lock if current input locker is self
     }
 
     _UpdatePreview() {
-        this._inputField.value = this.changedValue;
+        this._inputField.value = this.inputValue;
     }
 
 }

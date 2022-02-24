@@ -16,6 +16,7 @@ class InputColor extends ui.inputs.InputField {
         super._Init();
         this._label = null;
         this._body = null;
+        this._updatePreviewWhenFocused = true;
     }
 
     // ----> DOM

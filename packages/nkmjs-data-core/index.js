@@ -22,6 +22,7 @@ module.exports = {
     catalogs: require(`./lib/catalogs`),
     helpers: require(`./lib/helpers`),
     serialization: require(`./lib/serialization`),
+    tags: require(`./lib/tags`),
 
     validate: require(`./lib/validation`),
     sanitize: require(`./lib/sanitization`),

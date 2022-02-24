@@ -40,6 +40,9 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this._updatePreviewOnChange = true;
         this._submitOnChange = true;
 
+        this._managedUpdateInput = true;
+        this._managedUpdateChange = true;
+
         this._inputId = ``;
 
         this._updatePreviewFn = null;
@@ -178,10 +181,26 @@ class InputHandler extends com.pool.DisposableObjectEx {
     get inputValue() { return this._inputValue; }
     set inputValue(p_value) {
         if (this._inputValue === p_value) { return; }
+        let oldValue = this._inputValue;
         this._inputValue = p_value;
+        this._OnInputValueChanged(oldValue);
+    }
+
+    /**
+     * @access protected
+     * @param {*} p_oldValue 
+     */
+    _OnInputValueChanged(p_oldValue) {
+
         this._Broadcast(SIGNAL.VALUE_INPUT_CHANGED, this, this._inputValue);
-        if (this._changeOnInput) { this.changedValue = p_value; }
+
+        for (let i = 0; i < this._managed.count; i++) {
+            this._managed.At(i).inputValue = this._inputValue;
+        }
+
+        if (this._changeOnInput) { this.changedValue = this._inputValue; }
         if (this._updatePreviewOnInput) { this._delayedPreviewUpdate.Schedule(); }
+        
     }
 
     /**
@@ -460,6 +479,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
     AddManaged(p_handler) {
         if (!this._managed.Add(p_handler)) { return; }
         p_handler.manager = this;
+        p_handler.Watch(SIGNAL.VALUE_INPUT_CHANGED, this._OnManagedInputValueChanged, this);
         p_handler.Watch(SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
         p_handler.Watch(SIGNAL.VALUE_SUBMITTED, this._OnManagedValueSubmitted, this);
     }
@@ -467,16 +487,24 @@ class InputHandler extends com.pool.DisposableObjectEx {
     RemoveManaged(p_handler) {
         if (!this._managed.Remove(p_handler)) { return; }
         if (p_handler.manager == this) { p_handler.manager = null; }
+        p_handler.Unwatch(SIGNAL.VALUE_INPUT_CHANGED, this._OnManagedInputValueChanged, this);
         p_handler.Unwatch(SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
         p_handler.Unwatch(SIGNAL.VALUE_SUBMITTED, this._OnManagedValueSubmitted, this);
     }
 
+    _OnManagedInputValueChanged(p_managed, p_value) {
+        if(!this._managedUpdateInput){ return; }
+        this.inputValue = p_value;
+    }
+
     _OnManagedValueChanged(p_managed, p_value) {
+        if(!this._managedUpdateChange){ return; }
         this.changedValue = p_value;
     }
 
     _OnManagedValueSubmitted(p_managed, p_value) {
-        this.currentValue = p_value;
+        this.changedValue = p_value;
+        this.SubmitValue();
     }
 
     _OnManagerValueChanged(p_manager, p_value) {

@@ -5,6 +5,8 @@ const com = require("@nkmjs/common");
 const IDS = require(`../ids`);
 const SIGNAL = require(`./catalog-signal`);
 
+const tags = require(`../tags`);
+
 /**
  * @description TODO
  * @class
@@ -33,9 +35,58 @@ class CatalogItem extends com.helpers.OptionsObject {
         this._optionHandler.wrapUpFn = this._Bind(this._OnOptionsUpdated);
         this._optionHandler
             .Hook(com.IDS.DATA)
-            .Hook(IDS.BOUND);
+            .Hook(IDS.BOUND)
+            .Hook(`tags`, `tagsetter`);
 
     }
+
+    //#region Tag management
+
+    HasTag(p_tag) {
+        if (!this._tagBox) { return false; }
+        return this._tagBox.Has(p_tag);
+    }
+
+    HasTagAny(...p_tags) {
+        if (!this._tagBox) { return false; }
+        return this._tagBox.HasAny(...p_tags);
+    }
+
+    HasTagAll(...p_tags) {
+        if (!this._tagBox) { return false; }
+        return this._tagBox.HasAll(...p_tags);
+    }
+
+    AddTag(p_tag) {
+        if (!this._tagBox) {
+            this._tagBox = com.Rent(tags.TagBox);
+            this._tagBox.owner = this;
+        }
+        return this._tagBox.Add(p_tag);
+    }
+
+    RemoveTag(p_tag) {
+        if (!this._tagBox) { return false; }
+        if (this._tagBox.Remove(p_tag)) {
+            if (this._tagBox.isEmpty) { this._ClearTagBox(); }
+            return true;
+        }
+        return false;
+    }
+
+    set tagsetter(p_tags) {
+        for (let i = 0; i < p_tags.length; i++) {
+            this.AddTag(p_tags[i]);
+        }
+    }
+
+    _ClearTagBox() {
+        if (!this._tagBox) { return; }
+        this._tagBox.Release();
+        this._tagBox = null;
+    }
+
+    //#endregion
 
     /**
      * @description TODO
@@ -87,6 +138,10 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @param {object} p_options 
      */
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
+        if (p_options && `tags` in p_options) {
+            p_options.tags.length = 0;
+            delete p_options.tags;
+        }
         this._delayedUpdate.Schedule();
     }
 
@@ -184,6 +239,7 @@ class CatalogItem extends com.helpers.OptionsObject {
     _CleanUp() {
 
         if (this._parent) { this._parent.Remove(this); }
+        this._ClearTagBox();
 
         this._autoRelease = true;
         this._parent = null;
