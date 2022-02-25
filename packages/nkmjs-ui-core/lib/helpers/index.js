@@ -9,5 +9,5 @@ module.exports = {
     Frame: require(`./frame`),
     Modal: require(`./modal`),
     WidgetSelection: require(`./widget-selection`),
-    
+    Canvas: require(`./disposable-canvas-element`)   
 }

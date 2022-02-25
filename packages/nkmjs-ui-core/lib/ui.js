@@ -5,6 +5,7 @@ const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./signal`);
+const FLAGS = require(`./flags`);
 const DisposableHTMLElement = require(`./disposable-htmlelement`);
 
 /**
@@ -38,8 +39,8 @@ class UI extends com.helpers.SingletonEx {
      * @param {string} [p_extends] 
      * @group Pooling
      */
-    static Register(p_id, p_class, p_extends = `div`) {
-        this.instance._Register(p_id, p_class, p_extends);
+    static Register(p_id, p_class) {
+        this.instance._Register(p_id, p_class);
     }
 
     /**
@@ -48,12 +49,17 @@ class UI extends com.helpers.SingletonEx {
      * @param {DisposableHTMLElement} p_class 
      * @group Pooling
      */
-    _Register(p_id, p_class, p_extends = `div`) {
+    _Register(p_id, p_class) {
 
         if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
         //console.log(p_id);
         this._uiTypes.Set(p_class, p_id);
-        customElements.define(p_id, p_class);//, { extends: p_extends });
+        if(p_class.__extendsNode){
+            customElements.define(p_id, p_class, { extends: p_class.__extendsNode });
+        }else{
+            customElements.define(p_id, p_class);//, { extends: p_extends });    
+        }
+        
         //#LOG console.log(`%c+ ${p_class.name} %c<${p_id}>`, 'color: #9000ff', 'color: #b4b4b4');
 
     }
@@ -162,8 +168,6 @@ class UI extends com.helpers.SingletonEx {
         this._dirtyElements.ForEach((p_item, p_index) => { p_item.ApplyTransforms(); });
         this._dirtyElements.Clear();
     }
-
-
 
 }
 

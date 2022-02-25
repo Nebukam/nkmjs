@@ -32,7 +32,7 @@
 
 // ----> Global Host Presets
 
-*, :host{
+:root{
 
     // Font sizes
     @for $i from 0 to length($font_size_varnames) { 

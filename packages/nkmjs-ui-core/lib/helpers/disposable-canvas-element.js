@@ -3,8 +3,8 @@
 const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
 
-const dom = require(`./utils-dom`);
-const SIGNAL = require(`./signal`);
+const dom = require(`../utils-dom`);
+const SIGNAL = require(`../signal`);
 
 const __unpainted = `unpainted`;
 
@@ -29,14 +29,12 @@ const __paintingObserver = new IntersectionObserver(
             if (entry.isIntersecting) {
                 if (target._isPainted) { continue; }
                 target._isPainted = true;
-                target.classList.remove(__unpainted);
-                if (target.constructor.__usePaintCallback) { target._OnPaintChange(); }
+                target._OnPaintChange();
                 target._isFirstPaint = false;
             } else {
                 if (!target._isPainted) { continue; }
                 target._isPainted = false;
-                target.classList.add(__unpainted);
-                if (target.constructor.__usePaintCallback) { target._OnPaintChange(); }
+                target._OnPaintChange();
             }
         }
     },
@@ -50,9 +48,7 @@ const __resizeObserver = new ResizeObserver(
             let entry = entries[i],
                 target = entry.target;
 
-            if (target.constructor.__useResizeCallback) {
-                target._OnSizeChange(entry.contentRect);
-            }
+            target._OnSizeChange(entry.contentRect);
 
             /*
         if (entry.contentBoxSize) {
@@ -69,42 +65,13 @@ const __resizeObserver = new ResizeObserver(
         */
         }
     });
-/**
- * @typedef SignalReleasing
- * @type common.SIGNAL.RELEASING
- * @property {ui.core.DisposableHTMLElement} target Source of the signal ( would be event.target )
- */
-
-/**
-* @typedef SignalReleased
-* @type common.SIGNAL.RELEASED
-* @property {ui.core.DisposableHTMLElement} target Source of the signal ( would be event.target )
-*/
-
-/**
- * @typedef SignalFirstPaint
- * @type ui.core.SIGNAL.FIRST_PAINT
- * @property {ui.core.DisposableHTMLElement} target Source of the signal ( would be event.target )
- */
-
-/**
- * @typedef SignalPainted
- * @type ui.core.SIGNAL.PAINTED
- * @property {ui.core.DisposableHTMLElement} target Source of the signal ( would be event.target )
- */
-
-/**
- * @typedef SignalUnpainted
- * @type ui.core.SIGNAL.UNPAINTED
- * @property {ui.core.DisposableHTMLElement} target Source of the signal ( would be event.target )
- */
 
 /**
  * Ah hah !
  * <pre class="prettyprint" data-title="constructor"><code>Yey, new shit {@link ui.core.DisplayObject}</code></pre>
  * @class
  * @hideconstructor
- * @augments HTMLElement
+ * @augments HTMLCanvasElement
  * @memberof ui.core
  * @category Some Category
  * @signal SignalReleasing Broadcasted right before the object is about to be released. 
@@ -114,9 +81,10 @@ const __resizeObserver = new ResizeObserver(
  * @signal SignalPainted Broadcasted when the object has at least one painted pixel.
  * @signal SignalUnpainted Broadcasted when the object was painted but stopped being painted.
  */
-class DisposableHTMLElement extends HTMLElement {
+class DisposableCanvasElement extends HTMLCanvasElement {
 
-    static __extendsNode = null;
+    static __extendsNode = `canvas`;
+    static __redrawDelay = 300;
 
     constructor() {
         super();
@@ -132,12 +100,90 @@ class DisposableHTMLElement extends HTMLElement {
         this._released = false;
         this._isPainted = false;
         this._isFirstPaint = true;
+        this._sizeNeedRefresh = true;
 
-        if (this.constructor.__usePaintCallback) { this.classList.add(__unpainted); }
+        this._ctxType = '2d';
+        this._realtime = false;
+        this._requestDraw = false;
+        this._requestAfter = false;
+        this._alwaysFit = true;
+        this._size = { width: 0, height: 0 };
+        this._deltaSum = 0;
+
+        this._delayedRedraw = com.DelayedCall(this._Bind(this.Draw), this.constructor.__resizeDelay);
 
     }
 
-    _PostInit() { }
+    _PostInit() {
+        this._ctx = this._GetContext();
+    }
+
+    //#region Canvas logic
+
+    get requestDraw() { return this._requestDraw; }
+    set requestDraw(p_value) { this._requestDraw = p_value; }
+
+    SetSize(p_width = null, p_height = null) {
+        p_width = p_width || this._size.width;
+        p_height = p_height || this._size.height;
+
+        if (p_width == this._size.width
+            && p_height == this._size.height) {
+            return;
+        }
+
+        this._size.width = p_width;
+        this._size.height = p_height;
+        this._sizeNeedRefresh = true;
+        this._delayedRedraw.Schedule();
+    }
+
+    get realtime() { return this._realtime; }
+    set realtime(p_value) {
+        if (this._realtime == p_value) { return; }
+        this._realtime = p_value;
+        if (!p_value) { com.time.TIME.Unwatch(com.SIGNAL.TICK, this.Draw); }
+        else { if (this._isPainted) { com.time.TIME.Watch(com.SIGNAL.TICK, this.Draw); } }
+    }
+
+    // ---->
+
+    _GetContext() { return this.getContext(this._ctxType) }
+
+    Draw(p_delta = 0) {
+        if (!this._isPainted) {
+            // Offscreen, schedule draw for next paint instead
+            this._deltaSum += p_delta;
+            this._waitingForDraw = true;
+            return;
+        } else {
+            this._deltaSum = 0;
+        }
+
+        if (this._sizeNeedRefresh) {
+            this.width = this._size.width;
+            this.height = this._size.height;
+            this._sizeNeedRefresh = false;
+        }
+
+        if (this._requestDraw) {
+            this._Broadcast(SIGNAL.DRAW_REQUEST_BEFORE, this, this._ctx, p_delta);
+            this._InternalDraw(this._ctx, p_delta);
+            this._Broadcast(SIGNAL.DRAW_REQUEST_AFTER, this, this._ctx, p_delta);
+        } else {
+            this._InternalDraw(this._ctx, p_delta);
+        }
+
+    }
+
+    _InternalDraw(ctx, p_delta = 0) { }
+
+    Clear() {
+        this._ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this._ctx.clearRect(0, 0, this.width, this.height);
+    }
+
+    //#endregion
 
     /**
      * @access protected
@@ -153,53 +199,19 @@ class DisposableHTMLElement extends HTMLElement {
 
     /**
      * @access protected
-     * @description Determine whether the object uses resize callbacks and thus broadcast resize signals.
-     * <br>Note : this property is set on a per-class basis, rather than on a per-instance basis. 
-     * Set this value by overloading it in your class definition.
-     * @group Rendering
-     * @customtag static
-     * @example ... extends DisposableHTMLElement{
-     *  static __useResizeCallback = true;
-     * }
-     */
-    static __useResizeCallback = false;
-
-    /**
-     * @access protected
      * @description TODO
      * @customtag override-me
      * @group Rendering
      */
-    _OnSizeChange(p_contentRect) { }
+    _OnSizeChange(p_contentRect) {
+        if (this._alwaysFit) {
+            this.SetSize(p_contentRect.width, p_contentRect.height);
+        }
+    }
 
     //#endregion
 
     //#region Painting
-
-    /**
-     * @access protected
-     * @description TODO
-     * @group Rendering
-     * @customtag static
-     * @example ... extends DisposableHTMLElement{
-     *  static __observableIntersection = true;
-     * }
-     */
-    static __observableIntersection = false;
-
-    /**
-     * @access protected
-     * @description Determine whether the object uses paint callbacks and thus broadcast paint signals.
-     * <br>Note : this property is set on a per-class basis, rather than on a per-instance basis. 
-     * Set this value by overloading it in your class definition.
-     * @group Rendering
-     * @customtag static
-     * @example ... extends DisposableHTMLElement{
-     *  static __usePaintCallback = true;
-     * }
-     */
-    static __usePaintCallback = false;
-
 
     /**
      * @description TODO
@@ -217,10 +229,30 @@ class DisposableHTMLElement extends HTMLElement {
      */
     _OnPaintChange() {
         if (this._isPainted) {
+
             if (this._isFirstPaint) { this._signals.Broadcast(SIGNAL.FIRST_PAINT, this); }
             this._signals.Broadcast(SIGNAL.PAINTED, this);
+
+
+            if (this._realtime) {
+                com.time.TIME.Watch(com.SIGNAL.TICK, this.Draw);
+                this.Draw();
+            } else {
+                if (this._waitingForDraw) {
+                    this._waitingForDraw = false;
+                    this.Draw(this._deltaSum);
+                    this._deltaSum = 0;
+                }
+            }
         } else {
+
             this._signals.Broadcast(SIGNAL.UNPAINTED, this);
+
+            if (this._realtime) {
+                com.time.TIME.Unwatch(com.SIGNAL.TICK, this.Draw);
+            } else {
+
+            }
         }
     }
 
@@ -351,17 +383,11 @@ class DisposableHTMLElement extends HTMLElement {
 
         if (this._isPainted) {
             this._isPainted = false;
-            this.classList.add(__unpainted);
-            if (this.constructor.__usePaintCallback) { this._OnPaintChange(); }
+            this._OnPaintChange();
         }
 
-        if (this.constructor.__observableIntersection
-            || this.constructor.__usePaintCallback) {
-            __paintingObserver.unobserve(this);
-        }
-        if (this.constructor.__useResizeCallback) {
-            __resizeObserver.unobserve(this);
-        }
+        __paintingObserver.unobserve(this);
+        __resizeObserver.unobserve(this);
 
     }
 
@@ -369,13 +395,9 @@ class DisposableHTMLElement extends HTMLElement {
         this._released = false;
         this._Wake();
         this._PostWake();
-        if (this.constructor.__observableIntersection
-            || this.constructor.__usePaintCallback) {
-            __paintingObserver.observe(this);
-        }
-        if (this.constructor.__useResizeCallback) {
-            __resizeObserver.observe(this);
-        }
+
+        __resizeObserver.observe(this);
+        __paintingObserver.observe(this);
 
     }
 
@@ -394,4 +416,4 @@ class DisposableHTMLElement extends HTMLElement {
     toString() { return `<${this.constructor.name}>`; }
 }
 
-module.exports = DisposableHTMLElement;
+module.exports = DisposableCanvasElement;

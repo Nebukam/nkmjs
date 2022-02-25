@@ -221,6 +221,22 @@ class SIGNAL {
      */
     static NON_EMPTY = Symbol(`non-empty`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+     */
+     static DRAW_REQUEST_BEFORE = Symbol(`drawRequestBefore`);
+
+     /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+     */
+      static DRAW_REQUEST_AFTER = Symbol(`drawRequestAfter`);
+
 }
 
 module.exports = SIGNAL;

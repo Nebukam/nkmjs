@@ -116,7 +116,7 @@ class DisplayObjectContainer extends DisplayObject {
 
         if (p_index >= this._displayList.count || p_index < 0) { p_index = -1; }
 
-        if (u.isFunc(p_displayObject) && u.isInstanceOf(p_displayObject, DisplayObject)) {
+        if (u.isFunc(p_displayObject) && u.isInstanceOf(p_displayObject, HTMLElement)) {
             p_displayObject = UI.Rent(p_displayObject);
         }
 
@@ -140,6 +140,7 @@ class DisplayObjectContainer extends DisplayObject {
             p_index = this._displayList.count - 1;
 
             try { p_container.appendChild(p_displayObject); } catch (err) {
+                console.log(p_displayObject);
                 throw err;
             }
         }

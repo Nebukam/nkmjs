@@ -1,6 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const style = require("@nkmjs/style");
 
 /**
  * @description TODO

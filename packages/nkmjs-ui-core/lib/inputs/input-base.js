@@ -22,6 +22,8 @@ class BaseInput extends Widget {
         css: [`@/inputs/global-input.css`]
     }, Widget, ['css']);
 
+    static __usePaintCallback = false;
+
     // ----> Init
 
     _Init() {

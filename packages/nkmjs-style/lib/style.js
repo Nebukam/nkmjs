@@ -2,6 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
+const env = require("@nkmjs/environment");
 
 const dom = require("./utils-dom");
 const ColorBase = require("./colors/color-base");
@@ -55,6 +56,11 @@ class STYLE extends com.helpers.Singleton {
     _InitDefaults() {
         let cssBuilder = new DefaultStylesheet();
         cssBuilder.Build(this._defaultPalette);
+    }
+
+    get computedStyles() {
+        if (!this._computeStyles) { this._computeStyles = window.getComputedStyle(env.APP.body); }
+        return this._computeStyles;
     }
 
     /**
