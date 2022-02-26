@@ -4,6 +4,8 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 
+const dom = require(`../utils-dom`);
+
 /**
  * @description A CatalogBuilder observe a catalog's additions and removals 
  * and keeps a display list up to date.
@@ -31,6 +33,22 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
      */
     get host() { return this._host; }
     set host(p_value) { this._host = p_value; }
+
+    _AddCatalogContent(p_catalog, p_deep = false) {
+
+        let
+            fragment = document.createDocumentFragment(),
+            host = this._host;
+
+        this._host = fragment;
+
+        super._AddCatalogContent(p_catalog, p_deep);
+
+        dom.Attach(fragment, host);
+
+        this._host = host;
+
+    }
 
     /**
      * @access protected

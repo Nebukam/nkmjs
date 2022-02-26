@@ -67,7 +67,7 @@ class ControlBuilder {
     }
 
     /**
-     * { cl:class, css:'class', name:'name', options:{} }
+     * { cl:class, css:'class', member:'member', options:{} }
      * @param {array} p_controls 
      */
     Build(p_controls) {
@@ -84,7 +84,7 @@ class ControlBuilder {
             if(!cl){ cl = this._defaultControlClass; }
 
             control = this.Add(cl, config.css, config.options);
-            if (config.name) { this._owner[config.name] = control; }
+            if (config.member) { this._owner[config.member] = control; }
 
         }
 

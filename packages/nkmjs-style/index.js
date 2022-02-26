@@ -4,7 +4,7 @@
 const __CSS = require(`./lib/css`);
 const __STYLE = require(`./lib/style`);
 
-const __propCache = {};
+var __propCache = {};
 
 module.exports = {
 

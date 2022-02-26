@@ -68,9 +68,9 @@ class CommandAction extends Command {
      */
     _InternalExecute() {
 
-        if(!this.CanExecute(this._context)){ 
+        if (!this.CanExecute(this._context)) {
             this._Fail("Invalid context/operation");
-            return; 
+            return;
         }
 
         //TODO : Check whether or not there is an ongoing drag'n drop action
@@ -85,6 +85,7 @@ class CommandAction extends Command {
                 let editorClass = com.pool.POOL.GetClass(`Editor`),
                     p = this._emitter;
                 while (!editor && p) {
+                    p = p.editor || p.parent;
                     if (u.isInstanceOf(p, editorClass)) { editor = p; }
                     p = p.parent;
                 }

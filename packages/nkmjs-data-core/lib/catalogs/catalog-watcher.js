@@ -47,8 +47,6 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
         //both filtered AND flagged as 'flatten catalog'
 
-
-
     }
 
     /**
