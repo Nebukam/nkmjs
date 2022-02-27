@@ -4,6 +4,11 @@ const SIGNAL = require(`../signal`);
 class SimpleDataBlock extends DataBlock {
     constructor() { super(); }
 
+    static __signalValueMap = this.__GetSignalValueMap();
+    static __GetSignalValueMap() {
+        return {};
+    }
+
     _Init() {
         super._Init();
         this._values = {};
@@ -11,23 +16,23 @@ class SimpleDataBlock extends DataBlock {
 
     Set(p_id, p_value, p_silent = false) {
         let valueObject;
-        if (!(p_id in this._values)) { 
-            valueObject =  { value: p_value };
-            this._values[p_id] = valueObject; 
+        let oldValue = null;
+        if (!(p_id in this._values)) {
+            valueObject = { value: p_value };
+            this._values[p_id] = valueObject;
         }
-        else { 
+        else {
             valueObject = this._values[p_id];
-            valueObject.value = p_value; 
-            if(valueObject.setter){ this[valueObject.setter] = p_value; }
+            oldValue = valueObject.value;
+            if (oldValue === p_value) { return p_value; }
+            valueObject.value = p_value;
         }
-        this.CommitValueUpdate(p_id, valueObject, p_silent);
+        this.CommitValueUpdate(p_id, valueObject, oldValue, p_silent);
         return p_value;
     }
 
     Get(p_id, p_fallback = null, p_fallbackIfNullValue = false) {
-        if (!(p_id in this._values)) {
-            return p_fallback;
-        }
+        if (!(p_id in this._values)) { return p_fallback; }
         let value = this._values[p_id].value;
         if (p_fallbackIfNullValue && value == null) { return p_fallback; }
         return value;
@@ -35,8 +40,7 @@ class SimpleDataBlock extends DataBlock {
 
     GetOrSet(p_id, p_fallback = null, p_silent = false) {
         if (!(p_id in this._values)) {
-            this.Set(p_id, p_fallback, p_silent);
-            return p_fallback;
+            return this.Set(p_id, p_fallback, p_silent);
         }
         return this._values[p_id].value;
     }
@@ -46,9 +50,12 @@ class SimpleDataBlock extends DataBlock {
         this.CommitUpdate();
     }
 
-    CommitValueUpdate(p_id, p_valueObj, p_silent = false){
-        this._Broadcast(SIGNAL.VALUE_CHANGED, this, p_id, p_valueObj);
-        if(!p_silent){ this.CommitUpdate(); }
+    CommitValueUpdate(p_id, p_valueObj, p_oldValue, p_silent = false) {
+        if (p_id in this.constructor.__signalValueMap) {
+            this._Broadcast(this.constructor.__signalValueMap[p_id], this, p_valueObj, p_oldValue);
+        }
+        this._Broadcast(SIGNAL.VALUE_CHANGED, this, p_id, p_valueObj, p_oldValue);
+        if (!p_silent) { this.CommitUpdate(); }
     }
 
     _CleanUp() {
