@@ -17,6 +17,7 @@ const DisplayObjectContainer = require(`../display-object-container`);
 const Widget = require(`../widget`);
 
 const FlagEnum = require(`./flag-enum`);
+const RectTracker = require(`./rect-tracker`);
 
 
 /**
@@ -105,12 +106,19 @@ class Modal extends DisplayObjectContainer {
 
         super._Init();
 
+        this._Bind(this._mUp);
+        this._Bind(this._mDown);
+        this._Bind(this.Close);
+        this._Bind(this._UpdateAnchoredPosition);
+
         this._content = null;
         this._options = null;
         this._placement = null;
         this._origin = null;
         this._keepWithinScreen = true;
-        this._margins = { x:0, y:0 };
+        this._margins = { x: 0, y: 0 };
+
+        this._rectTracker = new RectTracker(this._UpdateAnchoredPosition, this);
 
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
@@ -133,10 +141,7 @@ class Modal extends DisplayObjectContainer {
 
         this._ownsContent = false;
 
-        this._Bind(this._mUp);
-        this._Bind(this._mDown);
-        this._Bind(this.Close);
-        this._Bind(this._UpdateAnchoredPosition);
+
 
         this._parentModal = null;
         this._subModals = new collections.List();
@@ -223,8 +228,8 @@ class Modal extends DisplayObjectContainer {
      * @type {object}
      * @group Placement
      */
-     get margins() { return this._margins; }
-     set margins(p_value) { this._margins = p_value; }
+    get margins() { return this._margins; }
+    set margins(p_value) { this._margins = p_value; }
 
     /**
      * @description Point inside the pop-in to pin at position
@@ -285,9 +290,15 @@ class Modal extends DisplayObjectContainer {
     get context() { return this._context; }
     set context(p_value) {
         if (this._context === p_value) { return; }
-        if (this._context) { dom.Detach(this); }
+        if (this._context) {
+            dom.Detach(this);
+            this._rectTracker.Remove(this._context);
+        }
         this._context = p_value;
-        if (this._context) { dom.Attach(this, this._context); }
+        if (this._context) {
+            this._rectTracker.Add(this._context);
+            dom.Attach(this, this._context);
+        }
     }
 
     /**
@@ -297,9 +308,23 @@ class Modal extends DisplayObjectContainer {
     get anchor() { return this._anchor; }
     set anchor(p_value) {
         if (this._anchor === p_value) { return; }
+
+        let oldAnchor = this._anchor;
+        if (oldAnchor) { this._rectTracker.Remove(oldAnchor); }
+
         this._anchor = p_value;
-        if (this._anchor) { com.time.TIME.Watch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
-        else { com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
+
+        //if (this._anchor) { com.time.TIME.Watch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
+        //else { com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
+        if (this._anchor) {
+            this.visible = false;
+            this._rectTracker.Add(this._anchor);
+            this._rectTracker.Enable();
+        } else {
+            this.visible = true;
+            this._rectTracker.Disable();
+        }
+
 
         // Guess parent modal from anchor
         if (this._anchor && !this._parentModal) {
@@ -373,12 +398,23 @@ class Modal extends DisplayObjectContainer {
      */
     _UpdateAnchoredPosition() {
 
-        let anchorRect = dom.Rect(this._anchor, this.parentElement),
-            selfRect = dom.Rect(this),
-            anchorCX = anchorRect.x + anchorRect.width * 0.5,
-            anchorCY = anchorRect.y + anchorRect.height * 0.5,
-            x = anchorCX + anchorRect.width * this._placement.x,
-            y = anchorCY + anchorRect.height * this._placement.y;
+        console.log(`_UpdateAnchoredPosition`);
+        this.visible = true;
+
+        let
+            contextRect = this._rectTracker.GetRect(this._context),
+            anchorRect = this._rectTracker.GetRect(this._anchor),
+            selfRect = this._rectTracker.GetRect(this),
+            ax = anchorRect.x - contextRect.x,
+            ay = anchorRect.y - contextRect.y,
+            aw = anchorRect.width,
+            ah = anchorRect.height;
+
+        let
+            anchorCX = ax + aw * 0.5,
+            anchorCY = ay + ah * 0.5,
+            x = anchorCX + aw * this._placement.x,
+            y = anchorCY + ah * this._placement.y;
 
         x -= this._origin.x * selfRect.width;
         y -= this._origin.y * selfRect.height;

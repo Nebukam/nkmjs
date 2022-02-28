@@ -91,9 +91,11 @@ class DictionaryList {
             this._map.set(p_key, list);
         }
 
-        if (list.includes(p_value)) { return; }
+        if (list.includes(p_value)) { return false; }
 
         list.push(p_value);
+
+        return true;
 
     }
 

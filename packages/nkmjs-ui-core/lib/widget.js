@@ -504,8 +504,8 @@ class Widget extends DisplayObjectContainer {
 
 
     toString() {
-        if (!this._data) { return `<${this.constructor.name}|${this._uinc}>`; }
-        else { return `<${this.constructor.name}|${this._uinc}:{${this._data}}>`; }
+        if (!this._data) { return `<${this.constructor.name}|${this.__URID}>`; }
+        else { return `<${this.constructor.name}|${this.__URID}:{${this._data}}>`; }
     }
 
 }

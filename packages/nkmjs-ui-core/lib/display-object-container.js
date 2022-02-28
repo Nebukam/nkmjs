@@ -135,7 +135,6 @@ class DisplayObjectContainer extends DisplayObject {
         }
 
         if (p_index === -1) {
-
             this._displayList.Add(p_displayObject);
             p_index = this._displayList.count - 1;
 

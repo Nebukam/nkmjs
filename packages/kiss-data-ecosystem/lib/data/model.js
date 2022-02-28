@@ -49,7 +49,7 @@ class Model extends DerivableDataBlock {
     _Init() {
         super._Init();
 
-        this._uinc = uinc++;
+        this.__URID = dom.URID;
 
         this._NFO = null;
         this._base = null;
@@ -328,7 +328,7 @@ class Model extends DerivableDataBlock {
     }
 
     toString() {
-        if (!this._id) { return `[(${this._uinc})Model::?]`; }
+        if (!this._id) { return `[(${this.__URID})Model::?]`; }
         return this.uri;
     }
 

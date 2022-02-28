@@ -2,6 +2,7 @@
 
 module.exports = {
 
+    RectTracker: require(`./rect-tracker`),
     CatalogBuilder: require(`./catalog-builder`),
     CatalogViewBuilder: require(`./catalog-view-builder`),
     FlagBox: require(`./flag-box`),
@@ -9,5 +10,7 @@ module.exports = {
     Frame: require(`./frame`),
     Modal: require(`./modal`),
     WidgetSelection: require(`./widget-selection`),
-    Canvas: require(`./disposable-canvas-element`)   
+    Canvas: require(`./disposable-canvas-element`),
+    DOMStreamer: require(`./dom-streamer`),
+
 }

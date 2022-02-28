@@ -8,8 +8,6 @@ const SIGNAL = require(`./signal`);
 
 const __unpainted = `unpainted`;
 
-let uinc = 0;
-
 const __paintingObserver = new IntersectionObserver(
     (entries, observer) => {
 
@@ -26,6 +24,7 @@ const __paintingObserver = new IntersectionObserver(
         for (let i = 0, n = entries.length; i < n; i++) {
             let entry = entries[i],
                 target = entry.target;
+
             if (entry.isIntersecting) {
                 if (target._isPainted) { continue; }
                 target._isPainted = true;
@@ -120,12 +119,12 @@ class DisposableHTMLElement extends HTMLElement {
 
     constructor() {
         super();
+        this.__URID = dom.URID;
         this._Init();
         this._PostInit();
     }
 
     _Init() {
-        this._uinc = uinc++;
 
         this._releasing = false;
         this._signals = new com.signals.SignalBox();

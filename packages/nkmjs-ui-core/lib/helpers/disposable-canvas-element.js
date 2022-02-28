@@ -8,8 +8,6 @@ const SIGNAL = require(`../signal`);
 
 const __unpainted = `unpainted`;
 
-let uinc = 0;
-
 const __paintingObserver = new IntersectionObserver(
     (entries, observer) => {
 
@@ -93,7 +91,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
     }
 
     _Init() {
-        this._uinc = uinc++;
+        this.__URID = dom.URID;
 
         this._releasing = false;
         this._signals = new com.signals.SignalBox();

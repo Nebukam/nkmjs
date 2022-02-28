@@ -2,6 +2,84 @@
 'use strict';
 
 const u = require(`@nkmjs/utils`);
+const collections = require(`@nkmjs/collections`);
+
+const __observedElements = [];
+const __observedCallbacks = new collections.DictionaryList();
+const __rectObserver = new IntersectionObserver(
+    (entries, observer) => {
+
+        // Each entry describes an intersection change for one observed
+        // target element:
+        //   entry.boundingClientRect
+        //   entry.intersectionRatio
+        //   entry.intersectionRect
+        //   entry.isIntersecting
+        //   entry.rootBounds
+        //   entry.target
+        //   entry.time
+
+        let entryList = [];
+        let callbackList = [];
+
+        //console.log(entries);
+        for (let i = 0, n = entries.length; i < n; i++) {
+            let
+                entry = entries[i],
+                target = entry.target,
+                oldRect = target.boundingClientRect,
+                newRect = entry.boundingClientRect,
+                doUpdate = false;
+
+            if (!oldRect) {
+                doUpdate = true;
+            } else {
+                if (oldRect.x != newRect.x ||
+                    oldRect.y != newRect.y ||
+                    oldRect.width != newRect.width ||
+                    oldRect.height != newRect.height) {
+                    doUpdate = true;
+                }
+            }
+
+            if (doUpdate) {
+                target.boundingClientRect = newRect;
+                callbackList.push(__observedCallbacks.Get(target));
+                entryList.push(entry);
+            }
+
+            if (entry.isIntersecting) {
+
+            } else {
+
+            }
+        }
+
+        // Callback AFTER updating boudingClientRect
+        // to ensure elements are all up-to-date
+        for (let i = 0; i < callbackList.length; i++) {
+            let
+                cbs = callbackList[i],
+                entry = entryList[i];
+            for (let c = 0, cn = cbs.length; c < cn; c++) {
+                let cb = cbs[c];
+
+                if (u.isFunc(cb)) { cb(entry); }
+            }
+        }
+
+        entryList.length = 0;
+        callbackList.length = 0;
+
+        observer.disconnect();
+
+        for (let i = 0, n = __observedElements.length; i < n; i++) {
+            observer.observe(__observedElements[i]);
+        }
+
+    });
+
+var __urid = 0;
 
 /**
  * UTILS_DOM is a wrapper class that contains a bunch of utilitary static methods to manipulate the DOM.
@@ -15,6 +93,41 @@ class UTILS_DOM {
 
     constructor() { }
 
+    static get URID() { return __urid++; }
+
+    //#region Observable
+
+    static ObserveRect(p_element, p_callback) {
+
+        if (!__observedCallbacks.Set(p_element, p_callback)) { return; }
+
+        let index = __observedElements.indexOf(p_element);
+
+        if (index == -1) {
+            __observedElements.push(p_element);
+            __rectObserver.observe(p_element);
+        }
+
+        console.log(`ObserveRect :: ${p_element} / ${p_callback} (${index})`);
+
+    }
+
+    static UnobserveRect(p_element, p_callback) {
+
+        if (!__observedCallbacks.Remove(p_element, p_callback)) { return; }
+
+        let count = __observedCallbacks.Count(p_element), index = -2;
+        if (count == 0) {
+            index = __observedElements.indexOf(p_element);
+            __observedElements.splice(index, 1);
+            __rectObserver.unobserve(p_element);
+        }
+
+        console.log(`UnobserveRect :: ${p_element} / ${p_callback} (${index} // ${count})`);
+    }
+
+    //#endregion
+
     /**
      * @description Create a DOM Node of a given type with a given set of attributes.
      * @param {string} p_element 
@@ -26,6 +139,7 @@ class UTILS_DOM {
     static El(p_element, p_attributes = null, p_container = null) {
 
         let element = document.createElement(p_element);
+
 
         if (!u.isVoid(p_attributes)) {
             for (let att in p_attributes) { element.setAttribute(att, p_attributes[att]); }
@@ -82,7 +196,7 @@ class UTILS_DOM {
     static Detach(p_element) {
         if (!u.isVoid(p_element.parentNode)) {
             p_element.parentNode.removeChild(p_element);
-        }else{
+        } else {
             p_element.remove();
         }
     }
