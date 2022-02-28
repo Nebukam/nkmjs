@@ -171,6 +171,15 @@ class UTILS_DOM {
         else { p_parent.appendChild(p_element); }
     }
 
+    static AttachAfter(p_element, p_refNode) {
+        p_refNode.parentNode.insertBefore(p_element, p_refNode.nextSibling);
+    }
+
+    static AttachBefore(p_element, p_refNode) {
+        p_refNode.parentNode.insertBefore(p_element, p_refNode);
+    }
+
+    
     /**
      * @description Appends or move an element at the beginning of the display list of another dom element. 
      * Note that if the element provided is not a child of the target parent, it will be removed from its previous parent.

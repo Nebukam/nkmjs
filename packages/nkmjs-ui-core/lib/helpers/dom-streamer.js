@@ -34,20 +34,20 @@ class DOMStreamer extends DisposableHTMLElement {
             .Hook(`host`)
             .Hook(`layout`);
 
+        this._linePaddingTop = 1;
+        this._linePaddingBottom = 1;
+
         this._header = null;
         this._footer = null;
         this._drawArea = { width: 0, height: 0 };
         this._indices = { start: 0, end: 0 };
-        this._activeFragment = null;
         this._items = [];
 
+        this._activeFragment = null;
+        
         this._isVertical = true; //TODO: Implement orientation flag instead
 
         this._rectTracker = new RectTracker(this._Bind(this._OnRectUpdate), this);
-
-        this._headerIntersects = false;
-        this._footerIntersects = false;
-        this._startIndex = 0;
 
     }
 
@@ -79,25 +79,22 @@ class DOMStreamer extends DisposableHTMLElement {
         return {
             ':host': {
                 'position': 'relative',
-                'display': 'flex',
-                'flex-flow': 'row wrap'
+                'display': 'grid',
             },
             '.fixture': {
                 'min-height': 0,
                 'width': '100%',
-                'height': '0px'
+                'flex-grow': `1`,
+                'height': '0px',
+                'grid-column': `1/-1`, // take one full width
             },
             '.dom-streamer-header': {
-                //'flex': '1 0 auto',
-
-                'border': '1px solid blue'
             },
             '.dom-streamer-footer': {
-                'border': '1px solid yellow',
-                'margin-top': '0px'
             },
             '.dom-streamer-item': {
-
+                'box-sizing': 'border-box',
+                'flex-grow': `1`,
             }
         };
     }
@@ -139,9 +136,6 @@ class DOMStreamer extends DisposableHTMLElement {
             }
          */
 
-        let iw = this._layout.itemWidth, ih = this._layout.itemHeight;
-        this._itemStyle.innerHTML = `.dom-streamer-item { width:${iw}px; height:${ih}px }`;
-
 
     }
 
@@ -150,26 +144,14 @@ class DOMStreamer extends DisposableHTMLElement {
         this._RefreshLayoutInfos();
     }
 
-    _OnHeaderIntersectToggle(p_toggle, p_rect) {
-        if (this._headerIntersects == p_toggle) { return; }
-        console.log(`Header intersect : ${p_toggle}`, p_rect);
-        this._headerIntersects = p_toggle;
-    }
-
-    _OnFooterIntersectToggle(p_toggle, p_rect) {
-        if (this._footerIntersects == p_toggle) { return; }
-        console.log(`Footer intersect : ${p_toggle}`, p_rect);
-        this._footerIntersects = p_toggle;
-    }
-
     _RequestItem(p_itemIndex) {
+        this._requestResult = null;
         this._Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
     }
 
-    ItemRequestHandled(p_itemIndex, p_item) {
+    ItemRequestAnswer(p_itemIndex, p_item) {
         p_item.classList.add(`dom-streamer-item`);
-        this._items.push(p_item);
-        console.log(`${p_item}`);
+        this._requestResult = p_item;
     }
 
     _RefreshLayoutInfos() {
@@ -181,40 +163,50 @@ class DOMStreamer extends DisposableHTMLElement {
             lineSize = v ? aw : ah, // Space available for a single line of items
             iWidth = 0, iHeight = 0, iSize = 0, //item desired size
             totalItemCount = l.itemCount, //total number of items
-            itemCountPerLine = 0; //item per row or column
+            lineItemCount = 0; //item per row or column
 
 
         if (l.itemSlots) {
-            itemCountPerLine = l.itemSlots;
-            iHeight = l.itemSize;
-            iWidth = Math.max(math.floor(lineSize / itemCountPerLine), 1); //TODO : Account for margin etc
+            lineItemCount = l.itemSlots;
+            if (v) {
+                iHeight = Math.max(math.floor(lineSize / l.itemSlots), 1);
+                iWidth = l.itemSize;
+            } else {
+                iHeight = l.itemSize;
+                iWidth = Math.max(math.floor(lineSize / l.itemSlots), 1);
+            }
         } else {
             iWidth = l.itemSize || l.itemWidth || l.itemHeight;
             iHeight = l.itemSize || l.itemHeight || iWidth;
-            itemCountPerLine = Math.max(Math.floor(lineSize / (v ? iWidth : iHeight)), 1); //min 1 item per line
         }
 
+        //TODO : Account for margin etc
         iSize = v ? iHeight : iWidth;
+        lineItemCount = Math.max(Math.floor(lineSize / iSize), 1); //min 1 item per line
 
-        console.log(this._drawArea);
 
         let
             streamAvailSpace = v ? ah : aw,
-            totalLineCount = Math.max(Math.ceil(totalItemCount / itemCountPerLine), 1),
-            streamLineCount = Math.max(Math.ceil(streamAvailSpace / iSize), 1), // +1 ?
+            totalLineCount = Math.max(Math.ceil(totalItemCount / lineItemCount), 1),
+            streamLineCount = Math.max(Math.ceil(streamAvailSpace / iSize), 1) + this._linePaddingBottom + this._linePaddingBottom,
             totalSize = iSize * totalLineCount,
             streamSize = streamLineCount * iSize,
-            itemCountInStream = streamLineCount * itemCountPerLine;
+            streamItemCount = streamLineCount * lineItemCount,
+            infos = this._layoutInfos;
 
-        this._layoutInfos.streamSize = streamSize;
-        this._layoutInfos.totalLineCount = totalLineCount;
-        this._layoutInfos.streamLineCount = streamLineCount;
-        this._layoutInfos.totalSize = totalSize;
-        this._layoutInfos.itemCountPerLine = itemCountPerLine;
-        this._layoutInfos.itemCountInStream = itemCountInStream;
-        this._layoutInfos.itemSize = iSize;
+        infos.streamSize = streamSize;
+        infos.streamLineCount = streamLineCount;
+        infos.streamItemCount = streamItemCount;
+        infos.totalSize = totalSize;
+        infos.totalLineCount = totalLineCount;
+        infos.lineItemCount = lineItemCount;
+        infos.itemSize = iSize;
 
-        console.log(this._layoutInfos);
+        let st = `:host{ grid-template-columns:repeat( ${lineItemCount}, ${100 / lineItemCount}%); }`;
+        st += `.dom-streamer-item { width:${iWidth}px; height:${iHeight}px }`;
+        this._itemStyle.innerHTML = st;
+
+        console.log(`_RefreshLayoutInfos :: ${JSON.stringify(this._layoutInfos)}`);
 
     }
 
@@ -222,10 +214,13 @@ class DOMStreamer extends DisposableHTMLElement {
 
         let
             v = this._isVertical,
+            l = this._layoutInfos,
+            linePaddingTop = this._linePaddingTop * l.itemSize,
             selfRect = this._rectTracker.GetIntersect(this),
             fixtRect = this._rectTracker.GetRect(this._header),
-            startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x),
-            l = this._layoutInfos;
+            startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x) - linePaddingTop;
+
+        if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
 
         if (this._drawArea.width != selfRect.width ||
             this._drawArea.height != selfRect.height) {
@@ -235,86 +230,111 @@ class DOMStreamer extends DisposableHTMLElement {
         }
 
         let
-            startLineIndex = Math.floor(startCoord / l.itemSize),
-            headerSize = startLineIndex * l.itemSize,
-            footerSize = l.totalSize - (l.streamLineCount * l.itemSize + headerSize),
-            startIndex = startLineIndex * l.itemCountPerLine,
-            endIndex = startIndex + l.itemCountInStream,
-            oldStart = this._indices.start,
-            oldEnd = this._indices.end;
+            lineStart = Math.floor(startCoord / l.itemSize),
+            newStart = lineStart * l.lineItemCount,
+            newEnd = newStart + l.streamItemCount,
+            newLength = newEnd - newStart,
 
-        if (startIndex == oldStart &&
-            endIndex == oldEnd) {
+            oldStart = this._indices.start,
+            oldEnd = this._indices.end,
+            oldLength = oldEnd - oldStart,
+
+            insertBefore = 0,
+            insertAfter = 0;
+
+        if (newStart == oldStart &&
+            newEnd == oldEnd) {
             return;
         }
 
-        /*
-        let
-            shiftCount = 0,
-            popCount = 0,
-            length = this._items.length;
-        // - Find how many items should be removed
-        // - Find how many items should be added
-        for (let i = 0; i < length; i++) {
-            let ii = oldStart + i;
-            if (ii < startIndex) { shiftCount++; }
-            else if (ii > endIndex) { popCount++; }
-        }
-
-
-
-        if ((shiftCount + popCount) >= length) {
-            // No item can be salvaged.
+        // Check if this is a complete refresh
+        if (newStart >= oldEnd ||
+            newEnd <= oldStart) {
+            this._ClearItems();
+            insertAfter = newLength;
         } else {
-            // Some items can be salvaged.
-            if (shiftCount > 0) {
-                let unshifted = this._items.splice(0, shiftCount);
-                for (let i = 0; i < unshifted.length; i++) {
-                    RemoveItem(unshifted[i]);
-                }
-            }
+
+            insertBefore = oldStart - newStart;
+            insertAfter = newEnd - oldEnd;
+
+            let
+                popCount = oldEnd - newEnd,
+                shiftCount = newStart - oldStart;
 
             if (popCount > 0) {
-                let popStart = this._items.length - popCount,
-                    popped = this._items.splice(popStart, popCount);
-                for (let i = 0; i < popped.length; i++) {
-                    RemoveItem(popped[i]);
+                for (let i = 0; i < popCount; i++) {
+                    let item = this._items.pop();
+                    if (item) { item.Release(); }
+                }
+            }
+
+            if (shiftCount > 0) {
+                for (let i = 0; i < shiftCount; i++) {
+                    let item = this._items.shift();
+                    if (item) { item.Release(); }
                 }
             }
 
         }
 
-        */
+        if (insertBefore > 0) {
 
-        for (let i = 0; i < this._items.length; i++) {
-            this._items[i].Release();
+            this._activeFragment = document.createDocumentFragment();
+
+            for (let i = 0; i < insertBefore; i++) {
+                let index = newStart + i;
+                this._RequestItem(index);
+                if (this._requestResult) {
+                    this._items.splice(i, 0, this._requestResult);
+                } else {
+                    // missing item. Fill with dummy ?
+                }
+            }
+
+            dom.AttachAfter(this._activeFragment, this._header);
+            this._activeFragment = null;
         }
-        this._items.length = 0;
 
-        this._activeFragment = document.createDocumentFragment();
+        if (insertAfter > 0) {
 
-        let length = endIndex - startIndex;
+            this._activeFragment = document.createDocumentFragment();
 
-        for (let i = 0; i < length; i++) {
-            let ii = startIndex + i;
-            this._RequestItem(ii);
+            for (let i = 0; i < insertAfter; i++) {
+                let index = newEnd - insertAfter + i;
+                this._RequestItem(index);
+                if (this._requestResult) {
+                    this._items.push(this._requestResult);
+                } else {
+                    // missing item. Fill with dummy ?
+                }
+            }
+
+            dom.AttachBefore(this._activeFragment, this._footer);
+            this._activeFragment = null;
         }
+
+        let
+            headerSize = lineStart * l.itemSize,
+            footerSize = l.totalSize - (l.streamLineCount * l.itemSize + headerSize);
 
         this._header.style.setProperty(`margin-bottom`, `${headerSize}px`);
         this._footer.style.setProperty(`margin-top`, `${footerSize}px`);
 
-        this._host.insertBefore(this._activeFragment, this._footer);
-        this._activeFragment = null;
-
-        console.log(`${startIndex} || ${endIndex} // ${this._layout.itemCount})`);
-
         // TODO : implement an option to "pin" indices and scrollIntoView() them.
 
 
-        this._indices.start = startIndex;
-        this._indices.end = endIndex;
+        this._indices.start = newStart;
+        this._indices.end = newEnd;
 
     }
+
+    _ClearItems() {
+        for (let i = 0; i < this._items.length; i++) {
+            this._items[i].Release();
+        }
+        this._items.length = 0;
+    }
+
 
     _RefreshStream() {
 
