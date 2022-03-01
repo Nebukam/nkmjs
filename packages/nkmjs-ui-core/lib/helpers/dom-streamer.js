@@ -80,12 +80,13 @@ class DOMStreamer extends DisposableHTMLElement {
             ':host': {
                 'position': 'relative',
                 'display': 'grid',
+                //'justify-items': `center`,
             },
             '.fixture': {
                 'min-height': 0,
                 'width': '100%',
-                'flex-grow': `1`,
-                'height': '0px',
+                'flex': `1 1 auto`,
+                //'height': '0px',
                 'grid-column': `1/-1`, // take one full width
             },
             '.dom-streamer-header': {
@@ -117,8 +118,10 @@ class DOMStreamer extends DisposableHTMLElement {
     get layout() { return this._itemProperties; }
     set layout(p_value) {
         if (!p_value) { p_value = {}; }
-        this._layout = p_value;
 
+        this._layout = p_value;
+        this._RefreshLayoutInfos();
+        //this._ClearItems();
         /*
         Accepts the two following format :
         #1 - Fixed number of item in available space (width or height)
@@ -199,11 +202,12 @@ class DOMStreamer extends DisposableHTMLElement {
         infos.streamItemCount = streamItemCount;
         infos.totalSize = totalSize;
         infos.totalLineCount = totalLineCount;
+        infos.totalItemCount = totalItemCount;
         infos.lineItemCount = lineItemCount;
         infos.itemSize = iSize;
 
         let st = `:host{ grid-template-columns:repeat( ${lineItemCount}, ${100 / lineItemCount}%); }`;
-        st += `.dom-streamer-item { width:${iWidth}px; height:${iHeight}px }`;
+        st += `.dom-streamer-item { min-width:${iWidth}px; min-height:${iHeight}px }`;
         this._itemStyle.innerHTML = st;
 
         console.log(`_RefreshLayoutInfos :: ${JSON.stringify(this._layoutInfos)}`);
@@ -230,9 +234,9 @@ class DOMStreamer extends DisposableHTMLElement {
         }
 
         let
-            lineStart = Math.floor(startCoord / l.itemSize),
-            newStart = lineStart * l.lineItemCount,
-            newEnd = newStart + l.streamItemCount,
+            lineStart = Math.min(Math.floor(startCoord / l.itemSize), l.totalLineCount),
+            newStart = Math.min(lineStart * l.lineItemCount, l.totalItemCount),
+            newEnd = Math.min(newStart + l.streamItemCount, l.totalItemCount),
             newLength = newEnd - newStart,
 
             oldStart = this._indices.start,
@@ -317,8 +321,8 @@ class DOMStreamer extends DisposableHTMLElement {
             headerSize = lineStart * l.itemSize,
             footerSize = l.totalSize - (l.streamLineCount * l.itemSize + headerSize);
 
-        this._header.style.setProperty(`margin-bottom`, `${headerSize}px`);
-        this._footer.style.setProperty(`margin-top`, `${footerSize}px`);
+        this._header.style.setProperty(`height`, `${headerSize}px`);
+        this._footer.style.setProperty(`height`, `${footerSize}px`);
 
         // TODO : implement an option to "pin" indices and scrollIntoView() them.
 
