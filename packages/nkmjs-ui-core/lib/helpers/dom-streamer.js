@@ -21,6 +21,8 @@ const DisposableHTMLElement = require("../disposable-htmlelement");
 class DOMStreamer extends DisposableHTMLElement {
     constructor() { super(); }
 
+    static __useResizeCallback = true;
+
     _Init() {
         super._Init();
 
@@ -44,7 +46,7 @@ class DOMStreamer extends DisposableHTMLElement {
         this._items = [];
 
         this._activeFragment = null;
-        
+
         this._isVertical = true; //TODO: Implement orientation flag instead
 
         this._rectTracker = new RectTracker(this._Bind(this._OnRectUpdate), this);
@@ -120,8 +122,7 @@ class DOMStreamer extends DisposableHTMLElement {
         if (!p_value) { p_value = {}; }
 
         this._layout = p_value;
-        this._RefreshLayoutInfos();
-        //this._ClearItems();
+
         /*
         Accepts the two following format :
         #1 - Fixed number of item in available space (width or height)
@@ -139,6 +140,8 @@ class DOMStreamer extends DisposableHTMLElement {
             }
          */
 
+        this._RefreshLayoutInfos();
+        this._OnRectUpdate();
 
     }
 
@@ -149,6 +152,7 @@ class DOMStreamer extends DisposableHTMLElement {
 
     _RequestItem(p_itemIndex) {
         this._requestResult = null;
+        if(p_itemIndex < 0){ return; }
         this._Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
     }
 
@@ -157,6 +161,10 @@ class DOMStreamer extends DisposableHTMLElement {
         this._requestResult = p_item;
     }
 
+    /**
+     * Computes static layout infos that will later
+     * be used to calculate which indices/items should be visible.
+     */
     _RefreshLayoutInfos() {
 
         let
@@ -203,6 +211,7 @@ class DOMStreamer extends DisposableHTMLElement {
         infos.totalSize = totalSize;
         infos.totalLineCount = totalLineCount;
         infos.totalItemCount = totalItemCount;
+        infos.maxItemCount = totalLineCount * lineItemCount;
         infos.lineItemCount = lineItemCount;
         infos.itemSize = iSize;
 
@@ -210,21 +219,31 @@ class DOMStreamer extends DisposableHTMLElement {
         st += `.dom-streamer-item { min-width:${iWidth}px; min-height:${iHeight}px }`;
         this._itemStyle.innerHTML = st;
 
-        console.log(`_RefreshLayoutInfos :: ${JSON.stringify(this._layoutInfos)}`);
+        this._OnRectUpdate();
 
     }
 
+    /**
+     * This is the core method of the DOM Streamer.
+     * It computes which item indices are currently visible, removes
+     * non-visible one and requests missing ones that should be visible.
+     */
     _OnRectUpdate() {
+
+        let
+            selfRect = this._rectTracker.GetIntersect(this),
+            fixtRect = this._rectTracker.GetRect(this._header);
+
+        if (!selfRect || !fixtRect) { return; }
 
         let
             v = this._isVertical,
             l = this._layoutInfos,
             linePaddingTop = this._linePaddingTop * l.itemSize,
-            selfRect = this._rectTracker.GetIntersect(this),
-            fixtRect = this._rectTracker.GetRect(this._header),
             startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x) - linePaddingTop;
 
         if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
+        if (startCoord > (l.totalSize - l.streamSize)) { startCoord = l.totalSize - l.streamSize; }
 
         if (this._drawArea.width != selfRect.width ||
             this._drawArea.height != selfRect.height) {
@@ -241,21 +260,24 @@ class DOMStreamer extends DisposableHTMLElement {
 
             oldStart = this._indices.start,
             oldEnd = this._indices.end,
-            oldLength = oldEnd - oldStart,
-
-            insertBefore = 0,
-            insertAfter = 0;
+            oldLength = oldEnd - oldStart;
 
         if (newStart == oldStart &&
             newEnd == oldEnd) {
             return;
         }
 
+        let
+            insertBefore = 0,
+            insertAfter = 0;
+
         // Check if this is a complete refresh
         if (newStart >= oldEnd ||
             newEnd <= oldStart) {
+
             this._ClearItems();
             insertAfter = newLength;
+
         } else {
 
             insertBefore = oldStart - newStart;
@@ -318,8 +340,8 @@ class DOMStreamer extends DisposableHTMLElement {
         }
 
         let
-            headerSize = lineStart * l.itemSize,
-            footerSize = l.totalSize - (l.streamLineCount * l.itemSize + headerSize);
+            headerSize = Math.max(Math.floor(newStart / l.lineItemCount) * l.itemSize, 1),
+            footerSize = l.totalSize - (headerSize + l.streamSize);
 
         this._header.style.setProperty(`height`, `${headerSize}px`);
         this._footer.style.setProperty(`height`, `${footerSize}px`);
@@ -329,9 +351,13 @@ class DOMStreamer extends DisposableHTMLElement {
 
         this._indices.start = newStart;
         this._indices.end = newEnd;
+        this._indices.startCoord = startCoord;
 
     }
 
+    /**
+     * Release all items
+     */
     _ClearItems() {
         for (let i = 0; i < this._items.length; i++) {
             this._items[i].Release();
@@ -339,6 +365,21 @@ class DOMStreamer extends DisposableHTMLElement {
         this._items.length = 0;
     }
 
+    /**
+     * Return the top position of a given item index, using
+     * the last computed layout infos
+     * @param {Number} p_index 
+     * @returns 
+     */
+    GetIndexOffset(p_index) {
+
+        // Compute index vertical position based on current layout infos
+        let l = this._layoutInfos,
+            lineIndex = p_index / l.lineItemCount - (p_index % l.lineItemCount);
+
+        return lineIndex * l.iSize;
+
+    }
 
     _RefreshStream() {
 
