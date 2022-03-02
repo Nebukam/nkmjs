@@ -24,9 +24,11 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
         super._Init();
 
         this._defaultItemClass = null;
-        this._defaultGroupClass = null;
+        this._defaultDirClass = null;
 
-        this._folderHost = null;
+        this._insideBatch = false;
+
+        this._host = null;
         this._itemStreamer = null;
 
         this._itemList = [];
@@ -37,8 +39,8 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
      * @description TODO
      * @type {Element}
      */
-    get folderHost() { return this._folderHost; }
-    set folderHost(p_value) { this._folderHost = p_value; }
+    get host() { return this._host; }
+    set host(p_value) { this._host = p_value; }
 
     /**
      * @description TODO
@@ -65,15 +67,35 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
         let
             fragment = document.createDocumentFragment(),
-            host = this._folderHost;
+            host = this._host;
 
-        this._folderHost = fragment;
+        this._host = fragment;
+        this._insideBatch = true;
+        this._itemList.length = 0;
 
         super._AddCatalogContent(p_catalog, p_deep);
 
         dom.Attach(fragment, host);
 
-        this._folderHost = host;
+        this._insideBatch = false;
+        this._host = host;
+
+        this._itemStreamer.itemCount = this._itemList.length;
+        //TODO: Update streamer
+
+    }
+
+    _RemoveCatalogContent(p_catalog) {
+
+        this._insideBatch = true;
+        this._itemList.length = 0;
+
+        let list = p_catalog._items;
+        for (let i = 0, n = list.length; i < n; i++) { this._OnItemRemoved(p_catalog, list[i], i); }
+
+        this._insideBatch = false;
+        this._itemStreamer.itemCount = 0;
+        this._itemStreamer._ClearItems();
 
     }
 
@@ -89,12 +111,9 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
         if (p_item.isDir) {
 
-            let
-                ownerCount = this._owner._displayList.count,
-                insertIndex = ownerCount > 1 ? ownerCount - 2 : ownerCount - 1,
-                mappedObject = this._owner.Add(
-                    com.BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
-                    `item group`, this._folderHost, insertIndex);
+            let mappedObject = this._owner.Add(
+                com.BINDINGS.Get(this._owner, p_item, this._defaultDirClass),
+                `item group`, this._host);
 
             this._map.set(p_item, mappedObject);
             mappedObject.data = p_item;
@@ -103,7 +122,9 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
         } else {
             this._itemList.push(p_item);
-            //TODO: Update streamer ?
+            if (!this._insideBatch) {
+                this._itemStreamer.itemCount++;
+            }
         }
 
         return true;
@@ -127,8 +148,13 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
             return mappedObject;
         } else {
-            let index = this._itemList.indexOf(p_item);
-            if (index != -1) { this._itemList.splice(index, 1); }
+            if (!this._insideBatch) {
+                let index = this._itemList.indexOf(p_item);
+                if (index != -1) {
+                    this._itemList.splice(index, 1);
+                    this._itemStreamer.itemCount--;
+                }
+            }
             //TODO: Update streamer
             return null;
         }
@@ -160,7 +186,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
             }
         }
 
-        this._itemLis.length = 0;
+        this._itemList.length = 0;
         this._itemList = newItemList;
 
         super._OnSorted(p_catalog);
@@ -202,9 +228,9 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
     _CleanUp() {
 
         this._defaultItemClass = null;
-        this._defaultGroupClass = null;
+        this._defaultDirClass = null;
 
-        this._folderHost = null;
+        this._host = null;
 
         super._CleanUp();
 

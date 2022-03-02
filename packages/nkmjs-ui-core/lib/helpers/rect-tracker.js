@@ -22,7 +22,6 @@ class RectTracker {
         this._onObserved = p_callback;
 
         for (let i = 0; i < p_elements.length; i++) { this.Add(p_elements[i]); }
-
     }
 
     Enable() {
@@ -98,6 +97,8 @@ class RectTracker {
         if (doCallback && this._onObserved) { this._onObserved(); }
 
         observer.disconnect();
+
+        if (!this._enabled) { return; }
 
         for (let i = 0; i < this._elements.length; i++) {
             observer.observe(this._elements[i]);

@@ -31,7 +31,7 @@ const DefaultStylesheet = require(`./default-stylesheet`);
  * @augments common.helpers.Singleton
  * @memberof style
  */
-class STYLE extends com.helpers.Singleton {
+class STYLE extends com.helpers.SingletonEx {
     constructor() { super(); }
 
     _Init() {

@@ -28,15 +28,16 @@ class FolderList extends ui.lists.Folder {
         super._Init();
     }
 
-    _PostInit() {
+    _PostInit() {        
         super._PostInit();
         this._extExpand.Setup(this, this._body, this._expandIcon.element);
     }
 
     _SetupBuilder(p_catalogBuilder) {
+        this._streamerWrapper = this._body;
         p_catalogBuilder.host = this._body;
         p_catalogBuilder._defaultItemClass = FolderListItem;
-        p_catalogBuilder._defaultGroupClass = FolderList;
+        p_catalogBuilder._defaultDirClass = FolderList;
     }
 
     // ----> DOM

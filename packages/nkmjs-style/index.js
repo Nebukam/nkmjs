@@ -33,8 +33,10 @@ module.exports = {
         return __propCache[p_property];
     },
     Set: (p_property, p_value) => {
+        if (p_property in __propCache) { if (__propCache[p_property] == p_value) { return; } }
         document.documentElement.style.setProperty(p_property, p_value);
         __propCache[p_property] = p_value;
+        __STYLE.instance._Broadcast(p_property, p_value);
     },
     ClearCache: () => { __propCache = {}; }
 

@@ -36,7 +36,7 @@ const FlagBox = require("./helpers/flag-box");
 class DisplayObject extends DisposableHTMLElement {
     constructor() { super(); }
 
-
+    static __defaultOrder = null;
 
     //#region  Init
 
@@ -57,7 +57,7 @@ class DisplayObject extends DisposableHTMLElement {
 
         this._requestSignalBox = null;
 
-        this._order = null;
+        this.order = this.constructor.__defaultOrder;
 
         this._parent = null;
 
@@ -517,7 +517,7 @@ class DisplayObject extends DisposableHTMLElement {
         
         this.parent = null;
 
-        this.order = null;
+        this.order = this.constructor.__defaultOrder;
 
         this._transforms = {};
         this.style.removeProperty(`transform`);

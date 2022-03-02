@@ -21,7 +21,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
         super._Init();
 
         this._defaultItemClass = null;
-        this._defaultGroupClass = null;
+        this._defaultDirClass = null;
 
         this._host = null;
 
@@ -62,11 +62,11 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
 
         let mappedObject = null;
 
-        //console.log(`${this._defaultItemClass.name} || ${this._defaultGroupClass.name}`);
+        //console.log(`${this._defaultItemClass.name} || ${this._defaultDirClass.name}`);
 
         if (p_item.isDir) {
             mappedObject = this._owner.Add(
-                com.BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
+                com.BINDINGS.Get(this._owner, p_item, this._defaultDirClass),
                 `item group`, this._host);
         } else {
             mappedObject = this._owner.Add(
@@ -133,7 +133,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
     _CleanUp() {
 
         this._defaultItemClass = null;
-        this._defaultGroupClass = null;
+        this._defaultDirClass = null;
 
         this._host = null;
 

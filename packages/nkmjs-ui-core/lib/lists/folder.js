@@ -1,11 +1,13 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const style = require("@nkmjs/style");
 
 const SIGNAL = require(`../signal`);
 const extensions = require(`../extensions`);
-const CatalogFolderBuilder = require(`./catalog-folder-builder`);
+const DOMStreamer = require(`../helpers/dom-streamer`);
 
+const CatalogFolderBuilder = require(`./catalog-folder-builder`);
 const ListItem = require(`./list-item`);
 
 /**
@@ -34,10 +36,18 @@ class Folder extends ListItem {
             .Watch(SIGNAL.EXPANDED, this._Expand, this)
             .Watch(SIGNAL.COLLAPSED, this._Collapse, this);
 
+        this._streamerWrapper = null;
+        this._streamerLayoutInfos = {
+            itemSlots: 1,
+            itemSize: 24,
+            itemCount: 0,
+            fixedSize: true
+        };
+
         this._builder = com.Rent(CatalogFolderBuilder);
         this._builder.owner = this;
         this._builder._defaultItemClass = ListItem;
-        this._builder._defaultGroupClass = Folder;
+        this._builder._defaultDirClass = Folder;
         this._builder
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
@@ -47,7 +57,17 @@ class Folder extends ListItem {
     _PostInit() {
         super._PostInit();
         this._SetupBuilder(this._builder);
-        this.order = 0;
+
+        this._itemStreamer = this.Add(DOMStreamer, `item group streamer`, this._streamerWrapper);
+        this._itemStreamer.options = {
+            layout: { ...this._streamerLayoutInfos }
+        };
+
+        this._builder.itemStreamer = this._itemStreamer;
+    }
+
+    _SetupBuilder(p_catalogBuilder) {
+
     }
 
     set depth(p_value) {
@@ -60,10 +80,6 @@ class Folder extends ListItem {
         for (let i = 0, n = keys.length; i < n; i++) {
             this._builder._map.get(keys[i]).depth = depthPlusOne;
         }
-
-    }
-
-    _SetupBuilder(p_catalogBuilder) {
 
     }
 
@@ -104,6 +120,10 @@ class Folder extends ListItem {
                 'min-width': 0,
             },
             ':host(.expanded) .body': { 'display': `flex` },
+            ':host(.expanded) .streamer': {
+                'height': `100%`,
+                'order': `99999999 !important`
+            },
 
             '.item': {
                 flex: `1 1 auto`,
@@ -138,6 +158,7 @@ class Folder extends ListItem {
         if (this._data) {
             this._data.expanded = true;
             this._builder.Enable();
+            this._itemStreamer._RefreshLayoutInfos();
         }
     }
 
@@ -151,7 +172,7 @@ class Folder extends ListItem {
     }
 
     _OnDataChanged(p_oldData) {
-        
+
         super._OnDataChanged(p_oldData);
 
         //Ensure content is cleared before updating builder's data

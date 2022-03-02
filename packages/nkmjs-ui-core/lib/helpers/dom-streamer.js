@@ -4,6 +4,8 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 
+const UI = require(`../ui`);
+
 const SIGNAL = require(`../signal`);
 const dom = require(`../utils-dom`);
 
@@ -22,6 +24,7 @@ class DOMStreamer extends DisposableHTMLElement {
     constructor() { super(); }
 
     static __useResizeCallback = true;
+    static __usePaintCallback = true;
 
     _Init() {
         super._Init();
@@ -36,7 +39,6 @@ class DOMStreamer extends DisposableHTMLElement {
             .Hook(`host`)
             .Hook(`layout`);
 
-        this._linePaddingTop = 1;
         this._linePaddingBottom = 1;
 
         this._header = null;
@@ -77,6 +79,12 @@ class DOMStreamer extends DisposableHTMLElement {
 
     }
 
+    _OnPaintChange() {
+        if (this._isPainted) { this._rectTracker.Enable(); }
+        else { this._rectTracker.Disable(); }
+        super._OnPaintChange();
+    }
+
     _Style() {
         return {
             ':host': {
@@ -84,16 +92,21 @@ class DOMStreamer extends DisposableHTMLElement {
                 'display': 'grid',
                 //'justify-items': `center`,
             },
+            ':host(.empty)': {
+                'display': 'none'
+            },
             '.fixture': {
                 'min-height': 0,
                 'width': '100%',
-                'flex': `1 1 auto`,
+                'flex': `0 0 auto`,
                 //'height': '0px',
                 'grid-column': `1/-1`, // take one full width
             },
-            '.dom-streamer-header': {
+            '.header': {
+                'order': '-9999999' //ugh.
             },
-            '.dom-streamer-footer': {
+            '.footer': {
+                'order': '9999999' //ugh.
             },
             '.dom-streamer-item': {
                 'box-sizing': 'border-box',
@@ -101,6 +114,7 @@ class DOMStreamer extends DisposableHTMLElement {
             }
         };
     }
+
 
     /**
      * @description TODO
@@ -129,19 +143,38 @@ class DOMStreamer extends DisposableHTMLElement {
             {
                 itemSlots:5, // item # over spread, need to compute item size
                 itemSize:200 // item size over distribution axis,
-                totalItems:5000
+                itemCount:5000,
+                fixedSize:true
             }
 
         #2 - Fixed item size
             {
                 itemWidth:200,
                 itemHeight:200,
-                totalItems:5000  
+                itemCount:5000,
+                fixedSize:true  
             }
          */
 
+        this._layout.itemCount = this._layout.itemCount || 0;
+        this._layout.fixedSize = `fixedSize` in this._layout ? this._layout.fixedSize : false;
+
+        if (this._layout.itemSlots) {
+
+        } else {
+            this._layout.itemWidth = this._layout.itemWidth || this._layout.itemHeight || this._layout.itemSize;
+            this._layout.itemHeight = this._layout.itemHeight || this._layout.itemWidth || this._layout.itemSize;
+        }
+
         this._RefreshLayoutInfos();
-        this._OnRectUpdate();
+
+    }
+
+    get itemCount() { return this._layout.itemCount; }
+    set itemCount(p_value) {
+        if (this._layout.itemCount == p_value) { return; }
+        this._layout.itemCount = p_value;
+        this._RefreshLayoutInfos();
 
     }
 
@@ -152,7 +185,7 @@ class DOMStreamer extends DisposableHTMLElement {
 
     _RequestItem(p_itemIndex) {
         this._requestResult = null;
-        if(p_itemIndex < 0){ return; }
+        if (p_itemIndex < 0) { return; }
         this._Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
     }
 
@@ -165,7 +198,7 @@ class DOMStreamer extends DisposableHTMLElement {
      * Computes static layout infos that will later
      * be used to calculate which indices/items should be visible.
      */
-    _RefreshLayoutInfos() {
+    _RefreshLayoutInfos(p_updateRect = true) {
 
         let
             v = this._isVertical,
@@ -176,25 +209,27 @@ class DOMStreamer extends DisposableHTMLElement {
             totalItemCount = l.itemCount, //total number of items
             lineItemCount = 0; //item per row or column
 
-
         if (l.itemSlots) {
             lineItemCount = l.itemSlots;
             if (v) {
-                iHeight = Math.max(math.floor(lineSize / l.itemSlots), 1);
-                iWidth = l.itemSize;
-            } else {
                 iHeight = l.itemSize;
-                iWidth = Math.max(math.floor(lineSize / l.itemSlots), 1);
+                iWidth = Math.max(Math.floor(lineSize / l.itemSlots), 1);
+            } else {
+                iHeight = Math.max(Math.floor(lineSize / l.itemSlots), 1);
+                iWidth = l.itemSize;
             }
         } else {
             iWidth = l.itemSize || l.itemWidth || l.itemHeight;
             iHeight = l.itemSize || l.itemHeight || iWidth;
+            if (v) {
+                lineItemCount = Math.max(Math.floor(lineSize / iHeight), 1); //min 1 item per line
+            } else {
+                lineItemCount = Math.max(Math.floor(lineSize / iWidth), 1); //min 1 item per line
+            }
         }
 
         //TODO : Account for margin etc
         iSize = v ? iHeight : iWidth;
-        lineItemCount = Math.max(Math.floor(lineSize / iSize), 1); //min 1 item per line
-
 
         let
             streamAvailSpace = v ? ah : aw,
@@ -214,14 +249,39 @@ class DOMStreamer extends DisposableHTMLElement {
         infos.maxItemCount = totalLineCount * lineItemCount;
         infos.lineItemCount = lineItemCount;
         infos.itemSize = iSize;
+        infos.fixedSize = l.fixedSize;
+        infos.maxCoord = totalSize - streamSize;
 
         this._indices.length = streamItemCount;
 
-        let st = `:host{ grid-template-columns:repeat( ${lineItemCount}, ${100 / lineItemCount}%); }`;
-        st += `.dom-streamer-item { min-width:${iWidth}px; min-height:${iHeight}px }`;
+        let st = ``;
+        if (lineItemCount == 1) {
+            //st += `:host{ display:flex; flex-flow:column nowrap; }`;
+            //st += `.dom-streamer-item { flex:0 0 auto; min-width:${iWidth}px; height:${iHeight}px; max-height:${iHeight}px; }`;
+        } else {
+
+        }
+
+        st += `:host{  grid-template-columns:repeat( ${lineItemCount}, ${100 / lineItemCount}%); }`;
+        st += `.dom-streamer-item { min-width:${iWidth}px; height:${iHeight}px; max-height:${iHeight}px; }`;
+
         this._itemStyle.innerHTML = st;
 
-        this._OnRectUpdate();
+        if (l.fixedSize) {
+            if (v) {
+                this.style.setProperty(`height`, `${totalSize}px`);
+            } else {
+                this.style.setProperty(`width`, `${totalSize}px`);
+            }
+        } else {
+            this.style.setProperty(`height`, null);
+            this.style.setProperty(`width`, null);
+        }
+
+        if(totalItemCount == 0){ this.classList.add(`empty`); }
+        else{ this.classList.remove(`empty`); }
+
+        if (p_updateRect) { this._OnRectUpdate(); }
 
     }
 
@@ -232,26 +292,34 @@ class DOMStreamer extends DisposableHTMLElement {
      */
     _OnRectUpdate() {
 
+
         let
             selfRect = this._rectTracker.GetIntersect(this),
             fixtRect = this._rectTracker.GetRect(this._header);
 
         if (!selfRect || !fixtRect) { return; }
 
-        let
-            v = this._isVertical,
-            l = this._layoutInfos,
-            linePaddingTop = this._linePaddingTop * l.itemSize,
-            startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x) - linePaddingTop;
-
-        if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
-        if (startCoord > (l.totalSize - l.streamSize)) { startCoord = l.totalSize - l.streamSize; }
-
         if (this._drawArea.width != selfRect.width ||
             this._drawArea.height != selfRect.height) {
             this._drawArea.width = selfRect.width;
             this._drawArea.height = selfRect.height;
-            this._RefreshLayoutInfos();
+            this._RefreshLayoutInfos(false);
+        }
+
+
+        let
+            v = this._isVertical,
+            l = this._layoutInfos,
+            startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x),
+            maxCoord = l.maxCoord;
+
+
+        if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
+
+        if (l.streamSize < l.totalSize) {
+            if (startCoord > l.totalSize - l.streamSize) { startCoord = Math.min(l.totalSize - l.streamSize); }
+        } else {
+            if (startCoord > l.totalSize) { startCoord = l.totalSize; }
         }
 
         let
@@ -268,6 +336,8 @@ class DOMStreamer extends DisposableHTMLElement {
             newEnd == oldEnd) {
             return;
         }
+
+
 
         this._indices.start = newStart;
         this._indices.end = newEnd;
@@ -348,14 +418,11 @@ class DOMStreamer extends DisposableHTMLElement {
         }
 
         let
-            headerSize = Math.max(Math.floor(newStart / l.lineItemCount) * l.itemSize, 1),
+            headerSize = Math.max(Math.floor(newStart / l.lineItemCount) * l.itemSize, 0),
             footerSize = l.totalSize - (headerSize + l.streamSize);
 
         this._header.style.setProperty(`height`, `${headerSize}px`);
         this._footer.style.setProperty(`height`, `${footerSize}px`);
-
-        // TODO : implement an option to "pin" indices and scrollIntoView() them.
-
 
     }
 
@@ -390,23 +457,18 @@ class DOMStreamer extends DisposableHTMLElement {
     }
 
     _Render() {
-        this._header = dom.El(`div`, { class: `dom-streamer-header fixture` }, this._host);
-        this._footer = dom.El(`div`, { class: `dom-streamer-footer fixture` }, this._host);
+        this._header = dom.El(`div`, { class: `header fixture` }, this._host);
+        this._footer = dom.El(`div`, { class: `footer fixture` }, this._host);
         this._rectTracker.Add(this._header);
         this._rectTracker.Add(this._footer);
     }
 
-    _Wake() {
-        super._Wake();
-        this._rectTracker.Enable();
-    }
-
     _CleanUp() {
         this._options = {};//u.tils.DeepClear(this._options, true); //Circular bs going on
-        this._rectTracker.Disable();
         super._CleanUp();
     }
 
 }
 
 module.exports = DOMStreamer;
+UI.Register(`nkmjs-dom-stream`, DOMStreamer);

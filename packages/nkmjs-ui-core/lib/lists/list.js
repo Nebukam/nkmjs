@@ -19,7 +19,7 @@ class List extends ListItem {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({}, ListItem, ['css']);
-
+    static __defaultOrder = 0;
     // ----> Init
 
     _Init() {
@@ -36,7 +36,7 @@ class List extends ListItem {
         this._builder = com.Rent(CatalogBuilder);
         this._builder.owner = this;
         this._builder._defaultItemClass = ListItem;
-        this._builder._defaultGroupClass = List;
+        this._builder._defaultDirClass = List;
         this._builder
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
@@ -46,7 +46,6 @@ class List extends ListItem {
     _PostInit() {
         super._PostInit();
         this._SetupBuilder(this._builder);
-        this.order = 0;
     }
 
     set depth(p_value) {

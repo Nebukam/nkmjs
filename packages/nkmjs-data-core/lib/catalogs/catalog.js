@@ -175,7 +175,7 @@ class Catalog extends CatalogItem {
      * @type {boolean}
      * @customtag read-only
      */
-    get isDir() { return false; }
+    get isDir() { return true; }
 
     /**
      * @description TODO

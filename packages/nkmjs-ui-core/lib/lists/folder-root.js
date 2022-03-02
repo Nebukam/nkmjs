@@ -4,19 +4,19 @@ const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 
-const ListList = require(`./list`);
+const Folder = require(`./folder`);
 
 /**
  * @description TODO
  * @hideconstructor
  * @class
- * @augments ui.core.tree.ListList
+ * @augments ui.core.tree.Folder
  * @memberof ui.core.tree
  */
-class FolderRoot extends ListList {
+class FolderRoot extends Folder {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, ListList, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, Folder, ['css']);
 
     // ----> Init
 
@@ -28,7 +28,7 @@ class FolderRoot extends ListList {
         this._searchBtn = null;
         this._InitSelectionStack();
 
-        this.style.setProperty(`--tree_size`, `var(--size-s)`);
+        this.style.setProperty(`--folder-size`, `var(--size-s)`);
         // TODO : If 'flattened', make directories non-expandable items
 
     }

@@ -36,7 +36,7 @@ class TreeList extends ui.lists.List {
     _SetupBuilder(p_catalogBuilder) {
         p_catalogBuilder.host = this._body;
         p_catalogBuilder._defaultItemClass = TreeItem;
-        p_catalogBuilder._defaultGroupClass = TreeList;
+        p_catalogBuilder._defaultDirClass = TreeList;
     }
 
     // ----> DOM

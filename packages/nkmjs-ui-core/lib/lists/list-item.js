@@ -16,10 +16,13 @@ const WidgetItem = require("../widget-item");
  * @memberof ui.core.tree
  */
 class ListItem extends WidgetItem {
-    constructor() {
-        super();
-        this.depth = 0;
+    constructor() { 
+        super(); 
+        this.depth = this.constructor.__defaultDepth;
     }
+
+    static __defaultDepth = 0;
+    static __defaultOrder = 1;
 
     static __NFO__ = com.NFOS.Ext({}, WidgetItem, ['css']);
 
@@ -37,13 +40,6 @@ class ListItem extends WidgetItem {
         this._toolbar = null;
         this._toolbarCtnr = this;
 
-        this._depth = 0;
-
-    }
-
-    _PostInit() {
-        super._PostInit();
-        this.order = 1;
     }
 
     // ----> DOM
