@@ -24,7 +24,6 @@ class CatalogItem extends com.helpers.OptionsObject {
         super._Init();
 
         this._parent = null;
-        this._isDir = false;
         this._rootCatalog = null;
         this._rootDistance = -1;
         this._autoRelease = true;
@@ -93,7 +92,7 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @type {boolean}
      * @customtag read-only
      */
-    get isDir() { return this._isDir; }
+    get isDir() { return false; }
 
     /**
      * @access protected

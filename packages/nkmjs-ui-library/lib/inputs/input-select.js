@@ -56,7 +56,7 @@ class InputSelect extends ui.inputs.InputCatalogBase {
                 'min-width': 0,
                 'height': 'var(--size)',
                 'min-height': `28px !important` //min height for input field
-                
+
             }
         }, super._Style());
     }
@@ -70,11 +70,10 @@ class InputSelect extends ui.inputs.InputCatalogBase {
         // Implementation detail
         let control = null;
 
-        if (this._useCatalogsAsGroup
-            && u.isInstanceOf(p_item, data.catalogs.Catalog)) {
+        if (this._useCatalogsAsGroup && p_item.isDir) {
             // Implementation detail, might prove trickier than it seems
             throw new Error(`not implemented`);
-        } else if (u.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
+        } else {
             let cid = `@${__uid++}`;
             control = ui.dom.El(`option`, { class: 'field-option', value: cid }, this._inputField);
             control.innerText = p_item.name;
@@ -86,8 +85,7 @@ class InputSelect extends ui.inputs.InputCatalogBase {
     }
 
     _CleanItem(p_item, p_control) {
-        if (this._useCatalogsAsGroup
-            && u.isInstanceOf(p_item, data.catalogs.Catalog)) {
+        if (this._useCatalogsAsGroup && p_item.isDir) {
             // Cleanup group AND childrens
         }
         let cid = this._reverseIdMap.Get(p_item);
@@ -107,12 +105,12 @@ class InputSelect extends ui.inputs.InputCatalogBase {
         //find which option should be selected
         let control = this._catalogHandler.Get(this._handler.inputValue);
 
-        if(this._selectedOption){
+        if (this._selectedOption) {
             ui.dom.RAtt(this._selectedOption, `selected`);
             this._selectedOption = null;
         }
 
-        if(control){
+        if (control) {
             ui.dom.SAtt(control, `selected`, `selected`);
             this._selectedOption = control;
         }

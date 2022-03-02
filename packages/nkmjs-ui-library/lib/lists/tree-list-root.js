@@ -6,21 +6,22 @@ const ui = require("@nkmjs/ui-core");
 
 const dom = require(`../dom`);
 
-const TreeItem = require(`./tree-item`);
+const TreeItem = require(`./tree-list-item`);
+const TreeList = require(`./tree-list`);
 
 /**
  * @description TODO
  * @hideconstructor
  * @class
- * @augments ui.core.lists.ItemGroup
+ * @augments ui.core.lists.ListRoot
  * @memberof ui.core.tree
  */
-class TreeItemGroup extends ui.lists.ItemGroup {
+class TreeListRoot extends ui.lists.ListRoot {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/lists/tree-group.css`]
-    }, ui.lists.ItemGroup, ['css']);
+        css: [`@/lists/tree-list-root.css`]
+    }, ui.lists.ListRoot, ['css']);
 
     // ----> Init
 
@@ -36,12 +37,9 @@ class TreeItemGroup extends ui.lists.ItemGroup {
     _SetupBuilder(p_catalogBuilder) {
         p_catalogBuilder.host = this._body;
         p_catalogBuilder._defaultItemClass = TreeItem;
-        p_catalogBuilder._defaultGroupClass = TreeItemGroup;
+        p_catalogBuilder._defaultGroupClass = TreeList;
     }
 
-    // ----> DOM
-
-    //TODO : Body must break flex row
     _Style() {
         return style.Extends({
 
@@ -83,7 +81,19 @@ class TreeItemGroup extends ui.lists.ItemGroup {
 
     }
 
+    _OpenFind() {
+
+    }
+
+    // ----> Pooling
+
+    _CleanUp() {
+        super._CleanUp();
+    }
+
+
+
 }
 
-module.exports = TreeItemGroup;
-ui.Register(`nkmjs-tree-item-group`, TreeItemGroup, `ul`);
+module.exports = TreeListRoot;
+ui.Register(`nkmjs-tree-list-root`, TreeListRoot);

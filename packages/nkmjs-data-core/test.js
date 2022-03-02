@@ -24,7 +24,7 @@ let catalog = Catalog.CreateFrom({
 assert.ok(!u.isVoid(catalog));
 assert.ok(catalog.GetOption(com.IDS.NAME) === catalogName);
 
-let itemName = `Test Item`;
+let itemName = `Test ListItem`;
 let cItem = catalog.Register({
     [com.IDS.NAME]: itemName
 });
@@ -33,7 +33,7 @@ assert.ok(!u.isVoid(cItem));
 assert.ok(cItem.GetOption(com.IDS.NAME) === itemName);
 assert.ok(catalog.At(0) === cItem);
 assert.ok(u.isVoid(catalog.Add(cItem)));
-//assert.ok(catalog.Resolve(`Test Item`) === cItem); //Not implemented  yet
+//assert.ok(catalog.Resolve(`Test ListItem`) === cItem); //Not implemented  yet
 
 cItem.Release();
 assert.ok(catalog.count === 0);

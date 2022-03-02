@@ -4,8 +4,12 @@ module.exports = {
 
     Tab: require(`./tab`),
 
-    TreeItem: require(`./tree-item`),
-    TreeItemGroup: require(`./tree-item-group`),
-    TreeRoot: require(`./tree-root`),
+    TreeListItem: require(`./tree-list-item`),
+    TreeList: require(`./tree-list`),
+    TreeListRoot: require(`./tree-list-root`),
+
+    FolderListItem: require(`./folder-list-item`),
+    FolderList: require(`./folder-list`),
+    FolderListRoot: require(`./folder-list-root`),
 
 }

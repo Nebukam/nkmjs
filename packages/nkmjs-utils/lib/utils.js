@@ -704,7 +704,7 @@ class UTILS {
 
     static Move(p_array, p_currentIndex, p_newIndex) {
         if (p_currentIndex === p_newIndex) { return; }
-        if (p_currentIndex === -1) { throw new Error(`Item is not in array`); }
+        if (p_currentIndex === -1) { throw new Error(`ListItem is not in array`); }
         p_array.splice(p_newIndex, 0, p_array.splice(p_currentIndex, 1)[0]);
     }
 

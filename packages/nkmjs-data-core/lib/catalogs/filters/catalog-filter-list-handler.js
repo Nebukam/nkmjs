@@ -43,7 +43,7 @@ class CatalogFilterListHandler extends com.pool.DisposableObjectEx {
             // Filter have been removed, re-add all previously invalidated items
             for (let i = 0; i < this._invalidItems.length; i++) {
                 let item = this._invalidItems[i];
-                this._OnCatalogItemAdded(item.parent, item);
+                this._OnItemAdded(item.parent, item);
             }
         }
     }

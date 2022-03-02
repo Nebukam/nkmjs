@@ -15,15 +15,15 @@ const dom = require(`../dom`);
  * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class TreeItem extends ui.lists.Item {
+class FolderListItem extends ui.lists.ListItem {
     constructor() {
         super();
         this.depth = 0;
     }
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/lists/tree-item.css`]
-    }, ui.lists.Item, ['css']);
+        css: [`@/lists/folder-list-item.css`]
+    }, ui.lists.ListItem, ['css']);
 
     // ----> Init
 
@@ -100,5 +100,5 @@ class TreeItem extends ui.lists.Item {
 
 }
 
-module.exports = TreeItem;
-ui.Register(`nkmjs-tree-item`, TreeItem, `li`);
+module.exports = FolderListItem;
+ui.Register(`nkmjs-folder-list-item`, FolderListItem, `li`);

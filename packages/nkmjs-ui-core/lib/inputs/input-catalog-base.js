@@ -28,8 +28,8 @@ class InputCatalogBase extends InputBase {
 
         this._catalogHandler = new data.catalogs.CatalogHandler();
         this._catalogHandler
-            .Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
-            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this);
 
         this._useCatalogsAsGroup = false;
         this._groupOptionId = null;
@@ -92,12 +92,12 @@ class InputCatalogBase extends InputBase {
         this._catalogHandler.catalog = this._data;
     }
 
-    _OnCatalogItemAdded(p_catalog, p_item) {
+    _OnItemAdded(p_catalog, p_item) {
         let control = this._HandleItem(p_item);
         if (control) { this._catalogHandler.Set(p_item, control); }
     }
 
-    _OnCatalogItemRemoved(p_catalog, p_item, p_control) {
+    _OnItemRemoved(p_catalog, p_item, p_control) {
         this._CleanItem(p_item, p_control);
         if (`Release` in p_control) { p_control.Release(); }
         else { dom.Detach(p_control); }

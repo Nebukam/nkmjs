@@ -2,8 +2,11 @@
 
 module.exports = {
 
-    Item: require(`./item`),
-    ItemGroup: require(`./item-group`),
-    Root: require(`./root`),
+    ListItem: require(`./list-item`),
+    List: require(`./list`),
+    ListRoot: require(`./list-root`),
+
+    Folder: require(`./folder`),
+    FolderRoot: require(`./folder-root`),
 
 }

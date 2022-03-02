@@ -158,7 +158,6 @@ class Catalog extends CatalogItem {
         this._optionHandler.beginFn = this._Bind(this._OnOptionsWillUpdate);
         this._optionHandler.Hook(`autoSort`, `autoSort`);
 
-        this._isDir = true;
         this._expanded = false;
 
         this._items = [];
@@ -170,6 +169,13 @@ class Catalog extends CatalogItem {
         this._delayedSort = new com.time.DelayedCall(this._Bind(this.Sort));
 
     }
+
+    /**
+     * @description TODO
+     * @type {boolean}
+     * @customtag read-only
+     */
+    get isDir() { return false; }
 
     /**
      * @description TODO

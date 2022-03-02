@@ -31,7 +31,7 @@ class SORTING {
      * @param {*} p_b 
      */
     static NAME_ASC(p_a, p_b) {
-        let a = p_a._isDir, b = p_b._isDir;
+        let a = p_a.isDir, b = p_b.isDir;
         if ((a && b) || (!a && !b)) {
             return p_a.name.localeCompare(p_b.name);
         } else if (!a) {
@@ -47,7 +47,7 @@ class SORTING {
      * @param {*} p_b 
      */
     static NAME_DSC(p_a, p_b) {
-        let a = p_a._isDir, b = p_b._isDir;
+        let a = p_a.isDir, b = p_b.isDir;
         if ((a && b) || (!a && !b)) {
             return p_a.name.localeCompare(p_b.name) * -1;
         } else if (!a) {
@@ -99,7 +99,7 @@ class SORTING {
      * @param {*} p_b 
      */
     static OPTION(p_a, p_b) {
-        let a = p_a._isDir, b = p_b._isDir;
+        let a = p_a.isDir, b = p_b.isDir;
         if ((a && b) || (!a && !b)) {
             return _compareMethod(p_a.GetOption(_optionID), p_b.GetOption(_optionID));
         } else if (!a) {

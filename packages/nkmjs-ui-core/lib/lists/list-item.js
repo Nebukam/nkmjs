@@ -15,7 +15,7 @@ const WidgetItem = require("../widget-item");
  * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class Item extends WidgetItem {
+class ListItem extends WidgetItem {
     constructor() {
         super();
         this.depth = 0;
@@ -103,4 +103,4 @@ class Item extends WidgetItem {
 
 }
 
-module.exports = Item;
+module.exports = ListItem;

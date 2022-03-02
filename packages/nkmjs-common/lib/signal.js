@@ -146,7 +146,7 @@ class SIGNAL{
      * @description TODO
      * @type {symbol}
      * @customtag read-only
-     * @group Item Management
+     * @group ListItem Management
      */
     static ITEM_ADDED = Symbol(`itemAdded`);
 
@@ -154,7 +154,7 @@ class SIGNAL{
      * @description TODO
      * @type {symbol}
      * @customtag read-only
-     * @group Item Management
+     * @group ListItem Management
      */
     static ITEM_REMOVED = Symbol(`itemRemoved`);
 
@@ -162,7 +162,7 @@ class SIGNAL{
      * @description TODO
      * @type {symbol}
      * @customtag read-only
-     * @group Item Management
+     * @group ListItem Management
      */
     static ITEM_UPDATED = Symbol(`itemUpdated`);
 

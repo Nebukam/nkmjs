@@ -4,21 +4,22 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`../signal`);
 const extensions = require(`../extensions`);
-const CatalogBuilder = require(`../helpers/catalog-builder`);
+const CatalogFolderBuilder = require(`./catalog-folder-builder`);
 
-const Item = require(`./item`);
+const ListItem = require(`./list-item`);
 
 /**
- * @description TODO
+ * @description Similar to item-group, a folder separates Catalog list from CatalogItems
+ * and uses a DOM Streamer to handle items.
  * @hideconstructor
  * @class
  * @augments ui.core.tree.ListItem
  * @memberof ui.core.tree
  */
-class ItemGroup extends Item {
+class Folder extends ListItem {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, Item, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, ListItem, ['css']);
 
     // ----> Init
 
@@ -33,10 +34,10 @@ class ItemGroup extends Item {
             .Watch(SIGNAL.EXPANDED, this._Expand, this)
             .Watch(SIGNAL.COLLAPSED, this._Collapse, this);
 
-        this._builder = com.Rent(CatalogBuilder);
+        this._builder = com.Rent(CatalogFolderBuilder);
         this._builder.owner = this;
-        this._builder._defaultItemClass = Item;
-        this._builder._defaultGroupClass = ItemGroup;
+        this._builder._defaultItemClass = ListItem;
+        this._builder._defaultGroupClass = Folder;
         this._builder
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
@@ -166,7 +167,7 @@ class ItemGroup extends Item {
 
     }
 
-    // ----> Item Management
+    // ----> ListItem Management
 
     /**
      * @access protected
@@ -203,4 +204,4 @@ class ItemGroup extends Item {
 
 }
 
-module.exports = ItemGroup;
+module.exports = Folder;

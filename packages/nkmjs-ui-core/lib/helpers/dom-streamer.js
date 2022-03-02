@@ -215,6 +215,8 @@ class DOMStreamer extends DisposableHTMLElement {
         infos.lineItemCount = lineItemCount;
         infos.itemSize = iSize;
 
+        this._indices.length = streamItemCount;
+
         let st = `:host{ grid-template-columns:repeat( ${lineItemCount}, ${100 / lineItemCount}%); }`;
         st += `.dom-streamer-item { min-width:${iWidth}px; min-height:${iHeight}px }`;
         this._itemStyle.innerHTML = st;
@@ -266,6 +268,12 @@ class DOMStreamer extends DisposableHTMLElement {
             newEnd == oldEnd) {
             return;
         }
+
+        this._indices.start = newStart;
+        this._indices.end = newEnd;
+        this._indices.startCoord = startCoord;
+
+        this._Broadcast(SIGNAL.ITEM_REQUEST_RANGE_UPDATE, this, this._indices);
 
         let
             insertBefore = 0,
@@ -348,10 +356,6 @@ class DOMStreamer extends DisposableHTMLElement {
 
         // TODO : implement an option to "pin" indices and scrollIntoView() them.
 
-
-        this._indices.start = newStart;
-        this._indices.end = newEnd;
-        this._indices.startCoord = startCoord;
 
     }
 

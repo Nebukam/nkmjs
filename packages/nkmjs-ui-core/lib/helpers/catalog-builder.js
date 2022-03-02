@@ -56,15 +56,15 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
      * @param {data.core.catalogs.Catalog} p_catalog 
      * @param {data.core.catalogs.CatalogItem} p_item 
      */
-    _OnCatalogItemAdded(p_catalog, p_item) {
+    _OnItemAdded(p_catalog, p_item) {
 
-        if (!super._OnCatalogItemAdded(p_catalog, p_item)) { return false; }
+        if (!super._OnItemAdded(p_catalog, p_item)) { return false; }
 
         let mappedObject = null;
 
         //console.log(`${this._defaultItemClass.name} || ${this._defaultGroupClass.name}`);
 
-        if (u.isInstanceOf(p_item, data.catalogs.Catalog)) {
+        if (p_item.isDir) {
             mappedObject = this._owner.Add(
                 com.BINDINGS.Get(this._owner, p_item, this._defaultGroupClass),
                 `item group`, this._host);
@@ -90,9 +90,9 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
      * @param {data.core.catalogs.Catalog} p_catalog 
      * @param {data.core.catalogs.CatalogItem} p_item 
      */
-    _OnCatalogItemRemoved(p_catalog, p_item, p_index) {
+    _OnItemRemoved(p_catalog, p_item, p_index) {
 
-        let mappedObject = super._OnCatalogItemRemoved(p_catalog, p_item, p_index);
+        let mappedObject = super._OnItemRemoved(p_catalog, p_item, p_index);
         if (mappedObject === false) { return false; }
 
         this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedObject, p_index);
@@ -107,7 +107,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
      * @description TODO
      * @param {data.core.catalogs.Catalog} p_catalog 
      */
-    _OnCatalogSorted(p_catalog) {
+    _OnSorted(p_catalog) {
 
         let list = this._catalog._items,
             index = 0;
@@ -126,7 +126,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
 
         }
 
-        super._OnCatalogSorted(p_catalog);
+        super._OnSorted(p_catalog);
 
     }
 

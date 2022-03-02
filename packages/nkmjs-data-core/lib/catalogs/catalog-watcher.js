@@ -24,9 +24,6 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         this._catalog = null;
         this._map = new Map();
 
-        this._validItems = null;
-        this._invalidItems = null;
-
         this._filtersHandler = new filters.CatalogFilterListHandler();
         this._filtersHandler
             .Watch(filters.SIGNAL.PASSED, this._OnFilterPassedItem, this)
@@ -36,13 +33,12 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
         this._isEnabled = true;
         this._ignoreFilters = false;
-        this._isDeepWatchEnabled = false;
 
         this._catalogObserver = new com.signals.Observer();
         this._catalogObserver
-            .Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
-            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this)
-            .Hook(SIGNAL.SORTED, this._OnCatalogSorted, this);
+            .Hook(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
+            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
+            .Hook(SIGNAL.SORTED, this._OnSorted, this);
 
         // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
         //both filtered AND flagged as 'flatten catalog'
@@ -105,7 +101,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         this._isEnabled = true;
         this._catalogObserver.Enable();
 
-        if (this._catalog) { this._AddCatalogContent(this._catalog, this._isDeepWatchEnabled); }
+        if (this._catalog) { this._AddCatalogContent(this._catalog); }
 
         return true;
     }
@@ -118,67 +114,11 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         if (!this._isEnabled) { return false; }
         this._isEnabled = false;
         this._catalogObserver.Disable();
-        if (this._catalog) { this._RemoveCatalogContent(this._catalog, this._isDeepWatchEnabled); }
+        if (this._catalog) { this._RemoveCatalogContent(this._catalog); }
         return true;
     }
 
     // ----> Flattening
-
-    /**
-     * @description TODO
-     * @type {boolean}
-     * @customtag read-only
-     */
-    get isDeepWatchEnabled() { return this._isDeepWatchEnabled; }
-
-    /**
-     * @description TODO
-     * @type {boolean}
-     * @customtag write-only
-     */
-    set deepWatch(p_value) {
-        if (this._isDeepWatchEnabled === p_value) { return; }
-        this._isDeepWatchEnabled = p_value;
-
-        if (this._isDeepWatchEnabled) {
-
-            // Unkook regular signals
-            this._catalogObserver
-                .Unhook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
-                .Unhook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this)
-                .Unhook(SIGNAL.SORTED, this._OnCatalogSorted, this);
-
-            // Hook root signals
-            this._catalogObserver
-                .Hook(SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this)
-                .Hook(SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
-
-            if (this._isEnabled && this._catalog) {
-                this._RemoveCatalogContent(this._catalog);
-                this._AddCatalogContent(this._catalog, true);
-            }
-
-        } else {
-
-            // Unkook root signals
-            this._catalogObserver
-                .Unhook(SIGNAL.ROOT_ITEM_ADDED, this._OnCatalogItemAdded, this)
-                .Unhook(SIGNAL.ROOT_ITEM_REMOVED, this._OnCatalogItemRemoved, this);
-
-            // Hook regular signals
-            this._catalogObserver
-                .Hook(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
-                .Hook(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this)
-                .Hook(SIGNAL.SORTED, this._OnCatalogSorted, this);
-
-            if (this._isEnabled && this._catalog) {
-                this._RemoveCatalogContent(this._catalog, true);
-                this._AddCatalogContent(this._catalog);
-            }
-
-        }
-
-    }
 
     // ---->
 
@@ -201,14 +141,14 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
     _OnFilterPassedItem(p_handler, p_item) {
         // Callback when a previously invalidated item is now valid
         this._ignoreFilters = true;
-        this._OnCatalogItemAdded(p_item.parent, p_item);
+        this._OnItemAdded(p_item.parent, p_item);
         this._ignoreFilters = false;
     }
 
     _OnFiltersRejectedItem(p_handler, p_item) {
         // Callback when a previously valid item is now invalid
         this._ignoreFilters = true;
-        this._OnCatalogItemRemoved(p_item.parent, p_item);
+        this._OnItemRemoved(p_item.parent, p_item);
         this._ignoreFilters = false;
     }
 
@@ -216,51 +156,26 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
     /**
      * @access protected
-     * @description Goes over the content of a given catalog and calls _OnCatalogItemAdded
+     * @description Goes over the content of a given catalog and calls _OnItemAdded
      * for each encountered item. 
      * This function is useful when the watcher is enabled with a set catalog to go through.
      * @param {data.core.catalogs.Catalog} p_catalog 
-     * @param {boolean} [p_deep]
      */
-    _AddCatalogContent(p_catalog, p_deep = false) {
+    _AddCatalogContent(p_catalog) {
         let list = p_catalog._items;
-        if (p_deep) {
-            for (let i = 0, n = list.length; i < n; i++) {
-                let item = list[i];
-                if (item.isDir) { this._AddCatalogContent(item, p_deep); }
-                else { this._OnCatalogItemAdded(p_catalog, item); }
-            }
-        } else {
-            for (let i = 0, n = list.length; i < n; i++) {
-                let item = list[i];
-                this._OnCatalogItemAdded(p_catalog, item);
-            }
-        }
-
+        for (let i = 0, n = list.length; i < n; i++) { this._OnItemAdded(p_catalog, list[i]); }
     }
 
     /**
      * @access protected
-     * @description Goes over the content of a given catalog and calls _OnCatalogItemRemoved
+     * @description Goes over the content of a given catalog and calls _OnItemRemoved
      * for each encountered item. 
      * This function is useful when the watcher is disabled with a set catalog to go through.
      * @param {data.core.catalogs.Catalog} p_catalog 
-     * @param {boolean} [p_deep] 
      */
-    _RemoveCatalogContent(p_catalog, p_deep = false) {
+    _RemoveCatalogContent(p_catalog) {
         let list = p_catalog._items;
-        if (p_deep) {
-            for (let i = 0, n = list.length; i < n; i++) {
-                let item = list[i];
-                if (item.isDir) { this._RemoveCatalogContent(item, p_deep); }
-                else { this._OnCatalogItemRemoved(p_catalog, item, i); }
-            }
-        } else {
-            for (let i = 0, n = list.length; i < n; i++) {
-                let item = list[i];
-                this._OnCatalogItemRemoved(p_catalog, item, i);
-            }
-        }
+        for (let i = 0, n = list.length; i < n; i++) { this._OnItemRemoved(p_catalog, list[i], i); }
     }
 
     /**
@@ -271,8 +186,8 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      */
     _OnCatalogChanged(p_oldValue) {
         if (!this._isEnabled) { return false; }
-        if (p_oldValue) { this._RemoveCatalogContent(p_oldValue, this._isDeepWatchEnabled); }
-        if (this._catalog) { this._AddCatalogContent(this._catalog, this._isDeepWatchEnabled); }
+        if (p_oldValue) { this._RemoveCatalogContent(p_oldValue); }
+        if (this._catalog) { this._AddCatalogContent(this._catalog); }
         return true;
     }
 
@@ -283,13 +198,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      * @param {data.core.catalogs.CatalogItem} p_item 
      * @customtag override-me
      */
-    _OnCatalogItemAdded(p_catalog, p_item) {
-
-        if (this._isDeepWatchEnabled) {
-            if (p_item.isDir || p_item.rootDistance <= this._catalog.rootDistance) {
-                return false;
-            }
-        }
+    _OnItemAdded(p_catalog, p_item) {
 
         if (!this._ignoreFilters) {
             if (this._filtersHandler._filters
@@ -297,7 +206,6 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
                 return false;
             }
         }
-
 
         this._itemCount++;
         p_item.Watch(SIGNAL.ITEM_DATA_RELEASED, this._OnItemDataReleased, this);
@@ -312,13 +220,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      * @param {data.core.catalogs.CatalogItem} p_item 
      * @customtag override-me
      */
-    _OnCatalogItemRemoved(p_catalog, p_item, p_index) {
-
-        if (this._isDeepWatchEnabled) {
-            if (p_item.isDir || p_item.rootDistance <= this._catalog.rootDistance) {
-                return false;
-            }
-        }
+    _OnItemRemoved(p_catalog, p_item, p_index) {
 
         if (!this._ignoreFilters) {
             if (this._filtersHandler._filters
@@ -356,7 +258,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      * @param {data.core.catalogs.Catalog} p_catalog 
      * @customtag override-me
      */
-    _OnCatalogSorted(p_catalog) {
+    _OnSorted(p_catalog) {
         this._Broadcast(SIGNAL.SORTED, this);
     }
 
@@ -410,7 +312,6 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
 
     _CleanUp() {
 
-        this.flattened = false;
         this.catalog = null;
         this.filters = null;
 

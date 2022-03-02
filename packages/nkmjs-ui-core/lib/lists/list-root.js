@@ -4,19 +4,19 @@ const com = require("@nkmjs/common");
 
 const UI = require(`../ui`);
 
-const ListItemGroup = require(`./item-group`);
+const ListList = require(`./list`);
 
 /**
  * @description TODO
  * @hideconstructor
  * @class
- * @augments ui.core.tree.ListItemGroup
+ * @augments ui.core.tree.ListList
  * @memberof ui.core.tree
  */
-class Root extends ListItemGroup {
+class ListRoot extends ListList {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, ListItemGroup, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, ListList, ['css']);
 
     // ----> Init
 
@@ -61,4 +61,4 @@ class Root extends ListItemGroup {
 
 }
 
-module.exports = Root;
+module.exports = ListRoot;

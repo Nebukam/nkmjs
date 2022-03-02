@@ -238,13 +238,20 @@ class SIGNAL {
     static DRAW_REQUEST_AFTER = Symbol(`drawRequestAfter`);
 
     /**
-   * @description TODO
-   * @type {symbol}
-   * @customtag read-only
-   * @group Rendering
-   */
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+    */
     static ITEM_REQUESTED = Symbol(`itemRequested`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+    */
+    static ITEM_REQUEST_RANGE_UPDATE = Symbol(`itemRequestRangeUpdate`);
 
 }
 

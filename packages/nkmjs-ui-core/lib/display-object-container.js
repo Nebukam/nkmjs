@@ -57,7 +57,7 @@ class DisplayObjectContainer extends DisplayObject {
 
     _PostInit() {
         super._PostInit();
-        if(!this._wrapper) { this._wrapper = this._host; }
+        if (!this._wrapper) { this._wrapper = this._host; }
     }
 
     // ----> Child Management
@@ -79,7 +79,7 @@ class DisplayObjectContainer extends DisplayObject {
      * @type {collections.List}
      * @group Child Management
      */
-    get displayList(){ return this._displayList; }
+    get displayList() { return this._displayList; }
 
     /**
      * @description Return the display object at the given index.
@@ -128,7 +128,7 @@ class DisplayObjectContainer extends DisplayObject {
             return p_displayObject;
         }
 
-        if (!p_container || p_container === this) {            
+        if (!p_container || p_container === this) {
             p_container = this._wrapper;
         } else if (u.isInstanceOf(p_container, DisplayObjectContainer)) {
             p_container = p_container.wrapper;
