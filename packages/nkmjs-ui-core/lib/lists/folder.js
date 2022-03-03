@@ -179,7 +179,9 @@ class Folder extends ListItem {
         this._builder.catalog = this._data;
 
         if (this._data) {
-            if (this._extExpand.isExpanded) {
+            if (this._data.expanded) {
+                this._extExpand.Expand();
+            } else if (this._extExpand.isExpanded) {
                 this._data.expanded = true;
             }
         } else {

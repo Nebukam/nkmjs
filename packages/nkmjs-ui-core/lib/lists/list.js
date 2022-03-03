@@ -149,16 +149,19 @@ class List extends ListItem {
     }
 
     _OnDataChanged(p_oldData) {
-        
+
         super._OnDataChanged(p_oldData);
 
         //Ensure content is cleared before updating builder's data
         this._builder.catalog = this._data;
 
         if (this._data) {
-            if (this._extExpand.isExpanded) {
+            if (this._data.expanded) {
+                this._extExpand.Expand();
+            } else if (this._extExpand.isExpanded) {
                 this._data.expanded = true;
             }
+
         } else {
             this._extExpand.Collapse();
         }

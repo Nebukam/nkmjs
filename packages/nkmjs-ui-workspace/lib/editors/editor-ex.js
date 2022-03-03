@@ -55,41 +55,37 @@ class EditorEx extends uidatacontrols.Editor {
         );
     }
 
-    _RegisterEditorBits(){
+    _RegisterEditorBits() {
 
         let confs = [];
 
         this._InitShelfCatalog(confs);
         this._shelf.catalog = this._shelfCatalog;
 
-        let conf = null;
-        let item = null;
-        let view = null;
-        let assign = null;
 
         for (let i = 0, n = confs.length; i < n; i++) {
 
-            conf = confs[i];
-            item = this._shelfCatalog.Register(conf);
-
-            view = item.GetOption('view', null);
-            assign = u.tils.Get(conf, `assign`, null);
+            let
+                conf = confs[i],
+                item = this._shelfCatalog.Register(conf),
+                view = item.GetOption('view', null),
+                assign = u.tils.Get(conf, `assign`, null);
 
             //console.log(`${assign} >> ${view}`);
 
             if (view) {
-                if(conf.isInspector){this._dataInspectors.Add(view);}
-                else{this._dataControllers.Add(view);}
-                if(assign){ this[assign] = view; }
+                if (conf.isInspector) { this._dataInspectors.Add(view); }
+                else { this._dataControllers.Add(view); }
+                if (assign) { this[assign] = view; }
             }
 
         }
 
-        if(this._header){ this._dataControllers.Add(this._header); }
-        if(this._viewport){ this._dataControllers.Add(this._viewport); }
-        if(this._footer){ this._dataControllers.Add(this._footer); }
+        if (this._header) { this._dataControllers.Add(this._header); }
+        if (this._viewport) { this._dataControllers.Add(this._viewport); }
+        if (this._footer) { this._dataControllers.Add(this._footer); }
 
-        if(this._inspectorShell){ this._dataInspectors.Add(this._inspectorShell); }
+        if (this._inspectorShell) { this._dataInspectors.Add(this._inspectorShell); }
 
     }
 
@@ -154,14 +150,14 @@ class EditorEx extends uidatacontrols.Editor {
 
     _Render() {
 
-        if(this.constructor.__default_headerClass){ this._header = this.Add(this.constructor.__default_headerClass, ui.IDS.HEADER, this._host);}
-        else{ this._header = ui.dom.El(`div`, {class:ui.IDS.HEADER}, this._host); }
+        if (this.constructor.__default_headerClass) { this._header = this.Add(this.constructor.__default_headerClass, ui.IDS.HEADER, this._host); }
+        else { this._header = ui.dom.El(`div`, { class: ui.IDS.HEADER }, this._host); }
 
-        this._body = ui.dom.El(`div`, {class:ui.IDS.BODY}, this._host);
+        this._body = ui.dom.El(`div`, { class: ui.IDS.BODY }, this._host);
 
-        if(this.constructor.__default_footerClass){ this._footer = this.Add(this.constructor.__default_footerClass, ui.IDS.FOOTER, this._host); }
-        else{ this._footer = ui.dom.El(`div`, {class:ui.IDS.FOOTER}, this._host); }
-        
+        if (this.constructor.__default_footerClass) { this._footer = this.Add(this.constructor.__default_footerClass, ui.IDS.FOOTER, this._host); }
+        else { this._footer = ui.dom.El(`div`, { class: ui.IDS.FOOTER }, this._host); }
+
         //ui.Render(uilib.dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
 
         this._viewport = this.Add(this.constructor.__default_viewportClass, `viewport`, this._body);
@@ -209,7 +205,7 @@ class EditorEx extends uidatacontrols.Editor {
 
     _OnInspectedDataChanged(p_oldData) {
         super._OnInspectedDataChanged(p_oldData);
-        
+
         if (this._inspectedData) {
             this._inspectorShell.data = this._inspectedData;
         }
