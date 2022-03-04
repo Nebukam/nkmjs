@@ -66,7 +66,7 @@ class DialogBox extends dialog.DialogBox {
                 flex: `0 0 auto`,
             },
             '.body': {
-                //'overflow-y':`overlay`,
+                //'overflow-y':`auto`,
                 flex: `1 1 auto`
             }
 

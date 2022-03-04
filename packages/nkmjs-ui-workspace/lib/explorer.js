@@ -49,7 +49,7 @@ class Explorer extends ui.views.View {
             },
 
             '.body': {
-                'overflow-y': `overlay`,
+                'overflow-y': `auto`,
                 'min-width': 0,
                 flex: `1 1 1px`,
             }

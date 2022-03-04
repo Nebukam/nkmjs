@@ -96,7 +96,7 @@ class ShelfNav extends ui.WidgetBar {
                 'flex-flow': `column nowrap`,
 
                 'overflow-x': `hidden`,
-                'overflow-y': `overlay`,
+                'overflow-y': `auto`,
 
                 'width': '100%',
                 'min-height': '0',
@@ -110,7 +110,7 @@ class ShelfNav extends ui.WidgetBar {
                 'grid-column': '2',
                 'flex-flow': `row nowrap`,
 
-                'overflow-x': `overlay`,
+                'overflow-x': `auto`,
                 'overflow-y': `hidden`,
 
                 'height': '100%',

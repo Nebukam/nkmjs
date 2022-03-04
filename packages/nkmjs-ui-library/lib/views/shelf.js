@@ -192,8 +192,8 @@ class Shelf extends ui.views.View {
             ':host(.vertical) .view': {
                 //'flex-flow': `column nowrap`,//should be managed by the view
 
-                'overflow-x': `overlay`,
-                'overflow-y': `overlay`,
+                'overflow-x': `auto`,
+                'overflow-y': `auto`,
 
                 'height': '100%',
                 'min-width': '0',
@@ -214,8 +214,8 @@ class Shelf extends ui.views.View {
             ':host(.horizontal) .view': {
                 //'flex-flow': `row nowrap`,//should be managed by the view
 
-                'overflow-x': `overlay`,
-                'overflow-y': `overlay`,
+                'overflow-x': `auto`,
+                'overflow-y': `auto`,
 
                 'width': '100%',
                 'min-height': '0',
