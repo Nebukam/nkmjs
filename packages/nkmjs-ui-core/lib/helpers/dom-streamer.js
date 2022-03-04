@@ -41,8 +41,7 @@ class DOMStreamer extends DisposableHTMLElement {
 
         this._linePaddingBottom = 1;
 
-        this._header = null;
-        this._footer = null;
+        this._fixture = null;
         this._drawArea = { width: 0, height: 0 };
         this._indices = { start: 0, end: 0 };
         this._items = [];
@@ -103,15 +102,8 @@ class DOMStreamer extends DisposableHTMLElement {
                 'min-height': 0,
                 'width': '100%',
                 'flex': `0 0 auto`,
-                //'height': '0px',
+                'grid-row-start': 'header',
                 'grid-column': `1/-1`, // take one full width
-            },
-            '.header': {
-                'grid-row-start': 'header'
-            },
-            '.footer': {
-                'grid-row-end': 'footer',
-                'order':'9999999'
             },
             '.dom-streamer-item': {
                 //'box-sizing': 'border-box',
@@ -241,7 +233,7 @@ class DOMStreamer extends DisposableHTMLElement {
         let
             lines = Math.max(Math.ceil(items / itemsPerLine), 1),
             streamAvailSpace = v ? ah : aw,
-            streamLines = Math.max(Math.ceil(streamAvailSpace / primarySize), 1) + this._linePaddingBottom + this._linePaddingBottom,
+            streamLines = Math.max(Math.ceil(streamAvailSpace / primarySize), 1) + this._linePaddingBottom,
             totalSize = primarySize * lines,
             streamSize = streamLines * primarySize,
             infos = this._layoutInfos;
@@ -256,7 +248,7 @@ class DOMStreamer extends DisposableHTMLElement {
         infos.itemsPerLine = itemsPerLine;
         infos.primarySize = primarySize;
         infos.fixedSize = l.fixedSize;
-        infos.maxCoord = totalSize - streamSize;
+        infos.maxCoord = totalSize - streamAvailSpace;
         infos.gap = gap;
 
         this._indices.length = infos.streamItems;
@@ -299,7 +291,7 @@ class DOMStreamer extends DisposableHTMLElement {
 
         let
             selfRect = this._rectTracker.GetIntersect(this),
-            fixtRect = this._rectTracker.GetRect(this._header);
+            fixtRect = this._rectTracker.GetRect(this._fixture);
 
         if (!selfRect || !fixtRect) { return; }
 
@@ -310,65 +302,62 @@ class DOMStreamer extends DisposableHTMLElement {
             this._RefreshLayoutInfos(false);
         }
 
-
         let
             v = this._isVertical,
             l = this._layoutInfos,
-            startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x),
-            maxCoord = l.maxCoord;
-
+            startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x);
 
         if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
-
-        if (l.streamSize <= l.totalSize) {
-            if (startCoord > l.totalSize - l.streamSize) { startCoord = Math.min(l.totalSize - l.streamSize); }
-        } else {
-            if (startCoord > l.totalSize) { startCoord = l.totalSize; }
-        }
 
         let
             lineStart = Math.min(Math.floor(startCoord / l.primarySize), l.lines),
             newStart = Math.min(lineStart * l.itemsPerLine, l.items),
-            newEnd = Math.min(newStart + l.streamItems, l.items),
-            newLength = newEnd - newStart,
+            newEnd = Math.min(newStart + l.streamItems, l.items);
 
-            oldStart = this._indices.start,
-            oldEnd = this._indices.end,
-            oldLength = oldEnd - oldStart;
+        let streamed = this._Stream(newStart, newEnd, this._forceRefresh);
+        this._forceRefresh = false;
 
-        if (!this._forceRefresh &&
-            newStart == oldStart &&
-            newEnd == oldEnd) {
-            return;
-        }
+        if (!streamed) { return; }
 
-        this._indices.start = newStart;
-        this._indices.end = newEnd;
-        this._indices.startCoord = startCoord;
+        this._fixture.style.setProperty(`grid-row-end`, `span ${lineStart + 1}`);
 
-        this._Broadcast(SIGNAL.ITEM_REQUEST_RANGE_UPDATE, this, this._indices);
+    }
+
+    _Stream(p_start, p_end, p_force = false) {
 
         let
+            oldStart = this._indices.start,
+            oldEnd = this._indices.end,
             insertBefore = 0,
             insertAfter = 0;
 
+        if (p_start == oldStart &&
+            p_end == oldEnd &&
+            !p_force) {
+            return false;
+        }
+
+        this._indices.start = p_start;
+        this._indices.end = p_end;
+
+        this._Broadcast(SIGNAL.ITEM_REQUEST_RANGE_UPDATE, this, this._indices);
+
         // Check if this is a complete refresh
-        if (this._forceRefresh ||
-            newStart >= oldEnd ||
-            newEnd <= oldStart) {
+        if (p_force ||
+            p_start >= oldEnd ||
+            p_end <= oldStart) {
 
             this._ClearItems();
-            insertAfter = newLength;
-            this._forceRefresh = false;
+            insertAfter = p_end - p_start;
 
         } else {
 
-            insertBefore = oldStart - newStart;
-            insertAfter = newEnd - oldEnd;
+            insertBefore = oldStart - p_start;
+            insertAfter = p_end - oldEnd;
 
             let
-                popCount = oldEnd - newEnd,
-                shiftCount = newStart - oldStart;
+                popCount = oldEnd - p_end,
+                shiftCount = p_start - oldStart;
 
             if (popCount > 0) {
                 for (let i = 0; i < popCount; i++) {
@@ -391,7 +380,7 @@ class DOMStreamer extends DisposableHTMLElement {
             this._activeFragment = document.createDocumentFragment();
 
             for (let i = 0; i < insertBefore; i++) {
-                let index = newStart + i;
+                let index = p_start + i;
                 this._RequestItem(index);
                 if (this._requestResult) {
                     this._items.splice(i, 0, this._requestResult);
@@ -400,7 +389,7 @@ class DOMStreamer extends DisposableHTMLElement {
                 }
             }
 
-            dom.AttachAfter(this._activeFragment, this._header);
+            dom.AttachAfter(this._activeFragment, this._fixture);
             this._activeFragment = null;
         }
 
@@ -409,7 +398,7 @@ class DOMStreamer extends DisposableHTMLElement {
             this._activeFragment = document.createDocumentFragment();
 
             for (let i = 0; i < insertAfter; i++) {
-                let index = newEnd - insertAfter + i;
+                let index = p_end - insertAfter + i;
                 this._RequestItem(index);
                 if (this._requestResult) {
                     this._items.push(this._requestResult);
@@ -418,33 +407,11 @@ class DOMStreamer extends DisposableHTMLElement {
                 }
             }
 
-            dom.AttachBefore(this._activeFragment, this._footer);
+            dom.Attach(this._activeFragment, this._host);
             this._activeFragment = null;
         }
 
-        let headerSize = (newStart / l.itemsPerLine) * l.primarySize;
-        headerSize = Math.min(headerSize, l.maxHeaderSize);
-        //if (headerSize > l.maxHeaderSize) { headerSize = l.maxHeaderSize; }
-
-        //let footerSize = Math.max(Math.floor((l.items - newEnd) / l.itemsPerLine) * (l.primarySize), 0); //(headerSize + l.streamSize);
-        let footerSize = Math.max(l.totalSize - ((newEnd / l.itemsPerLine) * l.primarySize), 0);
-
-        //console.log(`${headerSize} // ${footerSize}`, l);
-
-        let
-            hStart = 1,
-            hEnd = newStart / l.itemsPerLine,
-            fStart = Math.ceil(newEnd / l.itemsPerLine) + 1,
-            fEnd = l.lines;
-
-        console.log(`[${hStart}/${hEnd}] || [${fStart}/${fEnd}]`);
-
-        hEnd = Math.max(hEnd, 1);
-
-        this._header.style.setProperty(`grid-row-end`, `${hEnd}`);
-        this._footer.style.setProperty(`grid-row-start`, `${fStart}`);
-        //this._header.style.setProperty(`height`, `${headerSize}px`);
-        //this._footer.style.setProperty(`height`, `${footerSize}px`);
+        return true;
 
     }
 
@@ -480,14 +447,12 @@ class DOMStreamer extends DisposableHTMLElement {
     }
 
     _Render() {
-        this._header = dom.El(`div`, { class: `header fixture` }, this._host);
-        this._footer = dom.El(`div`, { class: `footer fixture` }, this._host);
-        this._rectTracker.Add(this._header);
-        this._rectTracker.Add(this._footer);
+        this._fixture = dom.El(`div`, { class: `header fixture` }, this._host);
+        this._rectTracker.Add(this._fixture);
     }
 
     _CleanUp() {
-        this._options = {};//u.tils.DeepClear(this._options, true); //Circular bs going on
+        this._options = {};
         super._CleanUp();
     }
 
