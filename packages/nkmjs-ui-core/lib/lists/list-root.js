@@ -18,6 +18,8 @@ class ListRoot extends List {
 
     static __NFO__ = com.NFOS.Ext({}, List, ['css']);
 
+    static __defaultDirClass = List;
+
     // ----> Init
 
     _Init() {

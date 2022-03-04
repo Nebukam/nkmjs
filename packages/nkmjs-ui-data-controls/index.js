@@ -26,9 +26,10 @@ module.exports = {
     inspectors: require(`./lib/inspectors`),
 
     FindEditor: (p_displayObject) => {
-        let p = p_displayObject._parent;
+        let p = p_displayObject;
         while (p != null) {
-            p = p.editor;
+            let e = p.editor;
+            if (e) { if (u.isInstanceOf(e, Editor)) { return e; } }
             if (u.isInstanceOf(p, Editor)) { return p; }
             p = p._parent;
         }

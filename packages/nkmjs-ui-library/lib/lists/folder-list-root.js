@@ -23,13 +23,16 @@ class FolderListRoot extends ui.lists.FolderRoot {
         css: [`@/lists/folder-list-root.css`]
     }, ui.lists.ListRoot, ['css']);
 
+    static __defaultItemClass = FolderListItem;
+    static __defaultDirClass = FolderList;
+
     // ----> Init
 
     _Init() {
         super._Init();
     }
 
-    _PostInit() {        
+    _PostInit() {
         super._PostInit();
         this._extExpand.Setup(this, this._body, this._expandIcon.element);
     }
@@ -37,8 +40,7 @@ class FolderListRoot extends ui.lists.FolderRoot {
     _SetupBuilder(p_catalogBuilder) {
         this._streamerWrapper = this._body;
         p_catalogBuilder.host = this._body;
-        p_catalogBuilder._defaultItemClass = FolderListItem;
-        p_catalogBuilder._defaultDirClass = FolderList;
+
     }
 
     _Style() {

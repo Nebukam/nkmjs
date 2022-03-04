@@ -18,6 +18,8 @@ class FolderRoot extends Folder {
 
     static __NFO__ = com.NFOS.Ext({}, Folder, ['css']);
 
+    static __defaultDirClass = Folder;
+
     // ----> Init
 
     _Init() {
@@ -30,6 +32,7 @@ class FolderRoot extends Folder {
 
         this.style.setProperty(`--folder-size`, `var(--size-s)`);
         // TODO : If 'flattened', make directories non-expandable items
+        
 
     }
 

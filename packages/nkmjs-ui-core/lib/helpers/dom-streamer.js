@@ -48,10 +48,13 @@ class DOMStreamer extends DisposableHTMLElement {
         this._items = [];
 
         this._activeFragment = null;
+        this._styleString = ``;
 
         this._isVertical = true; //TODO: Implement orientation flag instead
 
         this._rectTracker = new RectTracker(this._Bind(this._OnRectUpdate), this);
+
+        this._forceRefresh = true;
 
     }
 
@@ -105,10 +108,12 @@ class DOMStreamer extends DisposableHTMLElement {
                 'grid-column': `1/-1`, // take one full width
             },
             '.header': {
-                'order': '-9999999' //ugh.
+                'grid-row': 'header',
+                //    'order': '-9999999' //ugh.
             },
             '.footer': {
-                'order': '9999999' //ugh.
+                'grid-row': 'footer',
+                //    'order': '9999999' //ugh.
             },
             '.dom-streamer-item': {
                 //'box-sizing': 'border-box',
@@ -174,14 +179,14 @@ class DOMStreamer extends DisposableHTMLElement {
 
     get itemCount() { return this._layout.itemCount; }
     set itemCount(p_value) {
-        if (this._layout.itemCount == p_value) { return; }
+        //if (this._layout.itemCount == p_value) { return; }
         this._layout.itemCount = p_value;
+        this._ClearItems();
         this._RefreshLayoutInfos();
 
     }
 
     _OnSizeChange(p_contentRect) {
-        this._cachedRect = p_contentRect;
         this._RefreshLayoutInfos();
     }
 
@@ -206,93 +211,77 @@ class DOMStreamer extends DisposableHTMLElement {
             v = this._isVertical,
             l = this._layout,
             aw = this._drawArea.width, ah = this._drawArea.height,
-            lineSize = v ? aw : ah, // Space available for a single line of items
-            iWidth = 0, iHeight = 0, iSize = 0, //item desired size
-            totalItemCount = l.itemCount, //total number of items
-            lineItemCount = 0, //item per row or column
+            fullLineSize = v ? aw : ah, // Space available for a single line of items
+            lineSize = fullLineSize, // Space available for a single line of items
+            primarySize = 0, secondarySize = 0, //item sizes
+            items = l.itemCount, //total number of items
+            itemsPerLine = 0, //item per row or column
             gap = l.gap || 0;
 
         if (l.itemSlots) {
-            lineItemCount = l.itemSlots;
-            if (v) {
-                iHeight = l.itemSize - gap;
-                iWidth = Math.max(Math.floor((lineSize - ((l.itemSlots - 1) * gap)) / l.itemSlots), 1);
-            } else {
-                iHeight = Math.max(Math.floor((lineSize - ((l.itemSlots - 1) * gap)) / l.itemSlots), 1);
-                iWidth = l.itemSize - gap;
-            }
+
+            itemsPerLine = Math.max(l.itemSlots, 1);
+            lineSize -= Math.max(itemsPerLine - 1, 0) * gap;
+            primarySize = l.itemSize + gap;
+            secondarySize = Math.max(Math.floor(lineSize / itemsPerLine), 1);
+
         } else {
-            iWidth = l.itemSize || l.itemWidth || l.itemHeight;
-            iHeight = l.itemSize || l.itemHeight || iWidth;
 
-            if (v) {
-                lineItemCount = Math.max(Math.floor(lineSize / iWidth), 1); //min 1 item per line
-            } else {
-                lineItemCount = Math.max(Math.floor(lineSize / iHeight), 1); //min 1 item per line
-            }
+            let
+                iWidth = (l.itemWidth || l.itemHeight || l.itemSize) + gap,
+                iHeight = (l.itemHeight || l.itemSize || iWidth) + gap;
+
+            if (v) { primarySize = iHeight; secondarySize = iWidth; }
+            else { primarySize = iWidth; secondarySize = iHeight; }
+
+            itemsPerLine = Math.max(Math.floor(lineSize / secondarySize), 1);
+            lineSize -= Math.max(itemsPerLine - 1, 0) * gap;
+
         }
-
-        this.style.setProperty(`--gap`, `${gap}px`);
-
-        let totalLineCount = Math.max(Math.ceil(totalItemCount / lineItemCount), 1);
-        let refPc = 100;
-
-        if (v) {
-            refPc = ((lineSize - ((lineItemCount - 1) * gap)) / lineSize) * 100;
-        } else {
-            let refSize = totalLineCount * iHeight;
-            refPc = ((refSize - gapSum) / refSize) * 100;
-        }
-
-        iSize = v ? iHeight : iWidth;
 
         let
+            lines = Math.max(Math.ceil(items / itemsPerLine), 1),
             streamAvailSpace = v ? ah : aw,
-            streamLineCount = Math.max(Math.ceil(streamAvailSpace / iSize), 1) + this._linePaddingBottom + this._linePaddingBottom,
-            totalSize = iSize * totalLineCount,
-            streamSize = streamLineCount * iSize,
-            streamItemCount = streamLineCount * lineItemCount,
+            streamLines = Math.max(Math.ceil(streamAvailSpace / primarySize), 1) + this._linePaddingBottom + this._linePaddingBottom,
+            totalSize = primarySize * lines,
+            streamSize = streamLines * primarySize,
             infos = this._layoutInfos;
 
         infos.streamSize = streamSize;
-        infos.streamLineCount = streamLineCount;
-        infos.streamItemCount = streamItemCount;
+        infos.streamLines = streamLines;
+        infos.streamItems = streamLines * itemsPerLine;
         infos.totalSize = totalSize;
-        infos.totalLineCount = totalLineCount;
-        infos.totalItemCount = totalItemCount;
-        infos.maxItemCount = totalLineCount * lineItemCount;
-        infos.lineItemCount = lineItemCount;
-        infos.itemSize = iSize;
+        infos.lines = lines;
+
+        infos.items = items;
+        infos.maxHeaderSize = totalSize - (primarySize * streamLines);
+        infos.itemsPerLine = itemsPerLine;
+        infos.primarySize = primarySize;
         infos.fixedSize = l.fixedSize;
         infos.maxCoord = totalSize - streamSize;
         infos.gap = gap;
 
-        this._indices.length = streamItemCount;
+        this._indices.length = infos.streamItems;
 
-        let st = ``;
+        let
+            refPc = (lineSize / fullLineSize) * 100,
+            sstr = ``;
 
-        // TODO L cc
-        st += `:host{  ` +
-            `grid-template-columns:repeat( ${lineItemCount}, ${refPc / lineItemCount}%); ` +
-            `grid-template-rows: max-content repeat( ${streamLineCount}, ${iHeight}px) max-content; ` +
+        sstr += `:host{  `;
+
+        if (l.fixedSize) { sstr += `${v ? 'height' : 'width'}:${totalSize}px;`; }
+
+        sstr += `--gap:${gap}px;` +
+            `grid-template-columns:repeat( ${itemsPerLine}, ${refPc / itemsPerLine}%); ` +
+            `grid-template-rows: [header] max-content repeat( ${Math.min(lines, streamLines)}, ${primarySize - gap}px) [footer] max-content; ` +
             `}`;
 
-        //st += `.dom-streamer-item { min-width:${iWidth}px; height:${iHeight}px; max-height:${iHeight}px; }`;
-
-        this._itemStyle.innerHTML = st;
-
-        if (l.fixedSize) {
-            if (v) {
-                this.style.setProperty(`height`, `${totalSize}px`);
-            } else {
-                this.style.setProperty(`width`, `${totalSize}px`);
-            }
-        } else {
-            this.style.removeProperty(`height`);
-            this.style.removeProperty(`width`);
+        if (this._styleString != sstr) {
+            this._styleString = sstr;
+            this._itemStyle.innerHTML = sstr;
         }
 
-        if (totalItemCount == 0) { this.classList.add(`empty`); }
+        if (items == 0) { this.classList.add(`empty`); }
         else { this.classList.remove(`empty`); }
 
         if (p_updateRect) { this._OnRectUpdate(); }
@@ -305,7 +294,6 @@ class DOMStreamer extends DisposableHTMLElement {
      * non-visible one and requests missing ones that should be visible.
      */
     _OnRectUpdate() {
-
 
         let
             selfRect = this._rectTracker.GetIntersect(this),
@@ -337,21 +325,20 @@ class DOMStreamer extends DisposableHTMLElement {
         }
 
         let
-            lineStart = Math.min(Math.floor(startCoord / l.itemSize), l.totalLineCount),
-            newStart = Math.min(lineStart * l.lineItemCount, l.totalItemCount),
-            newEnd = Math.min(newStart + l.streamItemCount, l.totalItemCount),
+            lineStart = Math.min(Math.floor(startCoord / l.primarySize), l.lines),
+            newStart = Math.min(lineStart * l.itemsPerLine, l.items),
+            newEnd = Math.min(newStart + l.streamItems, l.items),
             newLength = newEnd - newStart,
 
             oldStart = this._indices.start,
             oldEnd = this._indices.end,
             oldLength = oldEnd - oldStart;
 
-        if (newStart == oldStart &&
+        if (!this._forceRefresh &&
+            newStart == oldStart &&
             newEnd == oldEnd) {
             return;
         }
-
-
 
         this._indices.start = newStart;
         this._indices.end = newEnd;
@@ -364,11 +351,13 @@ class DOMStreamer extends DisposableHTMLElement {
             insertAfter = 0;
 
         // Check if this is a complete refresh
-        if (newStart >= oldEnd ||
+        if (this._forceRefresh ||
+            newStart >= oldEnd ||
             newEnd <= oldStart) {
 
             this._ClearItems();
             insertAfter = newLength;
+            this._forceRefresh = false;
 
         } else {
 
@@ -431,9 +420,11 @@ class DOMStreamer extends DisposableHTMLElement {
             this._activeFragment = null;
         }
 
-        let
-            headerSize = Math.max(Math.floor(newStart / l.lineItemCount) * (l.itemSize), 0),
-            footerSize = Math.max(Math.floor((l.totalItemCount - newEnd) / l.lineItemCount) * (l.itemSize), 0); //(headerSize + l.streamSize);
+        let headerSize = (newStart / l.itemsPerLine) * l.primarySize;
+        //if (headerSize > l.maxHeaderSize) { headerSize = l.maxHeaderSize; }
+
+        //let footerSize = Math.max(Math.floor((l.items - newEnd) / l.itemsPerLine) * (l.primarySize), 0); //(headerSize + l.streamSize);
+        let footerSize = Math.max(l.totalSize - ((newEnd / l.itemsPerLine) * l.primarySize), 0);
 
         this._header.style.setProperty(`height`, `${headerSize}px`);
         this._footer.style.setProperty(`height`, `${footerSize}px`);
@@ -448,6 +439,7 @@ class DOMStreamer extends DisposableHTMLElement {
             this._items[i].Release();
         }
         this._items.length = 0;
+        this._forceRefresh = true;
     }
 
     /**
@@ -460,9 +452,9 @@ class DOMStreamer extends DisposableHTMLElement {
 
         // Compute index vertical position based on current layout infos
         let l = this._layoutInfos,
-            lineIndex = p_index / l.lineItemCount - (p_index % l.lineItemCount);
+            lineIndex = p_index / l.itemsPerLine - (p_index % l.itemsPerLine);
 
-        return lineIndex * (l.itemSize);
+        return lineIndex * (l.primarySize);
 
     }
 

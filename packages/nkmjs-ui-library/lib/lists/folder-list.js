@@ -18,6 +18,8 @@ const FolderListItem = require(`./folder-list-item`);
 class FolderList extends ui.lists.Folder {
     constructor() { super(); }
 
+    static __defaultItemClass = FolderListItem;
+
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/folder-list.css`]
     }, ui.lists.List, ['css']);
@@ -36,8 +38,6 @@ class FolderList extends ui.lists.Folder {
     _SetupBuilder(p_catalogBuilder) {
         this._streamerWrapper = this._body;
         p_catalogBuilder.host = this._body;
-        p_catalogBuilder._defaultItemClass = FolderListItem;
-        p_catalogBuilder._defaultDirClass = FolderList;
     }
 
     // ----> DOM
