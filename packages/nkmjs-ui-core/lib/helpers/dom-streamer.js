@@ -93,9 +93,8 @@ class DOMStreamer extends DisposableHTMLElement {
             ':host': {
                 'position': 'relative',
                 'display': 'grid',
-                'grid-gap': 'var(--gap)',
                 //'justify-items': `center`,
-                'overflow-x': 'clip !important'
+                'overflow-x': 'clip !important',
             },
             ':host(.empty)': {
                 'display': 'none'
@@ -108,16 +107,16 @@ class DOMStreamer extends DisposableHTMLElement {
                 'grid-column': `1/-1`, // take one full width
             },
             '.header': {
-                'grid-row': 'header',
-                //    'order': '-9999999' //ugh.
+                'grid-row-start': 'header'
             },
             '.footer': {
-                'grid-row': 'footer',
-                //    'order': '9999999' //ugh.
+                'grid-row-end': 'footer',
+                'order':'9999999'
             },
             '.dom-streamer-item': {
                 //'box-sizing': 'border-box',
-                'flex-grow': `1`,
+                //'flex-grow': `1`,
+                //'flex': `0 0 auto`,
             }
         };
     }
@@ -252,9 +251,8 @@ class DOMStreamer extends DisposableHTMLElement {
         infos.streamItems = streamLines * itemsPerLine;
         infos.totalSize = totalSize;
         infos.lines = lines;
-
         infos.items = items;
-        infos.maxHeaderSize = totalSize - (primarySize * streamLines);
+        infos.maxHeaderSize = Math.max((lines * primarySize) - (primarySize * streamLines), 0);
         infos.itemsPerLine = itemsPerLine;
         infos.primarySize = primarySize;
         infos.fixedSize = l.fixedSize;
@@ -265,15 +263,16 @@ class DOMStreamer extends DisposableHTMLElement {
 
         let
             refPc = (lineSize / fullLineSize) * 100,
+            rpx = primarySize - gap,
             sstr = ``;
 
         sstr += `:host{  `;
 
         if (l.fixedSize) { sstr += `${v ? 'height' : 'width'}:${totalSize}px;`; }
 
-        sstr += `--gap:${gap}px;` +
+        sstr += `grid-gap:${gap}px;` +
             `grid-template-columns:repeat( ${itemsPerLine}, ${refPc / itemsPerLine}%); ` +
-            `grid-template-rows: [header] max-content repeat( ${Math.min(lines, streamLines)}, ${primarySize - gap}px) [footer] max-content; ` +
+            `grid-template-rows:[header] 0px repeat( ${lines}, ${primarySize - gap}px); [footer] 0px` +
             `}`;
 
         if (this._styleString != sstr) {
@@ -283,6 +282,9 @@ class DOMStreamer extends DisposableHTMLElement {
 
         if (items == 0) { this.classList.add(`empty`); }
         else { this.classList.remove(`empty`); }
+
+
+        //console.log(infos);
 
         if (p_updateRect) { this._OnRectUpdate(); }
 
@@ -318,7 +320,7 @@ class DOMStreamer extends DisposableHTMLElement {
 
         if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
 
-        if (l.streamSize < l.totalSize) {
+        if (l.streamSize <= l.totalSize) {
             if (startCoord > l.totalSize - l.streamSize) { startCoord = Math.min(l.totalSize - l.streamSize); }
         } else {
             if (startCoord > l.totalSize) { startCoord = l.totalSize; }
@@ -421,13 +423,28 @@ class DOMStreamer extends DisposableHTMLElement {
         }
 
         let headerSize = (newStart / l.itemsPerLine) * l.primarySize;
+        headerSize = Math.min(headerSize, l.maxHeaderSize);
         //if (headerSize > l.maxHeaderSize) { headerSize = l.maxHeaderSize; }
 
         //let footerSize = Math.max(Math.floor((l.items - newEnd) / l.itemsPerLine) * (l.primarySize), 0); //(headerSize + l.streamSize);
         let footerSize = Math.max(l.totalSize - ((newEnd / l.itemsPerLine) * l.primarySize), 0);
 
-        this._header.style.setProperty(`height`, `${headerSize}px`);
-        this._footer.style.setProperty(`height`, `${footerSize}px`);
+        //console.log(`${headerSize} // ${footerSize}`, l);
+
+        let
+            hStart = 1,
+            hEnd = newStart / l.itemsPerLine,
+            fStart = Math.ceil(newEnd / l.itemsPerLine) + 1,
+            fEnd = l.lines;
+
+        console.log(`[${hStart}/${hEnd}] || [${fStart}/${fEnd}]`);
+
+        hEnd = Math.max(hEnd, 1);
+
+        this._header.style.setProperty(`grid-row-end`, `${hEnd}`);
+        this._footer.style.setProperty(`grid-row-start`, `${fStart}`);
+        //this._header.style.setProperty(`height`, `${headerSize}px`);
+        //this._footer.style.setProperty(`height`, `${footerSize}px`);
 
     }
 
