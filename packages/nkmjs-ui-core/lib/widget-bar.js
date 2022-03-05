@@ -160,7 +160,7 @@ class WidgetBar extends WidgetOrientable {
      */
     CreateHandle(p_options, p_class = null) {
 
-        let cl = (p_class || p_options.cl || this._defaultWidgetClass),
+        let cl = (p_class || (p_options ? p_options.cl : null) || this._defaultWidgetClass),
             handle,
             group = u.tils.Get(p_options, `group`, null),
             toggle = group ? u.tils.Get(p_options, `toggle`, null) : null;
@@ -188,9 +188,9 @@ class WidgetBar extends WidgetOrientable {
 
             if (p_options && this._defaultWidgetOptions) {
                 for (var key in this._defaultWidgetOptions) {
-                    if (!p_options.hasOwnProperty(key)) { 
+                    if (!p_options.hasOwnProperty(key)) {
                         p_options[key] = this._defaultWidgetOptions[key];
-                        if(!this.__tempKeys){ this.__tempKeys = []; }
+                        if (!this.__tempKeys) { this.__tempKeys = []; }
                         this.__tempKeys.push(key);
                     }
                 }
@@ -198,21 +198,27 @@ class WidgetBar extends WidgetOrientable {
 
             handle.options = p_options;
 
-            if(this.__tempKeys){
-                for(let i = 0, n = this.__tempKeys.length; i < n; i++){ delete p_options[this.__tempKeys[i]]; }
+            if (this.__tempKeys) {
+                for (let i = 0, n = this.__tempKeys.length; i < n; i++) { delete p_options[this.__tempKeys[i]]; }
                 this.__tempKeys.length = 0;
                 this.__tempKeys = null;
             }
 
+        } else {
+            if (p_options) {
+                if (`options` in handle) {
+                    handle.options = p_options;
+                }
+            }
         }
 
         if (u.isInstanceOf(handle, InputBase)) {
-            if(p_options){
-                if(`currentValue` in p_options){ handle.currentValue = p_options.currentValue; }
-                if(`inputId` in p_options){ handle.inputId = p_options.inputId; }
+            if (p_options) {
+                if (`currentValue` in p_options) { handle.currentValue = p_options.currentValue; }
+                if (`inputId` in p_options) { handle.inputId = p_options.inputId; }
 
-                if(p_options.inputWatchers && Array.isArray(p_options.inputWatchers)){
-                    for(var i = 0; i < p_options.inputWatchers.length; i++){
+                if (p_options.inputWatchers && Array.isArray(p_options.inputWatchers)) {
+                    for (var i = 0; i < p_options.inputWatchers.length; i++) {
                         let signal = p_options.inputWatchers[i];
                         handle.handler.Watch(signal.signal, signal.fn, signal.thisArg);
                     }
@@ -221,21 +227,21 @@ class WidgetBar extends WidgetOrientable {
             }
         }
 
-        if(p_options){
-            if(p_options.member){
+        if (p_options) {
+            if (p_options.member) {
                 let member = p_options.member;
                 member.owner[member.id] = handle;
             }
-    
-            if(p_options.watchers && Array.isArray(p_options.watchers)){
-                for(var i = 0; i < p_options.watchers.length; i++){
+
+            if (p_options.watchers && Array.isArray(p_options.watchers)) {
+                for (var i = 0; i < p_options.watchers.length; i++) {
                     let signal = p_options.watchers[i];
                     handle.Watch(signal.signal, signal.fn, signal.thisArg);
                 }
             }
         }
 
-        
+
 
         handle.flags.Set(this._orientation, true);
 

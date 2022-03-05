@@ -251,6 +251,14 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
     */
+     static ITEM_CLEARED = Symbol(`itemCleared`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+    */
     static ITEM_REQUEST_RANGE_UPDATE = Symbol(`itemRequestRangeUpdate`);
 
 }

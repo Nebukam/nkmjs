@@ -40,6 +40,8 @@ class DOMStreamer extends DisposableHTMLElement {
             .Hook(`layout`);
 
         this._linePaddingBottom = 1;
+        this._releaseClearedItems = true;
+        this._itemCount = 0;
 
         this._fixture = null;
         this._drawArea = { width: 0, height: 0 };
@@ -125,9 +127,10 @@ class DOMStreamer extends DisposableHTMLElement {
     }
 
     get owner() { return this._owner; }
-    set owner(p_value) {
-        this._owner = p_value;
-    }
+    set owner(p_value) { this._owner = p_value; }
+
+    get releaseClearedItems() { return this._releaseClearedItems; }
+    set releaseClearedItems(p_value) { this._releaseClearedItems = true; }
 
     get layout() { return this._itemProperties; }
     set layout(p_value) {
@@ -154,27 +157,28 @@ class DOMStreamer extends DisposableHTMLElement {
             }
          */
 
-        this._layout.itemCount = this._layout.itemCount || 0;
         this._layout.fixedSize = `fixedSize` in this._layout ? this._layout.fixedSize : false;
 
         if (this._layout.itemSlots) {
-
+            this._layout.itemSize = this._layout.itemSize || this._layout.itemWidth || this._layout.itemHeight || 100;
+            delete this._layout.itemWidth;
+            delete this._layout.itemHeight;
         } else {
-            this._layout.itemWidth = this._layout.itemWidth || this._layout.itemHeight || this._layout.itemSize;
-            this._layout.itemHeight = this._layout.itemHeight || this._layout.itemWidth || this._layout.itemSize;
+            this._layout.itemWidth = this._layout.itemWidth || this._layout.itemHeight || this._layout.itemSize || 100;
+            this._layout.itemHeight = this._layout.itemHeight || this._layout.itemWidth || this._layout.itemSize || 100;
+            delete this._layout.itemSize;
         }
 
-        this._RefreshLayoutInfos();
+        if (`itemCount` in p_value) { this.itemCount = p_value.itemCount; }
+        else { this._RefreshLayoutInfos(); }
 
     }
 
-    get itemCount() { return this._layout.itemCount; }
+    get itemCount() { return this._itemCount; }
     set itemCount(p_value) {
-        //if (this._layout.itemCount == p_value) { return; }
-        this._layout.itemCount = p_value;
+        this._itemCount = p_value;
         this._ClearItems();
         this._RefreshLayoutInfos();
-
     }
 
     _OnSizeChange(p_contentRect) {
@@ -185,6 +189,20 @@ class DOMStreamer extends DisposableHTMLElement {
         this._requestResult = null;
         if (p_itemIndex < 0) { return; }
         this._Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
+    }
+
+    _ClearItem(p_item) {
+        this._Broadcast(SIGNAL.ITEM_CLEARED, p_item);
+        if (this._releaseClearedItems) { p_item.Release(); }
+    }
+
+    /**
+     * Release all items
+     */
+    _ClearItems() {
+        for (let i = 0; i < this._items.length; i++) { this._ClearItem(this._items[i]); }
+        this._items.length = 0;
+        this._forceRefresh = true;
     }
 
     ItemRequestAnswer(p_itemIndex, p_item) {
@@ -205,7 +223,7 @@ class DOMStreamer extends DisposableHTMLElement {
             fullLineSize = v ? aw : ah, // Space available for a single line of items
             lineSize = fullLineSize, // Space available for a single line of items
             primarySize = 0, secondarySize = 0, //item sizes
-            items = l.itemCount, //total number of items
+            items = this._itemCount, //total number of items
             itemsPerLine = 0, //item per row or column
             gap = l.gap || 0;
 
@@ -362,14 +380,14 @@ class DOMStreamer extends DisposableHTMLElement {
             if (popCount > 0) {
                 for (let i = 0; i < popCount; i++) {
                     let item = this._items.pop();
-                    if (item) { item.Release(); }
+                    if (item) { this._ClearItem(item); }
                 }
             }
 
             if (shiftCount > 0) {
                 for (let i = 0; i < shiftCount; i++) {
                     let item = this._items.shift();
-                    if (item) { item.Release(); }
+                    if (item) { this._ClearItem(item); }
                 }
             }
 
@@ -413,17 +431,6 @@ class DOMStreamer extends DisposableHTMLElement {
 
         return true;
 
-    }
-
-    /**
-     * Release all items
-     */
-    _ClearItems() {
-        for (let i = 0; i < this._items.length; i++) {
-            this._items[i].Release();
-        }
-        this._items.length = 0;
-        this._forceRefresh = true;
     }
 
     /**

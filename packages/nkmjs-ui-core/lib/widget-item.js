@@ -218,6 +218,7 @@ class WidgetItem extends Widget {
      * @param {Event} p_evt 
      */
     AltActivate(p_evt) {
+        if(!this._data){ return true; }
         if (this._data.primaryCommand) {
             this._data.primaryCommand.Execute();
             return false;

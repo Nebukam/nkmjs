@@ -22,13 +22,31 @@ class Tag extends ui.Widget {
         this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
+        this._optionsHandler = new com.helpers.OptionsHandler();
+        this._optionsHandler.Setup(this);
+
+        this._optionsHandler
+            .Hook(ui.IDS.FLAVOR)
+            .Hook(ui.IDS.SIZE)
+            .Hook(ui.IDS.LABEL)
+            .Hook(ui.IDS.NAME, ui.IDS.LABEL)
+            .Hook(`bgColor`);
+
     }
 
-    set size(p_value) { this._sizeEnum.Set(p_value); }
-    get size() { return this._sizeEnum.currentFlag; }
+    set options(p_value){ this._optionsHandler.Process(this, p_value); }
 
-    set flavor(p_value) { this._flavorEnum.Set(p_value); }
+    get size() { return this._sizeEnum.currentFlag; }
+    set size(p_value) { this._sizeEnum.Set(p_value); }
+
     get flavor() { return this._flavorEnum.currentFlag; }
+    set flavor(p_value) { this._flavorEnum.Set(p_value); }
+
+    set bgColor(p_value) {
+        if (!p_value) { this.style.removeProperty(`background-color`); }
+        else { this.style.setProperty(`background-color`, p_value); }
+    }
+
 
     // ----> DOM
 
