@@ -8,7 +8,7 @@ const style = require(`@nkmjs/style`);
 class InputTextarea extends ui.inputs.InputTextBase {
     constructor() { super(); }
 
-    static __inputProperties = { rows: 3 };
+    static __inputProperties = { rows: 3, spellcheck:false };
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/expandable.css`]
@@ -24,6 +24,9 @@ class InputTextarea extends ui.inputs.InputTextBase {
         return style.Extends({
             ':host': {
                 'height': 'auto !important'
+            },
+            '.field':{
+                'resize': 'none'
             }
         }, super._Style());
     }

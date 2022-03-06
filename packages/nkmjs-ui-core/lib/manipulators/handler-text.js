@@ -43,13 +43,9 @@ class TextHandler extends ContentManipulator {
      */
     set ellipsis(p_value) {
         if (p_value) {
-            this._element.style.setProperty('white-space', `nowrap`);
-            this._element.style.setProperty('overflow', `hidden`);
-            this._element.style.setProperty('text-overflow', `ellipsis`);
+            this._element.classList.add('ellispsis');
         } else {
-            this._element.style.removeProperty('white-space');
-            this._element.style.removeProperty('overflow');
-            this._element.style.removeProperty('text-overflow');
+            this._element.classList.remove('ellispsis');
         }
     }
 

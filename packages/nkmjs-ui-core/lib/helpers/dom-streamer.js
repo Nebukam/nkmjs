@@ -108,6 +108,7 @@ class DOMStreamer extends DisposableHTMLElement {
                 'grid-column': `1/-1`, // take one full width
             },
             '.dom-streamer-item': {
+                'position':'relative'
                 //'box-sizing': 'border-box',
                 //'flex-grow': `1`,
                 //'flex': `0 0 auto`,

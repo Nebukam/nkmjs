@@ -369,6 +369,7 @@ class Modal extends DisplayObjectContainer {
                 'display': 'flex', // making sure things are properly sized,
                 'max-width': 'var(--screen-width)',
                 'max-height': 'var(--screen-height)',
+                'z-index':'10' //TODO : Need to update this is the modal is on top of an overlay
             },
             ':host(.mode-float-inside)': {
 
@@ -398,7 +399,6 @@ class Modal extends DisplayObjectContainer {
      */
     _UpdateAnchoredPosition() {
 
-        console.log(`_UpdateAnchoredPosition`);
         this.visible = true;
 
         let

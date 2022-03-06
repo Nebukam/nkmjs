@@ -45,7 +45,13 @@ class FolderList extends ui.lists.Folder {
     //TODO : Body must break flex row
     _Style() {
         return style.Extends({
-
+            ':host': {
+                'transition': 'opacity 0.15s',
+                'opacity': '1'
+            },
+            ':host(.unpainted)': {
+                'opacity': '0'
+            }
         }, super._Style());
     }
 
@@ -65,6 +71,8 @@ class FolderList extends ui.lists.Folder {
         this._dragFeedbackHost = this._header;
 
         this.focusArea = this._header;
+
+        this._label.ellipsis = true;
 
     }
 
