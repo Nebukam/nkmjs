@@ -25,6 +25,14 @@ class AppBody extends ui.views.LayerContainer {
 
     }
 
+    _Style() {
+        return style.Extends({
+            ':host': {
+                'transform':`translate3d(0,0,0)`,
+            }
+        }, super._Style());
+    }
+
     _OnTick() {
 
         let

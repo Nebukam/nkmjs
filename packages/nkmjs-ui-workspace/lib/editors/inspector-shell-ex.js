@@ -24,10 +24,6 @@ const uidatacontrols = require(`@nkmjs/ui-data-controls`);
 class InspectorShellEx extends uidatacontrols.InspectorShell {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({
-        css: [`@/views/inspector-shell.css`]
-    }, ui.views.View, ['css']);
-
     _Init() {
 
         super._Init();

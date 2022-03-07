@@ -30,7 +30,8 @@ class Tag extends ui.Widget {
             .Hook(ui.IDS.SIZE)
             .Hook(ui.IDS.LABEL)
             .Hook(ui.IDS.NAME, ui.IDS.LABEL)
-            .Hook(`bgColor`);
+            .Hook(`bgColor`)
+            .Hook(`textColor`);
 
     }
 
@@ -47,6 +48,18 @@ class Tag extends ui.Widget {
         else { this.style.setProperty(`background-color`, p_value); }
     }
 
+    set textColor(p_value) {
+        if (!p_value) { this._label._element.style.removeProperty(`color`); }
+        else { this._label._element.style.setProperty(`color`, p_value); }
+    }
+
+    set maxWidth(p_value){
+        if (!p_value) { this._label._element.style.removeProperty(`max-width`); }
+        else { 
+            this._label._element.style.setProperty(`max-width`, p_value); 
+            this._label.ellipsis = true;
+        }
+    }
 
     // ----> DOM
 
@@ -55,6 +68,12 @@ class Tag extends ui.Widget {
 
     _Render() {
         this._label = new ui.manipulators.Text(ui.dom.El(`span`, { class: `${ui.IDS.LABEL} ${style.FONT_FLAG.TAG}` }, this), false);
+    }
+
+    _CleanUp(){
+        this.maxWidth = null;
+        this._label.ellipsis = false;
+        super._CleanUp();
     }
 
 }

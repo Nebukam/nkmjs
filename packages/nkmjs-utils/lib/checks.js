@@ -11,7 +11,7 @@ const toString = Object.prototype.toString;
  * @memberof utils
  */
 class CHECKS {
-    
+
     /**
      * @description Determine if a value is an Array
      * @param {*} p_value The value to test
@@ -64,6 +64,17 @@ class CHECKS {
     static isNumber(p_value) { return typeof p_value === 'number'; }
 
     /**
+     * @description Determine if a string value is a valid hexadecimal number
+     * @param {*} p_value The value to test
+     * @returns {Number} True if string is a valid hex value, otherwise false
+     */
+    static isHex(p_value, p_pad = 0) {
+        if (!this.isString(p_value)) { return false; }
+        let result = parseInt(p_value, 16);
+        return (result.toString(16).padStart(p_pad, `0`) === p_value.toLowerCase());
+    }
+
+    /**
      * @description Determine if a value is a Boolean
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is a Boolean, otherwise false
@@ -111,6 +122,7 @@ class CHECKS {
         return A instanceof B;
 
     }
+
 
     /**
      * @description Determine if an object is empty

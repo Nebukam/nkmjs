@@ -22,6 +22,7 @@ module.exports = {
     isFunc: __CHECKS.isFunc.bind(__CHECKS),
     isString: __CHECKS.isString.bind(__CHECKS),
     isNumber: __CHECKS.isNumber.bind(__CHECKS),
+    isHex: __CHECKS.isHex.bind(__CHECKS),
     isBool: __CHECKS.isBool.bind(__CHECKS),
     isUndefined: __CHECKS.isUndefined.bind(__CHECKS),
     isVoid: __CHECKS.isVoid.bind(__CHECKS),

@@ -21,6 +21,10 @@ const ControlView = require(`./control-view`);
 class InspectorShell extends ControlView {
     constructor() { super(); }
 
+    static __NFO__ = com.NFOS.Ext({
+        css: [`@/views/inspector-shell.css`]
+    }, ControlView, ['css']);
+
     static __clearBuilderOnRelease = true;
 
     _Init() {

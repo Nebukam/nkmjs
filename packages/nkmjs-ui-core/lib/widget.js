@@ -136,8 +136,11 @@ class Widget extends DisplayObjectContainer {
      * @type {string}
      * @group Selection
      */
-    set htitle(p_value) { this.setAttribute(`title`, p_value); }
     get htitle() { this.getAttribute(`title`); }
+    set htitle(p_value) {
+        if (!p_value) { this.removeAttribute(`title`); }
+        else { this.setAttribute(`title`, p_value); }
+    }
 
     // ----> Interactions
 
