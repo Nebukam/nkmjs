@@ -3,11 +3,16 @@
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 const uilib = require(`@nkmjs/ui-library`);
+const com = require(`@nkmjs/common`);
 
 const EditorShelfNav = require(`./editor-shelf-nav`);
 
 class EditorShelf extends uilib.views.Shelf {
     constructor() { super(); }
+
+    static __NFO__ = com.NFOS.Ext({
+        css: [`@/views/editor-shelf.css`]
+    }, uilib.views.Shelf, ['css']);
 
     _Init() {
         super._Init();
