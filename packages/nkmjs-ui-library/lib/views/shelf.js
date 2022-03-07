@@ -28,6 +28,7 @@ class Shelf extends ui.views.View {
     static __default_fixedSizeAxis = ui.FLAGS.HORIZONTAL;
     static __default_fixedSize = `350px`;
     static __default_navPlacement = ui.FLAGS.TOP;
+    static __default_collapsable = true;
 
     _Init() {
 
@@ -48,18 +49,17 @@ class Shelf extends ui.views.View {
 
         this._currentHandle = null;
 
-        this._flags.Add(this, ui.FLAGS.FIXED_SIZE);
-
+        this._flags.Add(this, ui.FLAGS.FIXED_SIZE, ui.FLAGS.COLLAPSED, ui.FLAGS.EMPTY);
 
         this._navPlacement = new ui.helpers.FlagEnum(ui.FLAGS.placement, true);
         this._navPlacement.Add(this);
         this._navPlacement.onFlagChanged.Add(this._Bind(this._OnNavPlacementChanged));
 
-        this._isCollapsable = true;
+        this._isCollapsable = false;
         this._fixedSizeAxis = this.constructor.__default_fixedSizeAxis;
         this._fixedSize = this.constructor.__default_fixedSize;
 
-        this._flags.Add(this, ui.FLAGS.EMPTY);
+        
 
     }
 
@@ -77,6 +77,7 @@ class Shelf extends ui.views.View {
 
         this.fixedSizeAxis = this._fixedSizeAxis;
         this.fixedSize = this._fixedSize;
+        this.isCollapsable = this.constructor.__default_collapsable;
 
         this._OnShelfEmpty();
 
@@ -87,7 +88,12 @@ class Shelf extends ui.views.View {
      * @type {boolean}
      */
     get isCollapsable() { return this._isCollapsable; }
-    set isCollapsable(p_value) { this._isCollapsable = p_value; }
+    set isCollapsable(p_value) {
+        if (this._isCollapsable == p_value) { return; }
+        this._isCollapsable = p_value;
+        //if (p_value) { this.classList.add(`collapsable`); }
+        //else { this.classList.remove(`collapsable`); }
+    }
 
     /**
      * @description TODO
@@ -104,7 +110,6 @@ class Shelf extends ui.views.View {
             this._flags.Set(ui.FLAGS.FIXED_SIZE, false);
             this.style.removeProperty(`--fixed-size`);
         }
-
     }
 
     /**
@@ -279,13 +284,13 @@ class Shelf extends ui.views.View {
             ':host(.horizontal.nav-end) .view': { 'grid-row': '1' },
 
 
-            ':host(.fixed-horizontal.fixed-size)': {
+            ':host(.fixed-horizontal.fixed-size:not(.collapsed))': {
                 'width': 'var(--fixed-size)',
                 'min-width': 'var(--fixed-size)',
                 'max-width': 'var(--fixed-size)',
             },
 
-            ':host(.fixed-vertical.fixed-size)': {
+            ':host(.fixed-vertical.fixed-size:not(.collapsed))': {
                 'height': 'var(--fixed-size)',
                 'min-height': 'var(--fixed-size)',
                 'max-height': 'var(--fixed-size)',
@@ -383,7 +388,10 @@ class Shelf extends ui.views.View {
         if (this._isCollapsable) {
             if (this._currentView === view) {
                 this.currentView = null;
+                this._flags.Set(ui.FLAGS.COLLAPSED, true);
                 return;
+            } else {
+                this._flags.Set(ui.FLAGS.COLLAPSED, false);
             }
         }
 

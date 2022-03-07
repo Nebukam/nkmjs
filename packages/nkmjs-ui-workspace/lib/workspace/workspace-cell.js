@@ -19,13 +19,12 @@ class WorkspaceCell extends uilib.views.Shelf {
 
     static __default_orientation = ui.FLAGS.HORIZONTAL;
     static __default_fixedSize = false;
+    static __default_collapsable = false;
 
     _Init() {
         super._Init();
 
         this._navClass = WorkspaceCellNav;
-        this._isCollapsable = false;
-
         this._gridItemController = new ui.manipulators.GridItem(this);
     }
 
