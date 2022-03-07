@@ -25,6 +25,8 @@ class Shelf extends ui.views.View {
 
     static __default_placeholderViewClass = null;
     static __default_orientation = ui.FLAGS.VERTICAL;
+    static __default_fixedSizeAxis = ui.FLAGS.HORIZONTAL;
+    static __default_fixedSize = `350px`;
     static __default_navPlacement = ui.FLAGS.TOP;
 
     _Init() {
@@ -48,11 +50,14 @@ class Shelf extends ui.views.View {
 
         this._flags.Add(this, ui.FLAGS.FIXED_SIZE);
 
+
         this._navPlacement = new ui.helpers.FlagEnum(ui.FLAGS.placement, true);
         this._navPlacement.Add(this);
         this._navPlacement.onFlagChanged.Add(this._Bind(this._OnNavPlacementChanged));
 
         this._isCollapsable = true;
+        this._fixedSizeAxis = this.constructor.__default_fixedSizeAxis;
+        this._fixedSize = this.constructor.__default_fixedSize;
 
         this._flags.Add(this, ui.FLAGS.EMPTY);
 
@@ -70,6 +75,9 @@ class Shelf extends ui.views.View {
             this.currentView = this._placeholderView;
         }
 
+        this.fixedSizeAxis = this._fixedSizeAxis;
+        this.fixedSize = this._fixedSize;
+
         this._OnShelfEmpty();
 
     }
@@ -80,6 +88,49 @@ class Shelf extends ui.views.View {
      */
     get isCollapsable() { return this._isCollapsable; }
     set isCollapsable(p_value) { this._isCollapsable = p_value; }
+
+    /**
+     * @description TODO
+     * @type {boolean}
+     */
+    get fixedSize() { return this._fixedSize; }
+    set fixedSize(p_value) {
+        if (p_value) {
+            this._fixedSize = p_value;
+            this._flags.Set(ui.FLAGS.FIXED_SIZE, true);
+            this.style.setProperty(`--fixed-size`, `${p_value}`);
+        } else {
+            this._fixedSize = false;
+            this._flags.Set(ui.FLAGS.FIXED_SIZE, false);
+            this.style.removeProperty(`--fixed-size`);
+        }
+
+    }
+
+    /**
+     * @description TODO
+     * @type {boolean}
+     */
+    get fixedSizeAxis() { return this._fixedSizeAxis; }
+    set fixedSizeAxis(p_value) {
+        switch (p_value) {
+            case ui.FLAGS.VERTICAL:
+                this._fixedSizeAxis = ui.FLAGS.VERTICAL;
+                this.classList.add(`fixed-${ui.FLAGS.VERTICAL}`);
+                this.classList.remove(`fixed-${ui.FLAGS.HORIZONTAL}`);
+                break;
+            case ui.FLAGS.HORIZONTAL:
+                this._fixedSizeAxis = ui.FLAGS.HORIZONTAL;
+                this.classList.remove(`fixed-${ui.FLAGS.VERTICAL}`);
+                this.classList.add(`fixed-${ui.FLAGS.HORIZONTAL}`);
+                break;
+            default:
+                this._fixedSizeAxis = null;
+                this.classList.remove(`fixed-${ui.FLAGS.VERTICAL}`);
+                this.classList.remove(`fixed-${ui.FLAGS.HORIZONTAL}`);
+                break;
+        }
+    }
 
     get isEmpty() { return this._isEmpty; }
 
@@ -179,6 +230,7 @@ class Shelf extends ui.views.View {
                 'flex': `1 1 auto`, // was commented out but can't remember why
             },
 
+
             // Vertical ( nav on the left or right )
             ':host(.vertical)': {
                 'flex-flow': `row nowrap`,
@@ -225,6 +277,19 @@ class Shelf extends ui.views.View {
             ':host(.horizontal) .view, :host(.horizontal.nav-start) .view': { 'grid-row': '2' },
             ':host(.horizontal.nav-end) .navigation': { 'grid-row': '2' },
             ':host(.horizontal.nav-end) .view': { 'grid-row': '1' },
+
+
+            ':host(.fixed-horizontal.fixed-size)': {
+                'width': 'var(--fixed-size)',
+                'min-width': 'var(--fixed-size)',
+                'max-width': 'var(--fixed-size)',
+            },
+
+            ':host(.fixed-vertical.fixed-size)': {
+                'height': 'var(--fixed-size)',
+                'min-height': 'var(--fixed-size)',
+                'max-height': 'var(--fixed-size)',
+            },
         };
     }
 
@@ -295,11 +360,11 @@ class Shelf extends ui.views.View {
             this.currentView = null;
             if (this._nav._handles.length === 0) { this._OnShelfEmpty(); }
             // TODO : Customize which view is set as default
-            else { 
+            else {
                 console.log(p_index);
                 let handles = this._nav._handles;
-                if(p_index >= handles.length){ p_index = handles.length -1; }
-                this.currentHandle = handles[p_index]; 
+                if (p_index >= handles.length) { p_index = handles.length - 1; }
+                this.currentHandle = handles[p_index];
             }
         }
 
@@ -350,16 +415,16 @@ class Shelf extends ui.views.View {
 
     //#region Views Management
 
-    RequestView(p_identifier){
-        if(u.isNumber(p_identifier)){
+    RequestView(p_identifier) {
+        if (u.isNumber(p_identifier)) {
             // by index
             let list = this._nav._handles;
-            if(p_identifier < 0 || p_identifier > list.length-1 ){ return; }
+            if (p_identifier < 0 || p_identifier > list.length - 1) { return; }
             this.currentHandle = list[p_identifier];
-        }else if(u.isString(p_identifier)){
+        } else if (u.isString(p_identifier)) {
             // by data id name
             // TODO
-        }else if(u.isInstanceOf(data.catalogs.CatalogItem)){
+        } else if (u.isInstanceOf(data.catalogs.CatalogItem)) {
             // by catalog item reference
             // TODO
         }
@@ -376,7 +441,7 @@ class Shelf extends ui.views.View {
 
     _OnViewRequestClose(p_view) {
         let catalogItem = this._catalogViewBuilder._reverseMap.get(p_view);
-        if(catalogItem){ catalogItem.Release(); }
+        if (catalogItem) { catalogItem.Release(); }
     }
 
     /**
@@ -502,7 +567,7 @@ class Shelf extends ui.views.View {
      */
     _OnCurrentViewChanged(p_oldView) {
 
-        if(p_oldView){
+        if (p_oldView) {
             p_oldView.DisplayLost();
         }
 

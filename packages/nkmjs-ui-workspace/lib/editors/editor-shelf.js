@@ -22,7 +22,7 @@ class EditorShelf extends uilib.views.Shelf {
     _Style() {
         return style.Extends({
             ':host': {
-                width: `354px`,
+                //width: `354px`,
                 flex: `0 0 auto`,
                 'background-color': `rgba(127,127,127,0.1)`,
                 //'border-left':`1px dashed rgba(127,127,127,0.2)`

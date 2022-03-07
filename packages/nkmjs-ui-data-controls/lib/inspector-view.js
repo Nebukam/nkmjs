@@ -37,6 +37,7 @@ class InspectorView extends ControlView {
     _Style() {
         return style.Extends({
             ':host': {
+                'box-sizing':'border-box',
             },
         }, super._Style());
     }

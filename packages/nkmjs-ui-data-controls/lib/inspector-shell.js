@@ -37,6 +37,7 @@ class InspectorShell extends ControlView {
     _Style() {
         return style.Extends({
             ':host': {
+                
             }
         }, super._Style());
     }

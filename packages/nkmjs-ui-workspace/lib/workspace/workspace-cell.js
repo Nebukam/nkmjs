@@ -18,6 +18,7 @@ class WorkspaceCell extends uilib.views.Shelf {
     // ----> Init
 
     static __default_orientation = ui.FLAGS.HORIZONTAL;
+    static __default_fixedSize = false;
 
     _Init() {
         super._Init();

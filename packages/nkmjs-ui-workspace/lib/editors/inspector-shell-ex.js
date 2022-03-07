@@ -26,10 +26,7 @@ class InspectorShellEx extends uidatacontrols.InspectorShell {
 
     _Init() {
 
-        super._Init();
-
-        this._flags.Add(this, ui.FLAGS.FIXED_SIZE);
-        this._flags.Set(ui.FLAGS.FIXED_SIZE, true);
+        super._Init();        
 
         this._icon = null;
         this._title = null;
@@ -61,9 +58,6 @@ class InspectorShellEx extends uidatacontrols.InspectorShell {
                 'justify-content': `flex-start`,
                 'align-items': `stretch`,
                 'align-content': `stretch`, // Stretches view
-            },
-            ':host(.fixed-size)': {
-                'width': `350px`
             },
             '.header': {
                 'flex': '0 0 auto',
