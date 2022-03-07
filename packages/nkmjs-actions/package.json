@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/actions",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "NKMjs Framework Actions",
   "main": "index.js",
   "repository": {
@@ -16,11 +16,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "^0.1.17",
-    "@nkmjs/common": "^0.1.25",
-    "@nkmjs/environment": "^0.1.26",
-    "@nkmjs/services": "^0.0.34",
-    "@nkmjs/utils": "^0.0.34"
+    "@nkmjs/collections": "^0.1.18",
+    "@nkmjs/common": "^0.1.26",
+    "@nkmjs/environment": "^0.1.27",
+    "@nkmjs/services": "^0.0.35",
+    "@nkmjs/utils": "^0.0.35"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }
