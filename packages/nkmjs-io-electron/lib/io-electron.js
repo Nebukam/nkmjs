@@ -13,20 +13,25 @@ const {
 
 class IOElectron {
 
-    constructor() { }
+    constructor() { 
+        this._nkmjs = null;
+    }
 
-    Deploy() {
+    Deploy(nkmjs) {
+
+        this._nkmjs = nkmjs;
+        let RESOURCES = nkmjs.io.RESOURCES.instance;
 
         // Overwrite default or RESOURCES (IOWriter, IOReader, IORename + Directory support)
-        io.RESOURCES.instance._GetStats = this._GetStats.bind(io.RESOURCES.instance);
-        io.RESOURCES.instance._IOID = this._IOID.bind(io.RESOURCES.instance);
-        io.RESOURCES.instance._io[io.IO_TYPE.FILE_SYSTEM] = {
+        RESOURCES._GetStats = this._GetStats.bind(io.RESOURCES.instance);
+        RESOURCES._IOID = this._IOID.bind(io.RESOURCES.instance);
+        RESOURCES._io[nkmjs.io.IO_TYPE.FILE_SYSTEM] = {
             read: FSIOReader,
             write: FSIOWriter,
             rename: FSIORename,
             delete: FSIODelete
         };
-        io.RESOURCES.instance._io[io.IO_TYPE.DEFAULT] = {
+        RESOURCES._io[nkmjs.io.IO_TYPE.DEFAULT] = {
             read: FSIOReader,
             write: FSIOWriter,
             rename: FSIORename,

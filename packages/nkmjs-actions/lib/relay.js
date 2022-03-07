@@ -9,6 +9,8 @@ const services = require(`@nkmjs/services`);
 const env = require(`@nkmjs/environment`);
 const { signals } = require("@nkmjs/common");
 
+var test = 0;
+
 /**
  * @description TODO
  * @class
@@ -17,6 +19,8 @@ const { signals } = require("@nkmjs/common");
  * @memberof actions 
  */
 class RELAY extends services.ServiceBase {
+
+    constructor() { super(); }
 
     /**
      * @description TODO
@@ -36,7 +40,7 @@ class RELAY extends services.ServiceBase {
         this.instance._Broadcast(p_evt, ...args);
     }
 
-    constructor() { super(); }
+    
 
     _Init() {
         super._Init();
@@ -135,7 +139,10 @@ class RELAY extends services.ServiceBase {
      * @param {*} p_options 
      * @returns {Promise}
      */
-    static ShowOpenDialog(p_options) { return this.instance._ShowOpenDialog(p_options); }
+    static ShowOpenDialog(p_options, p_callback) { 
+        this.instance.__openDialogCallback = p_callback;
+        this.instance._ShowOpenDialog(p_options, p_callback); 
+    }
 
     /**
      * @access protected

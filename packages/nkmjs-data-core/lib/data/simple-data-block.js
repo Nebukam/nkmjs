@@ -1,3 +1,5 @@
+const u = require("@nkmjs/utils");
+
 const DataBlock = require(`./data-block`);
 const SIGNAL = require(`../signal`);
 
@@ -46,6 +48,7 @@ class SimpleDataBlock extends DataBlock {
     }
 
     BatchSet(p_values) {
+        if(u.isInstanceOf(SimpleDataBlock)){ p_values = p_values._values; }
         for (var p in p_values) { this.Set(p, p_values[p], true); }
         this.CommitUpdate();
     }

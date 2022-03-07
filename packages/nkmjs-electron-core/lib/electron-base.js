@@ -1,4 +1,5 @@
-const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, remote } = require(`electron`);
+const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, dialog } = require(`electron`);
+
 const path = require(`path`);
 const url = require(`url`);
 const fs = require(`fs`);
@@ -60,6 +61,8 @@ class ElectronBase {
         this._Bind(this._SendError);
         this._Bind(this._SendWarning);
         this._Bind(this._SendMessage);
+        this._Bind(this._OnRequestDialog);
+        this._Bind(this._RequestDialogResponse);
 
         this._windows = new collections.List();
         this._windowsMap = new collections.Dictionary();
@@ -82,6 +85,7 @@ class ElectronBase {
         });
 
         ipcMain.on(APP_MESSAGES.DO_RELOAD_APP, this._OnRequestReload);
+        ipcMain.on(APP_MESSAGES.OPEN_DIALOG, this._OnRequestDialog)
 
     }
 
@@ -173,10 +177,10 @@ class ElectronBase {
             ENV.instance.DEV_MODE = ${DEV_MODE};
 
             let IOElectron = nkmElectron.io.IOElectron;
-            (new IOElectron()).Deploy();
+            (new IOElectron()).Deploy(nkmjs);
 
             let IPCElectron = nkmElectron.core.IPCElectron;
-            (new IPCElectron()).Deploy();
+            (new IPCElectron()).Deploy(nkmjs);
 
             ENV.instance.Start({
                 paths:{
@@ -279,6 +283,17 @@ class ElectronBase {
     }
     _SendWarning(p_content) { this._mainWindow.webContents.send(APP_MESSAGES.WARNING, p_content); }
     _SendMessage(p_content) { this._mainWindow.webContents.send(APP_MESSAGES.MESSAGE, p_content); }
+
+
+    // ----> Dialog callbacks
+
+    _OnRequestDialog(p_evt, p_options){
+        dialog.showOpenDialog(p_options).then(this._RequestDialogResponse);
+    }
+
+    _RequestDialogResponse(response){
+        this._mainWindow.webContents.send(APP_MESSAGES.DIALOG_RESPONSE, response);
+    }
 
     // ----> Exit
 

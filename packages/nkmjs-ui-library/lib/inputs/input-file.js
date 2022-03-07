@@ -17,7 +17,7 @@ class InputFile extends InputPath {
     _Init() {
         super._Init();
         this._Bind(this._onPickerChange);
-        this._Bind(this._Picked);
+        this._Bind(this._OnPicked);
 
         // TODO : Handle web-based pick !
         // TODO : Add support for drag'n drop
@@ -30,7 +30,7 @@ class InputFile extends InputPath {
         this._dropExt.Hook({
             check: { fn: this._Bind(this._CheckDrop) },
             drop: { fn: this._Bind(this._Drop) },
-            dropCandidate:{ fn:this._Bind(this._ToggleDropCandidate) }
+            dropCandidate: { fn: this._Bind(this._ToggleDropCandidate) }
         });
 
     }
@@ -47,8 +47,8 @@ class InputFile extends InputPath {
             '.input-btn': {
                 flex: `1 1 auto`
             },
-            ':host(.allow-drop)':{
-                'background-color':`#00ff00`
+            ':host(.allow-drop)': {
+                'background-color': `#00ff00`
             }
         }, super._Style());
     }
@@ -82,14 +82,14 @@ class InputFile extends InputPath {
             actions.RELAY.ShowOpenDialog({
                 defaultPath: this._currentValue ? this._currentValue : ``,
                 properties: [this._openType]
-            }).then(this._Picked);
+            }, this._OnPicked);
         }
     }
 
-    _Picked(p_value) {
-        let val = p_value.filePaths[0];
-        if (val === undefined) { return; }
-        this.changedValue = p_value.filePaths[0];
+    _OnPicked(p_response) {
+        if (p_response.canceled || !p_response.filePaths) { return; }
+        let val = p_response.filePaths.join(`,`);
+        this.changedValue = p_response.filePaths;
     }
 
     _onPickerChange(p_evt) {
@@ -99,27 +99,27 @@ class InputFile extends InputPath {
 
     // Drop
 
-    _ToggleDropCandidate(p_toggle){
-        if(p_toggle){
+    _ToggleDropCandidate(p_toggle) {
+        if (p_toggle) {
             this.style.setProperty(`border`, `1px solid red`);
-        }else{
+        } else {
             this.style.removeProperty(`border`);
-        }        
+        }
     }
 
     _CheckDrop(p_data) {
-        if(u.isString(p_data)){
+        if (u.isString(p_data)) {
             return true;
-        }else if(u.isInstanceOf(p_data, DataTransfer)){
+        } else if (u.isInstanceOf(p_data, DataTransfer)) {
             return true;
         }
         return false;
     }
 
     _Drop(p_data) {
-        if(u.isString(p_data)){
+        if (u.isString(p_data)) {
             this.currentValue = p_data;
-        }if(u.isInstanceOf(p_data, DataTransfer)){
+        } if (u.isInstanceOf(p_data, DataTransfer)) {
             return true;
         }
     }
