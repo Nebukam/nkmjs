@@ -1,7 +1,6 @@
 'use strict';
 
 const env = require(`@nkmjs/environment`);
-const axios = require('axios');
 
 const IOProcess = require(`../io-process`);
 const ENCODING = require(`../encoding`);

@@ -1,7 +1,7 @@
 var appTab = null;
 
 self.addEventListener('fetch', function (event) {
-    event.respondWith( fetch(event.request, { mode: 'no-cors' }));// fetch as normal
+    event.respondWith( fetch(event.request));// fetch as normal
 });
 
 %context_api%.%action_api_name%.onClicked.addListener(

@@ -1,7 +1,5 @@
 'use strict';
 
-const axios = require(`axios`);
-
 /**
  * A simple ping object to an url that either succeeds or fails.
  * @class
@@ -37,17 +35,17 @@ class Ping {
     get doneAndError() { return this._done && !this._success; }
 
     Ping() {
+
         if (this._running || this._done) { return this._done; }
 
         this._running = true;
         this._success = false;
         this._done = false;
 
-        axios.get(this._url,
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*'
-                }
+        fetch(this._url, { method: 'GET', headers: { 'Access-Control-Allow-Origin': '*' } })
+            .then(response => {
+                if (!response.ok) { console.log(response); throw new Error('Network response was not OK'); }
+                return response;
             })
             .then(this._OnSuccess)
             .catch(this._OnError);
@@ -56,8 +54,8 @@ class Ping {
 
     }
 
-    Reset(){
-        if(this._running){ return; }
+    Reset() {
+        if (this._running) { return; }
         this._done = false;
     }
 

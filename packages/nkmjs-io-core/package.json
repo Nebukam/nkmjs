@@ -20,8 +20,7 @@
     "@nkmjs/common": "^0.1.26",
     "@nkmjs/environment": "^0.1.27",
     "@nkmjs/services": "^0.0.35",
-    "@nkmjs/utils": "^0.0.35",
-    "axios": "^0.24.0"
+    "@nkmjs/utils": "^0.0.35"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }

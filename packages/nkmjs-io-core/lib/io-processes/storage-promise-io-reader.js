@@ -2,7 +2,6 @@
 
 const u = require("@nkmjs/utils");
 const env = require(`@nkmjs/environment`);
-const axios = require('axios');
 
 const IOProcess = require(`../io-process`);
 

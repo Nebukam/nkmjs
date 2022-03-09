@@ -16,8 +16,6 @@ const IO_TYPE = require(`./io-type`);
 const ResourceOperation = require(`./resource-operation`);
 const IOProcess = require(`./io-process`);
 
-const axios = require(`axios`);
-
 /**
  * @description TODO
  * @class
@@ -81,8 +79,6 @@ class RESOURCES extends services.ServiceBase {
                 delete: ioprocesses.LocalStorageIODelete
             };
         }
-
-        //axios.defaults.withCredentials = true;
 
         this._IOQueue = new IOQueue();
 
