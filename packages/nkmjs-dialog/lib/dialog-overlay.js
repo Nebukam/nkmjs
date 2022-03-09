@@ -32,8 +32,9 @@ class DialogOverlay extends ui.overlays.Overlay {
                 'justify-content': `center`,
             },
             '.content': {
-                flex: `1 1 auto`,
-                'max-width': `500px`,
+                flex: `0 1 auto`,
+                'max-width': `100%`,
+                'max-height': `100%`,
             }
         }, super._Style());
     }

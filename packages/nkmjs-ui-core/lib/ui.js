@@ -24,6 +24,7 @@ class UI extends com.helpers.SingletonEx {
 
         this._uiPool = new collections.DictionaryList();
         this._uiTypes = new collections.Dictionary();
+        this._typeMap = {};
 
         this._dirtyElements = new collections.List(0);
 
@@ -59,6 +60,8 @@ class UI extends com.helpers.SingletonEx {
         }else{
             customElements.define(p_id, p_class);//, { extends: p_extends });    
         }
+
+        this._typeMap[p_id] = p_class;
         
         //#LOG console.log(`%c+ ${p_class.name} %c<${p_id}>`, 'color: #9000ff', 'color: #b4b4b4');
 
@@ -117,6 +120,8 @@ class UI extends com.helpers.SingletonEx {
      * @group Pooling
      */
     _Rent(p_class, p_parent = null) {
+
+        if(u.isString(p_class)){ console.log(`${p_class} -> `,this._typeMap); p_class = this._typeMap[p_class]; }
 
         if (!this._uiTypes.Contains(p_class)) {
             if (u.isInstanceOf(p_class, DisposableHTMLElement)) {

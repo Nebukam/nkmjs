@@ -213,6 +213,60 @@ class CSS_UTILS extends com.helpers.Singleton {
 
     }
 
+    /**
+     * Extract CSS Classes rules from a string
+     * @param {*} p_styleString 
+     * @returns 
+     */
+     static ClassCSS(p_styleString) {
+        let result = {};
+        try {
+            //.st0 |{| fill:#FF00FF;}.st1 |{| fill:#FF00FF;}
+            let baseSplit = p_styleString.split(`{`);
+            if (baseSplit.length > 1) {
+                //Has classes
+                let className = baseSplit[0];
+                for (let b = 1; b < baseSplit.length; b++) {
+                    let spl = baseSplit[b].split(`}`);
+                    result[className] = this.Rules(spl[0]);
+                    className = spl[1];
+                }
+            } else {
+                result = this.Rules(p_styleString);
+            }
+        } catch (e) { }
+        return result;
+    }
+
+    /**
+     * Extract rules from a CSS string
+     * @param {*} p_string 
+     * @returns 
+     */
+    static Rules(p_string) {
+        let
+            obj = {};
+
+        if (!p_string || p_string == ``) {
+            return obj;
+        }
+
+        let rules = p_string.trim().split(`;`);
+
+        if (rules.length == 1) {
+            // Single rule
+            let rule = p_string.split(`:`);
+            obj[rule[0]] = rule[1];
+        } else {
+            for (let s = 0; s < rules.length; s++) {
+                let rule = rules[s].split(`:`);
+                obj[rule[0]] = rule[1];
+            }
+        }
+
+        return obj;
+    }
+
 }
 
 module.exports = CSS_UTILS;

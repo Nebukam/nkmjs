@@ -32,6 +32,7 @@ class DialogBox extends ui.Widget {
 
         this._handles = [];
         this._contents = [];
+        this._contentOptions = new Map();
         this._submitMap = new collections.Dictionary();
         this._submitList = new collections.List();
 
@@ -91,6 +92,7 @@ class DialogBox extends ui.Widget {
             this._messageElement = ui.dom.El(`span`, { class: `item message` }, this._contentWrapper);
         }
         this._messageElement.innerHTML = p_message;
+        this._contents.push(this._messageElement);
         this._contents.push(this._messageElement);
     }
 
@@ -155,6 +157,8 @@ class DialogBox extends ui.Widget {
             throw new Error(`Cannot build dialog content list out of ${p_content}`);
         }
 
+        this._contentOptions.clear();
+
         for (let i = 0, n = p_content.length; i < n; i++) {
 
             let itemNfos = p_content[i],
@@ -162,7 +166,7 @@ class DialogBox extends ui.Widget {
                 itemData = itemNfos.data;
 
             if (!itemClass) {
-                throw new Error(`Cannot create item with unspecified class.`);
+                throw new Error(`Cannot create item with unspecified class or instance.`);
             }
 
             let item = this.Add(itemClass, `item`, this._contentWrapper);
@@ -187,6 +191,7 @@ class DialogBox extends ui.Widget {
             if (itemData) { item.data = itemData; }
 
             this._contents.push(item);
+            this._contentOptions.set(item, itemNfos);
         }
 
     }
@@ -301,16 +306,28 @@ class DialogBox extends ui.Widget {
         this._formHandler.Clear();
         this._ClearHandles();
 
+        console.log(this._contents, this._contentOptions);
+
         for (let i = 0, n = this._contents.length; i < n; i++) {
-            let item = this._contents[i];
-            if (`Release` in item) { this._contents[i].Release(); }
-            else { ui.dom.Detach(item); }
+            let item = this._contents[i],
+                itemNFos = this._contentOptions.get(item),
+                norelease = itemNFos ? itemNFos.donotrelease : false;
+
+            if (norelease || !(`Release` in item)) {
+                this.Remove(item);
+                ui.dom.Detach(item);
+            } else if (`Release` in item) {
+                item.Release();
+            }
+
+            if (`data` in item) { item.data = null; }
         }
 
         this._messageElement = null;
 
         this._hasInput = false;
         this._contents.length = 0;
+        this._contentOptions.clear();
 
         this.flavor = this.constructor.__default_flavor;
         this.variant = this.constructor.__default_variant;

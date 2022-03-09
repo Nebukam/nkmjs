@@ -152,7 +152,7 @@ class DefaultStylesheet extends PaletteBuilder{
             'cover': {
                 'background-size': `cover`,
                 'background-position': `center`,
-            },
+            }
 
         });
 

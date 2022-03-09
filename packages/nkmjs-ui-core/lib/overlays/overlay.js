@@ -58,7 +58,8 @@ class Overlay extends Layer {
         return style.Extends({
             ':host': {
                 'transform': 'translateX(-100%)', // YES this is a terrible hack
-                'transition': 'transform 0s linear'
+                'transition': 'transform 0s linear',
+                'z-index':'10', // Modals are 100.
             },
             '.bg': {
                 '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box

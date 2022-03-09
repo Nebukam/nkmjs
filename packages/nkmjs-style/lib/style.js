@@ -172,6 +172,8 @@ class STYLE extends com.helpers.SingletonEx {
 
     }
 
+    
+
 }
 
 module.exports = STYLE;

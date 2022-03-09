@@ -66,7 +66,9 @@ class DialogBox extends dialog.DialogBox {
                 flex: `0 0 auto`,
             },
             '.body': {
-                //'overflow-y':`auto`,
+                'min-height': '0',
+                'overflow-y':`auto`,
+                'overflow-x':`hidden`,
                 flex: `1 1 auto`
             }
 
