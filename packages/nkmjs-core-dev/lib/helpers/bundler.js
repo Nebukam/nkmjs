@@ -34,7 +34,7 @@ class Bundler {
         this.script = p_options.script;
         this.define = p_options.define;
 
-        this.shrinkMap = {};
+        this.shrinkMap = JSON.parse(fs.readFileSync(NKMjs.InCore(`configs`, `shrinkmap.json`), 'utf8'));
 
         // ----> Browserify
 
@@ -177,7 +177,7 @@ class Bundler {
         p_content = p_content.split(`(require,`).join(`(${req},`);
 
         for (let key in this.shrinkMap) {
-            //p_content = p_content.split(key).join(this.shrinkMap[key]);
+           p_content = p_content.split(key).join(this.shrinkMap[key]);
         }
 
         return p_content;
