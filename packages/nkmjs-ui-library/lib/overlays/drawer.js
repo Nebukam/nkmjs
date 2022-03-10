@@ -22,6 +22,20 @@ class Drawer extends ui.views.View {
         css: [`@/views/drawer.css`]
     }, ui.views.View, ['css']);
 
+    static __ppdata = (p_owner, p_data) => {
+
+        if (u.isInstanceOf(p_data, ui.overlays.OverlayOptions)) {
+
+            let p_options = p_data.options;
+            p_owner._icon.Set(p_options);
+            p_owner._title.Set(p_options);
+            return p_data.GetOption(`data`, p_data);
+
+        }
+
+        return p_data;
+    }
+
     // ----> Init
 
     static __default_orientation = ui.FLAGS.VERTICAL;
@@ -34,6 +48,8 @@ class Drawer extends ui.views.View {
 
         this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
         this._closeBtn.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE, this._CloseRequest);
+
+        this._dataPreProcessor = this.constructor.__ppdata;
 
     }
 
@@ -108,17 +124,6 @@ class Drawer extends ui.views.View {
     }
 
     // ----> DATA
-
-    _PreprocessData(p_data) {
-        if (u.isInstanceOf(p_data, ui.overlays.OverlayOptions)) {
-            let p_options = p_data.options;
-            this._icon.Set(p_options);
-            this._title.Set(p_options);
-            return p_data.GetOption(`data`, p_data);
-        }
-
-        return p_data;
-    }
 
     //
 

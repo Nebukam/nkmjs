@@ -52,6 +52,8 @@ class ControlWidget extends ui.Widget {
             .Hook(`editor`)
             .Hook(`data`);
 
+        this.forwardData.To(this._builder);
+
     }
 
     _PostInit() {
@@ -177,8 +179,7 @@ class ControlWidget extends ui.Widget {
                 this._ResetMetaPresentation();
             }
         }
-
-        this._builder.data = this._data;
+        
     }
 
     /**

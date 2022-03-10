@@ -52,6 +52,8 @@ class ControlView extends ui.views.View {
 
         this._editor = null;
 
+        this.forwardData.To(this._builder);
+
     }
 
     _PostInit() {
@@ -177,8 +179,6 @@ class ControlView extends ui.views.View {
                 this._ResetMetaPresentation();
             }
         }
-
-        this._builder.data = this._data;
 
     }
 

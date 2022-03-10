@@ -30,6 +30,8 @@ class View extends WidgetOrientable {
 
         this._isDisplayed = false;
         this._flags.Add(this, FLAGS.SHOWN);
+
+        this.forwardData.To(this._commands, { mapping: `context` });
     }
 
     _Style() {
@@ -38,11 +40,6 @@ class View extends WidgetOrientable {
 
             }
         }, super._Style());
-    }
-
-    _OnDataChanged(p_oldData) {
-        super._OnDataChanged(p_oldData);
-        this._commands.context = this._data;
     }
 
     get displayed() { return this._isDisplayed; }

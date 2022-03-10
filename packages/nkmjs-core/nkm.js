@@ -7,7 +7,7 @@
  * It encapsulate all available libraries except electron & server specifics.
  */
 
-module.exports = {
+globalThis.nkm = module.exports = {
     
     //#region core
 

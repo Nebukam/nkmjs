@@ -29,6 +29,9 @@ module.exports = {
     isInstanceOf: __CHECKS.isInstanceOf.bind(__CHECKS),
     isEmpty: __CHECKS.isEmpty.bind(__CHECKS),
 
+    Call: __UTILS.Call.bind(__UTILS),
+    CallPrepend: __UTILS.CallPrepend.bind(__UTILS),
+
     //
     PATH: __PATH,
 

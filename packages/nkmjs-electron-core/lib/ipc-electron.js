@@ -15,8 +15,8 @@ class IPCElectron {
 
     constructor() { }
 
-    Deploy(nkmjs) {
-        let RELAY = nkmjs.actions.RELAY.instance;
+    Deploy() {
+        let RELAY = nkm.actions.RELAY.instance;
         RELAY._ipcOn = this._ipcOn.bind(RELAY);
         RELAY._ipcSend = this._ipcSend.bind(RELAY);
         RELAY._ShowOpenDialog = this._remoteShowOpenDialog.bind(RELAY);

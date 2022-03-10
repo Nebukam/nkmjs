@@ -167,12 +167,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
             : this._externalSanitizationStack;
 
         for (let i = 0, n = stack.count; i < n; i++) {
-            obj = stack.At(i);
-
-            if (obj.arg) { p_value = obj.fn.call(obj.thisArg, p_value, obj.arg); }
-            else if (obj.args) { p_value = obj.fn.call(obj.thisArg, p_value, ...obj.args); }
-            else { p_value = obj.fn.call(obj.thisArg, p_value); }
-
+            p_value = u.CallPrepend(stack.At(i), p_value);
         }
 
         return p_value;
@@ -232,12 +227,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         for (let i = 0, n = stack.count; i < n; i++) {
 
             let obj = stack.At(i),
-                result = null;
-
-            if (obj.arg) { result = obj.fn.call(obj.thisArg, cValue, obj.arg); }
-            else if (obj.args) { result = obj.fn.call(obj.thisArg, cValue, ...obj.args); }
-            else { result = obj.fn.call(obj.thisArg, cValue); }
-
+                result = u.CallPrepend(stack.At(i), cValue);
             if (result) { this._PushError(result); }
 
         }

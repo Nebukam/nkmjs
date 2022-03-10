@@ -13,25 +13,22 @@ const {
 
 class IOElectron {
 
-    constructor() { 
-        this._nkmjs = null;
-    }
+    constructor() { }
 
-    Deploy(nkmjs) {
+    Deploy() {
 
-        this._nkmjs = nkmjs;
-        let RESOURCES = nkmjs.io.RESOURCES.instance;
+        let RESOURCES = nkm.io.RESOURCES.instance;
 
         // Overwrite default or RESOURCES (IOWriter, IOReader, IORename + Directory support)
         RESOURCES._GetStats = this._GetStats.bind(io.RESOURCES.instance);
         RESOURCES._IOID = this._IOID.bind(io.RESOURCES.instance);
-        RESOURCES._io[nkmjs.io.IO_TYPE.FILE_SYSTEM] = {
+        RESOURCES._io[nkm.io.IO_TYPE.FILE_SYSTEM] = {
             read: FSIOReader,
             write: FSIOWriter,
             rename: FSIORename,
             delete: FSIODelete
         };
-        RESOURCES._io[nkmjs.io.IO_TYPE.DEFAULT] = {
+        RESOURCES._io[nkm.io.IO_TYPE.DEFAULT] = {
             read: FSIOReader,
             write: FSIOWriter,
             rename: FSIORename,
@@ -48,9 +45,9 @@ class IOElectron {
         if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
             try{
                 let url = new URL(p_operation.fullPath);
-                return io.IO_TYPE.REMOTE;
+                return nkm.io.IO_TYPE.REMOTE;
             }catch(e){
-                return io.IO_TYPE.DEFAULT; 
+                return nkm.io.IO_TYPE.DEFAULT; 
             }
         }
         return p_ioId;

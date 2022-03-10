@@ -74,18 +74,20 @@ class EditorEx extends uidatacontrols.Editor {
             //console.log(`${assign} >> ${view}`);
 
             if (view) {
-                if (conf.isInspector) { this._dataInspectors.Add(view); }
-                else { this._dataControllers.Add(view); }
+                if (conf.isInspector) { this.forwardData.To(view); }
+                else { this.forwardInspected.To(view); }
                 if (assign) { this[assign] = view; }
             }
 
         }
 
-        if (this._header) { this._dataControllers.Add(this._header); }
-        if (this._viewport) { this._dataControllers.Add(this._viewport); }
-        if (this._footer) { this._dataControllers.Add(this._footer); }
+        this.forwardData
+            .To(this._header)
+            .To(this._viewport)
+            .To(this._footer);
 
-        if (this._inspectorShell) { this._dataInspectors.Add(this._inspectorShell); }
+        this.forwardInspected
+            .To(this._inspectorShell);
 
     }
 

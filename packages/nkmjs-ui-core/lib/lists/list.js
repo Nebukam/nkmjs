@@ -45,6 +45,8 @@ class List extends ListItem {
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
 
+        this.forwardData.To(this._builder, { mapping: `catalog` });
+
     }
 
     _PostInit() {
@@ -155,9 +157,6 @@ class List extends ListItem {
     _OnDataChanged(p_oldData) {
 
         super._OnDataChanged(p_oldData);
-
-        //Ensure content is cleared before updating builder's data
-        this._builder.catalog = this._data;
 
         if (this._data) {
             if (this._data.expanded) {

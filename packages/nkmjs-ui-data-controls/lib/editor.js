@@ -49,26 +49,25 @@ class Editor extends ui.views.View {
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackItemRemoved, this);
 
-        this._dataInspectors = new collections.List();
-        this._dataControllers = new collections.List();
+        this.forwardData.To(this._commands, { mapping: `context` });
 
     }
 
-    _PostInit(){
+    get forwardInspected() {
+        if (!this._forwardInspected) { this._forwardInspected = new ui.helpers.DataForward(this); }
+        return this._forwardInspected;
+    }
+
+    _PostInit() {
         super._PostInit();
         this._RegisterEditorBits();
 
-        for (let i = 0, n = this._dataControllers.count; i < n; i++) {
-            this._dataControllers.At(i).editor = this;
-        }
-
-        for (let i = 0, n = this._dataInspectors.count; i < n; i++) {
-            this._dataInspectors.At(i).editor = this;
-        }
+        if (this._forwardData) { this._forwardData._BatchSet(`editor`, this); }
+        if (this._forwardInspected) { this._forwardInspected._BatchSet(`editor`, this); }
 
     }
 
-    _RegisterEditorBits(){
+    _RegisterEditorBits() {
 
     }
 
@@ -99,17 +98,10 @@ class Editor extends ui.views.View {
     _OnDataChanged(p_oldData) {
 
         this._actionStack.Clear();
-        this._commands.context = this._data;
 
         super._OnDataChanged(p_oldData);
 
-        for (let i = 0, n = this._dataControllers.count; i < n; i++) {
-            this._dataControllers.At(i).data = this._data;
-        }
-
-        for (let i = 0, n = this._dataInspectors.count; i < n; i++) {
-            this._dataInspectors.At(i).context = this._data;
-        }
+        if (this._forwardInspected) { this._forwardInspected._BatchSet(`context`, this._data); }
 
         this.inspectedData = null;
 
@@ -174,9 +166,7 @@ class Editor extends ui.views.View {
     }
 
     _OnInspectedDataChanged(p_oldData) {
-        for (let i = 0, n = this._dataInspectors.count; i < n; i++) {
-            this._dataInspectors.At(i).data = this._inspectedData;
-        }
+        if (this._forwardInspected) { this._forwardInspected.Set(this._inspectedData); }
     }
 
     _OnInspectedDataReleased() {
@@ -222,6 +212,11 @@ class Editor extends ui.views.View {
     Redo() { this._actionStack.Redo(); }
 
     //#endregion
+
+    _CleanUp() {
+        if (this._forwardInspected) { this._forwardInspected.Clear(); }
+        super._CleanUp();
+    }
 
 }
 

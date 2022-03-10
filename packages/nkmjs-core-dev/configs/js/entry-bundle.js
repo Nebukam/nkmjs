@@ -4,7 +4,7 @@
  * If you want to customize this file behavior & contents, do so using the nkmjs.config.json.
  */
 
-const nkm = require(`@nkmjs/core`);
+require(`@nkmjs/core`);
 const { PATH, LOG } = nkm.utils;
 const { ENV } = nkm.env;
 

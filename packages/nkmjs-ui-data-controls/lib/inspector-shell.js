@@ -54,7 +54,6 @@ class InspectorShell extends ControlView {
 
         super._OnDataChanged(p_oldData);
 
-
         if (this._data) {
             let inspectorClass = com.BINDINGS.Get(CONTEXT.INSPECTOR, this._data, null);
             if (inspectorClass) {

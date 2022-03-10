@@ -296,7 +296,7 @@ class DialogBox extends ui.Widget {
 
     _Submit(p_source) {
         let cb = this._submitMap.Get(p_source);
-        cb.fn.call(cb.thisArg, this._formHandler.inputValues);
+        u.Call(cb, this._formHandler.inputValues);
     }
 
     _Clear() {
@@ -305,8 +305,6 @@ class DialogBox extends ui.Widget {
         this._submitList.Clear();
         this._formHandler.Clear();
         this._ClearHandles();
-
-        console.log(this._contents, this._contentOptions);
 
         for (let i = 0, n = this._contents.length; i < n; i++) {
             let item = this._contents[i],

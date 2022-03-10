@@ -10,13 +10,7 @@ const InspectorView = require(`../inspector-view`);
 class MetadataInspector extends InspectorView {
     constructor() { super(); }
 
-    _Init(){
-        super._Init();
-        this._dataObserver.Hook(data.SIGNAL.META_ADDED, this._OnMetaAdded, this);
-        this._mainMetadataObserver = new data.helpers.MetadataObserver();
-    }
-
-    _PreprocessData(p_data) {
+    static __ppdata = (p_owner, p_data) =>{
 
         if (u.isInstanceOf(p_data, data.Metadata)) { return p_data; }
 
@@ -24,6 +18,15 @@ class MetadataInspector extends InspectorView {
         if (u.isInstanceOf(p_data, data.Metadata)) { return metadata; }
 
         return null;
+
+    }
+
+    _Init(){
+        super._Init();
+        this._dataObserver.Hook(data.SIGNAL.META_ADDED, this._OnMetaAdded, this);
+        this._mainMetadataObserver = new data.helpers.MetadataObserver();
+
+        this._dataPreProcessor = this.constructor.__ppdata;
 
     }
 

@@ -30,12 +30,16 @@ class InputCatalogBase extends InputBase {
         this._catalogHandler
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this);
+        this.forwardData.To(this._catalogHandler, { mapping: `catalog` });
+
 
         this._useCatalogsAsGroup = false;
         this._groupOptionId = null;
 
         this._Bind(this._onInput);
         this._Bind(this._onChange);
+
+
 
     }
 
@@ -44,12 +48,12 @@ class InputCatalogBase extends InputBase {
         if (this._preventTabIndexing) { this.preventTabIndexing = true; }
     }
 
-    set useCatalogsAsGroup(p_value){ this._useCatalogsAsGroup = p_value; }
-    set groupOptionID(p_value){ this._groupOptionId = p_value; }
+    set useCatalogsAsGroup(p_value) { this._useCatalogsAsGroup = p_value; }
+    set groupOptionID(p_value) { this._groupOptionId = p_value; }
 
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
         super._OnOptionsUpdated(p_options, p_altOptions, p_defaults);
-        if(`catalog` in p_options){ this.data = p_options.catalog; }
+        if (`catalog` in p_options) { this.data = p_options.catalog; }
     }
 
     // ----> DOM
@@ -87,11 +91,6 @@ class InputCatalogBase extends InputBase {
         return p_data;
     }
 
-    _OnDataChanged(p_oldData) {
-        super._OnDataChanged(p_oldData);
-        this._catalogHandler.catalog = this._data;
-    }
-
     _OnItemAdded(p_catalog, p_item) {
         let control = this._HandleItem(p_item);
         if (control) { this._catalogHandler.Set(p_item, control); }
@@ -118,8 +117,8 @@ class InputCatalogBase extends InputBase {
         //so we can have checks on current input without overriding it if it doesn't pass validation.
     }
 
-    _onChange(p_evt) { 
-        this._handler.changedValue = this._GrabValue(); 
+    _onChange(p_evt) {
+        this._handler.changedValue = this._GrabValue();
     }
 
     _GrabValue() {

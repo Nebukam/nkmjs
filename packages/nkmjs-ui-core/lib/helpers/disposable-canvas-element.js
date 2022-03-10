@@ -164,6 +164,8 @@ class DisposableCanvasElement extends HTMLCanvasElement {
             this._sizeNeedRefresh = false;
         }
 
+        this._delayedRedraw.Cancel();
+
         if (this._requestDraw) {
             this._Broadcast(SIGNAL.DRAW_REQUEST_BEFORE, this, this._ctx, p_delta);
             this._InternalDraw(this._ctx, p_delta);

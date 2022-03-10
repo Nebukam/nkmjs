@@ -55,11 +55,7 @@ class KeystrokeEx extends Keystroke {
         if (!super.Activate()) { return false; }
         if (!this._trigger) { return true; }
 
-        let thisArg = u.tils.Get(this._trigger, `thisArg`, null);
-
-        if (this._trigger.args) { this._trigger.fn.call(thisArg, ...this._trigger.args); }
-        else if (this._trigger.arg) { this._trigger.fn.call(thisArg, this._trigger.arg); }
-        else { this._trigger.fn.call(thisArg); }
+        u.Call(this._trigger);
 
         return true;
 

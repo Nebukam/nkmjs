@@ -184,13 +184,7 @@ class Modal extends DisplayObjectContainer {
                 if (`contentOptions` in p_options) {
                     o = p_options.contentOptions;
                 } else if (`contentOptionsGetter` in p_options) {
-                    let
-                        oGet = p_options.contentOptionsGetter,
-                        thisArg = u.tils.Get(oGet, `thisArg`, null);
-
-                    if (oGet.args) { o = oGet.fn.call(thisArg, ...oGet.args); }
-                    else if (oGet.arg) { o = oGet.fn.call(thisArg, oGet.arg); }
-                    else { o = oGet.fn.call(thisArg); }
+                    o = u.Call(p_options.contentOptionsGetter);
                 }
 
                 if (o) { this._content.options = o; }

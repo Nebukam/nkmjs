@@ -167,20 +167,17 @@ class ElectronBase {
         let stylePath = this._constants.style ? this._constants.style : `style`;
 
         this._mainWindow.webContents.executeJavaScript(`
-            let nkmjs = require('@nkmjs/core'),
-                nkmElectron = require('@nkmjs/core/electron');
-            let LOG = nkmjs.utils.LOG;
+            require('@nkmjs/core');
+            let nkmElectron = require('@nkmjs/core/electron');
+            let LOG = nkm.utils.LOG;
             LOG.toggle(true);
 
-            let ENV = nkmjs.env.ENV;
+            let ENV = nkm.env.ENV;
             ENV.instance.features._isNodeEnabled = true;
             ENV.instance.DEV_MODE = ${DEV_MODE};
 
-            let IOElectron = nkmElectron.io.IOElectron;
-            (new IOElectron()).Deploy(nkmjs);
-
-            let IPCElectron = nkmElectron.core.IPCElectron;
-            (new IPCElectron()).Deploy(nkmjs);
+            (new nkmElectron.io.IOElectron()).Deploy();
+            (new nkmElectron.core.IPCElectron()).Deploy();
 
             ENV.instance.Start({
                 paths:{
@@ -288,6 +285,7 @@ class ElectronBase {
     // ----> Dialog callbacks
 
     _OnRequestDialog(p_evt, p_options){
+        console.log(`WELP`);
         dialog.showOpenDialog(p_options).then(this._RequestDialogResponse);
     }
 

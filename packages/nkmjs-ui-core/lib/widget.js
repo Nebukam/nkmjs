@@ -10,6 +10,7 @@ const POINTER = require(`./pointer`);
 const DisplayObjectContainer = require(`./display-object-container`);
 const WidgetSelection = require(`./helpers/widget-selection`);
 const FlagEnum = require(`./helpers/flag-enum`);
+const DataForward = require(`./helpers/data-forward`);
 
 const extensions = require(`./extensions`);
 
@@ -49,7 +50,6 @@ class Widget extends DisplayObjectContainer {
 
         this._isFocusable = true;
         this._isFocused = false;
-
         this._isHighlighted = false;
 
         this._isActivable = true;
@@ -79,6 +79,9 @@ class Widget extends DisplayObjectContainer {
         this.default_SelectOnActivation = (this.default_SelectOnActivation || false);
         this._selectOnActivation = this.default_SelectOnActivation;
 
+        this._forwardData = null;
+        this._dataPreProcessor = null;
+
     }
 
     _PostInit() {
@@ -93,10 +96,13 @@ class Widget extends DisplayObjectContainer {
     }
 
     get extensions() { return this._extensions; }
-
     get pointer() { return this._pointer; }
 
-    // ----> Placement & Orientation
+    get preprocessFn(){ return this._dataPreProcessor; }
+    set preprocessFn(p_value){ this._dataPreProcessor = p_value; }
+
+
+    //#region Placement & Orientation
 
     /**
      * @description This property is controlled by the widget's parent and
@@ -121,7 +127,10 @@ class Widget extends DisplayObjectContainer {
      */
     _OnPlacementChanged(p_newValue, p_oldValue) { }
 
-    // ----> Selections
+    //#endregion
+
+
+    //#region Interactions
 
     /**
      * @description TODO
@@ -142,8 +151,6 @@ class Widget extends DisplayObjectContainer {
         else { this.setAttribute(`title`, p_value); }
     }
 
-    // ----> Interactions
-
     /**
      * @description TODO
      * @type {Element}
@@ -156,7 +163,7 @@ class Widget extends DisplayObjectContainer {
         this._pointer.element = this._focusArea;
     }
 
-    // ----> Selection
+    //#region Selection
 
     /**
      * @description TODO
@@ -277,7 +284,9 @@ class Widget extends DisplayObjectContainer {
      */
     _SelectionLost() { }
 
-    // ----> Focus
+    //#endregion
+
+    //#region Focus
 
     /**
      * @description TODO
@@ -350,7 +359,9 @@ class Widget extends DisplayObjectContainer {
      */
     _FocusLost() { }
 
-    // ----> Highlight
+    //#endregion
+
+    //#region Highlight
 
     /**
      * @description A widget is highlighted if it is either Focused, Selected, or both.
@@ -385,7 +396,9 @@ class Widget extends DisplayObjectContainer {
      */
     _HighlightLost() { }
 
-    // ----> Activation
+    //#endregion
+
+    //#region Activation
 
     /**
      * @description TODO
@@ -413,7 +426,17 @@ class Widget extends DisplayObjectContainer {
         return true;
     }
 
-    // ----> DATA
+    //#endregion
+
+    //#endregion
+
+    //#region DATA
+
+    get forwardData() {
+        if (!this._forwardData) { this._forwardData = new DataForward(this); }
+        return this._forwardData;
+    }
+
 
     /**
      * @description TODO
@@ -423,8 +446,7 @@ class Widget extends DisplayObjectContainer {
     get data() { return this._data; }
     set data(p_value) {
 
-        if ('_PreprocessData' in this) { p_value = this._PreprocessData(p_value); }
-
+        if (this._dataPreProcessor) { p_value = this._dataPreProcessor(this, p_value); }
 
         if (this._data === p_value) { return; }
 
@@ -454,7 +476,7 @@ class Widget extends DisplayObjectContainer {
      * @customtag override-me
      * @group Data
      */
-    _OnDataChanged(p_oldData) { }
+    _OnDataChanged(p_oldData) { if (this._forwardData) { this._forwardData.Set(this._data); } }
 
     /**
      * @access protected
@@ -474,6 +496,7 @@ class Widget extends DisplayObjectContainer {
      */
     _OnDataUpdated(p_data) { }
 
+    //#endregion
 
     // ----> Pooling
 
@@ -485,6 +508,8 @@ class Widget extends DisplayObjectContainer {
         if (this._selectionStack) { this._selectionStack.Clear(); }
 
         this.data = null;
+        if (this._forwardData) { this._forwardData.Clear(); }
+
         this._selectOnActivation = this.default_SelectOnActivation;
         this.removeAttribute(`title`);
 

@@ -4,7 +4,7 @@ const IOProcess = require(`../io-process`);
 const ENCODING = require(`../encoding`);
 const RESPONSE_TYPE = require(`../response-type`);
 
-const domparser = new DOMParser();
+var domparser = null;
 
 /**
  * @description TODO
@@ -61,11 +61,9 @@ class HTTPIOReader extends IOProcess {
 
         super._OnProgress(0);
 
-        console.log(requestOptions);
-
         fetch(this._operation.fullPath, requestOptions)
             .then(response => {
-                if (!response.ok) { console.log(response);throw new Error('Network response was not OK'); }
+                if (!response.ok) { throw new Error('Network response was not OK'); }
                 return response;
             })
             .then(this._OnRequestSuccess)
@@ -116,6 +114,7 @@ class HTTPIOReader extends IOProcess {
 
     _OnResponseReadCompleteDOM(p_data) {
         try {
+            if(!domparser){domparser = new DOMParser();}
             this.rsc.raw = domparser.parseFromString(p_data, this._domType);
             this._OnSuccess();
         } catch (e) {

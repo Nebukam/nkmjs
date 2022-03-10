@@ -12,5 +12,6 @@ module.exports = {
     WidgetSelection: require(`./widget-selection`),
     Canvas: require(`./disposable-canvas-element`),
     DOMStreamer: require(`./dom-streamer`),
+    DataForward: require(`./data-forward`),
 
 }

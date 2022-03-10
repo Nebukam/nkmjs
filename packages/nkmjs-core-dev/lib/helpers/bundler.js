@@ -141,7 +141,7 @@ class Bundler {
         for (let i = 0, n = this.externals.length; i < n; i++) {
             let id = this.externals[i];
             if (id === this.moduleID) { continue; }
-            p_content = p_content.split(`require("${id}")`).join(`window.nkmjs[${i}]`);
+            p_content = p_content.split(`require("${id}")`).join(`globalThis.nkmdefs[${i}]`);
             p_content = p_content.split(`"${id}":void 0`).join(``);
         }
 

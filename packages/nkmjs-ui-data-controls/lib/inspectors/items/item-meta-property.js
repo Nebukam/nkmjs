@@ -10,6 +10,16 @@ class MetaPropertyInspectorItem extends InspectorWidget {
     constructor() { super(); }
 
     static __watchMidUpdate = false;
+    static __ppdata = (p_owner, p_data) => {
+
+        if (u.isInstanceOf(p_data, data.Metadata)) { return p_data; }
+
+        let metadata = p_data.metadata;
+        if (u.isInstanceOf(p_data, data.Metadata)) { return metadata; }
+
+        return null;
+
+    }
 
     _Init() {
 
@@ -22,6 +32,8 @@ class MetaPropertyInspectorItem extends InspectorWidget {
 
         this._Bind(this._OnPropertyUpdated);
         if (this.constructor.__watchMidUpdate) { this._Bind(this._OnPropertyMidUpdate); }
+
+        this._dataPreProcessor = this.constructor.__ppdata;
 
     }
 
@@ -76,17 +88,6 @@ class MetaPropertyInspectorItem extends InspectorWidget {
     get dataValue() {
         if (!this._data || !this._metaPath) { return null; }
         return this._data.Get(this._metaPath);
-    }
-
-    _PreprocessData(p_data) {
-
-        if (u.isInstanceOf(p_data, data.Metadata)) { return p_data; }
-
-        let metadata = p_data.metadata;
-        if (u.isInstanceOf(p_data, data.Metadata)) { return metadata; }
-
-        return null;
-
     }
 
     _OnDataChanged(p_oldData) {

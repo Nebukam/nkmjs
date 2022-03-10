@@ -161,20 +161,12 @@ class DropExtension extends Extension {
 
                     innerloop:
                     for (let d = 0, n2 = dragData.length; d < n2; d++) {
-
-                        let dataItem = dragData[d];
-
-                        if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dataItem); }
-                        else { pass = hook.check.fn(dataItem); }
-
+                        pass = u.Call(hook.check, dragData[d]);
                         if (pass) { break innerloop; }
                     }
 
                 } else {
-
-                    if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dragData); }
-                    else { pass = hook.check.fn(dragData); }
-
+                    pass = u.Call(hook.check, dragData);
                 }
             }
 
@@ -243,20 +235,12 @@ class DropExtension extends Extension {
 
                         innerloop:
                         for (let d = 0; d < dragLength; d++) {
-
-                            let dataItem = dragData[d];
-
-                            if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dataItem); }
-                            else { pass = hook.check.fn(dataItem); }
-
+                            pass = u.Call(hook.check, dragData[d]);
                             if (pass) { break innerloop; }
                         }
 
                     } else {
-
-                        if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, dragData); }
-                        else { pass = hook.check.fn(dragData); }
-
+                        pass = u.Call(hook.check, dragData);
                     }
 
                 } else {
@@ -312,9 +296,7 @@ class DropExtension extends Extension {
             let dragData = this._getDragData(p_evt);
 
             for (let i = 0, n = this._onDragOverHooks.length; i < n; i++) {
-                let hook = this._onDragOverHooks[i];
-                if (hook.thisArg) { hook.fn.call(hook.thisArg, dragData); }
-                else { hook.fn(dragData); }
+                pass = u.Call(this._onDragOverHooks[i], dragData);
             }
         }
 
@@ -342,16 +324,10 @@ class DropExtension extends Extension {
 
         for (let i = 0, n = this._allowedHooks.length; i < n; i++) {
 
-            let hook = this._allowedHooks[i],
-                pass = false;
+            let hook = this._allowedHooks[i];
 
-            if (hook.check.thisArg) { pass = hook.check.fn.call(hook.check.thisArg, p_dragDataItem); }
-            else { pass = hook.check.fn(p_dragDataItem); }
-
-            if (!pass) { continue; }
-
-            if (hook.drop.thisArg) { hook.drop.fn.call(hook.drop.thisArg, p_dragDataItem); }
-            else { hook.drop.fn(p_dragDataItem); }
+            if (!u.Call(hook.check, p_dragDataItem)) { continue; }
+            u.Call(hook.drop, p_dragDataItem);
 
         }
 
@@ -403,9 +379,7 @@ class DropExtension extends Extension {
         let dragData = POINTER.DRAG_DATA;
 
         for (let i = 0, n = this._onLeaveHooks.length; i < n; i++) {
-            let hook = this._onLeaveHooks[i];
-            if (hook.thisArg) { hook.fn.call(hook.thisArg, dragData); }
-            else { hook.fn(dragData); }
+            u.Call(this._onLeaveHooks[i], dragData);
         }
 
         this._target.removeEventListener(`dragleave`, this._mDragLeave);

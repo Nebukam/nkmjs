@@ -356,13 +356,8 @@ class WidgetButton extends Widget {
         // ----> Trigger
 
         if (this._trigger) {
-            let thisArg = u.tils.Get(this._trigger, `thisArg`, null);
-            if (this._trigger.args) { this._trigger.fn.call(thisArg, ...this._trigger.args); }
-            else if (this._trigger.arg) {
-                if (this._trigger.arg === FLAGS.SELF) { this._trigger.fn.call(thisArg, this); }
-                else { this._trigger.fn.call(thisArg, this._trigger.arg); }
-            }
-            else { this._trigger.fn.call(thisArg); }
+            if (this._trigger.arg === FLAGS.SELF) { u.Call(this._trigger, this); }
+            else { u.Call(this._trigger); }
         }
 
         // ----> Toggle
@@ -378,13 +373,8 @@ class WidgetButton extends Widget {
                 this._isToggled = true;
                 this._flags.Set(FLAGS.TOGGLED, true);
 
-                let thisArg = u.tils.Get(this._toggle, `thisArg`, null);
-                if (this._toggle.args) { this._toggle.fn.call(thisArg, ...this._toggle.args); }
-                else if (this._toggle.arg) {
-                    if (this._toggle.arg === FLAGS.SELF) { this._toggle.fn.call(thisArg, this); }
-                    else { this._toggle.fn.call(thisArg, this._toggle.arg); }
-                }
-                else { this._toggle.fn.call(thisArg); }
+                if (this._toggle.arg === FLAGS.SELF) { u.Call(this._toggle, this); }
+                else { u.Call(this._toggle); }
 
             }
         }
@@ -399,12 +389,7 @@ class WidgetButton extends Widget {
 
             // Override options value if a proxy has been set
             let proxy = u.tils.Get(this._request, `proxy`, null);
-            if (proxy) {
-                let thisArg = u.tils.Get(proxy, `thisArg`, null);
-                if (proxy.args) { options = proxy.fn.apply(thisArg, proxy.args); }
-                else if (proxy.arg) { options = proxy.fn.call(thisArg, proxy.arg); }
-                else { options = proxy.fn.call(thisArg); }
-            }
+            if (proxy) { u.Call(proxy); }
 
             requestEmitter._EmitLocalRequest(
                 opts.type,

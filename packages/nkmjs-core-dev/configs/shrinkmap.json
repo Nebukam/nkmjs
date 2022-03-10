@@ -1,18 +1,7 @@
 {
-    "module":"$m",
-    "exports":"$x",
     "_getPrototypeOf":"$gP",
     "_defineProperty":"$dP",
     "_classCallCheck":"$cCC",
     "_createClass":"$cC",
-    "_createSuper":"$cS",
-    "Broadcast":"$B",
-    "Add":"$A",
-    "Watch":"$W",
-    "Unwatch":"$Uw",
-    "Hook":"$H",
-    "Unhook":"$Uh",
-    "Remove":"RM",
-    "SIGNAL":"S",
-    "Release":"$R"
+    "_createSuper":"$cS"
 }

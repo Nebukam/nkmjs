@@ -791,6 +791,29 @@ class UTILS {
         return window.btoa(binary);
     }
 
+    //
+
+    static Call(p_callConf, ...args) {
+
+        let thisArg = p_callConf.thisArg || null;
+        if (args) { return p_callConf.fn.call(thisArg, ...args); }
+        else if (p_callConf.args) { return p_callConf.fn.call(thisArg, ...p_callConf.args); }
+        else if (p_callConf.arg) { return p_callConf.fn.call(thisArg, p_callConf.arg); }
+        else { return p_callConf.fn.call(thisArg); }
+
+    }
+
+    static CallPrepend(p_callConf, ...args) {
+
+        let thisArg = p_callConf.thisArg || null;
+
+        if (p_callConf.args) { return p_callConf.fn.call(thisArg, ...args, ...p_callConf.args); }
+        else if (p_callConf.arg) { return p_callConf.fn.call(thisArg, ...args, p_callConf.arg); }
+        else if(args) { return p_callConf.fn.call(thisArg, ...args); }
+        else { return p_callConf.fn.call(thisArg); }
+
+    }
+
 }
 
 module.exports = UTILS;
