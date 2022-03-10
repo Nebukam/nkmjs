@@ -13,10 +13,9 @@ const KB = actions.KEYBOARD;
 const InputField = require(`./input-field`);
 
 class InputNumberBase extends InputField {
+    constructor() { super(); }
 
     static __usePaintCallback = true;
-
-    constructor() { super(); }
 
     static __inputProperties = {};
     static __default_useMin = false;

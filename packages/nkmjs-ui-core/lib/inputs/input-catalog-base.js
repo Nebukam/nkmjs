@@ -17,6 +17,7 @@ const InputBase = require(`./input-base`);
 class InputCatalogBase extends InputBase {
     constructor() { super(); }
 
+    static __usePaintCallback = true;
     static __inputProperties = {};
 
     static __NFO__ = com.NFOS.Ext({
@@ -30,8 +31,8 @@ class InputCatalogBase extends InputBase {
         this._catalogHandler
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this);
-        this.forwardData.To(this._catalogHandler, { mapping: `catalog` });
 
+        this.forwardData.To(this._catalogHandler, { mapping: `catalog` });
 
         this._useCatalogsAsGroup = false;
         this._groupOptionId = null;
@@ -39,13 +40,14 @@ class InputCatalogBase extends InputBase {
         this._Bind(this._onInput);
         this._Bind(this._onChange);
 
-
+        this._pointer._wheelFn = this._Bind(this._OnWheel);
 
     }
 
     _PostInit() {
         super._PostInit();
         if (this._preventTabIndexing) { this.preventTabIndexing = true; }
+        this.focusArea = this;
     }
 
     set useCatalogsAsGroup(p_value) { this._useCatalogsAsGroup = p_value; }
@@ -67,8 +69,7 @@ class InputCatalogBase extends InputBase {
                 'align-items': `center`,
                 'min-height': `28px !important` //min height for input field
             },
-            '.field': {
-                display: 'none',
+            '.item': {
                 flex: `1 1 auto`,
                 'min-width': 0
             }
@@ -124,6 +125,20 @@ class InputCatalogBase extends InputBase {
     _GrabValue() {
         // Implementation detail
         throw new Error(`not implemented`);
+    }
+
+    _OnWheel(p_evt) {
+
+        let increase = p_evt.deltaY < 0 ? -1 : 1,
+            itemList = this._data._items,
+            maxValue = itemList.length - 1,
+            index = this._data._items.indexOf(this._handler.inputValue) + increase;
+
+        if (index > maxValue) { index = maxValue; }
+        if (index < 0) { index = 0; }
+
+        this._handler.changedValue = itemList[index];
+        this._handler.SubmitValue();
     }
 
     _UpdatePreview() {

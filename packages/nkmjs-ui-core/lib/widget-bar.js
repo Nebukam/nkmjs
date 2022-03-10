@@ -46,6 +46,7 @@ class WidgetBar extends WidgetOrientable {
         this._defaultWidgetOptions = null;
         this._optionsMap = new collections.Dictionary();
         this._handles = [];
+        this._inline = false;
 
         this._groups = {};
         this._radioMap = {};
@@ -83,6 +84,20 @@ class WidgetBar extends WidgetOrientable {
      * @group Styling
      */
     set size(p_value) { this._sizeEnum.Set(p_value); }
+
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.FlagEnum}
+     * @customtag read-only
+     * @group Styling
+     */
+    set inline(p_value){
+        this._inline = p_value;
+        for(let i =0, n = this._handles.length; i < n; i++){
+            if(p_value){this._handles[i].classList.add(`inline`);}
+            else{this._handles[i].classList.remove(`inline`);}
+        }
+    }
 
     /**
      * @description TODO
@@ -180,6 +195,8 @@ class WidgetBar extends WidgetOrientable {
         } else {
             handle = this.Add(cl, `item`);
         }
+        
+        if(this._inline){ handle.classList.add(`inline`); }
 
         this._optionsMap.Set(handle, p_options);
         handle.Watch(com.SIGNAL.RELEASED, this._OnHandleReleased, this);

@@ -56,7 +56,7 @@ class WidgetButton extends Widget {
 
         this._command = null;
         this._isCommandTrigger = true;
-        this._isCommandContext = true;
+        this._isCommandContext = false;
         this._isToggled = false;
 
         this._commandObserver = new com.signals.Observer();
@@ -369,13 +369,7 @@ class WidgetButton extends Widget {
                 if (this._toggle.yoyo) { this.Deactivate(); }
                 // Otherwise do nothing.
             } else {
-
-                this._isToggled = true;
-                this._flags.Set(FLAGS.TOGGLED, true);
-
-                if (this._toggle.arg === FLAGS.SELF) { u.Call(this._toggle, this); }
-                else { u.Call(this._toggle); }
-
+                this.Toggle(true);
             }
         }
 
@@ -407,28 +401,33 @@ class WidgetButton extends Widget {
 
     }
 
+    Toggle(p_value) {
+
+        if (this._isToggled == p_value) { return; }
+
+        this._isToggled = p_value;
+        this._flags.Set(FLAGS.TOGGLED, p_value);
+
+        let cbs = this._toggle;
+
+        if (cbs) {
+            if (this._isToggled) {
+                if (cbs.arg === FLAGS.SELF) { u.Call(cbs, this); }
+                else { u.Call(cbs); }
+            } else {
+                if (cbs.fnOff) {
+                    if (cbs.fnOff.arg === FLAGS.SELF) { u.Call(cbs.fnOff, this); }
+                    else { u.Call(cbs.fnOff); }
+                }
+            }
+        }
+    }
     /**
      * @description Only used if `isToggle === true`.
      */
     Deactivate() {
 
-        if (!this._isToggled) { return; }
-
-        this._isToggled = false;
-        this._flags.Set(FLAGS.TOGGLED, false);
-
-        if (this._toggle) {
-            if (this._toggle.fnOff) {
-                let thisArg = u.tils.Get(this._toggle, `thisArg`, null);
-                if (this._toggle.args) { this._toggle.fnOff.call(thisArg, ...this._toggle.args); }
-                else if (this._toggle.arg) {
-                    if (this._toggle.arg === FLAGS.SELF) { this._toggle.fnOff.call(thisArg, this); }
-                    else { this._toggle.fnOff.call(thisArg, this._toggle.arg); }
-                }
-                else { this._toggle.fnOff.call(thisArg); }
-            }
-        }
-
+        if (this._toggle) { this.Toggle(false); }
         this._Broadcast(SIGNAL.DEACTIVATED, this);
 
     }
@@ -444,7 +443,7 @@ class WidgetButton extends Widget {
 
         this.command = null;
         this._isCommandTrigger = true;
-        this._isCommandContext = true;
+        this._isCommandContext = false;
 
         this._isToggled = false;
 
