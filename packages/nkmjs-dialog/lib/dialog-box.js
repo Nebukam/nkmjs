@@ -85,6 +85,9 @@ class DialogBox extends ui.Widget {
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
         this._hasInput = (this._formHandler._inputList.count > 0);
         if (this._hasInput) { this._formHandler.ValidateForm(); }
+
+        if (p_options.grow) { this.style.removeProperty(`max-width`); }
+        else { this.style.setProperty(`max-width`, p_options.maxwidth || `500px`); }
     }
 
     set message(p_message) {
