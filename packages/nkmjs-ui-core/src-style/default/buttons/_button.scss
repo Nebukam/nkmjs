@@ -80,7 +80,7 @@ $btnBorderRadius: 3px;
     }
 }
 
-$th: 4px;
+$th: 2px;
 
 :host(#{$FOCUSED}){
 
@@ -129,6 +129,10 @@ $th: 4px;
 
     top: auto;
     bottom: -$th*0.5; // Default state ~= top
+}
+
+:host(#{$TOGGLED}){
+    backdrop-filter:brightness(0.65);
 }
 
 // ----> Horizontal placement

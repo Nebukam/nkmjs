@@ -91,7 +91,7 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
 
             if(this._showIcon){ control.icon = p_item.options; }
             if(this._showLabel){ control.label = p_item.options; }                
-
+            control.htitle = p_item.name;
             control.size = this._sizeEnum.currentFlag;
 
         }
