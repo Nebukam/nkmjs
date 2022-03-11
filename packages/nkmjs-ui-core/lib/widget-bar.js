@@ -137,10 +137,17 @@ class WidgetBar extends WidgetOrientable {
                 'min-width': '0',
                 'min-height': '0',
             },
-            ':host(.stretch), :host(.stretch-same)': {
-                'align-items': `stretch`,
-                'align-content': `stretch`,
-                'flex': `1 1 auto`
+            ':host(.stretch) .group': {
+                'flex': `1 0 auto`,
+            },
+            ':host(.stretch) .item': {
+                'flex': `1 0 auto`,
+            },
+            ':host(.vertical.stretch) .item': {
+                'max-height': `100% !important`,
+            },
+            ':host(.horizontal.stretch) .item': {
+                'max-width': `100% !important`,
             }
         };
     }
