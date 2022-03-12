@@ -175,7 +175,7 @@ class ControlBuilder {
                 (p_config.requireContext && !this._context)) {
                 p_control.visible = false;
             } else {
-                p_control.visible = !u.CallPrepend(p_config.hideWhen, this);
+                p_control.visible = u.CallPrepend(p_config.hideWhen, this);
             }
         }
         if (p_config.disableWhen) {
