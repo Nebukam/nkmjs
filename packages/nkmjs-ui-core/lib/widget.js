@@ -37,7 +37,7 @@ class Widget extends DisplayObjectContainer {
      */
     static __default_placement = null;
 
-    // ----> Init
+    //#region Init
 
     _Init() {
 
@@ -67,7 +67,8 @@ class Widget extends DisplayObjectContainer {
 
         this._flags.Add(this,
             FLAGS.ACTIVATED,
-            FLAGS.SELECTED);
+            FLAGS.SELECTED,
+            FLAGS.DISABLED);
 
         this._placement = new FlagEnum(FLAGS.placement, true);
         this._placement.Add(this);
@@ -98,8 +99,8 @@ class Widget extends DisplayObjectContainer {
     get extensions() { return this._extensions; }
     get pointer() { return this._pointer; }
 
-    get preprocessFn(){ return this._dataPreProcessor; }
-    set preprocessFn(p_value){ this._dataPreProcessor = p_value; }
+    get dataPreProcessor(){ return this._dataPreProcessor; }
+    set dataPreProcessor(p_value){ this._dataPreProcessor = p_value; }
 
 
     //#region Placement & Orientation
@@ -127,29 +128,30 @@ class Widget extends DisplayObjectContainer {
      */
     _OnPlacementChanged(p_newValue, p_oldValue) { }
 
-    //#endregion
-
-
-    //#region Interactions
-
-    /**
-     * @description TODO
-     * @type {boolean}
-     * @group Selection
-     */
-    get notifiesSelectionStack() { return this._notifiesSelectionStack; }
-    set notifiesSelectionStack(p_value) { this._notifiesSelectionStack = p_value; }
-
     /**
      * @description TODO
      * @type {string}
      * @group Selection
      */
-    get htitle() { this.getAttribute(`title`); }
-    set htitle(p_value) {
-        if (!p_value) { this.removeAttribute(`title`); }
-        else { this.setAttribute(`title`, p_value); }
-    }
+     get htitle() { this.getAttribute(`title`); }
+     set htitle(p_value) {
+         if (!p_value) { this.removeAttribute(`title`); }
+         else { this.setAttribute(`title`, p_value); }
+     }
+
+    //#endregion
+
+    
+
+    //#region Interactions
+
+    /**
+     * @description TODO
+     * @type {Element}
+     * @group Interactivity
+     */
+     get disabled() { return this._flags.IsSet(FLAGS.DISABLED); }
+     set disabled(p_value) { this._flags.Set(FLAGS.DISABLED, p_value); }
 
     /**
      * @description TODO
@@ -164,6 +166,15 @@ class Widget extends DisplayObjectContainer {
     }
 
     //#region Selection
+
+    
+    /**
+     * @description TODO
+     * @type {boolean}
+     * @group Selection
+     */
+     get notifiesSelectionStack() { return this._notifiesSelectionStack; }
+     set notifiesSelectionStack(p_value) { this._notifiesSelectionStack = p_value; }
 
     /**
      * @description TODO

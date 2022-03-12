@@ -182,6 +182,11 @@ class ControlView extends ui.views.View {
 
     }
 
+    _OnDataUpdated(p_data){
+        super._OnDataUpdated(p_data);
+        this._builder.RefreshConditionals();
+    }
+
     /**
      * @access protected
      * @description Called whenever this controller' data is flaggued Dirty.
