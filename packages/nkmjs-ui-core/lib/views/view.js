@@ -37,7 +37,7 @@ class View extends WidgetOrientable {
     _Style() {
         return style.Extends({
             ':host': {
-
+                '@':[`fade-in`]
             }
         }, super._Style());
     }

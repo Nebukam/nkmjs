@@ -34,8 +34,6 @@ class InputCheckbox extends ui.inputs.InputField {
     _Style() {
         return style.Extends({
             '.field': { 
-                //'@': [`invisible-fill`],
-                //'opacity':'1 !important',
                 'width':'var(--size)'
             }
         }, super._Style());

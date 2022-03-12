@@ -12,6 +12,8 @@ const dom = require(`../utils-dom`);
 const RectTracker = require(`./rect-tracker`);
 const DisposableHTMLElement = require("../disposable-htmlelement");
 
+const __empty = `empty`;
+
 /**
  * An DOM Streamer is designed to handle a large number of fixed-size dom elements.
  * It works by leveraging resize & intersection observer, and requests
@@ -291,8 +293,8 @@ class DOMStreamer extends DisposableHTMLElement {
             this._itemStyle.innerHTML = sstr;
         }
 
-        if (items == 0) { this.classList.add(`empty`); }
-        else { this.classList.remove(`empty`); }
+        if (items == 0) { this.classList.add(__empty); }
+        else { this.classList.remove(__empty); }
 
 
         //console.log(infos);

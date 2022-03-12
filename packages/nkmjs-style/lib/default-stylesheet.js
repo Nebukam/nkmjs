@@ -130,6 +130,10 @@ class DefaultStylesheet extends PaletteBuilder{
 
         palette.AddProperties({
 
+            'fade-in': {
+                'opacity': `0`,
+            },
+
             'layer': {
                 'position': `absolute`,
                 'top': `0px`,
@@ -146,7 +150,7 @@ class DefaultStylesheet extends PaletteBuilder{
                 'width': `100%`,
                 'height': `100%`,
                 'box-sizing': `border-box`,
-                'opacity': '0'
+                'opacity': '0 !important'
             },
 
             'cover': {

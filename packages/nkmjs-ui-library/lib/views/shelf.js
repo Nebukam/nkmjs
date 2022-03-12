@@ -59,7 +59,7 @@ class Shelf extends ui.views.View {
         this._fixedSizeAxis = this.constructor.__default_fixedSizeAxis;
         this._fixedSize = this.constructor.__default_fixedSize;
 
-        
+
 
     }
 
@@ -131,8 +131,9 @@ class Shelf extends ui.views.View {
                 break;
             default:
                 this._fixedSizeAxis = null;
-                this.classList.remove(`fixed-${ui.FLAGS.VERTICAL}`);
-                this.classList.remove(`fixed-${ui.FLAGS.HORIZONTAL}`);
+                this.classList.remove(
+                    `fixed-${ui.FLAGS.VERTICAL}`,
+                    `fixed-${ui.FLAGS.HORIZONTAL}`);
                 break;
         }
     }

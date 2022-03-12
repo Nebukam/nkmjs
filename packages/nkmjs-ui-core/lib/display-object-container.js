@@ -153,9 +153,7 @@ class DisplayObjectContainer extends DisplayObject {
         if (p_cssClass) {
             if (p_cssClass.includes(' ')) {
                 let classes = p_cssClass.split(' ');
-                for (let i = 0, n = classes.length; i < n; i++) {
-                    p_displayObject.classList.add(classes[i]);
-                }
+                p_displayObject.classList.add(...classes);
             } else {
                 p_displayObject.classList.add(p_cssClass);
             }

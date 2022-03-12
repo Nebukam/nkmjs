@@ -45,11 +45,7 @@ class TreeList extends ui.lists.List {
     _Style() {
         return style.Extends({
             ':host': {
-                'transition': 'opacity 0.15s',
-                'opacity': '1'
-            },
-            ':host(.unpainted)': {
-                'opacity': '0'
+                
             }
         }, super._Style());
     }

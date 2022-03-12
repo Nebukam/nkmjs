@@ -70,11 +70,7 @@ class TreeListItem extends ui.lists.ListItem {
     _Style() {
         return style.Extends({
             ':host': {
-                'transition': 'opacity 0.15s',
-                'opacity': '1'
-            },
-            ':host(.unpainted)': {
-                'opacity': '0'
+                
             }
         }, super._Style());
     }

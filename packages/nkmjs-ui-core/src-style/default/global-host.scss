@@ -22,8 +22,12 @@
     
 }
 
-:host(.unpainted){
-    visibility: hidden !important;
+
+
+:host(.disabled){
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.4;
 }
 
  /* Hide scrollbar for IE, Edge and Firefox */

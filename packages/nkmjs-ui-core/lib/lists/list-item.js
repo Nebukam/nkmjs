@@ -56,6 +56,7 @@ class ListItem extends WidgetItem {
             ':host': {
                 'position': 'relative',
                 'min-width': 0,
+                '@': ['fade-in']
             },
             '.toolbar': {
                 'flex': `0 0 auto`
