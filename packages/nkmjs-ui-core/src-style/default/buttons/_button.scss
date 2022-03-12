@@ -56,13 +56,11 @@ $btnBorderRadius: 3px;
     border-radius: 0;
 }
 
-:host(.inline:first-child),
-:host(.inline:first-of-type){
+:host(.inline:first-child){
     border-radius: $btnBorderRadius 0 0 $btnBorderRadius;
 }
 
-:host(.inline:last-child),
-:host(.inline:last-of-type){
+:host(.inline:last-child){
     border-radius: 0 $btnBorderRadius $btnBorderRadius 0;
 }
 
