@@ -19,7 +19,7 @@ class DataForward {
      * @param {ui.core.Widget|string} p_target 
      * @param {object} p_config
      * @param {object} [p_config.mapping]
-     * @param {object} [p_config.dataMember] child data id to forward
+     * @param {string} [p_config.dataMember] child data id to forward
      * @param {object} [p_config.preprocess] preprocess Call object { fn [,thisArg, arg|args] }
      * @param {boolean} p_static 
      */

@@ -38,6 +38,12 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
+    static VALUE = `value`;
+
+    /**
+     * @type {string}
+     * @customtag read-only
+     */
     static TITLE = `title`;
 
     /**
@@ -92,7 +98,7 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
-     static STATIC = `static`;
+    static STATIC = `static`;
 
 }
 

@@ -37,7 +37,7 @@ class InspectorShell extends ControlView {
     _Style() {
         return style.Extends({
             ':host': {
-                
+
             }
         }, super._Style());
     }
@@ -49,17 +49,23 @@ class InspectorShell extends ControlView {
     _OnDataChanged(p_oldData) {
 
         // TODO : Check whether we can re-use the existing inspector instead of creating a new one
-        this._inspector = null;
-        this._builder.Clear();
+        let reuse = false;
+        if (this._data && p_oldData) { reuse = (p_oldData.constructor === this._data.constructor); }
+
+        if (!reuse) { this._builder.Clear(); }
 
         super._OnDataChanged(p_oldData);
 
         if (this._data) {
-            let inspectorClass = com.BINDINGS.Get(CONTEXT.INSPECTOR, this._data, null);
-            if (inspectorClass) {
-                this._inspector = this._builder.Add(inspectorClass, `inspector`);
-                this._inspector.Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnInspectorRequestDisplay, this);
-                if(this._isDisplayed){ this._inspector.DisplayGranted(); }
+            if (reuse) {
+                this._builder.data = this._data;
+            } else {
+                let inspectorClass = com.BINDINGS.Get(CONTEXT.INSPECTOR, this._data, null);
+                if (inspectorClass) {
+                    this._inspector = this._builder.Add(inspectorClass, `inspector`);
+                    this._inspector.Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnInspectorRequestDisplay, this);
+                    if (this._isDisplayed) { this._inspector.DisplayGranted(); }
+                }
             }
         }
 

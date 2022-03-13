@@ -31,6 +31,7 @@ class ControlBuilder {
     }
 
     set host(p_value) { this._host = p_value; }
+    get host() { return this._host; }
 
     set preProcessDataFn(p_value) { this._preProcessDataFn = p_value; }
 

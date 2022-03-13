@@ -160,6 +160,13 @@ class CatalogItem extends com.helpers.OptionsObject {
 
     /**
      * @description TODO
+     * @type {string}
+     */
+    get value() { return this._options[com.IDS.VALUE]; }
+    set value(p_value) { this.SetOption(com.IDS.VALUE, p_value); }
+
+    /**
+     * @description TODO
      * @type {boolean}
      */
     get dataBound() { return this._options[IDS.BOUND] }

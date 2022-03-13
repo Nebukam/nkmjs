@@ -50,6 +50,7 @@ class Editor extends ui.views.View {
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackItemRemoved, this);
 
         this.forwardData.To(this._commands, { mapping: `context` });
+        this._delayedClearInspected = com.DelayedCall(() => { this.Inspect(null); });
 
     }
 
@@ -129,11 +130,17 @@ class Editor extends ui.views.View {
     //#region Selection stack
 
     _OnSelectionStackItemAdded(p_widget) {
-        if (p_widget.data) { this.Inspect(p_widget.data); }
+        if (p_widget.data) {
+            this._delayedClearInspected.Cancel();
+            this.Inspect(p_widget.data);
+        }
     }
 
     _OnSelectionStackItemRemoved(p_widget) {
-        if (this._inspectedData == p_widget.data) { this.Inspect(null); }
+        if (this._inspectedData == p_widget.data) {
+            this._delayedClearInspected.Schedule();
+            //this.Inspect(null); 
+        }
     }
 
     //#endregion

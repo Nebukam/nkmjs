@@ -20,9 +20,9 @@ module.exports = {
     // Shortcut to CSS.Extends
     Extends: __CSS.Extends.bind(__CSS),
 
-    URLTheme: (p_url) => { return __STYLE.instance.current.URLTheme(p_url); },
-    URLAssets: (p_url) => { return __STYLE.instance.current.URLAssets(p_url); },
-    URLImgs: (p_url) => { return __STYLE.instance.current.URLImgs(p_url); },
+    URLTheme: (p_url, p_wrap = false) => { return __STYLE.instance.current.URLTheme(p_url, p_wrap); },
+    URLAssets: (p_url, p_wrap = false) => { return __STYLE.instance.current.URLAssets(p_url, p_wrap); },
+    URLImgs: (p_url, p_wrap = false) => { return __STYLE.instance.current.URLImgs(p_url, p_wrap); },
 
     Get: (p_property) => {
         if (!(p_property in __propCache)) {
