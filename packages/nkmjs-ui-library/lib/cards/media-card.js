@@ -29,7 +29,7 @@ class MediaCard extends BaseCard {
 
     _Init() {
         super._Init();
-        this._optionsHandler.Hook(`media`);
+        this._distribute.To(`media`);
     }
 
     // ----> DOM

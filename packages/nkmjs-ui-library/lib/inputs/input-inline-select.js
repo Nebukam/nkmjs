@@ -40,9 +40,9 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
         this._showIcon = true;
         this._showLabel = false;
 
-        this._optionsHandler
-            .Hook(`showLabel`, null, false)
-            .Hook(`showIcon`, null, true);
+        this._distribute
+            .To(`showLabel`, null, false)
+            .To(`showIcon`, null, true);
 
     }
 

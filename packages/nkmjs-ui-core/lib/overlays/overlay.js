@@ -41,14 +41,14 @@ class Overlay extends Layer {
         this._closeBg.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this._CloseRequest));
 
         this._options = null;
-        this._optionsHandler = new com.helpers.OptionsHandler(
+        this._distribute = new com.helpers.OptionsDistribute(
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler
-            .Hook(`orientation`)
-            .Hook(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement)
-            .Hook(`flavor`, `contentFlavor`);
+        this._distribute
+            .To(`orientation`)
+            .To(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement)
+            .To(`flavor`, `contentFlavor`);
 
     }
 
@@ -81,7 +81,7 @@ class Overlay extends Layer {
     set options(p_value) {
         if (this._options == p_value || !p_value) { return; }
         this._options = p_value;
-        this._optionsHandler.Process(this, p_value);
+        this._distribute.Update(this, p_value);
     }
 
     /**

@@ -13,10 +13,7 @@ class Breadcrumb extends ui.WidgetBar{
         css: [`@/lists/breadcrum.css`]
     }, ui.WidgetBar, ['css']);
 
-    _Init(){
-        super._Init();
-        this._defaultWidgetClass = BreadcrumbItem;
-    }
+    static __defaultWidgetClass = BreadcrumbItem;
 
     // ----> DOM
 

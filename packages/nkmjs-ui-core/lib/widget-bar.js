@@ -38,11 +38,12 @@ class WidgetBar extends WidgetOrientable {
     // ----> Init
 
     static __default_size = FLAGS.SIZE_M;
+    static __defaultWidgetClass = WidgetButton;
 
     _Init() {
 
         super._Init();
-        this._defaultWidgetClass = WidgetButton;
+        this._defaultWidgetClass = this._defaultWidgetClass || this.constructor.__defaultWidgetClass;
         this._defaultWidgetOptions = null;
         this._optionsMap = new collections.Dictionary();
         this._handles = [];
@@ -62,12 +63,17 @@ class WidgetBar extends WidgetOrientable {
         this._sizeEnum.Add(this);
         this._sizeEnum.onFlagChanged.Add(this._Bind(this._OnSizeChanged));
 
+        this._distribute = new com.helpers.OptionsDistribute();
+        this._distribute
+            .To(`size`, null, this.constructor.__default_size)
+            .To(`inline`)
+            .To(`defaultWidgetClass`, `_defaultWidgetClass`)
+            .To(`defaultWidgetOptions`)
+            .To(`handles`);
+
     }
 
-    _PostInit() {
-        super._PostInit();
-        this._sizeEnum.Set(this.constructor.__default_size);
-    }
+    set options(p_value){ this._distribute.Update(this, p_value); }
 
     /**
      * @description TODO
@@ -91,11 +97,11 @@ class WidgetBar extends WidgetOrientable {
      * @customtag read-only
      * @group Styling
      */
-    set inline(p_value){
+    set inline(p_value) {
         this._inline = p_value;
-        for(let i =0, n = this._handles.length; i < n; i++){
-            if(p_value){this._handles[i].classList.add(`inline`);}
-            else{this._handles[i].classList.remove(`inline`);}
+        for (let i = 0, n = this._handles.length; i < n; i++) {
+            if (p_value) { this._handles[i].classList.add(`inline`); }
+            else { this._handles[i].classList.remove(`inline`); }
         }
     }
 
@@ -175,6 +181,12 @@ class WidgetBar extends WidgetOrientable {
         }
     }
 
+    set handles(p_value) {
+        this.Clear();
+        console.log(p_value);
+        if (u.isArray(p_value)) { this.CreateHandles(...p_value); }
+    }
+
     /**
      * @description TODO
      * @param {object} p_options 
@@ -202,8 +214,8 @@ class WidgetBar extends WidgetOrientable {
         } else {
             handle = this.Add(cl, `item`);
         }
-        
-        if(this._inline){ handle.classList.add(`inline`); }
+
+        if (this._inline) { handle.classList.add(`inline`); }
 
         this._optionsMap.Set(handle, p_options);
         handle.Watch(com.SIGNAL.RELEASED, this._OnHandleReleased, this);

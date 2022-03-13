@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
-const OptionsHandler = require(`./options-handler`);
+const OptionsDistribute = require(`./options-distribute`);
 
 /**
  * An OptionObject is an extension over the DisposableObjectEx with a builtin
@@ -21,15 +21,15 @@ class OptionsObject extends DisposableObjectEx {
         super._Init();
 
         this._options = {};
-        this._optionHandler = new OptionsHandler();
+        this._distribute = new OptionsDistribute();
 
     }
 
     /**
      * @description TODO
-     * @type {common.helpers.OptionsHandler}
+     * @type {common.helpers.OptionsDistribute}
      */
-    get optionHandler() { return this._optionHandler; }
+    get optionHandler() { return this._distribute; }
 
     /**
      * @description TODO
@@ -38,7 +38,7 @@ class OptionsObject extends DisposableObjectEx {
     get options() { return this._options; }
     set options(p_options) {
         this._options = p_options;
-        this._optionHandler.Process(this, p_options);
+        this._distribute.Update(this, p_options);
     }
 
     /**
@@ -54,7 +54,7 @@ class OptionsObject extends DisposableObjectEx {
             this._options[member] = value;
         }
 
-        this._optionHandler.Process(this, p_options, this._options);
+        this._distribute.Update(this, p_options, this._options);
 
     }
 
@@ -94,7 +94,7 @@ class OptionsObject extends DisposableObjectEx {
         if(p_id in this._options && this._options[p_id] === p_value){ return; }
 
         //process value first so if one already exists, it can be fetched as 'previous value'
-        this._optionHandler.ProcessSingle(this, p_id, p_value, this._options, true);
+        this._distribute.ProcessSingle(this, p_id, p_value, this._options, true);
         this._options[p_id] = p_value;
     }
 

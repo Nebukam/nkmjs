@@ -34,7 +34,7 @@ class TreeListItem extends ui.lists.ListItem {
 
     _PostInit(){
         super._PostInit();
-        this._optionsHandler.Hook(`data`, `itemData`); // Make sure this is registered last
+        this._distribute.To(`data`, `itemData`); // Make sure this is registered last
     }
 
     // ----> DOM

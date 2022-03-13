@@ -39,16 +39,16 @@ class DialogBox extends ui.Widget {
         this._toolbarClass = ui.WidgetBar;
         this._toolbar = null;
 
-        this._optionsHandler = new com.helpers.OptionsHandler(
+        this._distribute = new com.helpers.OptionsDistribute(
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler
-            .Hook(ui.IDS.FLAVOR)
-            .Hook(ui.IDS.TITLE, null, `!!! MISSING TITLE !!!`)
-            .Hook(ui.IDS.MESSAGE)
-            .Hook(`actions`, this._Bind(this.SetActions), null)
-            .Hook(`content`, this._Bind(this.SetContent));
+        this._distribute
+            .To(ui.IDS.FLAVOR)
+            .To(ui.IDS.TITLE, null, `!!! MISSING TITLE !!!`)
+            .To(ui.IDS.MESSAGE)
+            .To(`actions`, this._Bind(this.SetActions), null)
+            .To(`content`, this._Bind(this.SetContent));
 
         this._Bind(this._Close);
         this._Bind(this._Submit);
@@ -202,7 +202,7 @@ class DialogBox extends ui.Widget {
     _OnDataUpdated(p_data) {
 
         this._Clear();
-        this._optionsHandler.Process(this, p_data.options);
+        this._distribute.Update(this, p_data.options);
 
         /* DATA FORMAT
 

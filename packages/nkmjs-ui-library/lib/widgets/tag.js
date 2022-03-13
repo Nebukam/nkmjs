@@ -22,20 +22,20 @@ class Tag extends ui.Widget {
         this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
-        this._optionsHandler = new com.helpers.OptionsHandler();
-        this._optionsHandler.Setup(this);
+        this._distribute = new com.helpers.OptionsDistribute();
+        this._distribute.Setup(this);
 
-        this._optionsHandler
-            .Hook(ui.IDS.FLAVOR)
-            .Hook(ui.IDS.SIZE)
-            .Hook(ui.IDS.LABEL)
-            .Hook(ui.IDS.NAME, ui.IDS.LABEL)
-            .Hook(`bgColor`)
-            .Hook(`textColor`);
+        this._distribute
+            .To(ui.IDS.FLAVOR)
+            .To(ui.IDS.SIZE)
+            .To(ui.IDS.LABEL)
+            .To(ui.IDS.NAME, ui.IDS.LABEL)
+            .To(`bgColor`)
+            .To(`textColor`);
 
     }
 
-    set options(p_value){ this._optionsHandler.Process(this, p_value); }
+    set options(p_value){ this._distribute.Update(this, p_value); }
 
     get size() { return this._sizeEnum.currentFlag; }
     set size(p_value) { this._sizeEnum.Set(p_value); }

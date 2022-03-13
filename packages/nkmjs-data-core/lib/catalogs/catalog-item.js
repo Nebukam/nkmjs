@@ -31,11 +31,11 @@ class CatalogItem extends com.helpers.OptionsObject {
 
         this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._OnUpdate));
 
-        this._optionHandler.wrapUpFn = this._Bind(this._OnOptionsUpdated);
-        this._optionHandler
-            .Hook(com.IDS.DATA)
-            .Hook(IDS.BOUND)
-            .Hook(`tags`, `tagsetter`);
+        this._distribute.wrapUpFn = this._Bind(this._OnOptionsUpdated);
+        this._distribute
+            .To(com.IDS.DATA)
+            .To(IDS.BOUND)
+            .To(`tags`, `tagsetter`);
 
     }
 

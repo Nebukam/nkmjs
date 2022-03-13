@@ -123,19 +123,19 @@ class Modal extends DisplayObjectContainer {
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
 
-        this._optionsHandler = new com.helpers.OptionsHandler(
+        this._distribute = new com.helpers.OptionsDistribute(
             this._Bind(this._OnOptionsUpdated),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler
-            .Hook(`mode`)
-            .Hook(`context`, null, env.APP.body || document.body)
-            .Hook(`anchor`)
-            .Hook(`margins`)
-            .Hook(`keepWithinScreen`, null, true)
-            .Hook(`static`, null, false)
-            .Hook(`placement`, null, ANCHORING.BOTTOM_LEFT)
-            .Hook(`origin`, null, ANCHORING.TOP_LEFT);
+        this._distribute
+            .To(`mode`)
+            .To(`context`, null, env.APP.body || document.body)
+            .To(`anchor`)
+            .To(`margins`)
+            .To(`keepWithinScreen`, null, true)
+            .To(`static`, null, false)
+            .To(`placement`, null, ANCHORING.BOTTOM_LEFT)
+            .To(`origin`, null, ANCHORING.TOP_LEFT);
 
         this._pointer = new extensions.PointerStatic(this);
 
@@ -177,7 +177,7 @@ class Modal extends DisplayObjectContainer {
         this._options = p_options;
         this.content = p_options.content;
         if (this._content) {
-            this._optionsHandler.Process(this, this._options);
+            this._distribute.Update(this, this._options);
             if (`options` in this._content) {
                 let o = null;
 

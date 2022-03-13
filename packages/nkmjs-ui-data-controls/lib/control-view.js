@@ -40,15 +40,15 @@ class ControlView extends ui.views.View {
             this._metadata = null;
         }
 
-        this._optionsHandler = new com.helpers.OptionsHandler(
+        this._distribute = new com.helpers.OptionsDistribute(
             null,
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler
-            .Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
-            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
-            .Hook(`editor`)
-            .Hook(`data`);
+        this._distribute
+            .To(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
+            .To(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
+            .To(`editor`)
+            .To(`data`);
 
         this._editor = null;
 
@@ -91,7 +91,7 @@ class ControlView extends ui.views.View {
      */
     set options(p_value) {
         if (!p_value) { return; }
-        this._optionsHandler.Process(this, p_value);
+        this._distribute.Update(this, p_value);
     }
 
     /**
@@ -100,7 +100,7 @@ class ControlView extends ui.views.View {
      */
     set altOptions(p_value) {
         if (!p_value) { return; }
-        this._optionsHandler.ProcessExistingOnly(this, p_value, null, false, false);
+        this._distribute.ProcessExistingOnly(this, p_value, null, false, false);
     }
 
     /**

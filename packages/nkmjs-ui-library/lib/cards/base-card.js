@@ -57,18 +57,18 @@ class BaseCard extends ui.WidgetItem {
         this._orientation = new ui.helpers.FlagEnum(ui.FLAGS.orientations, true);
         this._orientation.Add(this);
 
-        this._optionsHandler
-            .Hook(`header-placement`,
+        this._distribute
+            .To(`header-placement`,
                 (p_value) => {
                     this._mediaPlacement.Set(p_value);
                     this._orientation.Set(ui.FLAGS.Orientation(p_value, true));
                 }, this.constructor.__default_headerPlacement)
-            .Hook(ui.IDS.VARIANT)
-            .Hook(ui.IDS.TITLE, null, ``)
-            .Hook(ui.IDS.SUBTITLE, null, ``)
-            .Hook(ui.IDS.LABEL, null, ``)
-            .Hook(ui.IDS.SIZE)
-            .Hook(`actions`);
+            .To(ui.IDS.VARIANT)
+            .To(ui.IDS.TITLE, null, ``)
+            .To(ui.IDS.SUBTITLE, null, ``)
+            .To(ui.IDS.LABEL, null, ``)
+            .To(ui.IDS.SIZE)
+            .To(`actions`);
 
     }
 

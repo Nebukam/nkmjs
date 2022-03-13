@@ -73,24 +73,24 @@ class WidgetButton extends Widget {
         this._variantEnum = new FlagEnum(FLAGS.variants, true);
         this._variantEnum.Add(this);
 
-        this._optionsHandler = new com.helpers.OptionsHandler(
+        this._distribute = new com.helpers.OptionsDistribute(
             this._Bind(this._OnOptionsUpdateComplete),
             this._Bind(this._OnOptionsWillUpdate));
 
-        this._optionsHandler
-            .Hook(IDS.DATA)
-            .Hook(`htitle`)
-            .Hook(`trigger`)
-            .Hook(`toggle`, null, null)
-            .Hook(`request`)
-            .Hook(`isCommandTrigger`)
-            .Hook(`isCommandContext`)
-            .Hook(`alwaysVisible`, `alwaysDisplayCommand`)
-            .Hook(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
-            .Hook(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
-            .Hook(`size`)
-            .Hook(IDS.FLAVOR)
-            .Hook(IDS.VARIANT);
+        this._distribute
+            .To(IDS.DATA)
+            .To(`htitle`)
+            .To(`trigger`)
+            .To(`toggle`, null, null)
+            .To(`request`)
+            .To(`isCommandTrigger`)
+            .To(`isCommandContext`)
+            .To(`alwaysVisible`, `alwaysDisplayCommand`)
+            .To(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
+            .To(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
+            .To(`size`)
+            .To(IDS.FLAVOR)
+            .To(IDS.VARIANT);
 
     }
 
@@ -243,7 +243,7 @@ class WidgetButton extends Widget {
 
         if (!p_value) { return; }
 
-        this._optionsHandler.Process(this, p_value);
+        this._distribute.Update(this, p_value);
         this._flags.Set(FLAGS.NO_SCALE, p_value.noscale ? p_value.noscale : false);
 
     }
@@ -256,7 +256,7 @@ class WidgetButton extends Widget {
 
         if (!p_value) { return; }
 
-        this._optionsHandler.ProcessExistingOnly(this, p_value, null, false, false);
+        this._distribute.ProcessExistingOnly(this, p_value, null, false, false);
 
     }
 

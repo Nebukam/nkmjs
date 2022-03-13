@@ -34,9 +34,9 @@ class InputField extends InputBase {
         this._handler._updatePreviewOnChange = true;
         this._handler._submitOnChange = true;
 
-        this._optionsHandler
-            .Hook(`preventTabIndexing`)
-            .Hook(`placeholder`, `placeholderValue`);
+        this._distribute
+            .To(`preventTabIndexing`)
+            .To(`placeholder`, `placeholderValue`);
 
         this._Bind(this._onInput);
         this._Bind(this._onChange);

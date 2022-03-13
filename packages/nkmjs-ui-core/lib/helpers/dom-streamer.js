@@ -35,11 +35,11 @@ class DOMStreamer extends DisposableHTMLElement {
         this._layoutInfos = {};
 
         this._options = {};
-        this._optionHandler = new com.helpers.OptionsHandler();
-        this._optionHandler
-            .Hook(`owner`)
-            .Hook(`host`)
-            .Hook(`layout`);
+        this._distribute = new com.helpers.OptionsDistribute();
+        this._distribute
+            .To(`owner`)
+            .To(`host`)
+            .To(`layout`);
 
         this._linePaddingBottom = 1;
         this._releaseClearedItems = true;
@@ -126,7 +126,7 @@ class DOMStreamer extends DisposableHTMLElement {
     get options() { return this._options; }
     set options(p_options) {
         this._options = p_options;
-        this._optionHandler.Process(this, p_options);
+        this._distribute.Update(this, p_options);
     }
 
     get owner() { return this._owner; }

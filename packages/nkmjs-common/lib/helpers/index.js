@@ -10,7 +10,7 @@ module.exports = {
     CSYMBOL: require(`./class-symbol`),
     CKEY: require(`./class-key`),
 
-    OptionsHandler: require(`./options-handler`),
+    OptionsDistribute: require(`./options-distribute`),
     OptionsObject: require(`./options-object`),
 
     Singleton: require(`./singleton`),

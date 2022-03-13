@@ -21,10 +21,10 @@ class ButtonEx extends ui.WidgetButton {
     _Init() {
         super._Init();
 
-        this._optionsHandler
-            .Hook(ui.IDS.ICON, null, ``)
-            .Hook(ui.IDS.LABEL, null, ``)
-            .Hook(`uppercaseText`);
+        this._distribute
+            .To(ui.IDS.ICON, null, ``)
+            .To(ui.IDS.LABEL, null, ``)
+            .To(`uppercaseText`);
 
         this._icon = null;
         this._label = null;

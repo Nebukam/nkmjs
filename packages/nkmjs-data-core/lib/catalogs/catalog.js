@@ -155,8 +155,8 @@ class Catalog extends CatalogItem {
 
         super._Init();
 
-        this._optionHandler.beginFn = this._Bind(this._OnOptionsWillUpdate);
-        this._optionHandler.Hook(`autoSort`, `autoSort`);
+        this._distribute.beginFn = this._Bind(this._OnOptionsWillUpdate);
+        this._distribute.To(`autoSort`, `autoSort`);
 
         this._expanded = false;
 

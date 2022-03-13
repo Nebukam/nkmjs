@@ -30,9 +30,9 @@ class Tab extends ui.WidgetItem {
 
         this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
 
-        this._optionsHandler.Hook(ui.IDS.NAME, `label`)
-            .Hook(ui.IDS.ICON)
-            .Hook(ui.IDS.STATIC, (p_value) => {
+        this._distribute.To(ui.IDS.NAME, `label`)
+            .To(ui.IDS.ICON)
+            .To(ui.IDS.STATIC, (p_value) => {
                 this._isStaticTab = p_value;
                 if (this._closeBtn.element) {
                     if (p_value) {

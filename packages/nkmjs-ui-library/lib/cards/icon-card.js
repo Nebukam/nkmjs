@@ -30,7 +30,7 @@ class IconCard extends BaseCard {
 
     _Init() {
         super._Init();
-        this._optionsHandler.Hook(`icon`);
+        this._distribute.To(`icon`);
     }
 
     // ----> DOM

@@ -20,8 +20,8 @@ class ToolButton extends ui.WidgetButton {
 
     _Init() {
         super._Init();
-        this._optionsHandler
-            .Hook(ui.IDS.ICON, null, ``);
+        this._distribute
+            .To(ui.IDS.ICON, null, ``);
 
         this._icon = null;
 

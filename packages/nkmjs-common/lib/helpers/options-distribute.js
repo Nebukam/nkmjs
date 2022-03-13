@@ -17,7 +17,7 @@ const __null = Symbol(`null`);
  * @class
  * @memberof common.helpers
  */
-class OptionsHandler {
+class OptionsDistribute {
 
     /**
      * @description TODO
@@ -81,7 +81,7 @@ class OptionsHandler {
      * with the same name as the optionID.
      * @param {*} [p_default]
      */
-    Hook(p_optionID, p_fn = null, p_default = undefined) {
+    To(p_optionID, p_fn = null, p_default = undefined) {
 
         if (p_fn === null) { p_fn = __direct; }
 
@@ -114,7 +114,7 @@ class OptionsHandler {
      * @param {object} p_options 
      * @param {object} p_altOptions an alternative set of options to forward to handlers (used when appending options)
      */
-    Process(p_target, p_options, p_altOptions = null, p_callBegin = true, p_callWrapUp = true) {
+    Update(p_target, p_options, p_altOptions = null, p_callBegin = true, p_callWrapUp = true) {
 
         if (p_callBegin && this._beginFn) { this._beginFn(p_options, p_altOptions, this._defaults); }
 
@@ -234,4 +234,4 @@ class OptionsHandler {
 
 }
 
-module.exports = OptionsHandler;
+module.exports = OptionsDistribute;

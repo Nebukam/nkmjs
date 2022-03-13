@@ -33,8 +33,8 @@ class DialogBox extends dialog.DialogBox {
         this._title = null;
         this._icon = null;       
 
-        this._optionsHandler.Hook(ui.IDS.ICON, null, ``);
-        this._optionsHandler.Hook(ui.IDS.VARIANT);
+        this._distribute.To(ui.IDS.ICON, null, ``);
+        this._distribute.To(ui.IDS.VARIANT);
 
     }
 
