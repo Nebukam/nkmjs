@@ -134,6 +134,13 @@ class DefaultStylesheet extends PaletteBuilder{
                 'opacity': `0`,
             },
 
+            'absolute-centered':{
+                'position': 'absolute',
+                'top': '50%',
+                'left': '50%',
+                'transform': 'translate(-50%, -50%)'
+            },
+
             'layer': {
                 'position': `absolute`,
                 'top': `0px`,

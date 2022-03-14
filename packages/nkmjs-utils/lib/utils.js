@@ -809,9 +809,16 @@ class UTILS {
 
         if (p_callConf.args) { return p_callConf.fn.call(thisArg, ...args, ...p_callConf.args); }
         else if (p_callConf.arg) { return p_callConf.fn.call(thisArg, ...args, p_callConf.arg); }
-        else if(args) { return p_callConf.fn.call(thisArg, ...args); }
+        else if (args) { return p_callConf.fn.call(thisArg, ...args); }
         else { return p_callConf.fn.call(thisArg); }
 
+    }
+
+    static Assign(p_conf, p_obj, p_owner = null) {
+        if (!p_conf) { return; }
+        if (p_conf.member) { p_conf = p_conf.member; }
+        if (p_conf.owner) { if (!p_owner) { return; } p_owner = p_conf.owner; }
+        p_owner[p_conf.id] = p_obj;
     }
 
 }

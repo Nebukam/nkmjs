@@ -31,6 +31,7 @@ module.exports = {
 
     Call: __UTILS.Call.bind(__UTILS),
     CallPrepend: __UTILS.CallPrepend.bind(__UTILS),
+    Assign: __UTILS.Assign.bind(__UTILS),
 
     //
     PATH: __PATH,

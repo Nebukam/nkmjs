@@ -29,6 +29,7 @@ class Tag extends ui.Widget {
             .To(ui.IDS.FLAVOR)
             .To(ui.IDS.SIZE)
             .To(ui.IDS.LABEL)
+            .To(`htitle`)
             .To(ui.IDS.NAME, ui.IDS.LABEL)
             .To(`bgColor`)
             .To(`textColor`);

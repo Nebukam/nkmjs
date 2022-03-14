@@ -183,7 +183,6 @@ class WidgetBar extends WidgetOrientable {
 
     set handles(p_value) {
         this.Clear();
-        console.log(p_value);
         if (u.isArray(p_value)) { this.CreateHandles(...p_value); }
     }
 
@@ -264,10 +263,8 @@ class WidgetBar extends WidgetOrientable {
         }
 
         if (p_options) {
-            if (p_options.member) {
-                let member = p_options.member;
-                member.owner[member.id] = handle;
-            }
+            
+            u.Assign(p_options, handle, this);
 
             if (p_options.watchers && Array.isArray(p_options.watchers)) {
                 for (var i = 0; i < p_options.watchers.length; i++) {
