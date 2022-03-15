@@ -91,7 +91,7 @@ class Catalog extends CatalogItem {
     /**
      * @description Creates a Catalog from a mockup object.
      * @param {CatalogItemOptions} p_rootOptions
-     * @param {*} [p_content] 
+     * @param {array} [p_content] 
      * @param {*} [p_parent] 
      * @returns {data.core.Catalog}
      */
@@ -587,16 +587,8 @@ class Catalog extends CatalogItem {
      * @description Clears the catalog and releases all items
      */
     Clear() {
-
-        let n = this._items.length - 1;
-        while (n > 0) {
-            this._items[n].Release();
-            n--;
-        }
-
-        this._items.length = 0;
+        while (this._items != 0) { this._items.pop().Release(); }
         this._delayedSort.Cancel();
-
     }
 
     _CleanUp() {
