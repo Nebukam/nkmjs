@@ -23,6 +23,8 @@ class Folder extends ListItem {
 
     static __NFO__ = com.NFOS.Ext({}, ListItem, ['css']);
 
+    static __itemHeight = 24;
+
     static __defaultItemClass = ListItem;
     static __defaultDirClass = this;
 
@@ -42,10 +44,12 @@ class Folder extends ListItem {
         this._streamerWrapper = null;
         this._streamerLayoutInfos = {
             itemSlots: 1,
-            itemSize: 24,
+            itemSize: this.constructor.__itemHeight,
             itemCount: 0,
             fixedSize: true
         };
+
+        this.style.setProperty(`--folder-size`, `${this.constructor.__itemHeight}px`);
 
         this._builder = com.Rent(CatalogFolderBuilder);
         this._builder.owner = this;

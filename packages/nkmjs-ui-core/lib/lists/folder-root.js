@@ -30,7 +30,7 @@ class FolderRoot extends Folder {
         this._searchBtn = null;
         this._InitSelectionStack();
 
-        this.style.setProperty(`--folder-size`, `var(--size-s)`);
+        //this.style.setProperty(`--folder-size`, `var(--size-s)`);
         // TODO : If 'flattened', make directories non-expandable items
         
 
