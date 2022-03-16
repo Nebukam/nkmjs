@@ -78,7 +78,7 @@ class DialogBox extends dialog.DialogBox {
 
     _Render() {
 
-        this._icon = new ui.manipulators.Icon(ui.dom.El('div', { class: `corner-icon icon` }, this._host), false, true);
+        this._icon = new ui.manipulators.Icon(ui.dom.El('div', { class: `corner-icon` }, this._host), false, true);
 
         this._header = ui.dom.El(`div`, { class: `group header` }, this._host);
         this._body = ui.dom.El(`div`, { class: `group body` }, this._host);

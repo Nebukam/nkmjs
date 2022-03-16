@@ -7,6 +7,8 @@ class SimpleDataBlock extends DataBlock {
     constructor() { super(); }
 
     static __signalValueMap = this.__GetSignalValueMap();
+    static __lockedData = true;
+
     static __GetSignalValueMap() {
         return {};
     }
@@ -20,6 +22,10 @@ class SimpleDataBlock extends DataBlock {
         let valueObject;
         let oldValue = null;
         if (!(p_id in this._values)) {
+            if(this.constructor.__lockedData){ 
+                console.warn(`Attempting to create value '${p_id}' on locked object.`, this);
+                return; 
+            }
             valueObject = { value: p_value };
             this._values[p_id] = valueObject;
         }

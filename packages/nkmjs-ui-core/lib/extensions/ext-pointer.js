@@ -241,11 +241,17 @@ class PointerExtension extends Extension {
     }
 
     _mWheel(p_evt) {
-        if (this._wheelFn) { this._wheelFn(p_evt); }
+        if (this._wheelFn) {
+            let consumed = this._wheelFn(p_evt); 
+            if(consumed){p_evt.preventDefault();}
+        }
     }
 
     _mMove(p_evt) {
-        if (this._moveFn) { this._moveFn(p_evt); }
+        if (this._moveFn) { 
+            let consumed = this._moveFn(p_evt); 
+            if(consumed){p_evt.preventDefault();}
+        }
     }
 
 

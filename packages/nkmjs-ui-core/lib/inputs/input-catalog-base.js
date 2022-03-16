@@ -139,6 +139,8 @@ class InputCatalogBase extends InputBase {
 
         this._handler.changedValue = itemList[index];
         this._handler.SubmitValue();
+
+        return true;
     }
 
     _UpdatePreview() {

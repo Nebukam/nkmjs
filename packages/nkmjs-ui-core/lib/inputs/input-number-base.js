@@ -150,6 +150,9 @@ class InputNumberBase extends InputField {
 
         this._handler.changedValue = value;
         this._handler.SubmitValue();
+
+        return true;
+
     }
 
     // ----> DOM

@@ -47,7 +47,7 @@ class FolderListRoot extends ui.lists.FolderRoot {
         return style.Extends({
             ':host': {
                 
-            },
+            }
         }, super._Style());
     }
 
