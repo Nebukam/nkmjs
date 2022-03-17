@@ -3,6 +3,7 @@
 module.exports = {
 
     Text: require(`./input-text`),
+    Search: require(`./input-search`),
     Identifier: require(`./input-identifier`),
     Textarea: require(`./input-textarea`),
     Boolean: require(`./input-boolean`),

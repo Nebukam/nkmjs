@@ -22,6 +22,7 @@ const IDS = require(`./ids`);
 class WidgetItem extends Widget {
     constructor() { super(); }
 
+    static __draggable = true;
     // ----> Init
 
     _Init() {
@@ -38,8 +39,10 @@ class WidgetItem extends Widget {
 
         this._pointer.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
 
-        this._extDrag = this._extensions.Add(extensions.Drag);
-        this._extDrag.grabDataCallback = this._Bind(this._GrabDragData);
+        if (this.constructor.__draggable) {
+            this._extDrag = this._extensions.Add(extensions.Drag);
+            this._extDrag.grabDataCallback = this._Bind(this._GrabDragData);
+        }
 
         this._dragActivator = null;
         this._dragFeedbackHost = this;
@@ -55,13 +58,13 @@ class WidgetItem extends Widget {
 
     _PostInit() {
         super._PostInit();
-        this._extDrag.Setup(this, this._dragActivator, this._dragFeedbackHost);
+        if (this._extDrag) { this._extDrag.Setup(this, this._dragActivator, this._dragFeedbackHost); }
         this._distribute.To(`data`, `itemData`); // Make sure this is registered last
     }
 
     _Wake() {
         super._Wake();
-        this._extDrag.owner = this;
+        if (this._extDrag) { this._extDrag.owner = this; }
     }
 
 
@@ -217,7 +220,7 @@ class WidgetItem extends Widget {
      * @param {Event} p_evt 
      */
     AltActivate(p_evt) {
-        if(!this._data){ return true; }
+        if (!this._data) { return true; }
         if (this._data.primaryCommand) {
             this._data.primaryCommand.Execute();
             return false;
@@ -280,8 +283,8 @@ class WidgetItem extends Widget {
 
     ///
 
-    _UpdateInfos(){
-        
+    _UpdateInfos() {
+
     }
 
 }

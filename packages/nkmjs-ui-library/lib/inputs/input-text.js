@@ -6,7 +6,7 @@ const ui = require(`@nkmjs/ui-core`);
 class InputText extends ui.inputs.InputTextBase {
     constructor() { super(); }
 
-    static __inputProperties = { type: 'search' };
+    static __inputProperties = { type: 'text' };
 
     _Init() {
         super._Init();

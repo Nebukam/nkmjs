@@ -10,6 +10,8 @@ const APP_MESSAGES = require(`@nkmjs/app-core/lib/app-messages`);
 
 const WindowWrapper = require(`./helpers/window-wrapper`);
 
+let DEV_MODE = false;
+
 /**
  * @description TODO
  * @class
@@ -32,6 +34,8 @@ class WINDOWS extends com.helpers.SingletonEx {
         this._mapIDToWrapper = new collections.Dictionary();
         this._mapWindowToID = new collections.Dictionary();
 
+        DEV_MODE = process.argv.includes('--dev') || process.argv.includes('-dev') || process.argv.includes('dev');
+
         this._mainWindow = null;
 
         this._Bind(this._OnWindowClosed);
@@ -45,6 +49,7 @@ class WINDOWS extends com.helpers.SingletonEx {
         this._Bind(this._OnRequestWindowAndPrint);
         this._Bind(this._OnRequestedWindowReady);
         this._Bind(this._DelayedPrintCall);
+        this._Bind(this._OnContextMenuShow);
 
         ipcMain.on(APP_MESSAGES.DO_OPEN_WINDOW, this._OnRequestWindowOpen);
         ipcMain.on(APP_MESSAGES.DO_CLOSE_WINDOW, this._OnRequestWindowClose);
@@ -52,22 +57,9 @@ class WINDOWS extends com.helpers.SingletonEx {
 
         ipcMain.on(APP_MESSAGES.DO_PRINT_WINDOW, this._OnRequestWindowPrint);
         ipcMain.on(APP_MESSAGES.DO_OPEN_AND_PRINT_WINDOW, this._OnRequestWindowAndPrint);
+        ipcMain.on(APP_MESSAGES.CONTEXT_MENU_SHOW, this._OnContextMenuShow);
 
-        //https://www.electronjs.org/docs/latest/api/menu#render-process
-        ipcMain.on('show-context-menu', (event, p_data) => {
-            const template = [
-                {
-                    label: 'Inspect',
-                    click: () => { BrowserWindow.fromWebContents(event.sender).inspectElement(p_data.x, p_data.y); }
-                },
-                {
-                    label: 'Template menu item',
-                    click: () => { event.sender.send('context-menu-command', 'menu-item-1') }
-                }
-            ]
-            const menu = Menu.buildFromTemplate(template)
-            menu.popup(BrowserWindow.fromWebContents(event.sender))
-        })
+
 
     }
 
@@ -296,6 +288,54 @@ class WINDOWS extends com.helpers.SingletonEx {
         fs.writeFile(pdfPath, data, function (error) {
             if (error) { this._SendError(error); }
         });
+    }
+
+    /**
+     * Expects object format :
+     * { x:, y:, items:[ { ... }, { ... } ] }
+     * @param {*} p_evt 
+     * @param {object} p_data 
+     */
+    _OnContextMenuShow(p_evt, p_data) {
+
+        //https://www.electronjs.org/docs/latest/api/menu#render-process
+
+        let itemList = [];
+
+        if (DEV_MODE) { //Show inspect
+            itemList.push(
+                {
+                    label: 'Inspect',
+                    click: () => { BrowserWindow.fromWebContents(p_evt.sender).inspectElement(p_data.x, p_data.y); }
+                }
+            );
+        }
+
+        if (p_data.items) {
+            for (let i = 0; i < p_data.items.length; i++) {
+                let cmd = p_data.items[i];
+                itemList.push({
+                    label: cmd.label || cmd.name || `unnamed menu item`,
+                    click: () => { p_evt.sender.send(APP_MESSAGES.CONTEXT_MENU_COMMAND, cmd); }
+                });
+            }
+        }
+        /*
+            const template = [
+                {
+                    label: 'Inspect',
+                    click: () => { BrowserWindow.fromWebContents(p_evt.sender).inspectElement(p_data.x, p_data.y); }
+                },
+                {
+                    label: 'Template menu item',
+                    click: () => { p_evt.sender.send(APP_MESSAGES.CONTEXT_MENU_COMMAND, 'menu-item-1') }
+                }
+            ]*/
+        if (itemList.length == 0) { return; }
+
+        var menu = Menu.buildFromTemplate(itemList);
+        menu.popup(BrowserWindow.fromWebContents(p_evt.sender));
+
     }
 
 }

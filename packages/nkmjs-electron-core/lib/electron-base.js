@@ -41,7 +41,7 @@ class ElectronBase {
 
         this._mainWindow = null;
 
-        //DEV_MODE = process.argv.includes('dev');
+        DEV_MODE = process.argv.includes('--dev') || process.argv.includes('-dev') || process.argv.includes('dev');
 
         this._dirname = (p_constants.dirname || __dirname);
         this._appindex = (p_constants.html || "");
