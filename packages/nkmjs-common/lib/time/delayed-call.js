@@ -13,6 +13,7 @@ const TIME = require(`./time`);
 class DelayedCall {
     constructor(p_fn = null, p_delay = -1) {
         this.Clear();
+        this._scheduled = false;
         this._Call = this._Call.bind(this);
         this.Schedule = this.Schedule.bind(this);
         this._delay = p_delay;
@@ -47,7 +48,7 @@ class DelayedCall {
      * @description Schedule this DelayedCall's callback to be called on TIME.NEXT_TICK
      */
     Schedule() {
-        if (this._scheduled || u.isVoid(this._callback)) { return; }
+        if (this._scheduled) { return; }
         this._scheduled = true;
         TIME.instance.NextTickAdd(this._Call);
     }
@@ -56,20 +57,19 @@ class DelayedCall {
      * @description Cancel the delayed call, if it was scheduled.
      */
     Cancel() {
-        if (this._scheduled && !u.isVoid(this._callback)) {
-            TIME.instance.NextTickRemove(this._Call);
-            this._elapsed = 0;
-        }
+        if (!this._scheduled) { return; }
+        TIME.instance.NextTickRemove(this._Call);
+        this._elapsed = 0;
     }
 
     /**
      * @access private
      * @param {*} p_obj 
      */
-    _Call(p_delta){
-        if(this._delay > 0){
+    _Call(p_delta) {
+        if (this._delay > 0) {
             this._elapsed += p_delta;
-            if(this._elapsed < this._delay){
+            if (this._elapsed < this._delay) {
                 TIME.instance.NextTickAdd(this._Call);
                 return;
             }

@@ -22,9 +22,9 @@ class SimpleDataBlock extends DataBlock {
         let valueObject;
         let oldValue = null;
         if (!(p_id in this._values)) {
-            if(this.constructor.__lockedData){ 
+            if (this.constructor.__lockedData) {
                 console.warn(`Attempting to create value '${p_id}' on locked object.`, this);
-                return; 
+                return;
             }
             valueObject = { value: p_value };
             this._values[p_id] = valueObject;
@@ -54,8 +54,8 @@ class SimpleDataBlock extends DataBlock {
     }
 
     BatchSet(p_values) {
-        if(u.isInstanceOf(SimpleDataBlock)){ p_values = p_values._values; }
-        for (var p in p_values) { this.Set(p, p_values[p], true); }
+        if (u.isInstanceOf(p_values, SimpleDataBlock)) { for (var p in p_values._values) { this.Set(p, p_values._values[p].value, true); } }
+        else { for (var p in p_values) { this.Set(p, p_values[p], true); } }
         this.CommitUpdate();
     }
 

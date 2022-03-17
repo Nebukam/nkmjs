@@ -254,7 +254,6 @@ class PointerExtension extends Extension {
         }
     }
 
-
     // ----> Event hooks
 
     /**
