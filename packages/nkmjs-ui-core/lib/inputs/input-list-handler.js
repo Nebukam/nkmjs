@@ -66,7 +66,7 @@ class InputListHandler extends com.pool.DisposableObjectEx {
 
             input._handler
                 .Watch(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit)
-                .Watch(SIGNAL.VALUE_CHANGED, this._OnInputChanged)
+                .Watch(com.SIGNAL.VALUE_CHANGED, this._OnInputChanged)
                 .Watch(SIGNAL.INPUT_ERROR, this._OnInputError);
         }
 

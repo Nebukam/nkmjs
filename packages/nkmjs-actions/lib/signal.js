@@ -36,6 +36,13 @@ class SIGNAL {
      */
     static DISABLED = Symbol(`disabled`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     */
+     static ACTION_STATE_CHANGED = Symbol(`actionStateChanged`);
+
 }
 
 module.exports = SIGNAL;

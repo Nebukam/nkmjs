@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 const OptionsDistribute = require(`./options-distribute`);
+const SIGNAL = require(`../signal`);
 
 /**
  * An OptionObject is an extension over the DisposableObjectEx with a builtin
@@ -16,6 +17,8 @@ const OptionsDistribute = require(`./options-distribute`);
  */
 class OptionsObject extends DisposableObjectEx {
     constructor() { super(); }
+
+    static __broadcastUpdate = false;
 
     _Init() {
         super._Init();
@@ -95,7 +98,15 @@ class OptionsObject extends DisposableObjectEx {
 
         //process value first so if one already exists, it can be fetched as 'previous value'
         this._distribute.ProcessSingle(this, p_id, p_value, this._options, true);
-        this._options[p_id] = p_value;
+
+        if(this.constructor.__broadcastUpdate){
+            let oldValue = this._options[p_id];
+            this._options[p_id] = p_value;
+            this._Broadcast(SIGNAL.VALUE_CHANGED, this, p_id, p_value, oldValue);
+        }else{
+            this._options[p_id] = p_value;
+        }
+        
     }
 
     _CleanUp() {

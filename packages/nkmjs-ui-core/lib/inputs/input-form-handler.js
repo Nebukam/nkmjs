@@ -44,7 +44,7 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
 
         p_input._handler
             .Watch(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
-            .Watch(SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
+            .Watch(com.SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
             .Watch(SIGNAL.INPUT_ERROR, this._OnInputError, this);
 
     }
@@ -57,7 +57,7 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
 
         p_input._handler
             .Unwatch(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
-            .Unwatch(SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
+            .Unwatch(com.SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
             .Unwatch(SIGNAL.INPUT_ERROR, this._OnInputError, this);
 
     }

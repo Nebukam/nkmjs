@@ -192,6 +192,15 @@ class Editor extends ui.views.View {
     //#endregion
 
     //#region Actions
+
+    StartActionGroup(){
+        this._actionStack.ToggleGrouping(true);
+    }
+
+    EndActionGroup(){
+        this._actionStack.ToggleGrouping(false);
+    }
+
     /**
      * @access public
      * @description Registers & executes an action in the local ActionStack.
@@ -200,7 +209,7 @@ class Editor extends ui.views.View {
      * @group Actions
      */
     Do(p_actionClass, p_operation) {
-        this._actionStack.ToggleGrouping(ui.POINTER.DRAG_MULTIPLE); //Group drag-related actions
+        //this._actionStack.ToggleGrouping(ui.POINTER.DRAG_MULTIPLE); //TODO : Need a better approach for Group drag-related actions 
         this._actionStack.Do(p_actionClass, p_operation);
     }
 

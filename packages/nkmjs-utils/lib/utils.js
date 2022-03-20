@@ -643,6 +643,8 @@ class UTILS {
     }
     */
 
+    
+
     // ----> Regex
 
     /**
@@ -714,10 +716,10 @@ class UTILS {
      * @param {number} p_size 
      */
     static Pad(p_num, p_size = 2) {
-        p_num = p_num.toString();
-        while (p_num.length < p_size) { p_num = "0" + p_num; }
-        return p_num;
+        return p_size < 0 ? p_num.toString().padEnd(p_size * -1, `0`) : p_num.toString().padStart(p_size, `0`);
     }
+
+
 
     /**
      * A - B

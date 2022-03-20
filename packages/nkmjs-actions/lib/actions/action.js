@@ -1,6 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const ACTION_STATE = require(`./action-state`);
 
 /**
  * @description TODO
@@ -20,7 +21,14 @@ class Action extends com.pool.DisposableObject {
         super._Init();
         this._operation = null;
         this._undoed = false;
+        this._stack = null;
     }
+
+    get stack(){ return this._stack; }
+    set stack(p_value){ this._stack = p_value; }
+
+    get title(){ return this.constructor.name; }
+    get htitle(){ return this.constructor.name; }
 
     /**
      * @description TODO
@@ -28,6 +36,7 @@ class Action extends com.pool.DisposableObject {
      * @customtag read-only
      */
     get operation() { return this._operation; }
+    get state(){ return this._undoed ? ACTION_STATE.UNDONE : ACTION_STATE.DONE; }
 
     // ----> Can merge ?
 
@@ -51,6 +60,7 @@ class Action extends com.pool.DisposableObject {
     Do(p_operation, p_merge = false) {
         if (!p_merge) { this._operation = p_operation; }
         this._InternalDo(p_operation, p_merge);
+        if(this._stack){ this._stack._OnActionStateChanged(this, this.state); }
         return this;
     }
 
@@ -60,6 +70,7 @@ class Action extends com.pool.DisposableObject {
     Undo() {
         this._undoed = true;
         this._InternalUndo();
+        if(this._stack){ this._stack._OnActionStateChanged(this, this.state); }
     }
 
     /**
@@ -68,6 +79,7 @@ class Action extends com.pool.DisposableObject {
     Redo() {
         this._undoed = false;
         this._InternalRedo();
+        if(this._stack){ this._stack._OnActionStateChanged(this, this.state); }
     }
 
     /**
@@ -102,6 +114,7 @@ class Action extends com.pool.DisposableObject {
     _CleanUp() {
         this._operation = null;
         this._undoed = false;
+        this._stack = null;
         super._CleanUp();
     }
 

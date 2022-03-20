@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
 const ActionGroup = require(`./action-group`);
+const RootAction = require(`./action-root`);
 
 /**
  * @description TODO
@@ -11,16 +12,16 @@ const ActionGroup = require(`./action-group`);
  * @hideconstructor
  * @memberof actions
  */
-class ActionStack {
+class ActionStack extends com.pool.DisposableObjectEx {
 
-    constructor() {
-        this._Init();
-        this._PostInit();
-    }
+    constructor() { super(); }
 
     // ----> Init
 
+    static ROOT = new RootAction();
+
     _Init() {
+        super._Init();
         this._maxCount = -1;
         this._headIndex = -1;
         this._stack = [];
@@ -29,9 +30,7 @@ class ActionStack {
         this._group = null;
     }
 
-    _PostInit() {
-
-    }
+    get count() { return this._stack.length; }
 
     // ----> Availability
 
@@ -69,6 +68,8 @@ class ActionStack {
         this._isEnabled = false;
         return true;
     }
+
+    get groupingActive() { return this._groupingActive; }
 
     /**
      * @description TODO
@@ -144,8 +145,11 @@ class ActionStack {
             stack.length = index;
         }
 
+        p_action.stack = this;
         stack.push(p_action);
         this._headIndex = stack.length - 1;
+
+        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_action);
 
         return p_action;
     }
@@ -191,6 +195,25 @@ class ActionStack {
 
     }
 
+    GoToAction(p_action){
+        let index = p_action == this.constructor.ROOT ? 0 : this._stack.indexOf(p_action);
+        if(index == -1){ return; }
+
+        let diff = this._headIndex - index;
+        if(diff > 0){
+            // Undo until we reach index
+            while(this._headIndex != index){
+                this.Undo();
+            }
+        }else{
+            // Redo until we reach index
+            while(this._headIndex != index){
+                this.Redo();
+            }
+        }
+
+    }
+
     /**
      * @description Clear all actions in the stack. **does not undo them, only clear the history.**
      */
@@ -201,6 +224,10 @@ class ActionStack {
         stack.length = 0;
         this._headIndex = -1;
         this._groupingActive = false;
+    }
+
+    _OnActionStateChanged(p_action, p_state) {
+        this._Broadcast(com.SIGNAL.UPDATED, this, p_action);
     }
 
 }

@@ -2,6 +2,8 @@
 
 module.exports = {
 
+    ActionStack: require(`./inspector-action-stack`),
+    
     //InspectorShell: require(`./inspector-shell`),
     //InspectorGroup: require(`./inspector-group`),
     //InspectorItem: require(`./inspector-item`),

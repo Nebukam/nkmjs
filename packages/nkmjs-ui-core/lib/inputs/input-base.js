@@ -140,7 +140,7 @@ class BaseInput extends Widget {
         if (onSubmit) { this._handler.Watch(SIGNAL.VALUE_SUBMITTED, onSubmit.fn, onSubmit.thisArg || null ); }
 
         let onChange = p_options.onChange;
-        if (onChange) { this._handler.Watch(SIGNAL.VALUE_CHANGED, onChange.fn, onChange.thisArg || null); }
+        if (onChange) { this._handler.Watch(com.SIGNAL.VALUE_CHANGED, onChange.fn, onChange.thisArg || null); }
 
         let onInput = p_options.onInput;
         if (onInput) { this._handler.Watch(SIGNAL.VALUE_INPUT_CHANGED, onInput.fn, onInput.thisArg || null); }

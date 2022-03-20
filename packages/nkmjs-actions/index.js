@@ -18,6 +18,8 @@ module.exports = {
     ActionGroup : require(`./lib/actions/action-group`),
     ActionStack : require(`./lib/actions/action-stack`),
 
+    ACTION_STATE : require(`./lib/actions/action-state`),
+
     COMMAND_SIGNAL : require(`./lib/commands/command-signal`),
     
     Command : require(`./lib/commands/command`),

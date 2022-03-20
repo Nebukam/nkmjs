@@ -62,7 +62,6 @@ class EditorEx extends uidatacontrols.Editor {
         this._InitShelfCatalog(confs);
         this._shelf.catalog = this._shelfCatalog;
 
-
         for (let i = 0, n = confs.length; i < n; i++) {
 
             let
@@ -75,7 +74,7 @@ class EditorEx extends uidatacontrols.Editor {
 
             if (view) {
                 if (conf.isInspector) { this.forwardData.To(view); }
-                else { this.forwardInspected.To(view); }
+                else if(!conf.ignoreData){ this.forwardInspected.To(view); }
                 if (assign) { this[assign] = view; }
             }
 

@@ -4,7 +4,6 @@ class INPUT_SIGNAL {
     constructor() { }
 
     static VALUE_INPUT_CHANGED = Symbol(`valueInputChanged`);
-    static VALUE_CHANGED = Symbol(`valueChanged`);
     static VALUE_SUBMITTED = Symbol(`valueCommitted`);
     static VALUE_UPDATE_ANY = Symbol(`valueUpdateAny`);
 

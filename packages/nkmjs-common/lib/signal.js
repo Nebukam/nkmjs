@@ -166,6 +166,14 @@ class SIGNAL{
      */
     static ITEM_UPDATED = Symbol(`itemUpdated`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group ListItem Management
+     */
+     static VALUE_CHANGED = Symbol(`valueChanged`);
+
 }
 
 module.exports = SIGNAL;

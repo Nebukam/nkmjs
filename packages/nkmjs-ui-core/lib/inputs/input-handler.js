@@ -137,7 +137,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
      */
     _OnValueChanged(p_oldValue) {
         this._internalValidateChangedValue();
-        this._Broadcast(SIGNAL.VALUE_CHANGED, this, this._changedValue);
+        this._Broadcast(com.SIGNAL.VALUE_CHANGED, this, this._changedValue);
 
         for (let i = 0; i < this._managed.count; i++) {
             this._managed.At(i).changedValue = this._changedValue;
@@ -450,7 +450,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this._manager = p_value;
 
         if (oldManager) {
-            oldManager.Unwatch(SIGNAL.VALUE_CHANGED, this._OnManagerValueChanged, this);
+            oldManager.Unwatch(com.SIGNAL.VALUE_CHANGED, this._OnManagerValueChanged, this);
             oldManager.Unwatch(SIGNAL.VALUE_SUBMITTED, this._OnManagerValueSubmitted, this);
             oldManager.RemoveManaged(this);
         }
@@ -458,7 +458,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         if (this._manager) {
             this.changedValue = this._manager.changedValue;
             this.currentValue = this._manager.currentValue;
-            this._manager.Watch(SIGNAL.VALUE_CHANGED, this._OnManagerValueChanged, this);
+            this._manager.Watch(com.SIGNAL.VALUE_CHANGED, this._OnManagerValueChanged, this);
             this._manager.Watch(SIGNAL.VALUE_SUBMITTED, this._OnManagerValueSubmitted, this);
             this._manager.AddManaged(this);
         }
@@ -470,7 +470,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         if (!this._managed.Add(p_handler)) { return; }
         p_handler.manager = this;
         p_handler.Watch(SIGNAL.VALUE_INPUT_CHANGED, this._OnManagedInputValueChanged, this);
-        p_handler.Watch(SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
+        p_handler.Watch(com.SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
         p_handler.Watch(SIGNAL.VALUE_SUBMITTED, this._OnManagedValueSubmitted, this);
     }
 
@@ -478,7 +478,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         if (!this._managed.Remove(p_handler)) { return; }
         if (p_handler.manager == this) { p_handler.manager = null; }
         p_handler.Unwatch(SIGNAL.VALUE_INPUT_CHANGED, this._OnManagedInputValueChanged, this);
-        p_handler.Unwatch(SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
+        p_handler.Unwatch(com.SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
         p_handler.Unwatch(SIGNAL.VALUE_SUBMITTED, this._OnManagedValueSubmitted, this);
     }
 

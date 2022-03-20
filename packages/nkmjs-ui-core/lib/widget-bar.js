@@ -67,6 +67,7 @@ class WidgetBar extends WidgetOrientable {
         this._distribute
             .To(`size`, null, this.constructor.__default_size)
             .To(`inline`)
+            .To(`stretch`)
             .To(`defaultWidgetClass`, `_defaultWidgetClass`)
             .To(`defaultWidgetOptions`)
             .To(`handles`);

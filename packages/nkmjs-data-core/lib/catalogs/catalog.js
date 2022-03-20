@@ -33,6 +33,8 @@ class Catalog extends CatalogItem {
     static __default_catalogClass = Catalog;
     static __default_itemClass = CatalogItem;
 
+    //#region Static methods
+
     /**
      * @description Parse a string to a catalog-friendly format
      * @param {string} p_path 
@@ -124,9 +126,10 @@ class Catalog extends CatalogItem {
      * @description Find a suitable item class based on provided options
      * @param {object} p_itemOptions 
      * @param {boolean} [p_forceCatalog] 
+     * @param {data.core.Catalog} [p_catalog] Parent catalog
      * @returns {constructor}
      */
-    static GetItemClass(p_itemOptions, p_forceCatalog = false, p_parentCatalog = null) {
+    static GetItemClass(p_itemOptions, p_forceCatalog = false, p_catalog = null) {
 
         let itemClass = null;
 
@@ -135,21 +138,23 @@ class Catalog extends CatalogItem {
             let data = u.tils.Get(p_itemOptions, `data`, null);
 
             if (data) {
-                let context = p_parentCatalog ? p_parentCatalog : Catalog;
+                let context = p_catalog ? p_catalog : Catalog;
                 if (u.isObject(context)) { context = context.constructor; }
                 itemClass = com.BINDINGS.Get(context, data, null);
             }
 
             if (!itemClass) {
                 if (p_forceCatalog || u.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = this.__default_catalogClass; }
-                else { itemClass = u.tils.Get(p_itemOptions, `itemClass`, this.__default_itemClass); }
+                else { itemClass = p_itemOptions.itemClass || (p_catalog ? p_catalog._localItemClass : null) || this.__default_itemClass; }
             }
         } else {
-            itemClass = p_forceCatalog ? this.__default_catalogClass : this.__default_itemClass;
+            itemClass = p_forceCatalog ? this.__default_catalogClass : (p_catalog ? p_catalog._localItemClass : null) || this.__default_itemClass;
         }
 
         return itemClass;
     }
+
+    //#endregion
 
     _Init() {
 
@@ -167,6 +172,8 @@ class Catalog extends CatalogItem {
         this._autoSort = true;
         this._defaultSortFunc = null;
         this._delayedSort = new com.time.DelayedCall(this._Bind(this.Sort));
+
+        this._localItemClass = null;
 
     }
 
@@ -265,6 +272,8 @@ class Catalog extends CatalogItem {
         }
     }
 
+    //#region Child management
+
     /**
      * @description Gets or create a catalog inside this one using the specified options
      * @param {CatalogItemOptions} p_options
@@ -282,7 +291,7 @@ class Catalog extends CatalogItem {
             if (u.isInstanceOf(catalog, Catalog) && catalog.name === catalogName) { return catalog; }
         }
 
-        catalog = com.Rent(Catalog.GetItemClass(p_options, true));
+        catalog = com.Rent(Catalog.GetItemClass(p_options, true, this));
         catalog.options = u.tils.Ensure(u.isObject(p_options) ? p_options : {}, {
             [com.IDS.NAME]: catalogName,
             [com.IDS.ICON]: `directory`
@@ -437,6 +446,10 @@ class Catalog extends CatalogItem {
         //TODO:Resolve path or id, based on whether it`s an array or a string
     }
 
+    //#endregion
+
+    //#region Search
+
     /**
      * @description TODO // Replace with Filter
      * @param {*} p_data 
@@ -531,7 +544,9 @@ class Catalog extends CatalogItem {
         return null;
     }
 
-    // ---->
+    //#endregion
+
+    //#region Sorting
 
     /**
      * @description TODO
@@ -583,6 +598,8 @@ class Catalog extends CatalogItem {
 
     }
 
+    //#endregion
+
     /**
      * @description Clears the catalog and releases all items
      */
@@ -598,6 +615,7 @@ class Catalog extends CatalogItem {
         super._CleanUp();
         this._rootCatalog = this;
         this._rootDistance = -1;
+        this._localItemClass = null;
     }
 
     /**
