@@ -41,6 +41,10 @@ class InputCatalogBase extends InputBase {
         this._Bind(this._onChange);
 
         this._pointer._wheelFn = this._Bind(this._OnWheel);
+        this._itemKey = null;
+
+        this._distribute
+            .To(`itemKey`, `_itemKey`, null);
 
     }
 
@@ -127,20 +131,33 @@ class InputCatalogBase extends InputBase {
         throw new Error(`not implemented`);
     }
 
+    get inputKeyItem() {
+        return this._itemKey ?
+            this._data.FindFirstByOptionValue(this._itemKey, this._handler.inputValue) :
+            this._handler.inputValue;
+    }
+
+    _KeyValue(p_item) {
+        return this._itemKey ?
+            p_item.GetOption(this._itemKey) :
+            p_item;
+    }
+
     _OnWheel(p_evt) {
 
         let increase = p_evt.deltaY < 0 ? -1 : 1,
             itemList = this._data._items,
             maxValue = itemList.length - 1,
-            index = this._data._items.indexOf(this._handler.inputValue) + increase;
+            index = this._data._items.indexOf(this.inputKeyItem) + increase;
 
         if (index > maxValue) { index = maxValue; }
         if (index < 0) { index = 0; }
 
-        this._handler.changedValue = itemList[index];
+        this._handler.changedValue = this._KeyValue(itemList[index]);
         this._handler.SubmitValue();
 
         return true;
+
     }
 
     _UpdatePreview() {

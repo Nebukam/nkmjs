@@ -72,8 +72,8 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
 
     }
 
-    set showIcon(p_value){ this._showIcon = p_value;}
-    set showLabel(p_value){ this._showLabel = p_value;}
+    set showIcon(p_value) { this._showIcon = p_value; }
+    set showLabel(p_value) { this._showLabel = p_value; }
 
     _HandleItem(p_item) {
         // Implementation detail
@@ -85,12 +85,12 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
         } else {
             control = this.Add(ButtonEx, 'item inline');
             control.options = {
-                toggle:{ fn:this._OnOptionToggle, arg:ui.FLAGS.SELF }
+                toggle: { fn: this._OnOptionToggle, arg: ui.FLAGS.SELF }
             };
             control.data = p_item;
 
-            if(this._showIcon){ control.icon = p_item.options; }
-            if(this._showLabel){ control.label = p_item.options; }                
+            if (this._showIcon) { control.icon = p_item.options; }
+            if (this._showLabel) { control.label = p_item.options; }
             control.htitle = p_item.name;
             control.size = this._sizeEnum.currentFlag;
 
@@ -109,7 +109,7 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
 
     _UpdatePreview() {
         //find which option should be selected
-        let control = this._catalogHandler.Get(this._handler.inputValue);
+        let control = this._catalogHandler.Get(this.inputKeyItem);
 
         if (this._selectedOption) {
             this._selectedOption.Toggle(false);
@@ -123,8 +123,8 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
 
     }
 
-    _OnOptionToggle(p_input){
-        this._handler.changedValue = p_input.data;
+    _OnOptionToggle(p_input) {
+        this._handler.changedValue = this._KeyValue(p_input.data);
     }
 
     _CleanUp() {

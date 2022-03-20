@@ -531,7 +531,7 @@ class Catalog extends CatalogItem {
             let item = this._items[i],
                 opt = item._options[p_key];
 
-            if (opt && opt === p_value) { return item; }
+            if (opt === p_value) { return item; }
             if (p_recursive) {
                 if (u.isInstanceOf(item, Catalog)) {
                     let result = item.FindFirstByOptionValue(p_key, p_value, true);

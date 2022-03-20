@@ -94,7 +94,7 @@ class InputSelect extends ui.inputs.InputCatalogBase {
     }
 
     _onInput(p_evt) {
-        this._handler.changedValue = this._idMap.Get(p_evt.currentTarget.value);
+        this._handler.changedValue = this._KeyValue(this._idMap.Get(p_evt.currentTarget.value));
     }
 
     _GrabValue() {
@@ -103,7 +103,7 @@ class InputSelect extends ui.inputs.InputCatalogBase {
 
     _UpdatePreview() {
         //find which option should be selected
-        let control = this._catalogHandler.Get(this._handler.inputValue);
+        let control = this._catalogHandler.Get(this.inputKeyItem);
 
         if (this._selectedOption) {
             ui.dom.RAtt(this._selectedOption, `selected`);
