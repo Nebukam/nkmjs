@@ -161,17 +161,19 @@ class ActionStack extends com.pool.DisposableObjectEx {
 
         let stack = this._stack;
 
-        if (stack.length === 0) { return; }
+        if (stack.length === 0) { return false; }
 
         let index = this._headIndex;
 
         //No more action in line.
-        if (index === -1) { return; }
+        if (index === -1) { return false; }
 
         let action = stack[index];
         this._headIndex = index - 1;
 
         action.Undo();
+
+        return true;
 
     }
 
@@ -180,36 +182,36 @@ class ActionStack extends com.pool.DisposableObjectEx {
      */
     Redo() {
 
-        if (this._stack.length === 0) { return; }
+        if (this._stack.length === 0) { return false; }
 
         let index = this._headIndex;
         index += 1;
 
         //Redo-ing action that hasn`t happened yet.
-        if (index >= this._stack.length) { return; }
+        if (index >= this._stack.length) { return false; }
 
         let action = this._stack[index];
         this._headIndex = index;
 
         action.Redo();
 
+        return true;
+
     }
 
-    GoToAction(p_action){
+    GoToAction(p_action) {
         let index = p_action == this.constructor.ROOT ? 0 : this._stack.indexOf(p_action);
-        if(index == -1){ return; }
+        if (index == -1) { return; }
 
-        let diff = this._headIndex - index;
-        if(diff > 0){
+        let diff = this._headIndex - (index - 1);
+
+        if (diff > 0) {
             // Undo until we reach index
-            while(this._headIndex != index){
-                this.Undo();
-            }
-        }else{
+            for (let i = 0; i < diff; i++) { this.Undo(); }
+        } else {
             // Redo until we reach index
-            while(this._headIndex != index){
-                this.Redo();
-            }
+            diff = Math.abs(diff) + 1;
+            for (let i = 0; i < diff; i++) { this.Redo(); }
         }
 
     }

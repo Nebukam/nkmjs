@@ -107,7 +107,7 @@ class ActionStackInspector extends datacontrols.InspectorView {
 
     _OnActionItemRelelased(p_item) {
         let action = p_item.data;
-        this._actionMap.delete(action);
+        this._actionMap.delete(action);    
     }
 
     _OnDataChanged(p_oldData) {
@@ -118,9 +118,8 @@ class ActionStackInspector extends datacontrols.InspectorView {
     //
 
     _OnSelectionStackAdd(p_item) {
-        console.log(`_OnSelectionStackAdd`, p_item.data);
-        //TODO: Undo or redo up to selected item
-        this._data.GoToAction(p_item.data);
+        this._data.GoToAction(p_item.data);            
+        this._selectionStack.Clear();
     }
 
     _OnSelectionStackRemove(p_item) { }
