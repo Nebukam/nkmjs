@@ -141,12 +141,17 @@ class BINDINGS {
      */
     static Get(p_context, p_key, p_fallback = null, p_broad = true) {
 
+        if(!p_context){ throw new Error(`p_context cannot be null.`); }
+
         p_key = u.isFunc(p_key) ? p_key : p_key.constructor;
         if (!u.isFunc(p_key)) { throw new Error(`p_key must be a constructor or have an accessible constructor.`); }
+
+        p_context = u.isFunc(p_context) ? p_context : p_context.constructor;
 
         let binding = _contextMap.Get(p_context, p_key);
 
         if (!binding) {
+
             if (p_broad) { //&& typeof p_context === 'function'
                 //p_borad === true, look for other associations in this context that would fit
                 //Ensure we're looking at a constructor context first

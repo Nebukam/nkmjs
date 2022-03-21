@@ -215,14 +215,24 @@ class WidgetItem extends Widget {
         this._ClearCommandHandles();
     }
 
+    Activate(p_evt) {
+        if (!super.Activate(p_evt)) { return false; }
+        if (!this._data) { return true; }
+        if (this._data.primaryCommand) {
+            this._data.primaryCommand.Execute();
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @description TODO
      * @param {Event} p_evt 
      */
     AltActivate(p_evt) {
         if (!this._data) { return true; }
-        if (this._data.primaryCommand) {
-            this._data.primaryCommand.Execute();
+        if (this._data.secondaryCommand) {
+            this._data.secondaryCommand.Execute();
             return false;
         }
         return true;

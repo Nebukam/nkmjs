@@ -54,6 +54,12 @@ class List extends ListItem {
         this._SetupBuilder(this._builder);
     }
 
+    get defaultItemClass() { return this._builder._defaultItemClass; }
+    set defaultItemClass(p_value) { this._builder._defaultItemClass = p_value || this.constructor.__defaultItemClass; }
+
+    get defaultDirClass() { return this._builder._defaultDirClass; }
+    set defaultDirClass(p_value) { this._builder._defaultDirClass = p_value || this.constructor.__defaultDirClass; }
+
     set depth(p_value) {
 
         super.depth = p_value;
@@ -200,6 +206,8 @@ class List extends ListItem {
     // ----> Pooling
 
     _CleanUp() {
+        this.defaultItemClass = null;
+        this.defaultDirClass = null;
         super._CleanUp();
         this.Collapse();
     }

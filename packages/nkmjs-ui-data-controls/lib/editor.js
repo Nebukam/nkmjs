@@ -193,8 +193,8 @@ class Editor extends ui.views.View {
 
     //#region Actions
 
-    StartActionGroup(){
-        this._actionStack.ToggleGrouping(true);
+    StartActionGroup(p_infos = null){
+        this._actionStack.ToggleGrouping(true, p_infos);
     }
 
     EndActionGroup(){

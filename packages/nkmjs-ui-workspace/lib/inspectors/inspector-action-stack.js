@@ -94,7 +94,7 @@ class ActionStackInspector extends datacontrols.InspectorView {
         let
             action = this._data._stack[p_index],
             item = this.Add(
-                com.BINDINGS.Get(this._owner, action, this.constructor.__default_actionItem),
+                com.BINDINGS.Get(this, action, this.constructor.__default_actionItem),
                 `item`, p_fragment);
 
         item.Watch(com.SIGNAL.RELEASED, this._OnActionItemRelelased, this);

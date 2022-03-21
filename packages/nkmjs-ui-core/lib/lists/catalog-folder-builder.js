@@ -67,7 +67,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
         let
             fragment = document.createDocumentFragment(),
-            host = this._host;
+            tempHost = this._host;
 
         this._host = fragment;
         this._insideBatch = true;
@@ -75,10 +75,10 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
         super._AddCatalogContent(p_catalog, p_deep);
 
-        dom.Attach(fragment, host);
+        dom.Attach(fragment, tempHost);
 
         this._insideBatch = false;
-        this._host = host;
+        this._host = tempHost;
 
         this._itemStreamer.itemCount = this._itemList.length;
         //TODO: Update streamer
@@ -111,9 +111,10 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
         if (p_item.isDir) {
 
-            let mappedObject = this._owner.Add(
-                com.BINDINGS.Get(this._owner, p_item, this._defaultDirClass),
-                `item group`, this._host);
+            let
+                mappedObject = this._owner.Add(
+                    com.BINDINGS.Get(this._owner, p_item, this._defaultDirClass),
+                    `item group`, this._host);
 
             this._map.set(p_item, mappedObject);
             mappedObject.data = p_item;

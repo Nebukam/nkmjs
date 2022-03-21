@@ -28,6 +28,7 @@ class ActionStack extends com.pool.DisposableObjectEx {
         this._isEnabled = true;
         this._groupingActive = false;
         this._group = null;
+        this._groupInfos = null;
     }
 
     get count() { return this._stack.length; }
@@ -75,7 +76,7 @@ class ActionStack extends com.pool.DisposableObjectEx {
      * @description TODO
      * @param {boolean} p_toggle 
      */
-    ToggleGrouping(p_toggle) {
+    ToggleGrouping(p_toggle, p_groupInfos = null) {
 
         if (this._groupingActive === p_toggle) { return; }
 
@@ -85,6 +86,9 @@ class ActionStack extends com.pool.DisposableObjectEx {
 
             //TODO : If group has only one action merge it with the stack instead
             this._group = null;
+            this._groupInfos = null;
+        } else if (p_toggle) {
+            this._groupInfos = p_groupInfos;
         }
 
     }
@@ -101,7 +105,10 @@ class ActionStack extends com.pool.DisposableObjectEx {
         if (!this._isEnabled) { return null; }
 
         if (this._groupingActive) {
-            if (!this._group) { this._group = this._Register(com.Rent(ActionGroup)); }
+            if (!this._group) {
+                this._group = this._Register(com.Rent(ActionGroup));
+                if (this._groupInfos) { this._group._infos = { ...this._groupInfos }; }
+            }
         }
 
         // Check if last action can be updated instead of creating a new one.

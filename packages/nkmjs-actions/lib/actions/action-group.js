@@ -19,7 +19,11 @@ class ActionGroup extends Action {
         super._Init();
         this._actions = [];
         this._last = null;
+        this._infos = null;
     }
+
+    get title(){ return this._infos ? this._infos.title || this.constructor.name : this.constructor.name; }
+    get htitle(){ return this._infos ? this._infos.htitle || this.constructor.name : this.constructor.name; }
 
     /**
      * @description TODO
