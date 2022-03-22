@@ -70,7 +70,8 @@ class WidgetBar extends WidgetOrientable {
             .To(`stretch`)
             .To(`defaultWidgetClass`, `_defaultWidgetClass`)
             .To(`defaultWidgetOptions`)
-            .To(`handles`);
+            .To(`handles`)
+            .To(`orientation`);
 
         this._handleObserver = new com.signals.Observer();
         this._handleObserver.Hook(com.SIGNAL.RELEASED, this._OnHandleReleased, this);
