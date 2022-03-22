@@ -9,4 +9,7 @@ module.exports = {
     Folder: require(`./folder`),
     FolderRoot: require(`./folder-root`),
 
+    MenuRoot: require(`./menu-root`),
+    MenuItem: require(`./menu-item`),
+
 }

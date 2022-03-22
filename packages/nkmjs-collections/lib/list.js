@@ -225,7 +225,7 @@ class List {
 
     /**
      * @description Loops through all items in List. Callback should match the signature : (item, index)
-     * @param {function} p_fn
+     * @param {function} p_fn ( list, item, index )
      * @param {object} p_this
      * @param {boolean} p_reverse
      */

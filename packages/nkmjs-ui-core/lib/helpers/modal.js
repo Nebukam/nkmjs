@@ -251,6 +251,7 @@ class Modal extends DisplayObjectContainer {
 
         if (this._content === p_value) { return; }
         if (this._content) {
+            if (this._content.modal == this) { this._content.modal = null; }
             this._content.Unwatch(SIGNAL.CLOSE_REQUESTED, this.Close);
             if (this._ownsContent) {
                 this._content.Release();
@@ -272,6 +273,7 @@ class Modal extends DisplayObjectContainer {
         this._ownsContent = u.isFunc(p_value);
 
         this._content = this.Add(p_value, `content`);
+        this._content.modal = this;
         this._content.Watch(SIGNAL.CLOSE_REQUESTED, this.Close);
         if (`DisplayGranted` in this._content) { this._content.DisplayGranted(); }
 
@@ -363,7 +365,7 @@ class Modal extends DisplayObjectContainer {
                 'display': 'flex', // making sure things are properly sized,
                 'max-width': 'var(--screen-width)',
                 'max-height': 'var(--screen-height)',
-                'z-index':'100' //TODO : Need to update this is the modal is on top of an overlay
+                'z-index': '100' //TODO : Need to update this is the modal is on top of an overlay
             },
             ':host(.mode-float-inside)': {
 

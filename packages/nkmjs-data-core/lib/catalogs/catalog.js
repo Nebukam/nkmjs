@@ -161,7 +161,10 @@ class Catalog extends CatalogItem {
         super._Init();
 
         this._distribute.beginFn = this._Bind(this._OnOptionsWillUpdate);
-        this._distribute.To(`autoSort`, `autoSort`);
+        this._distribute
+            .To(`autoSort`, `autoSort`)
+            .To(`localItemClass`, `_localItemClass`, null)
+            .To(`expanded`);
 
         this._expanded = false;
 

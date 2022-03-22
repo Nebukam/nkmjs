@@ -121,7 +121,7 @@ class UI extends com.helpers.SingletonEx {
      */
     _Rent(p_class, p_parent = null) {
 
-        if(u.isString(p_class)){ console.log(`${p_class} -> `,this._typeMap); p_class = this._typeMap[p_class]; }
+        if(u.isString(p_class)){ p_class = this._typeMap[p_class]; }
 
         if (!this._uiTypes.Contains(p_class)) {
             if (u.isInstanceOf(p_class, DisposableHTMLElement)) {
@@ -172,6 +172,12 @@ class UI extends com.helpers.SingletonEx {
     _UpdateDirty(p_delta) {
         this._dirtyElements.ForEach((p_item, p_index) => { p_item.ApplyTransforms(); });
         this._dirtyElements.Clear();
+    }
+
+    _Preload(p_class, p_num){
+        for(var i = 0; i < p_num; i++){
+            this._Rent(p_class).Release();
+        }
     }
 
 }

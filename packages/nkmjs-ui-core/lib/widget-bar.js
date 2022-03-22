@@ -45,7 +45,7 @@ class WidgetBar extends WidgetOrientable {
         super._Init();
         this._defaultWidgetClass = this._defaultWidgetClass || this.constructor.__defaultWidgetClass;
         this._defaultWidgetOptions = null;
-        this._optionsMap = new collections.Dictionary();
+        this._optionsMap = new Map();
         this._handles = [];
         this._inline = false;
 
@@ -72,9 +72,12 @@ class WidgetBar extends WidgetOrientable {
             .To(`defaultWidgetOptions`)
             .To(`handles`);
 
+        this._handleObserver = new com.signals.Observer();
+        this._handleObserver.Hook(com.SIGNAL.RELEASED, this._OnHandleReleased, this);
+
     }
 
-    set options(p_value){ this._distribute.Update(this, p_value); }
+    set options(p_value) { this._distribute.Update(this, p_value); }
 
     /**
      * @description TODO
@@ -217,8 +220,7 @@ class WidgetBar extends WidgetOrientable {
 
         if (this._inline) { handle.classList.add(`inline`); }
 
-        this._optionsMap.Set(handle, p_options);
-        handle.Watch(com.SIGNAL.RELEASED, this._OnHandleReleased, this);
+        this._optionsMap.get(handle, p_options);
 
         if (u.isInstanceOf(handle, WidgetButton)) {
 
@@ -264,7 +266,7 @@ class WidgetBar extends WidgetOrientable {
         }
 
         if (p_options) {
-            
+
             u.Assign(p_options, handle, this);
 
             if (p_options.watchers && Array.isArray(p_options.watchers)) {
@@ -283,10 +285,15 @@ class WidgetBar extends WidgetOrientable {
         if (`placement` in handle) { handle.placement = this._placement.currentFlag; }
 
         this._handles.push(handle);
+        this._handleObserver.Observe(handle);
+
+        this._OnHandleCreated(handle);
 
         return handle;
 
     }
+
+    _OnHandleCreated(p_handle) { }
 
     /**
      * @description TODO
@@ -328,7 +335,7 @@ class WidgetBar extends WidgetOrientable {
      */
     _OnRadioActivated(p_handle) {
 
-        let handleOptions = this._optionsMap.Get(p_handle),
+        let handleOptions = this._optionsMap.get(p_handle),
             radio = handleOptions.radio;
 
         if (radio in this._radioMap) {
@@ -347,7 +354,7 @@ class WidgetBar extends WidgetOrientable {
      */
     _OnRadioDeactivated(p_handle) {
 
-        let handleOptions = this._optionsMap.Get(p_handle),
+        let handleOptions = this._optionsMap.get(p_handle),
             radio = handleOptions.radio;
 
         if (radio in this._radioMap) {
@@ -368,7 +375,7 @@ class WidgetBar extends WidgetOrientable {
      */
     _OnHandleReleased(p_handle) {
 
-        let options = this._optionsMap.Get(p_handle),
+        let options = this._optionsMap.get(p_handle),
             groupId = u.tils.Get(options, `group`, null);
 
         if (groupId) {
@@ -387,12 +394,14 @@ class WidgetBar extends WidgetOrientable {
         }
 
         p_handle.classList.remove(`item`);
-        this._optionsMap.Remove(p_handle);
+        this._optionsMap.delete(p_handle);
 
         // TODO : Check if radio & remove
 
         let index = this._handles.indexOf(p_handle);
         if (index != -1) { this._handles.splice(index, 1); }
+
+        this._handleObserver.Unobserve(p_handle);
 
     }
 
@@ -400,6 +409,7 @@ class WidgetBar extends WidgetOrientable {
      * @description TODO
      */
     Clear() {
+        this._handleObserver.Flush();
         while (this._handles.length != 0) {
             this._handles.pop().Release();
         }

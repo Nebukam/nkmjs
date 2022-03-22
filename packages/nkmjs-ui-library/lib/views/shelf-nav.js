@@ -220,7 +220,7 @@ class ShelfNav extends ui.WidgetBar {
      * @param {*} p_handle 
      */
     _OnHandleActivated(p_handle) {
-        this._Broadcast(ShelfNav.HANDLE_ACTIVATED, this, p_handle, this._optionsMap.Get(p_handle));
+        this._Broadcast(ShelfNav.HANDLE_ACTIVATED, this, p_handle, this._optionsMap.get(p_handle));
     }
 
     // ----> Pooling

@@ -110,7 +110,7 @@ class DOMStreamer extends DisposableHTMLElement {
                 'grid-column': `1/-1`, // take one full width
             },
             '.dom-streamer-item': {
-                'position':'relative'
+                'position': 'relative'
                 //'box-sizing': 'border-box',
                 //'flex-grow': `1`,
                 //'flex': `0 0 auto`,
@@ -342,6 +342,10 @@ class DOMStreamer extends DisposableHTMLElement {
 
         this._fixture.style.setProperty(`grid-row-end`, `span ${lineStart + 1}`);
 
+    }
+
+    Reload() {
+        this._Stream(this._indices.start, this._indices.end, true);
     }
 
     _Stream(p_start, p_end, p_force = false) {

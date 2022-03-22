@@ -3,8 +3,9 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
+const ui = require("@nkmjs/ui-core");
 
-const Modal = require(`../helpers/modal`);
+const Modal = ui.helpers.Modal;
 
 /**
  * @description Controls a single instance of a Modal with static parameters.
@@ -14,10 +15,8 @@ const Modal = require(`../helpers/modal`);
  * @augments actions.Command
  * @memberof actions
  */
-class CommandModal extends actions.Command {
+class CommandMenu extends actions.Command {
     constructor() { super(); }
-
-    static __defaultModalClass = Modal;
 
     _Init() {
         super._Init();
@@ -59,7 +58,7 @@ class CommandModal extends actions.Command {
         }
 
         let o = this._options,
-        modalClass = o.modalClass || this.constructor.__defaultModalClass,
+        modalClass = o.modalClass || Modal,
         modalOptions = { ...o };
 
         if(o.anchorToEmitter){
@@ -91,4 +90,4 @@ class CommandModal extends actions.Command {
 
 }
 
-module.exports = CommandModal;
+module.exports = CommandMenu;

@@ -95,7 +95,7 @@ class TextHandler extends ContentManipulator {
      * @param {*} p_element 
      * @param {string} p_value 
      */
-     _Apply(p_element, p_value, p_direct = false) {
+    _Apply(p_element, p_value, p_direct = false) {
 
         if (u.isVoid(p_value)) {
             p_element.innerHTML = ``;
@@ -112,7 +112,8 @@ class TextHandler extends ContentManipulator {
 
             if (text === ``) { return false; }
 
-            p_element.innerHTML = text;
+            if (!p_direct) { p_element.innerHTML = text; }
+            else { p_element.textContent = text; }
             return true;
 
         }

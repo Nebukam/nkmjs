@@ -8,6 +8,7 @@ const REQUEST = require(`./lib/request`);
 const overlays = require(`./lib/overlays`);
 const dialogs = require(`./lib/dialogs`);
 const inputs = require(`./lib/inputs`);
+const modals = require(`./lib/modals`);
 
 class Bindings extends com.helpers.BindingKit {
     constructor() { super(); }
@@ -15,6 +16,9 @@ class Bindings extends com.helpers.BindingKit {
         super._Init();
 
         dialog.DialogOverlay.__default_overlayContentClass = dialogs.DialogBox;
+
+        ui.commands.Modal.__defaultModalClass = modals.Simple;
+        ui.commands.Menu.__defaultModalClass = modals.Simple;
 
         this.Add(
 

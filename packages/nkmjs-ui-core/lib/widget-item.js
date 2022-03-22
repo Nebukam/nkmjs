@@ -22,7 +22,7 @@ const IDS = require(`./ids`);
 class WidgetItem extends Widget {
     constructor() { super(); }
 
-    static __draggable = true;
+    static __draggable = false;
     // ----> Init
 
     _Init() {
