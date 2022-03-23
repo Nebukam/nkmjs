@@ -7,12 +7,8 @@ const SIGNAL = require(`../signal`);
 class SimpleDataBlock extends DataBlock {
     constructor() { super(); }
 
-    static __signalValueMap = this.__GetSignalValueMap();
+    static __signalValueMap = {};
     static __lockedData = true;
-
-    static __GetSignalValueMap() {
-        return {};
-    }
 
     _Init() {
         super._Init();

@@ -45,4 +45,22 @@ module.exports = {
 
     REPLACE: require(`./lib/replace`),
 
+    Download: (p_filename, p_content, p_mime = null) => {
+
+        let element = document.createElement("a"),
+            blob;
+
+        if (__CHECKS.isInstanceOf(p_content, Blob)) { blob = p_content; }
+        else {
+            if (!p_mime) { blob = new Blob([p_content]); }
+            else { blob = new Blob([p_content], { type: p_mime.type }); }
+        }
+
+        element.href = URL.createObjectURL(blob);
+        element.download = p_mime ? `${p_filename}${p_mime.ext}` : p_filename;
+        element.click();
+        element.remove();
+
+    }
+
 }

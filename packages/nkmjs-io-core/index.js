@@ -1,5 +1,6 @@
 'use strict';
 
+const u = require("@nkmjs/utils");
 const __RESOURCES = require(`./lib/resources-manager`);
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
     RESSOURCE_STATE: require(`./lib/resource-state`),
     Resource: require(`./lib/resource`),
     Directory: require(`./lib/directory`),
-    
+
     IOProcess: require(`./lib/io-process`),
     IOQueue: require(`./lib/io-queue`),
     ResourceOperation: require(`./lib/resource-operation`),
@@ -24,7 +25,7 @@ module.exports = {
     ioprocesses: require(`./lib/io-processes`),
 
     // Shortcut to RESOURCES.Get
-    Get:__RESOURCES.Get.bind(__RESOURCES),
-    Read:__RESOURCES.GetAndRead.bind(__RESOURCES),
+    Get: __RESOURCES.Get.bind(__RESOURCES),
+    Read: __RESOURCES.GetAndRead.bind(__RESOURCES),
 
 }

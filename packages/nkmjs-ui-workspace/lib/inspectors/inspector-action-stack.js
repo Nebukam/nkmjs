@@ -110,11 +110,6 @@ class ActionStackInspector extends datacontrols.InspectorView {
         this._actionMap.delete(action);    
     }
 
-    _OnDataChanged(p_oldData) {
-        super._OnDataChanged(p_oldData);
-        console.log(this._data);
-    }
-
     //
 
     _OnSelectionStackAdd(p_item) {

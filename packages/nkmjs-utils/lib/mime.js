@@ -106,7 +106,7 @@ class MIME {
         this._map = {};
         for (let i = 0, n = this.__commonMIMEs.length; i < n; i++) {
             let m = this.__commonMIMEs[i];
-            this._map[m.ext] = { type: m.type, desc: m.desc, as:(m.as || `fetch`) };
+            this._map[m.ext] = { ext:m.ext, type: m.type, desc: m.desc, as:(m.as || `fetch`) };
         }
     }
 
