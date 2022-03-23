@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const collections = require("@nkmjs/collections");
 
 const URI = require(`../uri`);
 const ECOSYSTEM_EVENT = require(`../ecosystem-event`);

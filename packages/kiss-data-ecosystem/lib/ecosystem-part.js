@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const data = require(`@nkmjs/data-core`);
+const data = require("@nkmjs/data-core");
 const actions = require("@nkmjs/actions");
 
 const EcosystemCommand = require(`./data/commands/command-ecosystem`);

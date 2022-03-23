@@ -420,6 +420,22 @@ class FLAGS {
 
     /**
      * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Sizes
+     */
+     static SIZE_FILL = `size-fill`;
+
+     /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Sizes
+     */
+      static SIZE_CUSTOM = `size-custom`;
+
+    /**
+     * @description TODO
      * @type {array}
      * @customtag read-only
      * @group Sizes
@@ -430,7 +446,9 @@ class FLAGS {
         this.SIZE_S,
         this.SIZE_M,
         this.SIZE_L,
-        this.SIZE_XL
+        this.SIZE_XL,
+        this.SIZE_FILL,
+        this.SIZE_CUSTOM
     ];
 
     // Flavors
@@ -472,7 +490,7 @@ class FLAGS {
         com.FLAGS.LOADING,
         com.FLAGS.PROCESSING,
         com.FLAGS.WAITING,
-        com.FLAGS.active,
+        com.FLAGS.ACTIVE,
         this.CTA
     ];
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const data = require(`@nkmjs/data-core`);
+const data = require("@nkmjs/data-core");
 
 class EcosystemDataBlock extends data.DataBlock {
     constructor() { super(); }
