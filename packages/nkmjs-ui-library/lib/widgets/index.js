@@ -2,6 +2,6 @@
 
 module.exports = {
 
-    Tag: require(`./Tag`),
+    Tag: require(`./tag`),
     
 }
