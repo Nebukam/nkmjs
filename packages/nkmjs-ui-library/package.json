@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-library",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "NKMjs Framework UI Library",
   "browser": "index.js",
   "repository": {
