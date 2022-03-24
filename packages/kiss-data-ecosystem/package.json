@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/kiss-data-ecosystem",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "NKMjs / KISS Data Ecosystem",
   "main": "index.js",
   "private": true,
