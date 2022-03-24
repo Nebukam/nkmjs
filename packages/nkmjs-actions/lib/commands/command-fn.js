@@ -12,7 +12,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
 const COMMAND_SIGNAL = require(`./command-signal`);
-const Command = require(`./Command`);
+const Command = require(`./command`);
 
 /**
  * @description TODO
