@@ -21,7 +21,6 @@ class TaskBuildElectronHTML extends ScriptBase {
     }
 
     OnPreparationComplete() {
-
         let electronHtml = NKMjs.InApp(NKMjs.ELECTRON_HTML_INDEX),
             replacer = new ReplaceVars(
                 NKMjs.projectConfig.__keys,

@@ -88,13 +88,13 @@ class WidgetOrientable extends Widget {
      * @group Placement & Orientation
      */
     _HorizontalScroll(p_evt) {
-        if(!dom.OverflowsX(this._wrapper)){ return; }
+        if (!dom.OverflowsX(this._wrapper)) { return; }
         let delta = Math.sign(p_evt.deltaY);
-        this._wrapper.scrollBy({ 
+        this._wrapper.scrollBy({
             top: 0, // could be negative value
-            left: (delta * 50), 
+            left: (delta * 50),
             //behavior: 'smooth' 
-          });
+        });
         p_evt.preventDefault();
     }
 

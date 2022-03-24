@@ -46,7 +46,7 @@ class TaskBuildElectronApp extends ScriptBase {
             main: `${NKMjs.projectConfig.dirs.app}/${NKMjs.ELECTRON_ENTRY_POINT}`,
             description: NKMjs.projectConfig.description,
             productName: NKMjs.projectConfig.longName,
-            appId: `my.id`,
+            appId: `app.id`,
             appDirectory: NKMjs.InProject(),
             buildResources: NKMjs.InBuildRsc(),
             dependencies: (NKMjs.projectConfig.__packagejson.dependencies || {}),

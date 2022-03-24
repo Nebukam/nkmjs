@@ -8,5 +8,6 @@ const MAIN_SERVER = require(`./%dirs.src-server%/main`);
 
 new MAIN_SERVER({
     dirname: __dirname,
+    version:'%version%',
 %config%
 });

@@ -123,6 +123,7 @@ class NKMjs {
         //console.log(`dirnameCore : ${this.dirnameCore}`);
 
         this.projectConfig.__keys[`build-uid`] = this.shortargs[`print-build-guid`] ? this.buildUID : ``;
+        this.projectConfig.__keys[`version`] = projectPackageJson ? projectPackageJson.version : `0.0.0`;
 
         
 

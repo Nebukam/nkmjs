@@ -15,7 +15,7 @@ class ActionInspectorItem extends datacontrols.InspectorWidget {
     _Init() {
         this.default_SelectOnActivation = true;
         super._Init();
-        this._notifiesSelectionStack = true;        
+        this._notifiesSelectionStack = true;
     }
 
     _PostInit() {
@@ -26,13 +26,13 @@ class ActionInspectorItem extends datacontrols.InspectorWidget {
     _Style() {
         return style.Extends({
             ':host': {
-                
+
             },
-            ':host(.done)':{
-                'opacity':`1`
+            ':host(.done)': {
+                'opacity': `1`
             },
-            ':host(.undone)':{
-                'opacity':`0.5`
+            ':host(.undone)': {
+                'opacity': `0.5`
             }
         }, super._Style());
     }
@@ -40,34 +40,33 @@ class ActionInspectorItem extends datacontrols.InspectorWidget {
     //TODO : Handle action state updates...
     _Render() {
         super._Render();
-        this._icon =  new ui.manipulators.Icon(ui.El(`div`, { class: `icon` }, this._host));
+        this._icon = new ui.manipulators.Icon(ui.El(`div`, { class: `icon` }, this._host));
         this._label = new ui.manipulators.Text(ui.El(`span`, { class: `label` }, this._host));
         this._icon.Set(`superior-or-equal`);
     }
 
-    _OnDataChanged(p_oldData){
+    _OnDataChanged(p_oldData) {
         super._OnDataChanged(p_oldData);
-        if(this._data){
+        if (this._data) {
             this.Refresh();
         }
     }
 
-    Refresh(){
+    Refresh() {
         this._label.Set(this._data.title);
         this.htitle = this._data.htitle;
 
-        if(this._data.undoed){
+        if (this._data.undoed) {
             this.classList.add(actions.ACTION_STATE.UNDONE);
             this.classList.remove(actions.ACTION_STATE.DONE);
-        }else{
+        } else {
             this.classList.remove(actions.ACTION_STATE.UNDONE);
             this.classList.add(actions.ACTION_STATE.DONE);
         }
     }
 
-    Activate(p_evt){
+    Activate(p_evt) {
         super.Activate(p_evt);
-        console.log(`Activated`);
     }
 
 }

@@ -11,5 +11,6 @@ new MAIN_ELECTRON({
     html: `./%htmlIndex%`,
     renderer: `%js_main%`,
     theme: '%app.theme%',
+    version:'%version%',
 %config%
 });
