@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/documents",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "description": "NKMjs Framework Documents management",
   "main": "index.js",
   "repository": {
@@ -18,7 +18,7 @@
   "dependencies": {
     "@nkmjs/collections": "^0.1.19",
     "@nkmjs/common": "^0.1.27",
-    "@nkmjs/data-core": "^0.0.37",
+    "@nkmjs/data-core": "^0.0.38",
     "@nkmjs/environment": "^0.1.28",
     "@nkmjs/io-core": "^0.1.31",
     "@nkmjs/utils": "^0.0.36"
