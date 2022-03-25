@@ -38,7 +38,6 @@ globalThis.nkm = module.exports = {
     dialog : require(`@nkmjs/dialog`),
     style : require(`@nkmjs/style`),
     ui : require(`@nkmjs/ui-core`),
-    uicontrols : require(`@nkmjs/ui-data-controls`),
     uilib : require(`@nkmjs/ui-library`),
     uiworkspace : require(`@nkmjs/ui-workspace`),
     

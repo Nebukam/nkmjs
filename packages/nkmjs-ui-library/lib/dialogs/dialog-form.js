@@ -116,4 +116,4 @@ class DialogForm extends dialog.DialogForm {
 }
 
 module.exports = DialogForm;
-ui.Register('nkmjs-dialog-box', DialogForm);
+ui.Register('nkmjs-dialog-form', DialogForm);
