@@ -26,6 +26,9 @@ class Command extends com.pool.DisposableObjectEx {
 
     //#region Static members
 
+    static __defaultName = u.tils.CamelSplit(this.name);
+    static __defaultIcon = `command`;
+
     /**
      * @description TODO
      * @param {function} p_class 
@@ -34,8 +37,8 @@ class Command extends com.pool.DisposableObjectEx {
      */
     static Rent(p_class, p_name = null, p_icon = null) {
         let cmd = com.Rent(p_class);
-        cmd.name = u.isEmpty(p_name) ? u.tils.CamelSplit(p_class.name) : p_name;
-        cmd.icon = u.isEmpty(p_icon) ? `command` : p_icon;
+        cmd.name = u.isEmpty(p_name) ? p_class.__defaultName : p_name;
+        cmd.icon = u.isEmpty(p_icon) ? p_class.__defaultIcon : p_icon;
         return cmd;
     }
 
@@ -43,8 +46,8 @@ class Command extends com.pool.DisposableObjectEx {
 
     _Init() {
         super._Init();
-        this._icon = ``;
-        this._name = u.tils.CamelSplit(this.constructor.name);
+        this._icon = this.constructor.__defaultIcon;
+        this._name = this.constructor.__defaultName;
         this._isEnabled = true;
         this._context = null;
         this._emitter = null;

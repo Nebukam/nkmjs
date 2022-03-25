@@ -285,7 +285,7 @@ class ElectronBase {
     // ----> Dialog callbacks
 
     _OnRequestDialog(p_evt, p_options){
-        console.log(`WELP`);
+        console.log(p_options);
         dialog.showOpenDialog(p_options).then(this._RequestDialogResponse);
     }
 

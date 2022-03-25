@@ -275,8 +275,13 @@ class DisplayObject extends DisposableHTMLElement {
             if (p_request.isHandled) { return; }
         }
 
-        if (this._parent) { this._parent._HandleLocalRequest(p_request); }
-        else { actions.RELAY.HandleRequest(p_request); }
+        if (this._parent) {
+            if (`_HandleLocalRequest` in this._parent) {
+                this._parent._HandleLocalRequest(p_request);
+                return;
+            }
+        }
+        actions.RELAY.HandleRequest(p_request);
 
     }
 
@@ -514,7 +519,7 @@ class DisplayObject extends DisposableHTMLElement {
     _CleanUp() {
 
         this.visible = true;
-        
+
         this.parent = null;
 
         this.order = this.constructor.__defaultOrder;

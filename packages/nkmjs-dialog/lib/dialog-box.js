@@ -21,11 +21,6 @@ class DialogBox extends ui.Widget {
     _Init() {
         super._Init();
 
-        this._formHandler = new ui.inputs.InputFormHandler();
-        this._formHandler
-            .Watch(ui.inputs.SIGNAL.FORM_INVALID, this._OnFormInvalid, this)
-            .Watch(ui.inputs.SIGNAL.FORM_READY, this._OnFormReady, this);
-
         this._contentWrapper = null;
 
         this._hasInput = false;
@@ -33,8 +28,6 @@ class DialogBox extends ui.Widget {
         this._handles = [];
         this._contents = [];
         this._contentOptions = new Map();
-        this._submitMap = new collections.Dictionary();
-        this._submitList = new collections.List();
 
         this._toolbarClass = ui.WidgetBar;
         this._toolbar = null;
@@ -51,7 +44,6 @@ class DialogBox extends ui.Widget {
             .To(`content`, this._Bind(this.SetContent));
 
         this._Bind(this._Close);
-        this._Bind(this._Submit);
 
         this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
@@ -83,9 +75,6 @@ class DialogBox extends ui.Widget {
     }
 
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
-        this._hasInput = (this._formHandler._inputList.count > 0);
-        if (this._hasInput) { this._formHandler.ValidateForm(); }
-
         if (p_options.grow) { this.style.removeProperty(`max-width`); }
         else { this.style.setProperty(`max-width`, p_options.maxwidth || `500px`); }
     }
@@ -174,28 +163,18 @@ class DialogBox extends ui.Widget {
 
             let item = this.Add(itemClass, `item`, this._contentWrapper);
 
-            if (u.isInstanceOf(itemClass, ui.inputs.InputBase)) {
-
-                item.inputId = itemNfos.inputId;
-
-                if (itemNfos.value) {
-                    item.currentValue = itemNfos.value;
-                }
-
-                let validations = itemNfos.validations;
-                if (validations) {
-                    for (let i = 0, n = validations.length; i < n; i++) {
-                        item.AddValidation(validations[i]);
-                    }
-                }
-                this._formHandler.Register(item);
-            }
-
             if (itemData) { item.data = itemData; }
 
             this._contents.push(item);
             this._contentOptions.set(item, itemNfos);
+
+            this._OnContentItemAdded(itemNfos, item);
+
         }
+
+    }
+
+    _OnContentItemAdded(p_item, p_infos){
 
     }
 
@@ -263,14 +242,6 @@ class DialogBox extends ui.Widget {
         let handle = this._toolbar.CreateHandle(p_options, p_class);
         this._handles.push(handle);
 
-        if (u.tils.Get(p_options, `submit`, false)) {
-            //TODO : Need to add a generic 'triggered' activation  signal
-            //to close the dialog box. Otherwise, close by default.
-            this._submitMap.Set(handle, p_options.submit);
-            this._submitList.Add(handle);
-            handle.Watch(ui.SIGNAL.TRIGGERED, this._Submit);
-        }
-
         if (u.tils.Get(p_options, `close`, true)) {
             //TODO : Need to add a generic 'triggered' activation signal
             //to close the dialog box. Otherwise, close by default.
@@ -281,32 +252,14 @@ class DialogBox extends ui.Widget {
 
     }
 
-    // ----> Form handling
-
-    _OnFormInvalid(p_handler) {
-        this._submitList.ForEach((p_item) => { p_item.activable = false; });
-    }
-
-    _OnFormReady(p_handler) {
-        this._submitList.ForEach((p_item) => { p_item.activable = true; });
-    }
-
     // ---->
 
     _Close() {
         this._data.Consume();
     }
 
-    _Submit(p_source) {
-        let cb = this._submitMap.Get(p_source);
-        u.Call(cb, this._formHandler.inputValues);
-    }
-
     _Clear() {
 
-        this._submitMap.Clear();
-        this._submitList.Clear();
-        this._formHandler.Clear();
         this._ClearHandles();
 
         for (let i = 0, n = this._contents.length; i < n; i++) {
@@ -326,7 +279,6 @@ class DialogBox extends ui.Widget {
 
         this._messageElement = null;
 
-        this._hasInput = false;
         this._contents.length = 0;
         this._contentOptions.clear();
 

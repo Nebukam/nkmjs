@@ -7,6 +7,7 @@ module.exports = {
     REQUEST: require(`./lib/request`),
 
     DialogBox: require(`./lib/dialog-box`),
+    DialogForm: require(`./lib/dialog-form`),
     DialogOverlay: require(`./lib/dialog-overlay`),
 
     // to DIALOG.Push
