@@ -80,23 +80,34 @@ class BINDINGS {
      * Retrieve the string identifier associated with a given class constructor, if any.
      * If no identifier could be found, but a UID is present in the class provided,
      * the class will be registered using that UID and its value returned by `GetClassKey`.
-     * @param {function} p_class constructor
+     * @param {function} p_constructor constructor
      * @returns {string} identifier if found, otherwise null
      * @group Class repertoire
      */
-    static GetClassKey(p_class) {
+    static GetConstructorKey(p_constructor) {
 
-        if (u.isObject(p_class)) { p_class = p_class.constructor; }
+        if (u.isObject(p_constructor)) { p_constructor = p_constructor.constructor; }
+        if (!p_constructor) { throw new Error(`Could not find valid constructor ref in ${p_constructor}`); }
 
-        let uid = _classReverseLookup.Get(p_class);
+        let uid = _classReverseLookup.Get(p_constructor);
 
         if (!uid) {
-            uid = u.tils.Get(NFOS.Get(p_class), IDS.UID, null);
-            if (!uid) { throw new Error(`No valid NFO found for ${p_class.name}`); }
-            this.SetClass(uid, p_class);
+            uid = u.tils.Get(NFOS.Get(p_constructor), IDS.UID, null);
+            if (!uid) { throw new Error(`No valid NFO found for ${p_constructor.name}`); }
+            this.SetClass(uid, p_constructor);
         }
 
         return uid;
+
+    }
+
+    static GetSerializerVersion(p_serializer) {
+        let nfos = NFOS.Get(p_serializer),
+            ver = u.tils.Get(nfos, IDS.VER, -1);
+
+        if (isNaN(ver)) { ver = -1; }
+
+        return ver;
     }
 
     /**
@@ -141,7 +152,7 @@ class BINDINGS {
      */
     static Get(p_context, p_key, p_fallback = null, p_broad = true) {
 
-        if(!p_context){ throw new Error(`p_context cannot be null.`); }
+        if (!p_context) { throw new Error(`p_context cannot be null.`); }
 
         p_key = u.isFunc(p_key) ? p_key : p_key.constructor;
         if (!u.isFunc(p_key)) { throw new Error(`p_key must be a constructor or have an accessible constructor.`); }

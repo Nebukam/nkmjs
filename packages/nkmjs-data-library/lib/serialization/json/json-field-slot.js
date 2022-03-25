@@ -18,7 +18,7 @@ class FieldSlotJSONSerializer extends DataBlockExtendableJSONSerializer {
 
         if (descriptor) {
             p_serial[IDS.DESCRIPTOR] = com.BINDINGS.GetClassKey(descriptor);
-            let serializer = this.GetSerializer(descriptor, FieldDescriptorJSONSerializer);
+            let serializer = this.GetSerializer(descriptor, -1, FieldDescriptorJSONSerializer);
             p_serial[IDS.SETTINGS] = serializer.Serialize(descriptor, p_options);
         }
 
@@ -37,7 +37,7 @@ class FieldSlotJSONSerializer extends DataBlockExtendableJSONSerializer {
         if (descriptorClassKey) {
             let descriptorClass = com.BINDINGS.GetClass(descriptorClassKey);
             let descriptor = com.Rent(descriptorClass),
-                serializer = this.GetSerializer(descriptor, FieldDescriptorJSONSerializer);
+                serializer = this.GetSerializer(descriptor, -1, FieldDescriptorJSONSerializer); //TODO : Get the correct ver
 
             p_data.settings = serializer.Deserialize(p_serial[IDS.SETTINGS], p_data, p_options, p_meta);
             p_data.descriptor = descriptor;

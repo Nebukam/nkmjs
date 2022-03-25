@@ -55,7 +55,7 @@ class JSON extends com.helpers.CSYMBOL{ constructor() { super(); }
      * @type {string}
      * @customtag read-only
      */
-    static CLASS = 'class';
+    static CONSTRUCTOR = 'constructor';
 
     /**
      * @description NKMjs JSON Identifier for storing class string identifier

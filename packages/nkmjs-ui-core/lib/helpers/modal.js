@@ -38,6 +38,8 @@ const RectTracker = require(`./rect-tracker`);
 class Modal extends DisplayObjectContainer {
     constructor() { super(); }
 
+    static __NFO__ = { css: [`@/global-host.css`] }
+    
     static modalStack = new collections.List();
 
     /**
@@ -359,6 +361,7 @@ class Modal extends DisplayObjectContainer {
     _Style() {
         return {
             ':host': {
+                '@':['fade-in'],
                 'position': 'absolute',
                 'border': '1px solid red',
                 //'width':'0', 'height':'0',

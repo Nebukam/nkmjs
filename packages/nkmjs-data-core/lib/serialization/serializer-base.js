@@ -14,7 +14,7 @@ class BaseSerializer {
     static __context = null;
     static __master = null;
 
-    static GetSerializer(p_key, p_fallback = null){
+    static GetSerializer(p_key, p_version = -1, p_fallback = null){
         return com.BINDINGS.Get(this.__context, p_key, p_fallback);
     }
 

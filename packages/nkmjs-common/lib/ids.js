@@ -20,8 +20,17 @@ class IDS {
     static METAPREFIX = `META@`;
 
     /**
-     * @description A property often expected to be found in a class `{@link common.NFOS|NFO}`.  
-     * It is looked-up by the `{@link common.helpers.BindingKit}` in order to make a class globally available through a string identifier.
+     * @description A property often expected to be found in a constructor `{@link common.NFOS|NFO}`.  
+     * It is looked-up by the `{@link common.helpers.BindingKit}` in order to use the right deserialization version when multiple one exists.
+     * @type {string}
+     * @customtag read-only
+     * @order 1000
+     */
+     static VER = `ver`;
+
+    /**
+     * @description A property often expected to be found in a constructor `{@link common.NFOS|NFO}`.  
+     * It is looked-up by the `{@link common.helpers.BindingKit}` in order to make a constructor globally available through a string identifier.
      * @type {string}
      * @customtag read-only
      * @order 1000

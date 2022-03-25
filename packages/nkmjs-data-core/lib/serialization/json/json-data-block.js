@@ -80,7 +80,7 @@ class DataBlockJSONSerializer extends AbstractJSONSerializer {
         if (!p_data) { throw new Error(`Cannot unpack to null target.`); }
 
         let metadata = p_data.metadata,
-            serializer = this.GetSerializer(metadata);
+            serializer = this.GetSerializer(metadata); //TODO : Get the correct ver
 
         if (__metaID in p_serial) { serializer.Deserialize(p_serial[__metaID], metadata, p_options, p_meta); }
         this.DeserializeContent(p_serial, p_data, p_options, p_meta);

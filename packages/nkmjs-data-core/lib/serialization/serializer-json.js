@@ -41,7 +41,7 @@ class JSONSerializer extends BaseSerializer {
     static Serialize(p_data, p_options = null) {
 
         // Retrieve serializer
-        let serializer = this.GetSerializer(p_data.constructor, null);
+        let serializer = this.GetSerializer(p_data.constructor, -1, null);
 
         if (!serializer) { throw new Error(`Could not find suitable serializer for target=${p_data}`); }
 
@@ -65,7 +65,9 @@ class JSONSerializer extends BaseSerializer {
             metas = serial[CONTEXT.JSON.META_KEY];
         }
 
-        metas[CONTEXT.JSON.CLASS] = com.BINDINGS.GetClassKey(p_data.constructor);
+        metas[CONTEXT.JSON.CONSTRUCTOR] = com.BINDINGS.GetConstructorKey(p_data.constructor);
+        metas[com.IDS.VER] = com.BINDINGS.GetSerializerVersion(serializer);
+
         let uid = p_data.id;
         if (uid) { metas[com.IDS.UID] = uid.toString(); }
 
@@ -83,15 +85,19 @@ class JSONSerializer extends BaseSerializer {
     static Deserialize(p_serial, p_data = null, p_options = null) {
 
         let targetClass = null,
+            version = -1,
             metas = p_serial[CONTEXT.JSON.META_KEY];
 
         // Retrieve reference constructor
         if (p_data != null) {
-            targetClass = p_data.constructor;
+            targetClass = p_data[CONTEXT.JSON.CONSTRUCTOR];
+            version = p_data[com.IDS.VER] || -1;
         } else {
             if (!metas) { throw new Error(`Cannot unserialize without nfos`); }
 
-            targetClass = com.BINDINGS.GetClass(metas[CONTEXT.JSON.CLASS]);
+            targetClass = com.BINDINGS.GetClass(metas[CONTEXT.JSON.CONSTRUCTOR]);
+            version = metas[com.IDS.VER] || -1;
+
             if (!targetClass) { throw new Error(`Could not find constructor ${metas.instanceOf}`); }
 
             p_data = com.Rent(targetClass);
@@ -102,7 +108,7 @@ class JSONSerializer extends BaseSerializer {
         else { dataWrapper = p_serial[CONTEXT.JSON.DATA_KEY]; }
 
         // Retrieve serializer
-        let serializer = this.GetSerializer(targetClass, null);
+        let serializer = this.GetSerializer(targetClass, version, null);
 
         if (!serializer) { throw new Error(`Could not find suitable de-serializer for target=${targetClass ? targetClass.name : null}`); }
 
