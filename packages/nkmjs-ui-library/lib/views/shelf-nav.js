@@ -38,8 +38,8 @@ class ShelfNav extends ui.WidgetBar {
 
         this._isHorizontalScrollEnabled = true;
 
-        this._handlesMap = new collections.Dictionary();
-        this._currentHandle = null;
+        this._navItemsMap = new Map();
+        this._currentNavItem = null;
 
         this._header = null;
         this._body = null;
@@ -53,7 +53,7 @@ class ShelfNav extends ui.WidgetBar {
      * @type {ui.core.Widget}
      * @customtag read-only
      */
-    get currentHandle() { return this._currentHandle; }
+    get currentNavItem() { return this._currentNavItem; }
 
     /**
      * @description TODO
@@ -160,22 +160,22 @@ class ShelfNav extends ui.WidgetBar {
      * @param {*} p_item 
      * @returns {*} the handle associated to the item, otherwise null.
      */
-    Get(p_item) {
-        return this._handlesMap.Get(p_item);
+    GetNavItem(p_item) {
+        return this._navItemsMap.get(p_item);
     }
 
     /**
      * @description Requests a handle from the shelf. Creates one if none already exists for the item
      * provided
      * @param {*} p_item item -- typically a CatalogItem, in the context of a Shelf.
-     * @param {*} p_index index at which the handle should be created. Not that if the handle already exists, it will not be moved.
+     * @param {number} p_index index at which the handle should be created. Not that if the handle already exists, it will not be moved.
      * @returns {*} The handle associated to the item
      */
-    CreateHandle(p_item, p_index = -1) {
+    CreateNavItem(p_item, p_index = -1){
 
-        let handle = this._handlesMap.Get(p_item);
+        let navItem = this._navItemsMap.get(p_item);
 
-        if (handle) { return handle; }
+        if (navItem) { return navItem; }
 
         if (!p_item.options.flagOn) {
             p_item.options.flagOn = [ui.FLAGS.TOGGLABLE];
@@ -183,51 +183,49 @@ class ShelfNav extends ui.WidgetBar {
             p_item.options.flagOn.push(ui.FLAGS.TOGGLABLE);
         }
 
+        navItem = this.CreateHandle(p_item.options);
+        this._navItemsMap.set(p_item, navItem);
 
-        handle = super.CreateHandle(p_item.options);
-        this._handlesMap.Set(p_item, handle);
+        navItem.data = p_item;
 
-        handle.data = p_item;
+        navItem.Watch(ui.SIGNAL.ACTIVATED, this._OnNavItemActivated, this);
 
-        handle.Watch(ui.SIGNAL.ACTIVATED, this._OnHandleActivated, this);
+        if (`orientation` in navItem) { navItem.orientation = this._orientation.currentFlag; }
 
-        if (`orientation` in handle) { handle.orientation = this._orientation.currentFlag; }
-
-        return handle;
-
-    }
+        return navItem;
+    }  
 
     /**
      * @description Removes the handle associated to the item
      * @param {*} p_item 
      * @returns {*} the handle associated to the item after it has been released (so references to it can be cleared)
      */
-    Remove(p_item) {
+    RemoveNavItem(p_item){
 
-        let handle = this._handlesMap.Get(p_item);
+        let navItem = this._navItemsMap.get(p_item);
+        if (!navItem) { return null; }
 
-        if (!handle) { return null; }
+        this._navItemsMap.delete(p_item);
+        navItem.Release();
 
-        handle.Release();
-
-        return handle;
+        return navItem;
 
     }
 
     /**
      * @access protected
      * @description TODO
-     * @param {*} p_handle 
+     * @param {*} p_navItem 
      */
-    _OnHandleActivated(p_handle) {
-        this._Broadcast(ShelfNav.HANDLE_ACTIVATED, this, p_handle, this._optionsMap.get(p_handle));
+    _OnNavItemActivated(p_navItem) {
+        this._Broadcast(ShelfNav.HANDLE_ACTIVATED, this, p_navItem, this._optionsMap.get(p_navItem));
     }
 
     // ----> Pooling
 
     _CleanUp() {
-        //TODO : Remove existing handles
-        this._handlesMap.Clear();
+        //TODO : Pre-process nav item data
+        this._navItemsMap.clear();
         super._CleanUp();
     }
 

@@ -95,6 +95,7 @@ class RootWorkspace extends Workspace {
         //If specified :
         //find the list of available editors
         //if there are multiple editor available, open the workbench and then open the desired editor
+        
     }
 
     _HandleOpenRequest(p_request) {

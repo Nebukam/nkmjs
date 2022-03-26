@@ -41,6 +41,8 @@ class WorkspaceCell extends uilib.views.Shelf {
      */
     _OnCatalogItemAdded(p_handler, p_item, p_mappedView) {
 
+        console.log(`_OnCatalogItemAdded : `, p_item);
+
         if (!u.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
             throw new Error(`non-catalog item added to workspace cell catalog.`);
         } else if (u.isInstanceOf(p_item, data.catalogs.Catalog)) {
@@ -52,6 +54,12 @@ class WorkspaceCell extends uilib.views.Shelf {
         
         return view;
 
+    }
+
+    _OnCatalogItemRemoved(p_builder, p_item, p_mappedView, p_index) {
+        console.log(`_OnCatalogItemRemoved : `, p_item);
+        return super._OnCatalogItemRemoved(p_builder, p_item, p_mappedView, p_index);
+        
     }
 
 }

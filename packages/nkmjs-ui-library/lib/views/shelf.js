@@ -67,7 +67,7 @@ class Shelf extends ui.views.View {
 
         super._PostInit();
         this._navPlacement.Set(this.constructor.__default_navPlacement);
-        this._nav.Watch(ShelfNav.HANDLE_ACTIVATED, this._OnHandleActivated, this);
+        this._nav.Watch(ShelfNav.HANDLE_ACTIVATED, this._OnNavItemActivated, this);
 
         let placholderViewClass = (this._placholderViewClass || this.constructor.__default_placeholderViewClass);
         if (placholderViewClass) {
@@ -330,11 +330,14 @@ class Shelf extends ui.views.View {
      */
     _OnCatalogItemAdded(p_builder, p_item, p_mappedView) {
 
-        let handle = this._nav.CreateHandle(p_item);
+        
+        let handle = this._nav.CreateNavItem(p_item);
         handle.Watch(ui.SIGNAL.CLOSE_REQUESTED, this._OnHandleCloseRequest, this);
 
-        p_mappedView.Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnViewRequestDisplay, this);
-        p_mappedView.Watch(ui.SIGNAL.CLOSE_REQUESTED, this._OnViewRequestClose, this);
+        p_mappedView
+            .Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnViewRequestDisplay, this)
+            .Watch(ui.SIGNAL.CLOSE_REQUESTED, this._OnViewRequestClose, this);
+
         p_mappedView.visible = false;
         p_mappedView.classList.add(ui.IDS.VIEW);
         this.Add(p_mappedView);
@@ -359,7 +362,7 @@ class Shelf extends ui.views.View {
      */
     _OnCatalogItemRemoved(p_builder, p_item, p_mappedView, p_index) {
 
-        let handle = this._nav.Remove(p_item);
+        let handle = this._nav.RemoveNavItem(p_item);
         if (this.currentHandle === handle) { this.currentHandle = null; }
 
         if (p_mappedView === this.currentView) {
@@ -382,7 +385,7 @@ class Shelf extends ui.views.View {
      * @param {ui.core.views.ShelfNav} p_nav 
      * @param {ui.core.Widget} p_handle 
      */
-    _OnHandleActivated(p_nav, p_handle) {
+     _OnNavItemActivated(p_nav, p_handle) {
         let view = this._catalogViewBuilder.Get(p_handle.data);
         if (!u.isInstanceOf(view, ui.views.View)) { return; }
 
@@ -587,7 +590,7 @@ class Shelf extends ui.views.View {
 
         // Retrieve the corresponding handle
         let item = this._catalogViewBuilder._reverseMap.get(this._currentView);
-        if (item) { this.currentHandle = this._nav.Get(item); }
+        if (item) { this.currentHandle = this._nav.GetNavItem(item); }
         else { this.currentHandle = null; }
 
         this._currentView.DisplayGranted();

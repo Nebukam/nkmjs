@@ -10,10 +10,10 @@ const RELAY = require(`./relay`);
  * You can use ```nkm.actions.Emit()``` to create & dispatch an app-wide request.
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObject
+ * @augments common.helpers.OptionObject
  * @memberof actions 
  */
-class Request extends com.pool.DisposableObject {
+class Request extends com.helpers.OptionsObject {
     constructor() { super(); }
 
     /**
@@ -57,7 +57,6 @@ class Request extends com.pool.DisposableObject {
         super._Init();
         this._emitter = null;
         this._requestType = null;
-        this._options = null;
         this._handled = false;
         this._handler = null;
         this._onFail = null;
@@ -65,6 +64,7 @@ class Request extends com.pool.DisposableObject {
         this._timeout = 0;
         this._life = 0;
         this._failReason = ``;
+
     }
 
     /**
@@ -144,17 +144,6 @@ class Request extends com.pool.DisposableObject {
      * @customtag read-only
      */
     get failReason() { return this._failReason; }
-
-    /**
-     * @description TODO
-     * @param {string} p_id 
-     * @param {*} [p_fallback] 
-     */
-    GetOption(p_id, p_fallback = null) {
-        let opt = this._options;
-        if (!opt || !opt.hasOwnProperty(p_id)) { return p_fallback; }
-        return opt[p_id];
-    }
 
     /**
      * @description TODO

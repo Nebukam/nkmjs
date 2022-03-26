@@ -30,7 +30,8 @@ class Tab extends ui.WidgetItem {
 
         this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
 
-        this._distribute.To(ui.IDS.NAME, `label`)
+        this._distribute
+            .To(ui.IDS.NAME, `label`)
             .To(ui.IDS.ICON)
             .To(ui.IDS.STATIC, (p_value) => {
                 this._isStaticTab = p_value;
@@ -144,8 +145,14 @@ class Tab extends ui.WidgetItem {
 
     _OnItemDataUpdated(p_data) {
         super._OnItemDataUpdated(p_data);
-        this._label.TryReplace(p_data);
-        this._icon.TryReplace(com.NFOS.Get(p_data));
+        this._UpdateInfos();
+    }
+
+    _UpdateInfos() {
+        super._UpdateInfos();
+        let iData = this.itemData;
+        if (this._label.TryReplace(iData)) { this.htitle = iData.id.name; }
+        this._icon.TryReplace(iData);
     }
 
     // ----> Pooling

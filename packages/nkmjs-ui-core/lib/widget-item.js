@@ -105,7 +105,7 @@ class WidgetItem extends Widget {
         if (this._isFocused) { this._BuildCommandHandles(); }
 
         this._UpdateInfos();
-
+        
     }
 
     _OnCatalogItemDataChanged(p_item, p_newData, p_oldData) {
@@ -163,7 +163,7 @@ class WidgetItem extends Widget {
     }
 
     _OnItemDataChanged(p_oldItemData) {
-
+        
     }
 
     /**

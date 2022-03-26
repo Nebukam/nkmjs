@@ -33,8 +33,8 @@ class Workspace extends ui.views.View {
 
         this._catalogHandler = new data.catalogs.CatalogHandler();
         this._catalogHandler
-            .Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
-            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnCellCatalogAdded, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCellCatalogRemoved, this);
 
         this._gridController = new ui.manipulators.Grid(this, [1, 1]);
 
@@ -88,7 +88,7 @@ class Workspace extends ui.views.View {
 
     // ----> Catalog Management
 
-    _OnCatalogItemAdded(p_handler, p_item) {
+    _OnCellCatalogAdded(p_handler, p_item) {
 
         if (!u.isInstanceOf(p_item, data.catalogs.Catalog)) {
             throw new Error(`non-catalog item added to workspace catalog : ${p_item}.`);
@@ -104,17 +104,24 @@ class Workspace extends ui.views.View {
         }
         //TODO : Listen to the data in case of release
         //if the data is released, then close associated catalog items
+        //NOTE : Why would a cell be associated with a data item?
 
         this._OnCellCreated(p_item, cell);
 
     }
 
     _OnCellCreated(p_item, p_cell) {
+        
+        console.log(`Cell created : `, p_item, p_cell);
         this._cells.Add(p_cell);
-        p_cell.Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnCellDisplayRequested, this);
-        p_cell.Watch(ui.SIGNAL.EMPTY, this._OnCellEmpty, this);
-        p_cell.Watch(ui.SIGNAL.NON_EMPTY, this._OnCellNonEmpty, this);
+
+        p_cell
+            .Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnCellDisplayRequested, this)
+            .Watch(ui.SIGNAL.EMPTY, this._OnCellEmpty, this)
+            .Watch(ui.SIGNAL.NON_EMPTY, this._OnCellNonEmpty, this);
+
         p_cell.catalog = p_item;
+
         this._UpdateWorkspaceEmptyState();
     }
 
@@ -134,7 +141,7 @@ class Workspace extends ui.views.View {
 
     }
 
-    _OnCatalogItemRemoved(p_handler, p_item, p_binding) {
+    _OnCellCatalogRemoved(p_handler, p_item, p_binding) {
 
         if (p_item.data) { p_item.data.Unwatch(com.SIGNAL.RELEASED, this._OnItemDataReleased, this); }
 
@@ -169,7 +176,6 @@ class Workspace extends ui.views.View {
 
         let localCatalog = this._FetchCatalog();
 
-
         if (u.isInstanceOf(p_item, data.catalogs.CatalogItem)) {
             // Attempting to host an existing catalog item.
             localCatalog.Add(p_item);
@@ -194,7 +200,7 @@ class Workspace extends ui.views.View {
         }
 
         let item = localCatalog.Register(p_item);
-        
+
         // TODO : Find cell associated to catalog and request focus on newly created view
         //        let view = this._catalogHandler.Get(item);
         //        view.RequestDisplay();
@@ -211,7 +217,7 @@ class Workspace extends ui.views.View {
 
         if (!localCatalog) {
             // No local catalog exists for this workspace. Create one.
-            let wCat = com.Rent(data.catalogs.Catalog);
+            let wCat = com.Rent(data.catalogs.Catalog); // TODO : Look into this. The "workspace"-level catalog should be stored somewhere?
             localCatalog = wCat.GetOrCreateCatalog({ name: 'RootCell' });
             this.catalog = wCat;
         } else {

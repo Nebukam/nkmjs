@@ -1,5 +1,6 @@
 'use strict';
 
+const data = require("@nkmjs/data-core");
 const u = require("@nkmjs/utils");
 
 const ContentManipulator = require("./manipulator-content");
@@ -97,26 +98,32 @@ class TextHandler extends ContentManipulator {
      */
     _Apply(p_element, p_value, p_direct = false) {
 
+
         if (u.isVoid(p_value)) {
             p_element.innerHTML = ``;
             return false;
-        } else {
-
-            let text = ``;
-
-            if (u.isString(p_value)) { text = p_value; }
-            else if (`label` in p_value) { text = p_value.label; }
-            else if (`name` in p_value) { text = p_value.name; }
-            else if (`title` in p_value) { text = p_value.title }
-            else if (`objectURL` in p_value) { text = p_value.objectURL; }
-
-            if (text === ``) { return false; }
-
-            if (!p_direct) { p_element.innerHTML = text; }
-            else { p_element.textContent = text; }
-            return true;
-
         }
+
+        if (u.isInstanceOf(p_value, data.DataBlock)) {
+            if (p_value.id) {
+                if (!p_direct) { p_element.innerHTML = p_value.id.name; }
+                else { p_element.textContent = p_value.id.name; }
+                return true;
+            }
+        }
+
+        let text = ``;
+
+        if (u.isString(p_value)) { text = p_value; }
+        else if (`label` in p_value) { text = p_value.label; }
+        else if (`name` in p_value) { text = p_value.name; }
+        else if (`title` in p_value) { text = p_value.title }
+
+        if (text === ``) { return false; }
+
+        if (!p_direct) { p_element.innerHTML = text; }
+        else { p_element.textContent = text; }
+        return true;
 
     }
 
