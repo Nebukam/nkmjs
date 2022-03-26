@@ -68,7 +68,7 @@ class DialogForm extends DialogBox {
 
     CreateHandle(p_options, p_class = null) {
 
-        let handle = CreateHandle(p_options, p_class = null);
+        let handle = super.CreateHandle(p_options, p_class = null);
 
         if (u.tils.Get(p_options, `submit`, false)) {
             //TODO : Need to add a generic 'triggered' activation  signal

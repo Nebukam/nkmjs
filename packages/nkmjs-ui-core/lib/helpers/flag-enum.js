@@ -166,7 +166,7 @@ class FlagEnum {
             }
         }
 
-        this._onFlagChanged.Broadcast(p_flag, oldFlag);
+        this._onFlagChanged.Dispatch(p_flag, oldFlag);
         return p_flag;
 
     }

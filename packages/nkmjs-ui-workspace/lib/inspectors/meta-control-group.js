@@ -100,7 +100,7 @@ class MetaControlGroup extends InspectorGroup {
                             `${com.IDS.METAPREFIX}${mPath}`,
                             this._data.constructor,
                             u.isObject(value) ? MetaControlGroup : MetaControlItem),
-                        ctrl = this.Add(ctrlClass, `group`);
+                        ctrl = this.Attach(ctrlClass, `group`);
 
                     //if(!ctrl){continue;}
 

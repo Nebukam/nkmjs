@@ -122,7 +122,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
      * @param {string} p_oldName 
      */
     _OnIDRenamed(p_id, p_oldName) {
-        this._Broadcast(com.SIGNAL.RENAMED, p_id, p_oldName);
+        this.Broadcast(com.SIGNAL.RENAMED, p_id, p_oldName);
     }
 
     /**
@@ -194,7 +194,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
      */
     _OnItemRegistered(p_item) {
         p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
-        this._Broadcast(SIGNAL.ITEM_REGISTERED, this, p_item);
+        this.Broadcast(SIGNAL.ITEM_REGISTERED, this, p_item);
     }
 
     /**
@@ -226,7 +226,7 @@ class Repertoire extends com.pool.DisposableObjectEx {
      */
     _OnItemUnregistered(p_item) {
         p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
-        this._Broadcast(SIGNAL.ITEM_UNREGISTERED, this, p_item);
+        this.Broadcast(SIGNAL.ITEM_UNREGISTERED, this, p_item);
     }
 
     /**

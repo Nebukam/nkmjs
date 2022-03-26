@@ -395,7 +395,7 @@ class WidgetButton extends Widget {
             );
         }
 
-        this._Broadcast(SIGNAL.TRIGGERED, this);
+        this.Broadcast(SIGNAL.TRIGGERED, this);
 
         return true;
 
@@ -428,7 +428,7 @@ class WidgetButton extends Widget {
     Deactivate() {
 
         if (this._toggle) { this.Toggle(false); }
-        this._Broadcast(SIGNAL.DEACTIVATED, this);
+        this.Broadcast(SIGNAL.DEACTIVATED, this);
 
     }
 

@@ -58,9 +58,9 @@ class SimpleDataBlock extends DataBlock {
 
     CommitValueUpdate(p_id, p_valueObj, p_oldValue, p_silent = false) {
         if (p_id in this.constructor.__signalValueMap) {
-            this._Broadcast(this.constructor.__signalValueMap[p_id], this, p_valueObj, p_oldValue);
+            this.Broadcast(this.constructor.__signalValueMap[p_id], this, p_valueObj, p_oldValue);
         }
-        this._Broadcast(com.SIGNAL.VALUE_CHANGED, this, p_id, p_valueObj, p_oldValue);
+        this.Broadcast(com.SIGNAL.VALUE_CHANGED, this, p_id, p_valueObj, p_oldValue);
         if (!p_silent) { this.CommitUpdate(); }
     }
 

@@ -67,11 +67,11 @@ class FieldManager extends EcosystemPart {
 
     _OnFieldRegistered(p_factory, p_field) {
         this._OnDataRegistered(p_field);
-        this._Broadcast(data.SIGNAL.ITEM_REGISTERED, p_field);
+        this.Broadcast(data.SIGNAL.ITEM_REGISTERED, p_field);
     }
 
     _OnFieldUnregistered(p_factory, p_field) {
-        this._Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_field);
+        this.Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_field);
     }
 
 }

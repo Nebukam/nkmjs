@@ -83,6 +83,7 @@ class ButtonEx extends ui.WidgetButton {
 
         this._icon = new ui.manipulators.Icon(ui.dom.El(`div`, { class: ui.IDS.ICON }, this._host));
         this._label = new ui.manipulators.Text(ui.dom.El(`span`, { class: ui.IDS.LABEL }, this._host));
+        this._label.ellipsis = true;
 
     }
 

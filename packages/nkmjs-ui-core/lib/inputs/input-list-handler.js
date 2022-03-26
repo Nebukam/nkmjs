@@ -36,7 +36,7 @@ class InputListHandler extends com.pool.DisposableObjectEx {
 
         for (let i = 0, n = p_list.length; i < n; i++) {
             let config = p_list[i],
-                input = this._owner.Add(config.cl);
+                input = this._owner.Attach(config.cl);
 
             if (config.member) { this._owner[config.member] = input; }
             if (config.value) { input.currentValue = config.value; }

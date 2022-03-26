@@ -124,7 +124,7 @@ class ModelManager extends EcosystemPart {
 
         //console.log(`%c +${p_model}`, 'color: #00d2ff');
 
-        this._Broadcast(data.SIGNAL.ITEM_REGISTERED, p_model);
+        this.Broadcast(data.SIGNAL.ITEM_REGISTERED, p_model);
 
     }
 
@@ -135,7 +135,7 @@ class ModelManager extends EcosystemPart {
             catEntry.Release();
         }
 
-        this._Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_model);
+        this.Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_model);
     }
 
     /**

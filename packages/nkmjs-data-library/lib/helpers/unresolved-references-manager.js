@@ -74,7 +74,7 @@ class UnresolvedReferenceManager extends com.pool.DisposableObjectEx {
             this._waitingOnResolve.Remove(data, p_reference);
             if (!this._waitingOnResolve.Contains(data)) {
                 // Data has no unresolved dependencies at this point
-                this._Broadcast(SIGNAL.DATA_REFERENCES_SOLVED, data);
+                this.Broadcast(SIGNAL.DATA_REFERENCES_SOLVED, data);
             }
         }
     }

@@ -81,7 +81,7 @@ class Workspace extends ui.views.View {
         super._Render();
         let placholderViewClass = (this._placholderViewClass || this.constructor.__default_placeholderViewClass);
         if (placholderViewClass) {
-            this._placeholderView = this.Add(placholderViewClass, `cell`);
+            this._placeholderView = this.Attach(placholderViewClass, `cell`);
             this._placeholderView.visible = true;
         }
     }
@@ -95,7 +95,7 @@ class Workspace extends ui.views.View {
         }
 
         let cellClass = p_item.GetOption(`cellClass`, this._cellDefaultClass),
-            cell = this.Add(cellClass, `cell`);
+            cell = this.Attach(cellClass, `cell`);
 
         p_handler.Set(p_item, cell);
 
@@ -112,7 +112,6 @@ class Workspace extends ui.views.View {
 
     _OnCellCreated(p_item, p_cell) {
         
-        console.log(`Cell created : `, p_item, p_cell);
         this._cells.Add(p_cell);
 
         p_cell
@@ -275,7 +274,7 @@ class Workspace extends ui.views.View {
     _OnWorkspacefEmpty() {
         this._isEmpty = true;
         this._flags.Set(ui.FLAGS.EMPTY, true);
-        this._Broadcast(ui.SIGNAL.EMPTY, this);
+        this.Broadcast(ui.SIGNAL.EMPTY, this);
         if (this._placeholderView) { this._placeholderView.visible = true; }
     }
 
@@ -287,7 +286,7 @@ class Workspace extends ui.views.View {
     _OnWorkspaceNonEmpty(p_view) {
         this._isEmpty = false;
         this._flags.Set(ui.FLAGS.EMPTY, false);
-        this._Broadcast(ui.SIGNAL.NON_EMPTY, this);
+        this.Broadcast(ui.SIGNAL.NON_EMPTY, this);
         if (this._placeholderView) { this._placeholderView.visible = false; }
     }
 

@@ -16,8 +16,16 @@ const SignalBroadcaster = require(`./signal-broadcaster`);
  */
 class SignalBox extends DisposableObject {
 
-    constructor() {
+    constructor(p_owner = null) {
         super();
+
+        if (p_owner) {
+            p_owner.Broadcast = this._Bind(this.Broadcast);
+            p_owner.Watch = this._Bind(this.Watch);
+            p_owner.WatchOnce = this._Bind(this.WatchOnce);
+            p_owner.Unwatch = this._Bind(this.Unwatch);
+        }
+
         this._signals = new collections.Dictionary();
         this._silent = false;
     }
@@ -31,7 +39,7 @@ class SignalBox extends DisposableObject {
         this._silent = p_value;
     }
 
-    get hasWatchers(){ return this._signals.count > 0; }
+    get hasWatchers() { return this._signals.count > 0; }
 
     isEmpty(p_signal) {
 
@@ -43,7 +51,7 @@ class SignalBox extends DisposableObject {
         }
     }
 
-    Get(p_signalId){ return this._signals.Get(p_signalId) }
+    Get(p_signalId) { return this._signals.Get(p_signalId) }
 
     /**
      * @description Broadcast a signal with arguments
@@ -52,13 +60,15 @@ class SignalBox extends DisposableObject {
      */
     Broadcast(p_signalId, ...args) {
 
-        if (this._silent || this._signals.isEmpty ) { return; }
-        if(!p_signalId){ 
-            throw new Error(`Signal may not be undefined or null.`); 
+        if (this._silent || this._signals.isEmpty) { return this; }
+        if (!p_signalId) {
+            throw new Error(`Signal may not be undefined or null.`);
         }
         let signal = this._signals.Get(p_signalId);
-        if(!signal){return;}
-        signal.Broadcast(...args);
+        if (!signal) { return; }
+        signal.Dispatch(...args);
+
+        return this;
     }
 
     /**
@@ -67,7 +77,7 @@ class SignalBox extends DisposableObject {
      * @param {function} p_fn 
      * @param {*} p_listener 
      */
-    Add(p_signalId, p_fn, p_listener = null) {
+    Watch(p_signalId, p_fn, p_listener = null) {
 
         let signal = this._signals.Get(p_signalId);
         if (u.isVoid(signal)) {
@@ -76,7 +86,7 @@ class SignalBox extends DisposableObject {
         }
 
         signal.Add(p_fn, p_listener);
-
+        return this;
     }
 
     /**
@@ -85,7 +95,7 @@ class SignalBox extends DisposableObject {
      * @param {function} p_fn 
      * @param {*} p_listener 
      */
-    AddOnce(p_signalId, p_fn, p_listener = null) {
+    WatchOnce(p_signalId, p_fn, p_listener = null) {
 
         let signal = this._signals.Get(p_signalId);
         if (u.isVoid(signal)) {
@@ -94,7 +104,7 @@ class SignalBox extends DisposableObject {
         }
 
         signal.AddOnce(p_fn, p_listener);
-
+        return this;
     }
 
     /**
@@ -103,10 +113,10 @@ class SignalBox extends DisposableObject {
      * @param {function} p_fn 
      * @param {*} p_listener 
      */
-    Remove(p_signalId, p_fn, p_listener = null) {
+    Unwatch(p_signalId, p_fn, p_listener = null) {
 
         let signal = this._signals.Get(p_signalId);
-        if (u.isVoid(signal)) { return; }
+        if (u.isVoid(signal)) { return this; }
 
         signal.Remove(p_fn, p_listener);
 
@@ -114,6 +124,8 @@ class SignalBox extends DisposableObject {
             this._signals.Remove(p_signalId);
             signal.Release();
         }
+
+        return this;
 
     }
 

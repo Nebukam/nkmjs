@@ -137,7 +137,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
      */
     _OnValueChanged(p_oldValue) {
         this._internalValidateChangedValue();
-        this._Broadcast(com.SIGNAL.VALUE_CHANGED, this, this._changedValue);
+        this.Broadcast(com.SIGNAL.VALUE_CHANGED, this, this._changedValue);
 
         for (let i = 0; i < this._managed.count; i++) {
             this._managed.At(i).changedValue = this._changedValue;
@@ -187,7 +187,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
      */
     _OnInputValueChanged(p_oldValue) {
 
-        this._Broadcast(SIGNAL.VALUE_INPUT_CHANGED, this, this._inputValue);
+        this.Broadcast(SIGNAL.VALUE_INPUT_CHANGED, this, this._inputValue);
 
         for (let i = 0; i < this._managed.count; i++) {
             this._managed.At(i).inputValue = this._inputValue;
@@ -333,7 +333,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
      */
     _internalOnInputError() {
         this._OnInputErrors();
-        this._Broadcast(SIGNAL.INPUT_ERROR, this, this._inputErrors);
+        this.Broadcast(SIGNAL.INPUT_ERROR, this, this._inputErrors);
     }
 
     /**
@@ -415,7 +415,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this.currentValue = this._changedValue;
         this._changedValue = this._currentValue;
 
-        this._Broadcast(SIGNAL.VALUE_SUBMITTED, this, this._changedValue);
+        this.Broadcast(SIGNAL.VALUE_SUBMITTED, this, this._changedValue);
         this._delayedPreviewUpdate.Schedule();
         return true;
 

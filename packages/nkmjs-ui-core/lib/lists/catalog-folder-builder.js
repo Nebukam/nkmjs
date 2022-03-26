@@ -112,14 +112,14 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
         if (p_item.isDir) {
 
             let
-                mappedObject = this._owner.Add(
+                mappedObject = this._owner.Attach(
                     com.BINDINGS.Get(this._owner, p_item, this._defaultDirClass),
                     `item group`, this._host);
 
             this._map.set(p_item, mappedObject);
             mappedObject.data = p_item;
 
-            this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, mappedObject);
+            this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, mappedObject);
 
         } else {
             this._itemList.push(p_item);
@@ -144,7 +144,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
             let mappedObject = super._OnItemRemoved(p_catalog, p_item, p_index);
             if (mappedObject === false) { return false; }
 
-            this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedObject, p_index);
+            this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedObject, p_index);
             if (mappedObject) { mappedObject.Release(); }
 
             return mappedObject;
@@ -176,13 +176,13 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
         for (let i = 0, n = list.length; i < n; i++) {
 
-            let item = this._items[i];
+            let item = list[i];
 
-            if (p_item.isDir) {
+            if (item.isDir) {
                 let mappedObject = this._map.get(item);
                 if (!mappedObject) { continue; }
                 index++;
-            } else if (this._itemList.includes(p_item)) {
+            } else if (this._itemList.includes(item)) {
                 this._itemList.push(newItemList);
             }
         }
@@ -204,7 +204,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
         let
             item = this._itemList[p_index],
-            mappedObject = this._owner.Add(
+            mappedObject = this._owner.Attach(
                 com.BINDINGS.Get(this._owner, item, this._defaultItemClass),
                 `item`, p_fragment);
 
@@ -212,7 +212,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
         this._map.set(item, mappedObject);
         mappedObject.data = item;
 
-        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, item, mappedObject);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, item, mappedObject);
 
         p_streamer.ItemRequestAnswer(p_index, mappedObject);
 

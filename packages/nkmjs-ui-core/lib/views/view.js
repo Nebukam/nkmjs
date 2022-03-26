@@ -48,7 +48,7 @@ class View extends WidgetOrientable {
      * @description TODO
      */
     RequestDisplay() {
-        this._Broadcast(SIGNAL.DISPLAY_REQUESTED, this);
+        this.Broadcast(SIGNAL.DISPLAY_REQUESTED, this);
         //Handle notifications bubbles & warnings the same way.
     }
 
@@ -56,7 +56,7 @@ class View extends WidgetOrientable {
      * @description TODO
      */
     RequestClose() {
-        this._Broadcast(SIGNAL.CLOSE_REQUESTED, this);
+        this.Broadcast(SIGNAL.CLOSE_REQUESTED, this);
     }
 
     /**
@@ -67,7 +67,7 @@ class View extends WidgetOrientable {
         this._isDisplayed = true;
         this._flags.Set(FLAGS.SHOWN, true);
         this._OnDisplayGain();
-        this._Broadcast(SIGNAL.DISPLAY_GAIN, this);
+        this.Broadcast(SIGNAL.DISPLAY_GAIN, this);
         return true;
     }
 
@@ -85,7 +85,7 @@ class View extends WidgetOrientable {
         this._isDisplayed = false;
         this._flags.Set(FLAGS.SHOWN, false);
         this._OnDisplayLost();
-        this._Broadcast(SIGNAL.DISPLAY_LOST, this);
+        this.Broadcast(SIGNAL.DISPLAY_LOST, this);
         return true;
     }
 

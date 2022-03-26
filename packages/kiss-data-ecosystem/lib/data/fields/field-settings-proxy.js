@@ -48,7 +48,7 @@ class FieldSettingsProxy extends FieldSettings {
     TogglePlannedDelete(p_toggle = false) {
         if (this._isDeletePlanned === p_toggle) { return; }
         this._isDeletePlanned = p_toggle;
-        this._Broadcast(FieldSettingsProxy.PLANNED_DELETE_CHANGED, this, p_toggle);
+        this.Broadcast(FieldSettingsProxy.PLANNED_DELETE_CHANGED, this, p_toggle);
     }
 
     _OnRefBaseChanged(p_ref) {

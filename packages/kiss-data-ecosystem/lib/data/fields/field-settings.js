@@ -65,7 +65,7 @@ class FieldSettings extends DerivableDataBlock {
         }
 
         this.Dirty();
-        this._Broadcast(FIELD_EVENT.FIELD_CLASS_CHANGED, this, oldFieldClass);
+        this.Broadcast(FIELD_EVENT.FIELD_CLASS_CHANGED, this, oldFieldClass);
     }
 
     get fieldInstance() { return this._fieldInstance; }

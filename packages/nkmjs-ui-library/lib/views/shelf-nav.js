@@ -123,7 +123,7 @@ class ShelfNav extends ui.WidgetBar {
 
     _Render() {
         ui.DOMTemplate.Render(dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
-        this._toolbar = this.Add(ui.WidgetBar, `toolbar`, this._footer);
+        this._toolbar = this.Attach(ui.WidgetBar, `toolbar`, this._footer);
         this._toolbar._defaultWidgetClass = buttons.Tool;
 
         this._orientation.AddManaged(this._toolbar._orientation);
@@ -218,7 +218,7 @@ class ShelfNav extends ui.WidgetBar {
      * @param {*} p_navItem 
      */
     _OnNavItemActivated(p_navItem) {
-        this._Broadcast(ShelfNav.HANDLE_ACTIVATED, this, p_navItem, this._optionsMap.get(p_navItem));
+        this.Broadcast(ShelfNav.HANDLE_ACTIVATED, this, p_navItem, this._optionsMap.get(p_navItem));
     }
 
     // ----> Pooling

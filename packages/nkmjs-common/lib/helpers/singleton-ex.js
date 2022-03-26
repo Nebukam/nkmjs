@@ -14,7 +14,7 @@ class SingletonEx extends Singleton {
 
     _Init() {
         super._Init();
-        this._signals = new SignalBox();
+        this._signals = new SignalBox(this);
     }
 
     /**
@@ -22,10 +22,7 @@ class SingletonEx extends Singleton {
      * @param {*} p_signalId 
      * @param  {...any} args 
      */
-    _Broadcast(p_signalId, ...args) {
-        this._signals.Broadcast(p_signalId, ...args);
-        return this;
-    }
+    Broadcast(p_signalId, ...args) { /* owned by local SignalBox */ }
 
     /**
      * @description TODO
@@ -33,14 +30,10 @@ class SingletonEx extends Singleton {
      * @param {*} p_fn 
      * @param {*} p_listener 
      */
-    static Watch(p_signalId, p_fn, p_listener = null) { 
-        this.instance._signals.Add(p_signalId, p_fn, p_listener); 
-        return this; 
+    static Watch(p_signalId, p_fn, p_listener = null) {
+        return this.instance.Watch(p_signalId, p_fn, p_listener);
     }
-    Watch(p_signalId, p_fn, p_listener = null) { 
-        this._signals.Add(p_signalId, p_fn, p_listener); 
-        return this;
-    }
+    Watch(p_signalId, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     /**
      * @description TODO
@@ -48,14 +41,10 @@ class SingletonEx extends Singleton {
      * @param {*} p_fn 
      * @param {*} p_listener 
      */
-    static WatchOnce(p_signalId, p_fn, p_listener = null) { 
-        this.instance._signals.AddOnce(p_signalId, p_fn, p_listener); 
-        return this;
+    static WatchOnce(p_signalId, p_fn, p_listener = null) {
+        return this.instance.WatchOnce(p_signalId, p_fn, p_listener);
     }
-    WatchOnce(p_signalId, p_fn, p_listener = null) { 
-        this._signals.AddOnce(p_signalId, p_fn, p_listener); 
-        return this;
-    }
+    WatchOnce(p_signalId, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     /**
      * @description TODO
@@ -63,14 +52,10 @@ class SingletonEx extends Singleton {
      * @param {*} p_fn 
      * @param {*} p_listener 
      */
-    static Unwatch(p_signalId, p_fn, p_listener = null) { 
-        this.instance._signals.Remove(p_signalId, p_fn, p_listener); 
-        return this;
+    static Unwatch(p_signalId, p_fn, p_listener = null) {
+        return this.instance.Unwatch(p_signalId, p_fn, p_listener);
     }
-    Unwatch(p_signalId, p_fn, p_listener = null) { 
-        this._signals.Remove(p_signalId, p_fn, p_listener); 
-        return this;
-    }
+    Unwatch(p_signalId, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
 }
 

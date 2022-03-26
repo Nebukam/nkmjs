@@ -311,7 +311,7 @@ class DropExtension extends Extension {
         } else { this._DropSingleDataItem(dragData); }
 
         if (POINTER.DRAG_TARGET) {
-            POINTER.DRAG_TARGET._Broadcast(SIGNAL.DROPPED, POINTER.DRAG_TARGET);
+            POINTER.DRAG_TARGET.Broadcast(SIGNAL.DROPPED, POINTER.DRAG_TARGET);
         }
 
         this._Clear();

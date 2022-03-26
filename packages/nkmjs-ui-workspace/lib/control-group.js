@@ -83,10 +83,10 @@ class ControlGroup extends Control {
 
         this._header = ui.dom.El(`div`, { class: `header` }, this._host);
 
-        this._expandBtn = this.Add(uilib.buttons.Tool, `toggle`, this._header);
+        this._expandBtn = this.Attach(uilib.buttons.Tool, `toggle`, this._header);
         this._icon = new ui.manipulators.Icon(ui.dom.El(`div`, { class: `icon` }, this._header));
         this._label = new ui.manipulators.Text(ui.dom.El(`span`, { class: `label` }, this._header));
-        this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._header);
+        this._toolbar = this.Attach(this._toolbarClass, `toolbar`, this._header);
 
         this._expandBtn.icon = '%ICON%/icon_expand_arrow.svg';
         this._expandBtn.scale = 0.75;

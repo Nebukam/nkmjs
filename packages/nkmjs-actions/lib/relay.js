@@ -37,7 +37,7 @@ class RELAY extends services.ServiceBase {
      * @param  {...any} args 
      */
     static Broadcast(p_evt, ...args) {
-        this.instance._Broadcast(p_evt, ...args);
+        this.instance.Broadcast(p_evt, ...args);
     }
 
     
@@ -63,7 +63,7 @@ class RELAY extends services.ServiceBase {
     HandleRequest(p_request) {
         this._requests.Add(p_request);
         console.log(`HandleRequest`);
-        this._Broadcast(p_request.requestType, p_request);
+        this.Broadcast(p_request.requestType, p_request);
         this._tick.Schedule();
     }
 

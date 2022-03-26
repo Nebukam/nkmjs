@@ -37,9 +37,9 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
 
         if (p_input.invalidInput) {
             this._invalidForm = true;
-            this._Broadcast(SIGNAL.FORM_INVALID, this);
+            this.Broadcast(SIGNAL.FORM_INVALID, this);
         } else if (!this._invalidForm) {
-            this._Broadcast(SIGNAL.FORM_READY, this);
+            this.Broadcast(SIGNAL.FORM_READY, this);
         }
 
         p_input._handler
@@ -71,10 +71,10 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
         if (this._invalidForm != was) {
             if (this._invalidForm) {
                 // Form is now invalid
-                this._Broadcast(SIGNAL.FORM_INVALID, this);
+                this.Broadcast(SIGNAL.FORM_INVALID, this);
             } else {
                 // For is now valid
-                this._Broadcast(SIGNAL.FORM_READY, this);
+                this.Broadcast(SIGNAL.FORM_READY, this);
             }
         }
 

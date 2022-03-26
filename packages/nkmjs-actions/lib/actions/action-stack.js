@@ -156,7 +156,7 @@ class ActionStack extends com.pool.DisposableObjectEx {
         stack.push(p_action);
         this._headIndex = stack.length - 1;
 
-        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_action);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_action);
 
         return p_action;
     }
@@ -236,7 +236,7 @@ class ActionStack extends com.pool.DisposableObjectEx {
     }
 
     _OnActionStateChanged(p_action, p_state) {
-        this._Broadcast(com.SIGNAL.UPDATED, this, p_action);
+        this.Broadcast(com.SIGNAL.UPDATED, this, p_action);
     }
 
 }

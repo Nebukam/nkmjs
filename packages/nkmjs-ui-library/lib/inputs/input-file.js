@@ -57,7 +57,7 @@ class InputFile extends InputPath {
         super._Render();
 
         if (env.isNodeEnabled) {
-            this._picker = this.Add(buttons.Tool, `input-btn`);
+            this._picker = this.Attach(buttons.Tool, `input-btn`);
             this._picker.options = {
                 [com.IDS.ICON]: this._iconID,
                 trigger: { fn: this._Pick, thisArg: this },

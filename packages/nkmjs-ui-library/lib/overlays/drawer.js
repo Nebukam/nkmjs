@@ -132,7 +132,7 @@ class Drawer extends ui.views.View {
         if (this._data) {
             this._data.Consume();
         }
-        //this._Broadcast(SIGNAL.CLOSE_REQUESTED, this);
+        //this.Broadcast(SIGNAL.CLOSE_REQUESTED, this);
     }
 
     // ----> Pooling

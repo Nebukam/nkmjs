@@ -88,7 +88,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      */
     _OnMetaAdded(p_meta, p_path, p_value) {
         let evt = `${_add_}@${p_path}`;
-        this._Broadcast(evt, p_meta, p_path, p_value);
+        this.Broadcast(evt, p_meta, p_path, p_value);
     }
 
     /**
@@ -99,7 +99,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      */
     _OnMetaRemoved(p_meta, p_path) {
         let evt = `${_rem_}@${p_path}`;
-        this._Broadcast(evt, p_meta, p_path, p_value, p_oldValue);
+        this.Broadcast(evt, p_meta, p_path, p_value, p_oldValue);
     }
 
     /**
@@ -112,7 +112,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      */
     _OnMetaUpdated(p_meta, p_path, p_value, p_oldValue) {
         let evt = `${_upd_}@${p_path}`;
-        this._Broadcast(evt, p_meta, p_path, p_value, p_oldValue);
+        this.Broadcast(evt, p_meta, p_path, p_value, p_oldValue);
     }
 
     /**
@@ -123,7 +123,7 @@ class MetadataObserver extends com.pool.DisposableObjectEx {
      */
     _OnMetaMidUpdate(p_meta, p_path) {
         let evt = `${_mpd_}@${p_path}`;
-        this._Broadcast(evt, p_meta, p_path);
+        this.Broadcast(evt, p_meta, p_path);
     }
 
     _CleanUp() {

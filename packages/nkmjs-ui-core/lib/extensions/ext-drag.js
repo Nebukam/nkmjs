@@ -190,7 +190,7 @@ class DragExtension extends Extension {
     // ----> Generic event handling
 
     _OwnerBroadcast(p_evt) {
-        this._owner._Broadcast(p_evt, this._owner);
+        this._owner.Broadcast(p_evt, this._owner);
     }
 
     _OnOwnerDragStarted(p_target) {

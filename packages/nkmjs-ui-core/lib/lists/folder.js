@@ -66,7 +66,7 @@ class Folder extends ListItem {
         super._PostInit();
         this._SetupBuilder(this._builder);
 
-        this._itemStreamer = this.Add(DOMStreamer, `item group streamer`, this._streamerWrapper);
+        this._itemStreamer = this.Attach(DOMStreamer, `item group streamer`, this._streamerWrapper);
         this._itemStreamer.options = {
             layout: { ...this._streamerLayoutInfos }
         };

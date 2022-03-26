@@ -43,13 +43,13 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
 
     _OnRegistrationError(p_err) {
         console.log(`_OnRegistrationError(${p_err})`, p_err);
-        this._Broadcast(SW_SIGNAL.SW_REGISTRATION_ERROR, this, p_err);
+        this.Broadcast(SW_SIGNAL.SW_REGISTRATION_ERROR, this, p_err);
     }
 
     _OnRegistered(p_registration) {
 
         console.log(`_OnRegistered(${p_registration})`, p_registration);
-        this._Broadcast(SW_SIGNAL.SW_REGISTERED, this);
+        this.Broadcast(SW_SIGNAL.SW_REGISTERED, this);
 
         this._registration = p_registration;
 
@@ -101,7 +101,7 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
         this._newWorkerState = this._newWorker.state;
         if (this._newWorkerState === `activated`) {
             if (this._installedWorker) {
-                this._Broadcast(SW_SIGNAL.SW_UPDATE_AVAILABLE, this);
+                this.Broadcast(SW_SIGNAL.SW_UPDATE_AVAILABLE, this);
             } else {
                 this._installedWorker = this._newWorker;
                 this._Ready();
@@ -112,17 +112,17 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
 
     _OnInstalledWorkerMessage(p_evt) {
         console.log(`_OnInstalledWorkerMessage(${p_evt})`, p_evt);
-        this._Broadcast(SW_SIGNAL.SW_MESSAGE, this, p_evt.data);
+        this.Broadcast(SW_SIGNAL.SW_MESSAGE, this, p_evt.data);
     }
 
     _OnNewWorkerMessage(p_evt) {
         console.log(`_OnNewWorkerMessage(${p_evt})`, p_evt);
-        this._Broadcast(SW_SIGNAL.SW_MESSAGE, this, p_evt.data);
+        this.Broadcast(SW_SIGNAL.SW_MESSAGE, this, p_evt.data);
     }
 
     _OnMessage(p_evt) {
         console.log(`_OnMessage(${p_evt})`, p_evt);
-        this._Broadcast(SW_SIGNAL.SW_MESSAGE, this, p_evt.data);
+        this.Broadcast(SW_SIGNAL.SW_MESSAGE, this, p_evt.data);
     }
 
     Send(p_data) {
@@ -134,7 +134,7 @@ class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
 
     _Ready() {
         //this.Send({command:`YOLO`});
-        this._Broadcast(SW_SIGNAL.SW_READY, this);
+        this.Broadcast(SW_SIGNAL.SW_READY, this);
     }
 
 }

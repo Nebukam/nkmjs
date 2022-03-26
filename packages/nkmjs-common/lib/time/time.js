@@ -117,7 +117,7 @@ class TIME extends helpers.SingletonEx {
         this._nextTick = currentCl === this._clA ? this._clB : this._clA;
 
         currentCl.Notify(this._deltaTime).Clear();
-        this._Broadcast(SIGNAL.TICK, this._deltaTime);
+        this.Broadcast(SIGNAL.TICK, this._deltaTime);
 
         if (this._isBrowser) {
             window.requestAnimationFrame(this._Tick);

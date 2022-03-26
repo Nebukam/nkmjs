@@ -53,7 +53,7 @@ class DataEntry extends DataBlockEx {
         }
 
         this._OnBaseChanged(oldValue);
-        this._Broadcast(ECOSYSTEM_EVENT.BASE_CHANGED, this);
+        this.Broadcast(ECOSYSTEM_EVENT.BASE_CHANGED, this);
 
     }
 
@@ -106,7 +106,7 @@ class DataEntry extends DataBlockEx {
         this._fieldData[p_id.name] = this._fieldData[p_oldName];
         delete this._fieldData[p_oldName];
         this.Dirty();
-        this._Broadcast(FIELD_EVENT.FIELD_RENAMED, this, p_id, p_oldName);
+        this.Broadcast(FIELD_EVENT.FIELD_RENAMED, this, p_id, p_oldName);
     }
 
     _FieldRemoved(p_id) {
@@ -117,7 +117,7 @@ class DataEntry extends DataBlockEx {
 
         this._roamingFieldData[stringID] = data;
         delete this._fieldData[stringID];
-        this._Broadcast(FIELD_EVENT.FIELD_REMOVED, this, p_id);
+        this.Broadcast(FIELD_EVENT.FIELD_REMOVED, this, p_id);
     }
 
     _FieldAdded(p_id, p_data = null) {
@@ -134,7 +134,7 @@ class DataEntry extends DataBlockEx {
 
         this._fieldMap.Set(p_id, p_data);
         this._fieldData[stringID] = p_data;
-        this._Broadcast(FIELD_EVENT.FIELD_ADDED, this, p_id);
+        this.Broadcast(FIELD_EVENT.FIELD_ADDED, this, p_id);
     }
 
     _CleanUp() {

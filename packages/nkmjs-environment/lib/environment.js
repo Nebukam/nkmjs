@@ -215,7 +215,7 @@ class ENV extends com.helpers.SingletonEx {
         if (!this._running) {
             this._updateQueued = true; // ENV will call again when running.
         } else {
-            this._Broadcast(SIGNAL.PWA_UPDATE_AVAILABLE);
+            this.Broadcast(SIGNAL.PWA_UPDATE_AVAILABLE);
         }
     }
 
@@ -305,7 +305,7 @@ class ENV extends com.helpers.SingletonEx {
         if (this._app) { this._app._InternalStart(); }
 
         this._onStart.Notify(this).Clear();
-        this._Broadcast(SIGNAL.START, this);
+        this.Broadcast(SIGNAL.START, this);
 
         if (this._updateQueued) { this._OnServiceWorkerUpdateAvailable(); }
 
@@ -328,12 +328,12 @@ class ENV extends com.helpers.SingletonEx {
     /**
      * @access private
      */
-    _OnEnvOnline() { this._Broadcast(SIGNAL.ONLINE); }
+    _OnEnvOnline() { this.Broadcast(SIGNAL.ONLINE); }
 
     /**
      * @access private
      */
-    _OnEnvOffline() { this._Broadcast(SIGNAL.OFFLINE); }
+    _OnEnvOffline() { this.Broadcast(SIGNAL.OFFLINE); }
 
 }
 

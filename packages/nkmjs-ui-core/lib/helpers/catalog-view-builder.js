@@ -68,7 +68,7 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
         if (p_item.data) { view.data = p_item.data; }
         else { view.data = p_item; }
 
-        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, view);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, view);
         return true;
 
     }
@@ -85,7 +85,7 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
         if (mappedView === false) { return false; }
 
         this._reverseMap.delete(mappedView);
-        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedView, p_index);
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedView, p_index);
         mappedView.Release();
 
         return mappedView;

@@ -56,7 +56,7 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
         //TODO : Add support for custom popup content request
         // = when displaying popup, callback to some function providing both dialog & dialog info
 
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
 
     }
 
@@ -100,7 +100,7 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
     Consume() {
         if (this._consumed) { return; }
         this._consumed = true;
-        this._Broadcast(com.SIGNAL.CONSUMED, this);
+        this.Broadcast(com.SIGNAL.CONSUMED, this);
     }
 
     _CleanUp() {

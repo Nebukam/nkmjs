@@ -97,7 +97,7 @@ class IOProcess extends com.pool.DisposableObjectEx {
 
     _OnComplete() {
         this._running = false;
-        this._Broadcast(com.SIGNAL.COMPLETE, this);
+        this.Broadcast(com.SIGNAL.COMPLETE, this);
         this.Release();
     }
 

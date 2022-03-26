@@ -37,7 +37,7 @@ class DerivableDataBlock extends DataBlockEx {
         }
 
         this._OnBaseChanged(oldBase);
-        this._Broadcast(ECOSYSTEM_EVENT.BASE_CHANGED, this, oldBase);
+        this.Broadcast(ECOSYSTEM_EVENT.BASE_CHANGED, this, oldBase);
         if (p_value) { this._OnBaseUpdated(p_value); }
         this.Dirty();
     }

@@ -89,7 +89,7 @@ class InputSlider extends ui.inputs.InputNumberBase {
         dom.El(`div`, { class: `slider-assets` }, sliderCtnr);
         this._inputField = dom.El(`input`, { class: 'field', ...this.constructor.__inputProperties }, sliderCtnr);
 
-        this._directField = this.Add(InputNumber, `direct-field item`, this._host);
+        this._directField = this.Attach(InputNumber, `direct-field item`, this._host);
         //directField._updatePreviewOnInput = false;
 
         this._sizeEnum.AddManaged(this._directField._sizeEnum);

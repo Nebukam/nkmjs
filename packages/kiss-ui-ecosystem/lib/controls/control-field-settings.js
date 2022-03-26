@@ -101,7 +101,7 @@ class FieldSettingsControl extends InspectorGroup {
     }
 
     _Render() {
-        this._dragHandle = this.Add(ButtonDragHandle, -1, this._host, `drag-handle`);
+        this._dragHandle = this.Attach(ButtonDragHandle, -1, this._host, `drag-handle`);
         this._dragHandle.icon = `%ICON%/icon_nine.svg`
         this._dragHandle.text = ``;
         this._dragHandle.htitle = `Drag to re-order`;

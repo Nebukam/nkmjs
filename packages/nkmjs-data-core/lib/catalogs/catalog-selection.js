@@ -24,7 +24,7 @@ class CatalogSelection extends Catalog {
 
         //p_item.parent = this;
 
-        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item);
         p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         if (this._autoSort) { this._delayedSort.Schedule(); }
@@ -33,7 +33,7 @@ class CatalogSelection extends Catalog {
 
     _OnItemRemoved(p_item) {
 
-        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item);
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item);
         p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         //if(p_item.parent === this){

@@ -164,7 +164,7 @@ class Overlay extends Layer {
             throw new Error(`Invalid overlay contentClass : ${contentClass}`);
         }
 
-        this._content = this.Add(contentClass, 'content');
+        this._content = this.Attach(contentClass, 'content');
         this._content.classList.add(FLAGS.SHOWN);
         this._content.style.setProperty(`transform`, `translateX(0%)`);
 

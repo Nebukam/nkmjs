@@ -76,7 +76,7 @@ class DataBlock extends com.pool.DisposableObjectEx {
     Dirty() {
         if (this._isDirty) { return; }
         this._isDirty = true;
-        this._Broadcast(SIGNAL.DIRTY, this);
+        this.Broadcast(SIGNAL.DIRTY, this);
     }
 
     /**
@@ -84,7 +84,7 @@ class DataBlock extends com.pool.DisposableObjectEx {
      */
     ClearDirty() {
         if (!this._isDirty) { return; } this._isDirty = false;
-        this._Broadcast(SIGNAL.DIRTY_CLEARED, this);
+        this.Broadcast(SIGNAL.DIRTY_CLEARED, this);
     }
 
     /**
@@ -119,7 +119,7 @@ class DataBlock extends com.pool.DisposableObjectEx {
      */
     CommitUpdate() {
         this.Dirty();
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     _CleanUp() {

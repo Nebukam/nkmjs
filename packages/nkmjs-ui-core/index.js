@@ -51,6 +51,8 @@ module.exports = {
 
     // Shortcuts
 
+    // to UI.Preload
+    Preload: __UI.Preload.bind(__UI),
     // to UI.Register
     Register: __UI.Register.bind(__UI),
     // to UI.RegisterGroup

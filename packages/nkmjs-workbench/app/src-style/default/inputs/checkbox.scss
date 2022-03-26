@@ -1,0 +1,37 @@
+/*-------------------------------*/
+/*<!---- @nkmjs/ui-library ----!>*/
+/*-------------------------------*/
+
+@import '../_variables';
+@import '../_mixins';
+@import '../_functions';
+@import '../_constants';
+
+:host {
+
+    
+
+}
+
+.field{
+    
+    border:none !important;
+
+    height: var(--size);
+    cursor: pointer;
+
+    background-image: url('../assets/icons/icon_checkbox-off.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    background-color: rgba(32, 32, 32, 0);
+    border-radius: 5%;
+
+}
+
+:host(.checked) .field {
+    background-image: url('../assets/icons/icon_checkbox-on.svg');
+    
+}
+

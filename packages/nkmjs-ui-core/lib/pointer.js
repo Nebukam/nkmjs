@@ -277,7 +277,7 @@ class POINTER extends com.helpers.SingletonEx {
      * @param {Event} p_evt 
      */
     _mDown(p_evt) {
-        this._Broadcast(POINTER.MOUSE_DOWN, p_evt);
+        this.Broadcast(POINTER.MOUSE_DOWN, p_evt);
         if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
     }
 
@@ -286,7 +286,7 @@ class POINTER extends com.helpers.SingletonEx {
      * @param {Event} p_evt 
      */
     _mUp(p_evt) {
-        this._Broadcast(POINTER.MOUSE_UP, p_evt);
+        this.Broadcast(POINTER.MOUSE_UP, p_evt);
         if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
     }
 
@@ -297,7 +297,7 @@ class POINTER extends com.helpers.SingletonEx {
     _mMove(p_evt) {
         this._position.x = p_evt.clientX;
         this._position.y = p_evt.clientY;
-        this._Broadcast(POINTER.MOUSE_MOVE, p_evt);
+        this.Broadcast(POINTER.MOUSE_MOVE, p_evt);
     }
 
     _tStart(p_evt) {
@@ -422,7 +422,7 @@ class POINTER extends com.helpers.SingletonEx {
         this._dragLength = dLength;
 
         this.DRAG_TARGET = p_target;
-        this.instance._Broadcast(SIGNAL.DRAG_STARTED, p_data);
+        this.instance.Broadcast(SIGNAL.DRAG_STARTED, p_data);
         
     }
 
@@ -431,7 +431,7 @@ class POINTER extends com.helpers.SingletonEx {
      * @group Drag and drop
      */
     static DragEnded() {
-        this.instance._Broadcast(SIGNAL.DRAG_ENDED);
+        this.instance.Broadcast(SIGNAL.DRAG_ENDED);
         this.DRAG_DATA = null;
         this.DRAG_TARGET = null;
         this._dragLength = -1;

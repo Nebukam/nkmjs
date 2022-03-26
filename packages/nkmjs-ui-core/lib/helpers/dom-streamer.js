@@ -191,11 +191,11 @@ class DOMStreamer extends DisposableHTMLElement {
     _RequestItem(p_itemIndex) {
         this._requestResult = null;
         if (p_itemIndex < 0) { return; }
-        this._Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
+        this.Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
     }
 
     _ClearItem(p_item) {
-        this._Broadcast(SIGNAL.ITEM_CLEARED, p_item);
+        this.Broadcast(SIGNAL.ITEM_CLEARED, p_item);
         if (this._releaseClearedItems) { p_item.Release(); }
     }
 
@@ -365,7 +365,7 @@ class DOMStreamer extends DisposableHTMLElement {
         this._indices.start = p_start;
         this._indices.end = p_end;
 
-        this._Broadcast(SIGNAL.ITEM_REQUEST_RANGE_UPDATE, this, this._indices);
+        this.Broadcast(SIGNAL.ITEM_REQUEST_RANGE_UPDATE, this, this._indices);
 
         // Check if this is a complete refresh
         if (p_force ||

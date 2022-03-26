@@ -9,8 +9,8 @@ const SIGNAL = require(`./signal`);
 const DisplayObject = require(`./display-object`);
 
 /**
- * @typedef SignalItemAdded
- * @type ui.core.SIGNAL.CHILD_ADDED
+ * @typedef SignalItemAttached
+ * @type ui.core.SIGNAL.CHILD_ATTACHED
  * @property {ui.core.DisplayObjectContainer} parent Parent of the display list
  * @property {ui.core.DisplayObject} target The display object that just got added to the display list
  * @property {number} index display object index inside the display list
@@ -26,8 +26,8 @@ const DisplayObject = require(`./display-object`);
  */
 
 /**
- * @typedef SignalItemRemoved
- * @type ui.core.SIGNAL.CHILD_REMOVED
+ * @typedef SignalItemDetached
+ * @type ui.core.SIGNAL.CHILD_DETACHED
  * @property {ui.core.DisplayObjectContainer} parent Parent of the display list
  * @property {ui.core.DisplayObject} target The display object that just got removed to the display list
  * @property {number} index Index of the removed object (before removal)
@@ -35,15 +35,15 @@ const DisplayObject = require(`./display-object`);
 
 /**
  * A DisplayObjectContainer is `{@link ui.code.DisplayObject}` that manages an internal list of DisplayObjects childs.
- * You can `{@link ui.code.DisplayObjectContainer.Add|Add}`, `{@link ui.code.DisplayObjectContainer.Move|Move}` & `{@link ui.code.DisplayObjectContainer.Remove|Remove}`
+ * You can `{@link ui.code.DisplayObjectContainer.Attach|Attach}`, `{@link ui.code.DisplayObjectContainer.Move|Move}` & `{@link ui.code.DisplayObjectContainer.Detach|Detach}`
  * child objects using either a string ID pointing to constructor definition in the `{@link ui.code.UI|UI}`, a reference to a constructor, or an instance of the latter.
  * @class
  * @hideconstructor
  * @augments ui.core.DisplayObject
  * @memberof ui.core
- * @signal SignalItemAdded Broadcasted right after a chlid was added to the display list
+ * @signal SignalItemAttached Broadcasted right after a chlid was added to the display list
  * @signal SignalItemMoved Broadcasted right after a child was moved inside the display list
- * @signal SignalItemRemoved Broadcasted right after a child was removed from the display list
+ * @signal SignalItemDetached Broadcasted right after a child was removed from the display list
  */
 class DisplayObjectContainer extends DisplayObject {
     constructor() { super(); }
@@ -99,20 +99,20 @@ class DisplayObjectContainer extends DisplayObject {
      * 
      * let myDisplayObject = ... ; // Any existing DisplayObject
      * let myContainer = ... ; // Any existing DisplayObjectContainer
-     * myContainer.Add(myDisplayObject);
+     * myContainer.Attach(myDisplayObject);
      * @example //Working with an existing container
      * 
      * let myContainer = ... ; // Any existing DisplayObjectContainer
-     * myContainer.Add(DisplayObjectConstructor, 'css-class1 css-class2');
+     * myContainer.Attach(DisplayObjectConstructor, 'css-class1 css-class2');
      * @example //Working with an existing container
      * //and adding the child to a specific DOM element
      * 
      * let myContainer = ... ; // Any existing DisplayObjectContainer
      * let myDomElement = ... ; // Any existing DOM Element
-     * myContainer.Add(DisplayObjectConstructor, 'css-class1 css-class2', myDomElement);
+     * myContainer.Attach(DisplayObjectConstructor, 'css-class1 css-class2', myDomElement);
      * @group Child Management
      */
-    Add(p_displayObject, p_cssClass = null, p_container = null, p_index = -1) {
+    Attach(p_displayObject, p_cssClass = null, p_container = null, p_index = -1) {
 
         if (p_index >= this._displayList.count || p_index < 0) { p_index = -1; }
 
@@ -159,7 +159,7 @@ class DisplayObjectContainer extends DisplayObject {
             }
         }
 
-        this._OnChildAdded(p_displayObject, p_index);
+        this._OnChildAttached(p_displayObject, p_index);
 
         return p_displayObject;
 
@@ -185,10 +185,10 @@ class DisplayObjectContainer extends DisplayObject {
      * @param {ui.core.DisplayObject} p_displayObject 
      * @group Child Management
      */
-    Remove(p_displayObject) {
+    Detach(p_displayObject) {
         let index = this._displayList.IndexOf(p_displayObject);
         if (index === -1) { return p_displayObject; }
-        return this.RemoveAt(index);
+        return this.DetachAt(index);
     }
 
     /**
@@ -197,7 +197,7 @@ class DisplayObjectContainer extends DisplayObject {
      * @returns {ui.core.DisplayObject}
      * @group Child Management
      */
-    RemoveAt(p_index) {
+    DetachAt(p_index) {
 
         if (p_index < 0 || p_index >= this._displayList.count) { return null; }
 
@@ -208,7 +208,7 @@ class DisplayObjectContainer extends DisplayObject {
             dom.Detach(removedDisplayObject);
         }
 
-        this._OnChildRemoved(removedDisplayObject, p_index);
+        this._OnChildDetached(removedDisplayObject, p_index);
 
         return removedDisplayObject;
 
@@ -217,21 +217,21 @@ class DisplayObjectContainer extends DisplayObject {
     /**
      * @access protected
      * @description Internal method called when a display object has been successfully added to the display list.  
-     * Since it is reponsible for broadcasting the CHILD_ADDED signal, overriding this methods gives you control
+     * Since it is reponsible for broadcasting the CHILD_ATTACHED signal, overriding this methods gives you control
      * over the order of any operations that would need to happen _before_ or _after_ the signal is being broadcasted.
      * @param {ui.core.DisplayObject} p_displayObject 
      * @param {number} p_index 
      * @customtag override-me
-     * @broadcasts ui.core.SIGNAL.CHILD_ADDED
+     * @broadcasts ui.core.SIGNAL.CHILD_ATTACHED
      * @group Child Management
-     * @example _OnChildAdded(p_displayObject, p_index){
+     * @example _OnChildAttached(p_displayObject, p_index){
      *     // ... Before signal broadcast
-     *     super._OnChildAdded(p_displayObject, p_index); // Will broadcast CHILD_ADDED
+     *     super._OnChildAttached(p_displayObject, p_index); // Will broadcast CHILD_ATTACHED
      *     // ... After signal broadcast
      * }
      */
-    _OnChildAdded(p_displayObject, p_index) {
-        this._Broadcast(SIGNAL.CHILD_ADDED, this, p_displayObject, p_index);
+    _OnChildAttached(p_displayObject, p_index) {
+        this.Broadcast(SIGNAL.CHILD_ATTACHED, this, p_displayObject, p_index);
     }
 
     /**
@@ -252,27 +252,27 @@ class DisplayObjectContainer extends DisplayObject {
      * }
      */
     _OnChildMoved(p_displayObject, p_index, p_oldIndex) {
-        this._Broadcast(SIGNAL.CHILD_MOVED, this, p_displayObject, p_index, p_oldIndex);
+        this.Broadcast(SIGNAL.CHILD_MOVED, this, p_displayObject, p_index, p_oldIndex);
     }
 
     /**
      * @access protected
      * @description Internal method called when a display object has been successfully removed from the display list.  
-     * Since it is reponsible for broadcasting the CHILD_REMOVED signal, overriding this methods gives you control
+     * Since it is reponsible for broadcasting the CHILD_DETACHED signal, overriding this methods gives you control
      * over the order of any operations that would need to happen _before_ or _after_ the signal is being broadcasted.
      * @param {ui.core.DisplayObject} p_displayObject 
      * @param {number} p_index 
      * @customtag override-me
-     * @broadcasts ui.core.SIGNAL.CHILD_REMOVED
+     * @broadcasts ui.core.SIGNAL.CHILD_DETACHED
      * @group Child Management
-     * @example _OnChildRemoved(p_displayObject, p_index){
+     * @example _OnChildDetached(p_displayObject, p_index){
      *     // ... Before signal broadcast
-     *     super._OnChildRemoved(p_displayObject, p_index); // Will broadcast CHILD_REMOVED
+     *     super._OnChildDetached(p_displayObject, p_index); // Will broadcast CHILD_DETACHED
      *     // ... After signal broadcast
      * }
      */
-    _OnChildRemoved(p_displayObject, p_index) {
-        this._Broadcast(SIGNAL.CHILD_REMOVED, this, p_displayObject, p_index);
+    _OnChildDetached(p_displayObject, p_index) {
+        this.Broadcast(SIGNAL.CHILD_DETACHED, this, p_displayObject, p_index);
     }
 
 

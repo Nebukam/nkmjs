@@ -80,7 +80,7 @@ class OverlayHandler extends LayerContainer {
             this.constructor.__default_overlayClass);
 
         let overlayClass = u.tils.Get(overlayOptions, `overlayClass`, fallbackOverlayClass),
-            newOverlay = this.Add(overlayClass, `overlay`);
+            newOverlay = this.Attach(overlayClass, `overlay`);
 
         this._overlayMap.Set(overlayOptions, newOverlay);
         overlayOptions.Watch(com.SIGNAL.CONSUMED, this._OnOverlayOptionsConsumed);

@@ -65,11 +65,11 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
         //console.log(`${this._defaultItemClass.name} || ${this._defaultDirClass.name}`);
 
         if (p_item.isDir) {
-            mappedObject = this._owner.Add(
+            mappedObject = this._owner.Attach(
                 com.BINDINGS.Get(this._owner, p_item, this._defaultDirClass),
                 `item group`, this._host);
         } else {
-            mappedObject = this._owner.Add(
+            mappedObject = this._owner.Attach(
                 com.BINDINGS.Get(this._owner, p_item, this._defaultItemClass),
                 `item`, this._host);
         }
@@ -78,7 +78,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
         this._map.set(p_item, mappedObject);
         mappedObject.data = p_item;
 
-        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, mappedObject);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, mappedObject);
 
         return true;
 
@@ -95,7 +95,7 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
         let mappedObject = super._OnItemRemoved(p_catalog, p_item, p_index);
         if (mappedObject === false) { return false; }
 
-        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedObject, p_index);
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedObject, p_index);
         if (mappedObject) { mappedObject.Release(); }
 
         return mappedObject;

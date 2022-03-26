@@ -58,12 +58,12 @@ class CatalogFilterListHandler extends com.pool.DisposableObjectEx {
         if (this._filters.Pass(p_item)) {
             if(this._validItems.includes(p_item)){ return true; }
             this._validItems.push(p_item);
-            this._Broadcast(FILTER_SIGNAL.PASSED, this, p_item);
+            this.Broadcast(FILTER_SIGNAL.PASSED, this, p_item);
             return true;
         } else {
             if(this._invalidItems.includes(p_item)){ return false; }
             this._invalidItems.push(p_item);
-            this._Broadcast(FILTER_SIGNAL.PASSED, this, p_item);
+            this.Broadcast(FILTER_SIGNAL.PASSED, this, p_item);
             return false;
         }
     }
@@ -92,7 +92,7 @@ class CatalogFilterListHandler extends com.pool.DisposableObjectEx {
                 this._validItems.splice(i,1);
                 this._invalidItems.push(p_item);
                 i--;
-                this._Broadcast(FILTER_SIGNAL.REJECTED, this, p_item);
+                this.Broadcast(FILTER_SIGNAL.REJECTED, this, p_item);
             }
         }
     }
@@ -105,7 +105,7 @@ class CatalogFilterListHandler extends com.pool.DisposableObjectEx {
                 this._invalidItems.splice(i,1);
                 this._validItems.push(p_item);
                 i--;
-                this._Broadcast(FILTER_SIGNAL.PASSED, this, p_item);
+                this.Broadcast(FILTER_SIGNAL.PASSED, this, p_item);
             }
         }
     }

@@ -147,7 +147,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
      * @param {*} p_item 
      */
     _OnItemRegistered(p_repertoire, p_item) {
-        this._Broadcast(SIGNAL.ITEM_REGISTERED, this, p_item);
+        this.Broadcast(SIGNAL.ITEM_REGISTERED, this, p_item);
     }
 
     /**
@@ -166,7 +166,7 @@ class DataFactory extends com.pool.DisposableObjectEx {
      * @param {*} p_item 
      */
     _OnItemUnregistered(p_repertoire, p_item) {
-        this._Broadcast(SIGNAL.ITEM_UNREGISTERED, this, p_item);
+        this.Broadcast(SIGNAL.ITEM_UNREGISTERED, this, p_item);
     }
 
     /**

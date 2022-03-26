@@ -386,10 +386,10 @@ class Catalog extends CatalogItem {
         p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         if (this._rootCatalog) {
-            this._rootCatalog._Broadcast(SIGNAL.ROOT_ITEM_ADDED, this._rootCatalog, p_item);
+            this._rootCatalog.Broadcast(SIGNAL.ROOT_ITEM_ADDED, this._rootCatalog, p_item);
         }
 
-        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item);
 
         if (this._autoSort) { this._delayedSort.Schedule(); }
 
@@ -424,10 +424,10 @@ class Catalog extends CatalogItem {
      * @param {data.core.CatalogItem} p_item 
      */
     _OnItemRemoved(p_item, p_index) {
-        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, p_index);
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, p_index);
 
         if (this._rootCatalog) {
-            this._rootCatalog._Broadcast(SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item, p_index);
+            this._rootCatalog.Broadcast(SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item, p_index);
         }
 
         p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
@@ -597,7 +597,7 @@ class Catalog extends CatalogItem {
             }
         }
 
-        if (sorted) { this._Broadcast(SIGNAL.SORTED, this); }
+        if (sorted) { this.Broadcast(SIGNAL.SORTED, this); }
 
     }
 

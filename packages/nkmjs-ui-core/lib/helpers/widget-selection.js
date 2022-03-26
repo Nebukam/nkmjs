@@ -122,7 +122,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
             .Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
         p_item.Select(true);
-        this._Broadcast(com.SIGNAL.ITEM_ADDED, p_item);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, p_item);
 
         return true;
 
@@ -142,7 +142,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
                 .Unwatch(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this)
                 .Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
-            this._Broadcast(com.SIGNAL.ITEM_REMOVED, p_item);
+            this.Broadcast(com.SIGNAL.ITEM_REMOVED, p_item);
         }
     }
 
@@ -168,7 +168,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         let list = this._stack.internalArray;
         for (let i = 0, n = list.length; i < n; i++) {
             let item = list[i];
-            if (item != p_emitter) { item._Broadcast(p_signal, item); }
+            if (item != p_emitter) { item.Broadcast(p_signal, item); }
         }
 
         this._sharingEvent = false;

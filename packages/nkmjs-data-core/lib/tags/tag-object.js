@@ -31,12 +31,12 @@ class TagObject extends com.pool.DisposableObjectEx {
 
     AddUser() {
         this._useCount++;
-        this._Broadcast(SIGNAL.USE_COUNT_CHANGED, this);
+        this.Broadcast(SIGNAL.USE_COUNT_CHANGED, this);
     }
 
     RemoveUser() {
         this._useCount--;
-        this._Broadcast(SIGNAL.USE_COUNT_CHANGED, this);
+        this.Broadcast(SIGNAL.USE_COUNT_CHANGED, this);
     }
 
     toString() {

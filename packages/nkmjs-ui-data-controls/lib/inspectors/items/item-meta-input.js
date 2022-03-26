@@ -14,7 +14,7 @@ class MetaInputInspectorItem extends MetaPropertyInspectorItem {
 
     _Render(){
         super._Render();
-        this._input = this.Add(this.constructor.__inputClass, `input`);
+        this._input = this.Attach(this.constructor.__inputClass, `input`);
     }
 
      _OnPropertyUpdated(p_meta, p_path, p_value, p_oldValue) {

@@ -22,9 +22,9 @@ class TestWidget extends nkm.ui.Widget {
 
     _Render() {
         super._Render();
-        this.Add(nkm.uilib.buttons.Tool, `close`).options = {
+        this.Attach(nkm.uilib.buttons.Tool, `close`).options = {
             'icon': `close-small`,
-            trigger: { arg: this, fn: (s) => { s._Broadcast(nkm.ui.SIGNAL.CLOSE_REQUESTED, s); } }
+            trigger: { arg: this, fn: (s) => { s.Broadcast(nkm.ui.SIGNAL.CLOSE_REQUESTED, s); } }
         }
     }
 

@@ -55,10 +55,10 @@ class Filter extends DisposableObjectEx {
      */
     _Accept(p_obj) {
         if (!this._invert) {
-            this._Broadcast(Filter.ACCEPTED, p_obj);
+            this.Broadcast(Filter.ACCEPTED, p_obj);
             return true;
         } else {
-            this._Broadcast(Filter.DENIED, p_obj);
+            this.Broadcast(Filter.DENIED, p_obj);
             return false;
         }
     }
@@ -70,10 +70,10 @@ class Filter extends DisposableObjectEx {
     _Deny(p_obj) {
 
         if (!this._invert) {
-            this._Broadcast(Filter.DENIED, p_obj);
+            this.Broadcast(Filter.DENIED, p_obj);
             return false;
         } else {
-            this._Broadcast(Filter.ACCEPTED, p_obj);
+            this.Broadcast(Filter.ACCEPTED, p_obj);
             return true;
         }
     }

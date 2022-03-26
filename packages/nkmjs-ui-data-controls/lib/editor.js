@@ -167,9 +167,9 @@ class Editor extends ui.views.View {
 
     }
 
-    _OnChildAdded(p_displayObject, p_index) {
+    _OnChildAttached(p_displayObject, p_index) {
         if (`editor` in p_displayObject) { p_displayObject.editor = this; }
-        super._OnChildAdded(p_displayObject, p_index);
+        super._OnChildAttached(p_displayObject, p_index);
     }
 
     _OnInspectedDataChanged(p_oldData) {

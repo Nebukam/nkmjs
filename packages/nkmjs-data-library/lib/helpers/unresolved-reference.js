@@ -27,7 +27,7 @@ class UnresolvedReference extends com.pool.DisposableObjectEx {
                 infos = this._dataList.Get(key);
             this._ResolveInfos(key, infos, p_reference);                
         }
-        this._Broadcast(SIGNAL.REFERENCE_SOLVED, this, keys);
+        this.Broadcast(SIGNAL.REFERENCE_SOLVED, this, keys);
         this.Release();
     }
 

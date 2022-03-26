@@ -114,7 +114,7 @@ class InspectorGroup extends InspectorItem {
             expandIcon: { url: `%ICON%/icon_expand_arrow.svg`, htitle: `Expand` }
         });
 
-        this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._header);
+        this._toolbar = this.Attach(this._toolbarClass, `toolbar`, this._header);
 
         this._wrapper = this._body;
 

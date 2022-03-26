@@ -178,7 +178,7 @@ class BaseCard extends ui.WidgetItem {
         if (this._actions) {
 
             if (!this._toolbar) {
-                this._toolbar = this.Add(ui.WidgetBar, `toolbar`, this._frame[ui.IDS.BODY]);
+                this._toolbar = this.Attach(ui.WidgetBar, `toolbar`, this._frame[ui.IDS.BODY]);
                 this._toolbar._defaultWidgetClass = buttons.Button;
             }
             this._handles = this._toolbar.CreateHandles(...this._actions);

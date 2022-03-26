@@ -140,7 +140,7 @@ class Model extends DerivableDataBlock {
             //Override inherited member.
             existingField.base = p_fieldSettings;
         } else {
-            this._Broadcast(FIELD_EVENT.FIELD_ADDED, this, p_fieldSettings);
+            this.Broadcast(FIELD_EVENT.FIELD_ADDED, this, p_fieldSettings);
         }
 
     }
@@ -152,7 +152,7 @@ class Model extends DerivableDataBlock {
             //A field with the same name already exists.
             existingField.base = null;
         } else {
-            this._Broadcast(FIELD_EVENT.FIELD_REMOVED, this, p_fieldSettings);
+            this.Broadcast(FIELD_EVENT.FIELD_REMOVED, this, p_fieldSettings);
         }
 
     }
@@ -176,7 +176,7 @@ class Model extends DerivableDataBlock {
             //No link to old name, but link to the new one
             existingFieldNew.base = p_base.Get(p_id);
         } else {
-            this._Broadcast(FIELD_EVENT.FIELD_RENAMED, this, p_id, p_oldName);
+            this.Broadcast(FIELD_EVENT.FIELD_RENAMED, this, p_id, p_oldName);
         }
 
     }
@@ -234,7 +234,7 @@ class Model extends DerivableDataBlock {
             }
         }
 
-        this._Broadcast(FIELD_EVENT.FIELD_ADDED, this, p_fieldSettings);
+        this.Broadcast(FIELD_EVENT.FIELD_ADDED, this, p_fieldSettings);
         this.Dirty();
 
     }
@@ -245,7 +245,7 @@ class Model extends DerivableDataBlock {
 
     _OnFieldUnregistered(p_repertoire, p_fieldSettings) {
         p_fieldSettings.Unwatch(data.SIGNAL.DIRTY, this._OnFieldDirty, this);
-        this._Broadcast(FIELD_EVENT.FIELD_REMOVED, this, p_fieldSettings);
+        this.Broadcast(FIELD_EVENT.FIELD_REMOVED, this, p_fieldSettings);
         if (p_fieldSettings.model === this) {
             p_fieldSettings.model = null;
         }
@@ -261,7 +261,7 @@ class Model extends DerivableDataBlock {
             }
         }
 
-        this._Broadcast(FIELD_EVENT.FIELD_RENAMED, this, p_id, p_oldName);
+        this.Broadcast(FIELD_EVENT.FIELD_RENAMED, this, p_id, p_oldName);
     }
 
     _OnFieldDirty(p_fieldSettings) {

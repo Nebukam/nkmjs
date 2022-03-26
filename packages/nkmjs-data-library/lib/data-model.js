@@ -111,7 +111,7 @@ class DataModel extends DataBlockExtendable {
             p_slot.fieldIndex = this._slotRep._itemList.count - 1;
         }
 
-        this._Broadcast(SIGNAL.SLOT_ADDED, this, p_slot);
+        this.Broadcast(SIGNAL.SLOT_ADDED, this, p_slot);
         this.Dirty();
 
     }
@@ -123,7 +123,7 @@ class DataModel extends DataBlockExtendable {
      * @param {ecosystem.FieldDescriptor} p_slot 
      */
     _OnSlotUnregistered(p_repertoire, p_slot) {
-        this._Broadcast(SIGNAL.SLOT_REMOVED, this, p_slot);
+        this.Broadcast(SIGNAL.SLOT_REMOVED, this, p_slot);
     }
 
     /**
@@ -133,7 +133,7 @@ class DataModel extends DataBlockExtendable {
      * @param {*} p_oldName 
      */
     _OnSlotRenamed(p_id, p_oldName) {
-        this._Broadcast(SIGNAL.SLOT_RENAMED, this, p_id, p_oldName);
+        this.Broadcast(SIGNAL.SLOT_RENAMED, this, p_id, p_oldName);
     }
 
     /**
@@ -206,7 +206,7 @@ class DataModel extends DataBlockExtendable {
             //Override inherited member.
             existingField.base = p_field;
         } else {
-            this._Broadcast(SIGNAL.SLOT_ADDED, this, p_field);
+            this.Broadcast(SIGNAL.SLOT_ADDED, this, p_field);
         }
 
     }
@@ -224,7 +224,7 @@ class DataModel extends DataBlockExtendable {
             //A field with the same name already exists.
             existingField.base = null;
         } else {
-            this._Broadcast(SIGNAL.SLOT_REMOVED, this, p_field);
+            this.Broadcast(SIGNAL.SLOT_REMOVED, this, p_field);
         }
 
     }
@@ -255,7 +255,7 @@ class DataModel extends DataBlockExtendable {
             //No link to old name, but link to the new one
             existingFieldNew.base = p_base.Get(p_id);
         } else {
-            this._Broadcast(SIGNAL.SLOT_RENAMED, this, p_id, p_oldName);
+            this.Broadcast(SIGNAL.SLOT_RENAMED, this, p_id, p_oldName);
         }
 
     }

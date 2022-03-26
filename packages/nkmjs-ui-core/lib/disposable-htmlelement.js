@@ -127,7 +127,9 @@ class DisposableHTMLElement extends HTMLElement {
     _Init() {
 
         this._releasing = false;
-        this._signals = new com.signals.SignalBox();
+        
+        this._signals = new com.signals.SignalBox(this);
+
         this._released = false;
         this._isPainted = false;
         this._isFirstPaint = true;
@@ -217,9 +219,9 @@ class DisposableHTMLElement extends HTMLElement {
     _OnPaintChange() {
         if (this._isPainted) {
             if (this._isFirstPaint) { this._signals.Broadcast(SIGNAL.FIRST_PAINT, this); }
-            this._signals.Broadcast(SIGNAL.PAINTED, this);
+            this.Broadcast(SIGNAL.PAINTED, this);
         } else {
-            this._signals.Broadcast(SIGNAL.UNPAINTED, this);
+            this.Broadcast(SIGNAL.UNPAINTED, this);
         }
     }
 
@@ -235,10 +237,7 @@ class DisposableHTMLElement extends HTMLElement {
      * @groupdescription This section list the main methods used to watch/unwatch signals on this object.
      * For more info on signals, see {@tutorial signals}
      */
-    _Broadcast(p_signal, ...args) {
-        this._signals.Broadcast(p_signal, ...args);
-        return this;
-    }
+    Broadcast(p_signal, ...args) { /* owned by local SignalBox */ }
 
     /**
      * @description Watch a signal broadcasted by this object.  
@@ -253,10 +252,7 @@ class DisposableHTMLElement extends HTMLElement {
      * @example object.Watch(com.SIGNAL.RELEASED, foo, this);
      * @example object.Watch(com.SIGNAL.RELEASED, (obj)=>{ ... }));
      */
-    Watch(p_signal, p_fn, p_listener = null) {
-        this._signals.Add(p_signal, p_fn, p_listener);
-        return this;
-    }
+    Watch(p_signal, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     /**
      * @description Watch a signal broadcasted by this object, once only; meaning if the signal the listener gets automatically 
@@ -267,10 +263,7 @@ class DisposableHTMLElement extends HTMLElement {
      * @returns {ui.core.DisposableHTMLElement}
      * @group Broadcasting
      */
-    WatchOnce(p_signal, p_fn, p_listener = null) {
-        this._signals.AddOnce(p_signal, p_fn, p_listener);
-        return this;
-    }
+    WatchOnce(p_signal, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     /**
      * @description Unwatch a signal broadcasted by this object
@@ -281,8 +274,8 @@ class DisposableHTMLElement extends HTMLElement {
      * @group Broadcasting
      */
     Unwatch(p_signal, p_fn, p_listener = null) {
-        this._signals.Remove(p_signal, p_fn, p_listener);
-        return this;
+        //this._signals.Remove(p_signal, p_fn, p_listener);
+        //return this;
     }
 
     //#endregion
@@ -315,7 +308,7 @@ class DisposableHTMLElement extends HTMLElement {
         if (this._releasing) { return; }
         this._releasing = true;
 
-        this._Broadcast(com.SIGNAL.RELEASING, this);
+        this.Broadcast(com.SIGNAL.RELEASING, this);
 
         if (this._releasePrevented) {
             this._releasing = false;
@@ -325,7 +318,7 @@ class DisposableHTMLElement extends HTMLElement {
 
         this._released = true;
 
-        this._Broadcast(com.SIGNAL.RELEASED, this);
+        this.Broadcast(com.SIGNAL.RELEASED, this);
         this._CleanUp();
 
         dom.Detach(this);

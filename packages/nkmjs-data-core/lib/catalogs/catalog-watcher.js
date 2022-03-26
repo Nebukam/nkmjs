@@ -259,7 +259,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      * @customtag override-me
      */
     _OnSorted(p_catalog) {
-        this._Broadcast(SIGNAL.SORTED, this);
+        this.Broadcast(SIGNAL.SORTED, this);
     }
 
     // ----> Map

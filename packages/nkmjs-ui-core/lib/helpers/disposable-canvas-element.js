@@ -94,7 +94,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
         this.__URID = dom.URID;
 
         this._releasing = false;
-        this._signals = new com.signals.SignalBox();
+        this._signals = new com.signals.SignalBox(this);
         this._released = false;
         this._isPainted = false;
         this._isFirstPaint = true;
@@ -165,9 +165,9 @@ class DisposableCanvasElement extends HTMLCanvasElement {
         }
 
         if (this._requestDraw) {
-            this._Broadcast(SIGNAL.DRAW_REQUEST_BEFORE, this, this._ctx, p_delta);
+            this.Broadcast(SIGNAL.DRAW_REQUEST_BEFORE, this, this._ctx, p_delta);
             this._InternalDraw(this._ctx, p_delta);
-            this._Broadcast(SIGNAL.DRAW_REQUEST_AFTER, this, this._ctx, p_delta);
+            this.Broadcast(SIGNAL.DRAW_REQUEST_AFTER, this, this._ctx, p_delta);
         } else {
             this._InternalDraw(this._ctx, p_delta);
         }
@@ -266,10 +266,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
      * @groupdescription This section list the main methods used to watch/unwatch signals on this object.
      * For more info on signals, see {@tutorial signals}
      */
-    _Broadcast(p_signal, ...args) {
-        this._signals.Broadcast(p_signal, ...args);
-        return this;
-    }
+    Broadcast(p_signal, ...args) { /* owned by local SignalBox */ }
 
     /**
      * @description Watch a signal broadcasted by this object.  
@@ -284,10 +281,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
      * @example object.Watch(com.SIGNAL.RELEASED, foo, this);
      * @example object.Watch(com.SIGNAL.RELEASED, (obj)=>{ ... }));
      */
-    Watch(p_signal, p_fn, p_listener = null) {
-        this._signals.Add(p_signal, p_fn, p_listener);
-        return this;
-    }
+    Watch(p_signal, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     /**
      * @description Watch a signal broadcasted by this object, once only; meaning if the signal the listener gets automatically 
@@ -298,10 +292,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
      * @returns {ui.core.DisposableHTMLElement}
      * @group Broadcasting
      */
-    WatchOnce(p_signal, p_fn, p_listener = null) {
-        this._signals.AddOnce(p_signal, p_fn, p_listener);
-        return this;
-    }
+    WatchOnce(p_signal, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     /**
      * @description Unwatch a signal broadcasted by this object
@@ -346,7 +337,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
         if (this._releasing) { return; }
         this._releasing = true;
 
-        this._Broadcast(com.SIGNAL.RELEASING, this);
+        this.Broadcast(com.SIGNAL.RELEASING, this);
 
         if (this._releasePrevented) {
             this._releasing = false;
@@ -356,7 +347,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
 
         this._released = true;
 
-        this._Broadcast(com.SIGNAL.RELEASED, this);
+        this.Broadcast(com.SIGNAL.RELEASED, this);
         this._CleanUp();
 
         dom.Detach(this);

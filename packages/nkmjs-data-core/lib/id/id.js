@@ -47,7 +47,7 @@ class ID extends com.pool.DisposableObjectEx {
 
         if (this._name === p_value) { return; }
 
-        this._Broadcast(com.SIGNAL.RENAMING, this, p_value);
+        this.Broadcast(com.SIGNAL.RENAMING, this, p_value);
 
         if (this._renamingPrevented) {
             this._renamingPrevented = false;
@@ -59,7 +59,7 @@ class ID extends com.pool.DisposableObjectEx {
 
         this._renamingPrevented = false;
 
-        this._Broadcast(com.SIGNAL.RENAMED, this, oldName);
+        this.Broadcast(com.SIGNAL.RENAMED, this, oldName);
 
     }
     get name() { return this._name; }

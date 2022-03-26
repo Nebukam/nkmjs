@@ -274,7 +274,7 @@ class Modal extends DisplayObjectContainer {
 
         this._ownsContent = u.isFunc(p_value);
 
-        this._content = this.Add(p_value, `content`);
+        this._content = this.Attach(p_value, `content`);
         this._content.modal = this;
         this._content.Watch(SIGNAL.CLOSE_REQUESTED, this.Close);
         if (`DisplayGranted` in this._content) { this._content.DisplayGranted(); }

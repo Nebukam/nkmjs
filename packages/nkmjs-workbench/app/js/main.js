@@ -9,7 +9,7 @@ const { DIALOG, DialogBox } = nkm.dialog;
 const w = nkm.uiworkspace;
 const ui = nkm.ui;
 const uilib = nkm.uilib;
-const uicontrols = nkm.uicontrols;
+const datacontrols = nkm.datacontrols;
 
 const UIItemListLayer = require("./ui-item-list-layer");
 const UIItem = require("./ui-item");
@@ -104,9 +104,9 @@ class StyleguideApp extends nkm.app.AppBase {
                 name: `Shelf Catalog`
             }, [
                 { name: `View`, [ui.IDS.VIEW_CLASS]: ui.views.View, data: this._fakeData[0] },
-                { name: `Editor`, [ui.IDS.VIEW_CLASS]: uicontrols.Editor, data: this._fakeData[1] },
+                { name: `Editor`, [ui.IDS.VIEW_CLASS]: datacontrols.Editor, data: this._fakeData[1] },
                 { name: `Extended editor`, [ui.IDS.VIEW_CLASS]: w.editors.EditorEx, data: this._fakeData[2] },
-                { name: `InspectorShell`, [ui.IDS.VIEW_CLASS]: uicontrols.InspectorShell, data: this._fakeData[3] },
+                { name: `InspectorShell`, [ui.IDS.VIEW_CLASS]: datacontrols.InspectorShell, data: this._fakeData[3] },
                 { name: `Another View`, [ui.IDS.VIEW_CLASS]: ui.views.View, data: this._fakeData[4] },
             ]);
         };

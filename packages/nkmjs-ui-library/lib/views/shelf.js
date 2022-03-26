@@ -71,7 +71,7 @@ class Shelf extends ui.views.View {
 
         let placholderViewClass = (this._placholderViewClass || this.constructor.__default_placeholderViewClass);
         if (placholderViewClass) {
-            this._placeholderView = this.Add(placholderViewClass, `view`);
+            this._placeholderView = this.Attach(placholderViewClass, `view`);
             this.currentView = this._placeholderView;
         }
 
@@ -301,7 +301,7 @@ class Shelf extends ui.views.View {
 
     _Render() {
         super._Render();
-        this._nav = this.Add(this._navClass, `navigation`);
+        this._nav = this.Attach(this._navClass, `navigation`);
 
         this._orientation.AddManaged(this._nav._orientation);
         this._nav.orientation = this.constructor.__default_orientation;
@@ -340,9 +340,9 @@ class Shelf extends ui.views.View {
 
         p_mappedView.visible = false;
         p_mappedView.classList.add(ui.IDS.VIEW);
-        this.Add(p_mappedView);
+        this.Attach(p_mappedView);
 
-        this._Broadcast(ui.SIGNAL.VIEW_ADDED, this, p_mappedView, handle);
+        this.Broadcast(ui.SIGNAL.VIEW_ADDED, this, p_mappedView, handle);
 
         if (this._isEmpty) {
             this._OnShelfNonEmpty();
@@ -355,7 +355,7 @@ class Shelf extends ui.views.View {
 
     /**
      * @access protected
-     * @description Remove the view & handle associated with the removed catalogItem
+     * @description Detach the view & handle associated with the removed catalogItem
      * @param {ui.core.helpers.CatalogViewBuilder} p_builder 
      * @param {data.core.catalogs.CatalogItem} p_item 
      * @param {ui.core.View} p_mappedView 
@@ -463,7 +463,7 @@ class Shelf extends ui.views.View {
     _OnShelfEmpty() {
         this._isEmpty = true;
         this._flags.Set(ui.FLAGS.EMPTY, true);
-        this._Broadcast(ui.SIGNAL.EMPTY, this);
+        this.Broadcast(ui.SIGNAL.EMPTY, this);
         this.RequestPlaceholderView(true);
     }
 
@@ -475,7 +475,7 @@ class Shelf extends ui.views.View {
     _OnShelfNonEmpty(p_view) {
         this._isEmpty = false;
         this._flags.Set(ui.FLAGS.EMPTY, false);
-        this._Broadcast(ui.SIGNAL.NON_EMPTY, this);
+        this.Broadcast(ui.SIGNAL.NON_EMPTY, this);
     }
 
     //#endregion
@@ -541,7 +541,7 @@ class Shelf extends ui.views.View {
                 oldValue.visible = false;
             } else {
                 oldValue.classList.remove(ui.IDS.VIEW);
-                this.Remove(oldValue);
+                this.Detach(oldValue);
             }
 
         }
@@ -552,7 +552,7 @@ class Shelf extends ui.views.View {
                 this._currentView.visible = true;
             } else {
                 this._currentView.classList.add(ui.IDS.VIEW);
-                this.Add(this._currentView);
+                this.Attach(this._currentView);
             }
         }
 

@@ -192,7 +192,7 @@ class EntryManager extends EcosystemPart {
         p_entry.ClearDirty();
         p_entry.metadirty = false;
 
-        this._Broadcast(data.SIGNAL.ITEM_REGISTERED, p_entry);
+        this.Broadcast(data.SIGNAL.ITEM_REGISTERED, p_entry);
 
         p_entry.metadata.Watch(data.SIGNAL.META_UPDATED, this._OnEntryMetaUpdated, this);
 
@@ -278,7 +278,7 @@ class EntryManager extends EcosystemPart {
             cItem.Release();
         }
 
-        this._Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_entry);
+        this.Broadcast(data.SIGNAL.ITEM_UNREGISTERED, p_entry);
         this._entryCatalogMap.Remove(p_entry);
     }
 

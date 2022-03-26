@@ -57,7 +57,7 @@ class ModelProxy extends Model {
         while (fieldList.length != 0) {
             let proxyFieldSettings = fieldList[fieldList.length - 1];
             this.Unregister(proxyFieldSettings);
-            this._Broadcast(ModelProxy.PROXY_FIELD_UNREGISTERED, this, proxyFieldSettings);
+            this.Broadcast(ModelProxy.PROXY_FIELD_UNREGISTERED, this, proxyFieldSettings);
             proxyFieldSettings.Release();
         }
 
@@ -100,7 +100,7 @@ class ModelProxy extends Model {
         proxyFieldSettings.referenceField = p_fieldSettings;
         this._proxyMap.Set(p_fieldSettings, proxyFieldSettings);
 
-        this._Broadcast(ModelProxy.PROXY_FIELD_REGISTERED, this, proxyFieldSettings);
+        this.Broadcast(ModelProxy.PROXY_FIELD_REGISTERED, this, proxyFieldSettings);
         return proxyFieldSettings;
 
     }

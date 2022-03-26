@@ -97,9 +97,9 @@ class Canvas extends DisplayObject {
         }
 
         if (this._requestDraw) {
-            this._Broadcast(SIGNAL.DRAW_REQUEST_BEFORE, this, this._ctx, p_delta);
+            this.Broadcast(SIGNAL.DRAW_REQUEST_BEFORE, this, this._ctx, p_delta);
             this._InternalDraw(p_delta);
-            this._Broadcast(SIGNAL.DRAW_REQUEST_AFTER, this, this._ctx, p_delta);
+            this.Broadcast(SIGNAL.DRAW_REQUEST_AFTER, this, this._ctx, p_delta);
         } else {
             this._InternalDraw(p_delta);
         }

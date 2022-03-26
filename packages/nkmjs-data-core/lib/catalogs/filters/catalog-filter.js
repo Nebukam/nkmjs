@@ -29,9 +29,9 @@ class CatalogFilter extends com.pool.DisposableObjectEx {
         if(this._isEnabled == p_value){ return; }
         this._isEnabled = p_value;
         if(p_value){
-            this._Broadcast(FILTER_SIGNAL.ENABLED, this);
+            this.Broadcast(FILTER_SIGNAL.ENABLED, this);
         }else{
-            this._Broadcast(FILTER_SIGNAL.DISABLED, this);
+            this.Broadcast(FILTER_SIGNAL.DISABLED, this);
         }
     }
 

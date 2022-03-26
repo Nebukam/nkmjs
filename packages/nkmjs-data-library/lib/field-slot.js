@@ -111,7 +111,7 @@ class FieldSlot extends DataBlocExtendable {
             if (this._settings) { this._descriptor.InitSettings(this._settings); }
         }
 
-        this._Broadcast(SIGNAL.DESCRIPTOR_CHANGED, this, this._descriptor, oldDescriptor);
+        this.Broadcast(SIGNAL.DESCRIPTOR_CHANGED, this, this._descriptor, oldDescriptor);
     }
 
     _OnBaseDescriptorChanged(p_slot, p_newDescriptor, p_oldDescriptor) {

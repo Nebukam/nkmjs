@@ -134,7 +134,7 @@ class Tab extends ui.WidgetItem {
 
     _CloseRequest() {
         if (!this._isActivable || this._isStaticTab) { return; }
-        this._Broadcast(ui.SIGNAL.CLOSE_REQUESTED, this);
+        this.Broadcast(ui.SIGNAL.CLOSE_REQUESTED, this);
     }
 
     // ----> DATA    

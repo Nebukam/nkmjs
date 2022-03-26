@@ -215,7 +215,7 @@ class CatalogItem extends com.helpers.OptionsObject {
         if (p_oldData && `Unwatch` in p_oldData) { p_oldData.Unwatch(com.SIGNAL.RELEASED, this._OnDataReleased, this); }
         if (p_newData && `Watch` in p_newData) { p_newData.Watch(com.SIGNAL.RELEASED, this._OnDataReleased, this); }
 
-        this._Broadcast(SIGNAL.ITEM_DATA_CHANGED, this, p_newData, p_oldData);
+        this.Broadcast(SIGNAL.ITEM_DATA_CHANGED, this, p_newData, p_oldData);
         this._delayedUpdate.Schedule();
     }
 
@@ -225,7 +225,7 @@ class CatalogItem extends com.helpers.OptionsObject {
      * @param {data.core.DataBlock} p_data 
      */
     _OnDataReleased(p_data) {
-        this._Broadcast(SIGNAL.ITEM_DATA_RELEASED, this, p_data);
+        this.Broadcast(SIGNAL.ITEM_DATA_RELEASED, this, p_data);
         if (this._options[IDS.BOUND]) { this.Release(); }
     }
 
@@ -269,7 +269,7 @@ class CatalogItem extends com.helpers.OptionsObject {
             this._isFirstUpdate = false;
             return;
         }
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     toString() {

@@ -275,9 +275,9 @@ class INPUT extends com.helpers.SingletonEx {
 
         this._down.Set(p_name, true);
 
-        this._Broadcast(INPUT.KEY_DOWN);
-        this._Broadcast(`D_${p_name}`);
-        this._Broadcast(`T_${p_name}`, true);
+        this.Broadcast(INPUT.KEY_DOWN);
+        this.Broadcast(`D_${p_name}`);
+        this.Broadcast(`T_${p_name}`, true);
         KB.instance._Push(p_keyCode);
 
     }
@@ -288,8 +288,8 @@ class INPUT extends com.helpers.SingletonEx {
             this._processKeyDown(p_name, p_keyCode);
         }
 
-        this._Broadcast(INPUT.KEY_REPEAT);
-        this._Broadcast(`R_${p_name}`);
+        this.Broadcast(INPUT.KEY_REPEAT);
+        this.Broadcast(`R_${p_name}`);
 
     }
 
@@ -298,9 +298,9 @@ class INPUT extends com.helpers.SingletonEx {
         if (!this._down.Get(p_name)) { return; }
 
         this._down.Remove(p_name);
-        this._Broadcast(INPUT.KEY_UP, p_name);
-        this._Broadcast(`U_${p_name}`);
-        this._Broadcast(`T_${p_name}`, false);
+        this.Broadcast(INPUT.KEY_UP, p_name);
+        this.Broadcast(`U_${p_name}`);
+        this.Broadcast(`T_${p_name}`, false);
         KB.instance._Pull(p_keyCode);
 
     }

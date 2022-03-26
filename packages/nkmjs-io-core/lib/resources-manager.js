@@ -247,7 +247,7 @@ class RESOURCES extends services.ServiceBase {
 
         if (dirRsc && dirRsc != p_rsc) { dirRsc.Add(p_rsc); }
 
-        this._Broadcast(IO_SIGNAL.RSC_REGISTERED, p_rsc);
+        this.Broadcast(IO_SIGNAL.RSC_REGISTERED, p_rsc);
 
     }
 
@@ -378,7 +378,7 @@ class RESOURCES extends services.ServiceBase {
      */
     _OnRscReleased(p_rsc) {
         this._resources.Remove(p_rsc.path);
-        this._Broadcast(IO_SIGNAL.RSC_UNREGISTERED, p_rsc);
+        this.Broadcast(IO_SIGNAL.RSC_UNREGISTERED, p_rsc);
     }
 
 

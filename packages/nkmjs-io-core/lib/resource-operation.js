@@ -152,7 +152,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
      */
     OnStart() {
         this._rsc._state.currentState = this._states.start;
-        this._rsc._Broadcast(this._states.start.evt, this._rsc);
+        this._rsc.Broadcast(this._states.start.evt, this._rsc);
         if (this._states.start.fn) {
             try {
                 this._states.start.fn();
@@ -172,7 +172,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._rsc._state.currentState = this._states.error.state;
         p_err.rsc = this._rsc;
         this._callbacks.OnError(p_err).Clear();
-        this._rsc._Broadcast(this._states.error.evt, this._rsc, p_err);
+        this._rsc.Broadcast(this._states.error.evt, this._rsc, p_err);
         this.OnEnd();
     }
 
@@ -190,7 +190,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
             }
         }
         this._rsc._state.currentState = this._states.progress.state;
-        this._rsc._Broadcast(this._states.progress.evt, this._rsc, p_progress);
+        this._rsc.Broadcast(this._states.progress.evt, this._rsc, p_progress);
     }
 
     /**
@@ -207,7 +207,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         }
         this._rsc._state.currentState = this._states.success.state;
         this._callbacks.OnSuccess(this._rsc).Clear();
-        this._rsc._Broadcast(this._states.success.evt, this._rsc);
+        this._rsc.Broadcast(this._states.success.evt, this._rsc);
         this.OnEnd();
     }
 

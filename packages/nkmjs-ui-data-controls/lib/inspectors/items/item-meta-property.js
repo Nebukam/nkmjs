@@ -122,7 +122,7 @@ class MetaPropertyInspectorItem extends InspectorWidget {
     _OnPropertyUpdated(p_meta, p_path, p_value, p_oldValue) {
         if (!this._ValidateType(p_value, p_oldValue)) {
             // Value type not validated, dispatch property change event and likely skip further updates
-            this._Broadcast(SIGNAL.META_PROPERTY_TYPE_CHANGED, this);
+            this.Broadcast(SIGNAL.META_PROPERTY_TYPE_CHANGED, this);
             return false;
         } else {
             // Update input / display values accordingly

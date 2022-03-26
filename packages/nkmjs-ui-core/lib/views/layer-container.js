@@ -48,8 +48,8 @@ class LayerContainer extends Layer {
         return s;
     }
 
-    _OnChildAdded(p_displayObject, p_index) {
-        super._OnChildAdded(p_displayObject, p_index);
+    _OnChildAttached(p_displayObject, p_index) {
+        super._OnChildAttached(p_displayObject, p_index);
         let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Add(layer);
@@ -59,8 +59,8 @@ class LayerContainer extends Layer {
         }
     }
 
-    _OnChildRemoved(p_displayObject, p_index) {
-        super._OnChildRemoved(p_displayObject, p_index);
+    _OnChildDetached(p_displayObject, p_index) {
+        super._OnChildDetached(p_displayObject, p_index);
         let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Remove(layer);

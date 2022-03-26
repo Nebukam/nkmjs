@@ -18,6 +18,22 @@
     width: 0;
 }
 
+:host{
+    //transition: $transition_opacity;
+}
+
+:host(:not(.unpainted)){
+    opacity:1;
+}
+
+:host(.unpainted){
+    //opacity:0;
+    visibility: hidden !important;
+}
+
+:host(.disabled){
+    filter: grayscale(1);
+}
 
 // ----> Host presets
 // Sizes
@@ -29,6 +45,13 @@
 @include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) using ($index, $val) {
     --flavor-color: var(#{$val});
     --flavor-color-rgb: var(#{$val+"-rgb"});
+
+    --flavor-color-dark: var(#{$val+'-dark'});
+    --flavor-color-dark-rgb: var(#{$val+'-dark-rgb'});
+
+    --flavor-color-light: var(#{$val+'-bright'});
+    --flavor-color-light-rgb: var(#{$val+'-bright-rgb'});
+    
     --flavor-contrast:var(#{$val+'-contrast'});
 }
 
@@ -115,8 +138,12 @@
     
 }
 
-:host(.unpainted){
-    visibility: hidden !important;
+
+
+:host(.disabled){
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.4;
 }
 
  /* Hide scrollbar for IE, Edge and Firefox */
@@ -155,8 +182,17 @@ using ($index, $val){
 
 /* Icon */
 
+.icon-element{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    aspect-ratio: 1/1;
+}
+
 .icon {
     
+    aspect-ratio: 1/1;
+
     margin:4px;
     padding: 0;
     
@@ -166,15 +202,6 @@ using ($index, $val){
     width: var(--clamped-size);
     min-width: var(--clamped-size);
     max-width: var(--clamped-size);
-
-    height: var(--clamped-size);
-    min-height: var(--clamped-size);
-    max-height: var(--clamped-size);
-
-    //border: 3px solid #e5e5e5;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
 
     opacity: 0.8;
 

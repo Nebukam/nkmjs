@@ -79,7 +79,7 @@ class MetaControlItem extends InspectorItem {
 
         if (u.tils.Void(obj)) { return; }
 
-        this._input = this.Add(this._inputClass, `control`);
+        this._input = this.Attach(this._inputClass, `control`);
         this._OnInputCreated(this._input);
         this._input.Watch(ui.inputs.SIGNAL.VALUE_SUBMITTED, this._OnInputValueCommited, this);
         this._input.currentValue = obj;

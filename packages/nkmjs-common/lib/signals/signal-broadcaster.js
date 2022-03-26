@@ -105,10 +105,10 @@ class SignalBroadcaster extends DisposableObject {
     }
 
     /**
-     * @description Broadcast arguments to subscribers
+     * @description Dispatch arguments to subscribers
      * @param  {...any} args
      */
-    Broadcast(...args) {
+     Dispatch(...args) {
 
         if (this._broadcasting) {
             //May cause chaos.
@@ -124,7 +124,7 @@ class SignalBroadcaster extends DisposableObject {
 
         if (args === null || args === undefined) {
 
-            // Broadcast without args
+            // Dispatch without args
             // this._slots.internalMap.forEach(this.__BroadcastWithoutArgs, this);
 
             for (let si = 0, sn = slots.size; si < sn; si++) {
@@ -163,7 +163,7 @@ class SignalBroadcaster extends DisposableObject {
 
         } else {
 
-            // Broadcast with args
+            // Dispatch with args
             // this._slots.internalMap.forEach(this.__BroadcastWithArgs, this);
 
             for (let si = 0, sn = slots.size; si < sn; si++) {
@@ -224,19 +224,19 @@ class SignalBroadcaster extends DisposableObject {
         this._deprecatedKVP.length = 0;
 
         if (this._queuedBroadcasts.length != 0) {
-            this.Broadcast.apply(this, this._queuedBroadcasts.shift());
+            this.Dispatch.apply(this, this._queuedBroadcasts.shift());
         }
 
     }
 
     /**
-     * Note : this has been inlined in _Broadcast.
+     * Note : this has been inlined in Dispatch.
      * @access private
      * @param {array} p_callbacks 
      * @param {*} p_listener 
      * @param {Map} p_map 
      */
-    __BroadcastWithoutArgs(p_callbacks, p_listener, p_map) {
+    __DispatchWithoutArgs(p_callbacks, p_listener, p_map) {
 
         let onceList = this._onceSlots.Get(p_listener);
 
@@ -268,13 +268,13 @@ class SignalBroadcaster extends DisposableObject {
     }
 
     /**
-     * Note : this has been inlined in _Broadcast
+     * Note : this has been inlined in Dispatch
      * @access private
      * @param {array} p_callbacks 
      * @param {*} p_listener 
      * @param {Map} p_map 
      */
-    __BroadcastWithArgs(p_callbacks, p_listener, p_map) {
+    __DispatchWithArgs(p_callbacks, p_listener, p_map) {
 
         let onceList = this._onceSlots.Get(p_listener);
         if (p_listener === SignalBroadcaster.BLANK) {

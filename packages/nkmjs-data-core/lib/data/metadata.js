@@ -56,7 +56,7 @@ class Metadata extends com.pool.DisposableObjectEx {
     Dirty() {
         if (this._isDirty) { return; }
         this._isDirty = true;
-        this._Broadcast(SIGNAL.DIRTY, this);
+        this.Broadcast(SIGNAL.DIRTY, this);
     }
 
     /**
@@ -65,7 +65,7 @@ class Metadata extends com.pool.DisposableObjectEx {
     ClearDirty() {
         if (!this._isDirty) { return; }
         this._isDirty = false;
-        this._Broadcast(SIGNAL.DIRTY_CLEARED, this);
+        this.Broadcast(SIGNAL.DIRTY_CLEARED, this);
     }
 
     /**
@@ -109,7 +109,7 @@ class Metadata extends com.pool.DisposableObjectEx {
                     lastElement[key] = p_value;
                     lastElement = p_value;
 
-                    this._Broadcast(SIGNAL.META_ADDED, this, p_path, lastElement);
+                    this.Broadcast(SIGNAL.META_ADDED, this, p_path, lastElement);
 
                 } else {
                     existingValue = lastElement[key];
@@ -133,11 +133,11 @@ class Metadata extends com.pool.DisposableObjectEx {
 
         n -= 1;
         for (let p = 0; p < n; p++) {
-            this._Broadcast(SIGNAL.META_MID_UPDATE, this, u.tils.Join(path, '.', 0, p));
+            this.Broadcast(SIGNAL.META_MID_UPDATE, this, u.tils.Join(path, '.', 0, p));
         }
 
-        this._Broadcast(SIGNAL.META_UPDATED, this, p_path, lastElement, previousValue);
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(SIGNAL.META_UPDATED, this, p_path, lastElement, previousValue);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
 
         this.Dirty();
 
@@ -236,7 +236,7 @@ class Metadata extends com.pool.DisposableObjectEx {
 
         if(lastElement){
             delete lastElement[lastKey];
-            this._Broadcast(com.SIGNAL.UPDATED, this);
+            this.Broadcast(com.SIGNAL.UPDATED, this);
             this.Dirty();
         }
 
@@ -250,7 +250,7 @@ class Metadata extends com.pool.DisposableObjectEx {
      * inner data holder -- granular updates will be ignored.
      */
     BroadcastUpdate(){
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
         this.Dirty();
     }
 

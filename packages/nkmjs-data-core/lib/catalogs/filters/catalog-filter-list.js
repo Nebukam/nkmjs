@@ -39,7 +39,7 @@ class FilterList extends com.pool.DisposableObjectEx {
 
         if (p_filter.enabled) { this._OnFilterEnabled(p_filter); }
 
-        this._Broadcast(com.SIGNAL.ITEM_ADDED, this, p_filter);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_filter);
         return true;
     }
 
@@ -57,20 +57,20 @@ class FilterList extends com.pool.DisposableObjectEx {
             .Unwatch(FILTER_SIGNAL.ENABLED, this._OnFilterEnabled, this)
             .Unwatch(FILTER_SIGNAL.DISABLED, this._OnFilterDisabled, this);
 
-        this._Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_filter);
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_filter);
         return true;
     }
 
     _OnFilterEnabled(p_filter) {
         if (!this._activeFilters.Add(p_filter)) { return; }
-        this._Broadcast(FILTER_SIGNAL.ENABLED, this, p_filter);
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(FILTER_SIGNAL.ENABLED, this, p_filter);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     _OnFilterDisabled(p_filter) {
         if (!this._activeFilters.Remove(p_filter)) { return; }
-        this._Broadcast(FILTER_SIGNAL.DISABLED, this, p_filter);
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(FILTER_SIGNAL.DISABLED, this, p_filter);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     Pass(p_item) {

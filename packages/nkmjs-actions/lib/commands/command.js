@@ -146,8 +146,8 @@ class Command extends com.pool.DisposableObjectEx {
         if (this._isEnabled) { return false; }
         this._isEnabled = true;
         if (this._shortcut) { this._shortcut.Enable(); }
-        this._Broadcast(com.SIGNAL.UPDATED, this);
-        this._Broadcast(SIGNAL.ENABLED, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(SIGNAL.ENABLED, this);
         return true;
     }
 
@@ -158,8 +158,8 @@ class Command extends com.pool.DisposableObjectEx {
         if (!this._isEnabled) { return false; }
         this._isEnabled = false;
         if (this._shortcut) { this._shortcut.Disable(); }
-        this._Broadcast(com.SIGNAL.UPDATED, this);
-        this._Broadcast(SIGNAL.DISABLED, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(SIGNAL.DISABLED, this);
         return true;
     }
 
@@ -267,8 +267,8 @@ class Command extends com.pool.DisposableObjectEx {
     _Start() {
         if (this._running) { return; }
         this._running = true;
-        this._Broadcast(COMMAND_SIGNAL.START, this);
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(COMMAND_SIGNAL.START, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     /**
@@ -276,7 +276,7 @@ class Command extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     _Success() {
-        this._Broadcast(COMMAND_SIGNAL.SUCCESS, this);
+        this.Broadcast(COMMAND_SIGNAL.SUCCESS, this);
         this._End();
     }
 
@@ -287,7 +287,7 @@ class Command extends com.pool.DisposableObjectEx {
      */
     _Fail(p_msg) {
         console.error(`${this} failed : ${p_msg}`);
-        this._Broadcast(COMMAND_SIGNAL.FAIL, this, p_msg);
+        this.Broadcast(COMMAND_SIGNAL.FAIL, this, p_msg);
         this._End();
     }
 
@@ -305,7 +305,7 @@ class Command extends com.pool.DisposableObjectEx {
      */
     _Cancel() {
         this._InternalCancel();
-        this._Broadcast(COMMAND_SIGNAL.CANCEL, this);
+        this.Broadcast(COMMAND_SIGNAL.CANCEL, this);
         this._End();
     }
 
@@ -315,8 +315,8 @@ class Command extends com.pool.DisposableObjectEx {
      */
     _End() {
         this._running = false;
-        this._Broadcast(COMMAND_SIGNAL.END, this);
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(COMMAND_SIGNAL.END, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     _OnShortcutActivated() {

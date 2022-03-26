@@ -48,10 +48,10 @@ class StateMachine extends DisposableObjectEx {
         }
 
         this._OnCurrentStateChanged(oldValue);
-        this._Broadcast(SIGNAL.STATE_CHANGED, this._owner, p_value, oldValue);
+        this.Broadcast(SIGNAL.STATE_CHANGED, this._owner, p_value, oldValue);
 
         if (this._owner === this) { this._signals.Broadcast(p_value, this._owner); }
-        else { this._owner._Broadcast(p_value, this._owner); }
+        else { this._owner.Broadcast(p_value, this._owner); }
 
     }
     /**

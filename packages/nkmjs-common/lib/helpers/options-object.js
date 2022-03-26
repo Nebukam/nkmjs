@@ -102,7 +102,7 @@ class OptionsObject extends DisposableObjectEx {
         if(this.constructor.__broadcastUpdate){
             let oldValue = this._options[p_id];
             this._options[p_id] = p_value;
-            this._Broadcast(SIGNAL.VALUE_CHANGED, this, p_id, p_value, oldValue);
+            this.Broadcast(SIGNAL.VALUE_CHANGED, this, p_id, p_value, oldValue);
         }else{
             this._options[p_id] = p_value;
         }

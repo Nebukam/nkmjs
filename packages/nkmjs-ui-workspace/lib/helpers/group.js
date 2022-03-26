@@ -69,7 +69,7 @@ class Group extends ui.WidgetOrientable {
         let group = this._groupMap.Get(p_key);
         if (!group) {
 
-            group = this.Add(p_class, `group tile-ctnr`, this._viewport.wrapper);
+            group = this.Attach(p_class, `group tile-ctnr`, this._viewport.wrapper);
             this._groupMap.Set(p_key, group);
             this._groupList.push(group);
 
@@ -80,7 +80,7 @@ class Group extends ui.WidgetOrientable {
             }
 
             this._OnGroupCreated(p_key, group);
-            this._Broadcast(Group.GROUP_CREATED, this, group);
+            this.Broadcast(Group.GROUP_CREATED, this, group);
         }
         return group;
     }

@@ -84,7 +84,7 @@ class DialogForm extends dialog.DialogForm {
         this._body = ui.dom.El(`div`, { class: `group body` }, this._host);
         this._footer = ui.dom.El(`div`, { class: `group footer` }, this._host);
 
-        this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._footer);
+        this._toolbar = this.Attach(this._toolbarClass, `toolbar`, this._footer);
         this._toolbar._defaultWidgetClass = this._toolbarDefaultWidgetClass;
         this._toolbar.size = ui.FLAGS.SIZE_M;
 

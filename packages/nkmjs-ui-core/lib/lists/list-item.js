@@ -75,7 +75,7 @@ class ListItem extends WidgetItem {
 
         if (!this._toolbarClass) { return; }
 
-        if (!this._toolbar) { this._toolbar = this.Add(this._toolbarClass, `toolbar`, this._toolbarCtnr); }
+        if (!this._toolbar) { this._toolbar = this.Attach(this._toolbarClass, `toolbar`, this._toolbarCtnr); }
         this._toolbar.CreateHandle({
             command: p_cmd, isCommandTrigger: false,
             trigger: { thisArg: this, fn: this._ExecuteCommand, arg: p_cmd }

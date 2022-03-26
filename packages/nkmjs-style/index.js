@@ -36,7 +36,7 @@ module.exports = {
         if (p_property in __propCache) { if (__propCache[p_property] == p_value) { return; } }
         document.documentElement.style.setProperty(p_property, p_value);
         __propCache[p_property] = p_value;
-        __STYLE.instance._Broadcast(p_property, p_value);
+        __STYLE.instance.Broadcast(p_property, p_value);
     },
     ClearCache: () => { __propCache = {}; }
 

@@ -40,9 +40,7 @@ class UI extends com.helpers.SingletonEx {
      * @param {string} [p_extends] 
      * @group Pooling
      */
-    static Register(p_id, p_class) {
-        this.instance._Register(p_id, p_class);
-    }
+    static Register(p_id, p_class) { this.instance._Register(p_id, p_class); }
 
     /**
      * @description Register custom element
@@ -125,7 +123,7 @@ class UI extends com.helpers.SingletonEx {
 
         if (!this._uiTypes.Contains(p_class)) {
             if (u.isInstanceOf(p_class, DisposableHTMLElement)) {
-                this._Register(u.tils.ToCustomElementID(p_class.name, true), p_class);
+                this._Register(u.tils.ToCustomElementID(p_class.name, true), p_class, 0);
             } else {
                 throw new Error(`${p_class} could not be found.`);
             }
@@ -174,8 +172,10 @@ class UI extends com.helpers.SingletonEx {
         this._dirtyElements.Clear();
     }
 
-    _Preload(p_class, p_num){
-        for(var i = 0; i < p_num; i++){
+    static Preload(p_class, p_count){ this.instance._Preload(p_class, p_count); }
+
+    _Preload(p_class, p_count){
+        for(var i = 0; i < p_count; i++){
             this._Rent(p_class).Release();
         }
     }

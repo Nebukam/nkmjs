@@ -160,7 +160,7 @@ class AppBase extends com.helpers.SingletonEx {
 
             for (let i = 0, n = layerCount; i < n; i++) {
                 let conf = this._layers[i],
-                    layer = this._appBody.Add(conf.cl);
+                    layer = this._appBody.Attach(conf.cl);
 
                 conf.layer = layer;
                 if (conf.id) { this[conf.id] = layer; }
@@ -168,7 +168,7 @@ class AppBase extends com.helpers.SingletonEx {
             }
 
             // Push overlay before postFn on layers
-            this._overlayHandler = this._appBody.Add(this._overlayHandlerClass);
+            this._overlayHandler = this._appBody.Attach(this._overlayHandlerClass);
 
             for (let i = 0, n = layerCount; i < n; i++) {
                 let conf = this._layers[i];
@@ -176,7 +176,7 @@ class AppBase extends com.helpers.SingletonEx {
             }
 
         } else {
-            this._overlayHandler = this._appBody.Add(this._overlayHandlerClass);
+            this._overlayHandler = this._appBody.Attach(this._overlayHandlerClass);
         }
 
     }

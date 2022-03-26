@@ -159,8 +159,8 @@ class CommandChain extends Command {
     _Start() {
         if (this._running) { return; }
         this._running = true;
-        this._Broadcast(COMMAND_SIGNAL.START, this);
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(COMMAND_SIGNAL.START, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     /**
@@ -168,7 +168,7 @@ class CommandChain extends Command {
      * @description TODO
      */
     _Success() {
-        this._Broadcast(COMMAND_SIGNAL.SUCCESS, this);
+        this.Broadcast(COMMAND_SIGNAL.SUCCESS, this);
         this._End();
     }
 
@@ -178,7 +178,7 @@ class CommandChain extends Command {
      * @description TODO
      */
     _Fail(p_msg) {
-        this._Broadcast(COMMAND_SIGNAL.FAIL, this, p_msg);
+        this.Broadcast(COMMAND_SIGNAL.FAIL, this, p_msg);
         this._End();
     }
 
@@ -192,7 +192,7 @@ class CommandChain extends Command {
      */
     _Cancel() {
         this._InternalCancel();
-        this._Broadcast(COMMAND_SIGNAL.CANCEL, this);
+        this.Broadcast(COMMAND_SIGNAL.CANCEL, this);
         this._End();
     }
 
@@ -202,8 +202,8 @@ class CommandChain extends Command {
      */
     _End() {
         this._running = false;
-        this._Broadcast(COMMAND_SIGNAL.END, this);
-        this._Broadcast(com.SIGNAL.UPDATED, this);
+        this.Broadcast(COMMAND_SIGNAL.END, this);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 
     //#endregion

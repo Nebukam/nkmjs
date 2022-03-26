@@ -74,7 +74,7 @@ class UIItem extends ui.DisplayObjectContainer {
 
         try {
             this._errorTf.Set(null);
-            this._sample = this.Add(p_class, `content`, this._wrapper);
+            this._sample = this.Attach(p_class, `content`, this._wrapper);
 
             if (p_variant) {
                 for (let key in p_variant) {

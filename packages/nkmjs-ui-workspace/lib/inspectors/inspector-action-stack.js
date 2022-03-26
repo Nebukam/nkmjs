@@ -55,10 +55,10 @@ class ActionStackInspector extends datacontrols.InspectorView {
 
         this._actionList = ui.El(`div`, {class:`list`}, this._host);
 
-        this._rootItem = this.Add(this.constructor.__default_actionItem, `item`, this._actionList);
+        this._rootItem = this.Attach(this.constructor.__default_actionItem, `item`, this._actionList);
         this._rootItem.data = actions.ActionStack.ROOT;
 
-        this._itemStreamer = this.Add(ui.helpers.DOMStreamer, `item group streamer`, this._actionList);
+        this._itemStreamer = this.Attach(ui.helpers.DOMStreamer, `item group streamer`, this._actionList);
         this._itemStreamer.options = {
             layout: { ...this.constructor.__domStreamer_layout }
         };
@@ -93,7 +93,7 @@ class ActionStackInspector extends datacontrols.InspectorView {
 
         let
             action = this._data._stack[p_index],
-            item = this.Add(
+            item = this.Attach(
                 com.BINDINGS.Get(this, action, this.constructor.__default_actionItem),
                 `item`, p_fragment);
 

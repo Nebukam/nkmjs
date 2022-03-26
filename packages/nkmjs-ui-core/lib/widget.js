@@ -267,12 +267,12 @@ class Widget extends DisplayObjectContainer {
 
         if (p_toggle) {
             this._SelectionGain();
-            this._Broadcast(SIGNAL.SELECTION_GAIN, this);
+            this.Broadcast(SIGNAL.SELECTION_GAIN, this);
             if (sStack) { sStack.Add(this); }
             this._Highlight(true);
         } else {
             this._SelectionLost();
-            this._Broadcast(SIGNAL.SELECTION_LOST, this);
+            this.Broadcast(SIGNAL.SELECTION_LOST, this);
             if (sStack) { sStack.Remove(this); }
             if (!this._isFocused) { this._Highlight(false); }
         }
@@ -429,7 +429,7 @@ class Widget extends DisplayObjectContainer {
      */
     Activate(p_evt) {
         if (!this._isActivable) { return false; }
-        this._Broadcast(SIGNAL.ACTIVATED, this, p_evt);
+        this.Broadcast(SIGNAL.ACTIVATED, this, p_evt);
 
         if (this._selectOnActivation) {
             if (this._isSelectable) { this.Select(INPUT.ctrl ? !this._isSelected : true); }
@@ -476,7 +476,7 @@ class Widget extends DisplayObjectContainer {
             this._OnDataUpdated(p_value);
         }
 
-        this._Broadcast(SIGNAL.DATA_CHANGED, this, p_value, oldValue);
+        this.Broadcast(SIGNAL.DATA_CHANGED, this, p_value, oldValue);
 
     }
 

@@ -145,7 +145,7 @@ class Document extends com.pool.DisposableObjectEx {
     Dirty() {
         if (this._isDirty) { return; }
         this._isDirty = true;
-        this._Broadcast(data.SIGNAL.DIRTY, this);
+        this.Broadcast(data.SIGNAL.DIRTY, this);
     }
 
     /**
@@ -154,7 +154,7 @@ class Document extends com.pool.DisposableObjectEx {
     ClearDirty() {
         if (!this._isDirty) { return; }
         this._isDirty = false;
-        this._Broadcast(data.SIGNAL.DIRTY_CLEARED, this);
+        this.Broadcast(data.SIGNAL.DIRTY_CLEARED, this);
     }
 
     // ----> RSC Management

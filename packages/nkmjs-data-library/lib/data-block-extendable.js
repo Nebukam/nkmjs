@@ -48,7 +48,7 @@ class DataBlockExtendable extends data.DataBlock {
         this._baseObserver.ObserveOnly(p_value);
         this._OnBaseChanged(oldBase);
         if (p_value) { this._OnBaseUpdated(this._base); }
-        this._Broadcast(SIGNAL.BASE_CHANGED, this, oldBase);
+        this.Broadcast(SIGNAL.BASE_CHANGED, this, oldBase);
     }
 
     /**

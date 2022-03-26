@@ -111,7 +111,7 @@ class ControlBuilder {
     Add(p_class, p_css = null, p_config = null, p_configIsOptions = false) {
 
         let
-            control = this._owner.Add(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, this._host),
+            control = this._owner.Attach(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, this._host),
             conditional = false;
         this._controls.push(control);
         if (p_config) {

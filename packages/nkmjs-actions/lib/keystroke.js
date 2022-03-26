@@ -89,7 +89,7 @@ console.log(p_string);
         if (this._enabled) { return; }
         this._enabled = true;
         KEYBOARD.instance._Register(this);
-        this._Broadcast(SIGNAL.ENABLED, this);
+        this.Broadcast(SIGNAL.ENABLED, this);
     }
 
     Disable() {
@@ -97,7 +97,7 @@ console.log(p_string);
         this._enabled = false;
         KEYBOARD.instance._Unregister(this);
         if(this._active){ this.Deactivate(); }
-        this._Broadcast(SIGNAL.DISABLED, this);
+        this.Broadcast(SIGNAL.DISABLED, this);
     }
 
     /**
@@ -127,14 +127,14 @@ console.log(p_string);
     Activate() {
         if(this._active){ return false; }
         this._active = true;
-        this._Broadcast(SIGNAL.ACTIVATED, this);
+        this.Broadcast(SIGNAL.ACTIVATED, this);
         return true;
     }
 
     Deactivate() {
         if(!this._active){ return false; }
         this._active = false;
-        this._Broadcast(SIGNAL.DEACTIVATED, this);
+        this.Broadcast(SIGNAL.DEACTIVATED, this);
         return true;
     }
 

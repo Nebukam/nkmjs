@@ -151,18 +151,18 @@ class EditorEx extends uidatacontrols.Editor {
 
     _Render() {
 
-        if (this.constructor.__default_headerClass) { this._header = this.Add(this.constructor.__default_headerClass, ui.IDS.HEADER, this._host); }
+        if (this.constructor.__default_headerClass) { this._header = this.Attach(this.constructor.__default_headerClass, ui.IDS.HEADER, this._host); }
         else { this._header = ui.dom.El(`div`, { class: ui.IDS.HEADER }, this._host); }
 
         this._body = ui.dom.El(`div`, { class: ui.IDS.BODY }, this._host);
 
-        if (this.constructor.__default_footerClass) { this._footer = this.Add(this.constructor.__default_footerClass, ui.IDS.FOOTER, this._host); }
+        if (this.constructor.__default_footerClass) { this._footer = this.Attach(this.constructor.__default_footerClass, ui.IDS.FOOTER, this._host); }
         else { this._footer = ui.dom.El(`div`, { class: ui.IDS.FOOTER }, this._host); }
 
         //ui.Render(uilib.dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
 
-        this._viewport = this.Add(this.constructor.__default_viewportClass, `viewport`, this._body);
-        this._shelf = this.Add(this.constructor.__default_shelfClass, `shelf`, this._body);
+        this._viewport = this.Attach(this.constructor.__default_viewportClass, `viewport`, this._body);
+        this._shelf = this.Attach(this.constructor.__default_shelfClass, `shelf`, this._body);
 
         this._shelf.orientation = ui.FLAGS.HORIZONTAL;
         this._shelf.navPlacement = ui.FLAGS.TOP;

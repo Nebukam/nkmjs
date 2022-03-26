@@ -88,7 +88,7 @@ class PathWatcher extends com.pool.DisposableObjectEx {
                 .on('ready', this._OnWatcherReady);
 
         } else {
-            this._Broadcast(SIGNAL.WATCH_ERROR, this);
+            this.Broadcast(SIGNAL.WATCH_ERROR, this);
             return;
         }
 
@@ -97,31 +97,31 @@ class PathWatcher extends com.pool.DisposableObjectEx {
 
     _OnWatcherError() {
         this.Disable();
-        this._Broadcast(SIGNAL.WATCH_ERROR, this);
+        this.Broadcast(SIGNAL.WATCH_ERROR, this);
     }
 
     _OnWatcherReady() {
-        this._Broadcast(SIGNAL.WATCH_STARTED, this);
+        this.Broadcast(SIGNAL.WATCH_STARTED, this);
     }
 
     _OnFileAdded(p_path) {
-        this._Broadcast(SIGNAL.FILE_ADDED, this);
+        this.Broadcast(SIGNAL.FILE_ADDED, this);
     }
 
     _OnFileChange(p_path) {
-        this._Broadcast(SIGNAL.FILE_CHANGED, this);
+        this.Broadcast(SIGNAL.FILE_CHANGED, this);
     }
 
     _OnFileDeleted(p_path) {
-        this._Broadcast(SIGNAL.FILE_DELETE, this);
+        this.Broadcast(SIGNAL.FILE_DELETE, this);
     }
 
     _OnDirectoryAdded(p_path) {
-        this._Broadcast(SIGNAL.DIR_ADDED, this);
+        this.Broadcast(SIGNAL.DIR_ADDED, this);
     }
 
     _OnDirectoryDeleted(p_path) {
-        this._Broadcast(SIGNAL.DIR_DELETE, this);
+        this.Broadcast(SIGNAL.DIR_DELETE, this);
     }
 
     _CleanUp() {

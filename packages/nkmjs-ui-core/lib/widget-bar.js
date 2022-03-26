@@ -201,22 +201,22 @@ class WidgetBar extends WidgetOrientable {
         let cl = (p_class || (p_options ? p_options.cl : null) || this._defaultWidgetClass),
             handle,
             group = u.tils.Get(p_options, `group`, null),
-            toggle = group ? u.tils.Get(p_options, `toggle`, null) : null;
+            radio = group ? u.tils.Get(p_options, `radio`, null) : null;
 
         if (group) {
 
             group = this.GetGroup(group, true);
-            handle = this.Add(cl, `item`, group.element);
+            handle = this.Attach(cl, `item`, group.element);
             group.handles.push(handle);
 
-            if (toggle) {
+            if (radio) {
                 handle
                     .Watch(SIGNAL.ACTIVATED, this._OnRadioActivated, this)
                     .Watch(SIGNAL.DEACTIVATED, this._OnRadioDeactivated, this);
             }
 
         } else {
-            handle = this.Add(cl, `item`);
+            handle = this.Attach(cl, `item`);
         }
 
         if (this._inline) { handle.classList.add(`inline`); }

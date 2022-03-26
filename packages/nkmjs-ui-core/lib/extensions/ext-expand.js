@@ -88,7 +88,7 @@ class ExpandExtension extends Extension {
         }
 
         this._UpdateFlags();
-        this._Broadcast(this._isExpanded ? SIGNAL.EXPANDED : SIGNAL.COLLAPSED);
+        this.Broadcast(this._isExpanded ? SIGNAL.EXPANDED : SIGNAL.COLLAPSED);
 
         if (p_activator) {
             this.activator = p_activator;
@@ -151,7 +151,7 @@ class ExpandExtension extends Extension {
         if (p_scrollTo) {
             this._target.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
         }
-        this._Broadcast(SIGNAL.EXPANDED);
+        this.Broadcast(SIGNAL.EXPANDED);
     }
 
     /**
@@ -161,7 +161,7 @@ class ExpandExtension extends Extension {
         if (!this._isExpanded) { return; }
         this._isExpanded = false;
         this._UpdateFlags();
-        this._Broadcast(SIGNAL.COLLAPSED);
+        this.Broadcast(SIGNAL.COLLAPSED);
     }
 
     _UpdateFlags() {

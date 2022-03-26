@@ -200,9 +200,9 @@ class DisplayObject extends DisposableHTMLElement {
         let oldParent = this._parent;
         this._parent = p_value;
 
-        if (oldParent) { oldParent.Remove(this); }
+        if (oldParent) { oldParent.Detach(this); }
         if (!this._parent) { this.remove(); }
-        //if (this._parent) { this._parent.Add(this); }
+        //if (this._parent) { this._parent.Attach(this); }
 
         this._OnParentChanged(oldParent);
 
@@ -293,7 +293,7 @@ class DisplayObject extends DisposableHTMLElement {
      */
     _RegisterLocalRequestHandler(p_requestType, p_fn) {
         if (!this._requestSignalBox) { this._requestSignalBox = new com.signals.SignalBox(); }
-        this._requestSignalBox.Add(p_requestType, p_fn, this);
+        this._requestSignalBox.Watch(p_requestType, p_fn, this);
     }
 
     /**
@@ -304,7 +304,7 @@ class DisplayObject extends DisposableHTMLElement {
      */
     _UnregisterLocalRequestHandler(p_requestType, p_fn) {
         if (!this._requestSignalBox) { return; }
-        this._requestSignalBox.Remove(p_requestType, p_fn, this);
+        this._requestSignalBox.Unwatch(p_requestType, p_fn, this);
     }
 
     //#endregion

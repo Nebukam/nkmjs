@@ -14,9 +14,11 @@ const SIGNAL = require(`../signal`);
  * @memberof environment.helpers
  */
 class Features extends com.pool.DisposableObjectEx {
-    constructor() {
+    constructor() { super();}
 
-        super();
+    _Init(){
+        
+        super._Init();
 
         this._manifestVersion = 0;
         this._isNodeEnabled = false; // <-- Electron or Nodejs context ?
@@ -258,7 +260,7 @@ class Features extends com.pool.DisposableObjectEx {
                 break;
         }
 
-        this._Broadcast(SIGNAL.DOMSTATE_CHANGED, this._domState);
+        this.Broadcast(SIGNAL.DOMSTATE_CHANGED, this._domState);
 
     }
 
@@ -340,7 +342,7 @@ class Features extends com.pool.DisposableObjectEx {
 
         u.LOG._U(`displayMode`, this._displayMode, oldMode, `#f7d801`);
 
-        this._Broadcast(SIGNAL.DISPLAY_MODE_CHANGED, this._displayMode, oldMode);
+        this.Broadcast(SIGNAL.DISPLAY_MODE_CHANGED, this._displayMode, oldMode);
 
     }
 
@@ -362,7 +364,7 @@ class Features extends com.pool.DisposableObjectEx {
 
         u.LOG._U(`prefersColorScheme`, this._prefersColorScheme, oldValue, `#f7d801`);
 
-        this._Broadcast(SIGNAL.COLOR_SCHEME_CHANGED, this._prefersColorScheme, oldValue);
+        this.Broadcast(SIGNAL.COLOR_SCHEME_CHANGED, this._prefersColorScheme, oldValue);
 
     }
 
@@ -385,7 +387,7 @@ class Features extends com.pool.DisposableObjectEx {
 
         u.LOG._U(`device`, this._displayType, oldMode, `#f7d801`);
 
-        this._Broadcast(SIGNAL.DISPLAY_TYPE_CHANGED, this._displayType, oldMode);
+        this.Broadcast(SIGNAL.DISPLAY_TYPE_CHANGED, this._displayType, oldMode);
 
     }
 
@@ -405,13 +407,13 @@ class Features extends com.pool.DisposableObjectEx {
     _OnEnvironmentOnline(p_evt){
         if(this._isOnline){ return; }
         this._isOnline = true;
-        this._Broadcast(SIGNAL.ONLINE);
+        this.Broadcast(SIGNAL.ONLINE);
     }
 
     _OnEnvironmentOffline(p_evt){
         if(!this._isOnline){ return; }
         this._isOnline = false;
-        this._Broadcast(SIGNAL.OFFLINE);
+        this.Broadcast(SIGNAL.OFFLINE);
     }
 
     //

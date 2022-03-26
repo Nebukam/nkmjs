@@ -39,7 +39,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Child management
      */
-    static CHILD_ADDED = Symbol(`childAdded`);
+    static CHILD_ATTACHED = Symbol(`childAdded`);
 
     /**
      * @description TODO
@@ -55,7 +55,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Child management
      */
-    static CHILD_REMOVED = Symbol(`childRemoved`);
+    static CHILD_DETACHED = Symbol(`childRemoved`);
 
     /**
      * @description TODO

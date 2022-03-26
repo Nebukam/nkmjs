@@ -72,12 +72,12 @@ class UIItemListLayer extends ui.views.Layer {
 
         if (variants) {
             for (let i = 0, n = variants.length; i < n; i++) {
-                let item = this.Add(UIItem, `item`, this._itemContainer);
+                let item = this.Attach(UIItem, `item`, this._itemContainer);
                 item.Display(p_id, p_class, variants[i]);
                 if (callback) { callback(item._sample, variants[i]); }
             }
         } else {
-            let item = this.Add(UIItem, `item`, this._itemContainer);
+            let item = this.Attach(UIItem, `item`, this._itemContainer);
             item.Display(p_id, p_class);
             if (callback) { callback(item._sample, null); }
         }

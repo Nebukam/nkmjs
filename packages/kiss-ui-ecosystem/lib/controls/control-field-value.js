@@ -68,7 +68,7 @@ class FieldValueControl extends Control{
 
     _PostRender(){
         super._PostRender();
-        this._overlay = this.Add(this._overlayClass, -1, this._host, `overlay`);
+        this._overlay = this.Attach(this._overlayClass, -1, this._host, `overlay`);
     }
 
     _OnDataUpdated(p_data){

@@ -83,7 +83,7 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
             // Implementation detail, might prove trickier than it seems
             throw new Error(`not implemented`);
         } else {
-            control = this.Add(ButtonEx, 'item inline');
+            control = this.Attach(ButtonEx, 'item inline');
             control.options = {
                 toggle: { fn: this._OnOptionToggle, arg: ui.FLAGS.SELF }
             };

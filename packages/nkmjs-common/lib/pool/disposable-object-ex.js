@@ -17,7 +17,7 @@ class DisposableObjectEx extends DisposableObject {
     constructor() { super(); }
 
     _Init() {
-        this._signals = new SignalBox();
+        this._signals = new SignalBox(this);
     }
 
     //#region Signals
@@ -30,10 +30,7 @@ class DisposableObjectEx extends DisposableObject {
      * @groupdescription This section list the main methods used to watch/unwatch signals on this object.
      * For more info on signals, see {@tutorial signals}
      */
-    _Broadcast(p_signal, ...args) { 
-        this._signals.Broadcast(p_signal, ...args); 
-        return this;
-    }
+    Broadcast(p_signal, ...args) { /* owned by local SignalBox */ }
 
     /**
      * @description Watch a signal broadcasted by this object.  
@@ -48,10 +45,7 @@ class DisposableObjectEx extends DisposableObject {
      * @example object.Watch(SIGNAL.RELEASED, foo, this);
      * @example object.Watch(SIGNAL.RELEASED, (obj)=>{ ... }));
      */
-    Watch(p_signal, p_fn, p_listener = null) {
-        this._signals.Add(p_signal, p_fn, p_listener);
-        return this;
-    }
+    Watch(p_signal, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     /**
      * @description Watch a signal broadcasted by this object, once only; meaning if the signal the listener gets automatically 
@@ -62,10 +56,7 @@ class DisposableObjectEx extends DisposableObject {
      * @returns {common.pool.DisposableObjectEx}
      * @group Broadcasting
      */
-    WatchOnce(p_signalId, p_fn, p_listener = null) {
-        this._signals.AddOnce(p_signalId, p_fn, p_listener);
-        return this;
-    }
+    WatchOnce(p_signalId, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     /**
      * @description Unwatch a signal broadcasted by this object
@@ -76,8 +67,8 @@ class DisposableObjectEx extends DisposableObject {
      * @group Broadcasting
      */
     Unwatch(p_signal, p_fn, p_listener = null) {
-        this._signals.Remove(p_signal, p_fn, p_listener);
-        return this;
+        //this._signals.Remove(p_signal, p_fn, p_listener);
+        //return this;
     }
 
     //#endregion
@@ -119,7 +110,7 @@ class DisposableObjectEx extends DisposableObject {
         this._isReleasing = true;
         this._releasePrevented = false;
 
-        this._Broadcast(SIGNAL.RELEASING, this);
+        this.Broadcast(SIGNAL.RELEASING, this);
 
         if (this._releasePrevented) {
             this._isReleasing = false;
@@ -127,7 +118,7 @@ class DisposableObjectEx extends DisposableObject {
             return;
         }
 
-        this._Broadcast(SIGNAL.RELEASED, this);
+        this.Broadcast(SIGNAL.RELEASED, this);
         this._CleanUp();
         
         if (this._returnFn != undefined) { this._returnFn(this); }

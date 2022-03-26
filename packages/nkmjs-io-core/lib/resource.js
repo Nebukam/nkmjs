@@ -198,7 +198,7 @@ class Resource extends com.pool.DisposableObjectEx {
         this._UpdatePathInfos();
         this._commitRnFn(this, oldPath);
         this._OnPathUpdated(oldPath);
-        this._Broadcast(IO_SIGNAL.RENAMED, this, oldPath);
+        this.Broadcast(IO_SIGNAL.RENAMED, this, oldPath);
     }
 
     _OnPathUpdated(p_oldPath) {
