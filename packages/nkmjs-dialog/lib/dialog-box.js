@@ -161,7 +161,7 @@ class DialogBox extends ui.Widget {
                 throw new Error(`Cannot create item with unspecified class or instance.`);
             }
 
-            let item = this.Add(itemClass, `item`, this._contentWrapper);
+            let item = this.Attach(itemClass, `item`, this._contentWrapper);
 
             if (itemData) { item.data = itemData; }
 
@@ -268,7 +268,7 @@ class DialogBox extends ui.Widget {
                 norelease = itemNFos ? itemNFos.donotrelease : false;
 
             if (norelease || !(`Release` in item)) {
-                this.Remove(item);
+                this.Detach(item);
                 ui.dom.Detach(item);
             } else if (`Release` in item) {
                 item.Release();
