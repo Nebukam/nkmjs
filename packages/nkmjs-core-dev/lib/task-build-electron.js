@@ -109,6 +109,7 @@ class TaskBuildElectronApp extends ScriptBase {
         this._log(`electron-builder » ${conf.platform}@${conf.arch}`);
 
         conf.platform = (conf.platform || builder.Platform.WINDOWS);
+        conf.build = conf.build || {};
         conf[(conf.arch || builder.Arch.x64)] = true;
 
         //https://stackoverflow.com/questions/42756982/how-do-you-specify-a-custom-file-extension-in-an-electron-app
@@ -119,7 +120,6 @@ class TaskBuildElectronApp extends ScriptBase {
                 name: shared.name,
                 main: shared.main,
                 description: shared.description,
-                author: { ...NKMjs.author },
                 platform: conf.platform,
                 [conf.arch]: true,
                 build: {
@@ -132,14 +132,17 @@ class TaskBuildElectronApp extends ScriptBase {
                         //app: shared.appDirectory,
                         buildResources: shared.buildResources
                     },
-                    files: shared.files
+                    files: shared.files,
+                    
+                    ...conf.build,
                 },
                 dependencies: shared.dependencies,
-                devDependencies: shared.devDependencies
+                devDependencies: shared.devDependencies,
+                author: { ...NKMjs.author },
             },
             builderConfig = {};
 
-        if(shared.fileAssociations){
+        if (shared.fileAssociations) {
             packageConfig.build.fileAssociations = shared.fileAssociations;
         }
 

@@ -64,7 +64,23 @@
         },
         {
             "platform": "windows",
-            "arch": "x64"
+            "arch": "x64",
+            "build":{
+                "target": "nsis",
+                "nsis": {
+                    "oneClick": false,
+                    "perMachine": false,
+                    "allowToChangeInstallationDirectory": true
+                  }
+            }
+        },
+        {
+            "platform": "linux",
+            "arch": "x64",
+            "build":{
+                "target": "deb",
+                "deb": {}
+            }
         },
         {
             "platform": "node",
