@@ -22,7 +22,7 @@ class TaskExtractBuildConfigs extends ScriptBase {
 
         // First, fetch Electron targets
 
-        let electronPlatforms = ["windows", "linux", "mac"],
+        let electronPlatforms = ["windows", "win", "linux", "mac", "darwin"],
             extensionPlatforms = ["chrome", "firefox", "edge"],
             wwwPlatforms = ["www"],
             pwaPlatforms = ["pwa"],
