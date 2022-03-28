@@ -179,7 +179,7 @@ class UTILS_DOM {
         p_refNode.parentNode.insertBefore(p_element, p_refNode);
     }
 
-    
+
     /**
      * @description Appends or move an element at the beginning of the display list of another dom element. 
      * Note that if the element provided is not a child of the target parent, it will be removed from its previous parent.
@@ -380,6 +380,20 @@ class UTILS_DOM {
     }
 
     //#endregion
+
+
+    static get isTextHighlighted() {
+        let t = this.highlightedText;
+        return !u.isVoid(t) && t != '';
+    }
+
+    static get highlightedText() {
+        let txt = '';
+        if (window.getSelection) { txt = window.getSelection(); }
+        else if (document.getSelection) { txt = document.getSelection(); }
+        else if (document.selection) { txt = document.selection.createRange().text; }
+        return txt;
+    }
 
 }
 

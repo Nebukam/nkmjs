@@ -11,11 +11,8 @@ class TaskPrepareIconsAssoc extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`prepare-icons`, p_onComplete);
+        super(`prepare-icons-assoc`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
-
-        this._Bind(this.ProcessNextIcon);
-        this._Bind(this.WrapUp);
 
         let fileAssociations = NKMjs.projectConfig.fileAssociations;
         if(!fileAssociations){ this.End(); return; }
