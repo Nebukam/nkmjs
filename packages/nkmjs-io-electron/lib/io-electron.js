@@ -43,12 +43,14 @@ class IOElectron {
 
     _IOID(p_ioId, p_operation) {
         if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
-            try{
+            try {
                 let url = new URL(p_operation.fullPath);
-                return nkm.io.IO_TYPE.REMOTE;
-            }catch(e){
-                return nkm.io.IO_TYPE.DEFAULT; 
-            }
+                if (!url.protocol.includes(`file`)) {
+                    return nkm.io.IO_TYPE.REMOTE;
+                }
+            } catch (e) { }
+
+            return nkm.io.IO_TYPE.DEFAULT;
         }
         return p_ioId;
     }

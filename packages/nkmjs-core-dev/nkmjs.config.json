@@ -27,7 +27,7 @@
                 {
                     "delete-inlined-files": false,
                     "rebuild-styles": true,
-                    "dev":true
+                    "dev": true
                 }
             ],
             "task-cleanup"

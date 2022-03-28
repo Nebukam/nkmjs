@@ -90,15 +90,15 @@ class JSONSerializer extends BaseSerializer {
 
         // Retrieve reference constructor
         if (p_data != null) {
-            targetClass = p_data[CONTEXT.JSON.CONSTRUCTOR];
-            version = p_data[com.IDS.VER] || -1;
+            targetClass = p_data.constructor;
+            version = metas[com.IDS.VER] || -1;
         } else {
             if (!metas) { throw new Error(`Cannot unserialize without nfos`); }
 
             targetClass = com.BINDINGS.GetClass(metas[CONTEXT.JSON.CONSTRUCTOR]);
             version = metas[com.IDS.VER] || -1;
 
-            if (!targetClass) { throw new Error(`Could not find constructor ${metas.instanceOf}`); }
+            if (!targetClass) { throw new Error(`Could not find constructor ${metas[CONTEXT.JSON.CONSTRUCTOR]}`); }
 
             p_data = com.Rent(targetClass);
         }

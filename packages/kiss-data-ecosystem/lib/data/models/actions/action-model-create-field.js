@@ -48,7 +48,7 @@ class ActionModelCreateField extends actions.Action {
     }
 
     _CleanUp() {
-        if (this._undoed) {
+        if (this._undone) {
             this._operation.field.Release();
         }
         super._CleanUp();

@@ -40,6 +40,13 @@
             "%dirs.style%"
         ]
     },
+    "fileAssociations": [
+        {
+            "ext": "nkmjs",
+            "name": "NKMjs File",
+            "role": "Editor"
+        }
+    ],
     "builds": [
         {
             "platform": "www",

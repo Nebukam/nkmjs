@@ -17,9 +17,10 @@ class JSONResource extends TextResource {
     constructor() { super(); }
 
     static __defaultType = RESPONSE_TYPE.JSON;
+    static __minify = true;
 
     _Encode() {
-        return u.isObject(this._content) ? JSON.stringify(this._content, null, `     `) : `{}`;
+        return u.isObject(this._content) ? JSON.stringify(this._content, null, this.constructor.__minify ? null : `     `) : `{}`;
     }
 
     _Decode() {

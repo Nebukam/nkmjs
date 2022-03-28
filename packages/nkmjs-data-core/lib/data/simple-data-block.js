@@ -13,6 +13,11 @@ class SimpleDataBlock extends DataBlock {
     _Init() {
         super._Init();
         this._values = {};
+        this._ResetValues(this._values);
+    }
+
+    _ResetValues(p_values){
+
     }
 
     Set(p_id, p_value, p_silent = false) {
@@ -89,7 +94,7 @@ class SimpleDataBlock extends DataBlock {
 
     _CleanUp() {
         super._CleanUp();
-        this._values = {};
+        this._ResetValues(this._values);
     }
 
 }

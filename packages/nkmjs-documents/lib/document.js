@@ -266,10 +266,11 @@ class Document extends com.pool.DisposableObjectEx {
             throw new Error(`No data.`);
         }
 
-        let nfo = com.NFOS.Get(this),
-            rsc = this._GetRsc(
-                u.tils.Get(p_options, `path`, null),
-                { cl: nfo.resource, encoding: nfo.encoding });
+        let nfo = com.NFOS.Get(this);
+        
+        let rsc = this._GetRsc(
+            u.tils.Get(p_options, `path`, null),
+            { cl: nfo.resource, encoding: nfo.encoding });
 
         if (!rsc) {
             throw new Error(`No resource set.`);

@@ -20,7 +20,7 @@ class TaskBuildElectronApp extends ScriptBase {
 
     }
 
-    _OnPreparationComplete(){
+    _OnPreparationComplete() {
 
         this._Bind(this.BuildNext);
 
@@ -53,9 +53,14 @@ class TaskBuildElectronApp extends ScriptBase {
             files: files
         };
 
+        if (NKMjs.projectConfig.fileAssociations) {
+            this.sharedConfig.fileAssociations = [...NKMjs.projectConfig.fileAssociations];
+        }
+
         this.Run([
             `./task-styles-build`,
             `./task-prepare-icons`,
+            `./task-prepare-icons-assoc`,
             `./task-build-electron-html`,
             `./task-build-electron-main`,
         ], this.BuildNext);
@@ -77,9 +82,9 @@ class TaskBuildElectronApp extends ScriptBase {
             ],
             externals = NKMjs.Get(`externals`, []);
 
-        if(NKMjs.projectConfig.dirs.locales != NKMjs.LOCALES_DIR){
+        if (NKMjs.projectConfig.dirs.locales != NKMjs.LOCALES_DIR) {
             list.push(`!${appDir}/${NKMjs.projectConfig.dirs.locales}`);
-        }            
+        }
 
         // Add externals to the ignore list
         for (let i = 0, n = externals.length; i < n; i++) {
@@ -106,6 +111,8 @@ class TaskBuildElectronApp extends ScriptBase {
         conf.platform = (conf.platform || builder.Platform.WINDOWS);
         conf[(conf.arch || builder.Arch.x64)] = true;
 
+        //https://stackoverflow.com/questions/42756982/how-do-you-specify-a-custom-file-extension-in-an-electron-app
+
         let shared = this.sharedConfig,
             packageConfig = { // Proxy for package.json
                 version: shared.version,
@@ -119,7 +126,7 @@ class TaskBuildElectronApp extends ScriptBase {
                     productName: shared.productName,
                     appId: shared.appId,
                     asar: !!conf.asar,
-                    icon:NKMjs.InBuildRsc(`icon.png`),
+                    icon: NKMjs.InBuildRsc(`icon.png`),
                     directories: {
                         output: NKMjs.InVersionedBuilds(`desktop`, `${conf.platform}-${conf.arch}-${shared.version}`),
                         //app: shared.appDirectory,
@@ -131,6 +138,10 @@ class TaskBuildElectronApp extends ScriptBase {
                 devDependencies: shared.devDependencies
             },
             builderConfig = {};
+
+        if(shared.fileAssociations){
+            packageConfig.build.fileAssociations = shared.fileAssociations;
+        }
 
         if (NKMjs.shortargs.Has(`pack-only`) || conf[`pack-only`]) {
             builderConfig.dir = true;

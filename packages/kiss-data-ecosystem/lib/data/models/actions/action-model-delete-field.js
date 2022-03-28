@@ -34,7 +34,7 @@ class ActionModelDeleteField extends actions.Action {
     }
 
     _CleanUp() {
-        if (!this._undoed) {
+        if (!this._undone) {
             this._operation.target.Release();
         }
         super._CleanUp();

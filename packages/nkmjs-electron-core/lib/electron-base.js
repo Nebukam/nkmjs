@@ -284,12 +284,19 @@ class ElectronBase {
 
     // ----> Dialog callbacks
 
-    _OnRequestDialog(p_evt, p_options){
-        console.log(p_options);
-        dialog.showOpenDialog(p_options).then(this._RequestDialogResponse);
+    _OnRequestDialog(p_evt, p_options) {
+        let win = BrowserWindow.fromWebContents(p_evt.sender);
+        switch (p_options.type) {
+            case `save`:
+                dialog.showSaveDialog(win, p_options).then(this._RequestDialogResponse);
+                break;
+            default:
+                dialog.showOpenDialog(win, p_options).then(this._RequestDialogResponse);
+                break;
+        }
     }
 
-    _RequestDialogResponse(response){
+    _RequestDialogResponse(response) {
         this._mainWindow.webContents.send(APP_MESSAGES.DIALOG_RESPONSE, response);
     }
 
