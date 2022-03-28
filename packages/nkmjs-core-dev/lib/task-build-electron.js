@@ -46,7 +46,7 @@ class TaskBuildElectronApp extends ScriptBase {
             main: `${NKMjs.projectConfig.dirs.app}/${NKMjs.ELECTRON_ENTRY_POINT}`,
             description: NKMjs.projectConfig.description,
             productName: NKMjs.projectConfig.longName,
-            appId: `app.id`,
+            appId: NKMjs.projectConfig.shortName,
             appDirectory: NKMjs.InProject(),
             buildResources: NKMjs.InBuildRsc(),
             dependencies: (NKMjs.projectConfig.__packagejson.dependencies || {}),
@@ -106,6 +106,13 @@ class TaskBuildElectronApp extends ScriptBase {
             return;
         }
 
+        if (`enabled` in conf) {
+            if (!conf.enabled) {
+                this.BuildNext();
+                return;
+            }
+        }
+
         this._log(`electron-builder » ${conf.platform}@${conf.arch}`);
 
         conf.platform = (conf.platform || builder.Platform.WINDOWS);
@@ -133,14 +140,22 @@ class TaskBuildElectronApp extends ScriptBase {
                         buildResources: shared.buildResources
                     },
                     files: shared.files,
-                    
+
                     ...conf.build,
                 },
                 dependencies: shared.dependencies,
                 devDependencies: shared.devDependencies,
                 author: { ...NKMjs.author },
             },
-            builderConfig = {};
+            builderConfig = { config: packageConfig.build };
+
+        if (conf.platform == "win" || conf.platform == "windows") {
+            builderConfig.targets = builder.Platform.WINDOWS.createTarget();
+        } else if (conf.platform == "mac") {
+            builderConfig.targets = builder.Platform.MAC.createTarget();
+        } else if (conf.platform == "linux") {
+            builderConfig.targets = builder.Platform.LINUX.createTarget();
+        }
 
         if (shared.fileAssociations) {
             packageConfig.build.fileAssociations = shared.fileAssociations;
