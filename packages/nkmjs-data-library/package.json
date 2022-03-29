@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/data-library",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "NKMjs Framework Data Ecosystem",
   "main": "index.js",
   "repository": {
@@ -16,13 +16,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^0.0.39",
+    "@nkmjs/actions": "^0.0.40",
     "@nkmjs/collections": "^0.1.19",
-    "@nkmjs/common": "^0.1.28",
-    "@nkmjs/data-core": "^0.0.39",
-    "@nkmjs/documents": "^0.0.42",
-    "@nkmjs/environment": "^0.1.29",
-    "@nkmjs/io-core": "^0.1.32",
+    "@nkmjs/common": "^0.1.29",
+    "@nkmjs/data-core": "^0.0.40",
+    "@nkmjs/documents": "^0.0.43",
+    "@nkmjs/environment": "^0.1.30",
+    "@nkmjs/io-core": "^0.1.33",
     "@nkmjs/utils": "^0.0.36"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"

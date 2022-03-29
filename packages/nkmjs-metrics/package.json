@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/metrics",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "NKMjs Framework Metrics",
   "main": "index.js",
   "repository": {
@@ -17,9 +17,9 @@
   "license": "MIT",
   "dependencies": {
     "@nkmjs/collections": "^0.1.19",
-    "@nkmjs/common": "^0.1.28",
-    "@nkmjs/environment": "^0.1.29",
-    "@nkmjs/services": "^0.0.37",
+    "@nkmjs/common": "^0.1.29",
+    "@nkmjs/environment": "^0.1.30",
+    "@nkmjs/services": "^0.0.38",
     "@nkmjs/utils": "^0.0.36"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
