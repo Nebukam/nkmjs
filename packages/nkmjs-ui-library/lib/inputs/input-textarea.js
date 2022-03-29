@@ -16,6 +16,7 @@ class InputTextarea extends ui.inputs.InputTextBase {
 
     _Init() {
         super._Init();
+        this._distribute.To('rows');
     }
 
     // ----> DOM
@@ -31,8 +32,17 @@ class InputTextarea extends ui.inputs.InputTextBase {
         }, super._Style());
     }
 
+    set rows(p_value){
+        this._inputField.setAttribute(`rows`, p_value || 3);
+    }
+
     _Render() {
         this._inputField = ui.dom.El(`textarea`, { class: 'field', ...this.constructor.__inputProperties }, this._host);
+    }
+
+    _CleanUp(){
+        this.rows = null;
+        super._CleanUp();
     }
 
 }

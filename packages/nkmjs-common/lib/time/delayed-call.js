@@ -58,6 +58,7 @@ class DelayedCall {
      */
     Cancel() {
         if (!this._scheduled) { return; }
+        this._scheduled = false;
         TIME.instance.NextTickRemove(this._Call);
         this._elapsed = 0;
     }
