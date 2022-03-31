@@ -27,8 +27,10 @@ class Widget extends DisplayObjectContainer {
     static __NFO__ = { css: [`@/global-host.css`] }
 
     static __usePaintCallback = true;
+    static __defaultSelectOnActivation = false;
 
     static __default_iState = FLAGS.IDLE;
+
 
     /**
      * @access protected
@@ -77,8 +79,7 @@ class Widget extends DisplayObjectContainer {
         this._istateEnum = new FlagEnum(FLAGS.istates, true);
         this._istateEnum.Add(this);
 
-        this.default_SelectOnActivation = (this.default_SelectOnActivation || false);
-        this._selectOnActivation = this.default_SelectOnActivation;
+        this._selectOnActivation = this.constructor.__defaultSelectOnActivation;
 
         this._forwardData = null;
         this._dataPreProcessor = null;
@@ -99,8 +100,8 @@ class Widget extends DisplayObjectContainer {
     get extensions() { return this._extensions; }
     get pointer() { return this._pointer; }
 
-    get dataPreProcessor(){ return this._dataPreProcessor; }
-    set dataPreProcessor(p_value){ this._dataPreProcessor = p_value; }
+    get dataPreProcessor() { return this._dataPreProcessor; }
+    set dataPreProcessor(p_value) { this._dataPreProcessor = p_value; }
 
 
     //#region Placement & Orientation
@@ -133,15 +134,15 @@ class Widget extends DisplayObjectContainer {
      * @type {string}
      * @group Selection
      */
-     get htitle() { this.getAttribute(`title`); }
-     set htitle(p_value) {
-         if (!p_value) { this.removeAttribute(`title`); }
-         else { this.setAttribute(`title`, p_value); }
-     }
+    get htitle() { this.getAttribute(`title`); }
+    set htitle(p_value) {
+        if (!p_value) { this.removeAttribute(`title`); }
+        else { this.setAttribute(`title`, p_value); }
+    }
 
     //#endregion
 
-    
+
 
     //#region Interactions
 
@@ -150,8 +151,8 @@ class Widget extends DisplayObjectContainer {
      * @type {Element}
      * @group Interactivity
      */
-     get disabled() { return this._flags.IsSet(FLAGS.DISABLED); }
-     set disabled(p_value) { this._flags.Set(FLAGS.DISABLED, p_value); }
+    get disabled() { return this._flags.IsSet(FLAGS.DISABLED); }
+    set disabled(p_value) { this._flags.Set(FLAGS.DISABLED, p_value); }
 
     /**
      * @description TODO
@@ -167,14 +168,14 @@ class Widget extends DisplayObjectContainer {
 
     //#region Selection
 
-    
+
     /**
      * @description TODO
      * @type {boolean}
      * @group Selection
      */
-     get notifiesSelectionStack() { return this._notifiesSelectionStack; }
-     set notifiesSelectionStack(p_value) { this._notifiesSelectionStack = p_value; }
+    get notifiesSelectionStack() { return this._notifiesSelectionStack; }
+    set notifiesSelectionStack(p_value) { this._notifiesSelectionStack = p_value; }
 
     /**
      * @description TODO
@@ -184,37 +185,6 @@ class Widget extends DisplayObjectContainer {
     get selectOnActivation() { return this._selectOnActivation; }
     set selectOnActivation(p_value) { this._selectOnActivation = p_value; }
 
-    /**
-     * @access protected
-     * @description TODO
-     * @group Interactivity.Selection
-     */
-    _InitSelectionStack() {
-        if (this._selectionStack) { return; }
-
-        let sStack = new WidgetSelection();
-        sStack
-            .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this)
-            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
-
-        this._selectionStack = sStack;
-    }
-
-    /**
-     * @access protected
-     * @description TODO
-     * @param {ui.core.Widget} p_item 
-     * @group Interactivity.Selection
-     */
-    _OnSelectionStackAdd(p_item) { }
-
-    /**
-     * @access protected
-     * @description TODO
-     * @param {ui.core.Widget} p_item 
-     * @group Interactivity.Selection
-     */
-    _OnSelectionStackRemove(p_item) { }
 
     /**
      * @description TODO
@@ -235,20 +205,6 @@ class Widget extends DisplayObjectContainer {
      * @group Interactivity.Selection
      */
     get isSelected() { return this._isSelected; }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.WidgetSelection}
-     * @group Interactivity.Selection
-     */
-    get selectionStack() {
-        if (this._selectionStack) {
-            return this._selectionStack;
-        } else {
-            if (!this._parent) { return null; }
-            else { return this._parent.selectionStack; }
-        }
-    }
 
     /**
      * @description TODO
@@ -294,6 +250,72 @@ class Widget extends DisplayObjectContainer {
      * @group Interactivity.Selection
      */
     _SelectionLost() { }
+
+    //#endregion
+
+    //#region Selection stack
+
+    get selectionStackOverride() { return this._selectionStackOverride; }
+    set selectionStackOverride(p_value) { this._selectionStackOverride = p_value; }
+
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.WidgetSelection}
+     * @group Interactivity.Selection
+     */
+    get selectionStack() {
+
+        if (this._selectionStackOverride) { return this._selectionStackOverride; }
+
+        if (this._selectionStack) {
+            return this._selectionStack;
+        } else {
+            if (!this._parent) { return null; }
+            else { return this._parent.selectionStack; }
+        }
+
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @group Interactivity.Selection
+     */
+    _InitSelectionStack(p_allowMultiple = false, p_persistentData = false) {
+
+        if (this._selectionStack) {
+            this._selectionStack.allowMultiple = p_allowMultiple;
+            this._selectionStack.persistentDataSelection = p_persistentData;
+            return;
+        }
+
+        let sStack = new WidgetSelection();
+        sStack
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
+
+        sStack.allowMultiple = p_allowMultiple;
+        sStack.persistentDataSelection = p_persistentData;
+
+        this._selectionStack = sStack;
+
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {ui.core.Widget} p_item 
+     * @group Interactivity.Selection
+     */
+    _OnSelectionStackAdd(p_item) { }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {ui.core.Widget} p_item 
+     * @group Interactivity.Selection
+     */
+    _OnSelectionStackRemove(p_item) { }
 
     //#endregion
 
@@ -432,7 +454,7 @@ class Widget extends DisplayObjectContainer {
         this.Broadcast(SIGNAL.ACTIVATED, this, p_evt);
 
         if (this._selectOnActivation) {
-            if (this._isSelectable) { this.Select(INPUT.ctrl ? !this._isSelected : true); }
+            if (this._isSelectable) { this.Select(true); }
         }
         return true;
     }
@@ -516,12 +538,13 @@ class Widget extends DisplayObjectContainer {
         this._istateEnum.Set(this.constructor.__default_iState);
         this._placement.Set(this.constructor.__default_placement);
 
+        if (this._selectionStackOverride) { this.selectionStackOverride = null; }
         if (this._selectionStack) { this._selectionStack.Clear(); }
 
         this.data = null;
         if (this._forwardData) { this._forwardData.Clear(); }
 
-        this._selectOnActivation = this.default_SelectOnActivation;
+        this._selectOnActivation = this.constructor.__defaultSelectOnActivation;
         this.removeAttribute(`title`);
 
         if (this._mouseOver) {

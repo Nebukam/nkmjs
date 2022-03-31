@@ -2,6 +2,11 @@
 
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 
+function isObservable(p_item){
+    if (p_item === null || p_item === undefined) { return false; }
+    return (`Watch` in p_item && `Unwatch` in p_item && `WatchOnce` in p_item);
+}
+
 /**
  * Allows to 'hook' (listen) to signal broadcasted by an object, without having to 
  * subscribe/unsubscribe each time the object changes. 
@@ -120,6 +125,7 @@ class Observer extends DisposableObjectEx {
      */
     Observe(p_target) {
         if(!p_target){ throw new Error(`Target cannot be null.`); }
+        if(!isObservable(p_target)){return p_target;}
         if (this._targets.includes(p_target)) { return p_target; }
         this._targets.push(p_target);
         if (this._isEnabled) { this._WatchAll(p_target); }
@@ -132,14 +138,8 @@ class Observer extends DisposableObjectEx {
      * @returns {*} target
      */
     ObserveOnly(p_target) {
-        if (this._targets.includes(p_target)) { return p_target; }
         this.Flush();
-        if(p_target){
-            this._targets.push(p_target);
-            if (this._isEnabled) { this._WatchAll(p_target); }
-        }
-
-        return p_target;
+        return this.Observe(p_target);
     }
 
     /**
@@ -149,6 +149,7 @@ class Observer extends DisposableObjectEx {
      */
     Unobserve(p_target) {
         if(!p_target){ throw new Error(`Target cannot be null.`); }
+        if(!isObservable(p_target)){return p_target;}
         let index = this._targets.indexOf(p_target);
         if (index === -1) { return p_target; }
         this._targets.splice(index, 1);

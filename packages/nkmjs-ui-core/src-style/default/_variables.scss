@@ -9,7 +9,7 @@ $default_states_ids:
     str-replace($IDLE, '.'),
     str-replace($FOCUSED, '.'),
     str-replace($SELECTED, '.'),
-    #{str-replace($SELECTED, '.')+'_'+str-replace($FOCUSED, '.')},
+    #{str-replace($SELECTED, '.')+'-'+str-replace($FOCUSED, '.')},
     str-replace($TOGGLED, '.');
 
 $short_states_ids:

@@ -140,6 +140,9 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
      */
     _OnItemRemoved(p_catalog, p_item, p_index) {
 
+        let selStack = this._owner.selectionStack;
+        if(selStack){ selStack.dataSelection.Remove(p_item); }
+
         if (p_item.isDir) {
             let mappedObject = super._OnItemRemoved(p_catalog, p_item, p_index);
             if (mappedObject === false) { return false; }
@@ -213,6 +216,10 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
         mappedObject.data = item;
 
         this.Broadcast(com.SIGNAL.ITEM_ADDED, this, item, mappedObject);
+
+
+        let selStack = this._owner.selectionStack;
+        if(selStack){ selStack.Check(mappedObject); }
 
         p_streamer.ItemRequestAnswer(p_index, mappedObject);
 

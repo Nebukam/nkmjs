@@ -15,7 +15,7 @@ const WidgetItem = require("../widget-item");
  * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class ListItem extends WidgetItem {
+class FolderItem extends WidgetItem {
     constructor() { 
         super(); 
         this.depth = this.constructor.__defaultDepth;
@@ -60,10 +60,10 @@ class ListItem extends WidgetItem {
 
                 'box-sizing': `border-box`,
 
-                'height': `var(--tree-size)`,
-                'min-height': `var(--tree-size)`,
+                'height': `var(--folder-size)`,
+                'min-height': `var(--folder-size)`,
 
-                '--indent': `calc(var(--depth) * var(--tree-indent))`,
+                '--indent': `calc(var(--depth) * var(--folder-indent))`,
                 'padding-left': `var(--indent, 0px)`,
             },
             '.toolbar': {
@@ -108,4 +108,4 @@ class ListItem extends WidgetItem {
 
 }
 
-module.exports = ListItem;
+module.exports = FolderItem;

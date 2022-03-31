@@ -1,6 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const style = require("@nkmjs/style");
 
 const UI = require(`../ui`);
 
@@ -19,16 +20,17 @@ class FolderRoot extends Folder {
     static __NFO__ = com.NFOS.Ext({}, Folder, ['css']);
 
     static __defaultDirClass = Folder;
+    static __defaultSelectOnActivation = false;
 
     // ----> Init
 
-    _Init() {
-        this.default_SelectOnActivation = false;
+    _Init() {;
 
         super._Init();
         this._selectOnActivation = false;
         this._searchBtn = null;
-        this._InitSelectionStack();
+
+        this._InitSelectionStack(true, true);
 
         //this.style.setProperty(`--folder-size`, `var(--size-s)`);
         // TODO : If 'flattened', make directories non-expandable items
@@ -48,6 +50,15 @@ class FolderRoot extends Folder {
                 });
                 this._searchBtn.order = 99;
         */
+    }
+
+    _Style() {
+        return style.Extends({
+            ':host': {
+                '--folder-size': `${this.constructor.__itemHeight}px`,
+                '--folder-indent': `var(--size-s, 16px)`
+            }
+        }, super._Style());
     }
 
     _OpenFind() {

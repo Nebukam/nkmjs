@@ -18,6 +18,12 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
         this._inputValues = {};
         this._errorCount = 0;
         this._invalidForm = false;
+
+        this._handlerObserver = new com.signals.Observer();
+        this._handlerObserver
+            .Watch(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
+            .Watch(com.SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
+            .Watch(SIGNAL.INPUT_ERROR, this._OnInputError, this);
     }
 
     get inputValues() { return this._inputValues; }
@@ -42,10 +48,7 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
             this.Broadcast(SIGNAL.FORM_READY, this);
         }
 
-        p_input._handler
-            .Watch(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
-            .Watch(com.SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
-            .Watch(SIGNAL.INPUT_ERROR, this._OnInputError, this);
+        this._handlerObserver.Observe(p_input._handler);
 
     }
 
@@ -55,10 +58,7 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
 
         delete this._inputValues[p_input.inputId];
 
-        p_input._handler
-            .Unwatch(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
-            .Unwatch(com.SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
-            .Unwatch(SIGNAL.INPUT_ERROR, this._OnInputError, this);
+        this._handlerObserver.Unobserve(p_input._handler);
 
     }
 

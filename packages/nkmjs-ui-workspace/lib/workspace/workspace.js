@@ -38,6 +38,12 @@ class Workspace extends ui.views.View {
 
         this._gridController = new ui.manipulators.Grid(this, [1, 1]);
 
+        this._cellObserver = new com.signals.Observer();
+        this._cellObserver
+            .Hook(ui.SIGNAL.DISPLAY_REQUESTED, this._OnCellDisplayRequested, this)
+            .Hook(ui.SIGNAL.EMPTY, this._OnCellEmpty, this)
+            .Hook(ui.SIGNAL.NON_EMPTY, this._OnCellNonEmpty, this);
+
     }
 
     _PostInit() {
@@ -111,13 +117,9 @@ class Workspace extends ui.views.View {
     }
 
     _OnCellCreated(p_item, p_cell) {
-        
-        this._cells.Add(p_cell);
 
-        p_cell
-            .Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnCellDisplayRequested, this)
-            .Watch(ui.SIGNAL.EMPTY, this._OnCellEmpty, this)
-            .Watch(ui.SIGNAL.NON_EMPTY, this._OnCellNonEmpty, this);
+        this._cells.Add(p_cell);
+        this._cellObserver.Observe(p_cell);
 
         p_cell.catalog = p_item;
 
@@ -155,9 +157,7 @@ class Workspace extends ui.views.View {
 
     _OnCellRemoved(p_item, p_cell) {
         this._cells.Remove(p_cell);
-        p_cell.Unwatch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnCellDisplayRequested, this);
-        p_cell.Unwatch(ui.SIGNAL.EMPTY, this._OnCellEmpty, this);
-        p_cell.Unwatch(ui.SIGNAL.NON_EMPTY, this._OnCellNonEmpty, this);
+        this._cellObserver.Unobserve(p_cell);
         this._UpdateWorkspaceEmptyState();
     }
 

@@ -30,7 +30,7 @@ class FolderList extends ui.lists.Folder {
         super._Init();
     }
 
-    _PostInit() {        
+    _PostInit() {
         super._PostInit();
         this._extExpand.Setup(this, this._body, this._expandIcon.element);
     }
@@ -46,6 +46,9 @@ class FolderList extends ui.lists.Folder {
     _Style() {
         return style.Extends({
             ':host': {
+                
+            },
+            '.header': {
                 
             }
         }, super._Style());

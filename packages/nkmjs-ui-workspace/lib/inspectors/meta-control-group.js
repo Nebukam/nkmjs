@@ -12,6 +12,8 @@ let _expandedMetaPaths = new collections.Dictionary();
 class MetaControlGroup extends InspectorGroup {
     constructor() { super(); }
 
+    static __defaultSelectOnActivation = false;
+
     static TogglePathExpansion(p_path, p_toggle) {
         if (p_toggle) {
             _expandedMetaPaths.Set(p_path, true);
@@ -26,7 +28,6 @@ class MetaControlGroup extends InspectorGroup {
 
     _Init() {
         this._ignoreMetaStyle = true;
-        this.default_SelectOnActivation = false;
         super._Init();
         this._staticContent = false;
         this._metaPath = '';

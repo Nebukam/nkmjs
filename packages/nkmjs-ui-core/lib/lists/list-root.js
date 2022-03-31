@@ -19,16 +19,18 @@ class ListRoot extends List {
     static __NFO__ = com.NFOS.Ext({}, List, ['css']);
 
     static __defaultDirClass = List;
+    static __defaultSelectOnActivation = false;
 
     // ----> Init
 
+    
+
     _Init() {
-        this.default_SelectOnActivation = false;
 
         super._Init();
         this._selectOnActivation = false;
         this._searchBtn = null;
-        this._InitSelectionStack();
+        this._InitSelectionStack(true, false);
 
         this.style.setProperty(`--tree-size`, `var(--size-s)`);
         // TODO : If 'flattened', make directories non-expandable items
@@ -47,6 +49,15 @@ class ListRoot extends List {
                 });
                 this._searchBtn.order = 99;
         */
+    }
+
+    _Style() {
+        return style.Extends({
+            ':host': {
+                '--tree-size': `var(--size-s, 16px)`,
+                '--tree-indent': `var(--size-s, 16px)`
+            }
+        }, super._Style());
     }
 
     _OpenFind() {

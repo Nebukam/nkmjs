@@ -29,12 +29,12 @@ class ActionStackInspector extends datacontrols.InspectorView {
         this._dataObserver.Hook(com.SIGNAL.ITEM_ADDED, this._OnActionAdded, this);
         this._actionMap = new Map();
 
-        this._InitSelectionStack();
-        this._selectionStack.allowMultiple = false;
+        this._InitSelectionStack(true, true);
 
     }
 
     _Style() {
+        
         return style.Extends({
             ':host': {
                 
@@ -46,7 +46,9 @@ class ActionStackInspector extends datacontrols.InspectorView {
             '.list':{
                 'flex':'0 0 auto'
             }
+
         }, super._Style());
+
     }
 
     _Render() {

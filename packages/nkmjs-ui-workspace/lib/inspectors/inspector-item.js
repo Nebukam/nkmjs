@@ -7,9 +7,10 @@ const Control = require(`../control`);
 class InspectorItem extends Control{
     constructor(){super();}
 
+    static __defaultSelectOnActivation = true;
+
     _Init(){
         this._ignoreMetaStyle = u.tils.Default(this._ignoreMetaStyle, false);
-        this.default_SelectOnActivation = u.tils.Default(this.default_SelectOnActivation, true);
         super._Init();
 
         if(!this._ignoreMetaStyle){

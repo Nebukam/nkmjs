@@ -46,6 +46,9 @@ class TreeList extends ui.lists.List {
         return style.Extends({
             ':host': {
                 
+            },
+            '.header': {
+                
             }
         }, super._Style());
     }

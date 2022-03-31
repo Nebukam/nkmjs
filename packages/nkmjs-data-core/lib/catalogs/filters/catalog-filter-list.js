@@ -22,6 +22,12 @@ class FilterList extends com.pool.DisposableObjectEx {
         this._filters = new collections.List();
         this._activeFilters = new collections.List();
         this._activeFiltersArray = this._activeFilters.internalArray;
+
+        this._filterObserver = new com.signals.Observer();
+        this._filterObserver
+            .Hook(FILTER_SIGNAL.ENABLED, this._OnFilterEnabled, this)
+            .Hook(FILTER_SIGNAL.DISABLED, this._OnFilterDisabled, this);
+
     }
 
     /**
@@ -33,9 +39,7 @@ class FilterList extends com.pool.DisposableObjectEx {
         if (this._filters.Contains(p_filter)) { return false; }
         this._filters.Add(p_filter);
 
-        p_filter
-            .Watch(FILTER_SIGNAL.ENABLED, this._OnFilterEnabled, this)
-            .Watch(FILTER_SIGNAL.DISABLED, this._OnFilterDisabled, this);
+        this._filterObserver.Observe(p_filter);
 
         if (p_filter.enabled) { this._OnFilterEnabled(p_filter); }
 
@@ -53,9 +57,7 @@ class FilterList extends com.pool.DisposableObjectEx {
 
         if (p_filter.enabled) { this._OnFilterDisabled(p_filter); }
 
-        p_filter
-            .Unwatch(FILTER_SIGNAL.ENABLED, this._OnFilterEnabled, this)
-            .Unwatch(FILTER_SIGNAL.DISABLED, this._OnFilterDisabled, this);
+        this._filterObserver.Unobserve(p_filter);
 
         this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_filter);
         return true;

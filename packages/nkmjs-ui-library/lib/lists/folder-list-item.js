@@ -15,7 +15,7 @@ const dom = require(`../dom`);
  * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class FolderListItem extends ui.lists.ListItem {
+class FolderListItem extends ui.lists.FolderItem {
     constructor() {
         super();
         this.depth = 0;
@@ -23,7 +23,7 @@ class FolderListItem extends ui.lists.ListItem {
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/folder-list-item.css`]
-    }, ui.lists.ListItem, ['css']);
+    }, ui.lists.FolderItem, ['css']);
 
     // ----> Init
 
@@ -32,7 +32,7 @@ class FolderListItem extends ui.lists.ListItem {
         this._toolbarClass = ui.WidgetBar;
     }
 
-    _PostInit(){
+    _PostInit() {
         super._PostInit();
         this._distribute.To(`data`, `itemData`); // Make sure this is registered last
     }
@@ -91,7 +91,7 @@ class FolderListItem extends ui.lists.ListItem {
     // ----> Update infos   
 
     _UpdateInfos() {
-        
+
         if (this._itemData) {
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
             if (!this._icon.Set(this._itemData)) { this._icon.Set(this._data.options); }

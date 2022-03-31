@@ -6,6 +6,7 @@ module.exports = {
     List: require(`./list`),
     ListRoot: require(`./list-root`),
 
+    FolderItem: require(`./folder-item`),
     Folder: require(`./folder`),
     FolderRoot: require(`./folder-root`),
 

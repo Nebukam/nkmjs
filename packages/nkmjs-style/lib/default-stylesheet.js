@@ -134,12 +134,15 @@ class DefaultStylesheet extends PaletteBuilder{
                 'opacity': `0`,
             },
 
-            'absolute-centered':{
-                'position': 'absolute',
-                'top': '50%',
-                'left': '50%',
-                'transform': 'translate(-50%, -50%)'
-            },
+            'absolute-center':{ 'position': 'absolute', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)' },
+            'absolute-top':{ 'position': 'absolute', 'top': '0', 'left': '50%', 'transform': 'translate(100%, -50%)' },
+            'absolute-top-left':{ 'position': 'absolute', 'top': '0', 'left': '0', 'transform': 'translate(100%, 100%)' },
+            'absolute-top-right':{ 'position': 'absolute', 'top': '0', 'right': '0', 'transform': 'translate(100%, -100%)' },
+            'absolute-bottom':{ 'position': 'absolute', 'bottom': '0', 'left': '50%', 'transform': 'translate(-100%, -50%)' },
+            'absolute-bottom-left':{ 'position': 'absolute', 'bottom': '0', 'left': '0', 'transform': 'translate(100%, -100%)' },
+            'absolute-bottom-right':{ 'position': 'absolute', 'bottom': '0', 'right': '0', 'transform': 'translate(-100%, -100%)' },
+            'absolute-left':{ 'position': 'absolute', 'top': '50%', 'left': '0', 'transform': 'translate(100%, -50%)' },
+            'absolute-right':{ 'position': 'absolute', 'top': '50%', 'right': '0', 'transform': 'translate(-100%, -50%)' },            
 
             'layer': {
                 'position': `absolute`,

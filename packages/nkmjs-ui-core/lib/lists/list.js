@@ -86,10 +86,22 @@ class List extends ListItem {
 
                 'position': `relative`,
 
+                'padding': 0,
+                'margin': 0,
+                '--half-indent': `calc(var(--tree-indent) / 2)`,
+
                 'display': `flex`,
                 'flex-flow': `column nowrap`,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
+
+                'box-sizing': `border-box`,
+                'padding-left': `var(--indent, 0px)`,
+
+                'height': `var(--tree-size)`,
+                'min-height': `var(--tree-size)`,
+
+                '--indent': `calc(var(--depth) * var(--tree-indent))`,
 
             },
 
@@ -100,6 +112,12 @@ class List extends ListItem {
             '.header': {
                 'position': `relative`,
                 'flex': '0 0 auto',
+
+                'box-sizing': `border-box`,
+                'height': `var(--tree-size)`,
+                'min-height': `var(--tree-size)`,
+                'padding-left': `var(--indent, 0px)`,
+
             },
 
             '.body': {

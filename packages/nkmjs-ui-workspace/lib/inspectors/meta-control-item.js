@@ -8,9 +8,10 @@ const InspectorItem = require(`./inspector-item`);
 class MetaControlItem extends InspectorItem {
     constructor() { super(); }
 
+    static __defaultSelectOnActivation = false;
+
     _Init() {
 
-        this.default_SelectOnActivation = false;
         this._ignoreMetaStyle = true;
 
         super._Init();

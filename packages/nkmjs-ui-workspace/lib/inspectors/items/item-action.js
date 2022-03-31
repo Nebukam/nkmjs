@@ -8,12 +8,13 @@ const ui = require("@nkmjs/ui-core");
 class ActionInspectorItem extends datacontrols.InspectorWidget {
     constructor() { super(); }
 
+    static __defaultSelectOnActivation = true;
+
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inspectors/items/action.css`]
     }, datacontrols.InspectorWidget, ['css']);
 
     _Init() {
-        this.default_SelectOnActivation = true;
         super._Init();
         this._notifiesSelectionStack = true;
     }

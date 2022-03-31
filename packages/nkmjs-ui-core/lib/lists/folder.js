@@ -8,7 +8,7 @@ const extensions = require(`../extensions`);
 const DOMStreamer = require(`../helpers/dom-streamer`);
 
 const CatalogFolderBuilder = require(`./catalog-folder-builder`);
-const ListItem = require(`./list-item`);
+const FolderItem = require(`./folder-item`);
 
 /**
  * @description Similar to item-group, a folder separates Catalog list from CatalogItems
@@ -18,14 +18,14 @@ const ListItem = require(`./list-item`);
  * @augments ui.core.tree.ListItem
  * @memberof ui.core.tree
  */
-class Folder extends ListItem {
+class Folder extends FolderItem {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, ListItem, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, FolderItem, ['css']);
 
     static __itemHeight = 24;
 
-    static __defaultItemClass = ListItem;
+    static __defaultItemClass = FolderItem;
     static __defaultDirClass = this;
 
     // ----> Init
@@ -103,6 +103,12 @@ class Folder extends ListItem {
     _Style() {
         return {
             ':host': {
+                'padding': 0,
+                'margin': 0,
+
+                '--folder-size': `${this.constructor.__itemHeight}px`,
+                '--half-indent': `calc(var(--folder-indent) / 2)`,
+
 
                 'position': `relative`,
 
@@ -110,6 +116,13 @@ class Folder extends ListItem {
                 'flex-flow': `column nowrap`,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
+
+                'box-sizing': `border-box`,
+
+                'height': `var(--folder-size)`,
+                'min-height': `var(--folder-size)`,
+
+                '--indent': `calc(var(--depth) * var(--folder-indent))`,
 
             },
 
@@ -120,6 +133,13 @@ class Folder extends ListItem {
             '.header': {
                 'position': `relative`,
                 'flex': '0 0 auto',
+
+                'box-sizing': `border-box`,
+                'height': `var(--folder-size)`,
+                
+                'min-height': `var(--folder-size)`,
+                'padding-left': `var(--indent, 0px)`,
+
             },
 
             '.body': {

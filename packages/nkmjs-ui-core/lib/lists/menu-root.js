@@ -40,8 +40,7 @@ class MenuRoot extends WidgetBar {
             .Hook(SIGNAL.SELECTION_GAIN, this._OnHandleSelectionGain, this)
             .Hook(SIGNAL.SELECTION_LOST, this._OnHandleSelectionLost, this);
 
-        this._InitSelectionStack();
-        this._selectionStack.allowMultiple = false;
+        this._InitSelectionStack(false, false);
 
         this._distribute.To(`items`);
 
