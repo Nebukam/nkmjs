@@ -9,11 +9,30 @@ const INPUT = require(`../input`);
 const DataSelection = require(`./data-selection`);
 
 /**
+ * @typedef SignalItemSelected
+ * @type com.SIGNAL.ITEM_ADDED
+ * @property {*} item The item that just got added to selection
+ * @property {boolean} firstTimeSelect True if the data associated to the selection has been added to the data selection 
+ * for the first time since it was last selected, otherwise false.
+ */
+
+/**
+ * @typedef SignalItemUnselected
+ * @type com.SIGNAL.ITEM_REMOVED
+ * @property {*} item The item that just got removed to selection
+ * @property {boolean} dataRemoved True if the data associated to the selection has been removed from the data selection 
+ * otherwise false.
+ */
+
+
+/**
  * A WidgetSelection is an object that wraps most common control for user-driven widget selection.
  * @class
  * @hideconstructor
  * @augments common.pool.DisposableObjectEx
  * @memberof ui.core.helpers
+ * @signal SignalItemSelected Broadcasted right after an item has been added to the selection
+ * @signal SignalItemUnselected Broadcasted right after an item has been removed from the selection
  */
 class WidgetSelection extends com.pool.DisposableObjectEx {
     constructor() { super(); }
@@ -115,12 +134,12 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         if (!this._allowMultiple || !p_additive) { this.Clear(); }
 
         this._stack.Add(p_item);
-        this._dataSelection.Add(p_item, p_additive);
+        let firstTimeSelect = this._dataSelection.AddFromItem(p_item, p_additive);
         this._itemObserver.Observe(p_item);
 
         p_item.Select(true);
 
-        this.Broadcast(com.SIGNAL.ITEM_ADDED, p_item);
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, p_item, firstTimeSelect);
 
         return true;
 
@@ -142,13 +161,13 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
             if (removeFromData) { this._dataSelection.RemoveFromItem(p_item); }
 
-            this.Broadcast(com.SIGNAL.ITEM_REMOVED, p_item);
+            this.Broadcast(com.SIGNAL.ITEM_REMOVED, p_item, removeFromData);
         }
     }
 
     Check(p_item) {
         if (!this._persistentDataSelection) { return; }
-        if (this._dataSelection.Contains(p_item)) { this.Add(p_item); }
+        if (this._dataSelection.ContainsItemData(p_item)) { this.Add(p_item); }
     }
 
     _OnItemSelectionLost(p_item) { this.Remove(p_item); }

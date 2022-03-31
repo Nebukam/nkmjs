@@ -7,12 +7,26 @@ const SIGNAL = require(`../signal`);
 const INPUT = require(`../input`);
 
 /**
+ * @typedef SignalDataSelected
+ * @type com.SIGNAL.ITEM_ADDED
+ * @property {*} item The item that just got added to selection
+ */
+
+/**
+ * @typedef SignalDataUnselected
+ * @type com.SIGNAL.ITEM_REMOVED
+ * @property {*} item The item that just got removed to selection
+ */
+
+/**
  * A DataSelection is an object that wraps the most common control for user-driven data selection.
  * It is designed to work with streamed widgets (i.e widgets that gets released and thus unselected)
  * @class
  * @hideconstructor
  * @augments common.pool.DisposableObjectEx
  * @memberof ui.core.helpers
+ * @signal SignalDataSelected Broadcasted right after a data item has been added to the selection
+ * @signal SignalDataUnselected Broadcasted right after a data item has been removed from the selection
  */
 class DataSelection extends com.pool.DisposableObjectEx {
     constructor() { super(); }
@@ -66,7 +80,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
      * @param {*} p_data 
      * @returns {boolean} True if the data was added for the first time, otherwise false
      */
-    Add(p_data, p_additive = false ) {
+    Add(p_data, p_additive = false) {
 
         if (p_data == null) { return false; }
 
@@ -76,7 +90,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
         }
 
         // Clear selection multiple selection isn't allowed.
-        if (!this._allowMultiple || !p_additive ) { this.Clear(); }
+        if (!this._allowMultiple || !p_additive) { this.Clear(); }
 
         this._stack.Add(p_data);
         this._dataSet.add(p_data);
@@ -187,8 +201,8 @@ class DataSelection extends com.pool.DisposableObjectEx {
      * @returns {boolean} True if the data member of the provided item is currently contained within that data selection, otherwise false
      */
     ContainsItemData(p_item) {
-        let data = (this._dataMember in p_item) ? p_item[this._dataMember] : null;
-        return data == null ? false : this.Has(data);
+        let data = this._ExtractData(p_item);
+        return data == null ? false : this.Contains(data);
     }
 
     /**

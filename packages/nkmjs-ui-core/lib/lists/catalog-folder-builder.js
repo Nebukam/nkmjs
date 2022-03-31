@@ -97,6 +97,11 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
         this._itemStreamer.itemCount = 0;
         this._itemStreamer._ClearItems();
 
+        if( this._owner){
+            let selStack = this._owner.selectionStack;
+            if(selStack){ selStack.Clear(); }
+        }
+
     }
 
     /**

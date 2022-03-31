@@ -129,14 +129,14 @@ class Editor extends ui.views.View {
 
     //#region Selection stack
 
-    _OnSelectionStackItemAdded(p_widget) {
+    _OnSelectionStackItemAdded(p_widget, p_dataAlreadyExists) {
         if (p_widget.data) {
             this._delayedClearInspected.Cancel();
             this.Inspect(p_widget.data);
         }
     }
 
-    _OnSelectionStackItemRemoved(p_widget) {
+    _OnSelectionStackItemRemoved(p_widget, p_dataRemoved) {
         if (this._inspectedData == p_widget.data) {
             this._delayedClearInspected.Schedule();
             //this.Inspect(null); 
