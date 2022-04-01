@@ -68,7 +68,7 @@ class DataForward {
             let dataMember = fwd.dataMember ? p_data[fwd.dataMember] : p_data;
 
             if (fwd.preprocess) { dataMember = u.Call(fwd.preprocess, dataMember, p_data); }
-            else { target.data = dataMember; }
+            //else { target.data = dataMember; }
 
             if (fwd.mapping) {
                 let mapping = fwd.mapping;
