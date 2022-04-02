@@ -38,7 +38,7 @@ class UnsavedDocHandler {
 
             dialog.Push({
                 title: `Unsaved changes`,
-                message: `There are unsaved changes in ${docName}.\nSave before closing?`,
+                message: `There are unsaved changes in <span style="color:var(--col-warning-contrast);">${docName}</span>.\nSave before closing?`,
                 actions: [
                     { label: `Ignore & Quit`, icon: `clear`, flavor: com.FLAGS.WARNING, trigger: { fn: this._IgnoreAndClose } }, //variant: nkm.ui.FLAGS.FRAME
                     { label: `Save`, icon: `save`, flavor: ui.FLAGS.CTA, trigger: { fn: this._SaveBeforeClosing } }, //variant: nkm.ui.FLAGS.FRAME
