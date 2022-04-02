@@ -28,9 +28,17 @@ class UnsavedDocHandler {
         let dirtyDoc = documents.DOCUMENTS.lastDirtyDoc;
         if (dirtyDoc) {
             //TODO : Popup to ask if changes should be saved
+
+            let docName = ``;
+            if (dirtyDoc.currentData) {
+                docName = `${dirtyDoc.currentData}`;
+                if (dirtyDoc.currentData.id) { docName = dirtyDoc.currentData.id.name; }
+                if (docName == ``) { docName = `${dirtyDoc.currentData}`; }
+            }
+
             dialog.Push({
                 title: `Unsaved changes`,
-                message: `There are unsaved changes in ${dirtyDoc.currentData}.\nSave before closing?`,
+                message: `There are unsaved changes in ${docName}.\nSave before closing?`,
                 actions: [
                     { label: `Ignore & Quit`, icon: `clear`, flavor: com.FLAGS.WARNING, trigger: { fn: this._IgnoreAndClose } }, //variant: nkm.ui.FLAGS.FRAME
                     { label: `Save`, icon: `save`, flavor: ui.FLAGS.CTA, trigger: { fn: this._SaveBeforeClosing } }, //variant: nkm.ui.FLAGS.FRAME
