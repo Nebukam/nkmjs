@@ -356,8 +356,8 @@ class DOMStreamer extends DisposableHTMLElement {
             insertBefore = 0,
             insertAfter = 0;
 
-        p_start = p_start || oldStart;
-        p_end = p_end || oldEnd;
+        p_start = p_start == null ? oldStart : p_start;
+        p_end = p_end == null ? oldEnd : p_end;
 
         if (p_start == oldStart &&
             p_end == oldEnd &&
