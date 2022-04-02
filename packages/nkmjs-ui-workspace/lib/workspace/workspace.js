@@ -189,7 +189,7 @@ class Workspace extends ui.views.View {
         for (let i = 0, n = dataHolders.length; i < n; i++) {
 
             let item = dataHolders[i],
-                view = item.GetOption([ui.IDS.VIEW_CLASS], null);
+                view = item.GetOption([ui.IDS.VIEW], null);
 
             if (view && u.isInstanceOf(view, viewClass)) {
                 view.RequestDisplay();

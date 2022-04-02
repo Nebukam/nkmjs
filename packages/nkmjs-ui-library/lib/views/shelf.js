@@ -370,7 +370,6 @@ class Shelf extends ui.views.View {
             if (this._nav._handles.length === 0) { this._OnShelfEmpty(); }
             // TODO : Customize which view is set as default
             else {
-                console.log(p_index);
                 let handles = this._nav._handles;
                 if (p_index >= handles.length) { p_index = handles.length - 1; }
                 this.currentHandle = handles[p_index];

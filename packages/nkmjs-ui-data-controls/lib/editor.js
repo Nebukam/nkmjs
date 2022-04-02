@@ -6,6 +6,27 @@ const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const collections = require(`@nkmjs/collections`);
 
+const SIGNAL = require(`./signal`);
+
+const __editorMap = new collections.DictionaryList();
+const __activeData = new Set();
+
+function __CheckEditorMap() {
+    console.log(`__CheckEditorMap`, __editorMap, __activeData);
+    let stack = [];
+    __activeData.forEach(p_data => {
+        // Check if still edited.
+        if (__editorMap.Count(p_data) == 0) { stack.push(p_data); }
+        for (let i = 0; i < stack.length; i++) {
+            let d = stack[i];
+            __activeData.delete(d);
+            d.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, d);
+        }
+    })
+}
+
+const __delayedCheckEditorMap = com.DelayedCall(__CheckEditorMap);
+
 /**
  * @description An abstract implementation of the concept of "data editor". It is designed to edit
  * a complex data object, as well as inspecting selection of that data object' components (no matter how complex).
@@ -18,10 +39,28 @@ const collections = require(`@nkmjs/collections`);
  */
 class Editor extends ui.views.View {
     constructor() { super(); }
+    /*
+        static __NFO__ = com.NFOS.Ext({
+            css: [`@/views/global-editor.css`]
+        }, ui.views.View, ['css']);
+    */
+    static __registerableEditor = false;
 
-    static __NFO__ = com.NFOS.Ext({
-        css: [`@/views/global-editor.css`]
-    }, ui.views.View, ['css']);
+    //#region Global editor tracking
+
+    static __Register(p_editor, p_data) {
+        __editorMap.Set(p_data, p_editor);
+        __activeData.add(p_data);
+        p_data.Broadcast(data.SIGNAL.ACTIVE_EDITOR_GAIN, p_data, p_editor);
+    }
+
+    static __Unregister(p_editor, p_data) {
+        __editorMap.Remove(p_data, p_editor);
+        p_data.Broadcast(data.SIGNAL.ACTIVE_EDITOR_LOST, p_data, p_editor);
+        __delayedCheckEditorMap.Schedule();
+    }
+
+    //#endregion
 
     _Init() {
 
@@ -105,6 +144,11 @@ class Editor extends ui.views.View {
         if (this._forwardInspected) { this._forwardInspected._BatchSet(`context`, this._data); }
 
         this.inspectedData = null;
+
+        if (this.constructor.__registerableEditor) {
+            if (p_oldData) { Editor.__Unregister(this, p_oldData); }
+            if (this._data) { Editor.__Register(this, this._data); }
+        }
 
     }
 
@@ -193,11 +237,11 @@ class Editor extends ui.views.View {
 
     //#region Actions
 
-    StartActionGroup(p_infos = null){
+    StartActionGroup(p_infos = null) {
         this._actionStack.ToggleGrouping(true, p_infos);
     }
 
-    EndActionGroup(){
+    EndActionGroup() {
         this._actionStack.ToggleGrouping(false);
     }
 

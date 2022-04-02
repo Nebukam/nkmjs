@@ -83,25 +83,46 @@ class SIGNAL {
   static TAG_ADDED = Symbol(`tagAdded`);
 
   /**
-  * @description TODO
-  * @type {symbol}
-  * @customtag read-only
-  */
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    */
   static TAG_REMOVED = Symbol(`tagRemoved`);
 
   /**
- * @description TODO
- * @type {symbol}
- * @customtag read-only
- */
+   * @description TODO
+   * @type {symbol}
+   * @customtag read-only
+   */
   static TAGS_CLEARED = Symbol(`tagsCleared`);
 
   /**
- * @description TODO
- * @type {symbol}
- * @customtag read-only
- */
+   * @description TODO
+   * @type {symbol}
+   * @customtag read-only
+   */
   static USE_COUNT_CHANGED = Symbol(`useCountChanged`);
+
+  /**
+   * @description TODO
+   * @type {symbol}
+   * @customtag read-only
+   */
+  static ACTIVE_EDITOR_LOST = Symbol(`activeEditorLost`);
+
+  /**
+   * @description TODO
+   * @type {symbol}
+   * @customtag read-only
+   */
+  static ACTIVE_EDITOR_GAIN = Symbol(`activeEditorGain`);
+
+  /**
+   * @description TODO
+   * @type {symbol}
+   * @customtag read-only
+   */
+   static NO_ACTIVE_EDITOR = Symbol(`noActiveEditor`);
 
 }
 

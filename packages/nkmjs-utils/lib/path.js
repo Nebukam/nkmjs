@@ -97,6 +97,7 @@ class PATH {
      * @example PATH.SHORT('./style/default/global.css') == '%STYLE%/global.css'
      */
     static SHORT(p_path) {
+        if (!p_path) { return p_path; }
         p_path = this.Sanitize(p_path);
         for (let n in this.MAP) { if (this.MAP[n] === ``) { continue; } p_path = p_path.replace(this.MAP[n], n); }
         return p_path;
@@ -111,6 +112,7 @@ class PATH {
      * @example PATH.FULL('%STYLE%/global.css'); == './style/default/global.css'
      */
     static FULL(p_path) {
+        if (!p_path) { return p_path; }
         for (let n in this.MAP) { p_path = p_path.replace(n, this.MAP[n]); }
         return this.Sanitize(p_path);
     }

@@ -2,13 +2,16 @@
 const u = require("@nkmjs/utils");
 const actions = require("@nkmjs/actions");
 
+const CMD_TYPE = require(`./cmd-type`);
 const CommandDocumentBase = require(`./cmd-document-base`);
 
 class CommandDocumentLoad extends CommandDocumentBase {
     constructor() { super(); }
 
-    static __defaultName = `Save document`;
-    static __defaultIcon = `save`;
+    static __docCmdType = CMD_TYPE.LOAD;
+
+    static __defaultName = `Load document`;
+    static __defaultIcon = `load-arrow-small`;
 
     _Init() {
         super._Init();
@@ -55,7 +58,18 @@ class CommandDocumentLoad extends CommandDocumentBase {
     _Open(p_filePath) {
 
         this._docPath = p_filePath;
-        let document = this._GetDoc();
+        let document = this._FindDoc();
+
+        if(document){
+            console.log(`document already exists!`);
+            this._doc.currentData.CommitUpdate();
+            this._doc.currentData.ClearDirty();
+            this._RequestEdit();
+            return;
+        }
+
+        document = this._GetDoc();
+
         document.Load({
             success: this._OnReadSuccess,
             error: this._Fail,
@@ -65,6 +79,7 @@ class CommandDocumentLoad extends CommandDocumentBase {
 
     _OnReadSuccess(p_doc) {
         this._doc.currentData.CommitUpdate();
+        this._doc.currentData.ClearDirty();
         this._RequestEdit();
     }
 

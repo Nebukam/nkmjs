@@ -1,9 +1,13 @@
 
+const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 
 const IDS = require(`../ids`);
 const DOCUMENTS = require(`../documents-manager`);
+const Document = require(`../document`);
+
+const CMD_TYPE = require(`./cmd-type`);
 
 class CommandDocumentBase extends actions.Command {
     constructor() { super(); }
@@ -11,9 +15,30 @@ class CommandDocumentBase extends actions.Command {
     static __defaultName = `New document`;
     static __defaultIcon = `new`;
 
+    static __docCmdType = null;
     static __docType = null;
     static __dataType = null;
     static __fileInfos = { name: `File type`, extensions: ['.file'] };
+
+    static Rent(p_options, p_registerAsDefault = false) {
+        let newCmd = actions.Command.Rent(
+            this,
+            p_options.name || null,
+            p_options.icon || null);
+
+        newCmd.docType = p_options.docType || null;
+        newCmd.dataType = p_options.dataType || null;
+        newCmd.fileInfos = p_options.fileInfos || null;
+
+        if (p_registerAsDefault && this.__docCmdType != null) {
+            //Register as default command within
+            DOCUMENTS.instance._RegisterDefaultCommand(
+                this.__docCmdType,
+                newCmd);
+        }
+
+        return newCmd;
+    }
 
     _Init() {
         super._Init();
@@ -33,24 +58,37 @@ class CommandDocumentBase extends actions.Command {
     get fileInfos() { return this._fileInfos; }
     set fileInfos(p_value) { this._fileInfos = p_value || this.constructor.__fileInfos; }
 
-    _GetDoc() {
-        
-        let document = DOCUMENTS.Get({
-            data: this._dataType,
-            document: this._docType,
-            path: this._docPath
-        });
+    _FindDoc() {
 
-        this._doc = document;
+        if(u.isInstanceOf(this._context, Document)){
+            this._doc = this._context;
+            return this._doc;
+        }
 
-        return document;
+        this._doc = DOCUMENTS.FindDocument(
+            this._context || this._dataType,
+            this._docType,
+            this._docPath
+        );
+
+        return this._doc;
 
     }
 
-    _FindDoc() {
-        let document = DOCUMENTS.FindDocument(this._context, this._docType);
-        this._doc = document;
-        return document;
+    _GetDoc(p_forceNew = false) {
+
+        this._doc = DOCUMENTS.Get({
+            data: this._dataType,
+            document: this._docType,
+            path: this._docPath
+        }, p_forceNew);
+
+        return this._doc;
+
+    }
+
+    _FetchContext() {
+        return this._context ? this._context : this._emitter ? this._emitter.data : null;
     }
 
     _RequestEdit() {
@@ -62,13 +100,24 @@ class CommandDocumentBase extends actions.Command {
 
     _End() {
         this._doc = null;
+        this._docPath = null;
         super._End();
     }
 
-    _ClearDocumentAndData() {
+    _ClearDocumentAndData(p_clearResource = false) {
+
         if (!this._doc) { return; }
-        if (this._doc.currentData) { this._doc.currentData.Release(); }
-        if (!com.NFOS.GetOption(this._doc, IDS.DATA_BOUND, false)) { this._doc.Release(); }
+
+        let rsc = this._doc.currentRsc,
+            data = this._doc.currentData,
+            dataBound = com.NFOS.GetOption(this._doc, IDS.DATA_BOUND, false);
+
+        console.log(rsc, data, dataBound, p_clearResource);
+
+        if (p_clearResource && rsc) { rsc.Release(); }
+        if (data) { data.Release(); }
+        if (dataBound) { this._doc.Release(); }
+
     }
 
     _CleanUp() {

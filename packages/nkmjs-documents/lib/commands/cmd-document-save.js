@@ -2,10 +2,13 @@
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 
+const CMD_TYPE = require(`./cmd-type`);
 const CommandDocumentBase = require(`./cmd-document-base`);
 
 class CommandDocumentSave extends CommandDocumentBase {
     constructor() { super(); }
+
+    static __docCmdType = CMD_TYPE.SAVE;
 
     static __defaultName = `Save document`;
     static __defaultIcon = `save`;
@@ -16,6 +19,11 @@ class CommandDocumentSave extends CommandDocumentBase {
         this._Bind(this._OnPicked);
         this._Bind(this._Fail);
         this._Bind(this._Success);
+
+        this._shortcut = actions.Keystroke.CreateFromString("Ctrl S");
+
+        this.Disable();
+
     }
 
     _InternalExecute() {
@@ -27,12 +35,12 @@ class CommandDocumentSave extends CommandDocumentBase {
         } else {
             if (document.currentPath) {
                 document.Save({
-                    success: this._OnSaveSuccess,
-                    error: this._OnSaveError,
+                    success: this._Success,
+                    error: this._Fail,
                 });
             } else {
                 actions.RELAY.ShowOpenDialog({
-                    filters: [{ ...this.constructor.__fileInfos }],
+                    filters: [{ ...this._fileInfos }],
                     type: `save`,
                 }, this._OnPicked);
             }

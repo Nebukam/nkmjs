@@ -62,7 +62,6 @@ class RELAY extends services.ServiceBase {
      */
     HandleRequest(p_request) {
         this._requests.Add(p_request);
-        console.log(`HandleRequest`);
         this.Broadcast(p_request.requestType, p_request);
         this._tick.Schedule();
     }

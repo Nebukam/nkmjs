@@ -1,17 +1,21 @@
 
 const com = require("@nkmjs/common");
 
+const CMD_TYPE = require(`./cmd-type`);
 const CommandDocumentBase = require(`./cmd-document-base`);
 
 class CommandDocumentCreate extends CommandDocumentBase {
     constructor() { super(); }
+
+    static __docCmdType = CMD_TYPE.CREATE;
 
     static __defaultName = `New document`;
     static __defaultIcon = `new`;
 
     _InternalExecute() {
 
-        let document = this._GetDoc();
+        let document = this._GetDoc(true);
+
         document.currentData.CommitUpdate();
         this._RequestEdit();
 

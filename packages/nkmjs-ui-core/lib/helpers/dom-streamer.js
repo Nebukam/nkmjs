@@ -348,13 +348,16 @@ class DOMStreamer extends DisposableHTMLElement {
         this._Stream(this._indices.start, this._indices.end, true);
     }
 
-    _Stream(p_start, p_end, p_force = false) {
+    _Stream(p_start = null, p_end = null, p_force = false) {
 
         let
             oldStart = this._indices.start,
             oldEnd = this._indices.end,
             insertBefore = 0,
             insertAfter = 0;
+
+        p_start = p_start || oldStart;
+        p_end = p_end || oldEnd;
 
         if (p_start == oldStart &&
             p_end == oldEnd &&

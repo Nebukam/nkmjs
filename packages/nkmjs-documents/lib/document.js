@@ -54,7 +54,9 @@ class Document extends com.pool.DisposableObjectEx {
         this._dataObserver
             .Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this)
             .Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this)
-            .Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
+            .Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this)
+            .Hook(data.SIGNAL.NO_ACTIVE_EDITOR, this._OnDataNoActiveEditor, this)
+            .Hook(data.SIGNAL.ACTIVE_EDITOR_GAIN, this._OnDataActiveEditorGain, this);
 
         this._Bind(this._OnLoadError);
         this._Bind(this._OnSaveError);
@@ -73,10 +75,10 @@ class Document extends com.pool.DisposableObjectEx {
      * @description TODO
      * @type {string}
      */
-    get currentPath() { }
+    get currentPath() { return this._currentPath; }
     set currentPath(p_value) {
 
-        p_value = u.PATH.SHORT(p_value);
+        p_value = u.SHORT(p_value);
 
         if (this._currentPath === p_value) { return; }
 
@@ -86,7 +88,7 @@ class Document extends com.pool.DisposableObjectEx {
             if (this._currentRsc.path != p_value) {
                 // Current resource doesn't have the provided path : unlink it.
                 // Document will fetch the correct resource when required.
-                this._currentRsc = null;
+                this.currentRsc = null;
             }
         }
 
@@ -103,8 +105,16 @@ class Document extends com.pool.DisposableObjectEx {
 
         let oldRsc = this._currentRsc; //TODO : Take a stance on what to do with the old resource.
         this._currentRsc = p_value;
-        if (oldRsc) { this._resourceObserver.Unobserve(oldRsc); }
+        if (oldRsc) {
+            if (this.constructor.__registerableType) {
+                DOCUMENTS.instance._MapToRsc(oldRsc, this);
+            }
+            this._resourceObserver.Unobserve(oldRsc);
+        }
         if (p_value) {
+            if (this.constructor.__registerableType) {
+                DOCUMENTS.instance._UnmapFromRsc(p_value, this);
+            }
             this._resourceObserver.Observe(p_value);
             this.currentPath = p_value.path; // Only update path if we're provided with a valid resource.
         }
@@ -129,13 +139,15 @@ class Document extends com.pool.DisposableObjectEx {
         let oldData = this._currentData;
         this._currentData = p_value;
         if (oldData) {
-            if (this.constructor.__registerableType) { 
-                DOCUMENTS.instance._UnregisterDataDoc(oldData, this); }
+            if (this.constructor.__registerableType) {
+                DOCUMENTS.instance._UnmapFromData(oldData, this);
+            }
             this._dataObserver.Unobserve(oldData);
         }
         if (p_value) {
-            if (this.constructor.__registerableType) { 
-                DOCUMENTS.instance._RegisterDataDoc(p_value, this); }
+            if (this.constructor.__registerableType) {
+                DOCUMENTS.instance._MapToData(p_value, this);
+            }
             this._dataObserver.Observe(p_value);
             // Dirty document if data is dirty
             if (p_value.isDirty) { this.Dirty(); }
@@ -200,6 +212,18 @@ class Document extends com.pool.DisposableObjectEx {
     _OnDataDirty(p_data) { this.Dirty(); }
 
     _OnDataCleaned(p_data) { this.ClearDirty(); }
+
+    _OnDataActiveEditorGain(p_data){
+        if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
+            
+        }
+    }
+
+    _OnDataNoActiveEditor(p_data){
+        if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
+            DOCUMENTS.instance.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, this);
+        }
+    }
 
     // ----> Load
 

@@ -20,6 +20,7 @@ const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 const data = require(`@nkmjs/data-core`);
 const dialog = require(`@nkmjs/dialog`);
+const documents = require(`@nkmjs/documents`);
 
 const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);
@@ -55,6 +56,8 @@ class AppBase extends com.helpers.SingletonEx {
 
         super._Init();
 
+        this._Bind(this._InternalDisplayReadyCheck);
+
         this._APPID = `${this.constructor.name}`;
 
         this._darkPaletteBuilder = null;
@@ -70,6 +73,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         this._overlayHandlerClass = GlobalOverlayHandler;
         this._overlayHandler = null;
+        this._unsavedDocHandler = new (require(`./helpers/unsaved-doc-handler`))(this);
 
         this._commands = new actions.CommandBox();
 
@@ -87,8 +91,6 @@ class AppBase extends com.helpers.SingletonEx {
         if (this._loadingOverlay && env.ENV.ARGV.Has(`no-loading`)) {
             ui.dom.Detach(this._loadingOverlay);
         }
-
-        this._Bind(this._InternalDisplayReadyCheck);
 
     }
 
@@ -336,10 +338,16 @@ class AppBase extends com.helpers.SingletonEx {
         if (this._IsReadyToQuit()) { this.CloseWindow(); }
     }
 
-    _IsReadyToQuit() { 
-        //TODO :  Check document for open doc with unsaved changes.
-        return true; 
+    _IsReadyToQuit() {
+        if (this._unsavedDocHandler.CanClose()) {
+            return true;
+        } else {
+            this._unsavedDocHandler.Advance();
+            return false;
+        }
     }
+
+
 
     ReloadApp() { actions.RELAY.ipcSend(APP_MESSAGES.DO_RELOAD_APP); }
 
