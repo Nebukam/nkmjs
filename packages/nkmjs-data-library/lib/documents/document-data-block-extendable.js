@@ -21,7 +21,7 @@ class DataBlockExtendableDocument extends documents.DocumentEx {
     static __NFO__ = com.NFOS.Ext({
         resource: io.resources.JSONResource,
         serializationContext: data.serialization.CONTEXT.JSON
-    }, documents.DocumentEx.__NFO__);
+    }, documents.DocumentEx);
 
     _Init() {
         super._Init();

@@ -148,7 +148,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         // Insert global.css inside the app shadow dom once so all subsequent elements inherit from it
         // Import in the head is not enough for the styles to 'pierce' through
-        
+
         /*
         ui.dom.AttachFirst(
             ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
@@ -230,7 +230,7 @@ class AppBase extends com.helpers.SingletonEx {
         // Insert global.css (again) outside of the shadow dom this time
         // NOTE : Should be added in regular css imports
         //ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
-        
+
         this._userPreferences.Load(
             `${this._APPID}Preferences`,
             this._defaultUserPreferences,
@@ -286,7 +286,7 @@ class AppBase extends com.helpers.SingletonEx {
             if (this._loadingOverlay) {
 
                 this.AppDisplay();
-                
+
                 // Push the app wrapper to the DOM
                 ui.dom.Attach(this._appBody, document.body);
 
@@ -331,6 +331,15 @@ class AppBase extends com.helpers.SingletonEx {
     //#endregion
 
     //#region Electron & Node
+
+    _OnExternalCloseRequest() {
+        if (this._IsReadyToQuit()) { this.CloseWindow(); }
+    }
+
+    _IsReadyToQuit() { 
+        //TODO :  Check document for open doc with unsaved changes.
+        return true; 
+    }
 
     ReloadApp() { actions.RELAY.ipcSend(APP_MESSAGES.DO_RELOAD_APP); }
 

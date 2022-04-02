@@ -46,6 +46,10 @@ class NFOS {
 
     }
 
+    static GetOption(p_obj, p_id, p_fallback = null) {
+        return u.tils.Get(this.Get(p_obj), p_id, p_fallback);
+    }
+
     /**
      * Extends another class NFO by copying properties & value from that class NFO that are missing 
      * or undefined in the provided `p_base` object. Existing properties values are left untouched, while arrays can be merged on

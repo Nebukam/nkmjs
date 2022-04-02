@@ -80,6 +80,8 @@ class RESOURCES extends services.ServiceBase {
             };
         }
 
+        this._io[IO_TYPE.DOCUMENT] = { ...this._io[IO_TYPE.LOCAL_STORAGE] };
+
         this._IOQueue = new IOQueue();
 
         this._Bind(this._RequestRead);

@@ -2,7 +2,7 @@
 
 module.exports = {
 
-    Modal: require(`./command-modal`),
-    Menu: require(`./command-menu`),
+    Modal: require(`./cmd-modal`),
+    Menu: require(`./cmd-menu`),
     
 }

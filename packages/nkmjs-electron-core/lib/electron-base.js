@@ -85,7 +85,7 @@ class ElectronBase {
         });
 
         ipcMain.on(APP_MESSAGES.DO_RELOAD_APP, this._OnRequestReload);
-        ipcMain.on(APP_MESSAGES.OPEN_DIALOG, this._OnRequestDialog)
+        ipcMain.on(APP_MESSAGES.OPEN_DIALOG, this._OnRequestDialog);
 
     }
 

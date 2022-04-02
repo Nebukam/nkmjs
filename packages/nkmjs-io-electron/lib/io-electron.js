@@ -35,6 +35,10 @@ class IOElectron {
             delete: FSIODelete
         };
 
+        RESOURCES._io[nkm.io.IO_TYPE.DOCUMENT] = {
+            ...RESOURCES._io[nkm.io.IO_TYPE.FILE_SYSTEM]
+        };
+
     }
 
     _GetStats(p_path) {

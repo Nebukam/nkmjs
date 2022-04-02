@@ -37,8 +37,10 @@ class WINDOWS extends com.helpers.SingletonEx {
         DEV_MODE = process.argv.includes('--dev') || process.argv.includes('-dev') || process.argv.includes('dev');
 
         this._mainWindow = null;
+        this._closingSet = new Set();
 
         this._Bind(this._OnWindowClosed);
+        this._Bind(this._OnWindowClosing)
 
         this._Bind(this._OnRequestWindowOpen);
         this._Bind(this._OnRequestedWindowReady);
@@ -58,8 +60,6 @@ class WINDOWS extends com.helpers.SingletonEx {
         ipcMain.on(APP_MESSAGES.DO_PRINT_WINDOW, this._OnRequestWindowPrint);
         ipcMain.on(APP_MESSAGES.DO_OPEN_AND_PRINT_WINDOW, this._OnRequestWindowAndPrint);
         ipcMain.on(APP_MESSAGES.CONTEXT_MENU_SHOW, this._OnContextMenuShow);
-
-
 
     }
 
@@ -134,6 +134,7 @@ class WINDOWS extends com.helpers.SingletonEx {
             this._mapWindowToID.Set(newWindow, winID);
 
             // Clean up mainWindow when closed
+            newWindow.on(`close`, this._OnWindowClosing);
             newWindow.on(`closed`, this._OnWindowClosed);
 
         }
@@ -168,7 +169,19 @@ class WINDOWS extends com.helpers.SingletonEx {
      */
     CloseWindow(p_id) {
         let wrapper = this._mapIDToWrapper.Get(p_id);
-        if (wrapper) { wrapper.window.close(); }
+        if (wrapper) {
+            this._closingSet.add(wrapper.window);
+            wrapper.window.close();
+        }
+    }
+
+    _OnWindowClosing(p_evt) {
+        let win = p_evt.sender;
+        if (this._closingSet.has(win)) { this._closingSet.delete(win); }
+        else {
+            p_evt.preventDefault();
+            win.webContents.send(APP_MESSAGES.EXT_CLOSE_WINDOW);
+        }
     }
 
     _OnWindowClosed(p_evt) {
@@ -214,7 +227,14 @@ class WINDOWS extends com.helpers.SingletonEx {
      * @param {*} p_data 
      */
     _OnRequestWindowClose(p_evt, p_data) {
-        this.CloseWindow(p_data.id);
+        let win = BrowserWindow.fromWebContents(p_evt.sender);
+
+        if (p_data) {
+            this.CloseWindow(p_data.id);
+        } else {
+            this._closingSet.add(win);
+            win.close();
+        }
     }
 
     /**

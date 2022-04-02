@@ -20,7 +20,7 @@ class EcosystemDocument extends documents.Document {
     static __NFO__ = com.NFOS.Ext({
         resource: io.resources.JSONResource,
         serializationContext: data.serialization.CONTEXT.JSON
-    }, documents.Document.__NFO__);
+    }, documents.Document);
 
 }
 

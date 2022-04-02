@@ -21,6 +21,13 @@ class IO_TYPE {
      * @type {string}
      * @customtag read-only
      */
+     static DOCUMENT = `document`;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
      static FETCH = `fetch`;
 
     /**

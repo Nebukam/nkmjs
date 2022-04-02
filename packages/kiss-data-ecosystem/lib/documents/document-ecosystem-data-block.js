@@ -2,19 +2,19 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
+const documents = require("@nkmjs/documents");
 
 const { JSONResource } = require(`@nkmjs/data-core`);
-const { Document } = require(`@nkmjs/documents`);
 
 const { SERIALIZATION_CONTEXT } = require(`../serialization/@.js`);
 const { SERIALIZER_JSON } = require(`../serialization/keys.js`);
 
-class DataBlockDocument extends Document {
+class DataBlockDocument extends documents.Document {
 
     static __NFO__ = com.NFOS.Ext({
-            resourceType: JSONResource,
-            serializer: SERIALIZER_JSON
-        }, Document);
+        [documents.IDS.TYPE_RSC]: JSONResource,
+        [documents.IDS.SERIAL_CTX]: SERIALIZER_JSON
+    }, documents.Document);
 
     constructor() { super(); }
 

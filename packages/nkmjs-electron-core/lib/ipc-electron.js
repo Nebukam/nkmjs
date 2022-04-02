@@ -21,6 +21,7 @@ class IPCElectron {
         RELAY._ipcSend = this._ipcSend.bind(RELAY);
         RELAY._ShowOpenDialog = this._remoteShowOpenDialog.bind(RELAY);
         ipcRenderer.on(`dialog-response`, this._dialogResponse.bind(RELAY));
+        ipcRenderer.on(`external-close-request`, this._externalCloseRequest.bind(this));
     }
 
     _ipcOn(p_evt, p_fn) {
@@ -37,6 +38,10 @@ class IPCElectron {
 
     _dialogResponse(p_evt, p_response){
         this.__openDialogCallback(p_response);
+    }
+
+    _externalCloseRequest(p_evt){
+        nkm.env.APP._OnExternalCloseRequest();
     }
 
 }

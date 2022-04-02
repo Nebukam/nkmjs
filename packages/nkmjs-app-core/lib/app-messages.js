@@ -25,6 +25,8 @@ class APP_MESSAGES{
     static DO_RELOAD_WINDOW = `request-window-reload`;
     static DO_CLOSE_WINDOW = `request-window-close`;
 
+    static EXT_CLOSE_WINDOW = `external-close-request`;
+
     static DO_PRINT_WINDOW = `request-window-print`;
     static DO_OPEN_AND_PRINT_WINDOW = `request-window-and-print`;
 

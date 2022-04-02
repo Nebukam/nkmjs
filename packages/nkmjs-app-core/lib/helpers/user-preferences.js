@@ -5,6 +5,11 @@ const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 const documents = require(`@nkmjs/documents`);
 
+class PrefDocument extends documents.MetaDocument {
+    constructor() { super(); }
+    static __registerableType = false;
+}
+
 class UserPreferences extends com.pool.DisposableObjectEx {
 
     constructor() { super(); }
@@ -43,7 +48,8 @@ class UserPreferences extends com.pool.DisposableObjectEx {
 
         this._document = documents.DOCUMENTS.Get({
             path: `${u.PATH.USER_DATA}/${p_name}.json`,
-            data: data.Metadata
+            data: data.Metadata,
+            document: PrefDocument
         });
 
         this._document.Watch(data.SIGNAL.DIRTY, this._OnDocumentDirty, this);
@@ -88,8 +94,8 @@ class UserPreferences extends com.pool.DisposableObjectEx {
     }
 
     // Definitely something wrong going on.
-    _OnDocumentSaveError(p_err) { 
-        throw p_err; 
+    _OnDocumentSaveError(p_err) {
+        throw p_err;
     }
 
     _Then() {
@@ -109,7 +115,7 @@ class UserPreferences extends com.pool.DisposableObjectEx {
 
     GetOrSet(p_path, p_fallback) { return this._document.currentData.GetOrSet(p_path, p_fallback); }
 
-    Delete(p_path){ this._document.currentData.Delete(p_path); }
+    Delete(p_path) { this._document.currentData.Delete(p_path); }
 
 }
 

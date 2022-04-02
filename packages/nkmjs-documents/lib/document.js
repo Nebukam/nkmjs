@@ -5,6 +5,9 @@ const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 const io = require(`@nkmjs/io-core`);
 
+const IDS = require(`./ids`);
+const DOCUMENTS = require(`./documents-manager`);
+
 /**
  * A document is wrapper for a resource and a data object.
  * It aims at streamlining working with custom datatypes, reading & saving them.
@@ -19,12 +22,15 @@ class Document extends com.pool.DisposableObjectEx {
 
     constructor() { super(); }
 
+    static __registerableType = true;
+
     static __NFO__ = {
         [com.IDS.ICON]: `document`,
-        resource: io.Resource,
-        encoding: io.ENCODING.UTF8,
-        serializationContext: data.serialization.CONTEXT.NONE,
-        defaultIOType: io.IO_TYPE.DEFAULT
+        [IDS.TYPE_RSC]: io.Resource,
+        [IDS.ENCODING]: io.ENCODING.UTF8,
+        [IDS.SERIAL_CTX]: data.serialization.CONTEXT.NONE,
+        [IDS.TYPE_IO]: io.IO_TYPE.DOCUMENT,
+        [IDS.DATA_BOUND]: true
     };
 
     _Init() {
@@ -122,8 +128,14 @@ class Document extends com.pool.DisposableObjectEx {
 
         let oldData = this._currentData;
         this._currentData = p_value;
-        if (oldData) { this._dataObserver.Unobserve(oldData); }
+        if (oldData) {
+            if (this.constructor.__registerableType) { 
+                DOCUMENTS.instance._UnregisterDataDoc(oldData, this); }
+            this._dataObserver.Unobserve(oldData);
+        }
         if (p_value) {
+            if (this.constructor.__registerableType) { 
+                DOCUMENTS.instance._RegisterDataDoc(p_value, this); }
             this._dataObserver.Observe(p_value);
             // Dirty document if data is dirty
             if (p_value.isDirty) { this.Dirty(); }
@@ -178,15 +190,16 @@ class Document extends com.pool.DisposableObjectEx {
 
     // ----> Data Management
 
-    _OnDataReleased(p_data) { this.data = null; }
-
-    _OnDataDirty(p_data) {
-        this.Dirty();
+    _OnDataReleased(p_data) {
+        this.currentData = null;
+        if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
+            this.Release();
+        }
     }
 
-    _OnDataCleaned(p_data) {
-        this.ClearDirty();
-    }
+    _OnDataDirty(p_data) { this.Dirty(); }
+
+    _OnDataCleaned(p_data) { this.ClearDirty(); }
 
     // ----> Load
 
@@ -199,11 +212,11 @@ class Document extends com.pool.DisposableObjectEx {
         let nfo = com.NFOS.Get(this),
             rsc = this._GetRsc(
                 u.tils.Get(p_options, `path`, null),
-                { cl: nfo.resource, encoding: nfo.encoding });
+                { cl: nfo.resource, encoding: nfo[IDS.ENCODING] });
 
         if (!rsc) { throw new Error(`No resource set.`); }
         if (rsc.Read({
-            io: u.tils.Get(p_options, `io`, nfo.defaultIOType),
+            io: u.tils.Get(p_options, `io`, nfo[IDS.TYPE_IO]),
             error: this._OnLoadError
         })) {
             this._options = p_options; // Store options to forward them to the serializer
@@ -245,7 +258,7 @@ class Document extends com.pool.DisposableObjectEx {
         // SomeSerializer.Read( p_rsc.content )
         let serializer = com.BINDINGS.Get(
             data.serialization.CONTEXT.SERIALIZER,
-            com.NFOS.Get(this).serializationContext), // TODO : Fetch serialization context based on resource type instead ?
+            com.NFOS.GetOption(this, IDS.SERIAL_CTX)), // TODO : Fetch serialization context based on resource type instead ?
             unpacked = serializer.Deserialize(p_content, p_data, this._options);
 
         this.Dirty();
@@ -267,17 +280,17 @@ class Document extends com.pool.DisposableObjectEx {
         }
 
         let nfo = com.NFOS.Get(this);
-        
+
         let rsc = this._GetRsc(
             u.tils.Get(p_options, `path`, null),
-            { cl: nfo.resource, encoding: nfo.encoding });
+            { cl: nfo[IDS.TYPE_RSC], encoding: nfo[IDS.ENCODING] });
 
         if (!rsc) {
             throw new Error(`No resource set.`);
         }
 
         if (rsc.Write({
-            io: u.tils.Get(p_options, `io`, nfo.defaultIOType),
+            io: u.tils.Get(p_options, `io`, nfo[IDS.TYPE_IO]),
             error: this._OnSaveError,
             success: this._OnSaveSuccess
         })) {
@@ -318,7 +331,7 @@ class Document extends com.pool.DisposableObjectEx {
         //Pack document data into serializable data
         let serializer = com.BINDINGS.Get(
             data.serialization.CONTEXT.SERIALIZER,
-            com.NFOS.Get(this).serializationContext); // TODO : Fetch serialization context based on resource type instead ?
+            com.NFOS.GetOption(this, IDS.SERIAL_CTX)); // TODO : Fetch serialization context based on resource type instead ?
 
         return serializer.Serialize(p_data, this._options);
     }
@@ -333,11 +346,22 @@ class Document extends com.pool.DisposableObjectEx {
 
     }
 
+    Wake() {
+        if (this.constructor.__registerableType) {
+            DOCUMENTS.instance._Register(this);
+        }
+    }
+
     _CleanUp() {
 
+        this.currentData = null;
         this.currentRsc = null;
         this._currentPath = null;
         this._options = null;
+
+        if (this.constructor.__registerableType) {
+            DOCUMENTS.instance._Unregister(this);
+        }
 
         super._CleanUp();
 
