@@ -1,5 +1,11 @@
 const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, dialog } = require(`electron`);
 
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+    app.quit();
+    return;
+}
+
 const path = require(`path`);
 const url = require(`url`);
 const fs = require(`fs`);
@@ -40,6 +46,7 @@ class ElectronBase {
         this._constants = p_constants;
 
         this._mainWindow = null;
+        this._openPathRequest = null;
 
         DEV_MODE = process.argv.includes('--dev') || process.argv.includes('-dev') || process.argv.includes('dev');
 
@@ -74,6 +81,10 @@ class ElectronBase {
         //app.commandLine.appendSwitch('js-flags', '--max-old-space-size=4096'); //Increase available memory
         app.allowRendererProcessReuse = false;
 
+        app.on('second-instance', this._Bind(this._OnSecondInstance));
+
+        app.on(`open-file`, this._Bind(this._OnSystemRequestOpenFile));
+
         // Run createWindow when app is ready
         app.on(`ready`, this._CreateMainWindow);
 
@@ -87,6 +98,16 @@ class ElectronBase {
         ipcMain.on(APP_MESSAGES.DO_RELOAD_APP, this._OnRequestReload);
         ipcMain.on(APP_MESSAGES.OPEN_DIALOG, this._OnRequestDialog);
 
+        
+
+    }
+
+    _OnSecondInstance(event, commandLine, workingDirectory) {
+        // Someone tried to run a second instance, we should focus our window.
+        if (this._mainWindow) {
+            if (this._mainWindow.isMinimized()) this._mainWindow.restore();
+            this._mainWindow.focus();
+        }
     }
 
     /**
@@ -150,7 +171,9 @@ class ElectronBase {
             globalShortcut.register(`CommandOrControl+R`, this._OnRequestReload);
         }
 
-
+        if(this._openPathRequest){
+            this._OnSystemRequestOpenFile(null, this._openPathRequest);
+        }
         // this._Boot();        
 
     }
@@ -281,6 +304,14 @@ class ElectronBase {
     _SendWarning(p_content) { this._mainWindow.webContents.send(APP_MESSAGES.WARNING, p_content); }
     _SendMessage(p_content) { this._mainWindow.webContents.send(APP_MESSAGES.MESSAGE, p_content); }
 
+    _OnSystemRequestOpenFile(p_evt, p_path){
+        if(!this._mainWindow){
+            this._openPathRequest = p_path;
+            return;
+        }
+
+        this._mainWindow.webContents.send(APP_MESSAGES.OPEN_FILE, { path:p_path });
+    }
 
     // ----> Dialog callbacks
 

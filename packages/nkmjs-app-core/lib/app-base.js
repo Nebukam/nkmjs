@@ -347,7 +347,9 @@ class AppBase extends com.helpers.SingletonEx {
         }
     }
 
+    _OnOpenPathRequest(p_path){
 
+    }
 
     ReloadApp() { actions.RELAY.ipcSend(APP_MESSAGES.DO_RELOAD_APP); }
 

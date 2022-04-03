@@ -33,6 +33,7 @@ class APP_MESSAGES{
     static CONTEXT_MENU_SHOW = `show-context-menu`;
     static CONTEXT_MENU_COMMAND = `context-menu-command`;
 
+    static OPEN_FILE = `open-file`;
     static OPEN_DIALOG = `open-dialog`;
     static DIALOG_RESPONSE = `dialog-response`;
 

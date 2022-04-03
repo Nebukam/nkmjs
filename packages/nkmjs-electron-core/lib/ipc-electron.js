@@ -1,6 +1,5 @@
 'use strict';
 
-const actions = require("@nkmjs/actions");
 const { ipcRenderer } = require('electron');
 //const remote = require('@electron/remote/main');
 //const { dialog } = require('electron').remote;
@@ -20,8 +19,9 @@ class IPCElectron {
         RELAY._ipcOn = this._ipcOn.bind(RELAY);
         RELAY._ipcSend = this._ipcSend.bind(RELAY);
         RELAY._ShowOpenDialog = this._remoteShowOpenDialog.bind(RELAY);
-        ipcRenderer.on(`dialog-response`, this._dialogResponse.bind(RELAY));
-        ipcRenderer.on(`external-close-request`, this._externalCloseRequest.bind(this));
+        ipcRenderer.on(nkm.app.APP_MESSAGES.DIALOG_RESPONSE, this._dialogResponse.bind(RELAY));
+        ipcRenderer.on(nkm.app.APP_MESSAGES.EXT_CLOSE_WINDOW, this._externalCloseRequest.bind(this));
+        ipcRenderer.on(nkm.app.APP_MESSAGES.OPEN_FILE, this._externalOpenFile.bind(this));
     }
 
     _ipcOn(p_evt, p_fn) {
@@ -32,16 +32,22 @@ class IPCElectron {
         ipcRenderer.send(p_evt, ...args);
     }
 
-    _remoteShowOpenDialog(p_options){
-        ipcRenderer.send(`open-dialog`, p_options);
+    _remoteShowOpenDialog(p_options) {
+        ipcRenderer.send(nkm.app.APP_MESSAGES.OPEN_DIALOG, p_options);
     }
 
-    _dialogResponse(p_evt, p_response){
+    _dialogResponse(p_evt, p_response) {
         this.__openDialogCallback(p_response);
     }
 
-    _externalCloseRequest(p_evt){
+    _externalCloseRequest(p_evt) {
         nkm.env.APP._OnExternalCloseRequest();
+    }
+
+    _externalOpenFile(p_evt, p_data) {
+        if (!p_data) { return; }
+        if (!p_data.path) { return; }
+        nkm.env.APP._OnOpenPathRequest(p_data.path);
     }
 
 }
