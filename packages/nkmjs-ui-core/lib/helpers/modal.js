@@ -39,7 +39,7 @@ class Modal extends DisplayObjectContainer {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
-    
+
     static modalStack = new collections.List();
 
     /**
@@ -170,6 +170,9 @@ class Modal extends DisplayObjectContainer {
         if (this._parentModal) { this._parentModal._subModals.Add(this); }
     }
 
+    get contentOptionsGetter() { return this._contentOptionsGetter; }
+    set contentOptionsGetter(p_value) { this._contentOptionsGetter = p_value; }
+
     /**
      * @description TODO
      * @type {object}
@@ -187,6 +190,8 @@ class Modal extends DisplayObjectContainer {
                     o = p_options.contentOptions;
                 } else if (`contentOptionsGetter` in p_options) {
                     o = u.Call(p_options.contentOptionsGetter);
+                } else if (this._contentOptionsGetter) {
+                    o = u.Call(this._contentOptionsGetter);
                 }
 
                 if (o) { this._content.options = o; }
@@ -361,7 +366,7 @@ class Modal extends DisplayObjectContainer {
     _Style() {
         return {
             ':host': {
-                '@':['fade-in'],
+                '@': ['fade-in'],
                 'position': 'absolute',
                 'border': '1px solid red',
                 //'width':'0', 'height':'0',
@@ -507,6 +512,8 @@ class Modal extends DisplayObjectContainer {
         this.mode = null;
         this.static = false;
         this.keepWithinScreen = true;
+
+        this._contentOptionsGetter = null;
 
         this._options = null;
 
