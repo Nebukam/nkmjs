@@ -1,11 +1,5 @@
 const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, dialog } = require(`electron`);
 
-const gotTheLock = app.requestSingleInstanceLock();
-if (!gotTheLock) {
-    app.quit();
-    return;
-}
-
 const path = require(`path`);
 const url = require(`url`);
 const fs = require(`fs`);

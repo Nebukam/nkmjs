@@ -37,12 +37,10 @@ class DOCUMENTS extends com.helpers.SingletonEx {
     }
 
     _RegisterDefaultCommand(p_type, p_cmd) {
-        console.log(p_type, p_cmd);
         this._defaultCommands.Set(p_type, p_cmd.docType, p_cmd.dataType, p_cmd);
     }
 
     _TryGetDefaultCommand(p_type, p_doc) {
-        console.log(p_type, p_doc, this._defaultCommands);
         if (!p_doc.currentData) { return null; }
         return this._defaultCommands.Get(p_type, p_doc.constructor, p_doc.currentData.constructor);
     }
@@ -152,7 +150,6 @@ class DOCUMENTS extends com.helpers.SingletonEx {
         for (let i = 0, n = this._documents.count; i < n; i++) {
             let doc = this._documents.At(i);
             if (this._CheckMatch(doc, p_data, p_docType, p_path)) { return doc; }
-            else { console.log(false); }
         }
 
         return null;
