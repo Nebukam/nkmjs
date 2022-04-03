@@ -48,7 +48,7 @@ class ElectronBase {
         this._appindex = (p_constants.html || "");
 
         if (!p_constants.renderer) { this._rendererDeclaration = ``; }
-        else { this._rendererDeclaration = `,renderer:require('${p_constants.renderer}'),version:'${process.env.npm_package_version}'` }
+        else { this._rendererDeclaration = `,renderer:require('${p_constants.renderer}'),version:'${p_constants.version}'` }
 
         this._autoUpdateFeed = (p_constants.autoUpdateFeed || "");
         this._bootWinOptions = p_constants.winOptions ? p_constants.winOptions : {};
