@@ -49,7 +49,7 @@ class FSUTIL {
             let pathsplt = p_path.split(sep);
             result = pathsplt.reduce((parentDir, childDir) => {
 
-                let curDir = path.resolve(baseDir, parentDir, childDir);
+                let curDir = path.join(baseDir, parentDir, childDir);
                 try {
                     fs.mkdirSync(curDir);
                 } catch (err) {

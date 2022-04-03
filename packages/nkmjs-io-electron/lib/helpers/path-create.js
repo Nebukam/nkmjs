@@ -42,7 +42,7 @@ class PathCreate extends com.pool.DisposableObject {
 
         if (u.isEmpty(this._splitPath[this._splitPath.length - 1])) { this._splitPath.pop(); }
 
-        fs.stat(path.resolve(...this._splitPath), this._OnNextStatsRead);
+        fs.stat(path.join(...this._splitPath), this._OnNextStatsRead);
 
     }
 
@@ -52,10 +52,10 @@ class PathCreate extends com.pool.DisposableObject {
 
             if (p_err.code != 'ENOENT') { return this._OnEnd(p_err); }
 
-            this._pathArray.push(path.resolve(...this._splitPath)); // this._splitPath.join(u.tils.DELIM_DIR);
+            this._pathArray.push(path.join(...this._splitPath)); // this._splitPath.join(u.tils.DELIM_DIR);
 
             this._splitPath.pop();
-            let parentPath = path.resolve(...this._splitPath); //this._splitPath.join(u.tils.DELIM_DIR);
+            let parentPath = path.join(...this._splitPath); //this._splitPath.join(u.tils.DELIM_DIR);
 
             fs.stat(parentPath, this._OnNextStatsRead);
 

@@ -42,6 +42,10 @@ class CommandDocumentBase extends actions.Command {
 
     _Init() {
         super._Init();
+
+        this._Bind(this._Fail);
+        this._Bind(this._Success);
+
         this._doc = null;
         this._docType = this.constructor.__docType;
         this._dataType = this.constructor.__dataType;
@@ -60,7 +64,7 @@ class CommandDocumentBase extends actions.Command {
 
     _FindDoc() {
 
-        if(u.isInstanceOf(this._context, Document)){
+        if (u.isInstanceOf(this._context, Document)) {
             this._doc = this._context;
             return this._doc;
         }
@@ -111,8 +115,6 @@ class CommandDocumentBase extends actions.Command {
         let rsc = this._doc.currentRsc,
             data = this._doc.currentData,
             dataBound = com.NFOS.GetOption(this._doc, IDS.DATA_BOUND, false);
-
-        console.log(rsc, data, dataBound, p_clearResource);
 
         if (p_clearResource && rsc) { rsc.Release(); }
         if (data) { data.Release(); }

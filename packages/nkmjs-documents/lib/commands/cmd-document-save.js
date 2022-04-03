@@ -17,8 +17,6 @@ class CommandDocumentSave extends CommandDocumentBase {
         super._Init();
 
         this._Bind(this._OnPicked);
-        this._Bind(this._Fail);
-        this._Bind(this._Success);
 
         this._shortcut = actions.Keystroke.CreateFromString("Ctrl S");
 

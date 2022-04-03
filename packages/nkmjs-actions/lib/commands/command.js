@@ -286,7 +286,6 @@ class Command extends com.pool.DisposableObjectEx {
      * @param {*} p_msg 
      */
     _Fail(p_msg) {
-        console.error(`${this} failed : ${p_msg}`);
         this.Broadcast(COMMAND_SIGNAL.FAIL, this, p_msg);
         this._End();
     }
