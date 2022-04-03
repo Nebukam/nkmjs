@@ -101,6 +101,7 @@ class ElectronBase {
         if (this._mainWindow) {
             if (this._mainWindow.isMinimized()) this._mainWindow.restore();
             this._mainWindow.focus();
+            this._OnSystemRequestOpenFile(null, commandLine);
         }
     }
 
