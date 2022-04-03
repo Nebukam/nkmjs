@@ -201,6 +201,14 @@ class WidgetButton extends Widget {
         this.focusArea = this;
     }
 
+    _OnPaintChange() {
+        super._OnPaintChange();
+        if (this._rippleWrapper) {
+            dom.Detach(this._rippleWrapper);
+            this._rippleWrapper = null;
+        }
+    }
+
     CreateRipple() {
 
         if (!this._rippleWrapper) {
@@ -227,6 +235,7 @@ class WidgetButton extends Widget {
         let ripple = p_evt.target;
         ripple.removeEventListener('animationend', this._OnRippleAnimationEnd);
         dom.Detach(ripple);
+        if (!this._rippleWrapper) { return; }
         if (!this._rippleWrapper.hasChildNodes()) {
             dom.Detach(this._rippleWrapper);
             this._rippleWrapper = null;
