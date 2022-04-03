@@ -43,8 +43,8 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
         super._Init();
 
-        this._dataSelection = new DataSelection();
-        this._persistentDataSelection = false;
+        this._data = new DataSelection();
+        this._persistentData = false;
 
         this._itemObserver = new com.signals.Observer();
         this._itemObserver
@@ -62,11 +62,11 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
     }
 
-    get dataSelection() { return this._dataSelection; }
+    get data() { return this._data; }
 
-    set persistentDataSelection(p_value) {
-        if (this._persistentDataSelection == p_value) { return; }
-        this._persistentDataSelection = p_value;
+    set persistentData(p_value) {
+        if (this._persistentData == p_value) { return; }
+        this._persistentData = p_value;
         if (!p_value) {
             this._releasingItems.clear();
             this._releasingItems = null;
@@ -74,7 +74,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
                 .Unhook(com.SIGNAL.RELEASING, this._OnItemReleasing, this)
                 .Unhook(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
-            this._dataSelection.RecomputeSelectionFromItems(this._stack.internalArray);
+            this._data.RecomputeSelectionFromItems(this._stack.internalArray);
         } else {
             this._releasingItems = new Set();
             this._itemObserver
@@ -97,7 +97,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
     get allowMultiple() { return this._allowMultiple; }
     set allowMultiple(p_value) {
         this._allowMultiple = p_value;
-        this._dataSelection.allowMultiple = p_value;
+        this._data.allowMultiple = p_value;
         if (!p_value) { this.Clear(); }
     }
 
@@ -134,7 +134,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         if (!this._allowMultiple || !p_additive) { this.Clear(); }
 
         this._stack.Add(p_item);
-        let firstTimeSelect = this._dataSelection.AddFromItem(p_item, p_additive);
+        let firstTimeSelect = this._data.AddFromItem(p_item, p_additive);
         this._itemObserver.Observe(p_item);
 
         p_item.Select(true);
@@ -155,19 +155,19 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
             this._itemObserver.Unobserve(p_item);
 
             let removeFromData = true;
-            if (this._persistentDataSelection) {
+            if (this._persistentData) {
                 removeFromData = !this._releasingItems.has(p_item);
             }
 
-            if (removeFromData) { this._dataSelection.RemoveFromItem(p_item); }
+            if (removeFromData) { this._data.RemoveFromItem(p_item); }
 
             this.Broadcast(com.SIGNAL.ITEM_REMOVED, p_item, removeFromData);
         }
     }
 
     Check(p_item) {
-        if (!this._persistentDataSelection) { return; }
-        if (this._dataSelection.ContainsItemData(p_item)) { this.Add(p_item); }
+        if (!this._persistentData) { return; }
+        if (this._data.ContainsItemData(p_item)) { this.Add(p_item); }
     }
 
     _OnItemSelectionLost(p_item) { this.Remove(p_item); }
@@ -210,7 +210,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
      * @description Clear all item in the stack
      */
     Clear() {
-        this._dataSelection.Clear();
+        this._data.Clear();
         while (!this._stack.isEmpty) { this.Remove(this._stack.last); }
     }
 

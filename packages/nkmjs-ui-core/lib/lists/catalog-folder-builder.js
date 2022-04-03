@@ -146,7 +146,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
     _OnItemRemoved(p_catalog, p_item, p_index) {
 
         let selStack = this._owner.selectionStack;
-        if(selStack){ selStack.dataSelection.Remove(p_item); }
+        if(selStack){ selStack.data.Remove(p_item); }
 
         if (p_item.isDir) {
             let mappedObject = super._OnItemRemoved(p_catalog, p_item, p_index);

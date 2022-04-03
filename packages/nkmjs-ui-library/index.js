@@ -3,6 +3,7 @@
 module.exports = {
 
     REQUEST: require(`./lib/request`),
+    SIGNAL: require(`./lib/signal`),
 
     bars: require(`./lib/bars`),
     buttons: require(`./lib/buttons`),

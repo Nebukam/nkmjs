@@ -15,6 +15,14 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
+     static RESIZE = Symbol(`resize`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+     */
     static PAINTED = Symbol(`painted`);
 
     /**

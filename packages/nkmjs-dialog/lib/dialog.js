@@ -43,7 +43,7 @@ class DIALOG extends services.ServiceBase {
      * @param {object} p_options 
      */
     static Push(p_options) {
-        this.instance._Push(p_options);
+        return this.instance._Push(p_options);
     }
 
     /**

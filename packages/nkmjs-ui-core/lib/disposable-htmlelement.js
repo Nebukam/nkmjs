@@ -127,7 +127,7 @@ class DisposableHTMLElement extends HTMLElement {
     _Init() {
 
         this._releasing = false;
-        
+
         this._signals = new com.signals.SignalBox(this);
 
         this._released = false;
@@ -171,7 +171,7 @@ class DisposableHTMLElement extends HTMLElement {
      * @customtag override-me
      * @group Rendering
      */
-    _OnSizeChange(p_contentRect) { }
+    _OnSizeChange(p_contentRect) { this.Broadcast(SIGNAL.RESIZE, this, p_contentRect); }
 
     //#endregion
 

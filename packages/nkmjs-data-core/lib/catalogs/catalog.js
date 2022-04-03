@@ -144,7 +144,7 @@ class Catalog extends CatalogItem {
             }
 
             if (!itemClass) {
-                if (p_forceCatalog || u.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = this.__default_catalogClass; }
+                if (p_forceCatalog || u.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = (p_catalog ? p_catalog._localCatalogClass : p_itemOptions.itemClass) || this.__default_catalogClass; }
                 else { itemClass = p_itemOptions.itemClass || (p_catalog ? p_catalog._localItemClass : null) || this.__default_itemClass; }
             }
         } else {
@@ -164,6 +164,7 @@ class Catalog extends CatalogItem {
         this._distribute
             .To(`autoSort`, `autoSort`)
             .To(`localItemClass`, `_localItemClass`, null)
+            .To(`localCatalogClass`, `_localCatalogClass`, null)
             .To(`expanded`);
 
         this._expanded = false;
@@ -177,6 +178,7 @@ class Catalog extends CatalogItem {
         this._delayedSort = new com.time.DelayedCall(this._Bind(this.Sort));
 
         this._localItemClass = null;
+        this._localCatalogClass = null;
 
     }
 
@@ -619,6 +621,7 @@ class Catalog extends CatalogItem {
         this._rootCatalog = this;
         this._rootDistance = -1;
         this._localItemClass = null;
+        this._localCatalogClass = null;
     }
 
     /**

@@ -5,6 +5,8 @@ const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 
+const SIGNAL = require(`../signal`);
+
 const ShelfNav = require(`./shelf-nav`);
 
 /**
@@ -516,8 +518,12 @@ class Shelf extends ui.views.View {
         let catalogItem = this._currentHandle ? this._currentHandle.data : null,
             view = this._catalogViewBuilder.Get(catalogItem);
 
-        if (!view) { return; }
+        if (!view) { 
+            this.Broadcast(SIGNAL.CURRENT_HANDLE_CHANGED, this, catalogItem, p_oldHandle ? p_oldHandle.data : null);
+            return; 
+        }
 
+        this.Broadcast(SIGNAL.CURRENT_HANDLE_CHANGED, this, catalogItem, p_oldHandle ? p_oldHandle.data : null);
         if (this.currentView != view) { view.RequestDisplay(); }
 
     }
@@ -584,6 +590,7 @@ class Shelf extends ui.views.View {
 
         if (!this._currentView) {
             this.currentHandle = null;
+            this.Broadcast(SIGNAL.CURRENT_VIEW_CHANGED, this, this._currentView, p_oldView);
             return;
         }
 
@@ -593,6 +600,7 @@ class Shelf extends ui.views.View {
         else { this.currentHandle = null; }
 
         this._currentView.DisplayGranted();
+        this.Broadcast(SIGNAL.CURRENT_VIEW_CHANGED, this, this._currentView, p_oldView);
 
     }
 

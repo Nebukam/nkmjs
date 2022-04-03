@@ -34,6 +34,8 @@ class DOMStreamer extends DisposableHTMLElement {
         this._layout = {};
         this._layoutInfos = {};
 
+        this._focusIndex = -1;
+
         this._options = {};
         this._distribute = new com.helpers.OptionsDistribute();
         this._distribute
@@ -45,17 +47,22 @@ class DOMStreamer extends DisposableHTMLElement {
         this._releaseClearedItems = true;
         this._itemCount = 0;
 
+        this._dummyItemClass = null;
+
         this._fixture = null;
         this._drawArea = { width: 0, height: 0 };
+        this._customArea = { start: 0, size: 0 };
         this._indices = { start: 0, end: 0 };
         this._items = [];
+
+        this._useCustomArea = false;
 
         this._activeFragment = null;
         this._styleString = ``;
 
         this._isVertical = true; //TODO: Implement orientation flag instead
 
-        this._rectTracker = new RectTracker(this._Bind(this._OnRectUpdate), this);
+        this._rectTracker = new RectTracker(this._Bind(this._UpdateStreamRect), this);
 
         this._forceRefresh = true;
 
@@ -148,7 +155,8 @@ class DOMStreamer extends DisposableHTMLElement {
                 itemSlots:5, // item # over spread, need to compute item size
                 itemSize:200 // item size over distribution axis,
                 itemCount:5000,
-                fixedSize:true
+                fixedSize:true,
+                customArea:{ start:0, size:0 }
             }
 
         #2 - Fixed item size
@@ -156,7 +164,8 @@ class DOMStreamer extends DisposableHTMLElement {
                 itemWidth:200,
                 itemHeight:200,
                 itemCount:5000,
-                fixedSize:true  
+                fixedSize:true,
+                customArea:{ start:0, size:0 }
             }
          */
 
@@ -172,9 +181,25 @@ class DOMStreamer extends DisposableHTMLElement {
             delete this._layout.itemSize;
         }
 
+        if (this._layout.customArea) {
+            this._customArea = { ...this._layout.customArea };
+            this._useCustomArea = true;
+        } else {
+            this._useCustomArea = false;
+        }
+
         if (`itemCount` in p_value) { this.itemCount = p_value.itemCount; }
         else { this._RefreshLayoutInfos(); }
 
+    }
+
+    get focusIndex(){ return this._focusIndex; }
+    set focusIndex(p_value){ this._focusIndex = p_value; }
+
+    SetFocusIndex(p_index = -1, p_reset = true){
+        this.focusIndex = p_index;
+        if(p_index != -1){ this.ScrollToIndex(p_index); }
+        else if(p_reset){ this.ScrollToIndex(0); }
     }
 
     get itemCount() { return this._itemCount; }
@@ -182,6 +207,27 @@ class DOMStreamer extends DisposableHTMLElement {
         this._itemCount = p_value;
         this._ClearItems();
         this._RefreshLayoutInfos();
+    }
+
+    set customArea(p_value) {
+        this._customArea = p_value;
+    }
+
+    get customStart() { return this._customArea.start; }
+    set customStart(p_value) {
+        this._customArea.start = p_value;
+    }
+
+    get customSize() { return this._customArea.size; }
+    set customSize(p_value) {
+        this._customArea.size = p_value;
+    }
+
+    get useCustomArea() { this._useCustomArea; }
+    set useCustomArea(p_value) {
+        if (this._useCustomArea == p_value) { return; }
+        this._useCustomArea = p_value;
+
     }
 
     _OnSizeChange(p_contentRect) {
@@ -194,8 +240,16 @@ class DOMStreamer extends DisposableHTMLElement {
         this.Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
     }
 
+    _RequestDummy(p_itemIndex) {
+        this._requestResult = null;
+        if (p_itemIndex < 0) { return; }
+        //TODO : Implement dummy items.
+        //this.Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
+    }
+
     _ClearItem(p_item) {
         this.Broadcast(SIGNAL.ITEM_CLEARED, p_item);
+        delete p_item.__streamIndex;
         if (this._releaseClearedItems) { p_item.Release(); }
     }
 
@@ -210,6 +264,7 @@ class DOMStreamer extends DisposableHTMLElement {
 
     ItemRequestAnswer(p_itemIndex, p_item) {
         p_item.classList.add(`dom-streamer-item`);
+        p_item.__streamIndex = p_itemIndex;
         this._requestResult = p_item;
     }
 
@@ -257,7 +312,10 @@ class DOMStreamer extends DisposableHTMLElement {
             streamLines = Math.max(Math.ceil(streamAvailSpace / primarySize), 1) + this._linePaddingBottom,
             totalSize = primarySize * lines,
             streamSize = streamLines * primarySize,
-            infos = this._layoutInfos;
+            infos = this._layoutInfos,
+            resize = false;
+
+        if (infos.streamItems != streamLines * itemsPerLine) { resize = true; }
 
         infos.streamSize = streamSize;
         infos.streamLines = streamLines;
@@ -296,10 +354,14 @@ class DOMStreamer extends DisposableHTMLElement {
         if (items == 0) { this.classList.add(__empty); }
         else { this.classList.remove(__empty); }
 
+        if (p_updateRect) { this._UpdateStreamRect(); }
 
-        //console.log(infos);
-
-        if (p_updateRect) { this._OnRectUpdate(); }
+        if (resize) {
+            this.Broadcast(SIGNAL.RESIZE, this);
+            if (this._focusIndex != -1) {
+                this.ScrollToIndex(this._focusIndex);
+            }
+        }
 
     }
 
@@ -308,7 +370,12 @@ class DOMStreamer extends DisposableHTMLElement {
      * It computes which item indices are currently visible, removes
      * non-visible one and requests missing ones that should be visible.
      */
-    _OnRectUpdate() {
+    _UpdateStreamRect() {
+
+        if (this._useCustomArea) {
+            this._UpdateCustomStreamRect();
+            return;
+        }
 
         let
             selfRect = this._rectTracker.GetIntersect(this),
@@ -327,6 +394,45 @@ class DOMStreamer extends DisposableHTMLElement {
             v = this._isVertical,
             l = this._layoutInfos,
             startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x);
+
+        if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
+
+        let
+            lineStart = Math.min(Math.floor(startCoord / l.primarySize), l.lines),
+            newStart = Math.min(lineStart * l.itemsPerLine, l.items),
+            newEnd = Math.min(newStart + l.streamItems, l.items);
+
+        let streamed = this._Stream(newStart, newEnd, this._forceRefresh);
+        this._forceRefresh = false;
+
+        if (!streamed) { return; }
+
+        this._fixture.style.setProperty(`grid-row-end`, `span ${lineStart + 1}`);
+
+    }
+
+    _UpdateCustomStreamRect() {
+
+        // Update streamer based on custom start & end coordinates.
+
+        let
+            selfRect = this._rectTracker.GetIntersect(this),
+            customStart = this._customArea.start,
+            customSize = customStart + this._customArea.size,
+            v = this._isVertical;
+
+        if (!selfRect) { return; }
+
+        if ((v && this._drawArea.width != selfRect.width) ||
+            (!v && this._drawArea.height != selfRect.height)) {
+            this._drawArea.width = v ? selfRect.width : customSize;
+            this._drawArea.height = v ? customSize : selfRect.height;
+            this._RefreshLayoutInfos(false);
+        }
+
+        let
+            l = this._layoutInfos,
+            startCoord = customStart;
 
         if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
 
@@ -410,6 +516,7 @@ class DOMStreamer extends DisposableHTMLElement {
             for (let i = 0; i < insertBefore; i++) {
                 let index = p_start + i;
                 this._RequestItem(index);
+                if (!this._requestResult) { this._RequestDummy(index); }
                 if (this._requestResult) {
                     this._items.splice(i, 0, this._requestResult);
                 } else {
@@ -428,6 +535,7 @@ class DOMStreamer extends DisposableHTMLElement {
             for (let i = 0; i < insertAfter; i++) {
                 let index = p_end - insertAfter + i;
                 this._RequestItem(index);
+                if (!this._requestResult) { this._RequestDummy(index); }
                 if (this._requestResult) {
                     this._items.push(this._requestResult);
                 } else {
@@ -453,9 +561,46 @@ class DOMStreamer extends DisposableHTMLElement {
 
         // Compute index vertical position based on current layout infos
         let l = this._layoutInfos,
-            lineIndex = p_index / l.itemsPerLine - (p_index % l.itemsPerLine);
+            lineIndex = Math.floor(p_index / l.itemsPerLine);
+
+        if (lineIndex < 0) { lineIndex = 0; }
+        if (lineIndex > l.lines) { lineIndex = l.lines; }
 
         return lineIndex * (l.primarySize);
+
+    }
+
+    /**
+    * 
+    * @param {*} p_index 
+    * @param {Number} p_mode 0 = top, 1 = center, 2 = bottom, 3 = custom offset (based on top)
+    */
+    ScrollToIndex(p_index = 0, p_mode = 1, p_offset = null) {
+
+        //TODO: Find index location in main axis
+        let
+            baseOffset = this.GetIndexOffset(p_index),
+            iSize = this._layoutInfos.primarySize,
+            sSize = this._layoutInfos.streamSize;
+
+
+        switch (p_mode) {
+            default:
+            case 0:
+                break;
+            case 1: // Center
+                baseOffset -= (sSize * 0.5 - iSize);
+                break;
+            case 2: // Bottom
+                baseOffset -= (sSize);
+                break;
+            case 3: // Manual
+                baseOffset -= p_offset != null ? p_offset : 0;
+                break;
+        }
+
+        if (this._isVertical) { this.scroll({ top: baseOffset }); }
+        else { this.scroll({ left: baseOffset }); }
 
     }
 

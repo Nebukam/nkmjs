@@ -285,7 +285,7 @@ class Widget extends DisplayObjectContainer {
 
         if (this._selectionStack) {
             this._selectionStack.allowMultiple = p_allowMultiple;
-            this._selectionStack.persistentDataSelection = p_persistentData;
+            this._selectionStack.persistentData = p_persistentData;
             return;
         }
 
@@ -295,7 +295,7 @@ class Widget extends DisplayObjectContainer {
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
 
         sStack.allowMultiple = p_allowMultiple;
-        sStack.persistentDataSelection = p_persistentData;
+        sStack.persistentData = p_persistentData;
 
         this._selectionStack = sStack;
 
