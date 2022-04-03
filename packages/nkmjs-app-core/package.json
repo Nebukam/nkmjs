@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/app-core",
-  "version": "0.1.45",
+  "version": "0.1.46",
   "description": "NKMjs Framework App Core",
   "browser": "index.js",
   "repository": {
