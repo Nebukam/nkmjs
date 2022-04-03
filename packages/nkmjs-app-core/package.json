@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/app-core",
-  "version": "0.1.46",
+  "version": "0.1.47",
   "description": "NKMjs Framework App Core",
   "browser": "index.js",
   "repository": {
@@ -21,14 +21,14 @@
     "@nkmjs/common": "^0.1.31",
     "@nkmjs/data-core": "^0.0.43",
     "@nkmjs/dialog": "^0.0.51",
-    "@nkmjs/documents": "^0.0.46",
+    "@nkmjs/documents": "^0.0.47",
     "@nkmjs/environment": "^0.1.32",
     "@nkmjs/io-core": "^0.1.35",
     "@nkmjs/services": "^0.0.40",
     "@nkmjs/style": "^0.0.44",
     "@nkmjs/ui-core": "^0.0.53",
-    "@nkmjs/ui-library": "^0.0.38",
-    "@nkmjs/ui-workspace": "^0.0.54",
+    "@nkmjs/ui-library": "^0.0.39",
+    "@nkmjs/ui-workspace": "^0.0.55",
     "@nkmjs/utils": "^0.0.37"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
