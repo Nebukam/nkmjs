@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/electron-core",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "description": "NKMjs Framework Electron App Core",
   "main": "index.js",
   "repository": {
