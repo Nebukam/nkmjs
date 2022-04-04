@@ -14,6 +14,10 @@ const DisposableHTMLElement = require("../disposable-htmlelement");
 
 const __empty = `empty`;
 
+class DOMStreamerPlaceholder extends DisposableHTMLElement {
+    constructor() { super(); this.classList.add(`dom-streamer-dummy`); }
+}
+
 /**
  * An DOM Streamer is designed to handle a large number of fixed-size dom elements.
  * It works by leveraging resize & intersection observer, and requests
@@ -121,6 +125,9 @@ class DOMStreamer extends DisposableHTMLElement {
                 //'box-sizing': 'border-box',
                 //'flex-grow': `1`,
                 //'flex': `0 0 auto`,
+            },
+            '.dom-streamer-dummy': {
+                'position': 'relative'
             }
         };
     }
@@ -193,13 +200,13 @@ class DOMStreamer extends DisposableHTMLElement {
 
     }
 
-    get focusIndex(){ return this._focusIndex; }
-    set focusIndex(p_value){ this._focusIndex = p_value; }
+    get focusIndex() { return this._focusIndex; }
+    set focusIndex(p_value) { this._focusIndex = p_value; }
 
-    SetFocusIndex(p_index = -1, p_reset = true){
+    SetFocusIndex(p_index = -1, p_reset = true) {
         this.focusIndex = p_index;
-        if(p_index != -1){ this.ScrollToIndex(p_index); }
-        else if(p_reset){ this.ScrollToIndex(0); }
+        if (p_index != -1) { this.ScrollToIndex(p_index); }
+        else if (p_reset) { this.ScrollToIndex(0); }
     }
 
     get itemCount() { return this._itemCount; }
@@ -241,10 +248,10 @@ class DOMStreamer extends DisposableHTMLElement {
     }
 
     _RequestDummy(p_itemIndex) {
-        this._requestResult = null;
         if (p_itemIndex < 0) { return; }
-        //TODO : Implement dummy items.
-        //this.Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
+        let dummy = UI.Rent(DOMStreamerPlaceholder);
+        dom.Attach(dummy, this._activeFragment);
+        this._requestResult = dummy;
     }
 
     _ClearItem(p_item) {
