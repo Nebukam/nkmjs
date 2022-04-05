@@ -65,6 +65,8 @@ class UI extends com.helpers.SingletonEx {
 
     }
 
+    static GetClass(p_id){ return this.instance._typeMap[p_id]; }
+
     /**
      * @description TODO
      * @param {object} p_group 

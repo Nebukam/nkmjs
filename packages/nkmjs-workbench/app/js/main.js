@@ -1,7 +1,7 @@
 'use strict';
 
 const nkm = require(`@nkmjs/core`);
-const u = nkm.utils;
+const u = nkm.u;
 const com = nkm.com;
 const { pool, FLAGS } = nkm.com;
 const data = nkm.data;

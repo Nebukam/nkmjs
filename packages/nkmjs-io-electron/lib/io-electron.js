@@ -1,15 +1,7 @@
 'use strict';
 
-const u = require("@nkmjs/utils");
 const io = require(`@nkmjs/io-core`);
 const fs = require(`fs`);
-
-const {
-    FSIOReader,
-    FSIOWriter,
-    FSIORename,
-    FSIODelete
-} = require(`./io-processes`);
 
 class IOElectron {
 
@@ -18,21 +10,22 @@ class IOElectron {
     Deploy() {
 
         let RESOURCES = nkm.io.RESOURCES.instance;
+        let iop = require(`./io-processes`);
 
         // Overwrite default or RESOURCES (IOWriter, IOReader, IORename + Directory support)
         RESOURCES._GetStats = this._GetStats.bind(io.RESOURCES.instance);
         RESOURCES._IOID = this._IOID.bind(io.RESOURCES.instance);
         RESOURCES._io[nkm.io.IO_TYPE.FILE_SYSTEM] = {
-            read: FSIOReader,
-            write: FSIOWriter,
-            rename: FSIORename,
-            delete: FSIODelete
+            read: iop.FSIOReader,
+            write: iop.FSIOWriter,
+            rename: iop.FSIORename,
+            delete: iop.FSIODelete
         };
         RESOURCES._io[nkm.io.IO_TYPE.DEFAULT] = {
-            read: FSIOReader,
-            write: FSIOWriter,
-            rename: FSIORename,
-            delete: FSIODelete
+            read: iop.FSIOReader,
+            write: iop.FSIOWriter,
+            rename: iop.FSIORename,
+            delete: iop.FSIODelete
         };
 
         RESOURCES._io[nkm.io.IO_TYPE.DOCUMENT] = {
@@ -46,7 +39,7 @@ class IOElectron {
     }
 
     _IOID(p_ioId, p_operation) {
-        if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
+        if (nkm.u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
             try {
                 let url = new URL(p_operation.fullPath);
                 if (!url.protocol.includes(`file`)) {

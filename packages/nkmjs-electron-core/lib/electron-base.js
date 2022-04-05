@@ -187,7 +187,7 @@ class ElectronBase {
         this._mainWindow.webContents.executeJavaScript(`
             require('@nkmjs/core');
             let nkmElectron = require('@nkmjs/core/electron');
-            let LOG = nkm.utils.LOG;
+            let LOG = nkm.u.LOG;
             LOG.toggle(true);
 
             let ENV = nkm.env.ENV;

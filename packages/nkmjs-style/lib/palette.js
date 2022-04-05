@@ -84,24 +84,24 @@ class Palette extends com.pool.DisposableObject {
      */
     GetCSSLink(p_key) {
         if (p_key in this._externalCSSMap) { p_key = this._externalCSSMap[p_key]; }
-        if (p_key[0] === __REF) { p_key = `${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}${p_key.substring(1)}`; }
-        else { p_key = u.PATH.FULL(p_key); }
+        if (p_key[0] === __REF) { p_key = `${u.FULL(u.PATH.STYLE)}/${this._themeId}${p_key.substring(1)}`; }
+        else { p_key = u.FULL(p_key); }
         return p_key;
     }
 
     URLTheme(p_url, p_wrap = false){ 
-        return p_wrap ? `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}")`
-        : `${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}`; 
+        return p_wrap ? `url("${u.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}")`
+        : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}`; 
     }
 
     URLAssets(p_url, p_wrap = false){ 
-        return p_wrap ? `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}")`
-        : `${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}`; 
+        return p_wrap ? `url("${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}")`
+        : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}`; 
     }
 
     URLImgs(p_url, p_wrap = false){ 
-        return p_wrap ? `url("${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}")`
-        : `${u.PATH.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}`; 
+        return p_wrap ? `url("${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}")`
+        : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}`; 
     }
 
     /**
@@ -110,7 +110,7 @@ class Palette extends com.pool.DisposableObject {
      * @param {*} p_family 
      * @param {*} p_url 
      */
-    AddFontFace(p_family, p_url) { this._fonts[p_family] = u.PATH.FULL(p_url); }
+    AddFontFace(p_family, p_url) { this._fonts[p_family] = u.FULL(p_url); }
 
     /**
      * @description TODO

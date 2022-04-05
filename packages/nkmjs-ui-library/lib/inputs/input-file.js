@@ -33,6 +33,11 @@ class InputFile extends InputPath {
             dropCandidate: { fn: this._Bind(this._ToggleDropCandidate) }
         });
 
+        this._multiSelection = false;
+
+        this._distribute
+            .To(`multiSelection`, null, false);
+
     }
 
     _PostInit() {
@@ -57,6 +62,7 @@ class InputFile extends InputPath {
         super._Render();
 
         if (env.isNodeEnabled) {
+
             this._picker = this.Attach(buttons.Tool, `input-btn`);
             this._picker.options = {
                 [com.IDS.ICON]: this._iconID,
@@ -77,18 +83,27 @@ class InputFile extends InputPath {
         */
     }
 
+    get multiSelection(){ return this._multiSelection; }
+    set multiSelection(p_value){ this._multiSelection = p_value; }
+
+    _GrabValue() { 
+        let values = this._inputField.value.split(`,`); 
+        for(let i = 0; i < values.length; i++){ values[i] = values[i].trim(); }
+        return values;
+    }
+
     _Pick() {
         if (env.isNodeEnabled) {
             actions.RELAY.ShowOpenDialog({
                 defaultPath: this._currentValue ? this._currentValue : ``,
-                properties: [this._openType]
+                properties: this._multiSelection ? [this._openType, 'multiSelections'] : [this._openType]
             }, this._OnPicked);
         }
     }
 
     _OnPicked(p_response) {
         if (p_response.canceled || !p_response.filePaths) { return; }
-        let val = p_response.filePaths.join(`,`);
+        let val = p_response.filePaths.join(`, `);
         this.changedValue = p_response.filePaths;
     }
 

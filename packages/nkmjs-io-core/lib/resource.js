@@ -206,7 +206,7 @@ class Resource extends com.pool.DisposableObjectEx {
     }
 
     _UpdatePathInfos() {
-        try { this._name = u.PATH.name(new URL(u.PATH.FULL(this._path)).pathname); }
+        try { this._name = u.PATH.name(new URL(u.FULL(this._path)).pathname); }
         catch (err) { this._name = u.PATH.name(this._path); }
 
         if (!this._mime) { this._mime = u.MIME.Get(u.PATH.ext(this._path)); }

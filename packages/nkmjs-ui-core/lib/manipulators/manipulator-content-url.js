@@ -45,7 +45,7 @@ class ContentURLManipulator extends ContentManipulator {
 
             if (path === `` || !u.isString(path)) { return false; }
 
-            path = u.PATH.FULL(path);
+            path = u.FULL(path);
 
             this._ApplyPath(p_element, path, p_direct);
 

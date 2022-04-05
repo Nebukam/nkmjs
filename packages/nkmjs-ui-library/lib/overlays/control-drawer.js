@@ -5,6 +5,7 @@ const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
+const datacontrols = require(`@nkmjs/ui-data-controls`);
 
 const dom = require(`../dom`);
 
@@ -15,12 +16,12 @@ const dom = require(`../dom`);
  * @augments ui.core.views.View
  * @memberof ui.core.views
  */
-class Drawer extends ui.views.View {
+class ControlDrawer extends datacontrols.ControlView {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/drawer.css`]
-    }, ui.views.View, ['css']);
+    }, datacontrols.ControlView, ['css']);
 
     static __ppdata = (p_owner, p_data) => {
 
@@ -124,6 +125,8 @@ class Drawer extends ui.views.View {
         this._closeBtn.element = this._closeIcon.element;
 
         this._wrapper = this._body;
+
+        super._Render();
     }
 
     // ----> DATA
@@ -150,5 +153,5 @@ class Drawer extends ui.views.View {
 
 }
 
-module.exports = Drawer;
-ui.Register('nkmjs-drawer', Drawer);
+module.exports = ControlDrawer;
+ui.Register('nkmjs-control-drawer', ControlDrawer);

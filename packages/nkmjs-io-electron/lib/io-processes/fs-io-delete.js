@@ -1,6 +1,5 @@
 'use strict';
 
-const com = require("@nkmjs/common");
 const io = require(`@nkmjs/io-core`);
 const PathDelete = require(`../helpers/path-delete`);
 
@@ -9,7 +8,7 @@ const fs = require(`fs`);
  * Desktop IO Reader
  */
 
-class FSIODelete extends io.IOProcess {
+class FSIODelete extends nkm.io.IOProcess {
 
     constructor() { super(); }
 
@@ -28,7 +27,7 @@ class FSIODelete extends io.IOProcess {
 
     _OnStatRead(p_err, p_stats) {
         if (p_err) { return this._OnError(p_err); }
-        com.Rent(PathDelete).Do(this._operation.fullPath, null, p_stats, this._OnPathDeleted);
+        nkm.com.Rent(PathDelete).Do(this._operation.fullPath, null, p_stats, this._OnPathDeleted);
     }
 
     _OnPathDeleted(p_err) {

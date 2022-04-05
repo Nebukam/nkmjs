@@ -72,7 +72,7 @@ class ControlWidget extends ui.Widget {
         while (p != null) {
             p = p.editor;
             if (u.isInstanceOf(p, Editor)) { return p; }
-            p = p._parent;
+            p = p ? p.parent : null;
         }
         return null;
     }

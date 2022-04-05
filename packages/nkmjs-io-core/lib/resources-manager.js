@@ -162,7 +162,7 @@ class RESOURCES extends services.ServiceBase {
      * @param {string} p_path 
      * @returns {io.core.Resource|*}
      */
-    _TryGet(p_path) { return this._resources.Get(u.PATH.SHORT(p_path)); }
+    _TryGet(p_path) { return this._resources.Get(u.SHORT(p_path)); }
 
     /**
      * @access private
@@ -177,11 +177,11 @@ class RESOURCES extends services.ServiceBase {
 
         //Rule of thumb : resources are mapped using SHRINKED path.
 
-        let shortPath = u.PATH.SHORT(p_path),
+        let shortPath = u.SHORT(p_path),
             rsc = this._resources.Get(shortPath),
             rscClass = u.tils.Get(p_options, `cl`, null),
             stats = null,
-            fullPath = u.PATH.FULL(p_path);
+            fullPath = u.FULL(p_path);
 
         if (rsc) {
             if (rscClass && !u.isInstanceOf(rsc, rscClass)) {

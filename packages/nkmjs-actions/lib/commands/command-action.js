@@ -87,7 +87,7 @@ class CommandAction extends Command {
                 while (!editor && p) {
                     p = p.editor || p.parent;
                     if (u.isInstanceOf(p, editorClass)) { editor = p; }
-                    p = p.parent;
+                    p = p ? p.parent : null;
                 }
             }
         }

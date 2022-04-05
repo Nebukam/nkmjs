@@ -2,7 +2,7 @@
 
 const nkm = require(`@nkmjs/core`);
 const env = nkm.env;
-const u = nkm.utils;
+const u = nkm.u;
 const ui = nkm.ui;
 const style = nkm.style;
 

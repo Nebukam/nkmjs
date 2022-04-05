@@ -2,8 +2,8 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
+
 const fs = require(`fs`);
-const path = require(`path`);
 
 const fileWatcher = require("chokidar");
 const SIGNAL = require(`../signal`);
@@ -31,10 +31,18 @@ class PathWatcher extends com.pool.DisposableObjectEx {
         this._path = null;
         this._watcher = null;
         this._enabled = false;
+
+        this._distribute = new com.helpers.OptionsDistribute();
+        this._distribute
+            .To(`path`);
+
     }
+
+    set options(p_options) { this._distribute.Update(this, p_options); }
 
     get path() { return this._path; }
     set path(p_value) {
+        p_value = nkm.u.FULL(p_value);
         if (this._path == p_value) { return; }
         let oldPath = this._path;
         this._path = p_value;
@@ -42,10 +50,11 @@ class PathWatcher extends com.pool.DisposableObjectEx {
     }
 
     _OnPathChanged(p_path, p_oldPath) {
-        if (this._watcher) { this._watcher.close(); }
-        if (this._enabled && p_path) {
+        if (this._watcher) {
             this._watcher.close();
             this._watcher = null;
+        }
+        if (this._enabled && p_path) {
             fs.stat(p_path, this._OnStats);
         }
     }
@@ -67,13 +76,14 @@ class PathWatcher extends com.pool.DisposableObjectEx {
 
     _OnStats(p_err, p_stats) {
 
+
         if (p_err) {
-            this._OnWatcherError();
+            this._OnWatcherError(p_err);
             return;
         }
 
         if (p_stats.isDirectory() || p_stats.isFile()) {
-            this._watcher = chokidar.watch(this._path, {
+            this._watcher = fileWatcher.watch(this._path, {
                 ignored: /[\/\\]\./,
                 persistent: true
             });
@@ -95,7 +105,8 @@ class PathWatcher extends com.pool.DisposableObjectEx {
 
     }
 
-    _OnWatcherError() {
+    _OnWatcherError(p_err) {
+        console.error(p_err);
         this.Disable();
         this.Broadcast(SIGNAL.WATCH_ERROR, this);
     }

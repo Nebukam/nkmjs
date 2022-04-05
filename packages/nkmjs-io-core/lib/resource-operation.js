@@ -120,7 +120,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._preparationOptions = p_options;
         this._cancelled = false;
         this._rsc = p_rsc;
-        this._fullPath = u.PATH.FULL(p_rsc.path);
+        this._fullPath = u.FULL(p_rsc.path);
         this._ioType = u.tils.Get(p_options, `io`, null);
         this._callbacks.Add(p_options);
         this._states = p_states;
@@ -153,6 +153,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
     OnStart() {
         this._rsc._state.currentState = this._states.start;
         this._rsc.Broadcast(this._states.start.evt, this._rsc);
+        
         if (this._states.start.fn) {
             try {
                 this._states.start.fn();

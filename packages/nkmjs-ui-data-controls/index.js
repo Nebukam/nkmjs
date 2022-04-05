@@ -31,7 +31,7 @@ module.exports = {
             let e = p.editor;
             if (e) { if (u.isInstanceOf(e, Editor)) { return e; } }
             if (u.isInstanceOf(p, Editor)) { return p; }
-            p = p._parent;
+            p = p.parent;
         }
         return null;
     }

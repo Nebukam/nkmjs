@@ -250,6 +250,7 @@ class AppBase extends com.helpers.SingletonEx {
 
     _OnAppReadyInternal(p_data) {
 
+        p_data.Watch(com.SIGNAL.UPDATED, this._OnPrefsUpdated, this);
         actions.RELAY.instance.Watch(actions.REQUEST.EDIT, this._OnEditRequest, this);
 
         // Load base kits... ?
@@ -265,6 +266,10 @@ class AppBase extends com.helpers.SingletonEx {
 
         this.AppReady();
         this._InternalDisplayReadyCheck();
+
+    }
+
+    _OnPrefsUpdated(p_data){
 
     }
 

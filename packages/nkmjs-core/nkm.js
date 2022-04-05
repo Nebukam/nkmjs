@@ -17,7 +17,7 @@ globalThis.nkm = module.exports = {
     env : require(`@nkmjs/environment`),
     metrics : require(`@nkmjs/metrics`),
     services : require(`@nkmjs/services`),
-    utils : require("@nkmjs/utils"),
+    u : require("@nkmjs/utils"),
 
     //#endregion
 

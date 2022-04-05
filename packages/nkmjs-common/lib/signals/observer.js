@@ -2,7 +2,7 @@
 
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 
-function isObservable(p_item){
+function isObservable(p_item) {
     if (p_item === null || p_item === undefined) { return false; }
     return (`Watch` in p_item && `Unwatch` in p_item && `WatchOnce` in p_item);
 }
@@ -116,7 +116,7 @@ class Observer extends DisposableObjectEx {
      * @type {number}
      * @customtag read-only
      */
-    get targetCount(){ return this._targets.length; }
+    get targetCount() { return this._targets.length; }
 
     /**
      * @description Starts watching for signals of a given target
@@ -124,8 +124,8 @@ class Observer extends DisposableObjectEx {
      * @returns {*} target
      */
     Observe(p_target) {
-        if(!p_target){ throw new Error(`Target cannot be null.`); }
-        if(!isObservable(p_target)){return p_target;}
+        if (!p_target) { throw new Error(`Target cannot be null.`); }
+        if (!isObservable(p_target)) { return p_target; }
         if (this._targets.includes(p_target)) { return p_target; }
         this._targets.push(p_target);
         if (this._isEnabled) { this._WatchAll(p_target); }
@@ -139,6 +139,7 @@ class Observer extends DisposableObjectEx {
      */
     ObserveOnly(p_target) {
         this.Flush();
+        if (!p_target) { return; }
         return this.Observe(p_target);
     }
 
@@ -148,8 +149,8 @@ class Observer extends DisposableObjectEx {
      * @returns {*} target
      */
     Unobserve(p_target) {
-        if(!p_target){ throw new Error(`Target cannot be null.`); }
-        if(!isObservable(p_target)){return p_target;}
+        if (!p_target) { throw new Error(`Target cannot be null.`); }
+        if (!isObservable(p_target)) { return p_target; }
         let index = this._targets.indexOf(p_target);
         if (index === -1) { return p_target; }
         this._targets.splice(index, 1);
@@ -183,7 +184,7 @@ class Observer extends DisposableObjectEx {
     /**
      * Stop watching targets and flushes them
      */
-    Flush(){
+    Flush() {
         if (this._isEnabled) {
             for (let i = 0, n = this._targets.length; i < n; i++) {
                 this._UnwatchAll(this._targets[i]);
