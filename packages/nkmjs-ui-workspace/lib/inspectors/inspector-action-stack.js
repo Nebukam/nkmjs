@@ -6,7 +6,7 @@ const style = require("@nkmjs/style");
 const ui = require("@nkmjs/ui-core");
 const data = require("@nkmjs/data-core");
 const datacontrols = require("@nkmjs/ui-data-controls");
-
+const uilib = require("@nkmjs/ui-library");
 
 const items = require(`./items`);
 
@@ -26,7 +26,9 @@ class ActionStackInspector extends datacontrols.InspectorView {
     _Init() {
         super._Init();
 
-        this._dataObserver.Hook(com.SIGNAL.ITEM_ADDED, this._OnActionAdded, this);
+        this._dataObserver
+        .Hook(com.SIGNAL.ITEM_ADDED, this._OnActionAdded, this)
+        .Hook(com.SIGNAL.ITEM_REMOVED, this._OnActionRemoved, this);
         this._actionMap = new Map();
 
         this._InitSelectionStack(true, true);
@@ -34,17 +36,25 @@ class ActionStackInspector extends datacontrols.InspectorView {
     }
 
     _Style() {
-        
+
         return style.Extends({
             ':host': {
-                
+                'display': `flex`,
+                'flex-flow': 'column nowrap',
             },
-            '.list':{
-                'display':`flex`,
-                'flex-flow':'column nowrap'
+            '.list': {
+                'display': `flex`,
+                'flex-flow': 'column nowrap',
+                'flex': '1 1 auto',
+                'min-height':0,
+                'overflow':'auto'
             },
-            '.list':{
-                'flex':'0 0 auto'
+            '.item':{
+                'min-height':`${this.__itemHeight}px`
+            },
+            '.toolbar':{
+                'padding':'10px',
+                'flex': '0 0 auto',
             }
 
         }, super._Style());
@@ -55,7 +65,7 @@ class ActionStackInspector extends datacontrols.InspectorView {
 
         super._Render();
 
-        this._actionList = ui.El(`div`, {class:`list`}, this._host);
+        this._actionList = ui.El(`div`, { class: `list` }, this._host);
 
         this._rootItem = this.Attach(this.constructor.__default_actionItem, `item`, this._actionList);
         this._rootItem.data = actions.ActionStack.ROOT;
@@ -68,6 +78,23 @@ class ActionStackInspector extends datacontrols.InspectorView {
         this._itemStreamer
             .Watch(ui.SIGNAL.ITEM_REQUEST_RANGE_UPDATE, this._OnRequestRangeUpdate, this)
             .Watch(ui.SIGNAL.ITEM_REQUESTED, this._OnActionItemRequest, this);
+
+        this._toolbar = this.Attach(ui.WidgetBar, `toolbar`, this._host);
+        this._toolbar.options = {
+            inline:true,
+            stretch:ui.WidgetBar.FLAG_STRETCH,
+            defaultWidgetClass:uilib.buttons.Button,
+            handles:[
+                {
+                    label:`flush action stack`, icon:`clear`,
+                    flavor:com.FLAGS.WARNING, variant:ui.FLAGS.FRAME,
+                    trigger:{
+                        fn:()=>{ this._data.Clear(); },
+                        thisArg:this
+                    }
+                }
+            ]
+        }
 
     }
 
@@ -84,6 +111,10 @@ class ActionStackInspector extends datacontrols.InspectorView {
     }
 
     _OnActionAdded(p_stack, p_action) {
+        this._itemStreamer.itemCount = p_stack.count;
+    }
+
+    _OnActionRemoved(p_stack, p_action) {
         this._itemStreamer.itemCount = p_stack.count;
     }
 
@@ -109,13 +140,13 @@ class ActionStackInspector extends datacontrols.InspectorView {
 
     _OnActionItemRelelased(p_item) {
         let action = p_item.data;
-        this._actionMap.delete(action);    
+        this._actionMap.delete(action);
     }
 
     //
 
     _OnSelectionStackAdd(p_item) {
-        this._data.GoToAction(p_item.data);            
+        this._data.GoToAction(p_item.data);
         this._selectionStack.Clear();
     }
 

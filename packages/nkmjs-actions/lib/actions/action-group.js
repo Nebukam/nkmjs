@@ -13,17 +13,17 @@ class ActionGroup extends Action {
 
     static get mergeable() { return false; }
 
+    static __displayIcon = `action`;
+    static __displayName = `Action group`;
+    static __displayTitle = `Action group`;
+
     // ----> Init
 
     _Init() {
         super._Init();
         this._actions = [];
         this._last = null;
-        this._infos = null;
     }
-
-    get title(){ return this._infos ? this._infos.title || this.constructor.name : this.constructor.name; }
-    get htitle(){ return this._infos ? this._infos.htitle || this.constructor.name : this.constructor.name; }
 
     /**
      * @description TODO

@@ -41,7 +41,7 @@ module.exports = {
         // Desktop app is closed.
         opts.detached = true;
 
-        console.log(`Opening ${p_targetPath} using ${p_editorPath}`);
+        //console.log(`Opening ${p_targetPath} using ${p_editorPath}`);
         spawn(p_editorPath, [`"${p_targetPath}"`], opts);
 
     }

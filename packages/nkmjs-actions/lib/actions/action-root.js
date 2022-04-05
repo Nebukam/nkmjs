@@ -19,8 +19,9 @@ class ActionRoot extends Action {
     get stack() { return this._stack; }
     set stack(p_value) { this._stack = p_value; }
 
-    get title(){ return `Root`; }
-    get htitle() { return `Action stack root`; }
+    static __displayIcon = `action`;
+    static __displayName = `Root`;
+    static __displayTitle = `Action stack root`;
 
     /**
      * @description TODO

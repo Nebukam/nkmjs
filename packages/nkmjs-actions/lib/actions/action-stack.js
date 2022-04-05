@@ -28,7 +28,7 @@ class ActionStack extends com.pool.DisposableObjectEx {
         this._isEnabled = true;
         this._groupingActive = false;
         this._group = null;
-        this._groupInfos = null;
+        this._groupDisplayInfos = null;
     }
 
     get count() { return this._stack.length; }
@@ -76,19 +76,18 @@ class ActionStack extends com.pool.DisposableObjectEx {
      * @description TODO
      * @param {boolean} p_toggle 
      */
-    ToggleGrouping(p_toggle, p_groupInfos = null) {
+    ToggleGrouping(p_toggle, p_groupDisplayInfos = null) {
 
         if (this._groupingActive === p_toggle) { return; }
 
         this._groupingActive = p_toggle;
 
         if (!p_toggle && this._group) {
-
             //TODO : If group has only one action merge it with the stack instead
             this._group = null;
-            this._groupInfos = null;
+            this._groupDisplayInfos = null;
         } else if (p_toggle) {
-            this._groupInfos = p_groupInfos;
+            this._groupDisplayInfos = p_groupDisplayInfos;
         }
 
     }
@@ -106,8 +105,9 @@ class ActionStack extends com.pool.DisposableObjectEx {
 
         if (this._groupingActive) {
             if (!this._group) {
-                this._group = this._Register(com.Rent(ActionGroup));
-                if (this._groupInfos) { this._group._infos = { ...this._groupInfos }; }
+                let newGroup = com.Rent(ActionGroup);
+                newGroup.displayInfos = this._groupDisplayInfos;
+                this._group = this._Register(newGroup);
             }
         }
 
@@ -148,8 +148,12 @@ class ActionStack extends com.pool.DisposableObjectEx {
         if (this._headIndex != stack.length - 1) {
             //Actions have be undoed but still in line.
             let index = this._headIndex + 1;
-            for (let i = index; i < stack.length; i++) { stack[i].Release(); }
-            stack.length = index;
+            let diff = stack.length - index;
+            for (let i = 0; i < diff; i++) {
+                let action = stack.pop();
+                this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, action);
+                action.Release();
+            }
         }
 
         p_action.stack = this;
@@ -229,7 +233,11 @@ class ActionStack extends com.pool.DisposableObjectEx {
     Clear() {
         this.ToggleGrouping(false);
         let stack = this._stack;
-        while (stack.length != 0) { stack.pop().Release(); }
+        while (stack.length != 0) {
+            let action = stack.pop();
+            this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, action);
+            action.Release();
+        }
         stack.length = 0;
         this._headIndex = -1;
         this._groupingActive = false;

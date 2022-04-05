@@ -22,6 +22,17 @@ class ACTION_STATE {
      */
      static UNDONE = `undone`;
 
+    /**
+     * @description TODO
+     * @type {array}
+     * @customtag read-only
+     * @group Position
+     */
+     static stateList = [
+        this.DONE,
+        this.UNDONE
+    ];
+
 }
 
 module.exports = ACTION_STATE;

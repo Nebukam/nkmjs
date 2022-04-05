@@ -17,6 +17,8 @@ class ActionInspectorItem extends datacontrols.InspectorWidget {
     _Init() {
         super._Init();
         this._notifiesSelectionStack = true;
+        this._stateEnum = new ui.helpers.FlagEnum(actions.ACTION_STATE.stateList, true);
+        this._stateEnum.Add(this);
     }
 
     _PostInit() {
@@ -41,9 +43,10 @@ class ActionInspectorItem extends datacontrols.InspectorWidget {
     //TODO : Handle action state updates...
     _Render() {
         super._Render();
+        this._hint = new ui.manipulators.Icon(ui.El(`div`, { class: `hint` }, this._host));
         this._icon = new ui.manipulators.Icon(ui.El(`div`, { class: `icon` }, this._host));
         this._label = new ui.manipulators.Text(ui.El(`span`, { class: `label` }, this._host));
-        this._icon.Set(`superior-or-equal`);
+        this._icon.Set(`action`);
     }
 
     _OnDataChanged(p_oldData) {
@@ -54,16 +57,11 @@ class ActionInspectorItem extends datacontrols.InspectorWidget {
     }
 
     Refresh() {
-        this._label.Set(this._data.title);
-        this.htitle = this._data.htitle;
-
-        if (this._data.undoed) {
-            this.classList.add(actions.ACTION_STATE.UNDONE);
-            this.classList.remove(actions.ACTION_STATE.DONE);
-        } else {
-            this.classList.remove(actions.ACTION_STATE.UNDONE);
-            this.classList.add(actions.ACTION_STATE.DONE);
-        }
+        let infos = this._data.displayInfos;
+        this._label.Set(infos.name);
+        this.htitle = infos.title;
+        this._icon.Set(infos.icon);
+        this._stateEnum.Set(this._data.state);
     }
 
     Activate(p_evt) {

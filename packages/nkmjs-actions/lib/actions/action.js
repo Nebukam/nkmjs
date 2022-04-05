@@ -15,6 +15,10 @@ class Action extends com.pool.DisposableObject {
 
     static get mergeable() { return false; }
 
+    static __displayIcon = `action`;
+    static __displayName = this.name;
+    static __displayTitle = this.name;
+
     static __deepCleanFn = null;
 
     // ----> Init
@@ -24,13 +28,33 @@ class Action extends com.pool.DisposableObject {
         this._operation = null;
         this._undone = false;
         this._stack = null;
+
+        this._displayInfos = {};
+        this.displayInfos = null;
+        this._icon = null;
     }
 
     get stack() { return this._stack; }
-    set stack(p_value) { this._stack = p_value; }
+    set stack(p_value) { 
+        this._stack = p_value; 
+    }
 
-    get title() { return this.constructor.name; }
-    get htitle() { return this.constructor.name; }
+    get displayInfos() { return this._displayInfos; }
+    set displayInfos(p_value) {
+        if (!p_value) {
+            this._displayInfos.icon = this.constructor.__displayIcon;
+            this._displayInfos.name = this.constructor.__displayName;
+            this._displayInfos.title = this.constructor.__displayTitle;
+        } else {
+            this._displayInfos.icon = p_value.icon || this.constructor.__displayIcon;
+            this._displayInfos.name = p_value.name || this.constructor.__displayName;
+            this._displayInfos.title = p_value.title || this.constructor.__displayTitle;
+        }
+    }
+
+    _UpdateDisplayInfos(){
+
+    }
 
     /**
      * @description TODO
@@ -62,7 +86,10 @@ class Action extends com.pool.DisposableObject {
     Do(p_operation, p_merge = false) {
         if (!p_merge) { this._operation = p_operation; }
         this._InternalDo(p_operation, p_merge);
-        if (this._stack) { this._stack._OnActionStateChanged(this, this.state); }
+        this._UpdateDisplayInfos();
+        if (this._stack) {
+            this._stack._OnActionStateChanged(this, this.state); 
+        }
         return this;
     }
 
@@ -114,6 +141,10 @@ class Action extends com.pool.DisposableObject {
     }
 
     _CleanUp() {
+
+        this._icon = null;
+        this.displayInfos = null;
+
         if (!this._undone) {
             if (this.constructor.__deepCleanFn != null) {
                 this.constructor.__deepCleanFn(this);
