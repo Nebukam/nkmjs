@@ -5,7 +5,7 @@
  */
 
 require(`@nkmjs/core`);
-const { PATH, LOG } = nkm.utils;
+const { PATH, LOG } = nkm.u;
 const { ENV } = nkm.env;
 
 let paths = {};

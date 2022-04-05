@@ -26,6 +26,7 @@ const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);
 const GlobalOverlayHandler = require(`./global-overlay-handler`);
 const AppBody = require(`./app-body`);
+const UnsavedDocHandler = require(`./helpers/unsaved-doc-handler`);
 
 /**
  * @typedef LayerDefinition
@@ -73,7 +74,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         this._overlayHandlerClass = GlobalOverlayHandler;
         this._overlayHandler = null;
-        this._unsavedDocHandler = new (require(`./helpers/unsaved-doc-handler`))(this);
+        this._unsavedDocHandler = new UnsavedDocHandler(this);
 
         this._commands = new actions.CommandBox();
 

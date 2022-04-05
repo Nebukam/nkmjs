@@ -120,14 +120,13 @@ class Bundler {
         try { localTerserConfig = JSON.parse(fs.readFileSync(NKMjs.InProject(`terser.config.json`))); } catch (e) { }
 
         minify(babeled.code, terserConfig).then(this._OnTerseryfied.bind(this));
-        //this._OnTerseryfied(babeled);
     }
 
     _OnTerseryfied(p_response) {
 
         this.script._logFwd(chalk.italic(`swap-externals » ${this.moduleID}`), `|`, 1);
 
-        let transformed = this._ReplaceKeys(this._ReplaceExternal(p_response.code));
+        let transformed = this._ReplaceExternal(p_response.code);//this._ReplaceKeys(this._ReplaceExternal(p_response.code));
 
         NKMjs.WriteTempSync(this.output, transformed);
         this.script._logFwd(`${NKMjs.Shorten(this.output)}`, `+`, 1);

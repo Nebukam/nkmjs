@@ -1,5 +1,6 @@
 'use strict';
 
+const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const collections = require(`@nkmjs/collections`);
 
@@ -40,7 +41,7 @@ class Directory extends Resource {
     _Encode() { return null; }
 
     _Decode() {
-        let fullPath = PATH.FULL(this._path);
+        let fullPath = u.FULL(this._path);
         for (let i = 0, n = this._raw.length; i < n; i++) {
             let rsc = this._requestRsc(`${fullPath}/${this._raw[i]}`);
         }
