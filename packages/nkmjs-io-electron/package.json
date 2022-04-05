@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/io-electron",
-  "version": "0.0.46",
+  "version": "0.1.0",
   "description": "NKMjs Framework IO Electron",
   "main": "index.js",
   "repository": {
