@@ -5,7 +5,7 @@ const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 const documents = require(`@nkmjs/documents`);
 
-class PrefDocument extends documents.MetaDocument {
+class PrefDocument extends documents.unbound.MetaDocument {
     constructor() { super(); }
     static __registerableType = false;
 }

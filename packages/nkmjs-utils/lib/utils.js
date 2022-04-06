@@ -797,6 +797,8 @@ class UTILS {
 
     static Call(p_callConf, ...args) {
 
+        if(CHECKS.isFunc(p_callConf)){ return p_callConf.call(null, ...args);}
+
         let thisArg = p_callConf.thisArg || null;
         if (args) { return p_callConf.fn.call(thisArg, ...args); }
         else if (p_callConf.args) { return p_callConf.fn.call(thisArg, ...p_callConf.args); }
@@ -806,6 +808,8 @@ class UTILS {
     }
 
     static CallPrepend(p_callConf, ...args) {
+
+        if(CHECKS.isFunc(p_callConf)){ return p_callConf.call(null, ...args);}
 
         let thisArg = p_callConf.thisArg || null;
 

@@ -21,6 +21,9 @@ class DelayedCall {
         if (p_fn) { this._callback = p_fn; }
     }
 
+    get delay() { return this._delay; }
+    set delay(p_value) { this._delay = p_value; }
+
     /**
      * @description Whether this DelayedCall is scheduled or not
      * @type {boolean}

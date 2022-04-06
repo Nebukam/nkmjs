@@ -212,7 +212,7 @@ class Command extends com.pool.DisposableObjectEx {
      * @param {*} p_context 
      */
     Execute(p_context = null) {
-        if (this._running) { return; }
+        if (this._running) { console.log(`FUCK`);return; }
 
         let enabledBefore = this._isEnabled;
 

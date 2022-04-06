@@ -1,6 +1,7 @@
 'use strict';
 
 const __DOCUMENTS = require(`./lib/documents-manager`);
+const docs = require(`./lib/documents`);
 
 module.exports = {
     
@@ -11,12 +12,14 @@ module.exports = {
     commands: require(`./lib/commands`),
 
     Document: require(`./lib/document`),
-    DocumentEx: require(`./lib/documents/document-ex`),
-    MetaDocument: require(`./lib/documents/document-meta`),
+    DocumentEx: docs.DocumentEx,
+    bound:docs.bound,
+    unbound:docs.unbound,
 
     Get:__DOCUMENTS.Get.bind(__DOCUMENTS),
     HasUnsavedDocuments:__DOCUMENTS.HasUnsavedDocuments.bind(__DOCUMENTS),
-    Find:__DOCUMENTS.FindDocument.bind(__DOCUMENTS)
+    Find:__DOCUMENTS.FindDocument.bind(__DOCUMENTS),
+    ToggleAutoSave:__DOCUMENTS.ToggleAutoSave.bind(__DOCUMENTS)
     
 }
 

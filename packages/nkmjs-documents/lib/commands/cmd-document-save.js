@@ -15,13 +15,7 @@ class CommandDocumentSave extends CommandDocumentBase {
 
     _Init() {
         super._Init();
-
         this._Bind(this._OnPicked);
-
-        this._shortcut = actions.Keystroke.CreateFromString("Ctrl S");
-
-        this.Disable();
-
     }
 
     _InternalExecute() {
@@ -40,6 +34,7 @@ class CommandDocumentSave extends CommandDocumentBase {
                 actions.RELAY.ShowOpenDialog({
                     filters: [{ ...this._fileInfos }],
                     type: `save`,
+                    title:`Save "${document.title}"`
                 }, this._OnPicked);
             }
         }

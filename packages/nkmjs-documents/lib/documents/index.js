@@ -1,6 +1,10 @@
 'use strict';
 
+const DocumentEx = require(`./document-ex`);
+
+
 module.exports = {
-    DocumentEx: require(`./document-ex`),
-    MetaDocument: require(`./document-meta`)
+    DocumentEx: DocumentEx,
+    bound: require(`./bound`),
+    unbound: require(`./unbound`),
 }

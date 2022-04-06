@@ -91,6 +91,8 @@ class Editor extends ui.views.View {
         this.forwardData.To(this._commands, { mapping: `context` });
         this._delayedClearInspected = com.DelayedCall(() => { this.Inspect(null); });
 
+        this._shortcuts = new actions.helpers.Shortcuts();
+
     }
 
     get forwardInspected() {
@@ -272,6 +274,24 @@ class Editor extends ui.views.View {
     Redo() { this._actionStack.Redo(); }
 
     //#endregion
+
+    /**
+     * @description Callback when the view handler granted display to another view.
+     * @customtag override-me
+     */
+    _OnDisplayGain() {
+        super._OnDisplayGain();
+        this._shortcuts.Enable();
+    }
+
+    /**
+    * @description Callback when the view handler granted display to another view.
+    * @customtag override-me
+    */
+    _OnDisplayLost() {
+        super._OnDisplayLost();
+        this._shortcuts.Disable();
+    }
 
     _CleanUp() {
         if (this._forwardInspected) { this._forwardInspected.Clear(); }

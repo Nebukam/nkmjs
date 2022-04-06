@@ -8,9 +8,9 @@ const com = require("@nkmjs/common");
 
 class DOCUMENT extends com.helpers.CSYMBOL { constructor() { super(); } }
 
-class DOCUMENT_DEFAULT_DATA extends com.helpers.CSYMBOL { constructor() { super(); } }
+class DOCUMENT_DATA extends com.helpers.CSYMBOL { constructor() { super(); } }
 
 module.exports = {
     DOCUMENT: DOCUMENT,
-    DOCUMENT_DEFAULT_DATA: DOCUMENT_DEFAULT_DATA
+    DOCUMENT_DATA: DOCUMENT_DATA
 };

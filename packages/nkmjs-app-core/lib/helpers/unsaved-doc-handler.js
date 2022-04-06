@@ -17,6 +17,9 @@ class UnsavedDocHandler {
         this._IgnoreAndClose = this._IgnoreAndClose.bind(this);
         this._OnSaveSuccess = this._OnSaveSuccess.bind(this);
         this._OnSaveFail = this._OnSaveError.bind(this);
+        this._ClearLastAndAdvance = this._ClearLastAndAdvance.bind(this);
+
+        this._delayedClearAdvance = com.DelayedCall(this._ClearLastAndAdvance );
 
     }
 
@@ -27,14 +30,8 @@ class UnsavedDocHandler {
     Advance() {
         let dirtyDoc = documents.DOCUMENTS.lastDirtyDoc;
         if (dirtyDoc) {
-            //TODO : Popup to ask if changes should be saved
 
-            let docName = ``;
-            if (dirtyDoc.currentData) {
-                docName = `${dirtyDoc.currentData}`;
-                if (dirtyDoc.currentData.id) { docName = dirtyDoc.currentData.id.name; }
-                if (docName == ``) { docName = `${dirtyDoc.currentData}`; }
-            }
+            let docName = dirtyDoc.title;
 
             dialog.Push({
                 title: `Unsaved changes`,
@@ -55,25 +52,28 @@ class UnsavedDocHandler {
 
     _SaveBeforeClosing() {
         let dirtyDoc = documents.DOCUMENTS.lastDirtyDoc;
+
         try {
+
             dirtyDoc.Save({
                 success: this._OnSaveSuccess,
                 error: this._OnSaveError
             });
+
         } catch (e) {
+
             //Try to save using default command
             let cmd = documents.DOCUMENTS.instance._TryGetDefaultCommand(
                 documents.commands.CMD_TYPE.SAVE, dirtyDoc);
 
             if (!cmd) {
-
+                this._OnSaveError();
             } else {
-                cmd.Watch(actions.COMMAND_SIGNAL.END, this._OnCmdEnd, this);
+                cmd.WatchOnce(actions.COMMAND_SIGNAL.END, this._OnCmdEnd, this);
                 cmd.Execute(dirtyDoc);
             }
 
         }
-
     }
 
     _OnSaveSuccess() {
@@ -88,7 +88,6 @@ class UnsavedDocHandler {
 
     _OnCmdEnd(p_cmd) {
         console.log(`Save CMD end.`);
-        p_cmd.Unwatch(actions.COMMAND_SIGNAL.END, this._OnCmdEnd, this);
         this._ClearLastAndAdvance(true);
     }
 
@@ -98,6 +97,7 @@ class UnsavedDocHandler {
 
     _ClearLastAndAdvance(p_advance = true) {
         let dirtyDoc = documents.DOCUMENTS.lastDirtyDoc;
+        console.log(`_ClearLastAndAdvance`, documents.DOCUMENTS.instance._dirtyDocuments);
         if (dirtyDoc) { dirtyDoc.Release(); }
         if (p_advance) { this.Advance(); }
     }

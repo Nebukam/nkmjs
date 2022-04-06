@@ -81,11 +81,11 @@ class List {
      * @param {*} p_item 
      * @returns {boolean} True if the item has been added to the list, otherwise false.
     */
-    Unshift(p_item){
+    Unshift(p_item) {
         if (isVoid(p_item)) { return false; }
-        if (this._array.includes(p_item)) { 
+        if (this._array.includes(p_item)) {
             let index = this._array.indexOf(p_item);
-            if(index != 0){this._array.splice(index, 1); }
+            if (index != 0) { this._array.splice(index, 1); }
         }
         this._array.unshift(p_item);
         return true;
@@ -243,6 +243,15 @@ class List {
                 p_fn.call(p_this, this._array[i], i);
             }
         }
+    }
+
+    PushInto(p_targetArray) {
+        if (!p_targetArray) { return [...this._array]; }
+        for (let i = 0; i < this._array.length; i++) {
+            let item = this._array[i];
+            if (!p_targetArray.includes(item)) { p_targetArray.push(item); }
+        }
+        return p_targetArray;
     }
 
     /**

@@ -71,6 +71,16 @@ class Document extends com.pool.DisposableObjectEx {
         If you choose to set a resource, the path will be set to that resource's path.
     */
 
+    get title() {
+        let docName = ``;
+        if (this._currentData) {
+            docName = `${this._currentData}`;
+            if (this._currentData.id) { docName = this._currentData.id.name; }
+            if (docName == ``) { docName = `${this._currentData}`; }
+        }
+        return docName;
+    }
+
     /**
      * @description TODO
      * @type {string}
@@ -213,13 +223,13 @@ class Document extends com.pool.DisposableObjectEx {
 
     _OnDataCleaned(p_data) { this.ClearDirty(); }
 
-    _OnDataActiveEditorGain(p_data){
+    _OnDataActiveEditorGain(p_data) {
         if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
-            
+
         }
     }
 
-    _OnDataNoActiveEditor(p_data){
+    _OnDataNoActiveEditor(p_data) {
         if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
             DOCUMENTS.instance.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, this);
         }

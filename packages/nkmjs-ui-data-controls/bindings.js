@@ -37,7 +37,7 @@ class Bindings extends com.helpers.BindingKit {
             ]            
         },
         {
-            context: nkmdocs.CONTEXT.DOCUMENT_DEFAULT_DATA,
+            context: nkmdocs.CONTEXT.DOCUMENT_DATA,
             kvps:[
                 { key: documents.Ecosystem, binding: Ecosystem },
                 { key: documents.EcosystemBundle, binding: EcosystemBundle }

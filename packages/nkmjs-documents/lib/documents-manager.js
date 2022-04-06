@@ -4,9 +4,12 @@ const u = require("@nkmjs/utils");
 const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
+const actions = require("@nkmjs/actions");
 const env = require("@nkmjs/environment");
 
+const CMD_TYPE = require(`./commands/cmd-type`);
 const CONTEXT = require(`./context`);
+const AutosaveHandler = require(`./helpers/autosave-handler`);
 
 /**
  * Helper class that hold windows data and help sort out ipcMessaging between windows
@@ -34,6 +37,8 @@ class DOCUMENTS extends com.helpers.SingletonEx {
             .Hook(data.SIGNAL.DIRTY, this._OnDocDirty, this)
             .Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDocDirtyCleared, this);
 
+        this._autosaveHandler = new AutosaveHandler(this);
+
     }
 
     _RegisterDefaultCommand(p_type, p_cmd) {
@@ -45,7 +50,7 @@ class DOCUMENTS extends com.helpers.SingletonEx {
         return this._defaultCommands.Get(p_type, p_doc.constructor, p_doc.currentData.constructor);
     }
 
-    static get lastDirtyDoc() { return this.instance._documents.last; }
+    static get lastDirtyDoc() { return this.instance._dirtyDocuments.last; }
 
     static HasUnsavedDocuments() {
         return !this.instance._dirtyDocuments.isEmpty;
@@ -88,7 +93,7 @@ class DOCUMENTS extends com.helpers.SingletonEx {
         let doc = com.Rent(docClass);
         if (path) { doc.currentPath = path; }
 
-        data = data || com.BINDINGS.Get(CONTEXT.DOCUMENT_DEFAULT_DATA, docClass, null);
+        data = data || com.BINDINGS.Get(CONTEXT.DOCUMENT_DATA, docClass, null);
 
         if (data) {
             if (u.isFunc(data)) { data = com.Rent(data); }
@@ -100,6 +105,7 @@ class DOCUMENTS extends com.helpers.SingletonEx {
     }
 
     _CheckMatch(p_doc, p_data = null, p_docType = null, p_path = null) {
+
 
         //Check docType
         if (p_docType) {
@@ -124,12 +130,15 @@ class DOCUMENTS extends com.helpers.SingletonEx {
         }
 
         if (p_path) {
-            if (p_doc.currentPath && p_doc.currentPath != p_path) {
-                // Path mismatch
-                return false;
-            } else if (p_doc.currentRsc && p_doc.currentRsc.path != p_path) {
-                // Path mismatch on resource
-                return false;
+
+            if (p_doc.currentPath != p_path) {
+                if (p_doc.currentRsc) {
+                    // Path mismatch, on resource
+                    if (p_doc.currentRsc.path != p_path) { return false; }
+                } else {
+                    // Path mismatch, no resource to confirm
+                    return false;
+                }
             }
 
             // If path exists, there's a match
@@ -146,6 +155,8 @@ class DOCUMENTS extends com.helpers.SingletonEx {
     _FindDocument(p_data = null, p_docType = null, p_path = null) {
 
         p_path = u.SHORT(p_path);
+
+        console.log(this._documents);
 
         for (let i = 0, n = this._documents.count; i < n; i++) {
             let doc = this._documents.At(i);
@@ -168,11 +179,17 @@ class DOCUMENTS extends com.helpers.SingletonEx {
     }
     _Unregister(p_doc) {
         this._documents.Remove(p_doc);
+        this._dirtyDocuments.Remove(p_doc);
         this._documentObserver.Unobserve(p_doc);
     }
 
     _OnDocDirty(p_doc) { this._dirtyDocuments.Add(p_doc); }
     _OnDocDirtyCleared(p_doc) { this._dirtyDocuments.Remove(p_doc); }
+
+    static ToggleAutoSave(p_toggle, p_delay = null) {
+        if (p_toggle) { this.instance._autosaveHandler.Enable(p_delay); }
+        else { this.instance._autosaveHandler.Disable(); }
+    }
 
 }
 

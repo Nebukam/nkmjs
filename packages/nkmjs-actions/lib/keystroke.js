@@ -25,7 +25,7 @@ class Keystroke extends com.pool.DisposableObjectEx {
     static CreateFromString(p_string, p_class = null) {
 
         p_string = p_string.toLowerCase();
-console.log(p_string);
+        //console.log(p_string);
         // "Ctrl C"
         // "Ctrl V"
         // "Ctrl Alt Z"
@@ -96,7 +96,7 @@ console.log(p_string);
         if (!this._enabled) { return; }
         this._enabled = false;
         KEYBOARD.instance._Unregister(this);
-        if(this._active){ this.Deactivate(); }
+        if (this._active) { this.Deactivate(); }
         this.Broadcast(SIGNAL.DISABLED, this);
     }
 
@@ -125,14 +125,14 @@ console.log(p_string);
     }
 
     Activate() {
-        if(this._active){ return false; }
+        if (this._active) { return false; }
         this._active = true;
         this.Broadcast(SIGNAL.ACTIVATED, this);
         return true;
     }
 
     Deactivate() {
-        if(!this._active){ return false; }
+        if (!this._active) { return false; }
         this._active = false;
         this.Broadcast(SIGNAL.DEACTIVATED, this);
         return true;

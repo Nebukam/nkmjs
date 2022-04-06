@@ -10,6 +10,8 @@ module.exports = {
     REQUEST: require(`./lib/action-request`),
     SIGNAL: require(`./lib/signal`),
     
+    helpers: require(`./lib/helpers`),
+
     KEYBOARD: require(`./lib/keyboard`),
     Keystroke: require(`./lib/keystroke`),
     KeystrokeEx: require(`./lib/keystroke-ex`),
@@ -29,6 +31,5 @@ module.exports = {
     CommandAction : require(`./lib/commands/command-action`),
 
     Emit:__REQUEST.Emit.bind(__REQUEST),
-
 
 }

@@ -3,6 +3,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 
+const CONTEXT = require(`../context`);
 const IDS = require(`../ids`);
 const DOCUMENTS = require(`../documents-manager`);
 const Document = require(`../document`);
@@ -26,9 +27,16 @@ class CommandDocumentBase extends actions.Command {
             p_options.name || null,
             p_options.icon || null);
 
-        newCmd.docType = p_options.docType || null;
-        newCmd.dataType = p_options.dataType || null;
+        let docType = p_options.docType || com.BINDINGS.Get(CONTEXT.DOCUMENT, p_options.dataType, null);
+
+        if (p_registerAsDefault && !docType) {
+            throw new Error(`Cannot register as default a document command with null docType`);
+        }
+
+        newCmd.docType = docType;
+        newCmd.dataType = p_options.dataType || com.BINDINGS.Get(CONTEXT.DOCUMENT_DATA, newCmd.docType, null);
         newCmd.fileInfos = p_options.fileInfos || null;
+        newCmd.shortcutSequence = p_options.shortcutSequence || null;
 
         if (p_registerAsDefault && this.__docCmdType != null) {
             //Register as default command within
@@ -62,9 +70,19 @@ class CommandDocumentBase extends actions.Command {
     get fileInfos() { return this._fileInfos; }
     set fileInfos(p_value) { this._fileInfos = p_value || this.constructor.__fileInfos; }
 
+    set shortcutSequence(p_value) {
+        if (p_value) {
+            let scut = null;
+            if (u.isString(p_value)) { scut = actions.Keystroke.CreateFromString(p_value); }
+            else if (u.isArray(p_value)) { scut = actions.Keystroke.CreateFromKeyCodes(p_value); }
+            this._shortcut = scut;
+        }
+    }
+
     _FindDoc() {
 
         if (u.isInstanceOf(this._context, Document)) {
+            console.log(`Document is context.`);
             this._doc = this._context;
             return this._doc;
         }
@@ -75,11 +93,14 @@ class CommandDocumentBase extends actions.Command {
             this._docPath
         );
 
+        console.log(`Found doc : `,this._doc);
         return this._doc;
 
     }
 
     _GetDoc(p_forceNew = false) {
+
+        console.log(`_GetDoc will create a document : ${p_forceNew}`);
 
         this._doc = DOCUMENTS.Get({
             data: this._dataType,
