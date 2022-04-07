@@ -104,6 +104,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
      */
     Add(p_data, p_dataIndex = -1, p_mode = null) {
 
+
         if (this._isRequestingRange) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
 
         if (p_data == null) { return false; }
@@ -117,12 +118,15 @@ class DataSelection extends com.pool.DisposableObjectEx {
         // Clear selection multiple selection isn't allowed.
         if (!this._allowMultiple || p_mode == INPUT.SELECT_MODIFIER_NONE) { this.Clear(); }
 
+
+        let pushRange = false;
         if (p_mode == INPUT.SELECT_MODIFIER_RANGE && !this._isRequestingRange
             && this._allowMultiple && p_dataIndex >= 0 && this._cachedRangeStart != -1) {
-            return this.AddRange(-1, p_dataIndex, false);
+            p_mode = INPUT.SELECT_MODIFIER_ADD;
+            pushRange = true;
         }
 
-        if (this._isRequestingRange) { this._currentRangeContent.push(p_data); }
+        if (p_mode == INPUT.SELECT_MODIFIER_ADD) { this._currentRangeContent.push(p_data); }
 
         this._stack.Add(p_data);
         this._indices.Add(p_dataIndex);
@@ -132,6 +136,8 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         this.Broadcast(com.SIGNAL.ITEM_ADDED, p_data);
 
+        if(pushRange){ this.AddRange(-1, p_dataIndex, false); }
+
         return true;
 
     }
@@ -140,7 +146,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         if (this._currentRangeContent) {
             // Clear active selection range
-            
+
             while (this._currentRangeContent.length != 0) {
                 let
                     data = this._currentRangeContent.pop(),
@@ -168,13 +174,10 @@ class DataSelection extends com.pool.DisposableObjectEx {
         if (p_to < p_from) { let swap = p_to; p_to = p_from; p_from = swap; }
 
         this._isRequestingRange = true;
-
-        for (var i = p_from; i < p_to; i++) {
+        for (var i = p_from; i <= p_to; i++) {
             this.Broadcast(SIGNAL.SELECTION_ADD_REQUEST, this, i);
         }
-        //TODO : Find why last index is ignored???
         this._isRequestingRange = false;
-        console.log([...this._currentRangeContent]);
         return true;
 
     }
@@ -217,7 +220,10 @@ class DataSelection extends com.pool.DisposableObjectEx {
     AddFromItem(p_item, p_mode = null) {
 
         let data = this._ExtractData(p_item);
-        if (data != null) { return this.Add(data, p_item.dataIndex, p_mode); }
+        if (data != null) {
+            if (p_mode == null) { p_mode = INPUT.selectionModifier; }
+            return this.Add(data, p_item.dataIndex, p_mode);
+        }
         else { return false; }
 
     }

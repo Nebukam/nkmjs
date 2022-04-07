@@ -134,8 +134,8 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         // Clear selection multiple selection isn't allowed.
         if (!this._allowMultiple || p_mode == INPUT.SELECT_MODIFIER_NONE) { this.Clear(); }
 
-        this._stack.Add(p_item);
         let firstTimeSelect = this._data.AddFromItem(p_item, p_mode);
+        this._stack.Add(p_item);
         this._itemObserver.Observe(p_item);
 
         p_item.Select(true);
