@@ -208,7 +208,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
     }
 
-    _OnItemRequest(p_streamer, p_index, p_fragment) {
+    _OnItemRequest(p_streamer, p_index, p_fragment, p_returnFn) {
 
         let
             item = this._itemList[p_index],
@@ -226,7 +226,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
         let selStack = this._owner.selectionStack;
         if(selStack){ selStack.Check(mappedObject); }
 
-        p_streamer.ItemRequestAnswer(p_index, mappedObject);
+        p_returnFn(p_index, mappedObject);
 
     }
 

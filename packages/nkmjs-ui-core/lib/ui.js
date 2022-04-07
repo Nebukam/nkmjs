@@ -181,7 +181,7 @@ class UI extends com.helpers.SingletonEx {
             this._Rent(p_class).Release();
         }
     }
-
+    
 }
 
 module.exports = UI;

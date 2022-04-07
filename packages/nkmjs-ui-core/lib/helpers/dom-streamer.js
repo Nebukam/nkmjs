@@ -39,6 +39,7 @@ class DOMStreamer extends DisposableHTMLElement {
         this._layoutInfos = {};
 
         this._focusIndex = -1;
+        this._indicesMap = {};
 
         this._options = {};
         this._distribute = new com.helpers.OptionsDistribute();
@@ -67,6 +68,7 @@ class DOMStreamer extends DisposableHTMLElement {
         this._isVertical = true; //TODO: Implement orientation flag instead
 
         this._rectTracker = new RectTracker(this._Bind(this._UpdateStreamRect), this);
+        this._Bind(this._ItemRequestCallback);
 
         this._forceRefresh = true;
 
@@ -209,6 +211,11 @@ class DOMStreamer extends DisposableHTMLElement {
         else if (p_reset) { this.ScrollToIndex(0); }
     }
 
+    GetItemAt(p_index = -1) {
+        if (p_index in this._indicesMap) { return this._indicesMap[p_index]; }
+        return null;
+    }
+
     get itemCount() { return this._itemCount; }
     set itemCount(p_value) {
         this._itemCount = p_value;
@@ -244,7 +251,7 @@ class DOMStreamer extends DisposableHTMLElement {
     _RequestItem(p_itemIndex) {
         this._requestResult = null;
         if (p_itemIndex < 0) { return; }
-        this.Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment);
+        this.Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment, this._ItemRequestCallback);
     }
 
     _RequestDummy(p_itemIndex) {
@@ -256,7 +263,8 @@ class DOMStreamer extends DisposableHTMLElement {
 
     _ClearItem(p_item) {
         this.Broadcast(SIGNAL.ITEM_CLEARED, p_item);
-        delete p_item.__streamIndex;
+        delete this._indicesMap[p_item.dataIndex];
+        p_item.dataIndex = -1;
         if (this._releaseClearedItems) { p_item.Release(); }
     }
 
@@ -269,9 +277,10 @@ class DOMStreamer extends DisposableHTMLElement {
         this._forceRefresh = true;
     }
 
-    ItemRequestAnswer(p_itemIndex, p_item) {
+    _ItemRequestCallback(p_itemIndex, p_item) {
         p_item.classList.add(`dom-streamer-item`);
-        p_item.__streamIndex = p_itemIndex;
+        p_item.dataIndex = p_itemIndex;
+        this._indicesMap[p_item.dataIndex] = p_item;
         this._requestResult = p_item;
     }
 

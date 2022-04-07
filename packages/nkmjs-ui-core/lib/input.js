@@ -5,9 +5,11 @@ const com = require("@nkmjs/common");
 const env = require(`@nkmjs/environment`);
 const actions = require(`@nkmjs/actions`);
 
+const SIGNAL = require(`./signal`);
 const POINTER = require("./pointer");
 const UI = require("./ui");
 const KB = actions.KEYBOARD;
+const dom = require(`./utils-dom`);
 
 
 /**
@@ -19,6 +21,40 @@ const KB = actions.KEYBOARD;
  */
 class INPUT extends com.helpers.SingletonEx {
     constructor() { super(); }
+
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Generic
+     */
+    static SELECT_MODIFIER_NONE = Symbol('none');
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Generic
+     */
+    static SELECT_MODIFIER_TOGGLE = Symbol('toggle');
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Generic
+    */
+    static SELECT_MODIFIER_RANGE = Symbol('range');
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Generic
+    */
+    static SELECT_MODIFIER_ADD = Symbol('add');
+
 
     /**
      * @description TODO
@@ -66,6 +102,7 @@ class INPUT extends com.helpers.SingletonEx {
      */
     static get alt() { return this.instance.altKey; }
 
+    static get selectionModifier() { return this.instance._activeSelModifier; }
     /**
      * @description TODO
      * @param {*} p_key 
@@ -140,11 +177,14 @@ class INPUT extends com.helpers.SingletonEx {
 
         this._Bind(this._KHandle);
         this._Bind(this._KBlur);
+        this._Bind(this._MDown);
 
         this._shiftKey = false;
         this._ctrlKey = false;
         this._altKey = false;
         this._currentKeyEvent = null;
+
+        this._activeSelModifier = INPUT.SELECT_MODIFIER_NONE;
 
         if (this._isBrowser) {
             this._Start();
@@ -174,6 +214,8 @@ class INPUT extends com.helpers.SingletonEx {
 
         window.addEventListener('blur', this._KBlur);
 
+        window.addEventListener('mousedown', this._MDown);
+
         POINTER.instance._Start();
 
         this._running = true;
@@ -189,6 +231,8 @@ class INPUT extends com.helpers.SingletonEx {
         window.removeEventListener('keypress', this._KHandle);
 
         window.removeEventListener('blur', this._KBlur);
+
+        window.removeEventListener('mousedown', this._MDown);
 
         POINTER.instance._Stop();
 
@@ -216,6 +260,11 @@ class INPUT extends com.helpers.SingletonEx {
      * @customtag read-only
      */
     get shiftKey() { return this._shiftKey; }
+    set shiftKey(p_value) {
+        if (this._shiftKey == p_value) { return; }
+        this._shiftKey = p_value;
+        this._OnSelectionModifierChanged();
+    }
 
     /**
      * @description TODO
@@ -223,6 +272,11 @@ class INPUT extends com.helpers.SingletonEx {
      * @customtag read-only
      */
     get ctrlKey() { return this._ctrlKey; }
+    set ctrlKey(p_value) {
+        if (this._ctrlKey == p_value) { return; }
+        this._ctrlKey = p_value;
+        this._OnSelectionModifierChanged();
+    }
 
     /**
      * @description TODO
@@ -230,6 +284,25 @@ class INPUT extends com.helpers.SingletonEx {
      * @customtag read-only
      */
     get altKey() { return this._altKey; }
+    set altKey(p_value) {
+        if (this._altKey == p_value) { return; }
+        this._altKey = p_value;
+        this._OnSelectionModifierChanged();
+    }
+
+    _OnSelectionModifierChanged() {
+
+        let was = this._activeSelModifier;
+
+        if (this._shiftKey) { this._activeSelModifier = INPUT.SELECT_MODIFIER_RANGE; }
+        else if (this._ctrlKey) { this._activeSelModifier = INPUT.SELECT_MODIFIER_TOGGLE; }
+        else { this._activeSelModifier = INPUT.SELECT_MODIFIER_NONE; }
+
+        if (was == this._activeSelModifier) { return; }
+
+        this.Broadcast(SIGNAL.SELECTION_MODIFIER_CHANGED, this._activeSelModifier, was);
+
+    }
 
     /**
      * @description TODO
@@ -237,6 +310,13 @@ class INPUT extends com.helpers.SingletonEx {
      * @customtag read-only
      */
     get mouse() { return this._pointer; }
+
+    _MDown(p_evt) {
+        if (INPUT.selectionModifier != INPUT.SELECT_MODIFIER_NONE) {
+            //p_evt.preventDefault();
+            dom.ClearHighlightedText();
+        }
+    }
 
     /**
      * @access private
@@ -247,9 +327,9 @@ class INPUT extends com.helpers.SingletonEx {
 
         this._currentKeyEvent = p_evt;
 
-        this._shiftKey = p_evt.shiftKey;
-        this._ctrlKey = p_evt.ctrlKey;
-        this._altKey = p_evt.altKey;
+        this.shiftKey = p_evt.shiftKey;
+        this.ctrlKey = p_evt.ctrlKey;
+        this.altKey = p_evt.altKey;
 
         let type = p_evt.type,
             key = p_evt.key,
@@ -322,6 +402,9 @@ class INPUT extends com.helpers.SingletonEx {
         this._down.Clear();
 
     }
+
+
+
 
 }
 

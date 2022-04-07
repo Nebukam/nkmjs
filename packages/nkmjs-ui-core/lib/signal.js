@@ -15,7 +15,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
-     static RESIZE = Symbol(`resize`);
+    static RESIZE = Symbol(`resize`);
 
     /**
      * @description TODO
@@ -259,7 +259,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
     */
-     static ITEM_CLEARED = Symbol(`itemCleared`);
+    static ITEM_CLEARED = Symbol(`itemCleared`);
 
     /**
      * @description TODO
@@ -268,6 +268,30 @@ class SIGNAL {
      * @group Rendering
     */
     static ITEM_REQUEST_RANGE_UPDATE = Symbol(`itemRequestRangeUpdate`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+    */
+    static SELECTION_ADD_REQUEST = Symbol(`selectionAddRequest`);
+
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Rendering
+   */
+    static SELECTION_REMOVE_REQUEST = Symbol(`selectionRemoveRequest`);
+
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Rendering
+   */
+    static SELECTION_MODIFIER_CHANGED = Symbol(`selectionModifierChanged`);
 
 }
 

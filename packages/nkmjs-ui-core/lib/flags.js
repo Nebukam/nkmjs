@@ -12,7 +12,6 @@ const style = require("@nkmjs/style");
 class FLAGS {
     constructor() { }
 
-
     // Generics
 
     /**

@@ -395,6 +395,11 @@ class UTILS_DOM {
         return txt;
     }
 
+    static ClearHighlightedText() {
+        if (window.getSelection) { window.getSelection().removeAllRanges(); }
+        else if (document.getSelection) { document.getSelection().removeAllRanges(); }
+    }
+
 }
 
 module.exports = UTILS_DOM;

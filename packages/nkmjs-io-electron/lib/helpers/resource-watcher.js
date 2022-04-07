@@ -8,14 +8,14 @@ const path = require(`path`);
 const fileWatcher = require("chokidar");
 const SIGNAL = require(`../signal`);
 
-const PathWatch = require(`./path-watcher`);
+const PathWatcher = require(`./path-watcher`);
 
 /**
  * Create all missing directories in a provided path.
  * Input path is assumed to be a directory, not a file.
  * path/to/something
  */
-class ResourceWatcher extends PathWatch {
+class ResourceWatcher extends PathWatcher {
     constructor() { super(); }
 
     _Init() {
@@ -23,13 +23,15 @@ class ResourceWatcher extends PathWatch {
         super._Init();
         this._currentRsc = null;
         this._readOnChange = false;
-        this._releaseOnDelete = false;
+        this._releaseRscOnDelete = false;
+        this._resourceBound = false;
         this._readOptions = null;
 
         this._distribute
             .To(`readOptions`)
             .To(`readOnChange`)
-            .To(`releaseOnDelete`)
+            .To(`releaseRscOnDelete`)
+            .To(`resourceBound`)
             .To(`resource`, `currentRsc`);
 
         this._rscObserver = new nkm.com.signals.Observer();
@@ -52,8 +54,11 @@ class ResourceWatcher extends PathWatch {
     get readOnChange() { return this._readOnChange; }
     set readOnChange(p_value) { this._readOnChange = p_value; }
 
-    get releaseOnDelete() { return this._releaseOnDelete; }
-    set releaseOnDelete(p_value) { this._releaseOnDelete = p_value; }
+    get releaseRscOnDelete() { return this._releaseRscOnDelete; }
+    set releaseRscOnDelete(p_value) { this._releaseRscOnDelete = p_value; }
+
+    get resourceBound() { return this._resourceBound; }
+    set resourceBound(p_value) { this._resourceBound = p_value; }
 
     get currentRsc() { return this._currentRsc; }
     set currentRsc(p_value) {
@@ -72,6 +77,7 @@ class ResourceWatcher extends PathWatch {
 
     _OnRscReleased() {
         this.currentRsc = null;
+        if(this._resourceBound){ this.Release(); }
     }
 
     Enable() {
@@ -105,6 +111,9 @@ class ResourceWatcher extends PathWatch {
 
     _OnFileDeleted(p_path) {
         super._OnFileDeleted(p_path);
+        if (this._releaseRscOnDelete) {
+            if (this._currentRsc) { this._currentRsc.Release(); }
+        }
     }
 
     _OnDirectoryAdded(p_path) {
@@ -113,7 +122,7 @@ class ResourceWatcher extends PathWatch {
 
     _OnDirectoryDeleted(p_path) {
         super._OnDirectoryDeleted(p_path);
-        if (this._releaseOnDelete) {
+        if (this._releaseRscOnDelete) {
             if (this._currentRsc) { this._currentRsc.Release(); }
         }
     }
@@ -130,7 +139,9 @@ class ResourceWatcher extends PathWatch {
     _CleanUp() {
         this.currentRsc = null;
         this._readOnChange = false;
-        this._releaseOnDelete = false;
+        this._releaseRscOnDelete = false;
+        this._resourceBound = false;
+        this._readOptions = null;
         super._CleanUp();
     }
 

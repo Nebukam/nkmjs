@@ -30,7 +30,7 @@ const DataSelection = require(`./data-selection`);
  * @class
  * @hideconstructor
  * @augments common.pool.DisposableObjectEx
- * @memberof ui.core.helpers
+ * @memberof c
  * @signal SignalItemSelected Broadcasted right after an item has been added to the selection
  * @signal SignalItemUnselected Broadcasted right after an item has been removed from the selection
  */
@@ -59,8 +59,9 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         this._clearing = false;
         this._sharingEvent = false;
 
-
     }
+
+    get isEmpty(){ return this._stack.isEmpty; }
 
     get data() { return this._data; }
 
@@ -121,20 +122,20 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
      * @param {*} p_item 
      * @returns {boolean} True if the object was added for the first time, otherwise false
      */
-    Add(p_item, p_additive = null) {
+    Add(p_item, p_mode = null) {
 
-        if (p_additive == null) { p_additive = INPUT.ctrl; }
+        if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
         if (this._stack.Contains(p_item)) {
-            if (p_additive) { this.Remove(p_item); } //TODO: Need a way to re-map ctrl to something else
+            //if (p_mode == INPUT.SELECT_MODIFIER_TOGGLE) { this.Remove(p_item); } 
             return false;
         }
 
         // Clear selection multiple selection isn't allowed.
-        if (!this._allowMultiple || !p_additive) { this.Clear(); }
+        if (!this._allowMultiple || p_mode == INPUT.SELECT_MODIFIER_NONE) { this.Clear(); }
 
         this._stack.Add(p_item);
-        let firstTimeSelect = this._data.AddFromItem(p_item, p_additive);
+        let firstTimeSelect = this._data.AddFromItem(p_item, p_mode);
         this._itemObserver.Observe(p_item);
 
         p_item.Select(true);
@@ -167,7 +168,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
     Check(p_item) {
         if (!this._persistentData) { return; }
-        if (this._data.ContainsItemData(p_item)) { this.Add(p_item); }
+        if (this._data.ContainsItemData(p_item)) { this.Add(p_item, INPUT.SELECT_MODIFIER_ADD); }
     }
 
     _OnItemSelectionLost(p_item) { this.Remove(p_item); }

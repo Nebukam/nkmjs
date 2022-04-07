@@ -37,6 +37,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
         super._Init();
 
         this._stack = new collections.List();
+        this._indices = new collections.List();
         this._dataSet = new Set();
         this._dataMember = `data`;
 
@@ -45,7 +46,15 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         this._allowMultiple = true;
         this._clearing = false;
+        this._isRequestingRange = false;
+        this._cachedRangeStart = -1;
+        this._currentRangeContent = null;
+
+        INPUT.Watch(SIGNAL.SELECTION_MODIFIER_CHANGED, this._OnSelectionModifierChanged, this);
+
     }
+
+    get isEmpty() { return this._stack.isEmpty; }
 
     get dataMember() { return this._dataMember; }
     set dataMember(p_value) {
@@ -75,30 +84,97 @@ class DataSelection extends com.pool.DisposableObjectEx {
      */
     get firstItem() { return this._stack.first; }
 
+    _OnSelectionModifierChanged(p_mod) {
+        this._cachedRangeStart = -1;
+        if (p_mod == INPUT.SELECT_MODIFIER_RANGE) {
+            if (!this._currentRangeContent) { this._currentRangeContent = []; }
+            this._cachedRangeStart = this._indices.last;
+        } else {
+            if (this._currentRangeContent) { this._currentRangeContent.length = 0; }
+            this._currentRangeContent = null;
+        }
+    }
+
     /**
      * @description Adds given data to the selection
      * @param {*} p_data 
+     * @param {number} [p_dataIndex]
+     * @param {ui.core.INPUT.SELECT_MOFIFIER} [p_mode] 0 = none, 1 = single add, 2 = request range
      * @returns {boolean} True if the data was added for the first time, otherwise false
      */
-    Add(p_data, p_additive = false) {
+    Add(p_data, p_dataIndex = -1, p_mode = null) {
+
+        if (this._isRequestingRange) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
 
         if (p_data == null) { return false; }
+        if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
         if (this._dataSet.has(p_data)) {
-            if (p_additive) { this.Remove(p_data); } //TODO: Need a way to re-map ctrl to something else
+            //if (p_mode == INPUT.SELECT_MODIFIER_TOGGLE) { this.Remove(p_data); } 
             return false;
         }
 
         // Clear selection multiple selection isn't allowed.
-        if (!this._allowMultiple || !p_additive) { this.Clear(); }
+        if (!this._allowMultiple || p_mode == INPUT.SELECT_MODIFIER_NONE) { this.Clear(); }
+
+        if (p_mode == INPUT.SELECT_MODIFIER_RANGE && !this._isRequestingRange
+            && this._allowMultiple && p_dataIndex >= 0 && this._cachedRangeStart != -1) {
+            return this.AddRange(-1, p_dataIndex, false);
+        }
+
+        if (this._isRequestingRange) { this._currentRangeContent.push(p_data); }
 
         this._stack.Add(p_data);
+        this._indices.Add(p_dataIndex);
         this._dataSet.add(p_data);
 
         this._itemObserver.Observe(p_data);
 
         this.Broadcast(com.SIGNAL.ITEM_ADDED, p_data);
 
+        return true;
+
+    }
+
+    AddRange(p_from = -1, p_to = -1, p_clearFirst = false) {
+
+        if (this._currentRangeContent) {
+            // Clear active selection range
+            
+            while (this._currentRangeContent.length != 0) {
+                let
+                    data = this._currentRangeContent.pop(),
+                    index = this._indices.At(this._stack.IndexOf(data));
+
+                this.Broadcast(SIGNAL.SELECTION_REMOVE_REQUEST, this, index, data);
+                this.Remove(data);
+            }
+        }
+
+        if (p_to == -1) { return false; }
+        if (p_clearFirst) {
+            this.Clear();
+            if (p_from == -1) {
+                // impossible to extrapolate "from" index.
+                return false;
+            }
+        }
+
+        if (p_from == -1) {
+            p_from = this._cachedRangeStart;
+            if (p_from < 0) { return false; }
+        }
+
+        if (p_to < p_from) { let swap = p_to; p_to = p_from; p_from = swap; }
+
+        this._isRequestingRange = true;
+
+        for (var i = p_from; i < p_to; i++) {
+            this.Broadcast(SIGNAL.SELECTION_ADD_REQUEST, this, i);
+        }
+        //TODO : Find why last index is ignored???
+        this._isRequestingRange = false;
+        console.log([...this._currentRangeContent]);
         return true;
 
     }
@@ -112,7 +188,9 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         if (!this._dataSet.has(p_data)) { return false; }
 
-        this._stack.Remove(p_data);
+        let index = this._stack.IndexOf(p_data);
+        this._stack.RemoveAt(index);
+        this._indices.RemoveAt(index);
         this._dataSet.delete(p_data);
 
         this._itemObserver.Unobserve(p_data);
@@ -136,10 +214,10 @@ class DataSelection extends com.pool.DisposableObjectEx {
      * @param {*} p_item 
      * @returns {boolean}
      */
-    AddFromItem(p_item) {
+    AddFromItem(p_item, p_mode = null) {
 
         let data = this._ExtractData(p_item);
-        if (data != null) { return this.Add(data); }
+        if (data != null) { return this.Add(data, p_item.dataIndex, p_mode); }
         else { return false; }
 
     }
@@ -205,10 +283,15 @@ class DataSelection extends com.pool.DisposableObjectEx {
         return data == null ? false : this.Contains(data);
     }
 
+    ContainsDataIndex(p_index) {
+        return this._indices.Contains(p_index);
+    }
+
     /**
      * @description Clear all item in the stack
      */
     Clear() {
+        this._cachedRangeStart = -1;
         this._clearing = true;
         while (!this._stack.isEmpty) { this.Remove(this._stack.last); }
         this._clearing = false;

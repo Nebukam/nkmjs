@@ -122,7 +122,7 @@ class ActionStackInspector extends datacontrols.InspectorView {
 
     }
 
-    _OnActionItemRequest(p_streamer, p_index, p_fragment) {
+    _OnActionItemRequest(p_streamer, p_index, p_fragment, p_returnFn) {
 
         let
             action = this._data._stack[p_index],
@@ -134,7 +134,7 @@ class ActionStackInspector extends datacontrols.InspectorView {
         this._actionMap.set(action, item);
         item.data = action;
 
-        p_streamer.ItemRequestAnswer(p_index, item);
+        p_returnFn(p_index, item);
 
     }
 

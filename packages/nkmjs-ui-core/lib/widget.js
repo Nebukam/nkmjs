@@ -1,5 +1,6 @@
 'use strict';
 
+const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
 const UI = require(`./ui`);
@@ -55,6 +56,7 @@ class Widget extends DisplayObjectContainer {
         this._isHighlighted = false;
 
         this._isActivable = true;
+        this._dataIndex = -1;
 
         this._extensions = new extensions.Extension();
 
@@ -103,6 +105,12 @@ class Widget extends DisplayObjectContainer {
     get dataPreProcessor() { return this._dataPreProcessor; }
     set dataPreProcessor(p_value) { this._dataPreProcessor = p_value; }
 
+    /**
+     * A multi-purpose index value.
+     * Primarily used by lists, dom-streamer & selection management
+     */
+    get dataIndex() { return this._dataIndex; }
+    set dataIndex(p_value) { this._dataIndex = p_value; }
 
     //#region Placement & Orientation
 
@@ -279,9 +287,12 @@ class Widget extends DisplayObjectContainer {
     /**
      * @access protected
      * @description TODO
+     * @param {boolean} [p_allowMultiple] 
+     * @param {boolean} [p_persistentData] 
+     * @param {Object} [p_selectionRequestHandler] {add:{fn:}, remove:{fn:}}, callback arguments will be prepended.
      * @group Interactivity.Selection
      */
-    _InitSelectionStack(p_allowMultiple = false, p_persistentData = false) {
+    _InitSelectionStack(p_allowMultiple = false, p_persistentData = false, p_requestHandlers = null) {
 
         if (this._selectionStack) {
             this._selectionStack.allowMultiple = p_allowMultiple;
@@ -296,6 +307,19 @@ class Widget extends DisplayObjectContainer {
 
         sStack.allowMultiple = p_allowMultiple;
         sStack.persistentData = p_persistentData;
+
+        if (p_requestHandlers) {
+            this.__selRequestHandlers = p_requestHandlers;
+            sStack.data
+                .Watch(SIGNAL.SELECTION_ADD_REQUEST,
+                    (p_dataSelection, p_index) => {
+                        u.CallPrepend(this.__selRequestHandlers.add, p_dataSelection, p_index);
+                    }, this)
+                .Watch(SIGNAL.SELECTION_REMOVE_REQUEST,
+                    (p_dataSelection, p_index) => {
+                        u.CallPrepend(this.__selRequestHandlers.remove, p_dataSelection, p_index);
+                    }, this);
+        }
 
         this._selectionStack = sStack;
 
@@ -454,7 +478,13 @@ class Widget extends DisplayObjectContainer {
         this.Broadcast(SIGNAL.ACTIVATED, this, p_evt);
 
         if (this._selectOnActivation) {
-            if (this._isSelectable) { this.Select(true); }
+            if (this._isSelectable) {
+                if (INPUT.selectionModifier == INPUT.SELECT_MODIFIER_TOGGLE) {
+                    this.Select(!this._isSelected);
+                } else {
+                    this.Select(true);
+                }
+            }
         }
         return true;
     }
@@ -558,6 +588,8 @@ class Widget extends DisplayObjectContainer {
 
         this.Select(false);
         this.Focus(false);
+
+        this._dataIndex = -1;
 
         super._CleanUp();
 
