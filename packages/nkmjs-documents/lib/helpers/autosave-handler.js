@@ -11,6 +11,8 @@ class AutosaveHandler {
 
         this._MANAGER = p_manager;
 
+        this._cachedList = null;
+
         this._OnSaveSuccess = this._OnSaveSuccess.bind(this);
         this._OnSaveFail = this._OnSaveError.bind(this);
         this.Advance = this.Advance.bind(this);
@@ -37,12 +39,13 @@ class AutosaveHandler {
     AutoSave() {
         if (this._running) { return; }
         this._running = true;
+        this._cachedList = [...this._MANAGER._dirtyDocuments._array]
         this.Advance();
     }
 
     Advance() {
 
-        let dirtyDoc = this._MANAGER._dirtyDocuments.last;
+        let dirtyDoc = this._cachedList.pop();
 
         if (!dirtyDoc) {
             this._running = false;
