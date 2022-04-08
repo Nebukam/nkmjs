@@ -104,7 +104,7 @@ class MenuRoot extends WidgetBar {
         p_handle.rootMenu = this;
     }
 
-    _OnHandleSelectionGain(p_handle) {
+    _OnHandleSelectionGain(p_handle, p_firstSelect = false) {
         let options = this._optionsMap.get(p_handle);
         if (p_handle.isDir) {
 

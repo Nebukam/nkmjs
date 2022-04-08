@@ -245,6 +245,7 @@ class SIGNAL {
     */
     static DRAW_REQUEST_AFTER = Symbol(`drawRequestAfter`);
 
+    
     /**
      * @description TODO
      * @type {symbol}
@@ -277,6 +278,15 @@ class SIGNAL {
     */
     static SELECTION_ADD_REQUEST = Symbol(`selectionAddRequest`);
 
+    
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Rendering
+   */
+     static SELECTION_TOTAL_COUNT_REQUEST = Symbol(`selectionTotalCountRequest`);
+
     /**
     * @description TODO
     * @type {symbol}
@@ -292,6 +302,7 @@ class SIGNAL {
     * @group Rendering
    */
     static SELECTION_MODIFIER_CHANGED = Symbol(`selectionModifierChanged`);
+
 
 }
 

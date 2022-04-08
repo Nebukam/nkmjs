@@ -6,7 +6,9 @@ const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const collections = require(`@nkmjs/collections`);
 
+
 const SIGNAL = require(`./signal`);
+const EditorSelection = require(`./helpers/editor-selection`);
 
 const __editorMap = new collections.DictionaryList();
 const __activeData = new Set();
@@ -66,6 +68,8 @@ class Editor extends ui.views.View {
 
         super._Init();
 
+        this._Bind(this.Inspect);
+
         //TODO : Find a way to invalidate action stacks // <--- WTF ?
         this._actionStack = new actions.ActionStack();
 
@@ -79,19 +83,38 @@ class Editor extends ui.views.View {
 
         this._flags.Add(this, com.FLAGS.WARNING);
 
-        this._hasUnsavedModifications = false;
+        let edSel = new EditorSelection(this);
+        this._inspectedSelection = edSel;
+        edSel
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnInspectableItemAdded, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnInspectableItemRemoved, this)
+            .Watch(com.SIGNAL.ITEM_BUMPED, this._OnInspectableItemBumped, this);
 
-        this._Bind(this.Inspect);
-
-        this._selectionStack = new ui.helpers.WidgetSelection();
-        this._selectionStack
-            .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackItemAdded, this)
-            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackItemRemoved, this);
+        let sStack = this._InitSelectionStack(true, true);
+        sStack.data
+            .Watch(com.SIGNAL.ITEM_ADDED, edSel.Add, edSel)
+            .Watch(com.SIGNAL.ITEM_REMOVED, edSel.Remove, edSel)
+            .Watch(com.SIGNAL.ITEM_BUMPED, edSel.Bump, edSel);
 
         this.forwardData.To(this._commands, { mapping: `context` });
-        this._delayedClearInspected = com.DelayedCall(() => { this.Inspect(null); });
+
+        this._delayedInspectNull = com.DelayedCall(this.Inspect);
 
         this._shortcuts = new actions.helpers.Shortcuts();
+
+        this._inspectionDataPreProcessor = null;
+
+    }
+
+    _PostInit() {
+
+        super._PostInit();
+        this._RegisterEditorBits();
+
+        if (this._forwardData) { this._forwardData._BatchSet(`editor`, this); }
+        if (this._forwardInspected) { this._forwardInspected._BatchSet(`editor`, this); }
+
+        this._inspectedSelection.preProcessData = this._inspectionDataPreProcessor;
 
     }
 
@@ -100,39 +123,10 @@ class Editor extends ui.views.View {
         return this._forwardInspected;
     }
 
-    _PostInit() {
-        super._PostInit();
-        this._RegisterEditorBits();
-
-        if (this._forwardData) { this._forwardData._BatchSet(`editor`, this); }
-        if (this._forwardInspected) { this._forwardInspected._BatchSet(`editor`, this); }
-
-    }
+    get inspectedSelection() { return this._inspectedSelection; }
 
     _RegisterEditorBits() {
 
-    }
-
-    /**
-     * @description TODO
-     * @type {boolean}
-     * @customtag read-only
-     */
-    get hasUnsavedModifications() { return this._hasUnsavedModifications; }
-
-    /**
-     * @description TODO
-     * @param {boolean} p_value 
-     * @returns 
-     */
-    _SetUnsavedModifications(p_value) {
-        if (this._hasUnsavedModifications === p_value) { return; }
-        this._hasUnsavedModifications = p_value;
-        if (p_value) {
-            // TODO
-        } else {
-            // TODO
-        }
     }
 
     // ----> Data management
@@ -141,9 +135,11 @@ class Editor extends ui.views.View {
 
         this._actionStack.Clear();
 
-        super._OnDataChanged(p_oldData);
-
+        // Set context first.
         if (this._forwardInspected) { this._forwardInspected._BatchSet(`context`, this._data); }
+        this._forwardData._BatchSet(`context`, this._data);
+
+        super._OnDataChanged(p_oldData);
 
         this.inspectedData = null;
 
@@ -175,18 +171,22 @@ class Editor extends ui.views.View {
 
     //#region Selection stack
 
-    _OnSelectionStackItemAdded(p_widget, p_dataAlreadyExists) {
-        if (p_widget.data) {
-            this._delayedClearInspected.Cancel();
-            this.Inspect(p_widget.data);
+    _OnInspectableItemAdded(p_data) {
+        this._delayedInspectNull.Cancel();
+        this.Inspect(p_data);
+    }
+
+    _OnInspectableItemRemoved(p_data) {
+        if (this._inspectedData == p_data) {
+            this._delayedInspectNull.Schedule();
         }
     }
 
-    _OnSelectionStackItemRemoved(p_widget, p_dataRemoved) {
-        if (this._inspectedData == p_widget.data) {
-            this._delayedClearInspected.Schedule();
-            //this.Inspect(null); 
-        }
+    _OnInspectableItemBumped(p_data) {
+        console.log(`Editor bump`, p_data);
+        if (this._inspectedData == p_data) { return; }
+        this._delayedInspectNull.Cancel();
+        this.Inspect(p_data);
     }
 
     //#endregion
@@ -230,7 +230,7 @@ class Editor extends ui.views.View {
      * @description Set data to be inspected
      * @param {data.core.DataBlock} p_data 
      */
-    Inspect(p_data) {
+    Inspect(p_data = null) {
         //TODO : Handle multiple selection editing
         this.inspectedData = p_data;
     }

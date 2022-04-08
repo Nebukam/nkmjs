@@ -171,6 +171,11 @@ class EditorEx extends uidatacontrols.Editor {
 
     // ----> Data management
 
+    _OnDataChanged(p_oldData){
+        super._OnDataChanged(p_oldData);
+        this._inspectorShell.context = this._data;
+    }
+
     _OnDataDirty(p_data) {
         super._OnDataDirty(p_data);
         this._ToggleWarning(true);

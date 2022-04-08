@@ -107,6 +107,7 @@ class DataForward {
         }
     }
 
+
     Clear(p_all = false) {
 
         if (p_all) {

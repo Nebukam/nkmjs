@@ -48,6 +48,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
         this._itemObserver = new com.signals.Observer();
         this._itemObserver
+            //.Hook(SIGNAL.SELECTION_GAIN, this._OnItemSelectionGain, this)
             .Hook(SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this)
             .Hook(SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this)
             .Hook(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this)
@@ -61,7 +62,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
     }
 
-    get isEmpty(){ return this._stack.isEmpty; }
+    get isEmpty() { return this._stack.isEmpty; }
 
     get data() { return this._data; }
 
@@ -166,10 +167,29 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         }
     }
 
+    Bump(p_item) {
+
+        if (!this._stack.Contains(p_item)) { return false; }
+
+        if (p_item != this._stack.last) {
+            let index = this._stack.IndexOf(p_item);
+            this._stack._array.push(this._stack._array.splice(index, 1)[0]);
+        }
+
+        this._data.BumpFromItem(p_item);
+
+        this.Broadcast(com.SIGNAL.ITEM_BUMPED, p_item);
+
+        return true;
+
+    }
+
     Check(p_item) {
         if (!this._persistentData) { return; }
         if (this._data.ContainsItemData(p_item)) { this.Add(p_item, INPUT.SELECT_MODIFIER_ADD); }
     }
+
+    _OnItemSelectionGain(p_item, p_initialSelection = false) { if (!p_initialSelection) { this.Bump(p_item); } }
 
     _OnItemSelectionLost(p_item) { this.Remove(p_item); }
 

@@ -36,6 +36,8 @@ class DataSelection extends com.pool.DisposableObjectEx {
     _Init() {
         super._Init();
 
+        this._Bind(this._SetAllCount);
+
         this._stack = new collections.List();
         this._indices = new collections.List();
         this._dataSet = new Set();
@@ -136,7 +138,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         this.Broadcast(com.SIGNAL.ITEM_ADDED, p_data);
 
-        if(pushRange){ this.AddRange(-1, p_dataIndex, false); }
+        if (pushRange) { this.AddRange(-1, p_dataIndex, false); }
 
         return true;
 
@@ -182,6 +184,23 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
     }
 
+    RequestSelectAll() {
+
+        this._countAll = null;
+        this.Broadcast(SIGNAL.SELECTION_TOTAL_COUNT_REQUEST, this);
+        if (this._countAll > 0) {
+            for (var i = 0; i < this._countAll; i++) {
+                this.Broadcast(SIGNAL.SELECTION_ADD_REQUEST, this, i);
+            }
+        }
+        this._countAll = null;
+
+    }
+
+    _SetAllCount(p_count) {
+        this._countAll = p_count;
+    }
+
     /**
      * @description Removes given data from the selection.
      * @param {*} p_data 
@@ -199,6 +218,22 @@ class DataSelection extends com.pool.DisposableObjectEx {
         this._itemObserver.Unobserve(p_data);
 
         this.Broadcast(com.SIGNAL.ITEM_REMOVED, p_data);
+        return true;
+
+    }
+
+    Bump(p_data) {
+
+        if (!this._dataSet.has(p_data)) { return false; }
+
+        if (p_data != this._stack.last) {
+            let index = this._stack.IndexOf(p_data);
+            this._stack._array.push(this._stack._array.splice(index, 1)[0]);
+            this._indices._array.push(this._indices._array.splice(index, 1)[0]);
+        }
+
+        this.Broadcast(com.SIGNAL.ITEM_BUMPED, p_data);
+
         return true;
 
     }
@@ -239,6 +274,12 @@ class DataSelection extends com.pool.DisposableObjectEx {
         if (data != null) { return this.Remove(data); }
         else { return false; }
 
+    }
+
+    BumpFromItem(p_item) {
+        let data = this._ExtractData(p_item);
+        if (data != null) { return this.Bump(data); }
+        else { return false; }
     }
 
     /**

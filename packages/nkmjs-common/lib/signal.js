@@ -156,6 +156,14 @@ class SIGNAL{
      * @customtag read-only
      * @group ListItem Management
      */
+     static ITEM_BUMPED = Symbol(`itemBumped`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group ListItem Management
+     */
     static ITEM_REMOVED = Symbol(`itemRemoved`);
 
     /**

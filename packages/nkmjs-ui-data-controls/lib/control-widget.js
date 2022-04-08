@@ -39,6 +39,8 @@ class ControlWidget extends ui.Widget {
             this._metadata = null;
         }
 
+        this._contextObserver = new com.signals.Observer();
+
         this._distribute = new com.helpers.OptionsDistribute(
             null,
             this._Bind(this._OnOptionsWillUpdate));
@@ -130,6 +132,7 @@ class ControlWidget extends ui.Widget {
         this._context = p_value;
         this._OnContextChanged(oldValue);
         this._builder.context = p_value;
+        this._contextObserver.ObserveOnly(this._context);
     }
 
     /**
@@ -150,7 +153,7 @@ class ControlWidget extends ui.Widget {
     _Style() {
         return style.Extends({
             ':host': {
-                '@':[`fade-in`]
+                '@': [`fade-in`]
             }
         }, super._Style());
     }
@@ -180,10 +183,10 @@ class ControlWidget extends ui.Widget {
                 this._ResetMetaPresentation();
             }
         }
-        
+
     }
 
-    _OnDataUpdated(p_data){
+    _OnDataUpdated(p_data) {
         super._OnDataUpdated(p_data);
         this._builder.RefreshConditionals();
     }

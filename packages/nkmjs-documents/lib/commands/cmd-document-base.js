@@ -82,7 +82,7 @@ class CommandDocumentBase extends actions.Command {
     _FindDoc() {
 
         if (u.isInstanceOf(this._context, Document)) {
-            console.log(`Document is context.`);
+            //console.log(`Document is context.`);
             this._doc = this._context;
             return this._doc;
         }
@@ -93,14 +93,14 @@ class CommandDocumentBase extends actions.Command {
             this._docPath
         );
 
-        console.log(`Found doc : `,this._doc);
+        //console.log(`Found doc : `,this._doc);
         return this._doc;
 
     }
 
     _GetDoc(p_forceNew = false) {
 
-        console.log(`_GetDoc will create a document : ${p_forceNew}`);
+        //console.log(`_GetDoc will create a document : ${p_forceNew}`);
 
         this._doc = DOCUMENTS.Get({
             data: this._dataType,

@@ -32,12 +32,17 @@ class InspectorView extends ControlView {
 
     _Init() {
         super._Init();
+        this.forwardContext = new ui.helpers.DataForward(this);
+    }
+
+    _OnContextChanged(p_oldValue) {
+        this.forwardContext._BatchSet(`context`, this._context);
     }
 
     _Style() {
         return style.Extends({
             ':host': {
-                'box-sizing':'border-box',
+                'box-sizing': 'border-box',
             },
         }, super._Style());
     }

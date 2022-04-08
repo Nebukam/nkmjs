@@ -40,6 +40,8 @@ class ControlView extends ui.views.View {
             this._metadata = null;
         }
 
+        this._contextObserver = new com.signals.Observer();
+
         this._distribute = new com.helpers.OptionsDistribute(
             null,
             this._Bind(this._OnOptionsWillUpdate));
@@ -51,7 +53,7 @@ class ControlView extends ui.views.View {
             .To(`data`);
 
         this._editor = null;
-
+        
         this.forwardData.To(this._builder);
 
     }
@@ -129,6 +131,7 @@ class ControlView extends ui.views.View {
         this._context = p_value;
         this._OnContextChanged(oldValue);
         this._builder.context = p_value;
+        this._contextObserver.ObserveOnly(this._context);
     }
 
     /**

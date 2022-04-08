@@ -219,10 +219,17 @@ class Widget extends DisplayObjectContainer {
      * @param {boolean} p_toggle 
      * @group Interactivity.Selection
      */
-    Select(p_toggle) {
+    Select(p_toggle, p_bump = false) {
 
         if (!this._isSelectable) { return; }
-        if (this._isSelected === p_toggle) { return; }
+        if (this._isSelected === p_toggle) {
+            if (this._isSelected && p_bump) {
+                this.Broadcast(SIGNAL.SELECTION_GAIN, this, false);
+                let sStack = this._notifiesSelectionStack ? this._parent ? this._parent.selectionStack : null : null;
+                if (sStack) { sStack.Bump(this); }
+            }
+            return;
+        }
 
         this._isSelected = p_toggle;
         this._flags.Set(FLAGS.SELECTED, p_toggle);
@@ -231,12 +238,12 @@ class Widget extends DisplayObjectContainer {
 
         if (p_toggle) {
             this._SelectionGain();
-            this.Broadcast(SIGNAL.SELECTION_GAIN, this);
+            this.Broadcast(SIGNAL.SELECTION_GAIN, this, true);
             if (sStack) { sStack.Add(this); }
             this._Highlight(true);
         } else {
             this._SelectionLost();
-            this.Broadcast(SIGNAL.SELECTION_LOST, this);
+            this.Broadcast(SIGNAL.SELECTION_LOST, this, true);
             if (sStack) { sStack.Remove(this); }
             if (!this._isFocused) { this._Highlight(false); }
         }
@@ -313,15 +320,23 @@ class Widget extends DisplayObjectContainer {
             sStack.data
                 .Watch(SIGNAL.SELECTION_ADD_REQUEST,
                     (p_dataSelection, p_index) => {
+                        if (!this.__selRequestHandlers.add) { return; }
                         u.CallPrepend(this.__selRequestHandlers.add, p_dataSelection, p_index);
                     }, this)
                 .Watch(SIGNAL.SELECTION_REMOVE_REQUEST,
                     (p_dataSelection, p_index) => {
+                        if (!this.__selRequestHandlers.remove) { return; }
                         u.CallPrepend(this.__selRequestHandlers.remove, p_dataSelection, p_index);
+                    }, this)
+                .Watch(SIGNAL.SELECTION_TOTAL_COUNT_REQUEST,
+                    (p_dataSelection, p_index) => {
+                        if (!this.__selRequestHandlers.count) { return; }
+                        p_dataSelection._SetAllCount(u.CallPrepend(this.__selRequestHandlers.count, p_dataSelection));
                     }, this);
         }
 
         this._selectionStack = sStack;
+        return sStack;
 
     }
 
@@ -482,7 +497,7 @@ class Widget extends DisplayObjectContainer {
                 if (INPUT.selectionModifier == INPUT.SELECT_MODIFIER_TOGGLE) {
                     this.Select(!this._isSelected);
                 } else {
-                    this.Select(true);
+                    this.Select(true, true);
                 }
             }
         }
@@ -509,7 +524,7 @@ class Widget extends DisplayObjectContainer {
     get data() { return this._data; }
     set data(p_value) {
 
-        if (this._dataPreProcessor) { p_value = this._dataPreProcessor(this, p_value); }
+        if (this._dataPreProcessor) { p_value = u.Call(this._dataPreProcessor, this, p_value); }
 
         if (this._data === p_value) { return; }
 
