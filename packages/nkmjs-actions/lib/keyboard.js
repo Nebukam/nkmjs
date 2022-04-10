@@ -257,7 +257,7 @@ class KEYBOARD extends com.helpers.SingletonEx {
     _Push(p_keyCode) {
         if (this._activeChain.includes(p_keyCode)) { return; }
         this._activeChain.push(p_keyCode);
-        this._UpdateActiveKeystrokes();
+        return this._UpdateActiveKeystrokes();
     }
 
     _Pull(p_keyCode) {
@@ -298,9 +298,14 @@ class KEYBOARD extends com.helpers.SingletonEx {
                 match = k.GetMatch(this._activeChain);
 
             if (match < 0) { this._activeKeystrokes.Remove(k); i--; }
-            else if (match == 1) { k.Activate(); }
+            else if (match == 1) {
+                let consumed = k.Activate();
+                if (consumed && !k.silent) { return true; }
+            }
 
         }
+
+        return false;
 
     }
 

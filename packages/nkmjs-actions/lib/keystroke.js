@@ -22,7 +22,7 @@ class Keystroke extends com.pool.DisposableObjectEx {
      * @param {*} p_string 
      * @param {*} p_class 
      */
-    static CreateFromString(p_string, p_class = null) {
+    static CreateFromString(p_string, p_class = null, p_silent = false) {
 
         p_string = p_string.toLowerCase();
         //console.log(p_string);
@@ -52,6 +52,7 @@ class Keystroke extends com.pool.DisposableObjectEx {
         }
 
         result.keys = keys;
+        result.silent = p_silent;
         return result;
 
     }
@@ -61,13 +62,14 @@ class Keystroke extends com.pool.DisposableObjectEx {
      * @param {*} p_stroke 
      * @param {*} p_class 
      */
-    static CreateFromKeyCodes(p_stroke, p_class = null) {
+    static CreateFromKeyCodes(p_stroke, p_class = null, p_silent = false) {
 
         let
             result = com.Rent(p_class ? p_class : Keystroke),
             keys = p_stroke;
 
         result.keys = keys;
+        result.silent = p_silent;
 
         return result;
 
@@ -78,12 +80,16 @@ class Keystroke extends com.pool.DisposableObjectEx {
         this._keys = [];
         this._active = false;
         this._enabled = false;
+        this._silent = false;
     }
 
     get keys() { return this._keys; }
     set keys(p_keys) {
         this._keys = [...p_keys];
     }
+
+    get silent() { return this._silent; }
+    set silent(p_value) { this._silent = p_value; }
 
     Enable() {
         if (this._enabled) { return; }

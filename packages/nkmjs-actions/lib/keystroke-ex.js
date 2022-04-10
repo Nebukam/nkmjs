@@ -24,8 +24,8 @@ class KeystrokeEx extends Keystroke {
      * @param {*} p_string 
      * @returns 
      */
-    static CreateFromString(p_string, p_trigger) {
-        let ks = Keystroke.CreateFromString(p_string, KeystrokeEx);
+    static CreateFromString(p_string, p_trigger, p_silent = false) {
+        let ks = Keystroke.CreateFromString(p_string, KeystrokeEx, p_silent);
         ks.trigger = p_trigger;
         return ks;
     }
@@ -35,8 +35,8 @@ class KeystrokeEx extends Keystroke {
      * @param {*} p_stroke 
      * @returns 
      */
-    static CreateFromKeyCodes(p_stroke, p_trigger) {
-        let ks = Keystroke.CreateFromKeyCodes(p_stroke, KeystrokeEx);
+    static CreateFromKeyCodes(p_stroke, p_trigger, p_silent = false) {
+        let ks = Keystroke.CreateFromKeyCodes(p_stroke, KeystrokeEx, p_silent);
         ks.trigger = p_trigger;
         return ks;
     }

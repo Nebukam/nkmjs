@@ -338,18 +338,18 @@ class INPUT extends com.helpers.SingletonEx {
 
         if (type === 'keydown') {
             if (p_evt.repeat) {
-                this._processKeyRepeat(which, p_evt.keyCode);
+                this._processKeyRepeat(which, p_evt.keyCode, p_evt);
             } else {
-                this._processKeyDown(which, p_evt.keyCode);
+                this._processKeyDown(which, p_evt.keyCode, p_evt);
             }
         } else if (type === 'keyup') {
-            this._processKeyUp(which, p_evt.keyCode);
+            this._processKeyUp(which, p_evt.keyCode, p_evt);
         }
 
         this._currentKeyEvent = null;
     }
 
-    _processKeyDown(p_name, p_keyCode) {
+    _processKeyDown(p_name, p_keyCode, p_evt) {
 
         this._kcodes[p_name] = p_keyCode;
 
@@ -358,11 +358,13 @@ class INPUT extends com.helpers.SingletonEx {
         this.Broadcast(INPUT.KEY_DOWN);
         this.Broadcast(`D_${p_name}`);
         this.Broadcast(`T_${p_name}`, true);
-        KB.instance._Push(p_keyCode);
+        
+        let consumed = KB.instance._Push(p_keyCode);
+        if(consumed){ p_evt.preventDefault(); }
 
     }
 
-    _processKeyRepeat(p_name, p_keyCode) {
+    _processKeyRepeat(p_name, p_keyCode, p_evt) {
 
         if (!this._down.Get(p_name)) {
             this._processKeyDown(p_name, p_keyCode);
@@ -373,7 +375,7 @@ class INPUT extends com.helpers.SingletonEx {
 
     }
 
-    _processKeyUp(p_name, p_keyCode) {
+    _processKeyUp(p_name, p_keyCode, p_evt) {
 
         if (!this._down.Get(p_name)) { return; }
 

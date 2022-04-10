@@ -59,6 +59,8 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         this._analyticsNeedRecompute = true;
         this._analytics = {};
 
+        this._invalidateAnalyticsOnBump = false;
+
     }
 
     get editor() { return this._editor; }
@@ -166,6 +168,8 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
             let index = this._stack.IndexOf(p_data);
             this._stack._array.push(this._stack._array.splice(index, 1)[0]);
         }
+
+        if (this._invalidateAnalyticsOnBump) { this._analyticsNeedRecompute = true; }
 
         this._lastItemType = p_data.constructor;
         this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, p_data);
@@ -289,6 +293,10 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         this.itemAnalyticFn = p_itemAnalyticFn;
         this._resetAnalyticsFn = p_analyticsResetFn;
         this._analytics = p_baseline || {};
+    }
+
+    set invalidateAnalyticsOnBump(p_value) {
+        this._invalidateAnalyticsOnBump = p_value;
     }
 
     get itemAnalyticFn() { return this._itemAnalyticFn; }
