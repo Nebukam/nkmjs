@@ -17,6 +17,7 @@ class ControlBuilder {
         this._owner = p_owner;
 
         this._context = null;
+        this._editor = null;
         this._host = p_owner;
         this._data = null;
         this._defaultCSS = p_defaultCSS;
@@ -39,6 +40,19 @@ class ControlBuilder {
 
     set defaultCSS(p_value) { this._defaultCSS = p_value; }
 
+    get editor() { return this._editor; }
+    set editor(p_value) {
+
+        this._editor = p_value;
+        for (let i = 0, n = this._controls.length; i < n; i++) {
+            let ctrl = this._controls[i];
+            if(`editor` in ctrl){ this._controls[i].editor = p_value; }
+        }
+
+        this.RefreshConditionals();
+
+    }
+
     get context() { return this._context; }
     set context(p_value) {
 
@@ -54,9 +68,9 @@ class ControlBuilder {
     get data() { return this._data; }
     set data(p_value) {
 
-        this._data = this._preProcessDataFn ? this._preProcessDataFn(p_value) : p_value;
+        this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_value) : p_value;
         for (let i = 0, n = this._controls.length; i < n; i++) {
-            this._controls[i].data = p_value;
+            this._controls[i].data = this._data;
         }
 
         this.RefreshConditionals();
@@ -66,12 +80,12 @@ class ControlBuilder {
     Set(p_context, p_data) {
 
         this._context = p_context;
-        this._data = this._preProcessDataFn ? this._preProcessDataFn(p_value) : p_value;
+        this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_data) : p_data;
 
         for (let i = 0, n = this._controls.length; i < n; i++) {
             let control = this._controls[i];
             control.context = p_context;
-            control.data = p_data;
+            control.data = this._data;
         }
 
         this.RefreshConditionals();
@@ -123,6 +137,7 @@ class ControlBuilder {
             }
         }
 
+        control.editor = this._editor;
         control.context = this._context;
         control.data = this._data;
 

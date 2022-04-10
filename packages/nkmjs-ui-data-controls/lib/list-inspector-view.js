@@ -15,6 +15,7 @@ const ui = require(`@nkmjs/ui-core`);
 
 const helpers = require(`./helpers`);
 const ControlView = require("./control-view");
+const InspectorView = require("./inspector-view");
 
 /**
  * @description TODO
@@ -23,26 +24,51 @@ const ControlView = require("./control-view");
  * @augments ui.datacontrols.ControlView
  * @memberof ui.datacontrols
  */
-class InspectorView extends ControlView {
+class ListInspectorView extends InspectorView {
     constructor() { super(); }
 
+    /*
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inspectors/inspector-view.css`]
-    }, ControlView, ['css']);
+    }, InspectorView, ['css']);
+    */
+
+
 
     _Init() {
         super._Init();
+        this.forwardData.Remove(this._builder);
+        this._dataType = null;
     }
 
     _Style() {
         return style.Extends({
             ':host': {
-                'box-sizing': 'border-box',
+
             },
         }, super._Style());
     }
 
+    get dataType() { return this._dataType; }
+    set dataType(p_value){
+        if(this._dataType == p_value){return;}
+        let old = this._dataType;
+        this._dataType = p_value;
+        this._OnDataTypeChanged(old);
+    }
+
+    get itemCount() { return this._data ? this._data.stack.count : 0; }
+
+    _OnDataTypeChanged(p_oldValue){
+
+    }
+
+    _OnDataUpdated(p_data) {
+        super._OnDataUpdated(p_data);
+        //There's been either additions or removals. (no bumps)
+    }
+
 }
 
-module.exports = InspectorView;
-//ui.Register('nkmjs-inspector-view', InspectorView);
+module.exports = ListInspectorView;
+//ui.Register('nkmjs-list-inspector-view', InspectorView);

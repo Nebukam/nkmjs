@@ -53,14 +53,27 @@ class ControlView extends ui.views.View {
             .To(`data`);
 
         this._editor = null;
-        
+
         this.forwardData.To(this._builder);
+
+        this._forwardContext = null;
+        this._forwardEditor = null;
 
     }
 
     _PostInit() {
         super._PostInit();
         this._ResetMetaPresentation();
+    }
+
+    get forwardContext() {
+        if (!this._forwardContext) { this._forwardContext = new ui.helpers.DataForward(this); }
+        return this._forwardContext;
+    }
+
+    get forwardEditor() {
+        if (!this._forwardEditor) { this._forwardEditor = new ui.helpers.DataForward(this); }
+        return this._forwardEditor;
     }
 
     /**
@@ -78,11 +91,13 @@ class ControlView extends ui.views.View {
         }
         return null;
     }
-    set editor(p_value) { 
-        if(this._editor == p_value){return;}
+    set editor(p_value) {
+        if (this._editor == p_value) { return; }
         let oldEditor = this._editor;
-        this._editor = p_value; 
-        if(`_OnEditorChanged` in this){ this._OnEditorChanged(oldEditor); }
+        this._editor = p_value;
+        this._builder.editor = p_value;
+        if (this._forwardEditor) { this._forwardEditor._BatchSet(`editor`, p_value); }
+        if (`_OnEditorChanged` in this) { this._OnEditorChanged(oldEditor); }
     }
 
     //#region Options handling
@@ -131,6 +146,7 @@ class ControlView extends ui.views.View {
         this._context = p_value;
         this._OnContextChanged(oldValue);
         this._builder.context = p_value;
+        if (this._forwardContext) { this._forwardContext._BatchSet(`context`, p_value); }
         this._contextObserver.ObserveOnly(this._context);
     }
 
@@ -158,7 +174,7 @@ class ControlView extends ui.views.View {
 
     _Render() {
         super._Render();
-        if(this._builder.host == this._builder._owner){this._builder.host = this._wrapper;}
+        if (this._builder.host == this._builder._owner) { this._builder.host = this._wrapper; }
         let controlList = this.constructor.__controls;
         if (controlList) { this._builder.Build(controlList); }
     }
@@ -186,7 +202,7 @@ class ControlView extends ui.views.View {
 
     }
 
-    _OnDataUpdated(p_data){
+    _OnDataUpdated(p_data) {
         super._OnDataUpdated(p_data);
         this._builder.RefreshConditionals();
     }

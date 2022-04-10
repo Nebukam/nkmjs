@@ -26,7 +26,7 @@ class InspectorShellEx extends uidatacontrols.InspectorShell {
 
     _Init() {
 
-        super._Init();        
+        super._Init();
 
         this._icon = null;
         this._title = null;
@@ -69,7 +69,7 @@ class InspectorShellEx extends uidatacontrols.InspectorShell {
                 'flex-flow': `column nowrap`,
                 'justify-content': `flex-start`,
                 'align-items': `stretch`,
-                'overflow':'auto',
+                'overflow': 'auto',
             },
             '.inspector': {
                 'flex': '1 1 auto',
@@ -85,13 +85,14 @@ class InspectorShellEx extends uidatacontrols.InspectorShell {
         });
 
         this._builder.host = this._body;
+        this._wrapper = this._body;
 
         super._Render();
 
     }
 
     //
-
+/*
     _OnDataChanged(p_oldValue) {
         super._OnDataChanged(p_oldValue);
 
@@ -116,7 +117,7 @@ class InspectorShellEx extends uidatacontrols.InspectorShell {
         }
 
     }
-
+*/
 }
 
 module.exports = InspectorShellEx;

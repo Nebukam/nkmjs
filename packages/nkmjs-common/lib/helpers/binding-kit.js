@@ -139,7 +139,9 @@ class BindingKit extends DisposableObjectEx {
 
             for (let k = 0, n = kvps.length; k < n; k++) {
                 let kvp = kvps[k];
-                BINDINGS.Set(context, kvp.key, kvp.binding);
+                
+                if (kvp.key) { BINDINGS.Set(context, kvp.key, kvp.binding); }
+                if (kvp.keys) { BINDINGS.SetTemplate(context, kvp.keys, kvp.binding); }
 
                 if (true) {
                     // TODO : REMOVE, FOR DEV ONLY

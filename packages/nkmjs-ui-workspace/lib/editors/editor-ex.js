@@ -50,7 +50,7 @@ class EditorEx extends uidatacontrols.Editor {
                 [ui.IDS.NAME]: `Inspector`,
                 [ui.IDS.ICON]: `icon`,
                 [ui.IDS.VIEW_CLASS]: this.constructor.__default_inspectorShellClass,
-                assign: `_inspectorShell`
+                assign: `_inspectorShell`,
             }
         );
     }
@@ -73,9 +73,14 @@ class EditorEx extends uidatacontrols.Editor {
             //console.log(`${assign} >> ${view}`);
 
             if (view) {
-                if (conf.isInspector) { this.forwardData.To(view); }
-                else if(!conf.ignoreData){ this.forwardInspected.To(view); }
+
+                if (`forwardData` in conf && !conf.forwardData) { }
+                else { this.forwardData.To(view); }
+
+                this._forwardContext.To(view);
+
                 if (assign) { this[assign] = view; }
+
             }
 
         }
@@ -85,7 +90,10 @@ class EditorEx extends uidatacontrols.Editor {
             .To(this._viewport)
             .To(this._footer);
 
-        this.forwardInspected
+        this._forwardContext
+            .To(this._header)
+            .To(this._viewport)
+            .To(this._footer)
             .To(this._inspectorShell);
 
     }
@@ -171,11 +179,6 @@ class EditorEx extends uidatacontrols.Editor {
 
     // ----> Data management
 
-    _OnDataChanged(p_oldData){
-        super._OnDataChanged(p_oldData);
-        this._inspectorShell.context = this._data;
-    }
-
     _OnDataDirty(p_data) {
         super._OnDataDirty(p_data);
         this._ToggleWarning(true);
@@ -204,20 +207,8 @@ class EditorEx extends uidatacontrols.Editor {
 
     // ---->
 
-    Inspect(p_data) {
-        super.Inspect(p_data);
+    _OnInspectableItemBumped(p_selection, p_data) {
         this._inspectorShell.RequestDisplay();
-    }
-
-    _OnInspectedDataChanged(p_oldData) {
-        super._OnInspectedDataChanged(p_oldData);
-
-        if (this._inspectedData) {
-            this._inspectorShell.data = this._inspectedData;
-        }
-        else {
-            this._inspectorShell.data = this._data;
-        }
     }
 
 }

@@ -82,6 +82,7 @@ class ControlWidget extends ui.Widget {
         if (this._editor == p_value) { return; }
         let oldEditor = this._editor;
         this._editor = p_value;
+        this._builder.editor = p_value;
         if (`_OnEditorChanged` in this) { this._OnEditorChanged(oldEditor); }
     }
 

@@ -2,5 +2,7 @@
 
 module.exports = {
     ControlBuilder: require(`./control-builder`),
-    EditorSelection: require(`./editor-selection`),
+    InspectionDataList: require(`./inspection-data-list`),
+    InspectionDataHandler: require(`./inspection-data-handler`),
+    InspectionDataForward: require(`./inspection-data-forward`),
 }

@@ -2,6 +2,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const { isArrayBuffer } = require("@nkmjs/utils/lib/checks");
 
 const __NFO__ = `__NFO__`;
 
@@ -118,6 +119,72 @@ class NFOS {
         return p_baseObject;
 
     }
+
+    //#region inheritance utils
+
+    static __legacyCountCache = new Map();
+
+    static GetDistanceToObject(p_obj) {
+
+        if (!u.isFunc(p_obj)) { p_obj = p_obj.constructor; }
+
+        let dist = this.__legacyCountCache.get(p_obj);
+        if (dist != undefined) { return dist; }
+
+        if (!u.isObject(p_obj)) {
+            this.__legacyCountCache.set(p_obj, -1);
+            return -1;
+        }
+
+        dist = 0;
+        let c = p_obj;
+
+        while (c) {
+            if (c == Object) {
+                this.__legacyCountCache.set(p_obj, dist);
+                return dist;
+            }
+            c = c.constructor;
+            dist++;
+        }
+
+    }
+
+    /**
+     * 
+     * @param {*} p_a 
+     * @param {*} p_b 
+     * @returns {number}
+     */
+    static GetSignedDistance(p_a, p_b) {
+
+        if (!p_a || !p_b) { return null; }
+
+        if (!u.isFunc(p_a)) { p_a = p_a.constructor; }
+        if (!u.isFunc(p_b)) { p_b = p_b.constructor; }
+
+        if (p_a == p_b) { return 0; } // Exact match
+
+        if (u.isInstanceOf(p_a, p_b) || u.isInstanceOf(p_b, p_a)) {
+            // There is a relationship
+            let
+                dist_a = this.GetDistanceToObject(p_a),
+                dist_b = this.GetDistanceToObject(p_b),
+                diff = dist_a - dist_b;
+
+            if (dist_a == -1 || dist_b == -1) { return null; }
+            // If diff > 0, B is a child of A with a distance of (diff) in inheritance chain.
+            // If diff < 0, A is a child of B, with a distance of (abs(diff))
+            // If diff == 0, A == B, but somehow hasn't been catched earlier?
+            return diff;
+        } else {
+            return null;
+        } //No match
+
+    }
+
+
+    //#endregion
 
 }
 

@@ -214,14 +214,13 @@ class ActionStack extends com.pool.DisposableObjectEx {
         let index = p_action == this.constructor.ROOT ? 0 : this._stack.indexOf(p_action);
         if (index == -1) { return; }
 
-        let diff = this._headIndex - (index - 1);
-
+        let diff = this._headIndex - index;
         if (diff > 0) {
             // Undo until we reach index
             for (let i = 0; i < diff; i++) { this.Undo(); }
-        } else {
+        } else if (diff < 0) {
             // Redo until we reach index
-            diff = Math.abs(diff) + 1;
+            diff = Math.abs(diff);
             for (let i = 0; i < diff; i++) { this.Redo(); }
         }
 

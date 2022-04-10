@@ -16,7 +16,11 @@ const _squashedAssocs = new collections.KDictionary();//Array of squashed associ
 const _contextMap = new collections.KDictionary();
 const _contextKeyLists = new collections.DictionaryList();
 
+const _contextTemplateMap = new collections.KDictionary();
+const _contextTemplateKeysLists = new collections.DictionaryList();
+
 const _distanceMap = new collections.KDictionary();
+const _tempSet = new Set();
 ////
 
 /**
@@ -134,10 +138,13 @@ class BINDINGS {
      */
     static Set(p_context, p_key, p_binding) {
         //TODO : Check if a value is being squashed, and store it to restore it on kit concealing
-        //console.log(`Set assoc ${p_context}=>${p_key}=${p_control}`);
         _contextMap.Set(p_context, p_key, p_binding);
-        //console.log(`= ${_contextMap.Get(p_context, p_key)}`);
         _contextKeyLists.Set(p_context, p_key);
+    }
+
+    static SetTemplate(p_context, p_keys, p_binding) {
+        _contextTemplateMap.Set(p_context, p_keys, p_binding);
+        _contextTemplateKeysLists.Set(p_context, p_keys);
     }
 
     /**
@@ -154,54 +161,77 @@ class BINDINGS {
 
         if (!p_context) { throw new Error(`p_context cannot be null.`); }
 
-        p_key = u.isFunc(p_key) ? p_key : p_key.constructor;
+        if (u.isObject(p_key)) {
+            if (p_key.constructor == Object) { return this.GetTemplate(p_context, p_key, p_fallback); }
+            p_key = p_key.constructor;
+        }
+
         if (!u.isFunc(p_key)) { throw new Error(`p_key must be a constructor or have an accessible constructor.`); }
 
         p_context = u.isFunc(p_context) ? p_context : p_context.constructor;
-
         let binding = _contextMap.Get(p_context, p_key);
 
-        if (!binding) {
+        if (!binding && p_broad) {
 
-            if (p_broad) { //&& typeof p_context === 'function'
-                //p_borad === true, look for other associations in this context that would fit
-                //Ensure we're looking at a constructor context first
-                let keyList = _contextKeyLists.Get(p_context);
+            //p_broad === true, look for other associations in this context that would fit
+            //Ensure we're looking at a constructor context first
+            let keyList = _contextKeyLists.Get(p_context);
 
-                if (!keyList) {
-                    //console.warn(`No association found for key:${p_key.name}, context:${p_context.name ? p_context.name : p_context}`);
-                    return p_fallback;
-                }
+            if (!keyList) {
+                //console.warn(`No association found for key:${p_key.name}, context:${p_context.name ? p_context.name : p_context}`);
+                return p_fallback;
+            }
 
-                let distance = -1,
-                    closestDistance = Number.MAX_SAFE_INTEGER;
+            let currentDist = Number.MAX_SAFE_INTEGER;
 
-                for (let i = 0, n = keyList.length; i < n; i++) {
-                    let otherKey = keyList[i];
-                    distance = _distanceMap.Get(p_key, otherKey);
-                    if (u.isVoid(distance)) {
-                        distance = u.tils.InheritanceDistance(p_key, otherKey);
-                        _distanceMap.Set(p_key, otherKey, distance);
-                    }
-                    if (distance === -1) { continue; }
-                    if (distance < closestDistance) {
-                        let tResult = _contextMap.Get(p_context, otherKey);
-                        if (tResult) {
-                            closestDistance = distance;
-                            binding = tResult;
-                        }
-                    }
-                }
+            for (let i = 0; i <= keyList.length; i++) {
 
-                if (!binding) {
-                    //TODO : Lookup for alternative contexts that fits and repeat the process.
-                    //TODO : store evaluated p_contexts in p_eval to avoid infinite looping   
+                let
+                    key = keyList[i],
+                    dist = NFOS.GetSignedDistance(p_key, key);
+
+                if (dist == null) { continue; }
+
+                if (dist > 0 && (dist < currentDist || !binding)) {
+                    binding = _contextMap.Get(p_context, key);
+                    currentDist = dist;
                 }
 
             }
+
+
         }
 
         return binding ? binding : p_fallback;
+
+    }
+
+    /**
+     * 
+     * @param {*} p_context 
+     * @param {object} p_keys 
+     * @param {*} p_fallback 
+     */
+    static GetTemplate(p_context, p_keys, p_fallback = null) {
+
+        if (!p_context) { throw new Error(`p_context cannot be null.`); }
+
+        let bindings = _contextTemplateKeysLists.Get(p_context);
+
+        if (!bindings) { return p_fallback; }
+
+        outerloop: for (let i = 0; i < bindings.length; i++) {
+            let tpl = bindings[i];
+
+            for (var p in tpl) {
+                if (!(p in p_keys)) { 
+                    continue outerloop; }
+            }
+
+            return _contextTemplateMap.Get(p_context, tpl) || p_fallback;
+        }
+
+        return p_fallback;
 
     }
 

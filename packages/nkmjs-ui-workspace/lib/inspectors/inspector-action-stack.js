@@ -27,11 +27,16 @@ class ActionStackInspector extends datacontrols.InspectorView {
         super._Init();
 
         this._dataObserver
-        .Hook(com.SIGNAL.ITEM_ADDED, this._OnActionAdded, this)
-        .Hook(com.SIGNAL.ITEM_REMOVED, this._OnActionRemoved, this);
+            .Hook(com.SIGNAL.ITEM_ADDED, this._OnActionAdded, this)
+            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnActionRemoved, this);
         this._actionMap = new Map();
 
         this._InitSelectionStack(true, true);
+        this._dataSelectionObserver
+            .Hook(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this)
+            .Hook(com.SIGNAL.ITEM_BUMPED, this._OnSelectionStackBumped, this)
+            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
+            
 
     }
 
@@ -46,14 +51,14 @@ class ActionStackInspector extends datacontrols.InspectorView {
                 'display': `flex`,
                 'flex-flow': 'column nowrap',
                 'flex': '1 1 auto',
-                'min-height':0,
-                'overflow':'auto'
+                'min-height': 0,
+                'overflow': 'auto'
             },
-            '.item':{
-                'min-height':`${this.__itemHeight}px`
+            '.item': {
+                'min-height': `${this.__itemHeight}px`
             },
-            '.toolbar':{
-                'padding':'10px',
+            '.toolbar': {
+                'padding': '10px',
                 'flex': '0 0 auto',
             }
 
@@ -81,16 +86,16 @@ class ActionStackInspector extends datacontrols.InspectorView {
 
         this._toolbar = this.Attach(ui.WidgetBar, `toolbar`, this._host);
         this._toolbar.options = {
-            inline:true,
-            stretch:ui.WidgetBar.FLAG_STRETCH,
-            defaultWidgetClass:uilib.buttons.Button,
-            handles:[
+            inline: true,
+            stretch: ui.WidgetBar.FLAG_STRETCH,
+            defaultWidgetClass: uilib.buttons.Button,
+            handles: [
                 {
-                    label:`flush action stack`, icon:`clear`,
-                    flavor:com.FLAGS.WARNING, variant:ui.FLAGS.FRAME,
-                    trigger:{
-                        fn:()=>{ this._data.Clear(); },
-                        thisArg:this
+                    label: `flush action stack`, icon: `clear`,
+                    flavor: com.FLAGS.WARNING, variant: ui.FLAGS.FRAME,
+                    trigger: {
+                        fn: () => { this._data.Clear(); },
+                        thisArg: this
                     }
                 }
             ]
@@ -146,7 +151,12 @@ class ActionStackInspector extends datacontrols.InspectorView {
     //
 
     _OnSelectionStackAdd(p_item) {
-        this._data.GoToAction(p_item.data);
+        this._data.GoToAction(p_item);
+        this._selectionStack.Clear();
+    }
+
+    _OnSelectionStackBumped(p_item) {
+        this._data.GoToAction(p_item);
         this._selectionStack.Clear();
     }
 

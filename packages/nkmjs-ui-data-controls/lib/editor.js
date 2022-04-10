@@ -8,7 +8,7 @@ const collections = require(`@nkmjs/collections`);
 
 
 const SIGNAL = require(`./signal`);
-const EditorSelection = require(`./helpers/editor-selection`);
+const InspectionDataList = require(`./helpers/inspection-data-list`);
 
 const __editorMap = new collections.DictionaryList();
 const __activeData = new Set();
@@ -68,41 +68,26 @@ class Editor extends ui.views.View {
 
         super._Init();
 
-        this._Bind(this.Inspect);
-
         //TODO : Find a way to invalidate action stacks // <--- WTF ?
         this._actionStack = new actions.ActionStack();
+        this._shortcuts = new actions.helpers.Shortcuts();
+
+        this._flags.Add(this, com.FLAGS.WARNING);
+
+        this._forwardContext = new ui.helpers.DataForward(this);
 
         this._dataObserver
             .Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this)
             .Hook(data.SIGNAL.DIRTY_CLEARED, this._OnDataCleaned, this);
 
-        this._inspectedData = null;
-        this._inspectedObserver = new com.signals.Observer();
-        this._inspectedObserver.Hook(com.SIGNAL.RELEASED, this._OnInspectedDataReleased, this);
-
-        this._flags.Add(this, com.FLAGS.WARNING);
-
-        let edSel = new EditorSelection(this);
-        this._inspectedSelection = edSel;
-        edSel
+        this._inspectedDataPreProcessor = null;
+        this._inspectedData = new InspectionDataList(this);
+        this._inspectedData
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnInspectableItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnInspectableItemRemoved, this)
             .Watch(com.SIGNAL.ITEM_BUMPED, this._OnInspectableItemBumped, this);
 
-        let sStack = this._InitSelectionStack(true, true);
-        sStack.data
-            .Watch(com.SIGNAL.ITEM_ADDED, edSel.Add, edSel)
-            .Watch(com.SIGNAL.ITEM_REMOVED, edSel.Remove, edSel)
-            .Watch(com.SIGNAL.ITEM_BUMPED, edSel.Bump, edSel);
-
         this.forwardData.To(this._commands, { mapping: `context` });
-
-        this._delayedInspectNull = com.DelayedCall(this.Inspect);
-
-        this._shortcuts = new actions.helpers.Shortcuts();
-
-        this._inspectionDataPreProcessor = null;
 
     }
 
@@ -112,18 +97,11 @@ class Editor extends ui.views.View {
         this._RegisterEditorBits();
 
         if (this._forwardData) { this._forwardData._BatchSet(`editor`, this); }
-        if (this._forwardInspected) { this._forwardInspected._BatchSet(`editor`, this); }
+        this._forwardContext._BatchSet(`editor`, this);
 
-        this._inspectedSelection.preProcessData = this._inspectionDataPreProcessor;
+        this._inspectedData.preProcessData = this._inspectedDataPreProcessor;
 
     }
-
-    get forwardInspected() {
-        if (!this._forwardInspected) { this._forwardInspected = new ui.helpers.DataForward(this); }
-        return this._forwardInspected;
-    }
-
-    get inspectedSelection() { return this._inspectedSelection; }
 
     _RegisterEditorBits() {
 
@@ -134,14 +112,11 @@ class Editor extends ui.views.View {
     _OnDataChanged(p_oldData) {
 
         this._actionStack.Clear();
-
-        // Set context first.
-        if (this._forwardInspected) { this._forwardInspected._BatchSet(`context`, this._data); }
-        this._forwardData._BatchSet(`context`, this._data);
+        this._forwardContext._BatchSet(`context`, this._data);
 
         super._OnDataChanged(p_oldData);
 
-        this.inspectedData = null;
+        this.inspectedData.Clear();
 
         if (this.constructor.__registerableEditor) {
             if (p_oldData) { Editor.__Unregister(this, p_oldData); }
@@ -169,29 +144,12 @@ class Editor extends ui.views.View {
 
     }
 
+    _OnChildAttached(p_displayObject, p_index) {
+        if (`editor` in p_displayObject) { p_displayObject.editor = this; }
+        super._OnChildAttached(p_displayObject, p_index);
+    }
+
     //#region Selection stack
-
-    _OnInspectableItemAdded(p_data) {
-        this._delayedInspectNull.Cancel();
-        this.Inspect(p_data);
-    }
-
-    _OnInspectableItemRemoved(p_data) {
-        if (this._inspectedData == p_data) {
-            this._delayedInspectNull.Schedule();
-        }
-    }
-
-    _OnInspectableItemBumped(p_data) {
-        console.log(`Editor bump`, p_data);
-        if (this._inspectedData == p_data) { return; }
-        this._delayedInspectNull.Cancel();
-        this.Inspect(p_data);
-    }
-
-    //#endregion
-
-    //#region Inspection
 
     /**
      * @description The Editor currently inspected data. Drives available controls, actions, commands,
@@ -199,40 +157,17 @@ class Editor extends ui.views.View {
      * @type {data.core.DataBlock}
      */
     get inspectedData() { return this._inspectedData; }
-    set inspectedData(p_value) {
 
-        if (this._inspectedData === p_value) { return; }
-
-        let oldValue = this._inspectedData;
-        this._inspectedData = p_value;
-
-        if (oldValue) { this._inspectedObserver.Unobserve(oldValue); }
-        if (p_value) { this._inspectedObserver.Observe(p_value); }
-
-        this._OnInspectedDataChanged(oldValue);
+    _OnInspectableItemAdded(p_selection, p_data) {
 
     }
 
-    _OnChildAttached(p_displayObject, p_index) {
-        if (`editor` in p_displayObject) { p_displayObject.editor = this; }
-        super._OnChildAttached(p_displayObject, p_index);
+    _OnInspectableItemRemoved(p_selection, p_data) {
+
     }
 
-    _OnInspectedDataChanged(p_oldData) {
-        if (this._forwardInspected) { this._forwardInspected.Set(this._inspectedData); }
-    }
+    _OnInspectableItemBumped(p_selection, p_data) {
 
-    _OnInspectedDataReleased() {
-        this.inspectedData = null;
-    }
-
-    /**
-     * @description Set data to be inspected
-     * @param {data.core.DataBlock} p_data 
-     */
-    Inspect(p_data = null) {
-        //TODO : Handle multiple selection editing
-        this.inspectedData = p_data;
     }
 
     //#endregion
@@ -291,11 +226,6 @@ class Editor extends ui.views.View {
     _OnDisplayLost() {
         super._OnDisplayLost();
         this._shortcuts.Disable();
-    }
-
-    _CleanUp() {
-        if (this._forwardInspected) { this._forwardInspected.Clear(); }
-        super._CleanUp();
     }
 
 }

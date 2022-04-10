@@ -20,6 +20,7 @@ module.exports = {
     InspectorView: require(`./lib/inspector-view`),
     InspectorWidgetGroup: require(`./lib/inspector-widget-group`),
     InspectorWidget: require(`./lib/inspector-widget`),
+    ListInspectorView: require(`./lib/list-inspector-view`),
 
     editors: require(`./lib/editors`),
     helpers: require(`./lib/helpers`),

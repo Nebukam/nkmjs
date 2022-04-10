@@ -48,13 +48,23 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         this._allowMultiple = true;
         this._clearing = false;
-        this._isRequestingRange = false;
+        this._isInsideRange = false;
         this._cachedRangeStart = -1;
         this._currentRangeContent = null;
 
         INPUT.Watch(SIGNAL.SELECTION_MODIFIER_CHANGED, this._OnSelectionModifierChanged, this);
 
+        this._delayedBump = com.DelayedCall(this._Bind(this._AutoBump));
+
     }
+
+    get autoBump() { return this._autoBump; }
+    set autoBump(p_value) {
+        this._autoBump = p_value;
+        this._delayedBump.Cancel();
+    }
+
+    get stack() { return this._stack; }
 
     get isEmpty() { return this._stack.isEmpty; }
 
@@ -107,7 +117,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
     Add(p_data, p_dataIndex = -1, p_mode = null) {
 
 
-        if (this._isRequestingRange) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
+        if (this._isInsideRange) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
 
         if (p_data == null) { return false; }
         if (p_mode == null) { p_mode = INPUT.selectionModifier; }
@@ -122,7 +132,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
 
         let pushRange = false;
-        if (p_mode == INPUT.SELECT_MODIFIER_RANGE && !this._isRequestingRange
+        if (p_mode == INPUT.SELECT_MODIFIER_RANGE && !this._isInsideRange
             && this._allowMultiple && p_dataIndex >= 0 && this._cachedRangeStart != -1) {
             p_mode = INPUT.SELECT_MODIFIER_ADD;
             pushRange = true;
@@ -139,6 +149,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
         this.Broadcast(com.SIGNAL.ITEM_ADDED, p_data);
 
         if (pushRange) { this.AddRange(-1, p_dataIndex, false); }
+        if (this._autoBump) { this._delayedBump.Schedule(); }
 
         return true;
 
@@ -149,6 +160,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
         if (this._currentRangeContent) {
             // Clear active selection range
 
+            this._isInsideRange = true;
             while (this._currentRangeContent.length != 0) {
                 let
                     data = this._currentRangeContent.pop(),
@@ -157,6 +169,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
                 this.Broadcast(SIGNAL.SELECTION_REMOVE_REQUEST, this, index, data);
                 this.Remove(data);
             }
+            this._isInsideRange = false;
         }
 
         if (p_to == -1) { return false; }
@@ -175,11 +188,11 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         if (p_to < p_from) { let swap = p_to; p_to = p_from; p_from = swap; }
 
-        this._isRequestingRange = true;
+        this._isInsideRange = true;
         for (var i = p_from; i <= p_to; i++) {
             this.Broadcast(SIGNAL.SELECTION_ADD_REQUEST, this, i);
         }
-        this._isRequestingRange = false;
+        this._isInsideRange = false;
         return true;
 
     }
@@ -236,6 +249,11 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         return true;
 
+    }
+
+    _AutoBump() {
+        if (this._stack.isEmpty) { return; }
+        this.Broadcast(com.SIGNAL.ITEM_BUMPED, this._stack.last);
     }
 
     _OnDataReleased(p_data) { this.Remove(p_data); }

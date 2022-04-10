@@ -1,7 +1,9 @@
 'use strict';
 
+const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const collections = require(`@nkmjs/collections`);
+const { isInstanceOf } = require("@nkmjs/utils/lib/checks");
 
 /**
  * @typedef SignalDataSelected
@@ -25,15 +27,16 @@ const collections = require(`@nkmjs/collections`);
  * @signal SignalDataSelected Broadcasted right after a data item has been added to the selection
  * @signal SignalDataUnselected Broadcasted right after a data item has been removed from the selection
  */
-class EditorSelection extends com.pool.DisposableObjectEx {
+class InspectionDataList extends com.pool.DisposableObjectEx {
     constructor(p_editor) {
         super();
         this._editor = p_editor;
     }
 
     // ----> Init
-
+    s
     _Init() {
+
         super._Init();
 
         this._stack = new collections.List();
@@ -41,6 +44,13 @@ class EditorSelection extends com.pool.DisposableObjectEx {
         this._itemObserver.Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this);
 
         this._clearing = false;
+        this._dataSet = new Set();
+
+        this._sharedItemTypeNeedRefresh = true;
+        this._sharedItemType = null;
+        this._lastItemType = null;
+
+        this._delayedUpdate = com.DelayedCall(this._Bind(this.CommitUpdate));
 
         this._preProcessData = null;
 
@@ -48,10 +58,21 @@ class EditorSelection extends com.pool.DisposableObjectEx {
 
     get editor() { return this._editor; }
 
+    get stack() { return this._stack; }
+
     get preProcessData() { return this._preProcessData; }
     set preProcessData(p_value) { this._preProcessData = p_value; }
 
     get isEmpty() { return this._stack.isEmpty; }
+    get lastType() { return this._lastItemType; }
+
+    get isSingle() { return this._stack._array.length == 1; }
+    get isList() { return this._stack._array.length > 1; }
+
+    get sharedType() {
+        if (this._sharedItemTypeNeedRefresh) { this._FindSharedDataType(); }
+        return this._sharedItemType;
+    }
 
     /**
      * @description TODO
@@ -81,7 +102,14 @@ class EditorSelection extends com.pool.DisposableObjectEx {
         this._dataSet.add(p_data);
         this._itemObserver.Observe(p_data);
 
-        this.Broadcast(com.SIGNAL.ITEM_ADDED, p_data);
+        this._lastItemType = p_data.constructor;
+
+        if (!this._sharedItemType || !u.isInstanceOf(p_data, this._sharedItemType)) {
+            this._sharedItemTypeNeedRefresh = true;
+        }
+
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_data);
+        this._delayedUpdate.Schedule();
 
         return true;
 
@@ -98,11 +126,17 @@ class EditorSelection extends com.pool.DisposableObjectEx {
 
         if (!this._dataSet.has(p_data)) { return false; }
 
-        this._stack.RemoveAt(p_data);
+        this._stack.Remove(p_data);
         this._dataSet.delete(p_data);
         this._itemObserver.Unobserve(p_data);
 
-        this.Broadcast(com.SIGNAL.ITEM_REMOVED, p_data);
+        this._lastItemType = this._stack.isEmpty ? null : this._stack.last.constructor;
+        if (!this._sharedItemType || !u.isInstanceOf(p_data, this._sharedItemType)) {
+            this._sharedItemTypeNeedRefresh = true;
+        }
+
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_data);
+        this._delayedUpdate.Schedule();
 
         return true;
 
@@ -124,9 +158,91 @@ class EditorSelection extends com.pool.DisposableObjectEx {
             this._stack._array.push(this._stack._array.splice(index, 1)[0]);
         }
 
-        this.Broadcast(com.SIGNAL.ITEM_BUMPED, p_data);
+        this._lastItemType = p_data.constructor;
+        this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, p_data);
 
         return true;
+
+    }
+
+    DelayedUpdate() { this._delayedUpdate.Schedule(); }
+
+    CommitUpdate() {
+        if (this._stack.isEmpty) {
+            this.Broadcast(com.SIGNAL.UPDATED, this);
+            return;
+        }
+        let data = this._stack.last;
+        this._lastItemType = data.constructor;
+        this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, data);
+        this.Broadcast(com.SIGNAL.UPDATED, this);
+    }
+
+    Set(p_data, p_preProcess = true) {
+        if (p_preProcess && this._preProcessData) { p_data = this._preProcessData(p_data); }
+
+        if (!p_data) {
+            this.Clear();
+            return;
+        }
+
+        for (let i = 0; i < this._stack._array.length; i++) {
+            let item = this._stack._array[i];
+            if (item != p_data) {
+                if (this.Remove(item, false)) { i--; }
+            }
+        }
+
+        if (this._stack.Contains(p_data)) { this.Bump(p_data, false); }
+        else { this.Add(p_data, false); }
+    }
+
+    _FindSharedDataType() {
+
+        this._sharedItemTypeNeedRefresh = false;
+
+        let count = this._stack.count;
+
+        if (count == 0) {
+            this._sharedItemType = null;
+            return;
+        } else if (count == 1) {
+            this._sharedItemType = this._lastItemType;
+            return;
+        }
+
+        //First pass : find the smallest distance.
+        let
+            shortestDist = Number.MAX_SAFE_INTEGER,
+            shortestType = null;
+
+        for (let i = 0; i < count; i++) {
+            let type = this._stack._array[i].constructor,
+                dist = com.NFOS.GetDistanceToObject(type);
+            if (dist < shortestDist) {
+                shortestDist = dist;
+                shortestType = type;
+            }
+        }
+
+        if (!shortestType) {
+            this._sharedItemType = null;
+            return;
+        }
+
+        //Second pass : make sure every other type is an instanceof that smallest type.
+
+        for (let i = 0; i < count; i++) {
+            let type = this._stack._array[i].constructor,
+                dist = com.NFOS.GetSignedDistance(shortestType);
+
+            if (isNaN(dist)) {
+                this._sharedItemType = null;
+                return;
+            }
+        }
+
+        this._sharedItemType = shortestType;
 
     }
 
@@ -153,4 +269,4 @@ class EditorSelection extends com.pool.DisposableObjectEx {
 
 }
 
-module.exports = EditorSelection;
+module.exports = InspectionDataList;

@@ -308,14 +308,18 @@ class Widget extends DisplayObjectContainer {
         }
 
         let sStack = new WidgetSelection();
-        sStack
-            .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this)
-            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
 
         sStack.allowMultiple = p_allowMultiple;
         sStack.persistentData = p_persistentData;
 
+        this._selectionObserver = new com.signals.Observer();
+        this._selectionObserver.ObserveOnly(sStack);
+
+        this._dataSelectionObserver = new com.signals.Observer();
+        this._dataSelectionObserver.ObserveOnly(sStack.data);
+
         if (p_requestHandlers) {
+
             this.__selRequestHandlers = p_requestHandlers;
             sStack.data
                 .Watch(SIGNAL.SELECTION_ADD_REQUEST,
@@ -333,28 +337,13 @@ class Widget extends DisplayObjectContainer {
                         if (!this.__selRequestHandlers.count) { return; }
                         p_dataSelection._SetAllCount(u.CallPrepend(this.__selRequestHandlers.count, p_dataSelection));
                     }, this);
+
         }
 
         this._selectionStack = sStack;
         return sStack;
 
     }
-
-    /**
-     * @access protected
-     * @description TODO
-     * @param {ui.core.Widget} p_item 
-     * @group Interactivity.Selection
-     */
-    _OnSelectionStackAdd(p_item) { }
-
-    /**
-     * @access protected
-     * @description TODO
-     * @param {ui.core.Widget} p_item 
-     * @group Interactivity.Selection
-     */
-    _OnSelectionStackRemove(p_item) { }
 
     //#endregion
 

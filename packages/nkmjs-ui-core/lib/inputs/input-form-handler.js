@@ -21,9 +21,9 @@ class InputFormHandler extends com.pool.DisposableObjectEx {
 
         this._handlerObserver = new com.signals.Observer();
         this._handlerObserver
-            .Watch(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
-            .Watch(com.SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
-            .Watch(SIGNAL.INPUT_ERROR, this._OnInputError, this);
+            .Hook(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit, this)
+            .Hook(com.SIGNAL.VALUE_CHANGED, this._OnInputChanged, this)
+            .Hook(SIGNAL.INPUT_ERROR, this._OnInputError, this);
     }
 
     get inputValues() { return this._inputValues; }

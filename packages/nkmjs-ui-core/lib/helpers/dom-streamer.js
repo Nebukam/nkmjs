@@ -207,7 +207,9 @@ class DOMStreamer extends DisposableHTMLElement {
 
     SetFocusIndex(p_index = -1, p_reset = true) {
         this.focusIndex = p_index;
-        if (p_index != -1) { this.ScrollToIndex(p_index); }
+        if (p_index != -1) {
+            if (p_reset) { this.ScrollToIndex(p_index); }
+        }
         else if (p_reset) { this.ScrollToIndex(0); }
     }
 
