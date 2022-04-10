@@ -211,8 +211,9 @@ class ActionStack extends com.pool.DisposableObjectEx {
     }
 
     GoToAction(p_action) {
-        let index = p_action == this.constructor.ROOT ? 0 : this._stack.indexOf(p_action);
-        if (index == -1) { return; }
+        
+        let index = this._stack.indexOf(p_action);
+        if (index == -1 && p_action != this.constructor.ROOT ) { return; }
 
         let diff = this._headIndex - index;
         if (diff > 0) {

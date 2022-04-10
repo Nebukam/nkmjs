@@ -109,12 +109,27 @@ class DisposableCanvasElement extends HTMLCanvasElement {
         this._deltaSum = 0;
 
         this._delayedRedraw = com.DelayedCall(this._Bind(this.Draw), this.constructor.__resizeDelay);
+        
+        this._visible = true;
 
     }
 
     _PostInit() {
         this._ctx = this._GetContext();
     }
+
+    /**
+     * @description TODO
+     * @type {boolean}
+     * @group Rendering
+     */
+     get visible() { return this._visible; }
+     set visible(p_value) {
+         if (this._visible === p_value) { return; }
+         this._visible = p_value;
+         if (!p_value) { this.style.display = `none`; }
+         else { this.style.removeProperty(`display`); }
+     }
 
     //#region Canvas logic
 
@@ -367,6 +382,8 @@ class DisposableCanvasElement extends HTMLCanvasElement {
      */
     _CleanUp() {
 
+        this.visible = true;
+        
         this._signals.Clear();
         this._isFirstPaint = true;
 

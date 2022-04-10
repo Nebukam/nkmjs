@@ -122,10 +122,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
         if (p_data == null) { return false; }
         if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
-        if (this._dataSet.has(p_data)) {
-            //if (p_mode == INPUT.SELECT_MODIFIER_TOGGLE) { this.Remove(p_data); } 
-            return false;
-        }
+        if (this._dataSet.has(p_data)) { return false; }
 
         // Clear selection multiple selection isn't allowed.
         if (!this._allowMultiple || p_mode == INPUT.SELECT_MODIFIER_NONE) { this.Clear(); }
@@ -238,6 +235,12 @@ class DataSelection extends com.pool.DisposableObjectEx {
     Bump(p_data) {
 
         if (!this._dataSet.has(p_data)) { return false; }
+
+        let dataIndex = this._indices.At(this._stack.IndexOf(p_data));
+        if (INPUT.selectionModifier == INPUT.SELECT_MODIFIER_RANGE && !this._isInsideRange
+            && this._allowMultiple && dataIndex >= 0 && this._cachedRangeStart != -1) {
+            return this.AddRange(-1, dataIndex, false);
+        }
 
         if (p_data != this._stack.last) {
             let index = this._stack.IndexOf(p_data);

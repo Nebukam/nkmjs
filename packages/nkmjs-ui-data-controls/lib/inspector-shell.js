@@ -199,7 +199,7 @@ class InspectorShell extends ControlView {
         super._Render();
         if (this._inspectorPlaceholderClass) {
             this._inspectorPlaceholder = this.Attach(this._inspectorPlaceholderClass, `placeholder`);
-            this._inspectorPlaceholder.visible = false;
+            //this._inspectorPlaceholder.visible = false;
         }
     }
 

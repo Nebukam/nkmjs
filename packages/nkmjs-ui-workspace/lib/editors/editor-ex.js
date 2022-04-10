@@ -85,6 +85,8 @@ class EditorEx extends uidatacontrols.Editor {
 
         }
 
+        this._inspectorShell.RequestDisplay();
+
         this.forwardData
             .To(this._header)
             .To(this._viewport)

@@ -54,6 +54,11 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
 
         this._preProcessData = null;
 
+        this._resetAnalyticsFn = null;
+        this._itemAnalyticFn = null;
+        this._analyticsNeedRecompute = true;
+        this._analytics = {};
+
     }
 
     get editor() { return this._editor; }
@@ -108,6 +113,8 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
             this._sharedItemTypeNeedRefresh = true;
         }
 
+        this._analyticsNeedRecompute = true;
+
         this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_data);
         this._delayedUpdate.Schedule();
 
@@ -134,6 +141,8 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         if (!this._sharedItemType || !u.isInstanceOf(p_data, this._sharedItemType)) {
             this._sharedItemTypeNeedRefresh = true;
         }
+
+        this._analyticsNeedRecompute = true;
 
         this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_data);
         this._delayedUpdate.Schedule();
@@ -165,7 +174,10 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
 
     }
 
-    DelayedUpdate() { this._delayedUpdate.Schedule(); }
+    DelayedUpdate(p_dirtyAnalytics = false) {
+        if (p_dirtyAnalytics) { this.DirtyAnalytics(); }
+        this._delayedUpdate.Schedule();
+    }
 
     CommitUpdate() {
         if (this._stack.isEmpty) {
@@ -266,6 +278,43 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         while (!this._stack.isEmpty) { this.Remove(this._stack.last, false); }
         this._clearing = false;
     }
+
+    //#region Analytics
+
+    DirtyAnalytics() {
+        this._analyticsNeedRecompute = true;
+    }
+
+    SetupAnalytics(p_baseline, p_itemAnalyticFn, p_analyticsResetFn = null) {
+        this.itemAnalyticFn = p_itemAnalyticFn;
+        this._resetAnalyticsFn = p_analyticsResetFn;
+        this._analytics = p_baseline || {};
+    }
+
+    get itemAnalyticFn() { return this._itemAnalyticFn; }
+    set itemAnalyticFn(p_value) {
+        this._itemAnalyticFn = p_value;
+        this._analyticsNeedRecompute = true;
+    }
+
+    set analytics(p_value) { this._analytics = p_value || {}; }
+    get analytics() {
+        if (this._analyticsNeedRecompute) {
+            if (this._resetAnalyticsFn) { u.Call(this._resetAnalyticsFn, this._analytics); }
+            if (this._itemAnalyticFn) {
+                let n = this._stack.count;
+                this._analytics.total = n;
+                for (let i = 0; i < n; i++) {
+                    u.Call(this._itemAnalyticFn, this._stack.At(i), this._analytics, i, n);
+                }
+            }
+            this._analyticsNeedRecompute = false;
+        }
+
+        return this._analytics;
+    }
+
+    //#endregion
 
 }
 
