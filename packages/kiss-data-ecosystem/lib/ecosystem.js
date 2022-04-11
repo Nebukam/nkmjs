@@ -25,7 +25,7 @@ class Ecosystem extends data.DataBlock {
 
         super._Init();
 
-        this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister));
+        this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister), this);
         this._dependencies = {}; //Kits are registered here
 
         let fields = com.Rent(FieldManager);
@@ -53,6 +53,8 @@ class Ecosystem extends data.DataBlock {
         this._catalog.expanded = true;
         this._catalog.name = `Ecosystem`;
 
+        //TODO : Refactor command creation using config object instead
+        
         this._cmdCleanCatalog = this._commands.Create(
             EcosystemCleanCatalog, null,
             `%ICON%/icon_clean.svg`);

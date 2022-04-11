@@ -34,6 +34,8 @@ class ModelManager extends EcosystemPart {
 
         //Commands
 
+        //TODO : Refactor command creation using config object instead
+
         this._cmdModelCreate = this._commands.Create(
             ModelCreate, null,
             `%ICON%/icon_create.svg`);

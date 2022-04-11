@@ -247,10 +247,12 @@ class KEYBOARD extends com.helpers.SingletonEx {
     }
 
     _Register(p_keystroke) {
+        console.log(`_Register : ${p_keystroke}`);
         this._keystrokes.Add(p_keystroke);
     }
 
     _Unregister(p_keystroke) {
+        console.log(`_Unregister : ${p_keystroke}`);
         this._keystrokes.Remove(p_keystroke);
     }
 

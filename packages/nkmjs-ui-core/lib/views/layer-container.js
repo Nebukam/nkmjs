@@ -64,14 +64,14 @@ class LayerContainer extends Layer {
         let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Remove(layer);
-            layer.classList.remove( this._layerClassName, __className_topLayer, __className_subLayer);
+            layer.classList.remove(this._layerClassName, __className_topLayer, __className_subLayer);
             layer.Unwatch(SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }
     }
 
     _OnLayerDisplayRequested(p_layer) {
-        if(!u.isInstanceOf(p_layer, Layer)){
+        if (!u.isInstanceOf(p_layer, Layer)) {
             throw new Error(`WTF`);
         }
         p_layer.BringToFront();

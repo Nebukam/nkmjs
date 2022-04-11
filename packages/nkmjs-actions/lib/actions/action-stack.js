@@ -22,6 +22,10 @@ class ActionStack extends com.pool.DisposableObjectEx {
 
     _Init() {
         super._Init();
+
+        this._Bind(this.Undo);
+        this._Bind(this.Redo);
+
         this._maxCount = -1;
         this._headIndex = -1;
         this._stack = [];

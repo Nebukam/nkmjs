@@ -156,8 +156,6 @@ class DOCUMENTS extends com.helpers.SingletonEx {
 
         p_path = u.SHORT(p_path);
 
-        console.log(this._documents);
-
         for (let i = 0, n = this._documents.count; i < n; i++) {
             let doc = this._documents.At(i);
             if (this._CheckMatch(doc, p_data, p_docType, p_path)) { return doc; }

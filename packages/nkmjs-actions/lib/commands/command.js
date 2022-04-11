@@ -51,17 +51,8 @@ class Command extends com.pool.DisposableObjectEx {
         this._isEnabled = true;
         this._context = null;
         this._emitter = null;
-        this._order = 0;
         this._running = false;
         this._shortcut = null;
-    }
-
-    _PostInit() {
-        super._PostInit();
-        if (this._shortcut) {
-            this._shortcut.Watch(SIGNAL.ACTIVATED, this._OnShortcutActivated, this);
-            if(this._isEnabled){ this._shortcut.Enable(); }
-        }
     }
 
     //#region Properties
@@ -72,13 +63,6 @@ class Command extends com.pool.DisposableObjectEx {
      * @customtag read-only
      */
     get running() { return this._running; }
-
-    /**
-     * @description Display order of the command
-     * @type {boolean}
-     */
-    get order() { return this._order; }
-    set order(p_value) { this._order = p_value; }
 
     /**
      * @description Icon asset of the command
@@ -109,6 +93,14 @@ class Command extends com.pool.DisposableObjectEx {
         if (p_value) {
             p_value.Watch(com.SIGNAL.RELEASED, this._OnEmitterReleased, this);
         }
+    }
+
+    get shortcut() { return this._shortcut; }
+    set shortcut(p_value) {
+        if (this._shortcut == p_value) { return; }
+        if (this._shortcut) { this._shortcut.Unwatch(SIGNAL.ACTIVATED, this._OnShortcutActivated, this); }
+        this._shortcut = p_value;
+        if (this._shortcut) { this._shortcut.Watch(SIGNAL.ACTIVATED, this._OnShortcutActivated, this); }
     }
 
     /**
@@ -145,7 +137,6 @@ class Command extends com.pool.DisposableObjectEx {
     Enable() {
         if (this._isEnabled) { return false; }
         this._isEnabled = true;
-        if (this._shortcut) { this._shortcut.Enable(); }
         this.Broadcast(com.SIGNAL.UPDATED, this);
         this.Broadcast(SIGNAL.ENABLED, this);
         return true;
@@ -157,7 +148,6 @@ class Command extends com.pool.DisposableObjectEx {
     Disable() {
         if (!this._isEnabled) { return false; }
         this._isEnabled = false;
-        if (this._shortcut) { this._shortcut.Disable(); }
         this.Broadcast(com.SIGNAL.UPDATED, this);
         this.Broadcast(SIGNAL.DISABLED, this);
         return true;
@@ -177,6 +167,7 @@ class Command extends com.pool.DisposableObjectEx {
         let sanitizedValue = this._SanitizeContext(p_value);
         if (this._context === sanitizedValue) { return; }
         this._context = sanitizedValue;
+        if (this._running) { this._contextBefore = sanitizedValue; }
         this._OnContextChanged();
         this.enabled = this.CanExecute(this._context);
     }
@@ -212,30 +203,48 @@ class Command extends com.pool.DisposableObjectEx {
      * @param {*} p_context 
      */
     Execute(p_context = null) {
-        if (this._running) { console.log(`FUCK`);return; }
 
-        let enabledBefore = this._isEnabled;
+        if (this._running || !this._isEnabled) { return false; }
 
-        if(!enabledBefore){ return; }
+        this._contextBefore = this._context;
 
-        let contextBefore = this._context;
-        
-        //TODO : Make this cleaner ;_;
+        if (p_context != null) {
 
-        if (!p_context) { p_context = this._FetchContext(); } // Try to dynamically fetch context value if provided value is empty
-        if (!p_context) { p_context = this._context; } // Try to fallback to an existing value
+            p_context = this._SanitizeContext(p_context);
 
-        this.context = p_context;
+        } else {
 
-        if (!this._isEnabled) {
-            // Got disabled by context update
-            this.context = contextBefore;
-            this.enabled = enabledBefore;
-            return; 
+            if (!p_context) { p_context = this._FetchContext(); } // Try to dynamically fetch context value if provided value is empty
+            if (!p_context) { p_context = this._context; } // Try to fallback to an existing value
+
         }
+
+        if (!this.CanExecute(p_context)) { return false; }
+
+        this._context = p_context;
 
         this._Start();
         this._InternalExecute();
+
+        return true;
+    }
+
+    ExecuteWith(p_context = null) {
+
+        if (this._running) { return false; }
+
+        p_context = this._SanitizeContext(p_context);
+
+        if (!this.CanExecute(p_context)) { return false; }
+
+        this._contextBefore = this._context;
+        this._context = p_context;
+
+        this._Start();
+        this._InternalExecute();
+
+        return true;
+
     }
 
     /**
@@ -313,12 +322,18 @@ class Command extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     _End() {
+
         this._running = false;
         this.Broadcast(COMMAND_SIGNAL.END, this);
         this.Broadcast(com.SIGNAL.UPDATED, this);
+
+        this._context = this._contextBefore;
+
     }
 
-    _OnShortcutActivated() {
+    _OnShortcutActivated(p_shortcut) {
+        if (!this._isEnabled) { return; }
+        p_shortcut.Consume();
         this.Execute();
     }
 
@@ -331,8 +346,9 @@ class Command extends com.pool.DisposableObjectEx {
         this._icon = ``;
         this._isEnabled = true;
         this.context = null;
+        this._contextBefore = null;
         this.emitter = null;
-        this.order = 0;
+        this.shortcut = null;
         super._CleanUp();
     }
 

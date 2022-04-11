@@ -1,5 +1,8 @@
 'use strict';
 
+const u = require("@nkmjs/utils");
+
+const Keystroke = require(`../keystroke`);
 const KeystrokeEx = require(`../keystroke-ex`);
 
 /**
@@ -29,6 +32,16 @@ class Shortcuts {
         if (!this._isEnabled) { return; }
         this._isEnabled = false;
         this._Toggle(false);
+    }
+
+    Create(p_keys, p_trigger = null, p_silent = false) {
+        if (!p_trigger) {
+            if (u.isString(p_keys)) { return this._Register(Keystroke.CreateFromString(p_keys, null, p_silent)); }
+            else { return this._Register(Keystroke.CreateFromKeyCodes(p_keys, null, p_silent)); }
+        } else {
+            if (u.isString(p_keys)) { return this._Register(KeystrokeEx.CreateFromString(p_keys, p_trigger, p_silent)); }
+            else { return this._Register(KeystrokeEx.CreateFromKeyCodes(p_keys, p_trigger, p_silent)); }
+        }
     }
 
     CreateFromString(p_string, p_trigger) {

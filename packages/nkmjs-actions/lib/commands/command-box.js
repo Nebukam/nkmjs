@@ -6,6 +6,8 @@ const collections = require(`@nkmjs/collections`);
 
 const Command = require(`./command`);
 
+const NULLOPTS = {};
+
 /**
  * A CommandBox is meant to be a repo of commands available for a single context.
  * It is also a mean to centralize command instances and have them act as "soft singleton" if needed,
@@ -16,9 +18,10 @@ const Command = require(`./command`);
  * @memberof actions
  */
 class CommandBox {
-    constructor(p_onRegister = null) {
+    constructor(p_onRegister = null, p_emitter = null) {
 
         this._context = null;
+        this._emitter = p_emitter;
 
         this._commandList = new collections.List(0);
         this._commandHooks = new collections.Dictionary();
@@ -41,14 +44,16 @@ class CommandBox {
      */
     get context() { return this._context; }
     set context(p_value) {
+        if (this._context == p_value) { return; }
         this._context = p_value;
-        let cmdList = this._commandList;
-        for (let i = 0, n = cmdList.count; i < n; i++) {
-            cmdList.At(i).context = p_value;
-        }
+        this._commandList.ForEach((cmd) => { cmd.context = p_value; });
     }
 
     //#endregion
+
+    RefreshAvailability() {
+        this._commandList.ForEach((cmd) => { cmd.enabled = cmd.CanExecute(this._context) });
+    }
 
     //#region Command management
 
@@ -61,10 +66,17 @@ class CommandBox {
      * Events are either generic Command events (COMMAND_SIGNAL.xxx) or custom ones, if any.
      * @returns {actions.Command} The newly created Command.
      */
-    Create(p_class, p_name = null, p_icon = null, p_hooks = null) {
-        let cmd = Command.Rent(p_class, p_name, p_icon);
-        this._Register(cmd, p_hooks);
+    Create(p_class, p_options = null) {
+
+        if (!p_options) { p_options = NULLOPTS; }
+
+        let cmd = u.isFunc(p_class) ? Command.Rent(p_class, p_options.name || null, p_options.icon || null) : p_class;
+        this._Register(cmd, p_options.hooks || null);
+
+        cmd.shortcut = p_options.shortcut || null;
+
         return cmd;
+
     }
 
     /**
@@ -82,6 +94,7 @@ class CommandBox {
                     p_cmd.Watch(hook.evt, hook.fn, (hook.thisArg || null));
                 }
             }
+            p_cmd.emitter = this._emitter;
             this._OnCommandRegistered(p_cmd);
         }
     }

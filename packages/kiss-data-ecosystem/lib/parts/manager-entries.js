@@ -29,6 +29,8 @@ class EntryManager extends EcosystemPart {
 
         //Commands
 
+        //TODO : Refactor command creation using config object instead
+
         this._cmdEntryCreateChild = this._commands.Create(
             EntryCreateChild, null,
             `%ICON%/icon_cmd_createchildentry.svg`);

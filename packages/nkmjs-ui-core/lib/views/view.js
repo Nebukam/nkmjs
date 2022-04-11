@@ -18,15 +18,26 @@ const WidgetOrientable = require(`../widget-orientable`);
 * @memberof ui.core.views
 */
 class View extends WidgetOrientable {
-    constructor() { super(); }
+    constructor() {
+        super();
+        // Auto assign focusArea if required & not set.
+        if (this._shortcutsRequireFocus &&
+            this._shortcuts &&
+            !this._focusArea) {
+            this.focusArea = this;
+        }
+    }
 
-    static __useResizeCallback = true;    
+    static __useResizeCallback = true;
     static __default_iState = null;
+    static __default_shortcutRequireFocus = false;
 
     _Init() {
         super._Init();
 
-        this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister));
+        this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister), this);
+        this._shortcuts = null;
+        this._shortcutsRequireFocus = this.constructor.__default_shortcutRequireFocus;
 
         this._isDisplayed = false;
         this._flags.Add(this, FLAGS.SHOWN);
@@ -37,9 +48,26 @@ class View extends WidgetOrientable {
     _Style() {
         return style.Extends({
             ':host': {
-                '@':[`fade-in`]
+                '@': [`fade-in`]
             }
         }, super._Style());
+    }
+
+    get shortcuts() {
+        if (!this._shortcuts) { this._shortcuts = new actions.helpers.Shortcuts(); }
+        return this._shortcuts;
+    }
+
+    _FocusGain() {
+        super._FocusGain();
+        if (!this._shortcuts) { return; }
+        if (this._shortcutsRequireFocus && this._isDisplayed) { this._shortcuts.Enable(); }
+    }
+
+    _FocusLost() {
+        super._FocusLost();
+        if (!this._shortcuts) { return; }
+        if (this._shortcutsRequireFocus) { this._shortcuts.Disable(); }
     }
 
     get displayed() { return this._isDisplayed; }
@@ -66,6 +94,7 @@ class View extends WidgetOrientable {
         if (this._isDisplayed) { return false; }
         this._isDisplayed = true;
         this._flags.Set(FLAGS.SHOWN, true);
+        if (this._shortcuts) { if (!this._shortcutsRequireFocus || this._isFocused) { this._shortcuts.Enable(); } }
         this._OnDisplayGain();
         this.Broadcast(SIGNAL.DISPLAY_GAIN, this);
         return true;
@@ -84,6 +113,7 @@ class View extends WidgetOrientable {
         if (!this._isDisplayed) { return false; }
         this._isDisplayed = false;
         this._flags.Set(FLAGS.SHOWN, false);
+        if (this._shortcuts) { this._shortcuts.Disable(); }
         this._OnDisplayLost();
         this.Broadcast(SIGNAL.DISPLAY_LOST, this);
         return true;

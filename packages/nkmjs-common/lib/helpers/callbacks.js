@@ -68,19 +68,19 @@ class Callbacks {
      * @description Promise-looking OnSuccess add.
      * @param {function} p_fn 
      */
-    then(p_fn){ this.onSuccess = p_fn; return this; }
+    then(p_fn) { this.onSuccess = p_fn; return this; }
 
     /**
      * @description Promise-looking OnError add.
      * @param {function} p_fn 
      */
-    catch(p_fn){ this.onError = p_fn; return this; }
+    catch(p_fn) { this.onError = p_fn; return this; }
 
     /**
      * @description Promise-looking OnAny add.
      * @param {function} p_fn 
      */
-    finally(p_fn){ this.onAny = p_fn; return this; }
+    finally(p_fn) { this.onAny = p_fn; return this; }
 
     /**
      * @description Call all success handlers with provided arguments, then all 'any'
@@ -112,9 +112,7 @@ class Callbacks {
     _Dispatch(p_list, ...args) {
         if (this._dispatching) { return; }
         this._dispatching = true;
-        for (let i = 0, n = p_list.count; i < n; i++) {
-            p_list.At(i).apply(null, args);
-        }
+        p_list.ForEach((item) => { item.apply(null, args); });
         this._dispatching = false;
     }
 

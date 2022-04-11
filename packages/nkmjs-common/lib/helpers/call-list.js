@@ -43,8 +43,8 @@ class CallList {
      * @returns {common.helpers.CallList} self
      * @example calllist.Remove(foo).Remove(bar);
      */
-    Remove(p_fn) { 
-        this._list.Remove(p_fn); 
+    Remove(p_fn) {
+        this._list.Remove(p_fn);
         return this;
     }
 
@@ -55,9 +55,7 @@ class CallList {
      * @returns {common.helpers.CallList} self
      */
     Notify(...args) {
-        for (let i = 0, n = this._list.count; i < n; i++) {
-            this._list.At(i).apply(null, args);
-        }
+        this._list.ForEach((item) => { item.apply(null, args); });
         return this;
     }
 
@@ -67,8 +65,8 @@ class CallList {
      * @example //Clear the list after traversing it
      * calllist.Notify().Clear();
      */
-    Clear() { 
-        this._list.Clear(); 
+    Clear() {
+        this._list.Clear();
         return this;
     }
 

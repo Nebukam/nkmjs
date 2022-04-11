@@ -109,11 +109,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
      * @param {*} p_oldValue 
      */
     _OnCurrentValueChanged(p_oldValue) {
-
-        for (let i = 0; i < this._managed.count; i++) {
-            this._managed.At(i).currentValue = this._currentValue;
-        }
-
+        this._managed.ForEach((item) => { item.currentValue = this._currentValue }, this);
         this._delayedPreviewUpdate.Schedule();
     }
 
@@ -139,9 +135,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this._internalValidateChangedValue();
         this.Broadcast(com.SIGNAL.VALUE_CHANGED, this, this._changedValue);
 
-        for (let i = 0; i < this._managed.count; i++) {
-            this._managed.At(i).changedValue = this._changedValue;
-        }
+        this._managed.ForEach((item) => { item.changedValue = this._changedValue }, this);
 
         if (this._updatePreviewOnChange) { this._delayedPreviewUpdate.Schedule(); }
         if (this._submitOnChange) { this.SubmitValue(); }
@@ -166,9 +160,13 @@ class InputHandler extends com.pool.DisposableObjectEx {
             ? this._manager._externalSanitizationStack
             : this._externalSanitizationStack;
 
+        stack.ForEach((fn) => { p_value = u.CallPrepend(fn, p_value); });
+
+        /*
         for (let i = 0, n = stack.count; i < n; i++) {
             p_value = u.CallPrepend(stack.At(i), p_value);
         }
+        */
 
         return p_value;
     }
@@ -189,13 +187,11 @@ class InputHandler extends com.pool.DisposableObjectEx {
 
         this.Broadcast(SIGNAL.VALUE_INPUT_CHANGED, this, this._inputValue);
 
-        for (let i = 0; i < this._managed.count; i++) {
-            this._managed.At(i).inputValue = this._inputValue;
-        }
+        this._managed.ForEach((item) => { item.inputValue = this._inputValue; });
 
         if (this._changeOnInput) { this.changedValue = this._inputValue; }
         if (this._updatePreviewOnInput) { this._delayedPreviewUpdate.Schedule(); }
-        
+
     }
 
     /**
@@ -224,6 +220,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
             : this._externalValidationStack;
 
         //Check external validation callbacks
+        /*
         for (let i = 0, n = stack.count; i < n; i++) {
 
             let obj = stack.At(i),
@@ -231,6 +228,11 @@ class InputHandler extends com.pool.DisposableObjectEx {
             if (result) { this._PushError(result); }
 
         }
+        */
+        this._managed.ForEach((fn) => {
+            let result = u.CallPrepend(fn, cValue);
+            if (result) { this._PushError(result); }
+        }, this);
 
         this._invalidInput = (this._inputErrors.length > 0);
         if (this._invalidInput) { this._internalOnInputError(); }
@@ -483,12 +485,12 @@ class InputHandler extends com.pool.DisposableObjectEx {
     }
 
     _OnManagedInputValueChanged(p_managed, p_value) {
-        if(!this._managedUpdateInput){ return; }
+        if (!this._managedUpdateInput) { return; }
         this.inputValue = p_value;
     }
 
     _OnManagedValueChanged(p_managed, p_value) {
-        if(!this._managedUpdateChange){ return; }
+        if (!this._managedUpdateChange) { return; }
         this.changedValue = p_value;
     }
 

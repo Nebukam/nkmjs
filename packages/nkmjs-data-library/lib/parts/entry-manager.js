@@ -83,7 +83,7 @@ class EntryManager extends EcosystemPart {
 
     }
 
-    GetLibrary(p_model){ return this._libraryMap.Get(p_model); }
+    GetLibrary(p_model) { return this._libraryMap.Get(p_model); }
 
     /**
      * @description TODO
@@ -107,14 +107,10 @@ class EntryManager extends EcosystemPart {
 
     }
 
-    Clear(){
+    Clear() {
         super.Clear();
         
-        for(let i = 0, n = this._libraryList.count; i < n; i++){
-            let library = this._libraryList.At(i);
-            library.Release();
-        }
-        
+        this._libraryList.ForEach((lib) => { lib.Release(); });
         this._libraryList.Clear();
         this._libraryMap.Clear();
     }

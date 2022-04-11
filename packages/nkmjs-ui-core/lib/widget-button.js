@@ -303,7 +303,6 @@ class WidgetButton extends Widget {
             this._commandObserver.Observe(p_command);
             this._OnCommandUpdated(p_command);
             this.htitle = p_command.name;
-            this.order = p_command.order;
         } else {
             this.order = 0;
         }

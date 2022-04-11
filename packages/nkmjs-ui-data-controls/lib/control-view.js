@@ -24,6 +24,7 @@ class ControlView extends ui.views.View {
     static __clearBuilderOnRelease = false;
     static __controls = null;
     static __useMetaObserver = false;
+    static __default_shortcutRequireFocus = true;
 
     _Init() {
         super._Init();
@@ -159,6 +160,20 @@ class ControlView extends ui.views.View {
      */
     _OnContextChanged(p_oldValue) {
 
+    }
+
+    //#endregion
+
+    //#region Display
+
+    _OnDisplayGain() {
+        super._OnDisplayGain();
+        this._builder.DisplayGranted();
+    }
+
+    _OnDisplayLost() {
+        super._OnDisplayLost();
+        this._builder.DisplayLost();
     }
 
     //#endregion

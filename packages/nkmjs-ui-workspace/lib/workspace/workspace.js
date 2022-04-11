@@ -250,6 +250,7 @@ class Workspace extends ui.views.View {
         if (this._cells.isEmpty) {
             isEmpty = true;
         } else {
+            /*
             for (let i = 0, n = this._cells.count; i < n; i++) {
                 let cell = this._cells.At(i);
                 if (!cell.isEmpty) {
@@ -259,6 +260,17 @@ class Workspace extends ui.views.View {
                     cell.visible = false;
                 }
             }
+            */
+
+            this._cells.ForEach((cell) => {
+                if (!cell.isEmpty) {
+                    isEmpty = false;
+                    cell.visible = true;
+                } else {
+                    cell.visible = false;
+                }
+            });
+
         }
 
         if (this._isEmpty === isEmpty) { return; }

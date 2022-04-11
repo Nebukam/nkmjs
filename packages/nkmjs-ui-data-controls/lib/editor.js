@@ -70,7 +70,6 @@ class Editor extends ui.views.View {
 
         //TODO : Find a way to invalidate action stacks // <--- WTF ?
         this._actionStack = new actions.ActionStack();
-        this._shortcuts = new actions.helpers.Shortcuts();
 
         this._flags.Add(this, com.FLAGS.WARNING);
 
@@ -89,7 +88,13 @@ class Editor extends ui.views.View {
 
         this.forwardData.To(this._commands, { mapping: `context` });
 
+        this._iDataCommands = new actions.CommandBox(this._Bind(this._OnInspectedDataCmdRegister), this);
+        this._iDataCommands.context = this._inspectedData;
+        this._iDataRefresh = com.DelayedCall(this._iDataCommands.RefreshAvailability.bind(this._iDataCommands));
+
     }
+
+    _OnInspectedDataCmdRegister(p_cmd) { }
 
     _PostInit() {
 
@@ -159,15 +164,15 @@ class Editor extends ui.views.View {
     get inspectedData() { return this._inspectedData; }
 
     _OnInspectableItemAdded(p_selection, p_data) {
-
+        this._iDataRefresh.Schedule();
     }
 
     _OnInspectableItemRemoved(p_selection, p_data) {
-
+        this._iDataRefresh.Schedule();
     }
 
     _OnInspectableItemBumped(p_selection, p_data) {
-
+        this._iDataRefresh.Schedule();
     }
 
     //#endregion
@@ -209,24 +214,6 @@ class Editor extends ui.views.View {
     Redo() { this._actionStack.Redo(); }
 
     //#endregion
-
-    /**
-     * @description Callback when the view handler granted display to another view.
-     * @customtag override-me
-     */
-    _OnDisplayGain() {
-        super._OnDisplayGain();
-        this._shortcuts.Enable();
-    }
-
-    /**
-    * @description Callback when the view handler granted display to another view.
-    * @customtag override-me
-    */
-    _OnDisplayLost() {
-        super._OnDisplayLost();
-        this._shortcuts.Disable();
-    }
 
 }
 

@@ -12,6 +12,9 @@ const CONTEXT = require(`./context`);
 const ControlView = require(`./control-view`);
 const InspectionDataHandler = require(`./helpers/inspection-data-handler`);
 
+const __singleConf = { ignoreData: true };
+const __multiConf = { ignoreData: true };
+
 /**
  * @description An InspectorShell is designed to work with an Editor.
  * It works around a given editor InspectableSelection, and attempts to fetch an inspector bound to
@@ -141,17 +144,13 @@ class InspectorShell extends ControlView {
         this._useListInspector = isListInspector;
 
         if (this._inspector) {
-            this.forwardContext.Remove(this._inspector);
-            this._inspector.Release();
+            this._builder.Remove(this._inspector);
             this._inspector = null;
-            //TODO : Display placeholder inspector
         }
 
         if (inspectorClass) {
-            this._inspector = this.Attach(inspectorClass, `inspector`);
-            this._inspector.context = this._context;
+            this._inspector = this._builder.Add(inspectorClass, `inspector`, __singleConf);
             this._inspector.Watch(ui.SIGNAL.DISPLAY_REQUESTED, this._OnInspectorRequestDisplay, this);
-            this.forwardContext.To(this._inspector);
         }
 
     }
@@ -206,16 +205,6 @@ class InspectorShell extends ControlView {
     //#region View
 
     _OnInspectorRequestDisplay() { this.RequestDisplay(); }
-
-    _OnDisplayGain() {
-        super._OnDisplayGain();
-        if (this._inspector) { this._inspector.DisplayGranted(); }
-    }
-
-    _OnDisplayLost() {
-        super._OnDisplayLost();
-        if (this._inspector) { this._inspector.DisplayLost(); }
-    }
 
     //#endregion
 

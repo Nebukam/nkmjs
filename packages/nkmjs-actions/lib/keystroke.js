@@ -81,6 +81,7 @@ class Keystroke extends com.pool.DisposableObjectEx {
         this._active = false;
         this._enabled = false;
         this._silent = false;
+        this._consumed = false;
     }
 
     get keys() { return this._keys; }
@@ -133,8 +134,9 @@ class Keystroke extends com.pool.DisposableObjectEx {
     Activate() {
         if (this._active) { return false; }
         this._active = true;
+        this._consumed = false;
         this.Broadcast(SIGNAL.ACTIVATED, this);
-        return true;
+        return this._consumed;
     }
 
     Deactivate() {
@@ -144,9 +146,20 @@ class Keystroke extends com.pool.DisposableObjectEx {
         return true;
     }
 
+    get consumed(){ return this._consumed; }
+
+    Consume() {
+        if (!this._active) { return; }
+        this._consumed = true;
+    }
+
     _CleanUp() {
         this._keys.length = 0;
         super._CleanUp();
+    }
+
+    toString() {
+        return `${this._keys.join(`+`)}`;
     }
 
 }

@@ -16,6 +16,8 @@ class ControlBuilder {
 
         this._owner = p_owner;
 
+        this._isDisplayed = false;
+
         this._context = null;
         this._editor = null;
         this._host = p_owner;
@@ -46,7 +48,7 @@ class ControlBuilder {
         this._editor = p_value;
         for (let i = 0, n = this._controls.length; i < n; i++) {
             let ctrl = this._controls[i];
-            if(`editor` in ctrl){ this._controls[i].editor = p_value; }
+            if (`editor` in ctrl) { this._controls[i].editor = p_value; }
         }
 
         this.RefreshConditionals();
@@ -70,7 +72,13 @@ class ControlBuilder {
 
         this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_value) : p_value;
         for (let i = 0, n = this._controls.length; i < n; i++) {
-            this._controls[i].data = this._data;
+            let
+                ctrl = this._controls[i],
+                opts = this._configMap.get(ctrl);
+
+            if (opts && opts.ignoreData) { continue; }
+
+            ctrl.data = this._data;
         }
 
         this.RefreshConditionals();
@@ -83,8 +91,15 @@ class ControlBuilder {
         this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_data) : p_data;
 
         for (let i = 0, n = this._controls.length; i < n; i++) {
-            let control = this._controls[i];
+            let
+                control = this._controls[i],
+                opts = this._configMap.get(control);
+
+            control.editor = this._editor;
             control.context = p_context;
+
+            if (opts && opts.ignoreData) { continue; }
+
             control.data = this._data;
         }
 
@@ -139,13 +154,17 @@ class ControlBuilder {
 
         control.editor = this._editor;
         control.context = this._context;
-        control.data = this._data;
+
+        if (p_config && !p_config.ignoreData) { control.data = this._data; }
+        else { control.data = this._data; }
 
         if (conditional) {
             if (!this._conditionalControls) { this._conditionalControls = []; }
             this._conditionalControls.push(control);
             this._RefreshConditions(control, p_config);
         }
+
+        if (this._isDisplayed && `DisplayGranted` in control) { control.DisplayGranted(); }
 
         return control;
 
@@ -211,6 +230,27 @@ class ControlBuilder {
         if (this._conditionalControls) {
             this._conditionalControls.length = 0;
             this._conditionalControls = null;
+        }
+    }
+
+    DisplayGranted() {
+        if (this._isDisplayed) { return; }
+        this._isDisplayed = true;
+
+        for (let i = 0, n = this._controls.length; i < n; i++) {
+            let control = this._controls[i];
+            if (`DisplayGranted` in control) { control.DisplayGranted(); }
+        }
+
+    }
+
+    DisplayLost() {
+        if (!this._isDisplayed) { return; }
+        this._isDisplayed = false;
+
+        for (let i = 0, n = this._controls.length; i < n; i++) {
+            let control = this._controls[i];
+            if (`DisplayLost` in control) { control.DisplayLost(); }
         }
     }
 

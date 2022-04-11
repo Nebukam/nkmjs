@@ -54,10 +54,9 @@ class KeystrokeEx extends Keystroke {
 
         if (!super.Activate()) { return false; }
         if (!this._trigger) { return true; }
+        let result = u.Call(this._trigger);
 
-        u.Call(this._trigger);
-
-        return true;
+        return this._consumed || result;
 
     }
 

@@ -203,6 +203,14 @@ class OptionsDistribute {
 
         if (!callList) { return; }
 
+        calllist.ForEach((item) => {
+            if (u.isString(item)) { // Consider string property setters
+                p_target[item] = p_optionValue;
+            } else {
+                item(p_optionValue, p_others);
+            }
+        });
+        /*
         for (let i = 0, n = callList.count; i < n; i++) {
             let fn = callList.At(i);
             if (u.isString(fn)) { // Consider string property setters
@@ -211,7 +219,7 @@ class OptionsDistribute {
                 fn(p_optionValue, p_others);
             }
         }
-
+        */
         if (p_wrapUp && this._wrapUpFn) { this._wrapUpFn(p_others, null, this._defaults); }
 
     }
