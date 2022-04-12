@@ -155,7 +155,7 @@ class ControlBuilder {
         control.editor = this._editor;
         control.context = this._context;
 
-        if (p_config && !p_config.ignoreData) { control.data = this._data; }
+        if (p_config) { if (!p_config.ignoreData) { control.data = this._data; } }
         else { control.data = this._data; }
 
         if (conditional) {

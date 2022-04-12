@@ -170,9 +170,10 @@ class InspectorShell extends ControlView {
             }
         }
 
-        if (this._useListInspector) { this._inspector.data = p_sel; }
-        else {
+        if (this._useListInspector) {
             this._inspector.dataType = p_sel.sharedType;
+            this._inspector.data = p_sel;
+        } else {
             this._inspector.data = p_sel.lastItem;
         }
 
