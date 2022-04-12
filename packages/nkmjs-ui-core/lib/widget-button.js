@@ -52,11 +52,10 @@ class WidgetButton extends Widget {
 
         this._Bind(this._OnRippleAnimationEnd);
 
-        this._alwaysDisplayCommand = (this._alwaysDisplayCommand || false);
-
         this._command = null;
-        this._isCommandTrigger = true;
-        this._isCommandContext = false;
+        this._isCmdTrigger = true;
+        this._isCmdEmitter = false;
+        this._isCmdContext = false;
         this._isToggled = false;
 
         this._commandObserver = new com.signals.Observer();
@@ -83,9 +82,9 @@ class WidgetButton extends Widget {
             .To(`trigger`)
             .To(`toggle`, null, null)
             .To(`request`)
-            .To(`isCommandTrigger`)
-            .To(`isCommandContext`)
-            .To(`alwaysVisible`, `alwaysDisplayCommand`)
+            .To(`isCmdTrigger`)
+            .To(`isCmdEmitter`)
+            .To(`isCmdContext`)
             .To(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
             .To(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
             .To(`size`)
@@ -171,29 +170,24 @@ class WidgetButton extends Widget {
      * @type {boolean}
      * @group Command
      */
-    get isCommandTrigger() { return this._isCommandTrigger; }
-    set isCommandTrigger(p_value) { this._isCommandTrigger = p_value; }
+    get isCmdEmitter() { return this._isCmdEmitter; }
+    set isCmdEmitter(p_value) { this._isCmdEmitter = p_value; }
 
     /**
      * @description TODO
      * @type {boolean}
      * @group Command
      */
-    get isCommandContext() { return this._isCommandContext; }
-    set isCommandContext(p_value) { this._isCommandContext = p_value; }
+    get isCmdTrigger() { return this._isCmdTrigger; }
+    set isCmdTrigger(p_value) { this._isCmdTrigger = p_value; }
 
     /**
      * @description TODO
      * @type {boolean}
      * @group Command
      */
-    get alwaysDisplayCommand() { return this._alwaysDisplayCommand; }
-    set alwaysDisplayCommand(p_value) {
-        this._alwaysDisplayCommand = p_value;
-        if (p_value && this._command) {
-            this.visible = true;
-        }
-    }
+    get isCmdContext() { return this._isCmdContext; }
+    set isCmdContext(p_value) { this._isCmdContext = p_value; }
 
     // ----> DOM
 
@@ -265,7 +259,7 @@ class WidgetButton extends Widget {
 
         if (!p_value) { return; }
 
-        this._distribute.ProcessExistingOnly(this, p_value, null, false, false);
+        this._distribute.UpdateNoDefaults(this, p_value, null, false, false);
 
     }
 
@@ -302,7 +296,7 @@ class WidgetButton extends Widget {
         if (p_command) {
             this._commandObserver.Observe(p_command);
             this._OnCommandUpdated(p_command);
-            this.htitle = p_command.name;
+            this.htitle = p_command.displayInfos.title;
         } else {
             this.order = 0;
         }
@@ -316,7 +310,7 @@ class WidgetButton extends Widget {
      * @group Command
      */
     _OnCommandUpdated(p_command) {
-        this.visible = this._alwaysDisplayCommand ? true : p_command.isEnabled;
+        this.disabled = !p_command.isEnabled;
     }
 
     /**
@@ -355,9 +349,9 @@ class WidgetButton extends Widget {
 
         // ----> Command
 
-        if (this._isCommandTrigger && this._command) {
-            this._command.emitter = this;
-            if (this._isCommandContext) { this._command.Execute(this); }
+        if (this._command && this._isCmdTrigger) {
+            if (this._isCmdEmitter) { this._command.emitter = this; }
+            if (this._isCmdContext) { this._command.Execute(this); }
             else { this._command.Execute(); }
         }
 
@@ -450,8 +444,9 @@ class WidgetButton extends Widget {
         this.htitle = ``;
 
         this.command = null;
-        this._isCommandTrigger = true;
-        this._isCommandContext = false;
+        this._isCmdTrigger = true;
+        this._isCmdEmitter = false;
+        this._isCmdContext = false;
 
         this._isToggled = false;
 

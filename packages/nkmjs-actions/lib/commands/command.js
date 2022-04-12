@@ -18,16 +18,15 @@ const SIGNAL = require(`../signal`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.helper.InfosObjectEx
  * @memberof actions
  */
-class Command extends com.pool.DisposableObjectEx {
+class Command extends com.helpers.InfosObjectEx {
     constructor() { super(); }
 
     //#region Static members
 
-    static __defaultName = u.tils.CamelSplit(this.name);
-    static __defaultIcon = `command`;
+    static __displayIcon = `command`;
 
     /**
      * @description TODO
@@ -35,10 +34,9 @@ class Command extends com.pool.DisposableObjectEx {
      * @param {string} [p_name] 
      * @param {string} [p_icon] 
      */
-    static Rent(p_class, p_name = null, p_icon = null) {
+    static Rent(p_class, p_options) {
         let cmd = com.Rent(p_class);
-        cmd.name = u.isEmpty(p_name) ? p_class.__defaultName : p_name;
-        cmd.icon = u.isEmpty(p_icon) ? p_class.__defaultIcon : p_icon;
+        cmd.displayInfos = p_options;
         return cmd;
     }
 
@@ -46,8 +44,9 @@ class Command extends com.pool.DisposableObjectEx {
 
     _Init() {
         super._Init();
-        this._icon = this.constructor.__defaultIcon;
-        this._name = this.constructor.__defaultName;
+
+        this._Bind(this.Execute);
+
         this._isEnabled = true;
         this._context = null;
         this._emitter = null;

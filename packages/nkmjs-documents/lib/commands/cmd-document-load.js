@@ -10,8 +10,8 @@ class CommandDocumentLoad extends CommandDocumentBase {
 
     static __docCmdType = CMD_TYPE.LOAD;
 
-    static __defaultName = `Load document`;
-    static __defaultIcon = `load-arrow-small`;
+    static __displayName = `Load document`;
+    static __displayIcon = `load-arrow-small`;
 
     _Init() {
         super._Init();

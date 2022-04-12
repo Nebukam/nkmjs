@@ -10,8 +10,8 @@ class CommandDocumentRelease extends CommandDocumentBase {
 
     static __docCmdType = CMD_TYPE.RELEASE;
 
-    static __defaultName = `Release document`;
-    static __defaultIcon = `remove`;
+    static __displayName = `Release document`;
+    static __displayIcon = `remove`;
 
     _Init() {
         super._Init();

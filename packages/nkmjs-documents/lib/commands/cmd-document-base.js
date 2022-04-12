@@ -13,8 +13,8 @@ const CMD_TYPE = require(`./cmd-type`);
 class CommandDocumentBase extends actions.Command {
     constructor() { super(); }
 
-    static __defaultName = `New document`;
-    static __defaultIcon = `new`;
+    static __displayName = `New document`;
+    static __displayIcon = `new`;
 
     static __docCmdType = null;
     static __docType = null;
@@ -22,11 +22,7 @@ class CommandDocumentBase extends actions.Command {
     static __fileInfos = { name: `File type`, extensions: ['.file'] };
 
     static Rent(p_options, p_registerAsDefault = false) {
-        let newCmd = actions.Command.Rent(
-            this,
-            p_options.name || null,
-            p_options.icon || null);
-
+        let newCmd = actions.Command.Rent(this, p_options);
         let docType = p_options.docType || com.BINDINGS.Get(CONTEXT.DOCUMENT, p_options.dataType, null);
 
         if (p_registerAsDefault && !docType) {

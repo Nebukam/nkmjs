@@ -152,7 +152,7 @@ class OptionsDistribute {
      * @param {object} p_options 
      * @param {object} p_altOptions an alternative set of options to forward to handlers (used when appending options)
      */
-    ProcessExistingOnly(p_target, p_options, p_altOptions = null, p_callBegin = true, p_callWrapUp = true) {
+    UpdateNoDefaults(p_target, p_options, p_altOptions = null, p_callBegin = true, p_callWrapUp = true) {
 
         if (p_callBegin && this._beginFn) { this._beginFn(p_options, p_altOptions, this._defaults); }
 
@@ -192,7 +192,7 @@ class OptionsDistribute {
      * @param {*} p_others An alternative set of options.
      * @param {boolean} p_wrapUp whether or not to wrap-up option call 
      */
-    ProcessSingle(p_target, p_optionID, p_optionValue, p_others = null, p_wrapUp = false) {
+    UpdateSingle(p_target, p_optionID, p_optionValue, p_others = null, p_wrapUp = false) {
 
         let callList = this._hooks.Get(p_optionID);
 

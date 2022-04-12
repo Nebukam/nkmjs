@@ -118,7 +118,7 @@ class ControlView extends ui.views.View {
      */
     set altOptions(p_value) {
         if (!p_value) { return; }
-        this._distribute.ProcessExistingOnly(this, p_value, null, false, false);
+        this._distribute.UpdateNoDefaults(this, p_value, null, false, false);
     }
 
     /**

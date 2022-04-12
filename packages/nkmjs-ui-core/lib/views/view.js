@@ -33,9 +33,12 @@ class View extends WidgetOrientable {
     static __default_shortcutRequireFocus = false;
 
     _Init() {
+        
         super._Init();
 
         this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister), this);
+        this.CmdGet = this._commands.Get.bind(this._commands);
+
         this._shortcuts = null;
         this._shortcutsRequireFocus = this.constructor.__default_shortcutRequireFocus;
 
@@ -43,7 +46,10 @@ class View extends WidgetOrientable {
         this._flags.Add(this, FLAGS.SHOWN);
 
         this.forwardData.To(this._commands, { mapping: `context` });
+
     }
+
+    CmdGet(p_key){ /* Replaced by this._commands.Get */}
 
     _Style() {
         return style.Extends({

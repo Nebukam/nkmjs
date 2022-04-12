@@ -10,8 +10,8 @@ class CommandDocumentSave extends CommandDocumentBase {
 
     static __docCmdType = CMD_TYPE.SAVE;
 
-    static __defaultName = `Save document`;
-    static __defaultIcon = `save`;
+    static __displayName = `Save document`;
+    static __displayIcon = `save`;
 
     _Init() {
         super._Init();

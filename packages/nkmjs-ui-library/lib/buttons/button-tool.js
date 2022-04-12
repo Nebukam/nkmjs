@@ -52,7 +52,7 @@ class ToolButton extends ui.WidgetButton {
 
     _OnCommandUpdated(p_command) {
         super._OnCommandUpdated(p_command);
-        this.icon = p_command.icon;
+        this.icon = p_command.displayInfos.icon;
     }
 
     _Render() {

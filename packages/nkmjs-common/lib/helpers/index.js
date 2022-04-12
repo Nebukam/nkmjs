@@ -19,4 +19,7 @@ module.exports = {
     StateBase: require(`./state-base`),
     StateMachine: require(`./state-machine`),
 
+    InfosObject: require(`./infos-object`),
+    InfosObjectEx: require(`./infos-object-ex`),
+
 }

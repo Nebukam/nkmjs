@@ -27,6 +27,8 @@ class CommandBox {
         this._commandHooks = new collections.Dictionary();
         this._onRegisterCmd = p_onRegister;
 
+        this._idMap = new Map();
+
     }
 
     //#region Properties
@@ -70,13 +72,20 @@ class CommandBox {
 
         if (!p_options) { p_options = NULLOPTS; }
 
-        let cmd = u.isFunc(p_class) ? Command.Rent(p_class, p_options.name || null, p_options.icon || null) : p_class;
+        let cmd = u.isFunc(p_class) ? Command.Rent(p_class, p_options) : p_class;
         this._Register(cmd, p_options.hooks || null);
 
         cmd.shortcut = p_options.shortcut || null;
 
+        this._idMap.set(p_options.key || cmd.constructor.name, cmd);
+
         return cmd;
 
+    }
+
+    Get(p_key) {
+        if (!u.isString(p_key)) { if (u.isFunc(p_key) && u.isInstanceOf(p_key, Command)) { p_key = p_key.name; } }
+        return this._idMap.get(p_key);
     }
 
     /**
@@ -123,6 +132,7 @@ class CommandBox {
                     p_cmd.Unwatch(hook.evt, hook.fn, (hook.thisArg || null));
                 }
             }
+            //TODO : Retrieve creation options to clear up idMap
             this._OnCommandRemoved(p_cmd);
         }
     }

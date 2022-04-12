@@ -1,5 +1,6 @@
 'use strict';
 
+const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const ACTION_STATE = require(`./action-state`);
 
@@ -7,18 +8,15 @@ const ACTION_STATE = require(`./action-state`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObject
+ * @augments common.helper.InfosObject
  * @memberof actions
  */
-class Action extends com.pool.DisposableObject {
+class Action extends com.helpers.InfosObject {
     constructor() { super(); }
 
     static get mergeable() { return false; }
 
     static __displayIcon = `action`;
-    static __displayName = this.name;
-    static __displayTitle = this.name;
-
     static __deepCleanFn = null;
 
     // ----> Init
@@ -28,28 +26,11 @@ class Action extends com.pool.DisposableObject {
         this._operation = null;
         this._undone = false;
         this._stack = null;
-
-        this._displayInfos = {};
-        this.displayInfos = null;
-        this._icon = null;
     }
 
     get stack() { return this._stack; }
     set stack(p_value) { 
         this._stack = p_value; 
-    }
-
-    get displayInfos() { return this._displayInfos; }
-    set displayInfos(p_value) {
-        if (!p_value) {
-            this._displayInfos.icon = this.constructor.__displayIcon;
-            this._displayInfos.name = this.constructor.__displayName;
-            this._displayInfos.title = this.constructor.__displayTitle;
-        } else {
-            this._displayInfos.icon = p_value.icon || this.constructor.__displayIcon;
-            this._displayInfos.name = p_value.name || this.constructor.__displayName;
-            this._displayInfos.title = p_value.title || this.constructor.__displayTitle;
-        }
     }
 
     _UpdateDisplayInfos(){
@@ -141,9 +122,6 @@ class Action extends com.pool.DisposableObject {
     }
 
     _CleanUp() {
-
-        this._icon = null;
-        this.displayInfos = null;
 
         if (!this._undone) {
             if (this.constructor.__deepCleanFn != null) {

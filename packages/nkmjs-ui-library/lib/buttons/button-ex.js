@@ -74,8 +74,8 @@ class ButtonEx extends ui.WidgetButton {
 
     _OnCommandUpdated(p_command){
         super._OnCommandUpdated(p_command);
-        this.label = p_command.name;
-        this.icon = p_command.icon;
+        this.label = p_command.displayInfos.name;
+        this.icon = p_command.displayInfos.icon;
     }
 
     _Render() {

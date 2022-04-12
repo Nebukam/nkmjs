@@ -20,7 +20,6 @@ class BreadcrumbItem extends ui.WidgetButton {
             .To(ui.IDS.ICON, null, ``)
             .To(ui.IDS.LABEL, null, ``);
 
-        this._alwaysDisplayCommand = true;
         this._icon = null;
         this._label = null;
     }

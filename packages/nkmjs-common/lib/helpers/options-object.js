@@ -97,7 +97,7 @@ class OptionsObject extends DisposableObjectEx {
         if(p_id in this._options && this._options[p_id] === p_value){ return; }
 
         //process value first so if one already exists, it can be fetched as 'previous value'
-        this._distribute.ProcessSingle(this, p_id, p_value, this._options, true);
+        this._distribute.UpdateSingle(this, p_id, p_value, this._options, true);
 
         if(this.constructor.__broadcastUpdate){
             let oldValue = this._options[p_id];

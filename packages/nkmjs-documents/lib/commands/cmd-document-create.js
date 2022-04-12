@@ -9,8 +9,8 @@ class CommandDocumentCreate extends CommandDocumentBase {
 
     static __docCmdType = CMD_TYPE.CREATE;
 
-    static __defaultName = `New document`;
-    static __defaultIcon = `new`;
+    static __displayName = `New document`;
+    static __displayIcon = `new`;
 
     _InternalExecute() {
 
