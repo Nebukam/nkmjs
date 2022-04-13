@@ -17,6 +17,11 @@ const tags = require(`../tags`);
 class CatalogItem extends com.helpers.OptionsObject {
     constructor() { super(); }
 
+    static __distribute = com.helpers.OptionsObject.__distribute.Ext({ wrapUpFn: `_OnOptionsUpdated` })
+        .To(com.IDS.DATA)
+        .To(IDS.BOUND)
+        .To(`tags`, `tagsetter`);
+
     // ----> Init
 
     _Init() {
@@ -30,13 +35,7 @@ class CatalogItem extends com.helpers.OptionsObject {
         this._isFirstUpdate = true;
 
         this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._OnUpdate));
-
-        this._distribute.wrapUpFn = this._Bind(this._OnOptionsUpdated);
-        this._distribute
-            .To(com.IDS.DATA)
-            .To(IDS.BOUND)
-            .To(`tags`, `tagsetter`);
-
+        
     }
 
     //#region Tag management

@@ -25,6 +25,11 @@ class Overlay extends Layer {
     static __default_overlayContentClass = null;
     static __default_contentPlacement = null;
     static __content_context = CONTEXT.CONTENT;
+    static __distribute = com.helpers.OptionsDistribute.Ext(null,
+        { beginFn: `_OnOptionsWillUpdate`, wrapUpFn: `_OnOptionsUpdated` })
+        .To(`orientation`)
+        .To(`placement`, `contentPlacement`, null, `__default_contentPlacement`)
+        .To(`flavor`, `contentFlavor`);
 
     _Init() {
 
@@ -41,14 +46,6 @@ class Overlay extends Layer {
         this._closeBg.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this._CloseRequest));
 
         this._options = null;
-        this._distribute = new com.helpers.OptionsDistribute(
-            this._Bind(this._OnOptionsUpdated),
-            this._Bind(this._OnOptionsWillUpdate));
-
-        this._distribute
-            .To(`orientation`)
-            .To(`placement`, `contentPlacement`, this.constructor.__default_contentPlacement)
-            .To(`flavor`, `contentFlavor`);
 
     }
 
@@ -59,7 +56,7 @@ class Overlay extends Layer {
             ':host': {
                 'transform': 'translateX(-100%)', // YES this is a terrible hack
                 'transition': 'transform 0s linear',
-                'z-index':'10', // Modals are 100.
+                'z-index': '10', // Modals are 100.
             },
             '.bg': {
                 '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box
@@ -81,7 +78,7 @@ class Overlay extends Layer {
     set options(p_value) {
         if (this._options == p_value || !p_value) { return; }
         this._options = p_value;
-        this._distribute.Update(this, p_value);
+        this.constructor.__distribute.Update(this, p_value);
     }
 
     /**
@@ -222,8 +219,8 @@ class Overlay extends Layer {
     _CloseRequest() {
         if (`_CloseRequest` in this._content) { this._content._CloseRequest(); }
     }
-    
-    _OnDisplayGain() { 
+
+    _OnDisplayGain() {
         super._OnDisplayGain();
         this.style.setProperty(`transform`, `translateX(0%)`);
         this._bg.style.setProperty(`transform`, `translateY(0%)`);

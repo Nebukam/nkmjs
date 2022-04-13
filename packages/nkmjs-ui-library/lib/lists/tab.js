@@ -15,6 +15,20 @@ class Tab extends ui.WidgetItem {
         css: [`@/buttons/tab.css`]
     }, ui.WidgetItem, ['css']);
 
+    static __distribute = ui.WidgetItem.__distribute.Ext()
+        .To(ui.IDS.NAME, `label`)
+        .To(ui.IDS.ICON)
+        .To(ui.IDS.STATIC, (p_target, p_value) => {
+            p_target._isStaticTab = p_value;
+            if (p_target._closeBtn.element) {
+                if (p_value) {
+                    p_target._closeBtn.element.style.display = `none`;
+                } else {
+                    delete p_target._closeBtn.element.style.display;
+                }
+            }
+        });
+
     // ----> Init
 
     _Init() {
@@ -29,20 +43,6 @@ class Tab extends ui.WidgetItem {
         this._closeBtn.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE, this._CloseRequest);
 
         this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
-
-        this._distribute
-            .To(ui.IDS.NAME, `label`)
-            .To(ui.IDS.ICON)
-            .To(ui.IDS.STATIC, (p_value) => {
-                this._isStaticTab = p_value;
-                if (this._closeBtn.element) {
-                    if (p_value) {
-                        this._closeBtn.element.style.display = `none`;
-                    } else {
-                        delete this._closeBtn.element.style.display;
-                    }
-                }
-            });
 
     }
 

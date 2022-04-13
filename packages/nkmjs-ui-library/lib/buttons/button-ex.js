@@ -18,13 +18,14 @@ class ButtonEx extends ui.WidgetButton {
         css: [`@/buttons/button-ex.css`]
     }, ui.WidgetButton, ['css']);
 
+    static __distribute = ui.WidgetButton.__distribute.Ext()
+        .To(ui.IDS.ICON, null, ``)
+        .To(ui.IDS.LABEL, null, ``)
+        .To(`uppercaseText`)
+        .Move(`command`);
+
     _Init() {
         super._Init();
-
-        this._distribute
-            .To(ui.IDS.ICON, null, ``)
-            .To(ui.IDS.LABEL, null, ``)
-            .To(`uppercaseText`);
 
         this._icon = null;
         this._label = null;
@@ -72,7 +73,7 @@ class ButtonEx extends ui.WidgetButton {
      */
     set label(p_value) { this._flags.Set(ui.FLAGS.NO_LABEL, !this._label.Set(p_value)); }
 
-    _OnCommandUpdated(p_command){
+    _OnCommandUpdated(p_command) {
         super._OnCommandUpdated(p_command);
         this.label = p_command.displayInfos.name;
         this.icon = p_command.displayInfos.icon;

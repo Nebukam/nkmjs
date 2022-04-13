@@ -20,7 +20,11 @@ class DialogForm extends dialog.DialogForm {
      * @description TODO
      * @type {string}
      */
-    static __default_flavor = null;
+    static __defaultFlavor = null;
+
+    static __distribute = dialog.DialogForm.__distribute.Ext()
+        .To(ui.IDS.ICON, null, ``)
+        .To(ui.IDS.VARIANT);
 
     _Init() {
         super._Init();
@@ -31,15 +35,11 @@ class DialogForm extends dialog.DialogForm {
         this._body = null;
         this._footer = null;
         this._title = null;
-        this._icon = null;       
-
-        this._distribute.To(ui.IDS.ICON, null, ``);
-        this._distribute.To(ui.IDS.VARIANT);
-
+        this._icon = null;
     }
 
     // ----> DOM
-    
+
 
     _Style() {
 
@@ -67,8 +67,8 @@ class DialogForm extends dialog.DialogForm {
             },
             '.body': {
                 'min-height': '0',
-                'overflow-y':`auto`,
-                'overflow-x':`hidden`,
+                'overflow-y': `auto`,
+                'overflow-x': `hidden`,
                 flex: `1 1 auto`
             }
 
@@ -101,16 +101,16 @@ class DialogForm extends dialog.DialogForm {
     get icon() { return this._icon; }
     set icon(p_icon) { this._icon.Set(p_icon); }
 
-    _OnOptionsUpdated(p_options, p_altOptions, p_defaults){
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
         super._OnOptionsUpdated(p_options, p_altOptions, p_defaults);
-        if(!p_options.icon){
+        if (!p_options.icon) {
             this._icon.Set((this.flavor || ``));
         }
     }
 
     _Clear() {
         super._Clear();
-        
+
     }
 
 }

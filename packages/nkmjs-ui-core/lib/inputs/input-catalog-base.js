@@ -24,7 +24,11 @@ class InputCatalogBase extends InputBase {
         css: [`@/inputs/field.css`]
     }, InputBase, ['css']);
 
+    static __distribute = InputBase.__distribute.Ext()
+        .To(`itemKey`, `_itemKey`, null);
+
     _Init() {
+
         super._Init();
 
         this._catalogHandler = new data.catalogs.CatalogHandler();
@@ -42,9 +46,6 @@ class InputCatalogBase extends InputBase {
 
         this._pointer._wheelFn = this._Bind(this._OnWheel);
         this._itemKey = null;
-
-        this._distribute
-            .To(`itemKey`, `_itemKey`, null);
 
     }
 

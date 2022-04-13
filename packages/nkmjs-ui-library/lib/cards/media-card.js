@@ -27,10 +27,8 @@ class MediaCard extends BaseCard {
         css: [`@/cards/media-card.css`]
     }, BaseCard, ['css']);
 
-    _Init() {
-        super._Init();
-        this._distribute.To(`media`);
-    }
+    static __distribute = BaseCard.__distribute.Ext()
+        .To(`media`);
 
     // ----> DOM
 

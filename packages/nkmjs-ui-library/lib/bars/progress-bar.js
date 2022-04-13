@@ -8,6 +8,10 @@ class ProgressBar extends ui.DisplayObject {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+        .To(`hideWhenComplete`)
+        .To(ui.IDS.SIZE)
+        .To(ui.IDS.FLAVOR);
 
     _Init() {
         super._Init();
@@ -18,22 +22,13 @@ class ProgressBar extends ui.DisplayObject {
         this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
-        this._distribute = new com.helpers.OptionsDistribute();
-        this._distribute
-            .To(`hideWhenComplete`)
-            .To(ui.IDS.SIZE)
-            .To(ui.IDS.FLAVOR);
-
     }
 
     /**
      * @description TODO
      * @type {object}
      */
-    set options(p_value) {
-        if (!p_value) { return; }
-        this._distribute.Update(this, p_value);
-    }
+    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
 
     set hideWhenComplete(p_value) { this._hideWhenComplete = p_value; }
     set size(p_value) { this._sizeEnum.Set(p_value); }

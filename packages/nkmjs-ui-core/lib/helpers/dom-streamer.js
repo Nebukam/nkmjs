@@ -31,6 +31,10 @@ class DOMStreamer extends DisposableHTMLElement {
 
     static __useResizeCallback = true;
     static __usePaintCallback = true;
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+        .To(`owner`)
+        .To(`host`)
+        .To(`layout`);
 
     _Init() {
         super._Init();
@@ -42,11 +46,6 @@ class DOMStreamer extends DisposableHTMLElement {
         this._indicesMap = {};
 
         this._options = {};
-        this._distribute = new com.helpers.OptionsDistribute();
-        this._distribute
-            .To(`owner`)
-            .To(`host`)
-            .To(`layout`);
 
         this._linePaddingBottom = 1;
         this._releaseClearedItems = true;
@@ -142,7 +141,7 @@ class DOMStreamer extends DisposableHTMLElement {
     get options() { return this._options; }
     set options(p_options) {
         this._options = p_options;
-        this._distribute.Update(this, p_options);
+        this.constructor.__distribute.Update(this, p_options);
     }
 
     get owner() { return this._owner; }

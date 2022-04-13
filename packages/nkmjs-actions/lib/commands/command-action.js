@@ -23,7 +23,7 @@ let _COMMAND_ACTION = null;
 class CommandAction extends Command {
     constructor() { super(); }
 
-    static __default_actionClass = null;
+    static get __defaultActionClass(){ return null; };
 
     /**
      * @description TODO
@@ -47,7 +47,7 @@ class CommandAction extends Command {
 
     _Init() {
         super._Init();
-        this._actionClass = this.constructor.__default_actionClass;
+        this._actionClass = this.constructor.__defaultActionClass;
     }
 
     /**

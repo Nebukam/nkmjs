@@ -23,6 +23,13 @@ class ControlWidget extends ui.Widget {
 
     static __clearBuilderOnRelease = false;
     static __useMetaObserver = false;
+    static __distribute = com.helpers.OptionsDistribute.Ext(null,
+        { beginFn: `_OnOptionsWillUpdate` })
+        .To(`htitle`)
+        .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
+        .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
+        .To(`editor`)
+        .To(`data`);
 
     _Init() {
         super._Init();
@@ -41,18 +48,7 @@ class ControlWidget extends ui.Widget {
 
         this._contextObserver = new com.signals.Observer();
 
-        this._distribute = new com.helpers.OptionsDistribute(
-            null,
-            this._Bind(this._OnOptionsWillUpdate));
-
         this._editor = null;
-
-        this._distribute
-            .To(`htitle`)
-            .To(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
-            .To(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
-            .To(`editor`)
-            .To(`data`);
 
         this.forwardData.To(this._builder);
 
@@ -92,19 +88,13 @@ class ControlWidget extends ui.Widget {
      * @description TODO
      * @type {object}
      */
-    set options(p_value) {
-        if (!p_value) { return; }
-        this._distribute.Update(this, p_value);
-    }
+    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
 
     /**
      * @description TODO
      * @type {object}
      */
-    set altOptions(p_value) {
-        if (!p_value) { return; }
-        this._distribute.UpdateNoDefaults(this, p_value, null, false, false);
-    }
+    set altOptions(p_value) { this.constructor.__distribute.UpdateNoDefaults(this, p_value, null, false, false); }
 
     /**
      * @access protected

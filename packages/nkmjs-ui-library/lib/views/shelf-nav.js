@@ -28,7 +28,7 @@ class ShelfNav extends ui.WidgetBar {
 
     // ----> Init
 
-    static __default_orientation = ui.FLAGS.VERTICAL;
+    static __defaultOrientation = ui.FLAGS.VERTICAL;
 
     _Init() {
 
@@ -127,10 +127,10 @@ class ShelfNav extends ui.WidgetBar {
         this._toolbar._defaultWidgetClass = buttons.Tool;
 
         this._orientation.AddManaged(this._toolbar._orientation);
-        this._toolbar.orientation = this.constructor.__default_orientation;
+        this._toolbar.orientation = this.constructor.__defaultOrientation;
 
         this._sizeEnum.AddManaged(this._toolbar._sizeEnum);
-        this._toolbar.size = this.constructor.__default_size;
+        this._toolbar.size = this.constructor.__defaultSize;
 
         this._wrapper = this._body;
 

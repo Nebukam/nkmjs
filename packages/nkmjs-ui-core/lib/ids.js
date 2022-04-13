@@ -221,6 +221,14 @@ class IDS {
      */
     static TRIGGER = `trigger`;
 
+    /**
+   * @description TODO
+   * @type {string}
+   * @customtag read-only
+   * @group Common
+   */
+     static CMD = `command`;
+
 }
 
 module.exports = IDS;

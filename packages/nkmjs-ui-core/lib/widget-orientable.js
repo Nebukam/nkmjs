@@ -33,7 +33,7 @@ class WidgetOrientable extends Widget {
      * @description TODO
      * @type {string}
      */
-    static __default_orientation = FLAGS.HORIZONTAL;
+    static __defaultOrientation = FLAGS.HORIZONTAL;
 
     _Init() {
 
@@ -50,7 +50,7 @@ class WidgetOrientable extends Widget {
 
     _PostInit() {
         super._PostInit();
-        this._orientation.Set(this.constructor.__default_orientation);
+        this._orientation.Set(this.constructor.__defaultOrientation);
     }
 
     // ----> Placement & Orientation
@@ -100,7 +100,7 @@ class WidgetOrientable extends Widget {
 
     _CleanUp() {
         super._CleanUp();
-        this._orientation.Set(this.constructor.__default_orientation);
+        this._orientation.Set(this.constructor.__defaultOrientation);
     }
 
 }

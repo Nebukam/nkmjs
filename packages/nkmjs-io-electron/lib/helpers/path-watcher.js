@@ -16,6 +16,9 @@ const SIGNAL = require(`../signal`);
 class PathWatcher extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+        .To(`path`);
+
     _Init() {
         super._Init();
 
@@ -32,13 +35,9 @@ class PathWatcher extends com.pool.DisposableObjectEx {
         this._watcher = null;
         this._enabled = false;
 
-        this._distribute = new com.helpers.OptionsDistribute();
-        this._distribute
-            .To(`path`);
-
     }
 
-    set options(p_options) { this._distribute.Update(this, p_options); }
+    set options(p_options) { this.constructor.__distribute.Update(this, p_options); }
 
     get path() { return this._path; }
     set path(p_value) {

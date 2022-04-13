@@ -18,13 +18,13 @@ const ResourceWatcher = require(`./resource-watcher`);
 class TempResourceWatcher extends ResourceWatcher {
     constructor() { super(); }
 
+    static __distribute = ResourceWatcher.__distribute.Ext()
+        .To(`rscOptions`);
+
     _Init() {
         super._Init();
         this._tempObj = null;
         this._rscOptions = null;
-
-        this._distribute
-            .To(`rscOptions`);
     }
 
     set rscOptions(p_value) { this._rscOptions = p_value; }

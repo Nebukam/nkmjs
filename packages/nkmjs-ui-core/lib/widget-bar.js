@@ -37,8 +37,16 @@ class WidgetBar extends WidgetOrientable {
 
     // ----> Init
 
-    static __default_size = FLAGS.SIZE_M;
+    static __defaultSize = FLAGS.SIZE_M;
     static __defaultWidgetClass = WidgetButton;
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+        .To(`size`, null, null, `__defaultSize`)
+        .To(`inline`)
+        .To(`stretch`)
+        .To(`defaultWidgetClass`, `_defaultWidgetClass`)
+        .To(`defaultWidgetOptions`)
+        .To(`handles`)
+        .To(`orientation`);
 
     _Init() {
 
@@ -63,22 +71,12 @@ class WidgetBar extends WidgetOrientable {
         this._sizeEnum.Add(this);
         this._sizeEnum.onFlagChanged.Add(this._Bind(this._OnSizeChanged));
 
-        this._distribute = new com.helpers.OptionsDistribute();
-        this._distribute
-            .To(`size`, null, this.constructor.__default_size)
-            .To(`inline`)
-            .To(`stretch`)
-            .To(`defaultWidgetClass`, `_defaultWidgetClass`)
-            .To(`defaultWidgetOptions`)
-            .To(`handles`)
-            .To(`orientation`);
-
         this._handleObserver = new com.signals.Observer();
         this._handleObserver.Hook(com.SIGNAL.RELEASED, this._OnHandleReleased, this);
 
     }
 
-    set options(p_value) { this._distribute.Update(this, p_value); }
+    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
 
     /**
      * @description TODO
@@ -420,7 +418,7 @@ class WidgetBar extends WidgetOrientable {
 
     _CleanUp() {
         this.Clear();
-        this._sizeEnum.Set(this.constructor.__default_size);
+        this._sizeEnum.Set(this.constructor.__defaultSize);
         super._CleanUp();
     }
 

@@ -26,34 +26,38 @@ class OptionsDistribute {
      * @param {function} [p_defaults] 
      */
     constructor(p_wrapUpFn = null, p_beginFn = null, p_defaults = null) {
-        this._hooks = new collections.DictionaryList();
+
+        this._indices = {};
+        this._hooks = []; // [ ['id','set','default'],[],[],...]
+
         this._defaults = p_defaults;
         this._beginFn = p_beginFn;
         this._wrapUpFn = p_wrapUpFn;
     }
 
-    Setup(p_obj, p_defaults = null) {
+    static Ext(p_source, p_config = null) {
 
-        if (`_OnOptionsWillUpdate` in p_obj) {
-            if (`_Bind` in p_obj) { p_obj._Bind(p_obj._OnOptionsWillUpdate); }
-            else { p_obj._OnOptionsWillUpdate = p_obj._OnOptionsWillUpdate.bind(p_obj); }
+        if (u.isFunc(p_source)) { p_source = p_source.__distribute; }
+
+        let newDistribute = new OptionsDistribute();
+
+        if (p_source) {
+            newDistribute._indices = { ...p_source._indices };
+            newDistribute._hooks = [...p_source._hooks];
+            newDistribute._beginFn = p_source._beginFn;
+            newDistribute._wrapUpFn = p_source._wrapUpFn;
         }
 
-        if (`_OnOptionsUpdated` in p_obj) {
-            if (`_Bind` in p_obj) { p_obj._Bind(p_obj._OnOptionsUpdated); }
-            else { p_obj._OnOptionsUpdated = p_obj._OnOptionsUpdated.bind(p_obj); }
+        if (p_config) {
+            newDistribute._wrapUpFn = p_config.wrapUpFn || newDistribute._wrapUpFn;
+            newDistribute._beginFn = p_config.beginFn || newDistribute._beginFn;
         }
 
-        if (p_defaults) { this._defaults = p_defaults; }
+        return newDistribute;
 
     }
 
-    /**
-     * @description Default options values
-     * @type {object}
-     */
-    set defaults(p_value) { this._defaults = p_value; }
-    get defaults() { return this._defaults; }
+    Ext(p_config = null) { return OptionsDistribute.Ext(this, p_config); }
 
     /**
      * @description A unique function to be called before the option
@@ -81,17 +85,37 @@ class OptionsDistribute {
      * with the same name as the optionID.
      * @param {*} [p_default]
      */
-    To(p_optionID, p_fn = null, p_default = undefined) {
+    To(p_optionID, p_fn = null, p_default = undefined, p_staticTargetMember = null) {
 
         if (p_fn === null) { p_fn = __direct; }
 
-        this._hooks.Set(p_optionID, p_fn);
+        let hook = null;
+        if (p_optionID in this._indices) {
+            hook = this._hooks[this._indices[p_optionID]];
+        } else {
+            hook = [p_optionID, undefined, null];
+            this._indices[p_optionID] = this._hooks.length;
+            this._hooks.push(hook);
+        }
+
+        hook[1] = p_fn;
+        hook[2] = p_staticTargetMember;
 
         if (p_default != undefined) {
             if (!this._defaults) { this._defaults = {} }
             this._defaults[p_optionID] = p_default;
         }
 
+        return this;
+    }
+
+    Move(p_optionID) {
+        if (p_optionID in this._indices) {
+            let hook = this._hooks[this._indices[p_optionID]];
+            this._hooks.splice(this._indices[p_optionID], 1);
+            this._hooks.push(hook);
+            this._hooks.forEach((h, index) => { this._indices[h[0]] = index; });
+        }
         return this;
     }
 
@@ -116,32 +140,31 @@ class OptionsDistribute {
      */
     Update(p_target, p_options, p_altOptions = null, p_callBegin = true, p_callWrapUp = true) {
 
-        if (p_callBegin && this._beginFn) { this._beginFn(p_options, p_altOptions, this._defaults); }
+        if (!p_options) { return; }
 
-        let map = this._hooks._map,
-            keys = map.keys(),
-            kn = map.size,
-            hooks;
+        if (p_callBegin) { this._Begin(p_target, p_options, p_altOptions); }
 
-        for (let k = 0; k < kn; k++) {
+        for (let i = 0, n = this._hooks.length; i < n; i++) {
 
-            let key = keys.next().value,
-                value = key in p_options ? p_options[key] : this._defaults && key in this._defaults ? this._defaults[key] : __null;
+            let hook = this._hooks[i],
+                key = hook[0],
+                fn = hook[1],
+                val = __null,
+                staticMember = hook[2];
 
-            if (value === __null) { continue; }
+            if (key in p_options) { val = p_options[key]; }
+            else if(staticMember){ val = p_target.constructor[staticMember]; }
+            else if (this._defaults && key in this._defaults) { val = this._defaults[key]; }
 
-            hooks = map.get(key);
+            if (val == __null) { continue; }
 
-            for (let i = 0, n = hooks.length; i < n; i++) {
-                let fn = hooks[i];
-                if (fn === __direct) { p_target[key] = value; }
-                else if (u.isString(fn)) { p_target[fn] = value; }
-                else { fn(value, p_altOptions); }
-            }
+            if (fn == __direct) { p_target[key] = val; }
+            else if (u.isString(fn)) { p_target[fn] = val; }
+            else { u.Call(fn, p_target, val, p_altOptions); }
 
         }
 
-        if (p_callWrapUp && this._wrapUpFn) { this._wrapUpFn(p_options, p_altOptions, this._defaults); }
+        if (p_callWrapUp) { this._WrapUp(p_target, p_options, p_altOptions); }
     }
 
     /**
@@ -154,32 +177,27 @@ class OptionsDistribute {
      */
     UpdateNoDefaults(p_target, p_options, p_altOptions = null, p_callBegin = true, p_callWrapUp = true) {
 
-        if (p_callBegin && this._beginFn) { this._beginFn(p_options, p_altOptions, this._defaults); }
+        if (!p_options) { return; }
 
-        let map = this._hooks._map,
-            keys = map.keys(),
-            kn = map.size,
-            hooks;
+        if (p_callBegin) { this._Begin(p_target, p_options, p_altOptions); }
 
-        for (let k = 0; k < kn; k++) {
+        for (let i = 0, n = this._hooks.length; i < n; i++) {
 
-            let key = keys.next().value,
-                value = key in p_options ? p_options[key] : __null;
+            let hook = this._hooks[i],
+                key = hook[0],
+                fn = hook[1],
+                val = __null;
 
-            if (value === __null) { continue; }
+            if (key in p_options) { val = p_options[key]; }
+            if (val == __null) { continue; }
 
-            hooks = map.get(key);
-
-            for (let i = 0, n = hooks.length; i < n; i++) {
-                let fn = hooks[i];
-                if (fn === __direct) { p_target[key] = value; }
-                else if (u.isString(fn)) { p_target[fn] = value; }
-                else { fn(value, p_altOptions, this._defaults); }
-            }
+            if (fn == __direct) { p_target[key] = val; }
+            else if (u.isString(fn)) { p_target[fn] = val; }
+            else { u.Call(fn, p_target, val, p_altOptions); }
 
         }
 
-        if (p_callWrapUp && this._wrapUpFn) { this._wrapUpFn(p_options, p_altOptions, this._defaults); }
+        if (p_callWrapUp) { this._WrapUp(p_target, p_options, p_altOptions); }
 
     }
 
@@ -190,37 +208,23 @@ class OptionsDistribute {
      * @param {string} p_optionID 
      * @param {*} p_optionValue 
      * @param {*} p_others An alternative set of options.
-     * @param {boolean} p_wrapUp whether or not to wrap-up option call 
+     * @param {boolean} p_callWrapUp whether or not to wrap-up option call 
      */
-    UpdateSingle(p_target, p_optionID, p_optionValue, p_others = null, p_wrapUp = false) {
+    UpdateSingle(p_target, p_optionID, p_optionValue, p_others = null, p_callWrapUp = false) {
 
-        let callList = this._hooks.Get(p_optionID);
 
-        if (callList === __direct) {
-            p_target[p_optionID] = p_optionValue;
-            return;
-        }
+        let hook = null;
 
-        if (!callList) { return; }
+        if (p_optionID in this._indices) { hook = this._hooks[this._indices[p_optionID]]; }
+        else { return; }
 
-        calllist.ForEach((item) => {
-            if (u.isString(item)) { // Consider string property setters
-                p_target[item] = p_optionValue;
-            } else {
-                item(p_optionValue, p_others);
-            }
-        });
-        /*
-        for (let i = 0, n = callList.count; i < n; i++) {
-            let fn = callList.At(i);
-            if (u.isString(fn)) { // Consider string property setters
-                p_target[fn] = p_optionValue;
-            } else {
-                fn(p_optionValue, p_others);
-            }
-        }
-        */
-        if (p_wrapUp && this._wrapUpFn) { this._wrapUpFn(p_others, null, this._defaults); }
+        let fn = hook[1];
+
+        if (fn == __direct) { p_target[p_optionID] = p_optionValue; }
+        else if (u.isString(fn)) { p_target[fn] = p_optionValue; }
+        else { u.Call(fn, p_target, p_optionValue, p_altOptions); }
+
+        if (p_callWrapUp) { this._WrapUp(p_target, p_others); }
 
     }
 
@@ -228,8 +232,20 @@ class OptionsDistribute {
      * @access private
      * @param {*} p_options 
      */
-    WrapUp(p_options) {
-        if (this._wrapUpFn) { this._wrapUpFn(p_options, null, this._defaults); }
+    _Begin(p_target, p_options, p_altOptions = null) {
+        if (!this._beginFn) { return; }
+        if (u.isString(this._beginFn)) { p_target[this._beginFn](p_options, p_altOptions, this._defaults); }
+        else { this._beginFn(p_options, p_altOptions, this._defaults); }
+    }
+
+    /**
+     * @access private
+     * @param {*} p_options 
+     */
+    _WrapUp(p_target, p_options, p_altOptions = null) {
+        if (!this._wrapUpFn) { return; }
+        if (u.isString(this._wrapUpFn)) { p_target[this._wrapUpFn](p_options, p_altOptions, this._defaults); }
+        else { this._wrapUpFn(p_options, p_altOptions, this._defaults); }
     }
 
     /**

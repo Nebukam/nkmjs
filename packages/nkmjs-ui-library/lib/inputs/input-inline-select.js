@@ -23,6 +23,10 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
         css: [`@/widgets/widget-bar.css`]
     }, ui.WidgetBar, ['css']);
 
+    static __distribute = ui.inputs.InputCatalogBase.__distribute.Ext()
+        .To(`showLabel`, null, false)
+        .To(`showIcon`, null, true);
+
     _Init() {
         super._Init();
 
@@ -39,10 +43,6 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
 
         this._showIcon = true;
         this._showLabel = false;
-
-        this._distribute
-            .To(`showLabel`, null, false)
-            .To(`showIcon`, null, true);
 
     }
 

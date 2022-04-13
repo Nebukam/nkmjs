@@ -27,7 +27,9 @@ class MenuRoot extends WidgetBar {
     static __NFO__ = com.NFOS.Ext({}, WidgetBar, ['css']);
 
     static __defaultItemClass = MenuItem;
-    static __default_orientation = FLAGS.VERTICAL;
+    static __defaultOrientation = FLAGS.VERTICAL;
+    static __distribute = WidgetBar.__distribute.Ext()
+        .To(`items`);
 
     // ----> Init
 
@@ -41,8 +43,6 @@ class MenuRoot extends WidgetBar {
             .Hook(SIGNAL.SELECTION_LOST, this._OnHandleSelectionLost, this);
 
         this._InitSelectionStack(false, false);
-
-        this._distribute.To(`items`);
 
         this._modal = null;
 
@@ -64,7 +64,7 @@ class MenuRoot extends WidgetBar {
     set items(p_value) {
         this.Clear();
         let itemList = u.isFunc(p_value) ? p_value() : p_value;
-        
+
         console.log(itemList);
         this.CreateHandles(...itemList);
     }

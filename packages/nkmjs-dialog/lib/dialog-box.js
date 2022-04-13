@@ -15,8 +15,15 @@ class DialogBox extends ui.Widget {
      * @description TODO
      * @type {string}
      */
-    static __default_flavor = null;
-    static __default_variant = null;
+    static __defaultFlavor = null;
+    static __defaultVariant = null;
+    static __distribute = com.helpers.OptionsDistribute.Ext(null,
+        { beginFn: `_OnOptionsWillUpdate`, wrapUpFn: `_OnOptionsUpdated` })
+        .To(ui.IDS.FLAVOR)
+        .To(ui.IDS.TITLE, null, `!!! MISSING TITLE !!!`)
+        .To(ui.IDS.MESSAGE)
+        .To(`actions`, (p_target, p_value) => { p_target.SetActions(p_value); }, null)
+        .To(`content`, (p_target, p_value) => { p_target.SetContent(p_value); });
 
     _Init() {
         super._Init();
@@ -31,17 +38,6 @@ class DialogBox extends ui.Widget {
 
         this._toolbarClass = ui.WidgetBar;
         this._toolbar = null;
-
-        this._distribute = new com.helpers.OptionsDistribute(
-            this._Bind(this._OnOptionsUpdated),
-            this._Bind(this._OnOptionsWillUpdate));
-
-        this._distribute
-            .To(ui.IDS.FLAVOR)
-            .To(ui.IDS.TITLE, null, `!!! MISSING TITLE !!!`)
-            .To(ui.IDS.MESSAGE)
-            .To(`actions`, this._Bind(this.SetActions), null)
-            .To(`content`, this._Bind(this.SetContent));
 
         this._Bind(this._Close);
 
@@ -174,14 +170,14 @@ class DialogBox extends ui.Widget {
 
     }
 
-    _OnContentItemAdded(p_item, p_infos){
+    _OnContentItemAdded(p_item, p_infos) {
 
     }
 
     _OnDataUpdated(p_data) {
 
         this._Clear();
-        this._distribute.Update(this, p_data.options);
+        this.constructor.__distribute.Update(this, p_data.options);
 
         /* DATA FORMAT
 
@@ -282,8 +278,8 @@ class DialogBox extends ui.Widget {
         this._contents.length = 0;
         this._contentOptions.clear();
 
-        this.flavor = this.constructor.__default_flavor;
-        this.variant = this.constructor.__default_variant;
+        this.flavor = this.constructor.__defaultFlavor;
+        this.variant = this.constructor.__defaultVariant;
 
     }
 

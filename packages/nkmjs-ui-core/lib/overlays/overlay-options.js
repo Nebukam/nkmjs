@@ -18,17 +18,12 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
         return overlayOptions;
     }
 
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+    .To(`overlayClass`, `_overlayClass`)
+    .To(`contentClass`, `_contentClass`)
+    .To(`origin`, `_origin`)
+
     constructor() { super(); }
-
-    _Init() {
-        super._Init();
-
-        this._distribute = new com.helpers.OptionsDistribute();
-        this._distribute
-            .To(`overlayClass`, `_overlayClass`)
-            .To(`contentClass`, `_contentClass`)
-            .To(`origin`, `_origin`)
-    }
 
     _PostInit() {
         super._PostInit();
@@ -51,7 +46,7 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
     set options(p_value) {
 
         this._options = p_value;
-        this._distribute.Update(this, p_value);
+        this.constructor.__distribute.Update(this, p_value);
 
         //TODO : Add support for custom popup content request
         // = when displaying popup, callback to some function providing both dialog & dialog info

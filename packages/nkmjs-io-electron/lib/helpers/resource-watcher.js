@@ -18,8 +18,15 @@ const PathWatcher = require(`./path-watcher`);
 class ResourceWatcher extends PathWatcher {
     constructor() { super(); }
 
+    static __distribute = PathWatcher.__distribute.Ext()
+        .To(`readOptions`)
+        .To(`readOnChange`)
+        .To(`releaseRscOnDelete`)
+        .To(`resourceBound`)
+        .To(`resource`, `currentRsc`);
+
     _Init() {
-        
+
         super._Init();
         this._currentRsc = null;
         this._readOnChange = false;
@@ -27,12 +34,6 @@ class ResourceWatcher extends PathWatcher {
         this._resourceBound = false;
         this._readOptions = null;
 
-        this._distribute
-            .To(`readOptions`)
-            .To(`readOnChange`)
-            .To(`releaseRscOnDelete`)
-            .To(`resourceBound`)
-            .To(`resource`, `currentRsc`);
 
         this._rscObserver = new nkm.com.signals.Observer();
 
@@ -77,7 +78,7 @@ class ResourceWatcher extends PathWatcher {
 
     _OnRscReleased() {
         this.currentRsc = null;
-        if(this._resourceBound){ this.Release(); }
+        if (this._resourceBound) { this.Release(); }
     }
 
     Enable() {

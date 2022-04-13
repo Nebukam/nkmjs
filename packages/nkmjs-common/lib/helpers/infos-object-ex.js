@@ -11,6 +11,7 @@ const DisposableObjectEx = require(`../pool/disposable-object-ex`);
  * @memberof actions
  */
 class InfosObjectEx extends DisposableObjectEx {
+    
     constructor() {
         super();
         this._displayInfos = {

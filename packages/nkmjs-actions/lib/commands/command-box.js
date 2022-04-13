@@ -77,7 +77,7 @@ class CommandBox {
 
         cmd.shortcut = p_options.shortcut || null;
 
-        this._idMap.set(p_options.key || cmd.constructor.name, cmd);
+        this._idMap.set(p_options.id || cmd.constructor.name, cmd);
 
         return cmd;
 

@@ -18,13 +18,13 @@ class ToolButton extends ui.WidgetButton {
         css: [`@/buttons/button-tool.css`]
     }, ui.WidgetButton, ['css']);
 
+    static __distribute = ui.WidgetButton.__distribute.Ext()
+        .To(ui.IDS.ICON, null, ``)
+        .Move(`command`);
+
     _Init() {
         super._Init();
-        this._distribute
-            .To(ui.IDS.ICON, null, ``);
-
         this._icon = null;
-
         this._flags.Add(this, ui.FLAGS.NO_ICON, ui.FLAGS.NO_LABEL);
     }
 

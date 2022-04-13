@@ -41,7 +41,7 @@ class Drawer extends ui.views.View {
 
     // ----> Init
 
-    static __default_orientation = ui.FLAGS.VERTICAL;
+    static __defaultOrientation = ui.FLAGS.VERTICAL;
     static __default_facadeTPL = dom.FacadeTitleClose;
 
     _Init() {

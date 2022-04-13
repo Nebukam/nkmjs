@@ -21,6 +21,10 @@ class InputField extends InputBase {
         css: [`@/inputs/field.css`]
     }, InputBase, ['css']);
 
+    static __distribute = InputBase.__distribute.Ext()
+        .To(`preventTabIndexing`)
+        .To(`placeholder`, `placeholderValue`);
+
     _Init() {
         super._Init();
         this._inputField = null;
@@ -33,10 +37,6 @@ class InputField extends InputBase {
         this._handler._changeOnInput = false;
         this._handler._updatePreviewOnChange = true;
         this._handler._submitOnChange = true;
-
-        this._distribute
-            .To(`preventTabIndexing`)
-            .To(`placeholder`, `placeholderValue`);
 
         this._Bind(this._onInput);
         this._Bind(this._onChange);

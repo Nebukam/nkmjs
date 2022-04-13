@@ -14,8 +14,13 @@ const InputPath = require(`./input-path`);
 class InputFile extends InputPath {
     constructor() { super(); }
 
+    static __distribute = InputPath.__distribute.Ext()
+        .To(`multiSelection`, null, false);
+
     _Init() {
+
         super._Init();
+        
         this._Bind(this._onPickerChange);
         this._Bind(this._OnPicked);
 
@@ -34,9 +39,6 @@ class InputFile extends InputPath {
         });
 
         this._multiSelection = false;
-
-        this._distribute
-            .To(`multiSelection`, null, false);
 
     }
 
@@ -83,12 +85,12 @@ class InputFile extends InputPath {
         */
     }
 
-    get multiSelection(){ return this._multiSelection; }
-    set multiSelection(p_value){ this._multiSelection = p_value; }
+    get multiSelection() { return this._multiSelection; }
+    set multiSelection(p_value) { this._multiSelection = p_value; }
 
-    _GrabValue() { 
-        let values = this._inputField.value.split(`,`); 
-        for(let i = 0; i < values.length; i++){ values[i] = values[i].trim(); }
+    _GrabValue() {
+        let values = this._inputField.value.split(`,`);
+        for (let i = 0; i < values.length; i++) { values[i] = values[i].trim(); }
         return values;
     }
 

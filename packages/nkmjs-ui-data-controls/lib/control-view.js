@@ -25,6 +25,12 @@ class ControlView extends ui.views.View {
     static __controls = null;
     static __useMetaObserver = false;
     static __default_shortcutRequireFocus = true;
+    static __distribute = com.helpers.OptionsDistribute.Ext(null,
+        { beginFn: `_OnOptionsWillUpdate` })
+        .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
+        .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
+        .To(`editor`)
+        .To(`data`);
 
     _Init() {
         super._Init();
@@ -43,22 +49,14 @@ class ControlView extends ui.views.View {
 
         this._contextObserver = new com.signals.Observer();
 
-        this._distribute = new com.helpers.OptionsDistribute(
-            null,
-            this._Bind(this._OnOptionsWillUpdate));
-
-        this._distribute
-            .To(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
-            .To(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
-            .To(`editor`)
-            .To(`data`);
-
         this._editor = null;
 
         this.forwardData.To(this._builder);
 
         this._forwardContext = null;
         this._forwardEditor = null;
+
+        this._defaultModalContentOptions = () => { return { editor: this.editor, data: this._data, context: this._context } };
 
     }
 
@@ -107,19 +105,13 @@ class ControlView extends ui.views.View {
      * @description TODO
      * @type {object}
      */
-    set options(p_value) {
-        if (!p_value) { return; }
-        this._distribute.Update(this, p_value);
-    }
+    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
 
     /**
      * @description TODO
      * @type {object}
      */
-    set altOptions(p_value) {
-        if (!p_value) { return; }
-        this._distribute.UpdateNoDefaults(this, p_value, null, false, false);
-    }
+    set altOptions(p_value) { this.constructor.__distribute.UpdateNoDefaults(this, p_value, null, false, false); }
 
     /**
      * @access protected
@@ -160,6 +152,44 @@ class ControlView extends ui.views.View {
      */
     _OnContextChanged(p_oldValue) {
 
+    }
+
+    //#endregion
+
+    //#region Commands
+
+    /**
+     * 
+     * @param {object} p_commandOptions 
+     * @param {*} [p_commandOptions.id]
+     * 
+     * @param {object} p_modalOptions 
+     * @param {class|object} p_modalOptions.content
+     * @param {function} [p_modalOptions.contentOptionsGetter]
+     * @param {boolean} [p_modalOptions.anchorToEmitter]
+     * @param {string} [p_modalOptions.placement]
+     * @param {object} [p_modalOptions.margins]
+     * 
+     * @returns {Command}
+     * 
+     */
+    _CmdModal(p_commandOptions, p_modalOptions) {
+
+        p_commandOptions.id = p_commandOptions.id || p_modalOptions.content || null;
+
+        let cmd = this._commands.Create(ui.commands.Modal, p_commandOptions);
+
+        p_modalOptions.contentOptionsGetter = p_modalOptions.contentOptionsGetter || this._defaultModalContentOptions;
+        p_modalOptions.anchorToEmitter = p_modalOptions.anchorToEmitter || true;
+        p_modalOptions.placement = p_modalOptions.placement || ui.ANCHORING.BOTTOM_LEFT;
+
+        cmd.options = p_modalOptions;
+
+        return cmd;
+    }
+
+    _CmdMenu(p_commandOptions, p_modalOptions) {
+        //TODO : same as modal ?
     }
 
     //#endregion

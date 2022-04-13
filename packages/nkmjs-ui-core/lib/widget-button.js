@@ -32,19 +32,36 @@ class WidgetButton extends Widget {
      * @description TODO
      * @type {string}
      */
-    static __default_size = null;
+    static __defaultSize = null;
 
     /**
      * @description TODO
      * @type {string}
      */
-    static __default_flavor = null;
+    static __defaultFlavor = null;
 
     /**
      * @description TODO
      * @type {string}
      */
-    static __default_variant = null;
+    static __defaultVariant = null;
+
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+        .To(IDS.DATA)
+        .To(`htitle`)
+        .To(`trigger`)
+        .To(`toggle`, null, null)
+        .To(`request`)
+        .To(`isCmdTrigger`)
+        .To(`isCmdEmitter`)
+        .To(`isCmdContext`)
+        .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
+        .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
+        .To(IDS.SIZE)
+        .To(`noscale`, (p_target, p_value) => { p_target._flags.Set(FLAGS.NO_SCALE, p_value); }, false)
+        .To(IDS.FLAVOR)
+        .To(IDS.VARIANT)
+        .To(IDS.CMD);
 
 
     _Init() {
@@ -72,32 +89,13 @@ class WidgetButton extends Widget {
         this._variantEnum = new FlagEnum(FLAGS.variants, true);
         this._variantEnum.Add(this);
 
-        this._distribute = new com.helpers.OptionsDistribute(
-            this._Bind(this._OnOptionsUpdateComplete),
-            this._Bind(this._OnOptionsWillUpdate));
-
-        this._distribute
-            .To(IDS.DATA)
-            .To(`htitle`)
-            .To(`trigger`)
-            .To(`toggle`, null, null)
-            .To(`request`)
-            .To(`isCmdTrigger`)
-            .To(`isCmdEmitter`)
-            .To(`isCmdContext`)
-            .To(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
-            .To(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
-            .To(`size`)
-            .To(IDS.FLAVOR)
-            .To(IDS.VARIANT);
-
     }
 
     _PostInit() {
         super._PostInit();
-        this._sizeEnum.Set(this.constructor.__default_size);
-        this._flavorEnum.Set(this.constructor.__default_flavor);
-        this._variantEnum.Set(this.constructor.__default_variant);
+        this._sizeEnum.Set(this.constructor.__defaultSize);
+        this._flavorEnum.Set(this.constructor.__defaultFlavor);
+        this._variantEnum.Set(this.constructor.__defaultVariant);
     }
 
     /**
@@ -242,41 +240,13 @@ class WidgetButton extends Widget {
      * @description TODO
      * @type {object}
      */
-    set options(p_value) {
-
-        if (!p_value) { return; }
-
-        this._distribute.Update(this, p_value);
-        this._flags.Set(FLAGS.NO_SCALE, p_value.noscale ? p_value.noscale : false);
-
-    }
+    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
 
     /**
      * @description TODO
      * @type {object}
      */
-    set altOptions(p_value) {
-
-        if (!p_value) { return; }
-
-        this._distribute.UpdateNoDefaults(this, p_value, null, false, false);
-
-    }
-
-    /**
-     * @access protected
-     * @description TODO
-     * @param {*} p_options 
-     * @customtag override-me
-     */
-    _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
-        if (!p_options) { return; }
-        p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
-    }
-
-    _OnOptionsUpdateComplete(p_options, p_altOptions, p_defaults) {
-        if (`command` in p_options) { this.command = p_options.command; }
-    }
+    set altOptions(p_value) { this.constructor.__distribute.UpdateNoDefaults(this, p_value, null, false, false); }
 
     /**
      * @description TODO
@@ -456,9 +426,9 @@ class WidgetButton extends Widget {
         this.isActivable = true;
 
         this._flags.ApplyAll(false);
-        this._sizeEnum.Set(this.constructor.__default_size);
-        this._flavorEnum.Set(this.constructor.__default_flavor);
-        this._variantEnum.Set(this.constructor.__default_variant);
+        this._sizeEnum.Set(this.constructor.__defaultSize);
+        this._flavorEnum.Set(this.constructor.__defaultFlavor);
+        this._variantEnum.Set(this.constructor.__defaultVariant);
 
         super._CleanUp();
     }

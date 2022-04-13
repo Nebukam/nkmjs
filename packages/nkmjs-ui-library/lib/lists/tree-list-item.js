@@ -25,16 +25,14 @@ class TreeListItem extends ui.lists.ListItem {
         css: [`@/lists/tree-list-item.css`]
     }, ui.lists.ListItem, ['css']);
 
+    static __distribute = ui.lists.ListItem.__distribute.Ext()
+        .To(`data`, `itemData`); // Make sure this is registered last
+
     // ----> Init
 
     _Init() {
         super._Init();
         this._toolbarClass = ui.WidgetBar;
-    }
-
-    _PostInit(){
-        super._PostInit();
-        this._distribute.To(`data`, `itemData`); // Make sure this is registered last
     }
 
     // ----> DOM
@@ -70,7 +68,7 @@ class TreeListItem extends ui.lists.ListItem {
     _Style() {
         return style.Extends({
             ':host': {
-                
+
             }
         }, super._Style());
     }
@@ -90,7 +88,7 @@ class TreeListItem extends ui.lists.ListItem {
     // ----> Update infos   
 
     _UpdateInfos() {
-        
+
         if (this._itemData) {
             if (!this._label.Set(this._itemData)) { this._label.Set(this._data.options); }
             if (!this._icon.Set(this._itemData)) { this._icon.Set(this._data.options); }

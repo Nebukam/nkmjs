@@ -19,20 +19,12 @@ class OptionsObject extends DisposableObjectEx {
     constructor() { super(); }
 
     static __broadcastUpdate = false;
+    static __distribute = OptionsDistribute.Ext();
 
     _Init() {
         super._Init();
-
         this._options = {};
-        this._distribute = new OptionsDistribute();
-
     }
-
-    /**
-     * @description TODO
-     * @type {common.helpers.OptionsDistribute}
-     */
-    get optionHandler() { return this._distribute; }
 
     /**
      * @description TODO
@@ -41,7 +33,7 @@ class OptionsObject extends DisposableObjectEx {
     get options() { return this._options; }
     set options(p_options) {
         this._options = p_options;
-        this._distribute.Update(this, p_options);
+        this.constructor.__distribute.Update(this, p_options);
     }
 
     /**
@@ -57,7 +49,7 @@ class OptionsObject extends DisposableObjectEx {
             this._options[member] = value;
         }
 
-        this._distribute.Update(this, p_options, this._options);
+        this.constructor.__distribute.Update(this, p_options, this._options);
 
     }
 
@@ -97,7 +89,7 @@ class OptionsObject extends DisposableObjectEx {
         if(p_id in this._options && this._options[p_id] === p_value){ return; }
 
         //process value first so if one already exists, it can be fetched as 'previous value'
-        this._distribute.UpdateSingle(this, p_id, p_value, this._options, true);
+        this.constructor.__distribute.UpdateSingle(this, p_id, p_value, this._options, true);
 
         if(this.constructor.__broadcastUpdate){
             let oldValue = this._options[p_id];

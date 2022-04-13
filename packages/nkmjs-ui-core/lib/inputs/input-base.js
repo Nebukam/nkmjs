@@ -24,6 +24,15 @@ class BaseInput extends Widget {
 
     static __usePaintCallback = false;
 
+    static __distribute = com.helpers.OptionsDistribute.Ext(null,
+        { beginFn: `_OnOptionsWillUpdate`, wrapUpFn: `_OnOptionsUpdated` })
+        .To(`flagOn`, (p_target, p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { p_target._flags.Set(p_value[i], true) } })
+        .To(`flagOff`, (p_target, p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { p_target._flags.Set(p_value[i], false) } })
+        .To(IDS.SIZE)
+        .To(`currentValue`)
+        .To(IDS.FLAVOR)
+        .To(IDS.VARIANT);
+
     // ----> Init
 
     _Init() {
@@ -46,18 +55,6 @@ class BaseInput extends Widget {
 
         this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
-
-        this._distribute = new com.helpers.OptionsDistribute(
-            this._Bind(this._OnOptionsUpdated),
-            this._Bind(this._OnOptionsWillUpdate));
-
-        this._distribute
-            .To(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
-            .To(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
-            .To(`size`)
-            .To(`currentValue`)
-            .To(IDS.FLAVOR)
-            .To(IDS.VARIANT);
 
     }
 
@@ -99,9 +96,9 @@ class BaseInput extends Widget {
      * @description TODO
      * @type {object}
      */
-     set options(p_value) {
+    set options(p_value) {
         if (!p_value) { return; }
-        this._distribute.Update(this, p_value);
+        this.constructor.__distribute.Update(this, p_value);
     }
 
     /**
@@ -110,7 +107,7 @@ class BaseInput extends Widget {
      */
     set altOptions(p_value) {
         if (!p_value) { return; }
-        this._distribute.UpdateNoDefaults(this, p_value, null, false, false);
+        this.constructor.__distribute.UpdateNoDefaults(this, p_value, null, false, false);
     }
 
     /**
@@ -134,10 +131,10 @@ class BaseInput extends Widget {
 
         this._handler.changeOnInput = u.tils.Get(p_options, `changeOnInput`, this._handler.changeOnInput);
         this._handler.submitOnChange = u.tils.Get(p_options, `submitOnChange`, this._handler.submitOnChange);
-        this._handler.preventTabIndexing = u.tils.Get(p_options, `preventTabIndexing`, this._handler.preventTabIndexing);        
+        this._handler.preventTabIndexing = u.tils.Get(p_options, `preventTabIndexing`, this._handler.preventTabIndexing);
 
         let onSubmit = p_options.onSubmit;
-        if (onSubmit) { this._handler.Watch(SIGNAL.VALUE_SUBMITTED, onSubmit.fn, onSubmit.thisArg || null ); }
+        if (onSubmit) { this._handler.Watch(SIGNAL.VALUE_SUBMITTED, onSubmit.fn, onSubmit.thisArg || null); }
 
         let onChange = p_options.onChange;
         if (onChange) { this._handler.Watch(com.SIGNAL.VALUE_CHANGED, onChange.fn, onChange.thisArg || null); }

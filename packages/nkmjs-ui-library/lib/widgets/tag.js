@@ -13,6 +13,15 @@ class Tag extends ui.Widget {
         css: [`@/widgets/tag.css`]
     }, ui.Widget, ['css']);
 
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+        .To(ui.IDS.FLAVOR)
+        .To(ui.IDS.SIZE)
+        .To(ui.IDS.LABEL)
+        .To(`htitle`)
+        .To(ui.IDS.NAME, ui.IDS.LABEL)
+        .To(`bgColor`)
+        .To(`textColor`);
+
     _Init() {
         super._Init();
 
@@ -22,21 +31,9 @@ class Tag extends ui.Widget {
         this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
-        this._distribute = new com.helpers.OptionsDistribute();
-        this._distribute.Setup(this);
-
-        this._distribute
-            .To(ui.IDS.FLAVOR)
-            .To(ui.IDS.SIZE)
-            .To(ui.IDS.LABEL)
-            .To(`htitle`)
-            .To(ui.IDS.NAME, ui.IDS.LABEL)
-            .To(`bgColor`)
-            .To(`textColor`);
-
     }
 
-    set options(p_value){ this._distribute.Update(this, p_value); }
+    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
 
     get size() { return this._sizeEnum.currentFlag; }
     set size(p_value) { this._sizeEnum.Set(p_value); }
@@ -54,10 +51,10 @@ class Tag extends ui.Widget {
         else { this._label._element.style.setProperty(`color`, p_value); }
     }
 
-    set maxWidth(p_value){
+    set maxWidth(p_value) {
         if (!p_value) { this._label._element.style.removeProperty(`max-width`); }
-        else { 
-            this._label._element.style.setProperty(`max-width`, p_value); 
+        else {
+            this._label._element.style.setProperty(`max-width`, p_value);
             this._label.ellipsis = true;
         }
     }
@@ -71,7 +68,7 @@ class Tag extends ui.Widget {
         this._label = new ui.manipulators.Text(ui.dom.El(`span`, { class: `${ui.IDS.LABEL} ${style.FONT_FLAG.TAG}` }, this), false);
     }
 
-    _CleanUp(){
+    _CleanUp() {
         this.maxWidth = null;
         this._label.ellipsis = false;
         super._CleanUp();

@@ -156,16 +156,15 @@ class Catalog extends CatalogItem {
 
     //#endregion
 
+    static __distribute = CatalogItem.__distribute.Ext({ beginFn: `_OnOptionsWillUpdate` })
+        .To(`autoSort`)
+        .To(`localItemClass`, `_localItemClass`, null)
+        .To(`localCatalogClass`, `_localCatalogClass`, null)
+        .To(`expanded`);
+
     _Init() {
 
         super._Init();
-
-        this._distribute.beginFn = this._Bind(this._OnOptionsWillUpdate);
-        this._distribute
-            .To(`autoSort`, `autoSort`)
-            .To(`localItemClass`, `_localItemClass`, null)
-            .To(`localCatalogClass`, `_localCatalogClass`, null)
-            .To(`expanded`);
 
         this._expanded = false;
 

@@ -25,16 +25,14 @@ class FolderListItem extends ui.lists.FolderItem {
         css: [`@/lists/folder-list-item.css`]
     }, ui.lists.FolderItem, ['css']);
 
+    static __distribute = ui.lists.FolderItem.__distribute.Ext()
+        .To(`data`, `itemData`); // Make sure this is registered last
+
     // ----> Init
 
     _Init() {
         super._Init();
         this._toolbarClass = ui.WidgetBar;
-    }
-
-    _PostInit() {
-        super._PostInit();
-        this._distribute.To(`data`, `itemData`); // Make sure this is registered last
     }
 
     // ----> DOM
@@ -70,7 +68,7 @@ class FolderListItem extends ui.lists.FolderItem {
     _Style() {
         return style.Extends({
             ':host': {
-                
+
             }
         }, super._Style());
     }

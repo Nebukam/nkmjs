@@ -20,6 +20,8 @@ class MenuItem extends WidgetButton {
 
     static __NFO__ = com.NFOS.Ext({}, WidgetButton, ['css']);
 
+    static __distribute = WidgetButton.__distribute.Ext({ wrapUpFn: `_OnOptionsUpdateComplete` });
+
     // ----> Init
 
     _Init() {
@@ -54,7 +56,6 @@ class MenuItem extends WidgetButton {
 
 
     _OnOptionsUpdateComplete(p_options, p_altOptions, p_defaults) {
-        super._OnOptionsUpdateComplete(p_options, p_altOptions, p_defaults);
         if (this._isCatalogItemHandler) {
 
         } else {

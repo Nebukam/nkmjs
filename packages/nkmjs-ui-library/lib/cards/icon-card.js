@@ -28,10 +28,8 @@ class IconCard extends BaseCard {
         css: [`@/cards/icon-card.css`]
     }, BaseCard, ['css']);
 
-    _Init() {
-        super._Init();
-        this._distribute.To(`icon`);
-    }
+    static __distribute = BaseCard.__distribute.Ext()
+        .To(ui.IDS.ICON);
 
     // ----> DOM
 

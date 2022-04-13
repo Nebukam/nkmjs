@@ -19,7 +19,7 @@ const Widget = require(`../widget`);
 const FlagEnum = require(`./flag-enum`);
 const RectTracker = require(`./rect-tracker`);
 
-
+const __defaultBody = Symbol(`defaultBody`);
 /**
  * A Modal is a lightweight container with absolute positioning added to an object.
  * It is attached to a specific position in parent screen-space, and can follow an object if attached to one.
@@ -104,6 +104,17 @@ class Modal extends DisplayObjectContainer {
         return this.Pop(p_options);
     }
 
+    static __distribute = com.helpers.OptionsDistribute.Ext(null,
+        { beginFn: `_OnOptionsWillUpdate`, wrapUpFn: `_OnOptionsUpdated` })
+        .To(`mode`)
+        .To(`context`, null, __defaultBody)
+        .To(`anchor`)
+        .To(`margins`)
+        .To(`keepWithinScreen`, null, true)
+        .To(`static`, null, false)
+        .To(`placement`, null, ANCHORING.BOTTOM_LEFT)
+        .To(`origin`, null, ANCHORING.TOP_LEFT);
+
     _Init() {
 
         super._Init();
@@ -124,20 +135,6 @@ class Modal extends DisplayObjectContainer {
 
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
-
-        this._distribute = new com.helpers.OptionsDistribute(
-            this._Bind(this._OnOptionsUpdated),
-            this._Bind(this._OnOptionsWillUpdate));
-
-        this._distribute
-            .To(`mode`)
-            .To(`context`, null, env.APP.body || document.body)
-            .To(`anchor`)
-            .To(`margins`)
-            .To(`keepWithinScreen`, null, true)
-            .To(`static`, null, false)
-            .To(`placement`, null, ANCHORING.BOTTOM_LEFT)
-            .To(`origin`, null, ANCHORING.TOP_LEFT);
 
         this._pointer = new extensions.PointerStatic(this);
 
@@ -182,7 +179,7 @@ class Modal extends DisplayObjectContainer {
         this._options = p_options;
         this.content = p_options.content;
         if (this._content) {
-            this._distribute.Update(this, this._options);
+            this.constructor.__distribute.Update(this, this._options);
             if (`options` in this._content) {
                 let o = null;
 
@@ -292,6 +289,7 @@ class Modal extends DisplayObjectContainer {
      */
     get context() { return this._context; }
     set context(p_value) {
+        if (p_value == __defaultBody) { p_value = env.APP.body || document.body; }
         if (this._context === p_value) { return; }
         if (this._context) {
             dom.Detach(this);

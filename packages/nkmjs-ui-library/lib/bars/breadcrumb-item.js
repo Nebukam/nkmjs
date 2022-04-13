@@ -13,13 +13,13 @@ class BreadcrumbItem extends ui.WidgetButton {
         css: [`@/lists/breadcrum-item.css`]
     }, ui.WidgetButton, ['css']);
 
+    static __distribute = ui.WidgetButton.__distribute.Ext()
+        .To(ui.IDS.ICON, null, ``)
+        .To(ui.IDS.LABEL, null, ``)
+        .Move(`command`);
+
     _Init() {
         super._Init();
-
-        this._distribute
-            .To(ui.IDS.ICON, null, ``)
-            .To(ui.IDS.LABEL, null, ``);
-
         this._icon = null;
         this._label = null;
     }

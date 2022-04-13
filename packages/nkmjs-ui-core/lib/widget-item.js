@@ -23,6 +23,12 @@ class WidgetItem extends Widget {
     constructor() { super(); }
 
     static __draggable = false;
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+        .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
+        .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
+        .To(IDS.FLAVOR)
+        .To(IDS.DATA, `itemData`);
+
     // ----> Init
 
     _Init() {
@@ -47,19 +53,11 @@ class WidgetItem extends Widget {
         this._dragActivator = null;
         this._dragFeedbackHost = this;
 
-        this._distribute = new com.helpers.OptionsDistribute();
-
-        this._distribute
-            .To(`flagOn`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], true) } })
-            .To(`flagOff`, (p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { this._flags.Set(p_value[i], false) } })
-            .To(IDS.FLAVOR);
-
     }
 
     _PostInit() {
         super._PostInit();
         if (this._extDrag) { this._extDrag.Setup(this, this._dragActivator, this._dragFeedbackHost); }
-        this._distribute.To(`data`, `itemData`); // Make sure this is registered last
     }
 
     _Wake() {
@@ -100,12 +98,12 @@ class WidgetItem extends Widget {
         if (u.isInstanceOf(this._data, data.catalogs.CatalogItem)) { options = this._data.options; }
         else { options = this._data; }
 
-        this._distribute.Update(this, options);
+        this.constructor.__distribute.Update(this, options);
 
         if (this._isFocused) { this._BuildCommandHandles(); }
 
         this._UpdateInfos();
-        
+
     }
 
     _OnCatalogItemDataChanged(p_item, p_newData, p_oldData) {
@@ -163,7 +161,7 @@ class WidgetItem extends Widget {
     }
 
     _OnItemDataChanged(p_oldItemData) {
-        
+
     }
 
     /**

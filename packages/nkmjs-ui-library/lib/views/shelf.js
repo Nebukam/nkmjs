@@ -26,7 +26,7 @@ class Shelf extends ui.views.View {
     // ----> Init
 
     static __default_placeholderViewClass = null;
-    static __default_orientation = ui.FLAGS.VERTICAL;
+    static __defaultOrientation = ui.FLAGS.VERTICAL;
     static __default_fixedSizeAxis = ui.FLAGS.HORIZONTAL;
     static __default_fixedSize = `350px`;
     static __default_navPlacement = ui.FLAGS.TOP;
@@ -306,7 +306,7 @@ class Shelf extends ui.views.View {
         this._nav = this.Attach(this._navClass, `navigation`);
 
         this._orientation.AddManaged(this._nav._orientation);
-        this._nav.orientation = this.constructor.__default_orientation;
+        this._nav.orientation = this.constructor.__defaultOrientation;
     }
 
     /**

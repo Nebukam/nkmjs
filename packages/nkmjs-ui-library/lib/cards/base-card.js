@@ -19,25 +19,38 @@ class BaseCard extends ui.WidgetItem {
      * @description TODO
      * @type {string}
      */
-    static __default_size = ui.FLAGS.SIZE_M;
+    static __defaultSize = ui.FLAGS.SIZE_M;
 
     /**
      * @description TODO
      * @type {string}
      */
-    static __default_flavor = null;
+    static __defaultFlavor = null;
 
     /**
      * @description TODO
      * @type {string}
      */
-    static __default_variant = null;
+    static __defaultVariant = null;
 
     /**
      * @description TODO
      * @type {string}
      */
-    static __default_headerPlacement = ui.FLAGS.TOP;
+    static __defaultHeaderPlacement = ui.FLAGS.TOP;
+
+    static __distribute = ui.WidgetItem.__distribute.Ext()
+        .To(`header-placement`,
+            (p_target, p_value) => {
+                p_target._mediaPlacement.Set(p_value);
+                p_target._orientation.Set(ui.FLAGS.Orientation(p_value, true));
+            }, null, `__defaultHeaderPlacement`)
+        .To(ui.IDS.VARIANT)
+        .To(ui.IDS.TITLE, null, ``)
+        .To(ui.IDS.SUBTITLE, null, ``)
+        .To(ui.IDS.LABEL, null, ``)
+        .To(ui.IDS.SIZE)
+        .To(`actions`);
 
     _Init() {
         super._Init();
@@ -57,26 +70,13 @@ class BaseCard extends ui.WidgetItem {
         this._orientation = new ui.helpers.FlagEnum(ui.FLAGS.orientations, true);
         this._orientation.Add(this);
 
-        this._distribute
-            .To(`header-placement`,
-                (p_value) => {
-                    this._mediaPlacement.Set(p_value);
-                    this._orientation.Set(ui.FLAGS.Orientation(p_value, true));
-                }, this.constructor.__default_headerPlacement)
-            .To(ui.IDS.VARIANT)
-            .To(ui.IDS.TITLE, null, ``)
-            .To(ui.IDS.SUBTITLE, null, ``)
-            .To(ui.IDS.LABEL, null, ``)
-            .To(ui.IDS.SIZE)
-            .To(`actions`);
-
     }
 
     _PostInit() {
         super._PostInit();
-        this._sizeEnum.Set(this.constructor.__default_size);
-        this._flavorEnum.Set(this.constructor.__default_flavor);
-        this._variantEnum.Set(this.constructor.__default_variant);
+        this._sizeEnum.Set(this.constructor.__defaultSize);
+        this._flavorEnum.Set(this.constructor.__defaultFlavor);
+        this._variantEnum.Set(this.constructor.__defaultVariant);
     }
 
     // ----> DOM
@@ -123,7 +123,7 @@ class BaseCard extends ui.WidgetItem {
                 'justify-content': `stretch`,
                 'align-items': `stretch`,
             },
-            
+
             '.header': {
                 'flex': '0 1 auto',
                 'min-height': '100px',

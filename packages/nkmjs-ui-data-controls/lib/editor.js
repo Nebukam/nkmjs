@@ -72,7 +72,7 @@ class Editor extends ui.views.View {
         this._actionStack = new actions.ActionStack();
 
         this._flags.Add(this, com.FLAGS.WARNING);
-
+        
         this._forwardContext = new ui.helpers.DataForward(this);
 
         this._dataObserver
@@ -94,8 +94,6 @@ class Editor extends ui.views.View {
 
     }
 
-    _OnInspectedDataCmdRegister(p_cmd) { }
-
     _PostInit() {
 
         super._PostInit();
@@ -111,6 +109,12 @@ class Editor extends ui.views.View {
     _RegisterEditorBits() {
 
     }
+
+    //#region Commands
+
+    _OnInspectedDataCmdRegister(p_cmd) { }
+
+    //#endregion
 
     // ----> Data management
 

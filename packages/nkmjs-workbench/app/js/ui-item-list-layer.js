@@ -10,7 +10,7 @@ const UIItem = require("./ui-item");
 class UIItemListLayer extends ui.views.Layer {
     constructor() { super(); }
 
-    static __default_orientation = ui.FLAGS.VERTICAL;
+    static __defaultOrientation = ui.FLAGS.VERTICAL;
 
     _Init() {
         super._Init();
