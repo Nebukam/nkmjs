@@ -44,14 +44,6 @@ class Shortcuts {
         }
     }
 
-    CreateFromString(p_string, p_trigger) {
-        return this._Register(KeystrokeEx.CreateFromString(p_string, p_trigger));
-    }
-
-    CreateFromKeyCodes(p_stroke, p_trigger) {
-        return this._Register(KeystrokeEx.CreateFromKeyCodes(p_stroke, p_trigger));
-    }
-
     _Register(p_keystroke) {
         this._keystrokes.push(p_keystroke);
         if (this._isEnabled) { p_keystroke.Enable(); }

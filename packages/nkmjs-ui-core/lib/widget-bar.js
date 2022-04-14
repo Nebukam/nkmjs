@@ -16,6 +16,7 @@ const InputBase = require(`./inputs/input-base`);
 
 const _flag_STRETCH = `stretch`;
 const _flag_STRETCH_SAME = `stretch-same`;
+const _flag_STRETCH_SQUEEZE = `stretch-squeeze`;
 
 /**
  * @description TODO
@@ -33,7 +34,9 @@ class WidgetBar extends WidgetOrientable {
 
     static get FLAG_STRETCH() { return _flag_STRETCH; }
     static get FLAG_STRETCH_SAME() { return _flag_STRETCH_SAME; }
-    static __stretchENUMs = [_flag_STRETCH, _flag_STRETCH_SAME];
+    static get FLAG_STRETCH_SQUEEZE(){ return _flag_STRETCH_SQUEEZE; }
+    
+    static __stretchENUMs = [_flag_STRETCH, _flag_STRETCH_SAME, _flag_STRETCH_SQUEEZE];
 
     // ----> Init
 
@@ -152,6 +155,14 @@ class WidgetBar extends WidgetOrientable {
             ':host(.stretch) .item': {
                 'flex': `1 0 auto`,
             },
+
+            ':host(.stretch-squeeze) .group': {
+                'flex': `1 1 auto`,
+            },
+            ':host(.stretch-squeeze) .item': {
+                'flex': `1 1 auto`,
+            },
+
             ':host(.vertical.stretch) .item': {
                 'max-height': `100% !important`,
             },

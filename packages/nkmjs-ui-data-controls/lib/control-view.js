@@ -24,7 +24,8 @@ class ControlView extends ui.views.View {
     static __clearBuilderOnRelease = false;
     static __controls = null;
     static __useMetaObserver = false;
-    static __default_shortcutRequireFocus = true;
+    static __default_shortcutRequireFocus = true;    
+
     static __distribute = com.helpers.OptionsDistribute.Ext(null,
         { beginFn: `_OnOptionsWillUpdate` })
         .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })

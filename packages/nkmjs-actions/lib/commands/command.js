@@ -52,9 +52,14 @@ class Command extends com.helpers.InfosObjectEx {
         this._emitter = null;
         this._running = false;
         this._shortcut = null;
+        this._shortcutActivated = false;
+        this._releaseOnEnd = false;
     }
 
     //#region Properties
+
+    get releaseOnEnd() { return this._releaseOnEnd; } //TODO : Check if this._icon is set, fallback on __NFO__.icon
+    set releaseOnEnd(p_value) { this._releaseOnEnd = p_value; }
 
     /**
      * @description TODO
@@ -62,20 +67,6 @@ class Command extends com.helpers.InfosObjectEx {
      * @customtag read-only
      */
     get running() { return this._running; }
-
-    /**
-     * @description Icon asset of the command
-     * @type {string}
-     */
-    get icon() { return this._icon; } //TODO : Check if this._icon is set, fallback on __NFO__.icon
-    set icon(p_value) { this._icon = p_value; }
-
-    /**
-     * @description Display name of the command
-     * @type {string}
-     */
-    get name() { return this._name; }
-    set name(p_value) { this._name = p_value; }
 
     /**
      * @description Current 'originator' of the command, i.e what made the execution request.
@@ -328,12 +319,16 @@ class Command extends com.helpers.InfosObjectEx {
 
         this._context = this._contextBefore;
 
+        if(this._releaseOnEnd){ this.Release(); }
+
     }
 
     _OnShortcutActivated(p_shortcut) {
         if (!this._isEnabled) { return; }
         p_shortcut.Consume();
+        this._shortcutActivated = true;
         this.Execute();
+        this._shortcutActivated = false;
     }
 
     //#endregion
@@ -348,6 +343,7 @@ class Command extends com.helpers.InfosObjectEx {
         this._contextBefore = null;
         this.emitter = null;
         this.shortcut = null;
+        this._releaseOnEnd = false;
         super._CleanUp();
     }
 

@@ -1,3 +1,5 @@
+'use strict';
+
 const actions = require("@nkmjs/actions");
 const ui = require(`@nkmjs/ui-core`);
 const dialog = require(`@nkmjs/dialog`);

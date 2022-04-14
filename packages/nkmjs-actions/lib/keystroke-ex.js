@@ -51,23 +51,15 @@ class KeystrokeEx extends Keystroke {
 
 
     Activate() {
-
-        if (!super.Activate()) { return false; }
-        if (!this._trigger) { return true; }
+        super.Activate();
+        if (!this._trigger) { return this._consumed; }
         let result = u.Call(this._trigger);
-
         return this._consumed || result;
-
-    }
-
-    Deactivate() {
-        if (!super.Deactivate()) { return false; }
-        if (!this._trigger) { return true; }
-        return true;
     }
 
     _CleanUp() {
         this._keys.length = 0;
+        this._trigger = null;
         super._CleanUp();
     }
 

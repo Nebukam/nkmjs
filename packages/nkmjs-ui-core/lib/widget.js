@@ -31,6 +31,7 @@ class Widget extends DisplayObjectContainer {
     static __defaultSelectOnActivation = false;
 
     static __default_iState = FLAGS.IDLE;
+    static __defaultInstanceOf = null;
 
 
     /**
@@ -512,6 +513,10 @@ class Widget extends DisplayObjectContainer {
      */
     get data() { return this._data; }
     set data(p_value) {
+
+        if (this.constructor.__defaultInstanceOf) {
+            if (!u.isInstanceOf(p_value, this.constructor.__defaultInstanceOf)) { p_value = null; }
+        }
 
         if (this._dataPreProcessor) { p_value = u.Call(this._dataPreProcessor, this, p_value); }
 

@@ -25,7 +25,9 @@ class InputCatalogBase extends InputBase {
     }, InputBase, ['css']);
 
     static __distribute = InputBase.__distribute.Ext()
-        .To(`itemKey`, `_itemKey`, null);
+        .To(`itemKey`, `_itemKey`, null)
+        .To(`catalog`, `data`)
+        .Move(`currentValue`);
 
     _Init() {
 
@@ -57,11 +59,6 @@ class InputCatalogBase extends InputBase {
 
     set useCatalogsAsGroup(p_value) { this._useCatalogsAsGroup = p_value; }
     set groupOptionID(p_value) { this._groupOptionId = p_value; }
-
-    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
-        super._OnOptionsUpdated(p_options, p_altOptions, p_defaults);
-        if (`catalog` in p_options) { this.data = p_options.catalog; }
-    }
 
     // ----> DOM
 
