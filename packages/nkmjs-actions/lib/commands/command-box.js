@@ -83,6 +83,20 @@ class CommandBox {
 
     }
 
+    Add(p_cmd, p_options = null) {
+
+        if (!p_options) { p_options = NULLOPTS; }
+
+        this._Register(p_cmd, p_options.hooks || null);
+
+        p_cmd.shortcut = p_options.shortcut || null;
+
+        this._idMap.set(p_options.id || p_cmd.constructor.name, p_cmd);
+
+        return p_cmd;
+
+    }
+
     Get(p_key) {
         if (!u.isString(p_key)) { if (u.isFunc(p_key) && u.isInstanceOf(p_key, Command)) { p_key = p_key.name; } }
         return this._idMap.get(p_key);
