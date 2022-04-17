@@ -78,6 +78,7 @@ class Keystroke extends com.pool.DisposableObjectEx {
     _Init() {
         super._Init();
         this._keys = [];
+        this._focusedFieldPreventActivation = false;
         this._active = false;
         this._enabled = false;
         this._silent = false;
@@ -91,6 +92,11 @@ class Keystroke extends com.pool.DisposableObjectEx {
 
     get silent() { return this._silent; }
     set silent(p_value) { this._silent = p_value; }
+
+    Weak(){
+        this._focusedFieldPreventActivation = true;
+        return this;
+    }
 
     Enable() {
         if (this._enabled) { return; }
@@ -133,6 +139,7 @@ class Keystroke extends com.pool.DisposableObjectEx {
 
     Activate() {
         if (this._active) { return false; }
+        if (this._focusedFieldPreventActivation && nkm.ui.INPUT.focusedField != null) { return false; }
         this._active = true;
         this._consumed = false;
         this.Broadcast(SIGNAL.ACTIVATED, this);
@@ -146,7 +153,7 @@ class Keystroke extends com.pool.DisposableObjectEx {
         return true;
     }
 
-    get consumed(){ return this._consumed; }
+    get consumed() { return this._consumed; }
 
     Consume() {
         if (!this._active) { return; }
@@ -155,6 +162,7 @@ class Keystroke extends com.pool.DisposableObjectEx {
 
     _CleanUp() {
         this._keys.length = 0;
+        this._focusedFieldPreventActivation = false;
         super._CleanUp();
     }
 

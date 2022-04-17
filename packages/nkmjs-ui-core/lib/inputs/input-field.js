@@ -104,13 +104,13 @@ class InputField extends InputBase {
 
     _FOut(p_evt) {
         if (INPUT.shift) { return; }
-
         if (p_evt) { p_evt.preventDefault(); }
         this._inputField.blur();
     }
 
     _onFocusIn(p_evt) {
         this._inFocus = true;
+        INPUT.focusedField = this;
         INPUT.ONKeyDown(KB._enter, this._FOut);
         this._restoreUpdatePreviewOnFocus = this._handler._updatePreviewOnInput;
         this._handler._updatePreviewOnInput = this._updatePreviewWhenFocused;
@@ -119,6 +119,7 @@ class InputField extends InputBase {
 
     _onFocusOut(p_evt) {
         this._inFocus = false;
+        if (INPUT.focusedField == this) { INPUT.focusedField = null; }
         INPUT.OFFKeyDown(KB._enter, this._FOut);
         this._handler._updatePreviewOnInput = this._restoreUpdatePreviewOnFocus;
         this._handler.SubmitValue();

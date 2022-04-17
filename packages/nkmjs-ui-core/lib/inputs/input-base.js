@@ -28,6 +28,7 @@ class BaseInput extends Widget {
         { beginFn: `_OnOptionsWillUpdate`, wrapUpFn: `_OnOptionsUpdated` })
         .To(`flagOn`, (p_target, p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { p_target._flags.Set(p_value[i], true) } })
         .To(`flagOff`, (p_target, p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { p_target._flags.Set(p_value[i], false) } })
+        .To(`htitle`)
         .To(IDS.SIZE)
         .To(`currentValue`)
         .To(IDS.FLAVOR)

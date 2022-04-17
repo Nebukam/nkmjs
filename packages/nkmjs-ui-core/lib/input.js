@@ -22,7 +22,6 @@ const dom = require(`./utils-dom`);
 class INPUT extends com.helpers.SingletonEx {
     constructor() { super(); }
 
-
     /**
      * @description TODO
      * @type {string}
@@ -158,6 +157,9 @@ class INPUT extends com.helpers.SingletonEx {
      * @param {*} p_fn 
      */
     static OFFKeyRepeat(p_key, p_fn) { this.Unwatch(`R_${p_key}`, p_fn); }
+
+    static get focusedField() { return this.__focusedField; }
+    static set focusedField(p_value) { this.__focusedField = p_value; }
 
     /**
      * @description TODO
@@ -358,9 +360,9 @@ class INPUT extends com.helpers.SingletonEx {
         this.Broadcast(INPUT.KEY_DOWN);
         this.Broadcast(`D_${p_name}`);
         this.Broadcast(`T_${p_name}`, true);
-        
+
         let consumed = KB.instance._Push(p_keyCode);
-        if(consumed){ p_evt.preventDefault(); }
+        if (consumed) { p_evt.preventDefault(); }
 
     }
 
