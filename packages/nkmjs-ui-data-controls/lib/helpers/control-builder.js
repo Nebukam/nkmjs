@@ -2,6 +2,7 @@
 
 const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
+const ui = require("@nkmjs/ui-core");
 
 /**
  * @description A ControlBuilder is a simple helper that streamlines
@@ -142,7 +143,11 @@ class ControlBuilder {
         let
             control = this._owner.Attach(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, this._host),
             conditional = false;
+
+        if (this._controls.length >= 1) { ui.dom.AttachAfter(control, this._controls[this._controls.length - 1]); }
+
         this._controls.push(control);
+
         if (p_config) {
             this._configMap.set(control, p_config);
             if (p_config.options && !p_configIsOptions) { control.options = p_config.options; }
