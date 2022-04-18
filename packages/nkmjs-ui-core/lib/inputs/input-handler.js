@@ -229,7 +229,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
 
         }
         */
-        this._managed.ForEach((fn) => {
+        stack.ForEach((fn) => {
             let result = u.CallPrepend(fn, cValue);
             if (result) { this._PushError(result); }
         }, this);

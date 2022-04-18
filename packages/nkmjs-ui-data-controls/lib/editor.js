@@ -86,8 +86,6 @@ class Editor extends ui.views.View {
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnInspectableItemRemoved, this)
             .Watch(com.SIGNAL.ITEM_BUMPED, this._OnInspectableItemBumped, this);
 
-        this.forwardData.To(this._commands, { mapping: `context` });
-
         this._iDataCommands = new actions.CommandBox(this._Bind(this._OnInspectedDataCmdRegister), this);
         this._iDataCommands.context = this._inspectedData;
         this._iDataRefresh = com.DelayedCall(this._iDataCommands.RefreshAvailability.bind(this._iDataCommands));

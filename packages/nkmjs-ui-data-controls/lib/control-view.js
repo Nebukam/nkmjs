@@ -220,7 +220,7 @@ class ControlView extends ui.views.View {
 
     _Render() {
         super._Render();
-        if (this._builder.host == this._builder._owner) { this._builder.host = this._wrapper; }
+        if (this._builder.host == this._builder._owner) { this._builder.host = this._buildHost || this._wrapper; }
         let controlList = this.constructor.__controls;
         if (controlList) { this._builder.Build(controlList); }
     }

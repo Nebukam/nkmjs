@@ -54,6 +54,7 @@ class Command extends com.helpers.InfosObjectEx {
         this._shortcut = null;
         this._shortcutActivated = false;
         this._releaseOnEnd = false;
+        this._emitterBound = false;
     }
 
     //#region Properties
@@ -98,7 +99,10 @@ class Command extends com.helpers.InfosObjectEx {
      * @description TODO
      * @param {*} p_emitter 
      */
-    _OnEmitterReleased(p_emitter) { this.emitter = null; }
+    _OnEmitterReleased(p_emitter) {
+        if (!this._emitterBound) { return; }
+        this.emitter = null;
+    }
 
     //#endregion
 
@@ -319,7 +323,7 @@ class Command extends com.helpers.InfosObjectEx {
 
         this._context = this._contextBefore;
 
-        if(this._releaseOnEnd){ this.Release(); }
+        if (this._releaseOnEnd) { this.Release(); }
 
     }
 

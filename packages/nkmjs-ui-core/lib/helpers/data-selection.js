@@ -197,7 +197,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
     RequestSelectAll() {
 
         this._countAll = null;
-        this.Broadcast(SIGNAL.SELECTION_TOTAL_COUNT_REQUEST, this);
+        this.Broadcast(SIGNAL.SELECTION_TOTAL_COUNT_REQUEST, this, this._SetAllCount);
         if (this._countAll > 0) {
             for (var i = 0; i < this._countAll; i++) {
                 this.Broadcast(SIGNAL.SELECTION_ADD_REQUEST, this, i);
