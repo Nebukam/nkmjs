@@ -51,10 +51,17 @@ class KeystrokeEx extends Keystroke {
 
 
     Activate() {
-        super.Activate();
-        if (!this._trigger) { return this._consumed; }
-        let result = u.Call(this._trigger);
-        return this._consumed || result;
+
+        if (this._active) { return false; }
+        if (this._focusedFieldPreventActivation && nkm.ui.INPUT.focusedField != null) { return false; }
+        this._active = true;
+        this._consumed = false;
+        this.Broadcast(SIGNAL.ACTIVATED, this);
+
+        if (this._consumed || !this._trigger) { return this._consumed; }
+        this._consumed = u.Call(this._trigger);
+
+        return this._consumed;
     }
 
     _CleanUp() {
