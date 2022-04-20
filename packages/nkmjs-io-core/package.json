@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/io-core",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "description": "NKMjs Framework IO Core",
   "main": "index.js",
   "repository": {
