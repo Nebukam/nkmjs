@@ -170,7 +170,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
      * @param {*} p_err 
      */
     OnError(p_err) {
-        console.error(p_err);
+        //console.error(p_err);
         if (this._states.error.fn) { this._states.error.fn(p_err); }
         this._rsc._state.currentState = this._states.error.state;
         p_err.rsc = this._rsc;
