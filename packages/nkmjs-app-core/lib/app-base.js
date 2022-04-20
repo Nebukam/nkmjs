@@ -74,6 +74,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         this._overlayHandlerClass = GlobalOverlayHandler;
         this._overlayHandler = null;
+        
         this._unsavedDocHandler = new UnsavedDocHandler(this);
 
         this._commands = new actions.CommandBox();
@@ -158,48 +159,29 @@ class AppBase extends com.helpers.SingletonEx {
             this._appBody._host);
         */
 
-        let layerCount = this._layers ? this._layers.length : 0;
-        if (layerCount > 0) {
+        if (!this._layers) { this._layers = []; }
+        this._layers.push({ id: `_overlayHandler`, cl: this._overlayHandlerClass });
 
-            for (let i = 0, n = layerCount; i < n; i++) {
-                let conf = this._layers[i],
-                    layer = this._appBody.Attach(conf.cl);
-
-                conf.layer = layer;
-                if (conf.id) { this[conf.id] = layer; }
-                if (conf.fn) { conf.fn(layer, conf); }
-            }
-
-            // Push overlay before postFn on layers
-            this._overlayHandler = this._appBody.Attach(this._overlayHandlerClass);
-
-            for (let i = 0, n = layerCount; i < n; i++) {
-                let conf = this._layers[i];
-                if (conf.postFn) { conf.postFn(conf.layer, conf); }
-            }
-
-        } else {
-            this._overlayHandler = this._appBody.Attach(this._overlayHandlerClass);
-        }
+        this._appBody.BuildLayers(this, this._layers);
 
     }
 
     _RegisterIPCBindings() {
+
         let binding;
+
         for (let i = 0, n = this._ipcBindings.length; i < n; i++) {
             binding = this._ipcBindings[i];
             actions.RELAY.ipcOn(binding.evt, binding.fn);
         }
+
     }
 
     _OnPWAUpdateAvailable() {
 
         let msg = ``;
-        if (env.displayMode != env.ENV_DISPLAY.STANDALONE) {
-            msg = `An update is available, please refresh the page to apply it.`;
-        } else {
-            msg = `An update is available, please close & re-open the app to apply it.`;
-        }
+        if (env.displayMode != env.ENV_DISPLAY.STANDALONE) { msg = `An update is available, please refresh the page to apply it.`; }
+        else { msg = `An update is available, please close & re-open the app to apply it.`; }
 
         dialog.DIALOG.Push({
             title: `Update available`,
@@ -270,7 +252,7 @@ class AppBase extends com.helpers.SingletonEx {
 
     }
 
-    _OnPrefsUpdated(p_data){
+    _OnPrefsUpdated(p_data) {
 
     }
 
@@ -322,9 +304,7 @@ class AppBase extends com.helpers.SingletonEx {
 
     AppDisplay() { }
 
-    _HandleDialogRequest(p_request) {
-        this._overlayHandler.HandleOverlayRequest(p_request);
-    }
+    _HandleDialogRequest(p_request) { this._overlayHandler.HandleOverlayRequest(p_request); }
 
     _OnEditRequest(p_request) {
 
@@ -353,7 +333,7 @@ class AppBase extends com.helpers.SingletonEx {
         }
     }
 
-    _OnOpenPathRequest(p_path){
+    _OnOpenPathRequest(p_path) {
 
     }
 

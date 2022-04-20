@@ -23,14 +23,43 @@ class AppBody extends ui.views.LayerContainer {
         this.style.setProperty(`--screen-width`, this._screenWidt);
         this.style.setProperty(`--screen-height`, this._screenHeight);
 
+        this._layerConfigs = null;
+        this._overlayHandler = null;
+
     }
 
     _Style() {
         return style.Extends({
             ':host': {
-                'transform':`translate3d(0,0,0)`,
+                'transform': `translate3d(0,0,0)`,
             }
         }, super._Style());
+    }
+
+    BuildLayers(p_owner, p_layerConfigs) {
+
+        this._layerConfigs = p_layerConfigs;
+
+        let layerCount = p_layerConfigs ? p_layerConfigs.length : 0;
+
+        if (layerCount == 0) {
+            throw new Error(`no body layer`);
+        }
+
+        for (let i = 0, n = layerCount; i < n; i++) {
+            let conf = p_layerConfigs[i],
+                layer = this.Attach(conf.cl);
+
+            conf.layer = layer;
+            if (conf.id) { p_owner[conf.id] = layer; }
+            if (conf.fn) { u.Call(conf.fn, layer, conf); }
+        }
+
+        for (let i = 0, n = layerCount; i < n; i++) {
+            let conf = p_layerConfigs[i];
+            if (conf.postFn) { u.Call(conf.postFn, conf.layer, conf); }
+        }
+
     }
 
     _OnTick() {

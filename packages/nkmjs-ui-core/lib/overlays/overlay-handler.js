@@ -51,7 +51,7 @@ class OverlayHandler extends LayerContainer {
 
     HandleOverlayRequest(p_request) {
 
-        if(p_request.isHandled){ return; }
+        if (p_request.isHandled) { return; }
 
         let overlayOptions = p_request.options;
 
@@ -65,7 +65,7 @@ class OverlayHandler extends LayerContainer {
 
         // Check if overlayOptions aren't in use already
         let existingOverlay = this._overlayMap.Get(overlayOptions);
-        
+
         if (existingOverlay) {
             existingOverlay.RequestDisplay();
             return;
@@ -74,12 +74,8 @@ class OverlayHandler extends LayerContainer {
         this.BringToFront();
         this.visible = true;
 
-        let fallbackOverlayClass = com.BINDINGS.Get(
-            CONTEXT.OVERLAY,
-            p_request.requestType,
-            this.constructor.__default_overlayClass);
-
-        let overlayClass = u.tils.Get(overlayOptions, `overlayClass`, fallbackOverlayClass),
+        let overlayClass = u.tils.Get(overlayOptions, `overlayClass`,
+            com.BINDINGS.Get(CONTEXT.OVERLAY, p_request.requestType, this.constructor.__default_overlayClass)),
             newOverlay = this.Attach(overlayClass, `overlay`);
 
         this._overlayMap.Set(overlayOptions, newOverlay);

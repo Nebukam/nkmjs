@@ -4,7 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
 const IO_SIGNAL = require(`./io-signal.js`);
-const RESSOURCE_STATE = require(`./resource-state`);
+const RESOURCE_STATE = require(`./resource-state`);
 const ResourceOperation = require(`./resource-operation`);
 const RESPONSE_TYPE = require(`./response-type.js`);
 
@@ -54,42 +54,42 @@ class Resource extends com.pool.DisposableObjectEx {
         this._serializeFn = null;
 
         this._state = new com.helpers.StateMachine();
-        this._state.currentState = RESSOURCE_STATE.NONE;
+        this._state.currentState = RESOURCE_STATE.NONE;
         this._state.owner = this;
 
         this._operation = null;
         this._releaseOnDeleteSuccess = false;
 
         this._readOperationConfig = {
-            prepare: { state: RESSOURCE_STATE.READ_PENDING },
-            start: { state: RESSOURCE_STATE.READING, evt: IO_SIGNAL.READ_START },
-            progress: { state: RESSOURCE_STATE.READING, evt: IO_SIGNAL.READ_PROGRESS },
-            error: { state: RESSOURCE_STATE.NONE, evt: IO_SIGNAL.READ_ERROR },
-            success: { state: RESSOURCE_STATE.READY, evt: IO_SIGNAL.READ_COMPLETE, fn: this._Bind(this._OnReadSuccess) }
+            prepare: { state: RESOURCE_STATE.READ_PENDING },
+            start: { state: RESOURCE_STATE.READING, evt: IO_SIGNAL.READ_START },
+            progress: { state: RESOURCE_STATE.READING, evt: IO_SIGNAL.READ_PROGRESS },
+            error: { state: RESOURCE_STATE.NONE, evt: IO_SIGNAL.READ_ERROR },
+            success: { state: RESOURCE_STATE.READY, evt: IO_SIGNAL.READ_COMPLETE, fn: this._Bind(this._OnReadSuccess) }
         }
 
         this._writeOperationConfig = {
-            prepare: { state: RESSOURCE_STATE.WRITE_PENDING },
-            start: { state: RESSOURCE_STATE.WRITING, evt: IO_SIGNAL.WRITE_START, fn: this._Bind(this._OnWriteStart) },
-            progress: { state: RESSOURCE_STATE.WRITING, evt: IO_SIGNAL.WRITE_PROGRESS },
-            error: { state: RESSOURCE_STATE.NONE, evt: IO_SIGNAL.WRITE_ERROR },
-            success: { state: RESSOURCE_STATE.READY, evt: IO_SIGNAL.WRITE_COMPLETE }
+            prepare: { state: RESOURCE_STATE.WRITE_PENDING },
+            start: { state: RESOURCE_STATE.WRITING, evt: IO_SIGNAL.WRITE_START, fn: this._Bind(this._OnWriteStart) },
+            progress: { state: RESOURCE_STATE.WRITING, evt: IO_SIGNAL.WRITE_PROGRESS },
+            error: { state: RESOURCE_STATE.NONE, evt: IO_SIGNAL.WRITE_ERROR },
+            success: { state: RESOURCE_STATE.READY, evt: IO_SIGNAL.WRITE_COMPLETE }
         }
 
         this._renameOperationConfig = {
-            prepare: { state: RESSOURCE_STATE.RENAME_PENDING },
-            start: { state: RESSOURCE_STATE.RENAMING, evt: IO_SIGNAL.RENAME_START },
-            progress: { state: RESSOURCE_STATE.RENAMING, evt: IO_SIGNAL.RENAME_PROGRESS },
-            error: { state: RESSOURCE_STATE.NONE, evt: IO_SIGNAL.RENAME_ERROR },
-            success: { state: RESSOURCE_STATE.READY, evt: IO_SIGNAL.RENAME_COMPLETE }
+            prepare: { state: RESOURCE_STATE.RENAME_PENDING },
+            start: { state: RESOURCE_STATE.RENAMING, evt: IO_SIGNAL.RENAME_START },
+            progress: { state: RESOURCE_STATE.RENAMING, evt: IO_SIGNAL.RENAME_PROGRESS },
+            error: { state: RESOURCE_STATE.NONE, evt: IO_SIGNAL.RENAME_ERROR },
+            success: { state: RESOURCE_STATE.READY, evt: IO_SIGNAL.RENAME_COMPLETE }
         }
 
         this._deleteOperationConfig = {
-            prepare: { state: RESSOURCE_STATE.DELETE_PENDING },
-            start: { state: RESSOURCE_STATE.DELETING, evt: IO_SIGNAL.DELETE_START },
-            progress: { state: RESSOURCE_STATE.DELETING, evt: IO_SIGNAL.DELETE_PROGRESS },
-            error: { state: RESSOURCE_STATE.NONE, evt: IO_SIGNAL.DELETE_ERROR },
-            success: { state: RESSOURCE_STATE.READY, evt: IO_SIGNAL.DELETE_COMPLETE, fn: this._Bind(this._OnDeleteSuccess) }
+            prepare: { state: RESOURCE_STATE.DELETE_PENDING },
+            start: { state: RESOURCE_STATE.DELETING, evt: IO_SIGNAL.DELETE_START },
+            progress: { state: RESOURCE_STATE.DELETING, evt: IO_SIGNAL.DELETE_PROGRESS },
+            error: { state: RESOURCE_STATE.NONE, evt: IO_SIGNAL.DELETE_ERROR },
+            success: { state: RESOURCE_STATE.READY, evt: IO_SIGNAL.DELETE_COMPLETE, fn: this._Bind(this._OnDeleteSuccess) }
         }
 
     }
@@ -166,7 +166,7 @@ class Resource extends com.pool.DisposableObjectEx {
 
     /**
      * @description TODO
-     * @type {io.core.RESSOURCE_STATE}
+     * @type {io.core.RESOURCE_STATE}
      * @customtag read-only
      */
     get state() { return this._state.currentState; }
@@ -237,7 +237,7 @@ class Resource extends com.pool.DisposableObjectEx {
      */
     _PrepareOperation(p_fn, p_states, p_options = null, ...args) {
 
-        if (this._state.IsNotAny(RESSOURCE_STATE.NONE, RESSOURCE_STATE.READY)) {
+        if (this._state.IsNotAny(RESOURCE_STATE.NONE, RESOURCE_STATE.READY)) {
             console.warn(`Resource ${this} not in a state allowing operation`);
             return false;
         }
@@ -420,7 +420,7 @@ class Resource extends com.pool.DisposableObjectEx {
 
         this._releaseOnDeleteSuccess = false;
 
-        this._state.currentState = RESSOURCE_STATE.NONE;
+        this._state.currentState = RESOURCE_STATE.NONE;
 
         super._CleanUp();
     }

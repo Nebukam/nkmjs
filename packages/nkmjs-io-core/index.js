@@ -11,7 +11,7 @@ module.exports = {
     IO_SIGNAL: require(`./lib/io-signal`),
 
     RESOURCES: __RESOURCES,
-    RESSOURCE_STATE: require(`./lib/resource-state`),
+    RESOURCE_STATE: require(`./lib/resource-state`),
     Resource: require(`./lib/resource`),
     Directory: require(`./lib/directory`),
 
