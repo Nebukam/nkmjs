@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/actions",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "NKMjs Framework Actions",
   "main": "index.js",
   "repository": {

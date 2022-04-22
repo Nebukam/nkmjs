@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/style",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "description": "NKMjs Framework Style -- include generic css sheets part of the default styling under /css.",
   "browser": "index.js",
   "repository": {
