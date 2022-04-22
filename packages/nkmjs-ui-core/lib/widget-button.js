@@ -12,6 +12,8 @@ const IDS = require(`./ids`);
 const Widget = require(`./widget`);
 const FlagEnum = require("./helpers/flag-enum");
 
+const base = Widget;
+
 /**
  * @description TODO
  * @class
@@ -19,12 +21,12 @@ const FlagEnum = require("./helpers/flag-enum");
  * @augments ui.core.Widget
  * @memberof ui.core
  */
-class WidgetButton extends Widget {
+class WidgetButton extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/global-button.css`]
-    }, Widget, ['css']);
+    }, base, ['css']);
 
     // ----> Init
 

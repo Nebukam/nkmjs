@@ -7,7 +7,9 @@ const APP_MESSAGES = require(`../app-messages`);
 
 // Auto update dialog
 
-class AutoUpdateDialogBox extends dialog.DialogBox {
+const base = dialog.DialogBox;
+
+class AutoUpdateDialogBox extends base {
     constructor() { super(); }
 
     _Init() {

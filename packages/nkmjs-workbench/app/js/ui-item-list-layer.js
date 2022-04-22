@@ -7,7 +7,8 @@ const { CSS } = nkm.style;
 
 const UIItem = require("./ui-item");
 
-class UIItemListLayer extends ui.views.Layer {
+const base = ui.views.Layer;
+class UIItemListLayer extends base {
     constructor() { super(); }
 
     static __defaultOrientation = ui.FLAGS.VERTICAL;
@@ -20,7 +21,7 @@ class UIItemListLayer extends ui.views.Layer {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return CSS.Extends({
             ':host': {
                 display: `flex`,
@@ -37,7 +38,7 @@ class UIItemListLayer extends ui.views.Layer {
                 'min-width': `250px`,
                 'min-height': `150px`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

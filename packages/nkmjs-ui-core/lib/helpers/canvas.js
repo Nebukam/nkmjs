@@ -10,7 +10,9 @@ const DisplayObject = require(`../display-object`);
 
 const SIGNAL = require(`../signal`);
 
-class Canvas extends DisplayObject {
+const base = DisplayObject;
+
+class Canvas extends base {
     constructor() { super(); }
 
     static __useResizeCallback = true;

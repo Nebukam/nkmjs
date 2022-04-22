@@ -290,10 +290,10 @@ class EntryManager extends EcosystemPart {
      * @param {*} p_otherEntry 
      */
     CheckCircularReference(p_userEntry, p_otherEntry) {
-        let base = p_otherEntry;
-        while (base != null) {
-            if (base === p_userEntry) { return true; }
-            base = base.base;
+        let baseEntry = p_otherEntry;
+        while (baseEntry != null) {
+            if (baseEntry === p_userEntry) { return true; }
+            baseEntry = baseEntry.base;
         }
         return false;
     }

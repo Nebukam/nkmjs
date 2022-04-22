@@ -15,12 +15,14 @@ const FlagEnum = require(`../helpers/flag-enum`);
 const SIGNAL = require(`./input-signal`);
 const InputHandler = require(`./input-handler`);
 
-class BaseInput extends Widget {
+const base = Widget;
+
+class BaseInput extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/global-input.css`]
-    }, Widget, ['css']);
+    }, base, ['css']);
 
     static __usePaintCallback = false;
 

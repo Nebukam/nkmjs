@@ -8,18 +8,19 @@ const actions = require("@nkmjs/actions");
 const data = require("@nkmjs/data-core");
 const collections = require("@nkmjs/collections");
 
+const base = ui.inputs.InputCatalogBase;
 const __slider = `slider`;
 const _flag_noArrows = `no-arrows`;
 var __uid = 0;
 
-class InputSelect extends ui.inputs.InputCatalogBase {
+class InputSelect extends base {
     constructor() { super(); }
 
     static __inputProperties = {};
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/select.css`, `@/inputs/field.css`]
-    }, ui.inputs.InputCatalogBase, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -41,7 +42,7 @@ class InputSelect extends ui.inputs.InputCatalogBase {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 position: `relative`,
@@ -58,7 +59,7 @@ class InputSelect extends ui.inputs.InputCatalogBase {
                 'min-height': `28px !important` //min height for input field
 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

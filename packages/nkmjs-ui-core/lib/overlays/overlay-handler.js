@@ -11,10 +11,12 @@ const CONTEXT = require("./overlay-context");
 const OverlayOptions = require("./overlay-options");
 const Overlay = require("./overlay");
 
+const base = LayerContainer;
+
 /**
  * @description TODO
  */
-class OverlayHandler extends LayerContainer {
+class OverlayHandler extends base {
     constructor() { super(); }
 
     static __default_overlayClass = Overlay;
@@ -34,12 +36,12 @@ class OverlayHandler extends LayerContainer {
 
     // ---> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': { 'pointer-events': 'none' },
             '.overlay': { 'pointer-events': 'auto' },
-            [this._layerClassName]: { 'pointer-events': 'auto' }
-        }, super._Style());
+            [this.__layerClassName]: { 'pointer-events': 'auto' }
+        }, base._Style());
     }
 
     // ----> Handling

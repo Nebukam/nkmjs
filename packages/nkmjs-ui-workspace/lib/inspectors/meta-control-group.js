@@ -7,9 +7,10 @@ const ui = require(`@nkmjs/ui-core`);
 const InspectorGroup = require(`./inspector-group`);
 const MetaControlItem = require(`./meta-control-item`);
 
+const base = InspectorGroup;
 let _expandedMetaPaths = new collections.Dictionary();
 
-class MetaControlGroup extends InspectorGroup {
+class MetaControlGroup extends base {
     constructor() { super(); }
 
     static __defaultSelectOnActivation = false;
@@ -37,7 +38,7 @@ class MetaControlGroup extends InspectorGroup {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 margin: `5px`
@@ -47,7 +48,7 @@ class MetaControlGroup extends InspectorGroup {
                 padding: `6px`
             },
             '.facade': { flex: `1 1 auto` },
-        }, super._Style());
+        }, base._Style());
     }
 
     get metaPath() { return this._metaPath; }

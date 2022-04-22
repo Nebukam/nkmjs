@@ -8,7 +8,9 @@ const ui = require(`@nkmjs/ui-core`);
 
 const DialogBox = require(`./dialog-box`);
 
-class DialogForm extends DialogBox {
+const base = DialogBox;
+
+class DialogForm extends base {
     constructor() { super(); }
 
     _Init() {
@@ -30,13 +32,13 @@ class DialogForm extends DialogBox {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
 
             }
-        }, super._Style());
+        }, base._Style());
 
     }
 

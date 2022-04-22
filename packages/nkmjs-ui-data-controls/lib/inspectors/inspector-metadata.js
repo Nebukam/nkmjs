@@ -7,7 +7,9 @@ const ui = require("@nkmjs/ui-core");
 const items = require(`./items`);
 const InspectorView = require(`../inspector-view`);
 
-class MetadataInspector extends InspectorView {
+const base = InspectorView;
+
+class MetadataInspector extends base {
     constructor() { super(); }
 
     static __ppdata = (p_owner, p_data) =>{

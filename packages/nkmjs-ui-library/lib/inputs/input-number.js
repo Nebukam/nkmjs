@@ -6,17 +6,18 @@ const ui = require(`@nkmjs/ui-core`);
 const style = require(`@nkmjs/style`);
 const actions = require("@nkmjs/actions");
 
+const base = ui.inputs.InputNumberBase;
 const __slider = `slider`;
 const _flag_noArrows = `no-arrows`;
 
-class InputNumber extends ui.inputs.InputNumberBase {
+class InputNumber extends base {
     constructor() { super(); }
 
     static __inputProperties = { type: `number` };
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/number.css`]
-    }, ui.inputs.InputNumberBase, ['css']);
+    }, base, ['css']);
 
     _Init(){
         super._Init();
@@ -30,7 +31,7 @@ class InputNumber extends ui.inputs.InputNumberBase {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'height': `var(--size)`,
@@ -48,7 +49,7 @@ class InputNumber extends ui.inputs.InputNumberBase {
                 '-webkit-appearance': 'none',
                 'margin': '0'
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _onFocusIn(p_evt) {

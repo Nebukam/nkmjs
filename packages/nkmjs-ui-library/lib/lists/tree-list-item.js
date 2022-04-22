@@ -7,6 +7,7 @@ const ui = require(`@nkmjs/ui-core`);
 
 const dom = require(`../dom`);
 
+const base = ui.lists.ListItem;
 
 /**
  * @description TODO
@@ -15,7 +16,7 @@ const dom = require(`../dom`);
  * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class TreeListItem extends ui.lists.ListItem {
+class TreeListItem extends base {
     constructor() {
         super();
         this.depth = 0;
@@ -23,9 +24,9 @@ class TreeListItem extends ui.lists.ListItem {
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/tree-list-item.css`]
-    }, ui.lists.ListItem, ['css']);
+    }, base, ['css']);
 
-    static __distribute = ui.lists.ListItem.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`data`, `itemData`); // Make sure this is registered last
 
     // ----> Init
@@ -65,12 +66,12 @@ class TreeListItem extends ui.lists.ListItem {
      */
     set label(p_value) { this._label.Set(p_value); }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

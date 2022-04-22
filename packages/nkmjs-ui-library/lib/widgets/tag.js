@@ -5,13 +5,14 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
+const base = ui.Widget;
 
-class Tag extends ui.Widget {
+class Tag extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/widgets/tag.css`]
-    }, ui.Widget, ['css']);
+    }, base, ['css']);
 
     static __distribute = com.helpers.OptionsDistribute.Ext()
         .To(ui.IDS.FLAVOR)

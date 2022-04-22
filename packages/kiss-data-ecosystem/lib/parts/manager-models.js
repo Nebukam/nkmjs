@@ -146,10 +146,10 @@ class ModelManager extends EcosystemPart {
      * @param {*} p_otherModel 
      */
     CheckCircularReference(p_userModel, p_otherModel) {
-        let base = p_otherModel;
-        while (base != null) {
-            if (base === p_userModel) { return true; }
-            base = base.base;
+        let baseModel = p_otherModel;
+        while (baseModel != null) {
+            if (baseModel === p_userModel) { return true; }
+            baseModel = baseModel.base;
         }
         return false;
     }

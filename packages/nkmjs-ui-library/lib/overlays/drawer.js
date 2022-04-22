@@ -8,6 +8,8 @@ const ui = require(`@nkmjs/ui-core`);
 
 const dom = require(`../dom`);
 
+const base = ui.views.View;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -15,12 +17,12 @@ const dom = require(`../dom`);
  * @augments ui.core.views.View
  * @memberof ui.core.views
  */
-class Drawer extends ui.views.View {
+class Drawer extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/drawer.css`]
-    }, ui.views.View, ['css']);
+    }, base, ['css']);
 
     static __ppdata = (p_owner, p_data) => {
 
@@ -63,7 +65,7 @@ class Drawer extends ui.views.View {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'display': `grid`,
@@ -79,7 +81,7 @@ class Drawer extends ui.views.View {
             },
             '.icon.close': {
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     /**

@@ -5,12 +5,14 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
-class InputColor extends ui.inputs.InputField {
+const base = ui.inputs.InputField;
+
+class InputColor extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/color.css`]
-    }, ui.inputs.InputField, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -24,11 +26,11 @@ class InputColor extends ui.inputs.InputField {
     get label() { return this._label; }
     set label(p_value){ this._label.Set(p_value); }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             '.field': { '@': [`invisible-fill`] },
             '.body':{ 'pointer-events':'none' }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

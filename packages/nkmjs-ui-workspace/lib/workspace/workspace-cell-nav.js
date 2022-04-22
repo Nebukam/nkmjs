@@ -4,12 +4,14 @@ const com = require("@nkmjs/common");
 const ui = require(`@nkmjs/ui-core`);
 const uilib = require(`@nkmjs/ui-library`);
 
-class WorkspaceCellNav extends uilib.views.ShelfNav {
+const base = uilib.views.ShelfNav;
+
+class WorkspaceCellNav extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace-cell-nav.css`]
-    }, uilib.views.ShelfNav, ['css']);
+    }, base, ['css']);
 
     // ----> Init
 

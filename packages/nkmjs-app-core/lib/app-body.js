@@ -6,12 +6,14 @@ const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 const ui = require("@nkmjs/ui-core");
 
-class AppBody extends ui.views.LayerContainer {
+const base = ui.views.LayerContainer;
+
+class AppBody extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/global.css`]
-    }, ui.views.LayerContainer, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -28,12 +30,12 @@ class AppBody extends ui.views.LayerContainer {
 
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'transform': `translate3d(0,0,0)`,
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     BuildLayers(p_owner, p_layerConfigs) {

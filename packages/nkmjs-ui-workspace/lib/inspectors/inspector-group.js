@@ -5,7 +5,9 @@ const uilib = require(`@nkmjs/ui-library`);
 
 const InspectorItem = require(`./inspector-item`);
 
-class InspectorGroup extends InspectorItem {
+const base = InspectorItem;
+
+class InspectorGroup extends base {
     constructor() { super(); this._staticContentDefault = this._staticContent; }
 
     _Init() {
@@ -51,7 +53,7 @@ class InspectorGroup extends InspectorItem {
     get body() { return this._body; }
     get footer() { return this._footer; }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 //TODO : Implement orientation in styling
@@ -103,7 +105,7 @@ class InspectorGroup extends InspectorItem {
             ':host(.expanded) .body': {
                 display: `flex`,
             },
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

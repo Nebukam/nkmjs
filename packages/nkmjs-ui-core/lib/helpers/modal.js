@@ -19,6 +19,7 @@ const Widget = require(`../widget`);
 const FlagEnum = require(`./flag-enum`);
 const RectTracker = require(`./rect-tracker`);
 
+const base = DisplayObjectContainer;
 const __defaultBody = Symbol(`defaultBody`);
 /**
  * A Modal is a lightweight container with absolute positioning added to an object.
@@ -35,7 +36,7 @@ const __defaultBody = Symbol(`defaultBody`);
  * @augments ui.core.DisplayObjectContainer
  * @memberof ui.core.helpers
  */
-class Modal extends DisplayObjectContainer {
+class Modal extends base {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
@@ -361,7 +362,7 @@ class Modal extends DisplayObjectContainer {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return {
             ':host': {
                 '@': ['fade-in'],

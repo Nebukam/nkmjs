@@ -5,6 +5,8 @@ const FLAGS = require(`../flags`);
 const manipulators = require("../manipulators");
 const DisplayObject = require("../display-object");
 
+const base = DisplayObject;
+
 /**
  * @description TODO
  * @class
@@ -12,7 +14,7 @@ const DisplayObject = require("../display-object");
  * @augments ui.core.DisplayObject
  * @memberof ui.core.helpers
  */
-class Frame extends DisplayObject {
+class Frame extends base {
     constructor() { super(); }
 
     // ----> Init
@@ -24,7 +26,7 @@ class Frame extends DisplayObject {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return {
             ':host': {
                 position: `relative`,

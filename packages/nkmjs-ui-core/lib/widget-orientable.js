@@ -9,6 +9,7 @@ const FLAGS = require(`./flags`);
 const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
 
+const base = Widget;
 
 /**
  * @description TODO
@@ -17,7 +18,7 @@ const Widget = require(`./widget`);
  * @augments ui.core.Widget
  * @memberof ui.core
  */
-class WidgetOrientable extends Widget {
+class WidgetOrientable extends base {
     constructor() { super(); }
 
     /**

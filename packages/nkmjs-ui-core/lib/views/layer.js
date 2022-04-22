@@ -3,6 +3,8 @@
 const UI = require(`../ui`);
 const View = require(`./view`);
 
+const base = View;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -10,7 +12,7 @@ const View = require(`./view`);
  * @augments ui.core.views.View
  * @memberof ui.core.views
  */
-class Layer extends View {
+class Layer extends base {
     constructor() { super(); }
 
     // ----> Init
@@ -36,7 +38,7 @@ class Layer extends View {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return {
             ':host': {
                 '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box

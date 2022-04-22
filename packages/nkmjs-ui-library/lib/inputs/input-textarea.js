@@ -5,21 +5,23 @@ const com = require("@nkmjs/common");
 const ui = require(`@nkmjs/ui-core`);
 const style = require(`@nkmjs/style`);
 
-class InputTextarea extends ui.inputs.InputTextBase {
+const base = ui.inputs.InputTextBase;
+
+class InputTextarea extends base {
     constructor() { super(); }
 
     static __inputProperties = { rows: 3, spellcheck: false };
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/expandable.css`]
-    }, ui.inputs.InputField, ['css']);
+    }, base, ['css']);
 
-    static __distribute = ui.inputs.InputTextBase.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To('rows');
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'height': 'auto !important'
@@ -27,7 +29,7 @@ class InputTextarea extends ui.inputs.InputTextBase {
             '.field': {
                 'resize': 'none'
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     set rows(p_value) {

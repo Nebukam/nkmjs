@@ -1,10 +1,12 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const style = require("@nkmjs/style");
 
 const UI = require(`../ui`);
-
 const List = require(`./list`);
+
+const base = List;
 
 /**
  * @description TODO
@@ -13,10 +15,10 @@ const List = require(`./list`);
  * @augments ui.core.tree.List
  * @memberof ui.core.tree
  */
-class ListRoot extends List {
+class ListRoot extends base {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, List, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
 
     static __defaultDirClass = List;
     static __defaultSelectOnActivation = false;
@@ -51,13 +53,13 @@ class ListRoot extends List {
         */
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 '--tree-size': `var(--size-s, 16px)`,
                 '--tree-indent': `var(--size-s, 16px)`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _OpenFind() {

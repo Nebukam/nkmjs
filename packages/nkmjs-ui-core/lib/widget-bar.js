@@ -18,6 +18,8 @@ const _flag_STRETCH = `stretch`;
 const _flag_STRETCH_SAME = `stretch-same`;
 const _flag_STRETCH_SQUEEZE = `stretch-squeeze`;
 
+const base = WidgetOrientable;
+
 /**
  * @description TODO
  * @class
@@ -25,12 +27,12 @@ const _flag_STRETCH_SQUEEZE = `stretch-squeeze`;
  * @augments ui.core.WidgetOrientable
  * @memberof ui.core.helpers
  */
-class WidgetBar extends WidgetOrientable {
+class WidgetBar extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/widgets/widget-bar.css`]
-    }, WidgetOrientable, ['css']);
+    }, base, ['css']);
 
     static get FLAG_STRETCH() { return _flag_STRETCH; }
     static get FLAG_STRETCH_SAME() { return _flag_STRETCH_SAME; }
@@ -122,7 +124,7 @@ class WidgetBar extends WidgetOrientable {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return {
             ':host': {
                 'position': `relative`,

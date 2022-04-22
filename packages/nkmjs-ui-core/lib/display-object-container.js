@@ -33,6 +33,8 @@ const DisplayObject = require(`./display-object`);
  * @property {number} index Index of the removed object (before removal)
  */
 
+ const base = DisplayObject;
+
 /**
  * A DisplayObjectContainer is `{@link ui.code.DisplayObject}` that manages an internal list of DisplayObjects childs.
  * You can `{@link ui.code.DisplayObjectContainer.Attach|Attach}`, `{@link ui.code.DisplayObjectContainer.Move|Move}` & `{@link ui.code.DisplayObjectContainer.Detach|Detach}`
@@ -45,7 +47,7 @@ const DisplayObject = require(`./display-object`);
  * @signal SignalItemMoved Broadcasted right after a child was moved inside the display list
  * @signal SignalItemDetached Broadcasted right after a child was removed from the display list
  */
-class DisplayObjectContainer extends DisplayObject {
+class DisplayObjectContainer extends base {
     constructor() { super(); }
 
     // ----> Init
@@ -212,6 +214,16 @@ class DisplayObjectContainer extends DisplayObject {
 
         return removedDisplayObject;
 
+    }
+
+    /**
+     * @description Releases all children of the displayList
+     * @param {number} p_index Index to be removed
+     * @returns {ui.core.DisplayObject}
+     * @group Child Management
+     */
+    DetachAll() {
+        while (!this._displayList.isEmpty) { this._displayList.last.Release(); }
     }
 
     /**

@@ -139,8 +139,8 @@ class STYLE extends com.helpers.SingletonEx {
      * @param {function} p_invalidateCache 
      * @returns {string} 
      */
-    static Get(p_class, p_generator, p_invalidateCache = false) {
-        return this.instance.current.Get(p_class, p_generator, p_invalidateCache);
+    static Get(p_class, p_generator, p_invalidateCache = false, p_classGenerator = false) {
+        return this.instance.current.Get(p_class, p_generator, p_invalidateCache, p_classGenerator);
     }
 
     /**

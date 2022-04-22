@@ -5,14 +5,16 @@ const datacontrols = require("@nkmjs/ui-data-controls");
 const actions = require("@nkmjs/actions");
 const ui = require("@nkmjs/ui-core");
 
-class ActionInspectorItem extends datacontrols.InspectorWidget {
+const base = datacontrols.InspectorWidget;
+
+class ActionInspectorItem extends base {
     constructor() { super(); }
 
     static __defaultSelectOnActivation = true;
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inspectors/items/action.css`]
-    }, datacontrols.InspectorWidget, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -26,7 +28,7 @@ class ActionInspectorItem extends datacontrols.InspectorWidget {
         this.focusArea = this;
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
 
@@ -37,7 +39,7 @@ class ActionInspectorItem extends datacontrols.InspectorWidget {
             ':host(.undone)': {
                 'opacity': `0.5`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     //TODO : Handle action state updates...

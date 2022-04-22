@@ -89,19 +89,19 @@ class Palette extends com.pool.DisposableObject {
         return p_key;
     }
 
-    URLTheme(p_url, p_wrap = false){ 
+    URLTheme(p_url, p_wrap = false) {
         return p_wrap ? `url("${u.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}")`
-        : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}`; 
+            : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/${p_url}`;
     }
 
-    URLAssets(p_url, p_wrap = false){ 
+    URLAssets(p_url, p_wrap = false) {
         return p_wrap ? `url("${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}")`
-        : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}`; 
+            : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/${p_url}`;
     }
 
-    URLImgs(p_url, p_wrap = false){ 
+    URLImgs(p_url, p_wrap = false) {
         return p_wrap ? `url("${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}")`
-        : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}`; 
+            : `${u.FULL(u.PATH.STYLE)}/${this._themeId}/assets/imgs/${p_url}`;
     }
 
     /**
@@ -188,7 +188,7 @@ class Palette extends com.pool.DisposableObject {
      * @param {boolean} [p_invalidateCache] 
      * @returns {array} an array of styling items. Contains
      */
-    Get(p_class, p_generator, p_invalidateCache = false) {
+    Get(p_class, p_generator, p_invalidateCache = false, p_classGenerator = false) {
 
         let style = this._cache.Get(p_class);
 
@@ -210,7 +210,7 @@ class Palette extends com.pool.DisposableObject {
                     imports += `@import url(${this.GetCSSLink(nfos.css[i])}); `;
                 }
             }
-/*
+            /*
             if (nfos.ignoreLocal) {
                 this._cache.Set(p_class, style);
                 return style;
@@ -218,8 +218,7 @@ class Palette extends com.pool.DisposableObject {
             */
         }
 
-
-        let styleObject = p_generator();
+        let styleObject = p_classGenerator ? p_generator._Style.call(p_generator) : p_generator();
 
         if (!u.isEmpty(styleObject)) {
 
@@ -236,8 +235,8 @@ class Palette extends com.pool.DisposableObject {
         }
 
         let styleElement = dom.El(`style`);
-            styleElement.innerText = imports;
-            style.push(styleElement);
+        styleElement.innerText = imports;
+        style.push(styleElement);
 
         this._cache.Set(p_class, style);
 

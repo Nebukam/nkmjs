@@ -12,7 +12,9 @@ const KB = actions.KEYBOARD;
 
 const InputField = require(`./input-field`);
 
-class InputTextBase extends InputField {
+const base = InputField;
+
+class InputTextBase extends base {
     constructor() { super(); }
 
     static __inputProperties = {};
@@ -108,7 +110,7 @@ class InputTextBase extends InputField {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
@@ -121,7 +123,7 @@ class InputTextBase extends InputField {
                 flex: `1 1 auto`,
                 'min-width': 0
             }
-        }, super._Style());
+        }, base._Style());
 
     }
 

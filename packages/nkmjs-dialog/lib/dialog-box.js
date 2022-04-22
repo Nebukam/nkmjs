@@ -6,10 +6,12 @@ const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
-class DialogBox extends ui.Widget {
+const base = ui.Widget;
+
+class DialogBox extends base {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, ui.Widget, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
 
     /**
      * @description TODO
@@ -56,13 +58,13 @@ class DialogBox extends ui.Widget {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
                 overflow: 'hidden'
             }
-        }, super._Style());
+        }, base._Style());
 
     }
 

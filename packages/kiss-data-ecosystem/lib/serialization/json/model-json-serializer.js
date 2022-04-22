@@ -53,9 +53,9 @@ class ModelJSONSerializer extends DataBlockJSONSerializer {
         let definition = p_serial.definition;
         if (!definition) { return p_data; }
 
-        let base = definition.base;
-        if (base) {
-            let baseModel = p_data.ecosystem.Resolve(base);
+        let baseDefinition = definition.base;
+        if (baseDefinition) {
+            let baseModel = p_data.ecosystem.Resolve(baseDefinition);
             if (!baseModel) {
                 // Create a watch token in the ecosystem so the base reference
                 // will be resolved as soon as it is registered

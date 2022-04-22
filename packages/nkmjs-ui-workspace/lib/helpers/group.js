@@ -2,7 +2,9 @@ const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const ui = require(`@nkmjs/ui-core`);
 
-class Group extends ui.WidgetOrientable {
+const base = ui.WidgetOrientable;
+
+class Group extends base {
     constructor() { super(); }
 
     static GROUP_CREATED = Symbol(`groupCreated`);
@@ -23,7 +25,7 @@ class Group extends ui.WidgetOrientable {
     get body() { return this._wrapper; }
     get footer() { return this._footer; }
 
-    _Style() {
+    static _Style() {
         return {
             ':host': {
                 position: `relative`,

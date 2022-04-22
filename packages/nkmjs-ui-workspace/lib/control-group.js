@@ -7,6 +7,8 @@ const uilib = require(`@nkmjs/ui-library`);
 
 const Control = require(`./control.js`);
 
+const base = Control;
+
 /**
  * 
  *  *----------------------*
@@ -14,7 +16,7 @@ const Control = require(`./control.js`);
  *  *----------------------*
  * 
  */
-class ControlGroup extends Control {
+class ControlGroup extends base {
     constructor() { super(); }
 
     _Init() {
@@ -46,7 +48,7 @@ class ControlGroup extends Control {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
 
@@ -76,7 +78,7 @@ class ControlGroup extends Control {
             '.content.collapsed': {
                 display: `none`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

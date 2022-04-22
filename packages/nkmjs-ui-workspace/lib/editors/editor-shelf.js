@@ -7,12 +7,14 @@ const com = require(`@nkmjs/common`);
 
 const EditorShelfNav = require(`./editor-shelf-nav`);
 
-class EditorShelf extends uilib.views.Shelf {
+const base = uilib.views.Shelf;
+
+class EditorShelf extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/editor-shelf.css`]
-    }, uilib.views.Shelf, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -24,7 +26,7 @@ class EditorShelf extends uilib.views.Shelf {
         //this._controls.order = 2; 
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 //width: `354px`,
@@ -35,7 +37,7 @@ class EditorShelf extends uilib.views.Shelf {
             '.controls': {
                 'background-color': `rgba(127,127,127,0.0)`,
             }
-        }, super._Style());
+        }, base._Style());
     }
 
 }

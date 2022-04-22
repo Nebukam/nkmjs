@@ -20,6 +20,8 @@ const CatalogItem = require(`./catalog-item`);
  * @param {boolean} autoSort  
  */
 
+ const base = CatalogItem;
+
 /**
  * @description TODO
  * @class
@@ -27,7 +29,7 @@ const CatalogItem = require(`./catalog-item`);
  * @augments data.core.catalogs.CatalogItem
  * @memberof data.core.catalog
  */
-class Catalog extends CatalogItem {
+class Catalog extends base {
     constructor(p_autoSort = true) { super(); this.autoSort = p_autoSort; }
 
     static __default_catalogClass = Catalog;
@@ -156,7 +158,7 @@ class Catalog extends CatalogItem {
 
     //#endregion
 
-    static __distribute = CatalogItem.__distribute.Ext({ beginFn: `_OnOptionsWillUpdate` })
+    static __distribute = base.__distribute.Ext({ beginFn: `_OnOptionsWillUpdate` })
         .To(`autoSort`)
         .To(`localItemClass`, `_localItemClass`, null)
         .To(`localCatalogClass`, `_localCatalogClass`, null)

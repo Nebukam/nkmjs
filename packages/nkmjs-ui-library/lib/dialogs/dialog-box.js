@@ -9,14 +9,16 @@ const dialog = require(`@nkmjs/dialog`);
 
 const buttons = require(`../buttons`);
 
-class DialogBox extends dialog.DialogBox {
+const base = dialog.DialogBox;
+
+class DialogBox extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/dialogs/dialog-box.css`]
-    }, dialog.DialogBox, ['css']);
+    }, base, ['css']);
 
-    static __distribute = dialog.DialogBox.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(ui.IDS.ICON, null, ``)
         .To(ui.IDS.VARIANT);
 
@@ -36,7 +38,7 @@ class DialogBox extends dialog.DialogBox {
     // ----> DOM
 
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
@@ -67,7 +69,7 @@ class DialogBox extends dialog.DialogBox {
                 flex: `1 1 auto`
             }
 
-        }, super._Style());
+        }, base._Style());
 
     }
 

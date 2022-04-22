@@ -13,7 +13,9 @@ const EditorHistoryView = require(`./editor-history-view`);
 
 const EditorShelf = require(`./editor-shelf`);
 
-class EditorEx extends uidatacontrols.Editor {
+const base = uidatacontrols.Editor;
+
+class EditorEx extends base {
     constructor() { super(); }
 
     static __default_shelfClass = EditorShelf;
@@ -106,7 +108,7 @@ class EditorEx extends uidatacontrols.Editor {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 position: `relative`,
@@ -156,7 +158,7 @@ class EditorEx extends uidatacontrols.Editor {
                 position: `absolute`,
                 width: `100%`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

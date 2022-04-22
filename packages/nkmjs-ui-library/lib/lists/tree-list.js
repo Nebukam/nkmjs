@@ -8,6 +8,8 @@ const dom = require(`../dom`);
 
 const TreeItem = require(`./tree-list-item`);
 
+const base = ui.lists.List;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -15,12 +17,14 @@ const TreeItem = require(`./tree-list-item`);
  * @augments ui.core.lists.List
  * @memberof ui.core.tree
  */
-class TreeList extends ui.lists.List {
+class TreeList extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/tree-list.css`]
-    }, ui.lists.List, ['css']);
+    }, base, ['css']);
+
+    static __defaultItemClass = TreeItem;
 
     // ----> Init
 
@@ -35,14 +39,12 @@ class TreeList extends ui.lists.List {
 
     _SetupBuilder(p_catalogBuilder) {
         p_catalogBuilder.host = this._body;
-        p_catalogBuilder._defaultItemClass = TreeItem;
-        p_catalogBuilder._defaultDirClass = TreeList;
     }
 
     // ----> DOM
 
     //TODO : Body must break flex row
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 
@@ -50,7 +52,7 @@ class TreeList extends ui.lists.List {
             '.header': {
                 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

@@ -12,6 +12,8 @@ const Layer = require(`./layer`);
 const __className_topLayer = `layer-top`;
 const __className_subLayer = `layer-covered`;
 
+const base = Layer;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -19,13 +21,14 @@ const __className_subLayer = `layer-covered`;
  * @augments ui.core.views.Layer
  * @memberof ui.core.views
  */
-class LayerContainer extends Layer {
+class LayerContainer extends base {
     constructor() { super(); }
 
     // ----> Init
 
+    static __layerClassName = `layer`;
+
     _Init() {
-        this._layerClassName = `layer`;
         super._Init();
         this._updateDepths = new com.time.DelayedCall(this._Bind(this._UpdateLayerDepth));
         this._layerList = new collections.List(0);
@@ -33,15 +36,15 @@ class LayerContainer extends Layer {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
 
         let s = style.Extends({
             ':host': {
                 //position:`relative`,
             }
-        }, super._Style());
+        }, base._Style());
 
-        s[`.${this._layerClassName}`] = {
+        s[`.${this.__layerClassName}`] = {
             '@': [`layer`]
         }
 
@@ -53,7 +56,7 @@ class LayerContainer extends Layer {
         let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Add(layer);
-            layer.classList.add(this._layerClassName);
+            layer.classList.add(this.constructor.__layerClassName);
             layer.Watch(SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }
@@ -64,7 +67,7 @@ class LayerContainer extends Layer {
         let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Remove(layer);
-            layer.classList.remove(this._layerClassName, __className_topLayer, __className_subLayer);
+            layer.classList.remove(this.constructor.__layerClassName, __className_topLayer, __className_subLayer);
             layer.Unwatch(SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }

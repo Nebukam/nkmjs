@@ -10,8 +10,9 @@ const FLAGS = require(`../flags`);
 
 const View = require(`./view`);
 
+const base = View;
 
-class Flow extends View {
+class Flow extends base {
     constructor() { super(); }
 
     _Init(){

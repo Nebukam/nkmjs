@@ -11,6 +11,8 @@ const helpers = require(`./helpers`);
 const META_IDS = require(`./meta-ids`);
 const Editor = require(`./editor`);
 
+const base = ui.views.View;
+
 /**
  * @description A Controller interface based on ui.views.View
  * @class
@@ -18,7 +20,7 @@ const Editor = require(`./editor`);
  * @augments ui.core.views.View
  * @memberof ui.datacontrols
  */
-class ControlView extends ui.views.View {
+class ControlView extends base {
     constructor() { super(); }
 
     static __clearBuilderOnRelease = false;
@@ -211,11 +213,11 @@ class ControlView extends ui.views.View {
 
     //#region DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

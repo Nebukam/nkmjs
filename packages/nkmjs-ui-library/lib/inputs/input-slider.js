@@ -8,7 +8,9 @@ const style = require(`@nkmjs/style`);
 
 const InputNumber = require(`./input-number`);
 
-class InputSlider extends ui.inputs.InputNumberBase {
+const base = ui.inputs.InputNumberBase;
+
+class InputSlider extends base {
     constructor() { super(); }
 
     static __inputProperties = { type: `range`, class: `slider` };
@@ -18,7 +20,7 @@ class InputSlider extends ui.inputs.InputNumberBase {
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/slider.css`]
-    }, ui.inputs.InputNumberBase, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -34,14 +36,14 @@ class InputSlider extends ui.inputs.InputNumberBase {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'height': `var(--size)`,
                 'display': 'flex',
                 'flex-flow': 'row nowrap',
                 'align-items': 'center',
-                '--thumbSize':'var(--size)',
+                '--thumbSize':'calc(var(--size) * 0.5)',
                 'min-width':'calc(var(--size) * 2)'
             },
             '.item': {
@@ -79,7 +81,7 @@ class InputSlider extends ui.inputs.InputNumberBase {
             '.slider::-moz-range-thumb, .slider::-moz-range-track, .slider::-moz-range-progress': {
                 'appearance': `none`,
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

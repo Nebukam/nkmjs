@@ -5,7 +5,9 @@ const ui = require(`@nkmjs/ui-core`);
 const dialog = require(`@nkmjs/dialog`);
 const uilib = require(`@nkmjs/ui-library`);
 
-class GlobalOverlayHandler extends ui.overlays.OverlayHandler {
+const base = ui.overlays.OverlayHandler;
+
+class GlobalOverlayHandler extends base {
     constructor() { super(); }
 
     _Init() {

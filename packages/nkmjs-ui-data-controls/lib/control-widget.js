@@ -11,6 +11,8 @@ const helpers = require(`./helpers`);
 const META_IDS = require(`./meta-ids`);
 const Editor = require(`./editor`);
 
+const base = ui.Widget;
+
 /**
  * @description A Controller interface based on ui.core.Widget
  * @class
@@ -18,7 +20,7 @@ const Editor = require(`./editor`);
  * @augments ui.core.Widget
  * @memberof ui.datacontrols
  */
-class ControlWidget extends ui.Widget {
+class ControlWidget extends base {
     constructor() { super(); }
 
     static __clearBuilderOnRelease = false;
@@ -141,12 +143,12 @@ class ControlWidget extends ui.Widget {
 
     //#region DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 '@': [`fade-in`]
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

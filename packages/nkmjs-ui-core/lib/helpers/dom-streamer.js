@@ -12,6 +12,7 @@ const dom = require(`../utils-dom`);
 const RectTracker = require(`./rect-tracker`);
 const DisposableHTMLElement = require("../disposable-htmlelement");
 
+const base = DisposableHTMLElement;
 const __empty = `empty`;
 
 class DOMStreamerPlaceholder extends DisposableHTMLElement {
@@ -26,7 +27,7 @@ class DOMStreamerPlaceholder extends DisposableHTMLElement {
  * @augments common.pool.DisposableObjectEx
  * @memberof common.helpers
  */
-class DOMStreamer extends DisposableHTMLElement {
+class DOMStreamer extends base {
     constructor() { super(); }
 
     static __useResizeCallback = true;
@@ -86,7 +87,7 @@ class DOMStreamer extends DisposableHTMLElement {
             this._styles.length = 0;
         }
 
-        this._styles = style.STYLE.Get(this.constructor, this._Bind(this._Style), false);
+        this._styles = style.STYLE.Get(this.constructor, this.constructor, false, true);
         for (let i = 0, n = this._styles.length; i < n; i++) {
             dom.Attach(this._styles[i].cloneNode(true), this._host);
         }
@@ -103,7 +104,7 @@ class DOMStreamer extends DisposableHTMLElement {
         super._OnPaintChange();
     }
 
-    _Style() {
+    static _Style() {
         return {
             ':host': {
                 'position': 'relative',

@@ -14,6 +14,8 @@ const ui = require(`@nkmjs/ui-core`);
 
 const InspectorWidget = require("./inspector-widget");
 
+const base = InspectorWidget;
+
 /**
  * @description An InspectorWidgetGroup is an InspectorWidget designed to be used inside an InspectorView or an Editor.
  * As a 'group' component, it offers the ability to expand & collapse a list of controls
@@ -22,7 +24,7 @@ const InspectorWidget = require("./inspector-widget");
  * @augments ui.datacontrols.InspectorWidget
  * @memberof ui.datacontrols
  */
-class InspectorWidgetGroup extends InspectorWidget {
+class InspectorWidgetGroup extends base {
     constructor() { super(); }
 
     static __controls = null;
@@ -43,12 +45,12 @@ class InspectorWidgetGroup extends InspectorWidget {
 
     //#region DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
 
             },
-        }, super._Style());
+        }, base._Style());
     }
 
     //#endregion

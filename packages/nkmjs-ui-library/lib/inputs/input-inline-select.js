@@ -14,7 +14,9 @@ var __uid = 0;
 
 const ButtonEx = require(`../buttons/button-ex`);
 
-class InputInlineSelect extends ui.inputs.InputCatalogBase {
+const base = ui.inputs.InputCatalogBase;
+
+class InputInlineSelect extends base {
     constructor() { super(); }
 
     static __inputProperties = {};
@@ -23,7 +25,7 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
         css: [`@/widgets/widget-bar.css`]
     }, ui.WidgetBar, ['css']);
 
-    static __distribute = ui.inputs.InputCatalogBase.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`showLabel`, null, false)
         .To(`showIcon`, null, true);
 
@@ -48,7 +50,7 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 position: `relative`,
@@ -65,7 +67,7 @@ class InputInlineSelect extends ui.inputs.InputCatalogBase {
                 'min-height': `28px !important` //min height for input field
 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

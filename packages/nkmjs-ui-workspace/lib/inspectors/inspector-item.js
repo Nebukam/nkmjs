@@ -4,7 +4,9 @@ const data = require(`@nkmjs/data-core`);
 
 const Control = require(`../control`);
 
-class InspectorItem extends Control{
+const base = Control;
+
+class InspectorItem extends base{
     constructor(){super();}
 
     static __defaultSelectOnActivation = true;

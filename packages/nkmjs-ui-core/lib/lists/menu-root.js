@@ -14,6 +14,8 @@ const WidgetBar = require(`../widget-bar`);
 const WidgetItem = require("../widget-item");
 const MenuItem = require(`./menu-item`);
 
+const base = WidgetBar;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -21,14 +23,14 @@ const MenuItem = require(`./menu-item`);
  * @augments ui.core.tree.ListItem
  * @memberof ui.core.tree
  */
-class MenuRoot extends WidgetBar {
+class MenuRoot extends base {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, WidgetBar, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
 
     static __defaultItemClass = MenuItem;
     static __defaultOrientation = FLAGS.VERTICAL;
-    static __distribute = WidgetBar.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`items`);
 
     // ----> Init
@@ -76,7 +78,7 @@ class MenuRoot extends WidgetBar {
     // ----> DOM
 
     //TODO : Body must break flex row
-    _Style() {
+    static _Style() {
         return {
             ':host': {
 

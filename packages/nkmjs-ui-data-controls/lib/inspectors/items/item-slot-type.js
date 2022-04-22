@@ -2,7 +2,9 @@
 
 const SlotInspectorItem = require(`./item-slot`);
 
-class SlotTypeInspectorItem extends SlotInspectorItem {
+const base = SlotInspectorItem;
+
+class SlotTypeInspectorItem extends base {
     constructor() { super(); }
 
 }

@@ -10,15 +10,17 @@ const tmp = require('tmp');
 
 const ResourceWatcher = require(`./resource-watcher`);
 
+const base = ResourceWatcher;
+
 /**
  * Create all missing directories in a provided path.
  * Input path is assumed to be a directory, not a file.
  * path/to/something
  */
-class TempResourceWatcher extends ResourceWatcher {
+class TempResourceWatcher extends base {
     constructor() { super(); }
 
-    static __distribute = ResourceWatcher.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`rscOptions`);
 
     _Init() {

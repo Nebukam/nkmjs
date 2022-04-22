@@ -4,6 +4,8 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const ui = require("@nkmjs/ui-core");
 
+const base = ui.WidgetButton;
+
 /**
  * @description A ButtonEx is a basic button implementation with an icon & a label.
  * @class
@@ -11,14 +13,14 @@ const ui = require("@nkmjs/ui-core");
  * @augments ui.core.buttons.ButtonBase
  * @memberof ui.core.buttons
  */
-class ButtonEx extends ui.WidgetButton {
+class ButtonEx extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/button-ex.css`]
-    }, ui.WidgetButton, ['css']);
+    }, base, ['css']);
 
-    static __distribute = ui.WidgetButton.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(ui.IDS.ICON, null, ``)
         .To(ui.IDS.LABEL, null, ``)
         .To(`uppercaseText`)

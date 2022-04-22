@@ -2,7 +2,9 @@
 
 const MetaPropertyInspectorItem = require(`./item-meta-property`);
 
-class MetaInputInspectorItem extends MetaPropertyInspectorItem {
+const base = MetaPropertyInspectorItem;
+
+class MetaInputInspectorItem extends base {
     constructor() { super(); }
 
     static __inputClass = null;

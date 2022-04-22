@@ -16,6 +16,8 @@ const ui = require(`@nkmjs/ui-core`);
 const helpers = require(`./helpers`);
 const ControlView = require("./control-view");
 
+const base = ControlView;
+
 /**
  * @description TODO
  * @class
@@ -23,23 +25,23 @@ const ControlView = require("./control-view");
  * @augments ui.datacontrols.ControlView
  * @memberof ui.datacontrols
  */
-class InspectorView extends ControlView {
+class InspectorView extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inspectors/inspector-view.css`]
-    }, ControlView, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'box-sizing': 'border-box',
             },
-        }, super._Style());
+        }, base._Style());
     }
 
 }

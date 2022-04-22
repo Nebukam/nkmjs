@@ -6,14 +6,16 @@ const ui = require(`@nkmjs/ui-core`);
 
 const dom = require(`../dom`);
 
-class BreadcrumbItem extends ui.WidgetButton {
+const base = ui.WidgetButton;
+
+class BreadcrumbItem extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/breadcrum-item.css`]
-    }, ui.WidgetButton, ['css']);
+    }, base, ['css']);
 
-    static __distribute = ui.WidgetButton.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(ui.IDS.ICON, null, ``)
         .To(ui.IDS.LABEL, null, ``)
         .Move(`command`);

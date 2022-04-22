@@ -5,12 +5,14 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
-class SimpleModal extends ui.helpers.Modal {
+const base = ui.helpers.Modal;
+
+class SimpleModal extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/modals/simple-modal.css`, `@/modals/modal.css`]
-    }, ui.helpers.Modal, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -19,7 +21,7 @@ class SimpleModal extends ui.helpers.Modal {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'border': 'none',
@@ -28,7 +30,7 @@ class SimpleModal extends ui.helpers.Modal {
                 'position':'relative',
                 'display':'inherit',
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

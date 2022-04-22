@@ -7,6 +7,7 @@ const data = require("@nkmjs/data-core");
 
 const WidgetButton = require("../widget-button");
 
+const base = WidgetButton;
 
 /**
  * @description TODO
@@ -15,12 +16,12 @@ const WidgetButton = require("../widget-button");
  * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class MenuItem extends WidgetButton {
+class MenuItem extends base {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, WidgetButton, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
 
-    static __distribute = WidgetButton.__distribute.Ext({ wrapUpFn: `_OnOptionsUpdateComplete` });
+    static __distribute = base.__distribute.Ext({ wrapUpFn: `_OnOptionsUpdateComplete` });
 
     // ----> Init
 
@@ -41,7 +42,7 @@ class MenuItem extends WidgetButton {
     set rootMenu(p_value) { this._rootMenu = p_value; }
 
     // ----> DOM
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'position': 'relative',
@@ -51,7 +52,7 @@ class MenuItem extends WidgetButton {
             '.toolbar': {
                 'flex': `0 0 auto`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
 

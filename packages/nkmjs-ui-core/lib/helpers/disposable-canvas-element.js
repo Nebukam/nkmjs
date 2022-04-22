@@ -64,6 +64,8 @@ const __resizeObserver = new ResizeObserver(
         }
     });
 
+const base = HTMLCanvasElement;
+
 /**
  * Ah hah !
  * <pre class="prettyprint" data-title="constructor"><code>Yey, new shit {@link ui.core.DisplayObject}</code></pre>
@@ -79,7 +81,7 @@ const __resizeObserver = new ResizeObserver(
  * @signal SignalPainted Broadcasted when the object has at least one painted pixel.
  * @signal SignalUnpainted Broadcasted when the object was painted but stopped being painted.
  */
-class DisposableCanvasElement extends HTMLCanvasElement {
+class DisposableCanvasElement extends base {
 
     static __extendsNode = `canvas`;
     static __redrawDelay = 300;
@@ -109,7 +111,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
         this._deltaSum = 0;
 
         this._delayedRedraw = com.DelayedCall(this._Bind(this.Draw), this.constructor.__resizeDelay);
-        
+
         this._visible = true;
 
     }
@@ -123,13 +125,13 @@ class DisposableCanvasElement extends HTMLCanvasElement {
      * @type {boolean}
      * @group Rendering
      */
-     get visible() { return this._visible; }
-     set visible(p_value) {
-         if (this._visible === p_value) { return; }
-         this._visible = p_value;
-         if (!p_value) { this.style.display = `none`; }
-         else { this.style.removeProperty(`display`); }
-     }
+    get visible() { return this._visible; }
+    set visible(p_value) {
+        if (this._visible === p_value) { return; }
+        this._visible = p_value;
+        if (!p_value) { this.style.display = `none`; }
+        else { this.style.removeProperty(`display`); }
+    }
 
     //#region Canvas logic
 
@@ -383,7 +385,7 @@ class DisposableCanvasElement extends HTMLCanvasElement {
     _CleanUp() {
 
         this.visible = true;
-        
+
         this._signals.Clear();
         this._isFirstPaint = true;
 

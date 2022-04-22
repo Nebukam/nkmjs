@@ -6,7 +6,9 @@ This manipulate a slot -- whether in the context of a slot, or setting a value.
 const datalib = require("@nkmjs/data-library");
 const InspectorWidget = require("../../inspector-widget");
 
-class SlotInspectorItem extends InspectorWidget{
+const base = InspectorWidget;
+
+class SlotInspectorItem extends base{
     constructor(){super();}
 
     _Init(){

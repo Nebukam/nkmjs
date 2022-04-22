@@ -6,7 +6,9 @@ const SIGNAL = require(`../../signal`);
 const META_IDS = require(`../../meta-ids`);
 const InspectorWidget = require(`../../inspector-widget`);
 
-class MetaPropertyInspectorItem extends InspectorWidget {
+const base = InspectorWidget;
+
+class MetaPropertyInspectorItem extends base {
     constructor() { super(); }
 
     static __watchMidUpdate = false;

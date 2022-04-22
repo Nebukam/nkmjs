@@ -7,6 +7,8 @@ const SIGNAL = require(`./catalog-signal`);
 
 const tags = require(`../tags`);
 
+const base = com.helpers.OptionsObject;
+
 /**
  * @description TODO
  * @class
@@ -14,10 +16,10 @@ const tags = require(`../tags`);
  * @augments common.helpers.OptionsObject
  * @memberof data.core.catalog
  */
-class CatalogItem extends com.helpers.OptionsObject {
+class CatalogItem extends base {
     constructor() { super(); }
 
-    static __distribute = com.helpers.OptionsObject.__distribute.Ext({ wrapUpFn: `_OnOptionsUpdated` })
+    static __distribute = base.__distribute.Ext({ wrapUpFn: `_OnOptionsUpdated` })
         .To(com.IDS.DATA)
         .To(IDS.BOUND)
         .To(`tags`, `tagsetter`);

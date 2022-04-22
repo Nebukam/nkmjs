@@ -5,7 +5,7 @@ const nkm = require(`@nkmjs/core`);
 class TestWidget extends nkm.ui.Widget {
     constructor() { super(); }
 
-    _Style() {
+    static _Style() {
         return {
             ':host': {
                 'background-color': 'rgb(0,255,0,0.5)',

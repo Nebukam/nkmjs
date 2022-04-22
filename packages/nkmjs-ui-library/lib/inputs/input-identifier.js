@@ -11,7 +11,8 @@ const ERR_NUM = { type: com.FLAGS.ERROR, message: `Must starts with <strong>A-Z,
 const ERR_EMPTY = { type: com.FLAGS.ERROR, message: `Cannot be empty` };
 const ERR_ILLEGAL_CHARS = { type: com.FLAGS.ERROR, message: `Can only contains the following characters : <strong>A-Z, a-z, _, 0-9</strong>` };
 
-class InputIdentifier extends ui.inputs.InputField {
+const base = ui.inputs.InputField;
+class InputIdentifier extends base {
     constructor() { super(); }
 
     _Init() {
@@ -30,7 +31,7 @@ class InputIdentifier extends ui.inputs.InputField {
     get label(){ return this._label; }
     set label(p_value){ this._label.Set(p_value); }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 display: `flex`,
@@ -42,7 +43,7 @@ class InputIdentifier extends ui.inputs.InputField {
                 flex: `1 1 auto`,
                 width: `auto`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

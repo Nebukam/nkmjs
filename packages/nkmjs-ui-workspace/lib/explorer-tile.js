@@ -6,33 +6,35 @@ const ui = require(`@nkmjs/ui-core`);
 
 const Explorer = require(`./explorer`);
 
-class TileExplorer extends Explorer{
-    constructor(){super();}
+const base = Explorer;
+
+class TileExplorer extends base {
+    constructor() { super(); }
 
     // ----> Rendering
 
-    _Style(){
+    static _Style() {
 
         return style.Extends({
-            '.body':{
-                display:`flex`,
-                'flex-flow':`row wrap`,
-                'align-content':`stretch`,
-                'align-items':`stretch`,
+            '.body': {
+                display: `flex`,
+                'flex-flow': `row wrap`,
+                'align-content': `stretch`,
+                'align-items': `stretch`,
             },
-            '.group':{
-                position:`relative`,
-                flex:`1 1 auto`,
+            '.group': {
+                position: `relative`,
+                flex: `1 1 auto`,
             },
-            'tile-ctnr':{
-                position:`relative`,
-                flex:`1 1 auto`,
-                display:`flex`,
-                'flex-flow':`row wrap`,
-                'align-content':`flex-start`,
-                'align-items':`flex-start`,
+            'tile-ctnr': {
+                position: `relative`,
+                flex: `1 1 auto`,
+                display: `flex`,
+                'flex-flow': `row wrap`,
+                'align-content': `flex-start`,
+                'align-items': `flex-start`,
             }
-        }, super._Style());
+        }, base._Style());
     }
 }
 

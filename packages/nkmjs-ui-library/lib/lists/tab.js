@@ -8,14 +8,16 @@ const ui = require(`@nkmjs/ui-core`);
 
 const dom = require(`../dom`);
 
-class Tab extends ui.WidgetItem {
+const base = ui.WidgetItem;
+
+class Tab extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/tab.css`]
-    }, ui.WidgetItem, ['css']);
+    }, base, ['css']);
 
-    static __distribute = ui.WidgetItem.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(ui.IDS.NAME, `label`)
         .To(ui.IDS.ICON)
         .To(ui.IDS.STATIC, (p_target, p_value) => {
@@ -78,7 +80,7 @@ class Tab extends ui.WidgetItem {
      */
     set closeIcon(p_value) { this._closeIcon.Set(p_value); }
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
 
@@ -91,7 +93,7 @@ class Tab extends ui.WidgetItem {
                 'align-content': `stretch`
             }
 
-        }, super._Style());
+        }, base._Style());
 
     }
 

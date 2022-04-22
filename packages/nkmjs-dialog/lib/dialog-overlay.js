@@ -7,12 +7,14 @@ const ui = require(`@nkmjs/ui-core`);
 
 const DialogBox = require(`./dialog-box.js`);
 
-class DialogOverlay extends ui.overlays.Overlay {
+const base = ui.overlays.Overlay;
+
+class DialogOverlay extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/dialogs/dialog-overlay.css`]
-    }, ui.overlays.Overlay, ['css']);
+    }, base, ['css']);
 
     static __default_overlayContentClass = DialogBox;
 
@@ -22,7 +24,7 @@ class DialogOverlay extends ui.overlays.Overlay {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 display: `flex`,
@@ -36,7 +38,7 @@ class DialogOverlay extends ui.overlays.Overlay {
                 'max-width': `100%`,
                 'max-height': `100%`,
             }
-        }, super._Style());
+        }, base._Style());
     }
 
 }

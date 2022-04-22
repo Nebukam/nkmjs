@@ -12,15 +12,17 @@ const extensions = require(`../extensions`);
 const CONTEXT = require(`./overlay-context`);
 const OverlayOptions = require(`./overlay-options`);
 
+const base = Layer;
+
 /**
  * @description TODO
  */
-class Overlay extends Layer {
+class Overlay extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/overlay.css`]
-    }, Layer, ['css']);
+    }, base, ['css']);
 
     static __default_overlayContentClass = null;
     static __default_contentPlacement = null;
@@ -51,7 +53,7 @@ class Overlay extends Layer {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'transform': 'translateX(-100%)', // YES this is a terrible hack
@@ -63,7 +65,7 @@ class Overlay extends Layer {
                 'transform': 'translateY(-100%)',
                 'transition': 'transform 0s linear'
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

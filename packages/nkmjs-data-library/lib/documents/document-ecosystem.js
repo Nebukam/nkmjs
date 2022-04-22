@@ -6,6 +6,8 @@ const data = require(`@nkmjs/data-core`);
 const io = require(`@nkmjs/io-core`);
 const documents = require(`@nkmjs/documents`);
 
+const base = documents.Document;
+
 /**
  * Loading an ecosystem document will not load all of its content, only the 'header/configuration' file.
  * Once this document is loaded & parsed, then only its content can be loaded.
@@ -14,13 +16,13 @@ const documents = require(`@nkmjs/documents`);
  * @augments documents.Document
  * @memberof documents
  */
-class EcosystemDocument extends documents.Document {
+class EcosystemDocument extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         resource: io.resources.JSONResource,
         serializationContext: data.serialization.CONTEXT.JSON
-    }, documents.Document);
+    }, base);
 
 }
 

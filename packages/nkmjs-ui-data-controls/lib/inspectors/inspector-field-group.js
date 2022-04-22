@@ -7,7 +7,9 @@ const items = require(`./items`);
 const CONTEXT = require(`../context`);
 const InspectorView = require(`../inspector-view`);
 
-class FieldGroupInspector extends InspectorView {
+const base = InspectorView;
+
+class FieldGroupInspector extends base {
     constructor() { super(); }
 
     _Init() {

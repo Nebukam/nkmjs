@@ -4,7 +4,9 @@ const u = require("@nkmjs/utils");
 
 const DataBlockExtendableInspector = require("./inspector-data-block-extendable");
 
-class FieldSlotInspector extends DataBlockExtendableInspector {
+const base = DataBlockExtendableInspector;
+
+class FieldSlotInspector extends base {
     constructor() { super(); }
 
     static __controls = u.tils.MergeArray([

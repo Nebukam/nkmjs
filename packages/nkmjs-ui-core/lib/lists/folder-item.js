@@ -7,6 +7,7 @@ const style = require(`@nkmjs/style`);
 const WidgetBar = require(`../widget-bar`);
 const WidgetItem = require("../widget-item");
 
+const base = WidgetItem;
 
 /**
  * @description TODO
@@ -15,7 +16,7 @@ const WidgetItem = require("../widget-item");
  * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class FolderItem extends WidgetItem {
+class FolderItem extends base {
     constructor() { 
         super(); 
         this.depth = this.constructor.__defaultDepth;
@@ -26,7 +27,7 @@ class FolderItem extends WidgetItem {
 
     static __defaultSelectOnActivation = true;
 
-    static __NFO__ = com.NFOS.Ext({}, WidgetItem, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
 
     // ----> Init
 
@@ -51,7 +52,7 @@ class FolderItem extends WidgetItem {
     get depth() { return this._depth; }
     set depth(p_value) { this._depth = p_value; this.style.setProperty(`--depth`, this._depth); }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'position': 'relative',
@@ -69,7 +70,7 @@ class FolderItem extends WidgetItem {
             '.toolbar': {
                 'flex': `0 0 auto`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

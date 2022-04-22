@@ -21,14 +21,16 @@ class CardTemplate extends ui.DOMTemplate {
     }
 }
 
-class IconCard extends BaseCard {
+const base = BaseCard;
+
+class IconCard extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/cards/icon-card.css`]
-    }, BaseCard, ['css']);
+    }, base, ['css']);
 
-    static __distribute = BaseCard.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(ui.IDS.ICON);
 
     // ----> DOM
@@ -40,7 +42,7 @@ class IconCard extends BaseCard {
         [ui.IDS.LABEL]: { [ui.IDS.CSS_CL]: `font-small` }
     };
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'display': 'flex',
@@ -58,7 +60,7 @@ class IconCard extends BaseCard {
                 'flex': '1 1 auto',
             },
 
-        }, super._Style());
+        }, base._Style());
     }
 
 }

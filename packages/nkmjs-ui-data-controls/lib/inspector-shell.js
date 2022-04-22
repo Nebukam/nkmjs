@@ -12,6 +12,7 @@ const CONTEXT = require(`./context`);
 const ControlView = require(`./control-view`);
 const InspectionDataHandler = require(`./helpers/inspection-data-handler`);
 
+const base = ControlView;
 const __singleConf = { ignoreData: true };
 const __multiConf = { ignoreData: true };
 
@@ -26,12 +27,12 @@ const __multiConf = { ignoreData: true };
  * @augments ui.datacontrols.ControlView
  * @memberof ui.datacontrols
  */
-class InspectorShell extends ControlView {
+class InspectorShell extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/inspector-shell.css`]
-    }, ControlView, ['css']);
+    }, base, ['css']);
 
     static __clearBuilderOnRelease = true;
     static __placeholderViewClass = null;
@@ -66,12 +67,12 @@ class InspectorShell extends ControlView {
 
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     //#region Data

@@ -4,7 +4,8 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
-class ProgressBar extends ui.DisplayObject {
+const base = ui.DisplayObject;
+class ProgressBar extends base {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
@@ -34,7 +35,7 @@ class ProgressBar extends ui.DisplayObject {
     set size(p_value) { this._sizeEnum.Set(p_value); }
     set flavor(p_value) { this._flavorEnum.Set(p_value); }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'position': 'relative',
@@ -49,7 +50,7 @@ class ProgressBar extends ui.DisplayObject {
                 'height': '100%',
                 'background-color': 'var(--flavor-color)',
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() { this._bar = ui.El(`div`, { class: `bar` }, this._host); }

@@ -4,7 +4,9 @@ const ui = require(`@nkmjs/ui-core`);
 
 const EditorEx = require(`./editor-ex`);
 
-class SlateEditor extends EditorEx{
+const base = EditorEx;
+
+class SlateEditor extends base{
     constructor(){super();}
 
     _Init(){

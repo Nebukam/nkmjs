@@ -9,6 +9,8 @@ const dom = require(`../dom`);
 const FolderListItem = require(`./folder-list-item`);
 const FolderList = require(`./folder-list`);
 
+const base = ui.lists.FolderRoot;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -16,12 +18,12 @@ const FolderList = require(`./folder-list`);
  * @augments ui.core.lists.ListRoot
  * @memberof ui.core.tree
  */
-class FolderListRoot extends ui.lists.FolderRoot {
+class FolderListRoot extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/folder-list-root.css`]
-    }, ui.lists.ListRoot, ['css']);
+    }, base, ['css']);
 
     static __defaultItemClass = FolderListItem;
     static __defaultDirClass = FolderList;
@@ -43,12 +45,12 @@ class FolderListRoot extends ui.lists.FolderRoot {
 
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

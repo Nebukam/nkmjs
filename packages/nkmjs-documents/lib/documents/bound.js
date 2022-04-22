@@ -6,6 +6,8 @@ const io = require("@nkmjs/io-core");
 const IDS = require(`../ids`);
 const DocumentEx = require(`./document-ex`);
 
+const base = DocumentEx;
+
 /**
  * A JSONDocument is a cross-plateform 'json' file.
  * It is DATA BOUND.
@@ -14,14 +16,14 @@ const DocumentEx = require(`./document-ex`);
  * @augments documents.Document
  * @memberof documents
  */
-class JSONDocument extends DocumentEx {
+class JSONDocument extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         [IDS.TYPE_RSC]: io.resources.JSONResource,
         [IDS.SERIAL_CTX]: data.serialization.CONTEXT.JSON,
         [IDS.DATA_BOUND]: true,
-    }, DocumentEx);
+    }, base);
 
 }
 

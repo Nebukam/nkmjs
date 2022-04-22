@@ -7,6 +7,8 @@ const dom = require("./utils-dom");
 
 const __media = `@media `;
 
+const __styleCache = new Map();
+
 /**
  * @description TODO
  * @class
@@ -208,6 +210,8 @@ class CSS_UTILS extends com.helpers.Singleton {
                 else { p_base[name] = sourceValue; }
             }
         }
+
+        
 
         return p_base;
 

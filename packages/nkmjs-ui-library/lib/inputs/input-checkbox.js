@@ -5,15 +5,15 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
-
+const base = ui.inputs.InputField;
 const _flag_CHECKED = `checked`;
 
-class InputCheckbox extends ui.inputs.InputField {
+class InputCheckbox extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/checkbox.css`]
-    }, ui.inputs.InputField, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -31,12 +31,12 @@ class InputCheckbox extends ui.inputs.InputField {
     get label(){ return this._label; }
     set label(p_value){ this._label.Set(p_value); }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             '.field': { 
                 'width':'var(--size)'
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

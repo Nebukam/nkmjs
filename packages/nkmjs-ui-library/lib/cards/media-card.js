@@ -20,14 +20,16 @@ class CardTemplate extends ui.DOMTemplate {
     }
 }
 
-class MediaCard extends BaseCard {
+const base = BaseCard;
+
+class MediaCard extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/cards/media-card.css`]
-    }, BaseCard, ['css']);
+    }, base, ['css']);
 
-    static __distribute = BaseCard.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`media`);
 
     // ----> DOM

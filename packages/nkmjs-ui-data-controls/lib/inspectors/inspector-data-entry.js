@@ -5,7 +5,9 @@ const ui = require("@nkmjs/ui-core");
 
 const DataBlockExtendableInspector = require("./inspector-data-block-extendable");
 
-class DataEntryInspector extends DataBlockExtendableInspector {
+const base = DataBlockExtendableInspector;
+
+class DataEntryInspector extends base {
     constructor() { super(); }
 
     static __controls = u.tils.MergeArray([

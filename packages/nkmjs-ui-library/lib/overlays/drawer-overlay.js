@@ -4,12 +4,14 @@ const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
-class DrawerOverlay extends ui.overlays.Overlay {
+const base = ui.overlays.Overlay;
+
+class DrawerOverlay extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/drawer-overlay.css`]
-    }, ui.overlays.Overlay, ['css']);
+    }, base, ['css']);
 
     static __default_contentPlacement = ui.FLAGS.BOTTOM_LEFT;
 
@@ -20,7 +22,7 @@ class DrawerOverlay extends ui.overlays.Overlay {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 display: `flex`
@@ -46,7 +48,7 @@ class DrawerOverlay extends ui.overlays.Overlay {
             '.content': {
                 flex: `0 1 auto`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     // TODO : Instanciate & place the overlay content...

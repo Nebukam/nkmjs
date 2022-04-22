@@ -6,6 +6,8 @@ const ui = require("@nkmjs/ui-core");
 
 const ToolButton = require(`./button-tool`);
 
+const base = ToolButton;
+
 /**
  * @description TODO
  * @class
@@ -13,14 +15,14 @@ const ToolButton = require(`./button-tool`);
  * @augments ui.core.buttons.ToolButton
  * @memberof ui.core.buttons
  */
-class ButtonDragHandle extends ToolButton {
+class ButtonDragHandle extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/button-drag-handle.css`]
-    }, ToolButton, ['css']);
+    }, base, ['css']);
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 //border:`1px solid #ff0000`
@@ -31,7 +33,7 @@ class ButtonDragHandle extends ToolButton {
                 cursor: `move`, /* fallback if grab cursor is unsupported */
                 cursor: `grab`,
             }
-        }, super._Style());
+        }, base._Style());
     }
 
 }

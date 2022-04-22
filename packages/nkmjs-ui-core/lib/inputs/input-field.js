@@ -12,16 +12,18 @@ const KB = actions.KEYBOARD;
 
 const InputBase = require(`./input-base`);
 
-class InputField extends InputBase {
+const base = InputBase;
+
+class InputField extends base {
     constructor() { super(); }
 
     static __inputProperties = {};
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/field.css`]
-    }, InputBase, ['css']);
+    }, base, ['css']);
 
-    static __distribute = InputBase.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`preventTabIndexing`)
         .To(`placeholder`, `placeholderValue`);
 
@@ -58,7 +60,7 @@ class InputField extends InputBase {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 position: `relative`,
@@ -72,7 +74,7 @@ class InputField extends InputBase {
                 flex: `1 1 auto`,
                 'min-width': 0
             }
-        }, super._Style());
+        }, base._Style());
 
     }
 

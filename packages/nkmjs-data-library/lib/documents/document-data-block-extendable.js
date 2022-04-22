@@ -6,6 +6,8 @@ const data = require(`@nkmjs/data-core`);
 const io = require(`@nkmjs/io-core`);
 const documents = require(`@nkmjs/documents`);
 
+const base = documents.DocumentEx;
+
 /**
  * A MetaDocument is a cross-plateform 'meta' file.
  * If run in a nodejs environment, is it saved on the drive, while in browser it will be stored
@@ -15,13 +17,13 @@ const documents = require(`@nkmjs/documents`);
  * @augments documents.Document
  * @memberof documents
  */
-class DataBlockExtendableDocument extends documents.DocumentEx {
+class DataBlockExtendableDocument extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         resource: io.resources.JSONResource,
         serializationContext: data.serialization.CONTEXT.JSON
-    }, documents.DocumentEx);
+    }, base);
 
     _Init() {
         super._Init();

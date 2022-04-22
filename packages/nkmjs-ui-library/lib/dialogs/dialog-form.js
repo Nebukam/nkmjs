@@ -9,12 +9,14 @@ const dialog = require(`@nkmjs/dialog`);
 
 const buttons = require(`../buttons`);
 
-class DialogForm extends dialog.DialogForm {
+const base = dialog.DialogForm;
+
+class DialogForm extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/dialogs/dialog-box.css`]
-    }, dialog.DialogForm, ['css']);
+    }, base, ['css']);
 
     /**
      * @description TODO
@@ -22,7 +24,7 @@ class DialogForm extends dialog.DialogForm {
      */
     static __defaultFlavor = null;
 
-    static __distribute = dialog.DialogForm.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(ui.IDS.ICON, null, ``)
         .To(ui.IDS.VARIANT);
 
@@ -41,7 +43,7 @@ class DialogForm extends dialog.DialogForm {
     // ----> DOM
 
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
@@ -72,7 +74,7 @@ class DialogForm extends dialog.DialogForm {
                 flex: `1 1 auto`
             }
 
-        }, super._Style());
+        }, base._Style());
 
     }
 

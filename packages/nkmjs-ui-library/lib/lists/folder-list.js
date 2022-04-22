@@ -8,6 +8,8 @@ const dom = require(`../dom`);
 
 const FolderListItem = require(`./folder-list-item`);
 
+const base = ui.lists.Folder;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -15,14 +17,14 @@ const FolderListItem = require(`./folder-list-item`);
  * @augments ui.core.lists.List
  * @memberof ui.core.tree
  */
-class FolderList extends ui.lists.Folder {
+class FolderList extends base {
     constructor() { super(); }
 
     static __defaultItemClass = FolderListItem;
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/folder-list.css`]
-    }, ui.lists.List, ['css']);
+    }, base, ['css']);
 
     // ----> Init
 
@@ -43,7 +45,7 @@ class FolderList extends ui.lists.Folder {
     // ----> DOM
 
     //TODO : Body must break flex row
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 
@@ -51,7 +53,7 @@ class FolderList extends ui.lists.Folder {
             '.header': {
                 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

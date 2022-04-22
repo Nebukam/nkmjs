@@ -13,9 +13,10 @@ const WidgetOrientable = require(`../widget-orientable`);
 
 const UNITS = require(`./units`);
 
+const base = WidgetOrientable;
 const __units = [UNITS.PIXEL, UNITS.PERCENTAGE];
 
-class MovableHandle extends WidgetOrientable {
+class MovableHandle extends base {
     constructor() { super(); }
 
     _Init() {
@@ -73,7 +74,7 @@ class MovableHandle extends WidgetOrientable {
             .Unwatch(POINTER.MOUSE_UP, this._OnPointerUp, this);
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'background-color': '#ff0000'
@@ -87,7 +88,7 @@ class MovableHandle extends WidgetOrientable {
             ':host(.vertical.horizontal:hover)': {
                 'cursor': 'move'
             }
-        }, super._Style());
+        }, base._Style());
     }
 
 }

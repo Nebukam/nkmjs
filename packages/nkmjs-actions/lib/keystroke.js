@@ -13,7 +13,7 @@ const KEYBOARD = require(`./keyboard`);
  * @augments common.pool.DisposableObject
  * @memberof actions 
  */
-class Keystroke extends com.pool.DisposableObjectEx {
+class Keystroke extends com.helpers.InfosObjectEx {
     constructor() { super(); }
 
 
@@ -93,7 +93,9 @@ class Keystroke extends com.pool.DisposableObjectEx {
     get silent() { return this._silent; }
     set silent(p_value) { this._silent = p_value; }
 
-    Weak(){
+    get isEnabled() { return this._enabled; }
+
+    Weak() {
         this._focusedFieldPreventActivation = true;
         return this;
     }

@@ -12,4 +12,6 @@ module.exports = {
     FolderList: require(`./folder-list`),
     FolderListRoot: require(`./folder-list-root`),
 
+    ShortcutList: require(`./shortcut-list`),
+
 }

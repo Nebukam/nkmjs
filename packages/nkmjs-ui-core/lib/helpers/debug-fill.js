@@ -9,7 +9,9 @@ const mediumParagraph = `Lorem ipsum dolor sit amet, consectetuer adipiscing eli
 Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
 Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.`;
 
-class DebugFill extends DisplayObjectContainer{
+const base = DisplayObjectContainer;
+
+class DebugFill extends base{
 
     constructor(){super();}
 

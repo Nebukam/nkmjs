@@ -10,14 +10,16 @@ const uilib = require("@nkmjs/ui-library");
 
 const items = require(`./items`);
 
-class PlaceholderInspector extends datacontrols.InspectorView {
+const base = datacontrols.InspectorView;
+
+class PlaceholderInspector extends base {
     constructor() { super(); }
 
     _Init() {
         super._Init();
     }
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
@@ -25,7 +27,7 @@ class PlaceholderInspector extends datacontrols.InspectorView {
                 'flex-flow': 'column nowrap',
             },
 
-        }, super._Style());
+        }, base._Style());
 
     }
 

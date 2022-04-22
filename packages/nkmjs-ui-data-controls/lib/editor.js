@@ -29,6 +29,8 @@ function __CheckEditorMap() {
 
 const __delayedCheckEditorMap = com.DelayedCall(__CheckEditorMap);
 
+const base = ui.views.View;
+
 /**
  * @description An abstract implementation of the concept of "data editor". It is designed to edit
  * a complex data object, as well as inspecting selection of that data object' components (no matter how complex).
@@ -39,12 +41,12 @@ const __delayedCheckEditorMap = com.DelayedCall(__CheckEditorMap);
  * @augments ui.core.Widget
  * @memberof ui.datacontrols
  */
-class Editor extends ui.views.View {
+class Editor extends base {
     constructor() { super(); }
     /*
         static __NFO__ = com.NFOS.Ext({
             css: [`@/views/global-editor.css`]
-        }, ui.views.View, ['css']);
+        }, base, ['css']);
     */
     static __registerableEditor = false;
 

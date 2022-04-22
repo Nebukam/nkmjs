@@ -54,10 +54,10 @@ class FieldSettingsControl extends InspectorGroup {
 
     //#region DOM
 
-    _Style() {
+    static _Style() {
         let h = 2;
         let rh = `rgba(${C.COLORS.main},1)`; //C.COLORS.main //255,255,255
-        return U.Merge(super._Style(), {
+        return style.Extends(base._Style(), {
             ':host': {
                 margin: `4px`,
                 'margin-top': `2px`,

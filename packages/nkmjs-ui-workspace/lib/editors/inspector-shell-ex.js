@@ -13,6 +13,7 @@ const ui = require(`@nkmjs/ui-core`);
 const uilib = require(`@nkmjs/ui-library`);
 const uidatacontrols = require(`@nkmjs/ui-data-controls`);
 
+const base = uidatacontrols.InspectorShell;
 
 /**
  * An inspector provide micro controls for a given piece of data.
@@ -21,7 +22,7 @@ const uidatacontrols = require(`@nkmjs/ui-data-controls`);
  * 
  * The InspectorShell looks for the most suitable inspector and displays it.
  */
-class InspectorShellEx extends uidatacontrols.InspectorShell {
+class InspectorShellEx extends base {
     constructor() { super(); }
 
     _Init() {
@@ -50,7 +51,7 @@ class InspectorShellEx extends uidatacontrols.InspectorShell {
     get header() { return this._header; }
     get body() { return this._body; }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'display': `flex`,
@@ -74,7 +75,7 @@ class InspectorShellEx extends uidatacontrols.InspectorShell {
             '.inspector': {
                 'flex': '1 1 auto',
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

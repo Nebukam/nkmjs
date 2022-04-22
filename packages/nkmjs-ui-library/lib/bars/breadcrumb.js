@@ -6,18 +6,20 @@ const ui = require(`@nkmjs/ui-core`);
 
 const BreadcrumbItem = require(`./breadcrumb-item`);
 
-class Breadcrumb extends ui.WidgetBar{
+const base = ui.WidgetBar;
+
+class Breadcrumb extends base{
     constructor(){super();}
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/breadcrum.css`]
-    }, ui.WidgetBar, ['css']);
+    }, base, ['css']);
 
     static __defaultWidgetClass = BreadcrumbItem;
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
             },
@@ -27,7 +29,7 @@ class Breadcrumb extends ui.WidgetBar{
             ':host(.horizontal)': {
                 'align-content': `flex-end`,
             }
-        }, super._Style());
+        }, base._Style());
     }
 
 }

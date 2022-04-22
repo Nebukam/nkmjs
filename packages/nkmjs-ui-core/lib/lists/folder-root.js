@@ -7,6 +7,8 @@ const UI = require(`../ui`);
 
 const Folder = require(`./folder`);
 
+const base = Folder;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -14,10 +16,10 @@ const Folder = require(`./folder`);
  * @augments ui.core.tree.Folder
  * @memberof ui.core.tree
  */
-class FolderRoot extends Folder {
+class FolderRoot extends base {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, Folder, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
 
     static __defaultDirClass = Folder;
     static __defaultSelectOnActivation = false;
@@ -52,13 +54,13 @@ class FolderRoot extends Folder {
         */
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 '--folder-size': `${this.constructor.__itemHeight}px`,
                 '--folder-indent': `var(--size-s, 16px)`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _OpenFind() {

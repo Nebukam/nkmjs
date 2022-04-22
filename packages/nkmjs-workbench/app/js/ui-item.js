@@ -4,10 +4,11 @@ const nkm = require(`@nkmjs/core`);
 const u = nkm.u;
 const ui = nkm.ui;
 
-class UIItem extends ui.DisplayObjectContainer {
+const base = ui.DisplayObjectContainer;
+class UIItem extends base {
     constructor() { super(); }
 
-    static __NFO__ = { css: [`@/global-host.css`] }
+    static __NFO__ = { css: [`@/global-host.css`] };
 
     static __usePaintCallback = true;
 
@@ -22,7 +23,7 @@ class UIItem extends ui.DisplayObjectContainer {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return nkm.style.Extends({
             ':host': {
                 //opacity: 0,
@@ -58,7 +59,7 @@ class UIItem extends ui.DisplayObjectContainer {
             'p.error': {
                 color: `#ff0000`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
 

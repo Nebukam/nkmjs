@@ -9,6 +9,8 @@ const dom = require(`../dom`);
 
 const buttons = require("../buttons");
 
+const base = ui.WidgetBar;
+
 /**
  * ShelfNav is a glorified toolbar designed to work with a Shelf, 
  * handleling which view should be displayed.
@@ -17,12 +19,12 @@ const buttons = require("../buttons");
  * @augments ui.core.WidgetBar
  * @memberof ui.core.views
  */
-class ShelfNav extends ui.WidgetBar {
+class ShelfNav extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/shelf-nav.css`]
-    }, ui.WidgetBar, ['css']);
+    }, base, ['css']);
 
     static HANDLE_ACTIVATED = Symbol(`handleActivated`);
 
@@ -64,7 +66,7 @@ class ShelfNav extends ui.WidgetBar {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
@@ -117,7 +119,7 @@ class ShelfNav extends ui.WidgetBar {
                 'min-width': '0',
             }
 
-        }, super._Style());
+        }, base._Style());
 
     }
 

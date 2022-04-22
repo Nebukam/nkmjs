@@ -5,7 +5,9 @@ const data = require(`@nkmjs/data-core`);
 
 const InspectorItem = require(`./inspector-item`);
 
-class MetaControlItem extends InspectorItem {
+const base = InspectorItem;
+
+class MetaControlItem extends Inspec__BASE__torItem {
     constructor() { super(); }
 
     static __defaultSelectOnActivation = false;
@@ -28,7 +30,7 @@ class MetaControlItem extends InspectorItem {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 margin: `5px`,
@@ -46,7 +48,7 @@ class MetaControlItem extends InspectorItem {
             '.control': {
                 flex: `1 1 auto`,
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

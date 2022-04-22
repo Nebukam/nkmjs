@@ -17,6 +17,8 @@ const helpers = require(`./helpers`);
 const ControlView = require("./control-view");
 const InspectorView = require("./inspector-view");
 
+const base = InspectorView;
+
 /**
  * @description TODO
  * @class
@@ -24,13 +26,13 @@ const InspectorView = require("./inspector-view");
  * @augments ui.datacontrols.ControlView
  * @memberof ui.datacontrols
  */
-class ListInspectorView extends InspectorView {
+class ListInspectorView extends base {
     constructor() { super(); }
 
     /*
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inspectors/inspector-view.css`]
-    }, InspectorView, ['css']);
+    }, base, ['css']);
     */
 
 
@@ -41,12 +43,12 @@ class ListInspectorView extends InspectorView {
         this._dataType = null;
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
 
             },
-        }, super._Style());
+        }, base._Style());
     }
 
     get dataType() { return this._dataType; }

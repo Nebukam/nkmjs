@@ -10,7 +10,9 @@ const uilib = require("@nkmjs/ui-library");
 
 const items = require(`./items`);
 
-class ActionStackInspector extends datacontrols.InspectorView {
+const base = datacontrols.InspectorView;
+
+class ActionStackInspector extends base {
     constructor() { super(); }
 
     static __itemHeight = 32;
@@ -40,7 +42,7 @@ class ActionStackInspector extends datacontrols.InspectorView {
 
     }
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
@@ -62,7 +64,7 @@ class ActionStackInspector extends datacontrols.InspectorView {
                 'flex': '0 0 auto',
             }
 
-        }, super._Style());
+        }, base._Style());
 
     }
 

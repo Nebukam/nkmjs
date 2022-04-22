@@ -2,15 +2,16 @@
 
 const nkm = require(`@nkmjs/core`);
 
-class PlaceholderView extends nkm.ui.views.View{
-    constructor(){super();}
+const base = nkm.ui.views.View;
+class PlaceholderView extends base {
+    constructor() { super(); }
 
-    _Style(){
+    static _Style() {
         return {
-            ':host':{
-                'background-color':'rgb(0,255,0,0.5)',
-                'width':'150px', 'height':'150px',
-                'margin':'5px'
+            ':host': {
+                'background-color': 'rgb(0,255,0,0.5)',
+                'width': '150px', 'height': '150px',
+                'margin': '5px'
             }
         };
     }

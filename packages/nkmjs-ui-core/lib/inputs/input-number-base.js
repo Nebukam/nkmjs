@@ -12,7 +12,9 @@ const KB = actions.KEYBOARD;
 
 const InputField = require(`./input-field`);
 
-class InputNumberBase extends InputField {
+const base = InputField;
+
+class InputNumberBase extends base {
     constructor() { super(); }
 
     static __usePaintCallback = true;
@@ -157,7 +159,7 @@ class InputNumberBase extends InputField {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
 
         return style.Extends({
             ':host': {
@@ -170,7 +172,7 @@ class InputNumberBase extends InputField {
                 flex: `1 1 auto`,
                 'min-width': 0
             }
-        }, super._Style());
+        }, base._Style());
 
     }
 

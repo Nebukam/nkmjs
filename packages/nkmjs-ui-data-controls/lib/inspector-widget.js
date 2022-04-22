@@ -5,6 +5,11 @@ const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
+const ControlWidget = require("./control-widget");
+
+const base = ControlWidget;
+
+
 /**
  * @description An InspectorWidget is a ControlWidget designed to be used inside an InspectorView or an Editor.
  * 80% of an app UI & editor contents is likely to be InspectorWidgets.
@@ -13,24 +18,22 @@ const ui = require(`@nkmjs/ui-core`);
  * @augments ui.datacontrols.ControlWidget
  * @memberof ui.datacontrols
  */
-const ControlWidget = require("./control-widget");
-
-class InspectorWidget extends ControlWidget {
+class InspectorWidget extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inspectors/inspector-widget.css`]
-    }, ControlWidget, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
             },
-        }, super._Style());
+        }, base._Style());
     }
 
 }

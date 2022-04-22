@@ -4,6 +4,8 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const ui = require("@nkmjs/ui-core");
 
+const base = ui.WidgetButton;
+
 /**
  * @description A tool button is a simple button with an icon.
  * @class
@@ -11,14 +13,14 @@ const ui = require("@nkmjs/ui-core");
  * @augments ui.core.WidgetButton
  * @memberof ui.library.buttons
  */
-class ToolButton extends ui.WidgetButton {
+class ToolButton extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/buttons/button-tool.css`]
-    }, ui.WidgetButton, ['css']);
+    }, base, ['css']);
 
-    static __distribute = ui.WidgetButton.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(ui.IDS.ICON, null, ``)
         .Move(`command`);
 

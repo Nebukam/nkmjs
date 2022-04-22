@@ -24,7 +24,8 @@ class FeatureLine extends ui.DOMTemplate {
 
 }
 
-class FeaturesWidget extends ui.DisplayObjectContainer {
+const base = ui.DisplayObjectContainer;
+class FeaturesWidget extends base {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
@@ -64,7 +65,7 @@ class FeaturesWidget extends ui.DisplayObjectContainer {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 //opacity: 0,
@@ -76,7 +77,7 @@ class FeaturesWidget extends ui.DisplayObjectContainer {
                 'width':'25px',
                 'content': 'attr(data-marker)'
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

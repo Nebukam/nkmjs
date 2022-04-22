@@ -9,6 +9,8 @@ const dom = require(`../dom`);
 const TreeItem = require(`./tree-list-item`);
 const TreeList = require(`./tree-list`);
 
+const base = ui.lists.ListRoot;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -16,12 +18,15 @@ const TreeList = require(`./tree-list`);
  * @augments ui.core.lists.ListRoot
  * @memberof ui.core.tree
  */
-class TreeListRoot extends ui.lists.ListRoot {
+class TreeListRoot extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/tree-list-root.css`]
-    }, ui.lists.ListRoot, ['css']);
+    }, base, ['css']);
+
+    static __defaultItemClass = TreeItem;
+    static __defaultDirClass = TreeList;
 
     // ----> Init
 
@@ -36,16 +41,14 @@ class TreeListRoot extends ui.lists.ListRoot {
 
     _SetupBuilder(p_catalogBuilder) {
         p_catalogBuilder.host = this._body;
-        p_catalogBuilder._defaultItemClass = TreeItem;
-        p_catalogBuilder._defaultDirClass = TreeList;
     }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

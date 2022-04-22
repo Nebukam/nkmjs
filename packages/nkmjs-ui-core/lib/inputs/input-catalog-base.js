@@ -14,7 +14,9 @@ const KB = actions.KEYBOARD;
 
 const InputBase = require(`./input-base`);
 
-class InputCatalogBase extends InputBase {
+const base = InputBase;
+
+class InputCatalogBase extends base {
     constructor() { super(); }
 
     static __usePaintCallback = true;
@@ -22,9 +24,9 @@ class InputCatalogBase extends InputBase {
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/field.css`]
-    }, InputBase, ['css']);
+    }, base, ['css']);
 
-    static __distribute = InputBase.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`itemKey`, `_itemKey`, null)
         .To(`catalog`, `data`)
         .Move(`currentValue`);
@@ -62,7 +64,7 @@ class InputCatalogBase extends InputBase {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 position: `relative`,
@@ -75,7 +77,7 @@ class InputCatalogBase extends InputBase {
                 flex: `1 1 auto`,
                 'min-width': 0
             }
-        }, super._Style());
+        }, base._Style());
 
     }
 

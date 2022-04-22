@@ -135,7 +135,9 @@ class DataSelection extends com.pool.DisposableObjectEx {
             pushRange = true;
         }
 
-        if (p_mode == INPUT.SELECT_MODIFIER_ADD) { this._currentRangeContent.push(p_data); }
+        if (p_mode == INPUT.SELECT_MODIFIER_ADD && this._currentRangeContent) {
+            this._currentRangeContent.push(p_data);
+        }
 
         this._stack.Add(p_data);
         this._indices.Add(p_dataIndex);

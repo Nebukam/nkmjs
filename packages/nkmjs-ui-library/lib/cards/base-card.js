@@ -7,10 +7,12 @@ const style = require("@nkmjs/style");
 const dom = require("../dom");
 const buttons = require("../buttons");
 
-class BaseCard extends ui.WidgetItem {
+const base = ui.WidgetItem;
+
+class BaseCard extends base {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, ui.WidgetItem, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
 
     static __cardTemplate = null;
     static __cardOptions = {};
@@ -39,7 +41,7 @@ class BaseCard extends ui.WidgetItem {
      */
     static __defaultHeaderPlacement = ui.FLAGS.TOP;
 
-    static __distribute = ui.WidgetItem.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`header-placement`,
             (p_target, p_value) => {
                 p_target._mediaPlacement.Set(p_value);
@@ -116,7 +118,7 @@ class BaseCard extends ui.WidgetItem {
     set subtitle(p_value) { this._frame[ui.IDS.SUBTITLE].Set(p_value); }
     set label(p_value) { this._frame[ui.IDS.LABEL].Set(p_value); }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'display': 'flex',
@@ -152,7 +154,7 @@ class BaseCard extends ui.WidgetItem {
             ':host(.horizontal)': {},
             ':host(.horizontal) .header': {},
 
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

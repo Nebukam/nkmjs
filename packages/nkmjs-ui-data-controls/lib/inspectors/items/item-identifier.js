@@ -2,7 +2,9 @@
 
 const InspectorWidget = require("../../inspector-widget");
 
-class IdentifierInspectorItem extends InspectorWidget {
+const base = InspectorWidget;
+
+class IdentifierInspectorItem extends base {
     constructor() { super(); }
 
     // Also allow to change a Slot' group within model

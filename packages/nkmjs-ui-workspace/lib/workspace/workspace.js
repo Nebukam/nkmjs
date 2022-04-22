@@ -8,12 +8,14 @@ const ui = require(`@nkmjs/ui-core`);
 
 const WorkspaceCell = require(`./workspace-cell`);
 
-class Workspace extends ui.views.View {
+const base = ui.views.View;
+
+class Workspace extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/workspace.css`]
-    }, ui.views.View, ['css']);
+    }, base, ['css']);
 
     // ----> Init
 
@@ -63,7 +65,7 @@ class Workspace extends ui.views.View {
 
     // ----> Rendering
 
-    _Style() {
+    static _Style() {
 
         return {
             ':host': {

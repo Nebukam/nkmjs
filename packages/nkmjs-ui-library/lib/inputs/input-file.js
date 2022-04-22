@@ -11,10 +11,12 @@ const buttons = require(`../buttons`);
 
 const InputPath = require(`./input-path`);
 
-class InputFile extends InputPath {
+const base = InputPath;
+
+class InputFile extends base {
     constructor() { super(); }
 
-    static __distribute = InputPath.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`multiSelection`, null, false);
 
     _Init() {
@@ -49,7 +51,7 @@ class InputFile extends InputPath {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             '.input-btn': {
                 flex: `1 1 auto`
@@ -57,7 +59,7 @@ class InputFile extends InputPath {
             ':host(.allow-drop)': {
                 'background-color': `#00ff00`
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

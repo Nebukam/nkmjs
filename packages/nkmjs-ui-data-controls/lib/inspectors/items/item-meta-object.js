@@ -5,7 +5,9 @@ const com = require("@nkmjs/common");
 const CONTEXT = require(`../context`);
 const MetaPropertyInspectorItem = require(`./item-meta-property`);
 
-class MetaObjectInspectorItem extends MetaPropertyInspectorItem {
+const base = MetaPropertyInspectorItem;
+
+class MetaObjectInspectorItem extends base {
     constructor() { super(); }
 
     static __watchMidUpdate = true;

@@ -11,7 +11,9 @@ const uidatacontrols = require(`@nkmjs/ui-data-controls`);
 const CONTEXT = uidatacontrols.CONTEXT;
 const Workspace = require(`./workspace`);
 
-class RootWorkspace extends Workspace {
+const base = Workspace;
+
+class RootWorkspace extends base {
 
     constructor() { super(); }
 
@@ -42,7 +44,7 @@ class RootWorkspace extends Workspace {
 
     // ----> Rendering
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 position: `relative`,
@@ -50,7 +52,7 @@ class RootWorkspace extends Workspace {
                 flex: `1 1 auto`,
                 display: `flex`,
             },
-        }, super._Style());
+        }, base._Style());
     }
 
     // ----> Request handling

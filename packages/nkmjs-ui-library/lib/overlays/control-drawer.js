@@ -9,6 +9,8 @@ const datacontrols = require(`@nkmjs/ui-data-controls`);
 
 const dom = require(`../dom`);
 
+const base = datacontrols.ControlView;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -16,12 +18,12 @@ const dom = require(`../dom`);
  * @augments ui.core.views.View
  * @memberof ui.core.views
  */
-class ControlDrawer extends datacontrols.ControlView {
+class ControlDrawer extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/drawer.css`]
-    }, datacontrols.ControlView, ['css']);
+    }, base, ['css']);
 
     static __ppdata = (p_owner, p_data) => {
 
@@ -64,7 +66,7 @@ class ControlDrawer extends datacontrols.ControlView {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 'display': `grid`,
@@ -80,7 +82,7 @@ class ControlDrawer extends datacontrols.ControlView {
             },
             '.icon.close': {
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     /**

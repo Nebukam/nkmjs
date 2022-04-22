@@ -4,12 +4,14 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const ui = require(`@nkmjs/ui-core`);
 
-class Explorer extends ui.views.View {
+const base = ui.views.View;
+
+class Explorer extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/explorer.css`]
-    }, ui.views.View, ['css']);
+    }, base, ['css']);
 
     _Init() {
         super._Init();
@@ -23,7 +25,7 @@ class Explorer extends ui.views.View {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
 
         let shadowSize = 5;
         let shadowColor = `rgba(0,0,0,0.5)`;

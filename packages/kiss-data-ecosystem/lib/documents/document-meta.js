@@ -10,12 +10,14 @@ const { Metadata } = require(`../data-core/@.js`);
 const { SERIALIZATION_CONTEXT } = require(`../serialization/@.js`);
 const { SERIALIZER_JSON } = require(`../serialization/keys.js`);
 
-class MetaDocument extends Document {
+const base = Document;
+
+class MetaDocument extends base {
 
     static __NFO__ = com.NFOS.Ext({
             resourceType: JSONResource,
             serializer: SERIALIZER_JSON
-        }, Document);
+        }, base);
 
     constructor() { super(); }
 

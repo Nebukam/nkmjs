@@ -9,6 +9,8 @@ const SIGNAL = require(`../signal`);
 const FLAGS = require(`../flags`);
 const WidgetOrientable = require(`../widget-orientable`);
 
+const base = WidgetOrientable;
+
 /**
 * A View is a simple WidgetOrientable that can request focus, and includes
 * an internal CommandBox.
@@ -17,7 +19,7 @@ const WidgetOrientable = require(`../widget-orientable`);
 * @augments ui.core.WidgetOrientable
 * @memberof ui.core.views
 */
-class View extends WidgetOrientable {
+class View extends base {
     constructor() {
         super();
         // Auto assign focusArea if required & not set.
@@ -51,12 +53,12 @@ class View extends WidgetOrientable {
 
     CmdGet(p_key){ /* Replaced by this._commands.Get */}
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
                 '@': [`fade-in`]
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     get shortcuts() {

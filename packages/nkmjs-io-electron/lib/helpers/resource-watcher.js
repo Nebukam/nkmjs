@@ -10,15 +10,17 @@ const SIGNAL = require(`../signal`);
 
 const PathWatcher = require(`./path-watcher`);
 
+const base = PathWatcher;
+
 /**
  * Create all missing directories in a provided path.
  * Input path is assumed to be a directory, not a file.
  * path/to/something
  */
-class ResourceWatcher extends PathWatcher {
+class ResourceWatcher extends base {
     constructor() { super(); }
 
-    static __distribute = PathWatcher.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`readOptions`)
         .To(`readOnChange`)
         .To(`releaseRscOnDelete`)

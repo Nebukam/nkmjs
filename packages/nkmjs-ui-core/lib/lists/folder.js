@@ -10,6 +10,8 @@ const DOMStreamer = require(`../helpers/dom-streamer`);
 const CatalogFolderBuilder = require(`./catalog-folder-builder`);
 const FolderItem = require(`./folder-item`);
 
+const base = FolderItem;
+
 /**
  * @description Similar to item-group, a folder separates Catalog list from CatalogItems
  * and uses a DOM Streamer to handle items.
@@ -18,10 +20,10 @@ const FolderItem = require(`./folder-item`);
  * @augments ui.core.tree.ListItem
  * @memberof ui.core.tree
  */
-class Folder extends FolderItem {
+class Folder extends base {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, FolderItem, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
 
     static __itemHeight = 24;
 
@@ -100,7 +102,7 @@ class Folder extends FolderItem {
     // ----> DOM
 
     //TODO : Body must break flex row
-    _Style() {
+    static _Style() {
         return {
             ':host': {
                 'padding': 0,

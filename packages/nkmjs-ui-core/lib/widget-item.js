@@ -12,6 +12,8 @@ const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
 const IDS = require(`./ids`);
 
+const base = Widget;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -19,7 +21,7 @@ const IDS = require(`./ids`);
  * @augments ui.core.Widget
  * @memberof ui.core
  */
-class WidgetItem extends Widget {
+class WidgetItem extends base {
     constructor() { super(); }
 
     static __draggable = false;

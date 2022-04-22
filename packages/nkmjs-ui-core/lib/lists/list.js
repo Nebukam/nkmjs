@@ -8,6 +8,8 @@ const CatalogBuilder = require(`../helpers/catalog-builder`);
 
 const ListItem = require(`./list-item`);
 
+const base = ListItem;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -15,10 +17,10 @@ const ListItem = require(`./list-item`);
  * @augments ui.core.tree.ListItem
  * @memberof ui.core.tree
  */
-class List extends ListItem {
+class List extends base {
     constructor() { super(); }
 
-    static __NFO__ = com.NFOS.Ext({}, ListItem, ['css']);
+    static __NFO__ = com.NFOS.Ext({}, base, ['css']);
     static __defaultOrder = 0;
 
     static __defaultItemClass = ListItem;
@@ -80,7 +82,7 @@ class List extends ListItem {
     // ----> DOM
 
     //TODO : Body must break flex row
-    _Style() {
+    static _Style() {
         return {
             ':host': {
 
@@ -96,7 +98,7 @@ class List extends ListItem {
                 'align-items': `stretch`,
 
                 'box-sizing': `border-box`,
-                'padding-left': `var(--indent, 0px)`,
+                //'padding-left': `var(--indent, 0px)`,
 
                 'height': `var(--tree-size)`,
                 'min-height': `var(--tree-size)`,

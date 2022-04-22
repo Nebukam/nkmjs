@@ -7,6 +7,7 @@ const ui = require(`@nkmjs/ui-core`);
 
 const dom = require(`../dom`);
 
+const base = ui.lists.FolderItem;
 
 /**
  * @description TODO
@@ -15,7 +16,7 @@ const dom = require(`../dom`);
  * @augments ui.core.WidgetItem
  * @memberof ui.core.tree
  */
-class FolderListItem extends ui.lists.FolderItem {
+class FolderListItem extends base {
     constructor() {
         super();
         this.depth = 0;
@@ -23,9 +24,9 @@ class FolderListItem extends ui.lists.FolderItem {
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/lists/folder-list-item.css`]
-    }, ui.lists.FolderItem, ['css']);
+    }, base, ['css']);
 
-    static __distribute = ui.lists.FolderItem.__distribute.Ext()
+    static __distribute = base.__distribute.Ext()
         .To(`data`, `itemData`); // Make sure this is registered last
 
     // ----> Init
@@ -65,12 +66,12 @@ class FolderListItem extends ui.lists.FolderItem {
      */
     set label(p_value) { this._label.Set(p_value); }
 
-    _Style() {
+    static _Style() {
         return style.Extends({
             ':host': {
 
             }
-        }, super._Style());
+        }, base._Style());
     }
 
     _Render() {

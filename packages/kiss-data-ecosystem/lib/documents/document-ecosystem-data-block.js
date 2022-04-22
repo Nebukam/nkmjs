@@ -9,12 +9,14 @@ const { JSONResource } = require(`@nkmjs/data-core`);
 const { SERIALIZATION_CONTEXT } = require(`../serialization/@.js`);
 const { SERIALIZER_JSON } = require(`../serialization/keys.js`);
 
-class DataBlockDocument extends documents.Document {
+const base = documents.Document;
+
+class DataBlockDocument extends base {
 
     static __NFO__ = com.NFOS.Ext({
         [documents.IDS.TYPE_RSC]: JSONResource,
         [documents.IDS.SERIAL_CTX]: SERIALIZER_JSON
-    }, documents.Document);
+    }, base);
 
     constructor() { super(); }
 

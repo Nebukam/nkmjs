@@ -15,6 +15,8 @@ const DataForward = require(`./helpers/data-forward`);
 
 const extensions = require(`./extensions`);
 
+const base = DisplayObjectContainer;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -22,7 +24,7 @@ const extensions = require(`./extensions`);
  * @augments ui.core.DisplayObjectContainer
  * @memberof ui.core
  */
-class Widget extends DisplayObjectContainer {
+class Widget extends base {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
@@ -141,7 +143,7 @@ class Widget extends DisplayObjectContainer {
     /**
      * @description TODO
      * @type {string}
-     * @group Selection
+     * @group Alt
      */
     get htitle() { this.getAttribute(`title`); }
     set htitle(p_value) {

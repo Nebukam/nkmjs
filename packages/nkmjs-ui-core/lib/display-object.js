@@ -26,6 +26,8 @@ const FlagBox = require("./helpers/flag-box");
  * @property {number} [scaleZ]
  */
 
+const base = DisposableHTMLElement;
+
 /**
  * @description TODO
  * @class
@@ -33,7 +35,7 @@ const FlagBox = require("./helpers/flag-box");
  * @augments ui.core.DisposableHTMLElement
  * @memberof ui.core
  */
-class DisplayObject extends DisposableHTMLElement {
+class DisplayObject extends base {
     constructor() { super(); }
 
     static __defaultOrder = null;
@@ -114,7 +116,7 @@ class DisplayObject extends DisposableHTMLElement {
      * @customtag override-me
      * @group Styling
      */
-    _Style() { }
+    static _Style() { }
 
     /**
      * @access private
@@ -130,7 +132,7 @@ class DisplayObject extends DisposableHTMLElement {
             this._styles.length = 0;
         }
 
-        this._styles = style.STYLE.Get(this.constructor, this._Bind(this._Style), p_invalidateCache);
+        this._styles = style.STYLE.Get(this.constructor, this.constructor, p_invalidateCache, true);
         for (let i = 0, n = this._styles.length; i < n; i++) {
             dom.Attach(this._styles[i].cloneNode(true), this._host);
         }

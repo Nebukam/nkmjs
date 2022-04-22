@@ -9,6 +9,8 @@ const SIGNAL = require(`../signal`);
 
 const ShelfNav = require(`./shelf-nav`);
 
+const base = ui.views.View;
+
 /**
  * @description TODO
  * @hideconstructor
@@ -16,12 +18,12 @@ const ShelfNav = require(`./shelf-nav`);
  * @augments ui.core.views.View
  * @memberof ui.core.views
  */
-class Shelf extends ui.views.View {
+class Shelf extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/shelf.css`]
-    }, ui.views.View, ['css']);
+    }, base, ['css']);
 
     // ----> Init
 
@@ -220,7 +222,7 @@ class Shelf extends ui.views.View {
 
     // ----> DOM
 
-    _Style() {
+    static _Style() {
 
         return {
             ':host': {
