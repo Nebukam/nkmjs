@@ -21,6 +21,7 @@ const RectTracker = require(`./rect-tracker`);
 
 const base = DisplayObjectContainer;
 const __defaultBody = Symbol(`defaultBody`);
+const __isReady = `isready`;
 /**
  * A Modal is a lightweight container with absolute positioning added to an object.
  * It is attached to a specific position in parent screen-space, and can follow an object if attached to one.
@@ -83,7 +84,6 @@ class Modal extends base {
      */
     static Pop(p_options) {
         let cl = p_options.modalClass;
-        //console.log(this);
         if (!u.isInstanceOf(cl, Modal)) { cl = this; }
         let modal = UI.Rent(cl);
         modal.options = p_options;
@@ -134,14 +134,16 @@ class Modal extends base {
 
         this._rectTracker = new RectTracker(this._UpdateAnchoredPosition, this);
 
+        this._isReady = false;
+        this._delayedReady = com.DelayedCall(this._Bind(this._Ready), 100);
+
+
         this._modeEnum = new FlagEnum(this.constructor.modes, true);
         this._modeEnum.Add(this);
 
         this._pointer = new extensions.PointerStatic(this);
 
         this._ownsContent = false;
-
-
 
         this._parentModal = null;
         this._subModals = new collections.List();
@@ -319,11 +321,11 @@ class Modal extends base {
         //if (this._anchor) { com.time.TIME.Watch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
         //else { com.time.TIME.Unwatch(com.SIGNAL.TICK, this._UpdateAnchoredPosition); }
         if (this._anchor) {
-            this.visible = false;
+            this._Ready(false);
             this._rectTracker.Add(this._anchor);
             this._rectTracker.Enable();
         } else {
-            this.visible = true;
+            this._Ready();
             this._rectTracker.Disable();
         }
 
@@ -340,6 +342,18 @@ class Modal extends base {
             }
         }
 
+    }
+
+    _Ready(p_toggle = true) {
+        this._isReady = p_toggle;
+        if (p_toggle) {
+            //this.visible = true;
+            this.classList.add(__isReady);
+            this._delayedReady.Cancel();
+        } else {
+            //this.visible = false;
+            this.classList.remove(__isReady);
+        }
     }
 
     _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
@@ -366,6 +380,7 @@ class Modal extends base {
         return {
             ':host': {
                 '@': ['fade-in'],
+                'transition': 'opacity 0.01s ease !important',
                 'position': 'absolute',
                 'border': '1px solid red',
                 //'width':'0', 'height':'0',
@@ -379,6 +394,10 @@ class Modal extends base {
             },
             ':host(.mode-anchor)': {
 
+            },
+            ':host(:not(.isready))': {
+                'opacity': `0`,
+                'pointer-events': 'none'
             },
             /*
             // Float inside
@@ -402,7 +421,7 @@ class Modal extends base {
      */
     _UpdateAnchoredPosition() {
 
-        this.visible = true;
+        if (!this._isReady) { this._delayedReady.Schedule(); }
 
         let
             contextRect = this._rectTracker.GetRect(this._context),
@@ -495,6 +514,8 @@ class Modal extends base {
     }
 
     _CleanUp() {
+
+        this._Ready(false);
 
         this.constructor.modalStack.Remove(this);
 

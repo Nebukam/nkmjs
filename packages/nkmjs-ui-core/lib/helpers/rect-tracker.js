@@ -18,6 +18,7 @@ class RectTracker {
         this._elements = [];
         this._cachedRects = new Map();
         this._cachedIntersections = new Map();
+        this._cachedRatios = new Map();
         this._enabled = false;
         this._onObserved = p_callback;
 
@@ -51,9 +52,16 @@ class RectTracker {
         let index = this._elements.indexOf(p_element);
         if (index == -1) { return; }
         this._elements.splice(index, 1);
+        this._cachedRatios.delete(p_element);
         this._cachedRects.delete(p_element);
         this._cachedIntersections.delete(p_element);
         if (this._enabled) { this._observer.unobserve(p_element); }
+    }
+
+    Clear() {
+        while (this._elements.length != 0) {
+            this.Remove(this._elements[this._elements.length - 1]);
+        }
     }
 
     _OnObservation(entries, observer) {
@@ -68,10 +76,13 @@ class RectTracker {
                 newRect = entry.boundingClientRect,
                 oldIntersection = this._cachedIntersections.get(target),
                 newIntersection = entry.intersectionRect,
+                oldRatio = this._cachedRatios.get(target),
+                newRatio = entry.intersectionRatio,
                 localUpdate = false;
 
             if (!oldRect ||
-                !oldIntersection) {
+                !oldIntersection ||
+                isNaN(oldRatio)) {
                 localUpdate = true;
             }
             else if (
@@ -82,19 +93,21 @@ class RectTracker {
                 oldIntersection.x != newIntersection.x ||
                 oldIntersection.y != newIntersection.y ||
                 oldIntersection.width != newIntersection.width ||
-                oldIntersection.height != newIntersection.height) {
+                oldIntersection.height != newIntersection.height ||
+                oldRatio != newRatio) {
                 localUpdate = true;
             }
 
             if (localUpdate) {
                 doCallback = true;
+                this._cachedRatios.set(target, newRatio);
                 this._cachedRects.set(target, newRect);
                 this._cachedIntersections.set(target, newIntersection);
             }
 
         }
 
-        if (doCallback && this._onObserved) { this._onObserved(); }
+        if (doCallback && this._onObserved) { this._onObserved(this); }
 
         observer.disconnect();
 
@@ -108,8 +121,7 @@ class RectTracker {
 
     GetRect(p_element) { return this._cachedRects.get(p_element); }
     GetIntersect(p_element) { return this._cachedIntersections.get(p_element); }
-
-
+    GetRatio(p_element) { return this._cachedRatios.get(p_element); }
 
 }
 

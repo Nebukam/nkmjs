@@ -20,6 +20,7 @@ class InputInlineSelect extends base {
     constructor() { super(); }
 
     static __inputProperties = {};
+    static __defaultScrollable = false;
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/widgets/widget-bar.css`]

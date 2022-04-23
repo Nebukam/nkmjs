@@ -21,6 +21,7 @@ class InputCatalogBase extends base {
 
     static __usePaintCallback = true;
     static __inputProperties = {};
+    static __defaultScrollable = true;
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/field.css`]
@@ -29,6 +30,7 @@ class InputCatalogBase extends base {
     static __distribute = base.__distribute.Ext()
         .To(`itemKey`, `_itemKey`, null)
         .To(`catalog`, `data`)
+        .To(`scrollable`)
         .Move(`currentValue`);
 
     _Init() {
@@ -44,11 +46,14 @@ class InputCatalogBase extends base {
 
         this._useCatalogsAsGroup = false;
         this._groupOptionId = null;
+        this._scrollable = this.constructor.__defaultScrollable;
 
         this._Bind(this._onInput);
         this._Bind(this._onChange);
+        this._Bind(this._OnWheel);
 
-        this._pointer._wheelFn = this._Bind(this._OnWheel);
+        this.scrollable = this.constructor.__defaultScrollable;
+
         this._itemKey = null;
 
     }
@@ -61,6 +66,11 @@ class InputCatalogBase extends base {
 
     set useCatalogsAsGroup(p_value) { this._useCatalogsAsGroup = p_value; }
     set groupOptionID(p_value) { this._groupOptionId = p_value; }
+
+    set scrollable(p_value) {
+        this._scrollable = p_value;
+        this._pointer._wheelFn = p_value ? this._OnWheel : null;
+    }
 
     // ----> DOM
 
@@ -163,6 +173,11 @@ class InputCatalogBase extends base {
     _UpdatePreview() {
         // Implementation detail
         throw new Error(`not implemented`);
+    }
+
+    _CleanUp() {
+        this.scrollable = this.constructor.__defaultScrollable;
+        super._CleanUp();
     }
 
 }
