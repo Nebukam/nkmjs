@@ -63,6 +63,7 @@ class DialogBox extends base {
                 flex: `0 0 auto`,
             },
             '.body': {
+                'display':'flex',
                 'min-height': '0',
                 'overflow-y': `auto`,
                 'overflow-x': `hidden`,
