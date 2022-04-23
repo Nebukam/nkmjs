@@ -16,7 +16,7 @@ class SimpleDataBlock extends DataBlock {
         this._ResetValues(this._values);
     }
 
-    _ResetValues(p_values){
+    _ResetValues(p_values) {
 
     }
 
@@ -92,9 +92,22 @@ class SimpleDataBlock extends DataBlock {
         return v;
     }
 
+    Reset(p_individualSet = true, p_silent = false) {
+
+        if (p_individualSet) {
+            let copy = { ...this._values };
+            this._ResetValues(copy);
+            this.BatchSet(copy, p_silent);
+        } else {
+            this._ResetValues(this._values);
+            if (!p_silent) { this.CommitUpdate(); }
+        }
+        
+    }
+
     _CleanUp() {
         super._CleanUp();
-        this._ResetValues(this._values);
+        this.Reset(false, true);
     }
 
 }
