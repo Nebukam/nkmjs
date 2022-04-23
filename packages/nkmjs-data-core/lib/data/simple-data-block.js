@@ -98,12 +98,16 @@ class SimpleDataBlock extends DataBlock {
             let copy = { ...this._values };
             this._ResetValues(copy);
             this.BatchSet(copy, p_silent);
+            this._OnReset(p_individualSet, p_silent);
         } else {
             this._ResetValues(this._values);
+            this._OnReset(p_individualSet, p_silent);
             if (!p_silent) { this.CommitUpdate(); }
         }
-        
+
     }
+
+    _OnReset(p_individualSet, p_silent) { }
 
     _CleanUp() {
         super._CleanUp();

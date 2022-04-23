@@ -77,11 +77,6 @@ class ServerBase {
 
     }
 
-    _PostInit() {
-        super._PostInit();
-
-    }
-
     _InternalBoot() {
         console.log("Listening on port %s", this._server.address().port);
         this._Boot();

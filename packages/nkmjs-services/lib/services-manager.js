@@ -19,11 +19,6 @@ class ServicesManager extends com.helpers.SingletonEx{
         this._services = new collections.List();
     }
 
-    _PostInit()
-    {
-        super._PostInit();
-    }
-
     /**
      * @description TODO
      */
