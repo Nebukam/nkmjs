@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/dialog",
-  "version": "0.0.63",
+  "version": "0.0.64",
   "description": "NKMjs Framework Dialog",
   "main": "index.js",
   "repository": {
@@ -22,7 +22,7 @@
     "@nkmjs/common": "^0.1.35",
     "@nkmjs/services": "^0.0.45",
     "@nkmjs/style": "^0.0.53",
-    "@nkmjs/ui-core": "^0.2.3",
+    "@nkmjs/ui-core": "^0.2.4",
     "@nkmjs/utils": "^0.0.39"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"

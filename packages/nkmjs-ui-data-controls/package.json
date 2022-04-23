@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-data-controls",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "NKMjs Framework Data Library Controls",
   "main": "index.js",
   "repository": {
@@ -25,7 +25,7 @@
     "@nkmjs/environment": "^0.1.37",
     "@nkmjs/io-core": "^0.1.41",
     "@nkmjs/style": "^0.0.53",
-    "@nkmjs/ui-core": "^0.2.3",
+    "@nkmjs/ui-core": "^0.2.4",
     "@nkmjs/utils": "^0.0.39"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
