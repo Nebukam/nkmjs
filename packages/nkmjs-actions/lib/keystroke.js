@@ -79,6 +79,7 @@ class Keystroke extends com.helpers.InfosObjectEx {
         super._Init();
         this._keys = [];
         this._focusedFieldPreventActivation = false;
+        this._textSelectionPreventActivation = false;
         this._active = false;
         this._enabled = false;
         this._silent = false;
@@ -95,8 +96,19 @@ class Keystroke extends com.helpers.InfosObjectEx {
 
     get isEnabled() { return this._enabled; }
 
-    Weak() {
+    NoFieldFocus() {
         this._focusedFieldPreventActivation = true;
+        return this;
+    }
+
+    NoTextSelect() {
+        this._textSelectionPreventActivation = true;
+        return this;
+    }
+
+    Strict(){
+        this._focusedFieldPreventActivation = true;
+        this._textSelectionPreventActivation = true;
         return this;
     }
 
@@ -142,6 +154,7 @@ class Keystroke extends com.helpers.InfosObjectEx {
     Activate() {
         if (this._active) { return false; }
         if (this._focusedFieldPreventActivation && nkm.ui.INPUT.focusedField != null) { return false; }
+        if(this._textSelectionPreventActivation && nkm.ui.dom.isTextHighlighted){ return false; }
         this._active = true;
         this._consumed = false;
         this.Broadcast(SIGNAL.ACTIVATED, this);
@@ -165,6 +178,7 @@ class Keystroke extends com.helpers.InfosObjectEx {
     _CleanUp() {
         this._keys.length = 0;
         this._focusedFieldPreventActivation = false;
+        this._textSelectionPreventActivation = false;
         super._CleanUp();
     }
 

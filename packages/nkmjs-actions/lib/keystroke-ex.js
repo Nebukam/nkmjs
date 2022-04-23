@@ -54,6 +54,7 @@ class KeystrokeEx extends Keystroke {
 
         if (this._active) { return false; }
         if (this._focusedFieldPreventActivation && nkm.ui.INPUT.focusedField != null) { return false; }
+        if(this._textSelectionPreventActivation && nkm.ui.dom.isTextHighlighted){ return false; }
         this._active = true;
         this._consumed = false;
         this.Broadcast(SIGNAL.ACTIVATED, this);
