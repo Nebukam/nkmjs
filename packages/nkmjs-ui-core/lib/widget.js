@@ -70,7 +70,9 @@ class Widget extends base {
         this._focusArea = null;
 
         this._dataObserver = new com.signals.Observer();
-        this._dataObserver.Hook(com.SIGNAL.UPDATED, this._OnDataUpdated, this);
+        this._dataObserver
+            .Hook(com.SIGNAL.UPDATED, this._OnDataUpdated, this)
+            .Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this);
 
         this._flags.Add(this,
             FLAGS.ACTIVATED,
@@ -569,6 +571,8 @@ class Widget extends base {
      * @group Data
      */
     _OnDataUpdated(p_data) { }
+
+    _OnDataReleased(p_data) { this.data = null; }
 
     //#endregion
 

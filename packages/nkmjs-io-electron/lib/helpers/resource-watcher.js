@@ -35,11 +35,14 @@ class ResourceWatcher extends base {
         this._releaseRscOnDelete = false;
         this._resourceBound = false;
         this._readOptions = null;
-
+        this._rscOptions = null;
 
         this._rscObserver = new nkm.com.signals.Observer();
+        this._rscObserver.Hook(nkm.io.IO_SIGNAL.READ_COMPLETE, this._OnReadComplete, this);
 
     }
+
+    set rscOptions(p_value) { this._rscOptions = p_value; }
 
     Hook(p_evt, p_fn, p_subscriber = null) { this._rscObserver.Hook(p_evt, p_fn, p_subscriber); }
     Unhook(p_evt, p_fn, p_subscriber = null) { this._rscObserver.Unhook(p_evt, p_fn, p_subscriber); }
@@ -49,7 +52,7 @@ class ResourceWatcher extends base {
         super._OnPathChanged(p_path, p_oldPath);
     }
 
-    _GetRsc(p_path) { return nkm.io.Get(p_path); }
+    _GetRsc(p_path) { return nkm.io.Get(p_path, this._rscOptions); }
 
     get readOptions() { return this._readOptions; }
     set readOptions(p_value) { this._readOptions = p_value; }
@@ -76,6 +79,7 @@ class ResourceWatcher extends base {
     _OnRscChanged(p_new, p_old) {
         if (p_old) { p_old.Unwatch(nkm.com.SIGNAL.RELEASED, this._OnRscReleased, this); }
         if (p_new) { p_new.Watch(nkm.com.SIGNAL.RELEASED, this._OnRscReleased, this); }
+        this.Broadcast(nkm.com.SIGNAL.ITEM_UPDATED, this, p_new, p_old);
     }
 
     _OnRscReleased() {
@@ -110,6 +114,10 @@ class ResourceWatcher extends base {
         if (this._readOnChange) {
             this.Read(this._readOptions);
         }
+    }
+
+    _OnReadComplete(p_rsc) {
+        this.Broadcast(nkm.io.IO_SIGNAL.READ_COMPLETE, this, p_rsc);
     }
 
     _OnFileDeleted(p_path) {

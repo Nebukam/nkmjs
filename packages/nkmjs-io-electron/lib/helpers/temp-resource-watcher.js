@@ -26,12 +26,7 @@ class TempResourceWatcher extends base {
     _Init() {
         super._Init();
         this._tempObj = null;
-        this._rscOptions = null;
     }
-
-    set rscOptions(p_value) { this._rscOptions = p_value; }
-
-    _GetRsc(p_path) { return nkm.io.Get(p_path, this._rscOptions); }
 
     Create(p_options = null, p_tmpOpts = null) {
         this.Flush();
