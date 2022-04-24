@@ -51,6 +51,7 @@ class WidgetButton extends base {
     static __distribute = com.helpers.OptionsDistribute.Ext()
         .To(IDS.DATA)
         .To(`htitle`)
+        .To(`order`)
         .To(`trigger`)
         .To(`toggle`, null, null)
         .To(`request`)

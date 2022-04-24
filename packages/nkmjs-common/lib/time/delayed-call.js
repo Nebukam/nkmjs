@@ -56,6 +56,11 @@ class DelayedCall {
         TIME.instance.NextTickAdd(this._Call);
     }
 
+    Bump() {
+        if (this._scheduled) { this._elapsed = 0; }
+        else { this.Schedule(); }
+    }
+
     /**
      * @description Cancel the delayed call, if it was scheduled.
      */

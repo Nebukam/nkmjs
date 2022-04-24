@@ -46,6 +46,7 @@ class WidgetBar extends base {
     static __defaultWidgetClass = WidgetButton;
     static __distribute = com.helpers.OptionsDistribute.Ext()
         .To(`size`, null, null, `__defaultSize`)
+        .To(`order`)
         .To(`inline`)
         .To(`stretch`)
         .To(`defaultWidgetClass`, `_defaultWidgetClass`)
