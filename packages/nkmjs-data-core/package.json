@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/data-core",
-  "version": "0.0.55",
+  "version": "0.0.56",
   "description": "NKMjs Framework Core Data",
   "main": "index.js",
   "repository": {

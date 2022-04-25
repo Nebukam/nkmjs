@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/data-library",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "NKMjs Framework Data Ecosystem",
   "main": "index.js",
   "repository": {
@@ -19,8 +19,8 @@
     "@nkmjs/actions": "^0.2.4",
     "@nkmjs/collections": "^0.1.20",
     "@nkmjs/common": "^0.1.36",
-    "@nkmjs/data-core": "^0.0.55",
-    "@nkmjs/documents": "^0.1.9",
+    "@nkmjs/data-core": "^0.0.56",
+    "@nkmjs/documents": "^0.1.10",
     "@nkmjs/environment": "^0.1.38",
     "@nkmjs/io-core": "^0.1.42",
     "@nkmjs/utils": "^0.0.39"
