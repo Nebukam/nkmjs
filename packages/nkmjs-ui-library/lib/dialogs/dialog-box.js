@@ -46,7 +46,8 @@ class DialogBox extends base {
                 'flex-flow': `column`,
                 'align-content': `stretch`,
                 'align-items': `stretch`,
-                'justify-content': `center`
+                'justify-content': `center`,
+                'min-width': `450px`
             },
             '.header': {
 

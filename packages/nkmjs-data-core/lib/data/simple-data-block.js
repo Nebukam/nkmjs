@@ -16,6 +16,11 @@ class SimpleDataBlock extends DataBlock {
         this._ResetValues(this._values);
     }
 
+    _PostInit() {
+        super._PostInit();
+        this._OnReset(false, true);
+    }
+
     _ResetValues(p_values) {
 
     }
