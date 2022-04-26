@@ -161,6 +161,8 @@ class EditorEx extends base {
         }, base._Style());
     }
 
+    get viewport() { return this._viewport; }
+
     _Render() {
 
         if (this.constructor.__default_headerClass) { this._header = this.Attach(this.constructor.__default_headerClass, ui.IDS.HEADER, this._host); }

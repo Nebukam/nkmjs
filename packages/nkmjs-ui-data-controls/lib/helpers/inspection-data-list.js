@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const collections = require(`@nkmjs/collections`);
-const { isInstanceOf } = require("@nkmjs/utils/lib/checks");
+const ui = require("@nkmjs/ui-core");
 
 /**
  * @typedef SignalDataSelected
@@ -34,7 +34,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
     }
 
     // ----> Init
-    s
+
     _Init() {
 
         super._Init();
@@ -213,6 +213,29 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         else { this.Add(p_data, false); }
     }
 
+    SetList(p_dataArray, p_preProcess = true) {
+        //This is because data can actually be an array, so using Set would yield the wrong results.
+        if (!p_dataArray) {
+            this.Clear();
+            return;
+        }
+
+        if (p_dataArray.length == 1) {
+            this.Set(p_dataArray[0], p_preProcess);
+            return;
+        }
+
+        this.Clear();
+
+        for (let i = 0; i < p_dataArray.length; i++) {
+            let data = p_dataArray[i];
+            if (p_preProcess && this._preProcessData) { data = this._preProcessData(data); }
+            if (!data) { continue; }
+            this.Add(data, false);
+        }
+
+    }
+
     _FindSharedDataType() {
 
         this._sharedItemTypeNeedRefresh = false;
@@ -278,9 +301,11 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
      * @description Clear all item in the stack
      */
     Clear() {
+        if (this._stack.isEmpty) { return; }
         this._clearing = true;
         while (!this._stack.isEmpty) { this.Remove(this._stack.last, false); }
         this._clearing = false;
+        this.Broadcast(ui.SIGNAL.SELECTION_CLEARED, this);
     }
 
     //#region Analytics

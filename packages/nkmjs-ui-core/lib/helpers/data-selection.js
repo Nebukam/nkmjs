@@ -362,9 +362,11 @@ class DataSelection extends com.pool.DisposableObjectEx {
      */
     Clear() {
         this._cachedRangeStart = -1;
+        if (this._stack.isEmpty) { return; }
         this._clearing = true;
         while (!this._stack.isEmpty) { this.Remove(this._stack.last); }
         this._clearing = false;
+        this.Broadcast(SIGNAL.SELECTION_CLEARED, this);
     }
 
 }

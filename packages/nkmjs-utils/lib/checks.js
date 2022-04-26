@@ -141,6 +141,23 @@ class CHECKS {
         return false;
     }
 
+    static isContentEqual(p_a, p_b) {
+        // compare array lengths, if not equal then skip.
+        if (p_a.length !== p_b.length) return false;
+
+        // setup a variable of the array length
+        let i = p_a.length;
+
+        // iterate through every element in arr1 basically...
+        while (i--) {
+            // if arr2 doesn't include x element from arr1, return false
+            if (!p_b.includes(p_a[i])) return false;
+
+            // passes tests and checks out
+        };
+        return true;
+    }
+
 }
 
 module.exports = CHECKS;

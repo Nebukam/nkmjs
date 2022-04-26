@@ -16,6 +16,8 @@ class InspectionDataForward extends com.pool.DisposableObjectEx {
     constructor(p_owner) {
         super();
         this._owner = p_owner;
+        this._smartClear = true;
+        this._dataSelection = null;
     }
 
     _Init() {
@@ -31,9 +33,10 @@ class InspectionDataForward extends com.pool.DisposableObjectEx {
 
     set editor(p_value) { this.inspectionData = p_value ? p_value.inspectedData : null; }
 
-    set dataSelection(p_value) { 
-        if(u.isInstanceOf(p_value, ui.helpers.WidgetSelection)){ p_value = p_value.data; }
-        this._selectionObserver.ObserveOnly(p_value); 
+    set dataSelection(p_value) {
+        if (u.isInstanceOf(p_value, ui.helpers.WidgetSelection)) { p_value = p_value.data; }
+        this._dataSelection = p_value;
+        this._selectionObserver.ObserveOnly(p_value);
     }
     set inspectionData(p_value) {
         if (this._inspectionData == p_value) { return; }
@@ -53,6 +56,11 @@ class InspectionDataForward extends com.pool.DisposableObjectEx {
 
     _OnItemAdded(p_item) {
         if (!this._inspectionData) { return; }
+        if (this._smartClear && this._dataSelection) {
+            if (this._dataSelection.stack.count == 1 && this._dataSelection.stack.last == p_item) {
+                this._inspectionData.Clear();
+            }
+        }
         this._inspectionData.Add(p_item);
     }
 

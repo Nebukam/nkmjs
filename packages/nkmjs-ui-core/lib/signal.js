@@ -266,7 +266,7 @@ class SIGNAL {
      * @description TODO
      * @type {symbol}
      * @customtag read-only
-     * @group Rendering
+     * @group Selection
     */
     static ITEM_REQUEST_RANGE_UPDATE = Symbol(`itemRequestRangeUpdate`);
 
@@ -274,7 +274,7 @@ class SIGNAL {
      * @description TODO
      * @type {symbol}
      * @customtag read-only
-     * @group Rendering
+     * @group Selection
     */
     static SELECTION_ADD_REQUEST = Symbol(`selectionAddRequest`);
 
@@ -283,7 +283,7 @@ class SIGNAL {
     * @description TODO
     * @type {symbol}
     * @customtag read-only
-    * @group Rendering
+    * @group Selection
    */
      static SELECTION_TOTAL_COUNT_REQUEST = Symbol(`selectionTotalCountRequest`);
 
@@ -291,7 +291,7 @@ class SIGNAL {
     * @description TODO
     * @type {symbol}
     * @customtag read-only
-    * @group Rendering
+    * @group Selection
    */
     static SELECTION_REMOVE_REQUEST = Symbol(`selectionRemoveRequest`);
 
@@ -299,9 +299,17 @@ class SIGNAL {
     * @description TODO
     * @type {symbol}
     * @customtag read-only
-    * @group Rendering
+    * @group Selection
    */
     static SELECTION_MODIFIER_CHANGED = Symbol(`selectionModifierChanged`);
+
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Selection
+   */
+     static SELECTION_CLEARED = Symbol(`selectionCleared`);
 
 
 }

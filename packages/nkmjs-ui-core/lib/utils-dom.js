@@ -392,7 +392,7 @@ class UTILS_DOM {
         if (window.getSelection) { txt = window.getSelection(); }
         else if (document.getSelection) { txt = document.getSelection(); }
         else if (document.selection) { txt = document.selection.createRange().text; }
-        return txt;
+        return txt.toString();
     }
 
     static ClearHighlightedText() {

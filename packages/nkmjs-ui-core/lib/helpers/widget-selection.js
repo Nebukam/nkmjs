@@ -232,7 +232,9 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
      */
     Clear() {
         this._data.Clear();
+        if (this._stack.isEmpty) { return; }
         while (!this._stack.isEmpty) { this.Remove(this._stack.last); }
+        this.Broadcast(SIGNAL.SELECTION_CLEARED, this);
     }
 
 }
