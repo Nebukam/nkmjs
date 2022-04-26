@@ -32,6 +32,9 @@ class ControlBuilder {
         this._configMap = new Map();
         this._conditionalControls = null;
 
+        this._dataObserver = new com.signals.Observer();
+        this._dataObserver.Hook(com.SIGNAL.UPDATED, this.RefreshConditionals, this);
+
     }
 
     set host(p_value) { this._host = p_value; }
@@ -72,6 +75,8 @@ class ControlBuilder {
     set data(p_value) {
 
         this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_value) : p_value;
+        this._dataObserver.ObserveOnly(this._data);
+        
         for (let i = 0, n = this._controls.length; i < n; i++) {
             let
                 ctrl = this._controls[i],
@@ -90,6 +95,7 @@ class ControlBuilder {
 
         this._context = p_context;
         this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_data) : p_data;
+        this._dataObserver.ObserveOnly(this._data);
 
         for (let i = 0, n = this._controls.length; i < n; i++) {
             let
