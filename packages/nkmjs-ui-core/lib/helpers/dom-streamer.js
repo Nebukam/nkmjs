@@ -413,7 +413,7 @@ class DOMStreamer extends base {
             l = this._layoutInfos,
             startCoord = Math.abs(v ? selfRect.y - fixtRect.y : selfRect.x - fixtRect.x);
 
-        if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
+        if (startCoord < 0 || Number.isNaN(startCoord)) { startCoord = 0; }
 
         let
             lineStart = Math.min(Math.floor(startCoord / l.primarySize), l.lines),
@@ -452,7 +452,7 @@ class DOMStreamer extends base {
             l = this._layoutInfos,
             startCoord = customStart;
 
-        if (startCoord < 0 || isNaN(startCoord)) { startCoord = 0; }
+        if (startCoord < 0 || Number.isNaN(startCoord)) { startCoord = 0; }
 
         let
             lineStart = Math.min(Math.floor(startCoord / l.primarySize), l.lines),

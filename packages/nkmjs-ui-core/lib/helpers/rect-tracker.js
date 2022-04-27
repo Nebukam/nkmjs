@@ -82,7 +82,7 @@ class RectTracker {
 
             if (!oldRect ||
                 !oldIntersection ||
-                isNaN(oldRatio)) {
+                Number.isNaN(oldRatio)) {
                 localUpdate = true;
             }
             else if (

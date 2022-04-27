@@ -109,7 +109,7 @@ class BINDINGS {
         let nfos = NFOS.Get(p_serializer),
             ver = u.tils.Get(nfos, IDS.VER, -1);
 
-        if (isNaN(ver)) { ver = -1; }
+        if (Number.isNaN(ver)) { ver = -1; }
 
         return ver;
     }

@@ -275,7 +275,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
             let type = this._stack._array[i].constructor,
                 dist = com.NFOS.GetSignedDistance(shortestType);
 
-            if (isNaN(dist)) {
+            if (Number.isNaN(dist)) {
                 this._sharedItemType = null;
                 return;
             }
