@@ -33,6 +33,8 @@ class ControlWidget extends base {
         .To(`editor`)
         .To(`data`);
 
+    static __updateDataOnSameSet = true;
+
     _Init() {
         super._Init();
 
