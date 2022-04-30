@@ -153,6 +153,7 @@ class ResourceWatcher extends base {
         this._releaseRscOnDelete = false;
         this._resourceBound = false;
         this._readOptions = null;
+        this._rscOptions = null;
         super._CleanUp();
     }
 

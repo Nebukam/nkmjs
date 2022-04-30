@@ -136,6 +136,7 @@ class PathWatcher extends com.pool.DisposableObjectEx {
 
     _CleanUp() {
         this.Disable();
+        this.path = null;
         super._CleanUp();
     }
 
