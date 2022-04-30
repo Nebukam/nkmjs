@@ -57,12 +57,32 @@ class InspectorWidgetGroup extends base {
 
     //#region Expand/Collapse
 
+    _OnDataChanged(p_oldData) {
+
+        super._OnDataChanged(p_oldData);
+
+        if (this._data) {
+            if (this._data.expanded) {
+                this._extExpand.Expand();
+            } else if (this._extExpand.isExpanded) {
+                this._data.expanded = true;
+            }
+
+        } else {
+            this._extExpand.Collapse();
+        }
+
+    }
+
     /**
      * @description TODO
      */
     Expand() { this._extExpand.Expand(); }
     _Expand() {
-        this._BuildContent();
+        if (this._data) {
+            this._data.expanded = true;
+            this._BuildContent();
+        }
     }
 
     _BuildContent(){
@@ -75,6 +95,7 @@ class InspectorWidgetGroup extends base {
      */
     Collapse() { this._extExpand.Collapse(); }
     _Collapse() {
+        if (this._data) { this._data.expanded = false; }
         this._ClearContent();
     }
 
