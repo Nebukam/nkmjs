@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-core",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "NKMjs Framework UI Core",
   "browser": "index.js",
   "repository": {
@@ -21,7 +21,7 @@
     "@nkmjs/common": "^0.1.38",
     "@nkmjs/data-core": "^0.0.58",
     "@nkmjs/environment": "^0.1.40",
-    "@nkmjs/style": "^0.0.57",
+    "@nkmjs/style": "^0.0.58",
     "@nkmjs/utils": "^0.0.40"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"

@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-library",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "NKMjs Framework UI Library",
   "browser": "index.js",
   "repository": {
@@ -20,13 +20,13 @@
     "@nkmjs/collections": "^0.1.20",
     "@nkmjs/common": "^0.1.38",
     "@nkmjs/data-core": "^0.0.58",
-    "@nkmjs/dialog": "^0.0.68",
+    "@nkmjs/dialog": "^0.0.69",
     "@nkmjs/documents": "^0.1.12",
     "@nkmjs/environment": "^0.1.40",
     "@nkmjs/io-core": "^0.1.44",
-    "@nkmjs/style": "^0.0.57",
-    "@nkmjs/ui-core": "^0.2.8",
-    "@nkmjs/ui-data-controls": "^0.2.9",
+    "@nkmjs/style": "^0.0.58",
+    "@nkmjs/ui-core": "^0.2.9",
+    "@nkmjs/ui-data-controls": "^0.2.10",
     "@nkmjs/utils": "^0.0.40"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
