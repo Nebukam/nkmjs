@@ -29,12 +29,16 @@ class InspectorWidgetGroup extends base {
 
     static __controls = null;
     static __clearBuilderOnRelease = false;
+    static __widgetExpandData = true;
+    static __clearToolbarOnRelease = false;
 
     _Init() {
 
         super._Init();
 
-        this._extExpand = this._extensions.Add(extensions.Expand);
+        this._pointer.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
+
+        this._extExpand = this._extensions.Add(ui.extensions.Expand);
         this._extExpand._toggled = false;
 
         this._extExpand
@@ -48,9 +52,72 @@ class InspectorWidgetGroup extends base {
     static _Style() {
         return style.Extends({
             ':host': {
+                '@': ['fade-in'],
+
+                'position': `relative`,
+
+                'display': `flex`,
+                'flex-flow': `column nowrap`,
+                'justify-content': 'flex-start',
+                'align-items': `stretch`,
+
+                'box-sizing': `border-box`,
 
             },
+            ':host(.expanded)': { 'height': 'auto', },
+            ':host(.expanded) .icon.expand': { 'transform': `rotate(90deg)` },
+
+            '.header': {
+                'box-sizing': `border-box`,
+
+                'flex': '1 1 auto',
+                'width': `100%`,
+
+                'position': `relative`,
+                'display': 'flex',
+                'flex-flow': `row nowrap`,
+                'align-items': `center`,
+                'justify-items': `flex-start`,
+            },
+
+            '.toolbar': {
+                'flex': '0 0 auto',
+            },
+
+            '.label': {
+                'flex': '1 1 auto'
+            },
+
+            '.body': {
+                'position': `relative`,
+                'flex': '1 0 auto',
+                'display': `none`,
+                'min-width': 0,
+                'flex-flow': `column nowrap`,
+            },
+
+            ':host(.expanded) .body': { 'display': `flex` },
+            ':host(.expanded) .header': { 'margin-bottom': `5px` },
+
         }, base._Style());
+    }
+
+    _Render() {
+
+        ui.DOMTemplate.Render(nkm.uilib.dom.BodyExpand, this, {
+            [ui.IDS.OWNER]: this,
+            //[ui.IDS.ICON]: { autoHide: true },
+            expandIcon: { htitle: `Expand` }
+        });
+
+        this._wrapper = this._body;
+
+        super._Render();
+
+        this._toolbar = this.Attach(ui.WidgetBar, `toolbar`, this._header);
+
+        this.focusArea = this._header;
+
     }
 
     //#endregion
@@ -65,9 +132,9 @@ class InspectorWidgetGroup extends base {
             if (this._data.expanded) {
                 this._extExpand.Expand();
             } else if (this._extExpand.isExpanded) {
-                this._data.expanded = true;
+                if (this.constructor.__widgetExpandData) { this._data.expanded = true; }
+                else { this._extExpand.Collapse(); }
             }
-
         } else {
             this._extExpand.Collapse();
         }
@@ -85,7 +152,7 @@ class InspectorWidgetGroup extends base {
         }
     }
 
-    _BuildContent(){
+    _BuildContent() {
         let controlList = this.constructor.__controls;
         if (controlList) { this._builder.Build(controlList); }
     }
@@ -99,11 +166,25 @@ class InspectorWidgetGroup extends base {
         this._ClearContent();
     }
 
-    _ClearContent(){
+    _ClearContent() {
         this._builder.Clear();
     }
 
+    /**
+     * @description TODO
+     * @param {Event} p_evt 
+     */
+    AltActivate(p_evt) {
+        if (this._toolbar && this._toolbar.isFocused) { return; }
+        this._extExpand.Toggle();
+    }
+
     //#endregion
+
+    _CleanUp() {
+        if (this.constructor.__clearToolbarOnRelease) { this._toolbar.Clear(); }
+        super._CleanUp();
+    }
 
 }
 

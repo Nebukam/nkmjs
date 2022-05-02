@@ -76,7 +76,7 @@ class ControlBuilder {
 
         this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_value) : p_value;
         this._dataObserver.ObserveOnly(this._data);
-        
+
         for (let i = 0, n = this._controls.length; i < n; i++) {
             let
                 ctrl = this._controls[i],
@@ -235,7 +235,13 @@ class ControlBuilder {
     }
 
     Clear() {
-        for (let i = 0, n = this._controls.length; i < n; i++) { this._controls[i].Release(); }
+        for (let i = 0, n = this._controls.length; i < n; i++) {
+            let
+                ctrl = this._controls[i],
+                conf = this._configMap.get(ctrl);
+            if (conf && conf.css) { ctrl.classList.remove(conf.css); }
+            ctrl.Release();
+        }
         this._configMap.clear();
         this._controls.length = 0;
         if (this._conditionalControls) {

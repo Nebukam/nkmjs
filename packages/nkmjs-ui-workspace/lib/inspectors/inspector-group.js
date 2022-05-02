@@ -139,12 +139,12 @@ class InspectorGroup extends base {
     }
 
     Activate(p_evt) {
-        if (this._toolbar.focused) { return false; }
+        if (this._toolbar.isFocused) { return false; }
         return super.Activate(p_evt);
     }
 
     AltActivate(p_evt) {
-        if (this._toolbar.focused) { return; }
+        if (this._toolbar.isFocused) { return; }
         if (this._expandOnHeaderAltActivation) { this._extExpand.Toggle(); }
     }
 

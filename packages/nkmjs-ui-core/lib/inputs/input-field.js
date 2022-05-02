@@ -132,6 +132,14 @@ class InputField extends base {
         this._inputField.value = this.inputValue;
     }
 
+    _CleanUp(){
+        this._inputField.value = null;
+        super._CleanUp();
+        this.handler.currentValue = null;
+        this.handler.changedValue = null;
+        this.handler.inputValue = null;
+    }
+
 }
 
 module.exports = InputField;

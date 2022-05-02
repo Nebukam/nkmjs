@@ -34,7 +34,10 @@ class BaseInput extends base {
         .To(IDS.SIZE)
         .To(`currentValue`)
         .To(IDS.FLAVOR)
-        .To(IDS.VARIANT);
+        .To(IDS.VARIANT)
+        .To(`onSubmit`, `onSubmitFn`, null)
+        .To(`onChange`, `onChangeFn`, null)
+        .To(`onInput`, `onInputFn`, null);
 
     // ----> Init
 
@@ -59,6 +62,10 @@ class BaseInput extends base {
         this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
+        this._onSubmitFn = null;
+        this._onChangeFn = null;
+        this._onInputFn = null;
+
     }
 
     get handler() { return this._handler; }
@@ -68,6 +75,7 @@ class BaseInput extends base {
 
     set flavor(p_value) { this._flavorEnum.Set(p_value); }
     get flavor() { return this._flavorEnum.currentFlag; }
+
 
     //#region Input properties
 
@@ -124,6 +132,31 @@ class BaseInput extends base {
         p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
     }
 
+
+    get onSubmitFn() { return this._onSubmitFn; }
+    set onSubmitFn(p_value) {
+        if (this._onSubmitFn == p_value) { return; }
+        if (this._onSubmitFn) { this._handler.Unwatch(SIGNAL.VALUE_SUBMITTED, this._onSubmitFn.fn, this._onSubmitFn.thisArg || null); }
+        this._onSubmitFn = p_value;
+        if (p_value) { this._handler.Watch(SIGNAL.VALUE_SUBMITTED, p_value.fn, p_value.thisArg || null); }
+    }
+
+    get onChangeFn() { return this._onChangeFn; }
+    set onChangeFn(p_value) {
+        if (this._onChangeFn == p_value) { return; }
+        if (this._onChangeFn) { this._handler.Unwatch(SIGNAL.VALUE_CHANGED, this._onChangeFn.fn, this._onChangeFn.thisArg || null); }
+        this._onChangeFn = p_value;
+        if (p_value) { this._handler.Watch(SIGNAL.VALUE_CHANGED, p_value.fn, p_value.thisArg || null); }
+    }
+
+    get onInputFn() { return this._onInputFn; }
+    set onInputFn(p_value) {
+        if (this._onInputFn == p_value) { return; }
+        if (this._onInputFn) { this._handler.Unwatch(SIGNAL.VALUE_INPUT_CHANGED, this._onInputFn.fn, this._onInputFn.thisArg || null); }
+        this._onInputFn = p_value;
+        if (p_value) { this._handler.Watch(SIGNAL.VALUE_INPUT_CHANGED, p_value.fn, p_value.thisArg || null); }
+    }
+
     /**
      * @access protected
      * @description TODO
@@ -135,15 +168,6 @@ class BaseInput extends base {
         this._handler.changeOnInput = u.tils.Get(p_options, `changeOnInput`, this._handler.changeOnInput);
         this._handler.submitOnChange = u.tils.Get(p_options, `submitOnChange`, this._handler.submitOnChange);
         this._handler.preventTabIndexing = u.tils.Get(p_options, `preventTabIndexing`, this._handler.preventTabIndexing);
-
-        let onSubmit = p_options.onSubmit;
-        if (onSubmit) { this._handler.Watch(SIGNAL.VALUE_SUBMITTED, onSubmit.fn, onSubmit.thisArg || null); }
-
-        let onChange = p_options.onChange;
-        if (onChange) { this._handler.Watch(com.SIGNAL.VALUE_CHANGED, onChange.fn, onChange.thisArg || null); }
-
-        let onInput = p_options.onInput;
-        if (onInput) { this._handler.Watch(SIGNAL.VALUE_INPUT_CHANGED, onInput.fn, onInput.thisArg || null); }
 
     }
 
@@ -207,6 +231,10 @@ class BaseInput extends base {
     _CleanUp() {
 
         super._CleanUp();
+
+        this.onSubmitFn = null;
+        this.onChangeFn = null;
+        this.onInputFn = null;
 
         this._sizeEnum.Set(null);
         this._flavorEnum.Set(null);

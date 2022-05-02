@@ -172,7 +172,7 @@ class Folder extends base {
      * @param {Event} p_evt 
      */
     Activate(p_evt) {
-        if (this._toolbar && this._toolbar.focused) { return; }
+        if (this._toolbar && this._toolbar.isFocused) { return; }
         super.Activate(p_evt);
     }
 
@@ -181,7 +181,7 @@ class Folder extends base {
      * @param {Event} p_evt 
      */
     AltActivate(p_evt) {
-        if (this._toolbar && this._toolbar.focused) { return; }
+        if (this._toolbar && this._toolbar.isFocused) { return; }
         if (!super.AltActivate(p_evt)) { return false; }
         this._extExpand.Toggle();
     }

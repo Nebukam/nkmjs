@@ -142,6 +142,7 @@ class InputCatalogBase extends base {
     }
 
     get inputKeyItem() {
+        if (!this._data) { return null; }
         return this._itemKey ?
             this._data.FindFirstByOptionValue(this._itemKey, this._handler.inputValue) :
             this._handler.inputValue;

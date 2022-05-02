@@ -15,6 +15,10 @@ class InputCheckbox extends base {
         css: [`@/inputs/checkbox.css`]
     }, base, ['css']);
 
+    static __distribute = base.__distribute.Ext()
+        .To(`iconOn`, null, null)
+        .To(`iconOff`, null, null);
+
     _Init() {
         super._Init();
 
@@ -28,13 +32,23 @@ class InputCheckbox extends base {
 
     // ----> DOM
 
-    get label(){ return this._label; }
-    set label(p_value){ this._label.Set(p_value); }
+    get label() { return this._label; }
+    set label(p_value) { this._label.Set(p_value); }
+
+    set iconOn(p_value) {
+        if (!p_value) { this.style.removeProperty(`--icon-on`); }
+        else { this.style.setProperty(`--icon-on`, `url(../assets/icons/icon_${p_value}.svg`); }
+    }
+
+    set iconOff(p_value) {
+        if (!p_value) { this.style.removeProperty(`--icon-off`); }
+        else { this.style.setProperty(`--icon-off`, `url(../assets/icons/icon_${p_value}.svg`); }
+    }
 
     static _Style() {
         return style.Extends({
-            '.field': { 
-                'width':'var(--size)'
+            '.field': {
+                'width': 'var(--size)'
             }
         }, base._Style());
     }
@@ -59,7 +73,7 @@ class InputCheckbox extends base {
     // ----> Mouse events
 
     Activate(p_evt) {
-        if(!super.Activate(p_evt)){ return false; }
+        if (!super.Activate(p_evt)) { return false; }
         this.changedValue = !this.changedValue;
         return true;
     }

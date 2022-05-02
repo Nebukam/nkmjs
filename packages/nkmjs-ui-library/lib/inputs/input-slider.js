@@ -120,7 +120,6 @@ class InputSlider extends base {
     }
 
     _CleanUp() {
-        this.SetSliderData();
         super._CleanUp();
     }
 

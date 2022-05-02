@@ -40,6 +40,7 @@ class InspectorView extends base {
         return style.Extends({
             ':host': {
                 'box-sizing': 'border-box',
+                'overflow-y': `auto`
             },
         }, base._Style());
     }

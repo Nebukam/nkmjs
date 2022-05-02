@@ -612,7 +612,8 @@ class Widget extends base {
         this.Focus(false);
 
         this._dataIndex = -1;
-
+        this.disabled = false;
+        
         super._CleanUp();
 
     }
