@@ -118,7 +118,7 @@ class ControlBuilder {
      * { cl:class, css:'class', member:'member', options:{} }
      * @param {array} p_controls 
      */
-    Build(p_controls) {
+    Build(p_controls, p_host = null) {
 
         for (let i = 0, n = p_controls.length; i < n; i++) {
 
@@ -131,7 +131,7 @@ class ControlBuilder {
 
             if (!cl) { cl = this._defaultControlClass; }
 
-            control = this.Add(cl, config.css, config);
+            control = this.Add(cl, config.css, config, p_host);
             if (config.member) { this._owner[config.member] = control; }
 
         }
@@ -144,10 +144,10 @@ class ControlBuilder {
      * @param {string} [p_css] 
      * @returns 
      */
-    Add(p_class, p_css = null, p_config = null, p_configIsOptions = false) {
+    Add(p_class, p_css = null, p_config = null, p_configIsOptions = false, p_host = null) {
 
         let
-            control = this._owner.Attach(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, this._host),
+            control = this._owner.Attach(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, p_host || this._host),
             conditional = false;
 
         if (this._controls.length >= 1) { ui.dom.AttachAfter(control, this._controls[this._controls.length - 1]); }
