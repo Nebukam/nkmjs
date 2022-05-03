@@ -14,10 +14,10 @@ const SIGNAL = require(`../signal`);
  * @memberof environment.helpers
  */
 class Features extends com.pool.DisposableObjectEx {
-    constructor() { super();}
+    constructor() { super(); }
 
-    _Init(){
-        
+    _Init() {
+
         super._Init();
 
         this._manifestVersion = 0;
@@ -104,7 +104,7 @@ class Features extends com.pool.DisposableObjectEx {
             window.addEventListener('offline', this._Bind(this._OnEnvironmentOffline));
 
             let navData = window.performance.getEntriesByType("navigation");
-            if (navData.length > 0 && navData[0].loadEventEnd > 0){ this._OnWindowLoaded(); }
+            if (navData.length > 0 && navData[0].loadEventEnd > 0) { this._OnWindowLoaded(); }
             else { window.addEventListener('load', this._Bind(this._OnWindowLoaded)); }
 
             this._isMobile = /Mobi|Android/i.test(navigator.userAgent);
@@ -140,11 +140,13 @@ class Features extends com.pool.DisposableObjectEx {
         }
     }
 
-    _OnWindowLoaded(p_evt){
-        
+    _OnWindowLoaded(p_evt) {
+
     }
 
     // ----> Properties
+
+    GetMemory() { return { workingSetSize: 0, peakWorkingSetSize: 0, privateBytes: 0, sharedBytes: 0 }; }
 
     /**
      * @description TODO
@@ -158,7 +160,7 @@ class Features extends com.pool.DisposableObjectEx {
      * @type {boolean}
      * @customtag read-only
      */
-    get isOnline(){ return this._isOnline; }
+    get isOnline() { return this._isOnline; }
 
     /**
      * @description TODO
@@ -404,14 +406,14 @@ class Features extends com.pool.DisposableObjectEx {
 
     //
 
-    _OnEnvironmentOnline(p_evt){
-        if(this._isOnline){ return; }
+    _OnEnvironmentOnline(p_evt) {
+        if (this._isOnline) { return; }
         this._isOnline = true;
         this.Broadcast(SIGNAL.ONLINE);
     }
 
-    _OnEnvironmentOffline(p_evt){
-        if(!this._isOnline){ return; }
+    _OnEnvironmentOffline(p_evt) {
+        if (!this._isOnline) { return; }
         this._isOnline = false;
         this.Broadcast(SIGNAL.OFFLINE);
     }
@@ -422,7 +424,7 @@ class Features extends com.pool.DisposableObjectEx {
         let g = `✔`, b = `🞫`, gt = `889000`, bt = `d86100`, bg = `#171717`;
         u.LOG._(`${this._isBrowser ? g : b} isBrowser`, `#${this._isBrowser ? gt : bt}`, bg);
         u.LOG._(`${this._isMobile ? g : b} isMobile`, `#${this._isMobile ? gt : bt}`, bg);
-        u.LOG._(`${this._isExtension ? g : b} isExtension (v${this._isExtension ? this._manifestVersion : 0 })`, `#${this._isExtension ? gt : bt}`, bg);
+        u.LOG._(`${this._isExtension ? g : b} isExtension (v${this._isExtension ? this._manifestVersion : 0})`, `#${this._isExtension ? gt : bt}`, bg);
         u.LOG._(`${this._isTouchEnabled ? g : b} isToucheEnabled`, `#${this._isTouchEnabled ? gt : bt}`, bg);
         u.LOG._(`${this._hasStorageArea ? g : b} hasStorageArea`, `#${this._hasStorageArea ? gt : bt}`, bg);
         u.LOG._(`${this._isCORSEnabled ? g : b} isCORSEnabled`, `#${this._isCORSEnabled ? gt : bt}`, bg);

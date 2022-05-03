@@ -224,7 +224,7 @@ class ControlView extends base {
 
     _Render() {
         super._Render();
-        if (this._builder.host == this._builder._owner) { this._builder.host = this._buildHost || this._wrapper; }
+        if (this._builder.host == this._builder._owner) { this._builder.host = this._buildHost || this._wrapper || this._host; }
         let controlList = this.constructor.__controls;
         if (controlList) { this._builder.Build(controlList); }
     }

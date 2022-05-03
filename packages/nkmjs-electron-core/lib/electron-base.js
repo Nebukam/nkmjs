@@ -217,7 +217,8 @@ class ElectronBase {
                 argv:${JSON.stringify(process.argv)},
                 theme:'${(this._constants.theme || 'default')}'
                 ${this._rendererDeclaration}
-            });            
+            });   
+
         `);
 
 

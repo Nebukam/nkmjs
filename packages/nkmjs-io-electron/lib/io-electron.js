@@ -32,6 +32,12 @@ class IOElectron {
             ...RESOURCES._io[nkm.io.IO_TYPE.FILE_SYSTEM]
         };
 
+        nkm.env.features.GetMemory = this._GetMemory.bind(nkm.env.FEATURES);
+
+    }
+
+    _GetMemory(){
+        return process.getProcessMemoryInfo();
     }
 
     _GetStats(p_path) {

@@ -9,7 +9,7 @@ module.exports = {
     SIGNAL: require(`./lib/signal`),
     ENV: __ENV,
 
-    features: __ENV.instance._features,
+    get features() { return __ENV.instance._features; },
     get APP() { return __ENV.instance._app; },
     get ARGV() { return __ENV.instance._config.argv; },
     get CONF() { return __ENV.instance._config; },

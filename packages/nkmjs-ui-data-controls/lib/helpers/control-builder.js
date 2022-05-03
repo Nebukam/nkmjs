@@ -128,6 +128,10 @@ class ControlBuilder {
      */
     Build(p_controls, p_host = null) {
 
+        this.Clear();
+
+        let fragment = document.createDocumentFragment();
+
         for (let i = 0, n = p_controls.length; i < n; i++) {
 
             let config = p_controls[i],
@@ -139,10 +143,12 @@ class ControlBuilder {
 
             if (!cl) { cl = this._defaultControlClass; }
 
-            control = this.Add(cl, config.css, config, p_host);
+            control = this.Add(cl, config.css, config, false, fragment);
             if (config.member) { this._owner[config.member] = control; }
 
         }
+
+        ui.dom.Attach(fragment, p_host || this._host);
 
     }
 
@@ -158,7 +164,7 @@ class ControlBuilder {
             control = this._owner.Attach(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, p_host || this._host),
             conditional = false;
 
-        if (this._controls.length >= 1) { ui.dom.AttachAfter(control, this._controls[this._controls.length - 1]); }
+        //if (this._controls.length >= 1) { ui.dom.AttachAfter(control, this._controls[this._controls.length - 1]); }
 
         this._controls.push(control);
 
@@ -247,7 +253,10 @@ class ControlBuilder {
             let
                 ctrl = this._controls[i],
                 conf = this._configMap.get(ctrl);
-            if (conf && conf.css) { ctrl.classList.remove(conf.css); }
+            if (conf) {
+                if (conf.css) { ctrl.classList.remove(conf.css); }
+                //TODO : Clear owner member, if any
+            }
             ctrl.Release();
         }
         this._configMap.clear();

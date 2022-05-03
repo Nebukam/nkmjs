@@ -57,6 +57,8 @@ class AppBase extends com.helpers.SingletonEx {
 
         super._Init();
 
+        this.SIGNAL_MEM_MONITOR = Symbol(`memory-monitoring`);
+
         this._Bind(this._InternalDisplayReadyCheck);
 
         this._APPID = `${this.constructor.name}`;
@@ -74,7 +76,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         this._overlayHandlerClass = GlobalOverlayHandler;
         this._overlayHandler = null;
-        
+
         this._unsavedDocHandler = new UnsavedDocHandler(this);
 
         this._commands = new actions.CommandBox();
@@ -116,6 +118,15 @@ class AppBase extends com.helpers.SingletonEx {
             throw new Error(`App body constructor (${this._appBodyClass.name}) must extend AppBody.`);
         }
 
+        if (env.features.isNodeEnabled) { this.__StartMonitoring(); }
+
+    }
+
+    __StartMonitoring() {
+        setInterval(() => {
+            nkm.env.features.GetMemory()
+                .then(p_result => { this.Broadcast(this.SIGNAL_MEM_MONITOR, p_result) });
+        }, 5000);
     }
 
     //#region Setup
