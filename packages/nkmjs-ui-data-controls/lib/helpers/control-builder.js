@@ -13,6 +13,12 @@ const ui = require("@nkmjs/ui-core");
  */
 class ControlBuilder {
 
+    static __distribute = com.helpers.OptionsDistribute.Ext()
+        .To(`host`, `_host`)
+        .To(`css`, `_defaultCSS`)
+        .To(`cl`, `_defaultControlClass`)
+        .To(`dataFn`, `_preProcessDataFn`);
+
     constructor(p_owner, p_defaultCSS = `group`) {
 
         this._owner = p_owner;
@@ -36,6 +42,8 @@ class ControlBuilder {
         this._dataObserver.Hook(com.SIGNAL.UPDATED, this.RefreshConditionals, this);
 
     }
+
+    set options(p_options) { this.constructor.__distribute.Update(this, p_options); }
 
     set host(p_value) { this._host = p_value; }
     get host() { return this._host; }

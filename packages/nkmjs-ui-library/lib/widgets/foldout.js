@@ -24,7 +24,8 @@ class Foldout extends base {
         .To(`handles`)
         .To(ui.IDS.NAME, ui.IDS.LABEL)
         .To(ui.IDS.TITLE, ui.IDS.LABEL)
-        .To(`expanded`, null, false);
+        .To(`expanded`, null, false)
+        .To(`prefId`);
 
     _Init() {
         super._Init();
@@ -33,6 +34,8 @@ class Foldout extends base {
 
         this._extExpand = this._extensions.Add(ui.extensions.Expand);
         this._extExpand._toggled = false;
+
+        this._prefId = null;
 
         this._extExpand
             .Watch(ui.SIGNAL.EXPANDED, this._Expand, this)
@@ -59,6 +62,12 @@ class Foldout extends base {
     set expanded(p_value) {
         if (p_value) { this.Expand(); }
         else { this.Collapse(); }
+    }
+
+    get prefId() { return this._prefId; }
+    set prefId(p_value) {
+        this._prefId = p_value;
+        if (this._prefId) { this.expanded = nkm.env.prefs.GetOrSet(`ui.foldout.${this._prefId}.expanded`, this.expanded); }
     }
 
     set handles(p_handles) { this._toolbar.CreateHandles(...p_handles); }
@@ -94,14 +103,14 @@ class Foldout extends base {
                 'display': 'flex',
                 'flex-flow': `row nowrap`,
                 'align-items': `center`,
-                'justify-items':`flex-start`,
+                'justify-items': `flex-start`,
             },
-            '.toolbar':{
+            '.toolbar': {
                 'flex': '0 0 auto',
             },
 
-            '.label':{
-                'flex':'1 1 auto'
+            '.label': {
+                'flex': '1 1 auto'
             },
 
             '.body': {
@@ -146,7 +155,7 @@ class Foldout extends base {
      * @description TODO
      * @param {Event} p_evt 
      */
-     AltActivate(p_evt) {
+    AltActivate(p_evt) {
         if (this._toolbar && this._toolbar.isFocused) { return; }
         this._extExpand.Toggle();
     }
@@ -156,7 +165,7 @@ class Foldout extends base {
      */
     Expand() { this._extExpand.Expand(); }
     _Expand() {
-
+        if (this._prefId) { this.expanded = nkm.env.prefs.Set(`ui.foldout.${this._prefId}.expanded`, true); }
     }
 
     /**
@@ -164,10 +173,11 @@ class Foldout extends base {
      */
     Collapse() { this._extExpand.Collapse(); }
     _Collapse() {
-
+        if (this._prefId) { this.expanded = nkm.env.prefs.Set(`ui.foldout.${this._prefId}.expanded`, false); }
     }
 
     _CleanUp() {
+        this._prefId = null;
         this._toolbar.Clear();
         this.expanded = false;
         super._CleanUp();

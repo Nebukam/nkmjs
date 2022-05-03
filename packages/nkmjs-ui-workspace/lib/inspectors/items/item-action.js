@@ -10,6 +10,7 @@ const base = datacontrols.InspectorWidget;
 class ActionInspectorItem extends base {
     constructor() { super(); }
 
+    static __itemHeight = 32;
     static __defaultSelectOnActivation = true;
 
     static __NFO__ = com.NFOS.Ext({
@@ -31,7 +32,7 @@ class ActionInspectorItem extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-
+                'min-height': `${this.__itemHeight}px`
             },
             ':host(.done)': {
                 'opacity': `1`

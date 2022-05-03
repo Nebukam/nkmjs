@@ -15,15 +15,16 @@ const base = datacontrols.InspectorView;
 class ActionStackInspector extends base {
     constructor() { super(); }
 
-    static __itemHeight = 32;
+    static __default_actionItem = items.Action;
+
     static __domStreamer_layout = {
         itemSlots: 1,
-        itemSize: this.__itemHeight,
+        itemSize: this.__default_actionItem.__itemHeight,
         itemCount: 0,
         fixedSize: true
     };
 
-    static __default_actionItem = items.Action;
+
 
     _Init() {
         super._Init();
@@ -38,7 +39,7 @@ class ActionStackInspector extends base {
             .Hook(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this)
             .Hook(com.SIGNAL.ITEM_BUMPED, this._OnSelectionStackBumped, this)
             .Hook(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
-            
+
 
     }
 
@@ -57,7 +58,7 @@ class ActionStackInspector extends base {
                 'overflow': 'auto'
             },
             '.item': {
-                'min-height': `${this.__itemHeight}px`
+                'min-height': `${this.__default_actionItem.__itemHeight}px`
             },
             '.toolbar': {
                 'padding': '10px',

@@ -8,6 +8,7 @@
  */
 'use strict';
 
+const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
