@@ -100,7 +100,7 @@ class InspectionDataHandler extends com.pool.DisposableObjectEx {
         let was = this._cachedSingleType;
         this._cachedSingleType = p_type;
         this._UpdateCtxs(this._sctxs, this._sctxm, p_type);
-        this.Broadcast(SIGNAL.SELECTION_LASTTYPE_CHANGED, this, p_type, was);
+        this.Broadcast(SIGNAL.SEL_LASTTYPE_CHANGED, this, p_type, was);
     }
 
     _RefreshSharedType() {
@@ -110,7 +110,7 @@ class InspectionDataHandler extends com.pool.DisposableObjectEx {
         let was = this._cachedSharedType;
         this._cachedSharedType = currentSharedType;
         this._UpdateCtxs(this._lctxs, this._lctxm, currentSharedType);
-        this.Broadcast(SIGNAL.SELECTION_SHAREDTYPE_CHANGED, this, currentSharedType, was);
+        this.Broadcast(SIGNAL.SEL_SHAREDTYPE_CHANGED, this, currentSharedType, was);
     }
 
     ////

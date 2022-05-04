@@ -36,8 +36,6 @@ class DataSelection extends com.pool.DisposableObjectEx {
     _Init() {
         super._Init();
 
-        this._Bind(this._SetAllCount);
-
         this._stack = new collections.List();
         this._indices = new collections.List();
         this._dataSet = new Set();
@@ -52,7 +50,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
         this._cachedRangeStart = -1;
         this._currentRangeContent = null;
 
-        INPUT.Watch(SIGNAL.SELECTION_MODIFIER_CHANGED, this._OnSelectionModifierChanged, this);
+        INPUT.Watch(SIGNAL.SEL_MODIFIER_CHANGED, this._OnSelectionModifierChanged, this);
 
         this._delayedBump = com.DelayedCall(this._Bind(this._AutoBump));
 
@@ -117,10 +115,11 @@ class DataSelection extends com.pool.DisposableObjectEx {
     Add(p_data, p_dataIndex = -1, p_mode = null) {
 
 
-        if (this._isInsideRange) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
-
         if (p_data == null) { return false; }
-        if (p_mode == null) { p_mode = INPUT.selectionModifier; }
+
+        if (this._isInsideRange || !p_mode) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
+
+        //if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
         if (this._dataSet.has(p_data)) { return false; }
 
@@ -165,8 +164,9 @@ class DataSelection extends com.pool.DisposableObjectEx {
                     data = this._currentRangeContent.pop(),
                     index = this._indices.At(this._stack.IndexOf(data));
 
-                this.Broadcast(SIGNAL.SELECTION_REMOVE_REQUEST, this, index, data);
+                this.RequestRemove(index, data);
                 this.Remove(data);
+
             }
             this._isInsideRange = false;
         }
@@ -188,29 +188,31 @@ class DataSelection extends com.pool.DisposableObjectEx {
         if (p_to < p_from) { let swap = p_to; p_to = p_from; p_from = swap; }
 
         this._isInsideRange = true;
-        for (var i = p_from; i <= p_to; i++) {
-            this.Broadcast(SIGNAL.SELECTION_ADD_REQUEST, this, i);
-        }
+        for (var i = p_from; i <= p_to; i++) { this.RequestAdd(i); }
         this._isInsideRange = false;
         return true;
 
     }
 
-    RequestSelectAll() {
-
-        this._countAll = null;
-        this.Broadcast(SIGNAL.SELECTION_TOTAL_COUNT_REQUEST, this, this._SetAllCount);
-        if (this._countAll > 0) {
-            for (var i = 0; i < this._countAll; i++) {
-                this.Broadcast(SIGNAL.SELECTION_ADD_REQUEST, this, i);
-            }
-        }
-        this._countAll = null;
-
+    RequestRemove(p_index, p_data) {
+        this.Broadcast(SIGNAL.SEL_REQ_REMOVE, this, p_index, p_data);
     }
 
-    _SetAllCount(p_count) {
-        this._countAll = p_count;
+    RequestAdd(p_index) {
+        this.Broadcast(SIGNAL.SEL_REQ_ADD, this, p_index);
+    }
+
+    RequestIndex(p_data) {
+        let index = null;
+        this.Broadcast(SIGNAL.SEL_REQ_INDEX, this, p_data, (p_index) => { index = p_index; });
+        return index == null ? -1 : index;
+    }
+
+    RequestSelectAll() {
+        let count = null;
+        this.Broadcast(SIGNAL.SEL_REQ_LENGTH, this, (p_count) => { count = p_count; });
+        if (!count) { return; }
+        for (var i = 0; i < count; i++) { this.Broadcast(SIGNAL.SEL_REQ_ADD, this, i); }
     }
 
     /**
@@ -366,7 +368,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
         this._clearing = true;
         while (!this._stack.isEmpty) { this.Remove(this._stack.last); }
         this._clearing = false;
-        this.Broadcast(SIGNAL.SELECTION_CLEARED, this);
+        this.Broadcast(SIGNAL.SEL_CLEARED, this);
     }
 
 }

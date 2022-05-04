@@ -4,5 +4,5 @@ module.exports = {
     ControlBuilder: require(`./control-builder`),
     InspectionDataList: require(`./inspection-data-list`),
     InspectionDataHandler: require(`./inspection-data-handler`),
-    InspectionDataForward: require(`./inspection-data-forward`),
+    InspectionDataBridge: require(`./inspection-data-bridge`),
 }

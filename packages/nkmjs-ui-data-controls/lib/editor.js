@@ -74,7 +74,7 @@ class Editor extends base {
         this._actionStack = new actions.ActionStack();
 
         this._flags.Add(this, com.FLAGS.WARNING);
-        
+
         this._forwardContext = new ui.helpers.DataForward(this);
 
         this._dataObserver
@@ -90,7 +90,12 @@ class Editor extends base {
 
         this._iDataCommands = new actions.CommandBox(this._Bind(this._OnInspectedDataCmdRegister), this);
         this._iDataCommands.context = this._inspectedData;
-        this._iDataRefresh = com.DelayedCall(this._iDataCommands.RefreshAvailability.bind(this._iDataCommands));
+        this._iDataRefresh = com.DelayedCall(this._Bind(this._OnInspectedDataDelayedRefresh));
+
+        this._stateStack = new actions.helpers.StateStack();
+
+        this._skipNextSelectionState = false;
+        this._registerEmptySelection = false;
 
     }
 
@@ -111,6 +116,11 @@ class Editor extends base {
     }
 
     //#region Commands
+
+    get stateStack() { return this._stateStack; }
+
+    PreviousState() { return this._stateStack.Previous(); }
+    NextState() { return this._stateStack.Next(); }
 
     _OnInspectedDataCmdRegister(p_cmd) { }
 
@@ -179,6 +189,29 @@ class Editor extends base {
         this._iDataRefresh.Schedule();
     }
 
+    _OnInspectedDataDelayedRefresh() {
+        this._iDataCommands.RefreshAvailability();
+
+        if (!this._skipNextSelectionState) {
+            if (this.inspectedData.stack.isEmpty && !this._registerEmptySelection) {
+
+            } else {
+
+                this._stateStack.Push({
+                    data: [...this._inspectedData.stack._array],
+                    restore: (p_self) => {
+                        this._skipNextSelectionState = true;
+                        this._inspectedData.SetList(p_self.data);
+                    }
+                });
+                
+            }
+        } else {
+            this._skipNextSelectionState = false;
+        }
+
+    }
+
     //#endregion
 
     //#region Actions
@@ -218,6 +251,12 @@ class Editor extends base {
     Redo() { this._actionStack.Redo(); }
 
     //#endregion
+
+    _CleanUp() {
+        this._skipNextSelectionState = false;
+        this._stateStack.Clear();
+        super._CleanUp();
+    }
 
 }
 

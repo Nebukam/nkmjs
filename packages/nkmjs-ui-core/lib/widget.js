@@ -226,13 +226,13 @@ class Widget extends base {
      * @param {boolean} p_toggle 
      * @group Interactivity.Selection
      */
-    Select(p_toggle, p_bump = false) {
+    Select(p_toggle, p_bump = false, p_mode = null) {
 
         if (!this._isSelectable) { return; }
         if (this._isSelected === p_toggle) {
             if (this._isSelected && p_bump) {
-                this.Broadcast(SIGNAL.SELECTION_GAIN, this, false);
-                let sStack = this._notifiesSelectionStack ? this._parent ? this._parent.selectionStack : null : null;
+                this.Broadcast(SIGNAL.SEL_GAIN, this, false);
+                let sStack = this._notifiesSelectionStack ? this.selectionStack : null;
                 if (sStack) { sStack.Bump(this); }
             }
             return;
@@ -241,16 +241,16 @@ class Widget extends base {
         this._isSelected = p_toggle;
         this._flags.Set(FLAGS.SELECTED, p_toggle);
 
-        let sStack = this._notifiesSelectionStack ? this._parent ? this._parent.selectionStack : null : null;
+        let sStack = this._notifiesSelectionStack ? this.selectionStack : null;
 
         if (p_toggle) {
             this._SelectionGain();
-            this.Broadcast(SIGNAL.SELECTION_GAIN, this, true);
-            if (sStack) { sStack.Add(this); }
+            this.Broadcast(SIGNAL.SEL_GAIN, this, true);
+            if (sStack) { sStack.Add(this, p_mode); }
             this._Highlight(true);
         } else {
             this._SelectionLost();
-            this.Broadcast(SIGNAL.SELECTION_LOST, this, true);
+            this.Broadcast(SIGNAL.SEL_LOST, this, true);
             if (sStack) { sStack.Remove(this); }
             if (!this._isFocused) { this._Highlight(false); }
         }
@@ -277,8 +277,7 @@ class Widget extends base {
 
     //#region Selection stack
 
-    get selectionStackOverride() { return this._selectionStackOverride; }
-    set selectionStackOverride(p_value) { this._selectionStackOverride = p_value; }
+
 
     /**
      * @description TODO
@@ -286,71 +285,10 @@ class Widget extends base {
      * @group Interactivity.Selection
      */
     get selectionStack() {
-
-        if (this._selectionStackOverride) { return this._selectionStackOverride; }
-
-        if (this._selectionStack) {
-            return this._selectionStack;
-        } else {
-            if (!this._parent) { return null; }
-            else { return this._parent.selectionStack; }
-        }
-
+        if (!this._parent) { return null; }
+        else { return this._parent.selectionStack; }
     }
 
-    /**
-     * @access protected
-     * @description TODO
-     * @param {boolean} [p_allowMultiple] 
-     * @param {boolean} [p_persistentData] 
-     * @param {Object} [p_selectionRequestHandler] {add:{fn:}, remove:{fn:}}, callback arguments will be prepended.
-     * @group Interactivity.Selection
-     */
-    _InitSelectionStack(p_allowMultiple = false, p_persistentData = false, p_requestHandlers = null) {
-
-        if (this._selectionStack) {
-            this._selectionStack.allowMultiple = p_allowMultiple;
-            this._selectionStack.persistentData = p_persistentData;
-            return;
-        }
-
-        let sStack = new WidgetSelection();
-
-        sStack.allowMultiple = p_allowMultiple;
-        sStack.persistentData = p_persistentData;
-
-        this._selectionObserver = new com.signals.Observer();
-        this._selectionObserver.ObserveOnly(sStack);
-
-        this._dataSelectionObserver = new com.signals.Observer();
-        this._dataSelectionObserver.ObserveOnly(sStack.data);
-
-        if (p_requestHandlers) {
-
-            this.__selRequestHandlers = p_requestHandlers;
-            sStack.data
-                .Watch(SIGNAL.SELECTION_ADD_REQUEST,
-                    (p_dataSelection, p_index) => {
-                        if (!this.__selRequestHandlers.add) { return; }
-                        u.CallPrepend(this.__selRequestHandlers.add, p_dataSelection, p_index);
-                    }, this)
-                .Watch(SIGNAL.SELECTION_REMOVE_REQUEST,
-                    (p_dataSelection, p_index) => {
-                        if (!this.__selRequestHandlers.remove) { return; }
-                        u.CallPrepend(this.__selRequestHandlers.remove, p_dataSelection, p_index);
-                    }, this)
-                .Watch(SIGNAL.SELECTION_TOTAL_COUNT_REQUEST,
-                    (p_dataSelection, p_index) => {
-                        if (!this.__selRequestHandlers.count) { return; }
-                        p_dataSelection._SetAllCount(u.CallPrepend(this.__selRequestHandlers.count, p_dataSelection));
-                    }, this);
-
-        }
-
-        this._selectionStack = sStack;
-        return sStack;
-
-    }
 
     //#endregion
 
@@ -491,9 +429,9 @@ class Widget extends base {
         if (this._selectOnActivation) {
             if (this._isSelectable) {
                 if (INPUT.selectionModifier == INPUT.SELECT_MODIFIER_TOGGLE) {
-                    this.Select(!this._isSelected);
+                    this.Select(!this._isSelected, false, INPUT.selectionModifier);
                 } else {
-                    this.Select(true, true);
+                    this.Select(true, true, INPUT.selectionModifier);
                 }
             }
         }
@@ -526,11 +464,11 @@ class Widget extends base {
 
         if (this._dataPreProcessor) { p_value = u.Call(this._dataPreProcessor, this, p_value); }
 
-        if (this._data === p_value) { 
-            if(this._data && this.constructor.__updateDataOnSameSet){
+        if (this._data === p_value) {
+            if (this._data && this.constructor.__updateDataOnSameSet) {
                 this._OnDataUpdated(this._data);
             }
-            return; 
+            return;
         }
 
         let oldValue = this._data;
@@ -590,9 +528,6 @@ class Widget extends base {
         this._istateEnum.Set(this.constructor.__default_iState);
         this._placement.Set(this.constructor.__default_placement);
 
-        if (this._selectionStackOverride) { this.selectionStackOverride = null; }
-        if (this._selectionStack) { this._selectionStack.Clear(); }
-
         this.data = null;
         if (this._forwardData) { this._forwardData.Clear(); }
 
@@ -613,7 +548,7 @@ class Widget extends base {
 
         this._dataIndex = -1;
         this.disabled = false;
-        
+
         super._CleanUp();
 
     }

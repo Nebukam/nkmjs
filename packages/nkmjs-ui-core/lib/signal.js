@@ -71,7 +71,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static SELECTION_GAIN = Symbol(`selectionGain`);
+    static SEL_GAIN = Symbol(`selectionGain`);
 
     /**
      * @description TODO
@@ -79,7 +79,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static SELECTION_LOST = Symbol(`selectionLost`);
+    static SEL_LOST = Symbol(`selectionLost`);
 
     /**
      * @description TODO
@@ -276,8 +276,15 @@ class SIGNAL {
      * @customtag read-only
      * @group Selection
     */
-    static SELECTION_ADD_REQUEST = Symbol(`selectionAddRequest`);
+    static SEL_REQ_ADD = Symbol(`selectionAddRequest`);
 
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Selection
+   */
+     static SEL_REQ_INDEX = Symbol(`selectionIndexRequest`);
     
     /**
     * @description TODO
@@ -285,7 +292,7 @@ class SIGNAL {
     * @customtag read-only
     * @group Selection
    */
-     static SELECTION_TOTAL_COUNT_REQUEST = Symbol(`selectionTotalCountRequest`);
+     static SEL_REQ_LENGTH = Symbol(`selectionTotalCountRequest`);
 
     /**
     * @description TODO
@@ -293,7 +300,7 @@ class SIGNAL {
     * @customtag read-only
     * @group Selection
    */
-    static SELECTION_REMOVE_REQUEST = Symbol(`selectionRemoveRequest`);
+    static SEL_REQ_REMOVE = Symbol(`selectionRemoveRequest`);
 
     /**
     * @description TODO
@@ -301,7 +308,7 @@ class SIGNAL {
     * @customtag read-only
     * @group Selection
    */
-    static SELECTION_MODIFIER_CHANGED = Symbol(`selectionModifierChanged`);
+    static SEL_MODIFIER_CHANGED = Symbol(`selectionModifierChanged`);
 
     /**
     * @description TODO
@@ -309,7 +316,7 @@ class SIGNAL {
     * @customtag read-only
     * @group Selection
    */
-     static SELECTION_CLEARED = Symbol(`selectionCleared`);
+     static SEL_CLEARED = Symbol(`selectionCleared`);
 
 
 }

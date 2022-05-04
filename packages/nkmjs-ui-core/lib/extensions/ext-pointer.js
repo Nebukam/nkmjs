@@ -44,6 +44,8 @@ class PointerExtension extends Extension {
         this._focusFn = null;
         this._moveFn = null;
 
+        this._triggerMask = {};
+
         /*
 
             p_evt.button 
@@ -56,6 +58,17 @@ class PointerExtension extends Extension {
 
         */
 
+    }
+
+    /**
+     * If flagged as  true, will always dispatch RELEASE event, no matter the event detail count
+     * @param {*} p_id 
+     * @param {*} p_value 
+     */
+    SetTriggerMask(p_id, p_value = false) {
+        if (!p_value) { delete this._triggerMask[p_id]; }
+        else { this._triggerMask[p_id] = true; }
+        return this;
     }
 
     /**
@@ -197,8 +210,9 @@ class PointerExtension extends Extension {
         if (this._buttons[eNum] === POINTER.DOWN) {
             this._buttons[eNum] = POINTER.UP;
             this._Trigger(`${eNum}_${POINTER.UP}`);
-            if (p_evt.detail === 1) { this._Trigger(`${eNum}_${POINTER.RELEASE}`); }
-            else if (p_evt.detail === 2) { this._Trigger(`${eNum}_${POINTER.RELEASE_TWICE}`); }
+            let mdl = p_evt.detail % 2;
+            if (mdl || this._triggerMask[eNum]) { this._Trigger(`${eNum}_${POINTER.RELEASE}`); }
+            if (!mdl) { this._Trigger(`${eNum}_${POINTER.RELEASE_TWICE}`); }
         } else {
             this._buttons[eNum] = POINTER.UP;
             this._Trigger(`${eNum}_${POINTER.UP}`);
@@ -242,15 +256,15 @@ class PointerExtension extends Extension {
 
     _mWheel(p_evt) {
         if (this._wheelFn) {
-            let consumed = this._wheelFn(p_evt); 
-            if(consumed){p_evt.preventDefault();}
+            let consumed = this._wheelFn(p_evt);
+            if (consumed) { p_evt.preventDefault(); }
         }
     }
 
     _mMove(p_evt) {
-        if (this._moveFn) { 
-            let consumed = this._moveFn(p_evt); 
-            if(consumed){p_evt.preventDefault();}
+        if (this._moveFn) {
+            let consumed = this._moveFn(p_evt);
+            if (consumed) { p_evt.preventDefault(); }
         }
     }
 

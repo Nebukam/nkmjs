@@ -126,7 +126,7 @@ class AppBase extends com.helpers.SingletonEx {
         setInterval(() => {
             nkm.env.features.GetMemory()
                 .then(p_result => { this.Broadcast(this.SIGNAL_MEM_MONITOR, p_result) });
-        }, 5000);
+        }, 1000);
     }
 
     //#region Setup

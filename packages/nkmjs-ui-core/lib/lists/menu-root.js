@@ -4,14 +4,10 @@ const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
 
 const SIGNAL = require(`../signal`);
-const extensions = require(`../extensions`);
-const CatalogBuilder = require(`../helpers/catalog-builder`);
-
 const FLAGS = require(`../flags`);
-
+const helpers = require(`../helpers`);
 
 const WidgetBar = require(`../widget-bar`);
-const WidgetItem = require("../widget-item");
 const MenuItem = require(`./menu-item`);
 
 const base = WidgetBar;
@@ -41,10 +37,10 @@ class MenuRoot extends base {
 
         this._defaultItemClass = null;
         this._handleObserver
-            .Hook(SIGNAL.SELECTION_GAIN, this._OnHandleSelectionGain, this)
-            .Hook(SIGNAL.SELECTION_LOST, this._OnHandleSelectionLost, this);
+            .Hook(SIGNAL.SEL_GAIN, this._OnHandleSelectionGain, this)
+            .Hook(SIGNAL.SEL_LOST, this._OnHandleSelectionLost, this);
 
-        this._InitSelectionStack(false, false);
+            helpers.HostSelStack(this, false, false);
 
         this._modal = null;
 
@@ -122,8 +118,28 @@ class MenuRoot extends base {
         }
     }
 
+    //#region Selection
+
+    get selStackOverride() { return this._selStackOverride; }
+    set selStackOverride(p_value) { this._selStackOverride = p_value; }
+
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.WidgetSelection}
+     * @group Interactivity.Selection
+     */
+    get selectionStack() {
+        if (this._selStackOverride) { return this._selStackOverride; }
+        if (this._selStack) { return this._selStack; }
+        else { return super.selectionStack; }
+    }
+
+    //#endregion
+
     _CleanUp() {
         this.defaultItemClass = null;
+        if (this._selStackOverride) { this.selStackOverride = null; }
+        if (this._selStack) { this._selStack.Clear(); }
         super._CleanUp();
     }
 

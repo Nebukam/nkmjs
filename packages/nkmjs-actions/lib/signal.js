@@ -41,7 +41,14 @@ class SIGNAL {
      * @type {symbol}
      * @customtag read-only
      */
-     static ACTION_STATE_CHANGED = Symbol(`actionStateChanged`);
+    static ACTION_STATE_CHANGED = Symbol(`actionStateChanged`);
+
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    */
+    static STACK_STATE_CHANGED = Symbol(`stackStateChanged`);
 
 }
 

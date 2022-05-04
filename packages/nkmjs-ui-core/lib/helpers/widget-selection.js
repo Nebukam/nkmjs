@@ -48,8 +48,8 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
         this._itemObserver = new com.signals.Observer();
         this._itemObserver
-            //.Hook(SIGNAL.SELECTION_GAIN, this._OnItemSelectionGain, this)
-            .Hook(SIGNAL.SELECTION_LOST, this._OnItemSelectionLost, this)
+            //.Hook(SIGNAL.SEL_GAIN, this._OnItemSelectionGain, this)
+            .Hook(SIGNAL.SEL_LOST, this._OnItemSelectionLost, this)
             .Hook(SIGNAL.DRAG_STARTED, this._OnItemDragStarted, this)
             .Hook(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this)
             .Hook(com.SIGNAL.RELEASED, this._OnItemReleased, this);
@@ -125,7 +125,8 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
      */
     Add(p_item, p_mode = null) {
 
-        if (p_mode == null) { p_mode = INPUT.selectionModifier; }
+        if (p_mode == null) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
+        //if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
         if (this._stack.Contains(p_item)) {
             //if (p_mode == INPUT.SELECT_MODIFIER_TOGGLE) { this.Remove(p_item); } 
@@ -152,19 +153,18 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
      * @param {*} p_item 
      */
     Remove(p_item) {
-        if (this._stack.Remove(p_item)) {
-            p_item.Select(false);
-            this._itemObserver.Unobserve(p_item);
 
-            let removeFromData = true;
-            if (this._persistentData) {
-                removeFromData = !this._releasingItems.has(p_item);
-            }
+        if (!this._stack.Remove(p_item)) { return; }
 
-            if (removeFromData) { this._data.RemoveFromItem(p_item); }
+        p_item.Select(false);
+        this._itemObserver.Unobserve(p_item);
 
-            this.Broadcast(com.SIGNAL.ITEM_REMOVED, p_item, removeFromData);
-        }
+        let removeFromData = true;
+        if (this._persistentData) { removeFromData = !this._releasingItems.has(p_item); }
+        if (removeFromData) { this._data.RemoveFromItem(p_item); }
+
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, p_item, removeFromData);
+
     }
 
     Bump(p_item) {
@@ -218,9 +218,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         this._sharingEvent = false;
     }
 
-    _OnItemReleasing(p_item) {
-        this._releasingItems.add(p_item);
-    }
+    _OnItemReleasing(p_item) { this._releasingItems.add(p_item); }
 
     _OnItemReleased(p_item) {
         this.Remove(p_item);
@@ -234,7 +232,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         this._data.Clear();
         if (this._stack.isEmpty) { return; }
         while (!this._stack.isEmpty) { this.Remove(this._stack.last); }
-        this.Broadcast(SIGNAL.SELECTION_CLEARED, this);
+        this.Broadcast(SIGNAL.SEL_CLEARED, this);
     }
 
 }

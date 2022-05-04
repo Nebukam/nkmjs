@@ -4,6 +4,8 @@ const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
 const actions = require("@nkmjs/actions");
 
+const helpers = require(`../helpers`);
+
 const UI = require(`../ui`);
 const SIGNAL = require(`../signal`);
 const FLAGS = require(`../flags`);
@@ -35,7 +37,7 @@ class View extends base {
     static __default_shortcutRequireFocus = false;
 
     _Init() {
-        
+
         super._Init();
 
         this._commands = new actions.CommandBox(this._Bind(this._OnCmdRegister), this);
@@ -51,7 +53,7 @@ class View extends base {
 
     }
 
-    CmdGet(p_key){ /* Replaced by this._commands.Get */}
+    CmdGet(p_key) { /* Replaced by this._commands.Get */ }
 
     static _Style() {
         return style.Extends({
@@ -141,8 +143,28 @@ class View extends base {
 
     }
 
+    //#region Selection
+
+    get selStackOverride() { return this._selStackOverride; }
+    set selStackOverride(p_value) { this._selStackOverride = p_value; }
+
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.WidgetSelection}
+     * @group Interactivity.Selection
+     */
+    get selectionStack() {
+        if (this._selStackOverride) { return this._selStackOverride; }
+        if (this._selStack) { return this._selStack; }
+        else { return super.selectionStack; }
+    }
+
+    //#endregion
+
     _CleanUp() {
         this.DisplayLost();
+        if (this._selStackOverride) { this.selStackOverride = null; }
+        if (this._selStack) { this._selStack.Clear(); }
         super._CleanUp();
     }
 

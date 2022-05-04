@@ -34,11 +34,10 @@ class ActionStackInspector extends base {
             .Hook(com.SIGNAL.ITEM_REMOVED, this._OnActionRemoved, this);
         this._actionMap = new Map();
 
-        this._InitSelectionStack(true, true);
-        this._dataSelectionObserver
-            .Hook(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this)
-            .Hook(com.SIGNAL.ITEM_BUMPED, this._OnSelectionStackBumped, this)
-            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
+        ui.helpers.HostSelStack(this, true, true).data
+            .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackAdd, this)
+            .Watch(com.SIGNAL.ITEM_BUMPED, this._OnSelectionStackBumped, this)
+            .Watch(com.SIGNAL.ITEM_REMOVED, this._OnSelectionStackRemove, this);
 
 
     }
@@ -155,12 +154,12 @@ class ActionStackInspector extends base {
 
     _OnSelectionStackAdd(p_item) {
         this._data.GoToAction(p_item);
-        this._selectionStack.Clear();
+        this._selStack.Clear();
     }
 
     _OnSelectionStackBumped(p_item) {
         this._data.GoToAction(p_item);
-        this._selectionStack.Clear();
+        this._selStack.Clear();
     }
 
     _OnSelectionStackRemove(p_item) { }

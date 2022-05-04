@@ -302,7 +302,7 @@ class INPUT extends com.helpers.SingletonEx {
 
         if (was == this._activeSelModifier) { return; }
 
-        this.Broadcast(SIGNAL.SELECTION_MODIFIER_CHANGED, this._activeSelModifier, was);
+        this.Broadcast(SIGNAL.SEL_MODIFIER_CHANGED, this._activeSelModifier, was);
 
     }
 

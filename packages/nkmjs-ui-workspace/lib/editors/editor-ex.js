@@ -44,9 +44,18 @@ class EditorEx extends base {
         this._topStatus = null;
         this._bottomStatus = null;
 
+        this._pointer
+            .Hook(ui.POINTER.MOUSE_NEXT, ui.POINTER.RELEASE, this._Bind(this.NextState))
+            .Hook(ui.POINTER.MOUSE_PREV, ui.POINTER.RELEASE, this._Bind(this.PreviousState))
+            .SetTriggerMask(ui.POINTER.MOUSE_NEXT, true)
+            .SetTriggerMask(ui.POINTER.MOUSE_PREV, true);
+
+        this.focusArea = this;
+
     }
 
     _InitShelfCatalog(p_configList) {
+
         p_configList.push(
             {
                 [ui.IDS.NAME]: `Inspector`,
@@ -55,6 +64,7 @@ class EditorEx extends base {
                 assign: `_inspectorShell`,
             }
         );
+
     }
 
     _RegisterEditorBits() {

@@ -56,7 +56,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
 
         this._resetAnalyticsFn = null;
         this._itemAnalyticFn = null;
-        this._analyticsNeedRecompute = true;
+        this._analyticsDirty = true;
         this._analytics = {};
 
         this._invalidateAnalyticsOnBump = false;
@@ -115,7 +115,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
             this._sharedItemTypeNeedRefresh = true;
         }
 
-        this._analyticsNeedRecompute = true;
+        this._analyticsDirty = true;
 
         this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_data);
         this._delayedUpdate.Schedule();
@@ -144,7 +144,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
             this._sharedItemTypeNeedRefresh = true;
         }
 
-        this._analyticsNeedRecompute = true;
+        this._analyticsDirty = true;
 
         this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_data);
         this._delayedUpdate.Schedule();
@@ -169,7 +169,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
             this._stack._array.push(this._stack._array.splice(index, 1)[0]);
         }
 
-        if (this._invalidateAnalyticsOnBump) { this._analyticsNeedRecompute = true; }
+        if (this._invalidateAnalyticsOnBump) { this._analyticsDirty = true; }
 
         this._lastItemType = p_data.constructor;
         this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, p_data);
@@ -305,13 +305,13 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         this._clearing = true;
         while (!this._stack.isEmpty) { this.Remove(this._stack.last, false); }
         this._clearing = false;
-        this.Broadcast(ui.SIGNAL.SELECTION_CLEARED, this);
+        this.Broadcast(ui.SIGNAL.SEL_CLEARED, this);
     }
 
     //#region Analytics
 
     DirtyAnalytics() {
-        this._analyticsNeedRecompute = true;
+        this._analyticsDirty = true;
     }
 
     SetupAnalytics(p_baseline, p_itemAnalyticFn, p_analyticsResetFn = null) {
@@ -327,12 +327,12 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
     get itemAnalyticFn() { return this._itemAnalyticFn; }
     set itemAnalyticFn(p_value) {
         this._itemAnalyticFn = p_value;
-        this._analyticsNeedRecompute = true;
+        this._analyticsDirty = true;
     }
 
     set analytics(p_value) { this._analytics = p_value || {}; }
     get analytics() {
-        if (this._analyticsNeedRecompute) {
+        if (this._analyticsDirty) {
             if (this._resetAnalyticsFn) { u.Call(this._resetAnalyticsFn, this._analytics); }
             if (this._itemAnalyticFn) {
                 let n = this._stack.count;
@@ -341,7 +341,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
                     u.Call(this._itemAnalyticFn, this._stack.At(i), this._analytics, i, n);
                 }
             }
-            this._analyticsNeedRecompute = false;
+            this._analyticsDirty = false;
         }
 
         return this._analytics;

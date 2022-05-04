@@ -3,6 +3,7 @@
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 
+const helpers = require(`../helpers`);
 const UI = require(`../ui`);
 const List = require(`./list`);
 
@@ -32,25 +33,11 @@ class ListRoot extends base {
         super._Init();
         this._selectOnActivation = false;
         this._searchBtn = null;
-        this._InitSelectionStack(true, false);
+        helpers.HostSelStack(this, true, false);
 
         this.style.setProperty(`--tree-size`, `var(--size-s)`);
         // TODO : If 'flattened', make directories non-expandable items
 
-    }
-
-    _PostInit() {
-        super._PostInit();
-
-        // TODO : Find an elegant way to make the toolbar static
-        /*
-                this._searchBtn = this._toolbar.CreateHandle({
-                    [IDS.ICON]:`%ICON%/icon_search.svg`, text:`Find...`,
-                    trigger:{ thisArg:this, fn:this._OpenFind},
-                    //request:{}
-                });
-                this._searchBtn.order = 99;
-        */
     }
 
     static _Style() {
@@ -66,12 +53,31 @@ class ListRoot extends base {
 
     }
 
+    //#region Selection
+
+    get selStackOverride() { return this._selStackOverride; }
+    set selStackOverride(p_value) { this._selStackOverride = p_value; }
+
+    /**
+     * @description TODO
+     * @type {ui.core.helpers.WidgetSelection}
+     * @group Interactivity.Selection
+     */
+    get selectionStack() {
+        if (this._selStackOverride) { return this._selStackOverride; }
+        if (this._selStack) { return this._selStack; }
+        else { return super.selectionStack; }
+    }
+
+    //#endregion
+
     // ----> Pooling
 
     _CleanUp() {
+        if (this._selStackOverride) { this.selStackOverride = null; }
+        if (this._selStack) { this._selStack.Clear(); }
         super._CleanUp();
     }
-
 
 
 }

@@ -9,7 +9,7 @@ const style = require("@nkmjs/style");
  * @hideconstructor
  * @memberof ui.core
  */
-class SELECTION_MODE {
+class SEL_MODE {
     constructor() { }
 
     /**
@@ -39,4 +39,4 @@ class SELECTION_MODE {
 
 }
 
-module.exports = SELECTION_MODE;
+module.exports = SEL_MODE;

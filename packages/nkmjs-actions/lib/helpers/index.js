@@ -1,5 +1,6 @@
 'use strict';
 
 module.exports = {
-    Shortcuts: require(`./shortcuts`)
+    Shortcuts: require(`./shortcuts`),
+    StateStack: require(`./state-stack`)
 }

@@ -47,8 +47,8 @@ class InspectorShell extends base {
         this._inspectionHandler = new InspectionDataHandler(this);
         this._inspectionHandler
             .Watch(com.SIGNAL.ITEM_BUMPED, this._OnItemBumped, this)
-            .Watch(SIGNAL.SELECTION_LASTTYPE_CHANGED, this._OnLastTypeChanged, this)
-            .Watch(SIGNAL.SELECTION_SHAREDTYPE_CHANGED, this._OnSharedTypeChanged, this)
+            .Watch(SIGNAL.SEL_LASTTYPE_CHANGED, this._OnLastTypeChanged, this)
+            .Watch(SIGNAL.SEL_SHAREDTYPE_CHANGED, this._OnSharedTypeChanged, this)
             .Watch(com.SIGNAL.UPDATED, this._OnSelectionUpdated, this);
 
         this._inspectionHandler
