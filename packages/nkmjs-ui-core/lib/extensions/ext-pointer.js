@@ -28,7 +28,7 @@ class PointerExtension extends Extension {
         this._hooks = {};
         this._using = {};
         this._buttons = {};
-        this._position = { x: 0, y: 0 };
+        this._position = { x: 0, y: 0, dx: 0, dy: 0, tdx: 0, tdy: 0 };
 
         this._isMouseOver = false;
         this._isAnyBtnDown = false;
@@ -161,7 +161,7 @@ class PointerExtension extends Extension {
         if (this._focusFn) { this._focusFn(true); }
 
         if (this._wheelFn) { this._element.addEventListener('wheel', this._mWheel); }
-        if (this._moveFn) { this._element.addEventListener('move', this._mMove); }
+        if (this._moveFn) { this._element.addEventListener('mousemove', this._mMove); }
 
     }
 
@@ -179,7 +179,7 @@ class PointerExtension extends Extension {
         else if (this._focusFn) { this._focusFn(false); }
 
         if (this._wheelFn) { this._element.removeEventListener('wheel', this._mWheel); }
-        if (this._moveFn) { this._element.removeEventListener('move', this._mMove); }
+        if (this._moveFn) { this._element.removeEventListener('mousemove', this._mMove); }
 
     }
 
@@ -263,7 +263,18 @@ class PointerExtension extends Extension {
 
     _mMove(p_evt) {
         if (this._moveFn) {
-            let consumed = this._moveFn(p_evt);
+            let
+                tdx = p_evt.clientX - this._position.x,
+                tdy = p_evt.clientY - this._position.y,
+                dx = tdx - this._position.tdx,
+                dy = tdy - this._position.tdy;
+
+            this._position.dx = dx;
+            this._position.dy = dy;
+            this._position.tdx = tdx;
+            this._position.tdy = tdy;
+
+            let consumed = this._moveFn(p_evt, this._position);
             if (consumed) { p_evt.preventDefault(); }
         }
     }

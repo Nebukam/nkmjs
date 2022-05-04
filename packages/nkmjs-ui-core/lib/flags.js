@@ -245,19 +245,23 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static placement = [
+    static placement = [ // Order do matter!
+        this.TOP_LEFT,
         this.LEFT,
         this.RIGHT,
         this.TOP,
         this.BOTTOM,
-        this.TOP_LEFT,
         this.TOP_RIGHT,
         this.BOTTOM_LEFT,
         this.BOTTOM_RIGHT
     ];
 
     /**
-     * @description TODO
+     * @description Contains the following values :  
+     * * {@link ui.core.UI_FLAG.LEFT}
+     * * {@link ui.core.UI_FLAG.RIGHT}
+     * * {@link ui.core.UI_FLAG.TOP}
+     * * {@link ui.core.UI_FLAG.BOTTOM}
      * @type {array}
      * @customtag read-only
      * @group Position

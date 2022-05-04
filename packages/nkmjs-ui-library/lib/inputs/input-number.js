@@ -19,6 +19,9 @@ class InputNumber extends base {
         css: [`@/inputs/number.css`]
     }, base, ['css']);
 
+    static __distribute = base.__distribute.Ext()
+        .To(`hideArrow`, null, false);
+
     _Init(){
         super._Init();
         this._flags.Add(this, _flag_noArrows);
