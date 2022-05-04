@@ -47,7 +47,7 @@ class StateStack extends com.pool.DisposableObjectEx {
         this._stack.push(p_state);
         this._index = this._stack.length;
 
-        console.log(this._stack, this._index);
+        //console.log(this._stack, this._index);
 
         if (this._stack.length > this._maxItems) {
             this._index--;
@@ -96,7 +96,7 @@ class StateStack extends com.pool.DisposableObjectEx {
 
         this._restoring = true;
         let state = this._stack[this._index];
-        console.log(`Restore @${this._index}/${this._stack.length}`);
+        //console.log(`Restore @${this._index}/${this._stack.length}`);
         u.Call(state.restore, state, p_forward);
         this._restoring = false;
     }
