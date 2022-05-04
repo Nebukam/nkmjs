@@ -18,9 +18,11 @@ class InputNumber extends base {
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/number.css`]
     }, base, ['css']);
-
+    
+/*
     static __distribute = base.__distribute.Ext()
         .To(`hideArrow`, null, false);
+        */
 
     _Init(){
         super._Init();

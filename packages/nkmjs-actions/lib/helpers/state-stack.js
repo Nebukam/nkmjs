@@ -30,7 +30,7 @@ class StateStack extends com.pool.DisposableObjectEx {
      * @param {object} p_state 
      * @param {function} p_state.restore a function called with the state object as argument
      */
-    Push(p_state) {
+    Push(p_state, p_multiHandle = false) {
 
         if (this._restoring || this._clearing) { return false; }
 
@@ -45,7 +45,7 @@ class StateStack extends com.pool.DisposableObjectEx {
         }
 
         this._stack.push(p_state);
-        this._index = this._stack.length;
+        this._index = this._stack.length-(p_multiHandle ? 0 : 1);
 
         //console.log(this._stack, this._index);
 

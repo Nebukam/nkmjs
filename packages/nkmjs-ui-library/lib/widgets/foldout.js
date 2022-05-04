@@ -145,7 +145,7 @@ class Foldout extends base {
 
         this._wrapper = this._body;
 
-        this.focusArea = this._header;
+        //this.focusArea = this._header;
 
     }
 
@@ -156,7 +156,7 @@ class Foldout extends base {
      * @param {Event} p_evt 
      */
     AltActivate(p_evt) {
-        if (this._toolbar && this._toolbar.isFocused) { return; }
+        if ((this._toolbar && this._toolbar.isFocused) || !this._header.matches(':hover')) { return; }
         this._extExpand.Toggle();
     }
 
