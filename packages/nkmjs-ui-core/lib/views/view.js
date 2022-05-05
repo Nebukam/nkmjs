@@ -25,7 +25,7 @@ class View extends base {
     constructor() {
         super();
         // Auto assign focusArea if required & not set.
-        if (this._shortcutsRequireFocus &&
+        if (this._shortcutsRequireHover &&
             this._shortcuts &&
             !this._focusArea) {
             this.focusArea = this;
@@ -44,12 +44,17 @@ class View extends base {
         this.CmdGet = this._commands.Get.bind(this._commands);
 
         this._shortcuts = null;
-        this._shortcutsRequireFocus = this.constructor.__default_shortcutRequireFocus;
+        this._shortcutsRequireHover = this.constructor.__default_shortcutRequireFocus;
 
         this._isDisplayed = false;
         this._flags.Add(this, FLAGS.SHOWN);
 
         this.forwardData.To(this._commands, { mapping: `context` });
+
+        if (this._shortcutsRequireHover) {
+            this.addEventListener('mouseover', () => { this.isViewHover = true; });
+            this.addEventListener('mouseout', () => { this.isViewHover = false; });
+        }
 
     }
 
@@ -68,19 +73,16 @@ class View extends base {
         return this._shortcuts;
     }
 
-    _FocusGain() {
-        super._FocusGain();
-        if (!this._shortcuts) { return; }
-        if (this._shortcutsRequireFocus && this._isDisplayed) { this._shortcuts.Enable(); }
-    }
-
-    _FocusLost() {
-        super._FocusLost();
-        if (!this._shortcuts) { return; }
-        if (this._shortcutsRequireFocus) { this._shortcuts.Disable(); }
-    }
-
     get displayed() { return this._isDisplayed; }
+
+    set isViewHover(p_toggle) {
+        if (this._isViewHover == p_toggle) { return; }
+        this._isViewHover = p_toggle;
+        if (this._shortcuts && this._shortcutsRequireHover) {
+            if (p_toggle) { if (this._isDisplayed) { this._shortcuts.Enable(); } }
+            else { this._shortcuts.Disable(); }
+        }
+    }
 
     /**
      * @description TODO
@@ -104,7 +106,7 @@ class View extends base {
         if (this._isDisplayed) { return false; }
         this._isDisplayed = true;
         this._flags.Set(FLAGS.SHOWN, true);
-        if (this._shortcuts) { if (!this._shortcutsRequireFocus || this._isFocused) { this._shortcuts.Enable(); } }
+        if (this._shortcuts) { if (!this._shortcutsRequireHover || this._isViewHover) { this._shortcuts.Enable(); } }
         this._OnDisplayGain();
         this.Broadcast(SIGNAL.DISPLAY_GAIN, this);
         return true;

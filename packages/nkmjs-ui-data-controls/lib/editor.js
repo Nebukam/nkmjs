@@ -49,6 +49,7 @@ class Editor extends base {
         }, base, ['css']);
     */
     static __registerableEditor = false;
+    static __default_shortcutRequireFocus = true;
 
     //#region Global editor tracking
 
