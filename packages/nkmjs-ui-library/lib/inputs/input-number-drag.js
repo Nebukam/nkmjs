@@ -25,7 +25,7 @@ class InputNumberDrag extends base {
             .Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE_OUTSIDE, () => { return this._Pin(false); });
 
         this._Bind(this._OnMove);
-        this._applyMove = com.DelayedCall(this._Bind(this._ApplyMove), 150);
+        this._applyMove = com.DelayedCall(this._Bind(this._ApplyMove), 50);
     }
 
     static _Style() {
@@ -84,9 +84,12 @@ class InputNumberDrag extends base {
         if (this._useMax && value > this._max) { value = this._max; }
 
 
-        this._handler.changedValue = value;
+        this._handler.inputValue = value;
 
-        if (p_submit) { this._handler.SubmitValue(); }
+        if (p_submit) { 
+            this._handler.changedValue = value;
+            this._handler.SubmitValue(); 
+        }
 
     }
 

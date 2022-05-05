@@ -90,9 +90,7 @@ class ControlBuilder {
                 ctrl = this._controls[i],
                 opts = this._configMap.get(ctrl);
 
-            if (opts && opts.ignoreData) { continue; }
-
-            ctrl.data = this._data;
+            this._AssignData(ctrl, opts, this._data);
         }
 
         this.RefreshConditionals();
@@ -107,15 +105,13 @@ class ControlBuilder {
 
         for (let i = 0, n = this._controls.length; i < n; i++) {
             let
-                control = this._controls[i],
-                opts = this._configMap.get(control);
+                ctrl = this._controls[i],
+                opts = this._configMap.get(ctrl);
 
-            control.editor = this._editor;
-            control.context = p_context;
+            ctrl.editor = this._editor;
+            ctrl.context = p_context;
 
-            if (opts && opts.ignoreData) { continue; }
-
-            control.data = this._data;
+            this._AssignData(ctrl, opts, this._data);
         }
 
         this.RefreshConditionals();
@@ -161,37 +157,36 @@ class ControlBuilder {
     Add(p_class, p_css = null, p_config = null, p_configIsOptions = false, p_host = null) {
 
         let
-            control = this._owner.Attach(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, p_host || this._host),
+            ctrl = this._owner.Attach(p_class, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, p_host || this._host),
             conditional = false;
 
         //if (this._controls.length >= 1) { ui.dom.AttachAfter(control, this._controls[this._controls.length - 1]); }
 
-        this._controls.push(control);
+        this._controls.push(ctrl);
 
         if (p_config) {
-            this._configMap.set(control, p_config);
-            if (p_config.options && !p_configIsOptions) { control.options = p_config.options; }
-            else if (p_configIsOptions) { control.options = p_config; }
+            this._configMap.set(ctrl, p_config);
+            if (p_config.options && !p_configIsOptions) { ctrl.options = p_config.options; }
+            else if (p_configIsOptions) { ctrl.options = p_config; }
             if (p_config.hideWhen || p_config.disableWhen) {
                 conditional = true;
             }
         }
 
-        control.editor = this._editor;
-        control.context = this._context;
+        ctrl.editor = this._editor;
+        ctrl.context = this._context;
 
-        if (p_config) { if (!p_config.ignoreData) { control.data = this._data; } }
-        else { control.data = this._data; }
+        this._AssignData(ctrl, p_config, this._data);
 
         if (conditional) {
             if (!this._conditionalControls) { this._conditionalControls = []; }
-            this._conditionalControls.push(control);
-            this._RefreshConditions(control, p_config);
+            this._conditionalControls.push(ctrl);
+            this._RefreshConditions(ctrl, p_config);
         }
 
-        if (this._isDisplayed && `DisplayGranted` in control) { control.DisplayGranted(); }
+        if (this._isDisplayed && `DisplayGranted` in ctrl) { ctrl.DisplayGranted(); }
 
-        return control;
+        return ctrl;
 
     }
 
@@ -246,6 +241,14 @@ class ControlBuilder {
                 p_control.disabled = !u.CallPrepend(p_config.disableWhen, this);
             }
         }
+    }
+
+    _AssignData(p_ctrl, p_opts, p_data) {
+        if (!p_ctrl) { return; }
+        if (!p_opts) { p_ctrl.data = p_data; return; }
+        if (p_opts.ignoreData) { return; }
+        if (p_opts.dataMember && p_data) { p_ctrl.data = p_data[p_opts.dataMember]; }
+        else { p_ctrl.data = p_data; }
     }
 
     Clear() {
