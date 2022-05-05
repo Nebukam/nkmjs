@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-library",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "description": "NKMjs Framework UI Library",
   "browser": "index.js",
   "repository": {
@@ -26,7 +26,7 @@
     "@nkmjs/io-core": "^0.1.45",
     "@nkmjs/style": "^0.0.61",
     "@nkmjs/ui-core": "^0.2.14",
-    "@nkmjs/ui-data-controls": "^0.2.15",
+    "@nkmjs/ui-data-controls": "^0.2.16",
     "@nkmjs/utils": "^0.0.40"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
