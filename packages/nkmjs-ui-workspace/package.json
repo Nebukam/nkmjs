@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-workspace",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "NKMjs Framework Workspace",
   "browser": "index.js",
   "repository": {
@@ -28,7 +28,7 @@
     "@nkmjs/style": "^0.1.0",
     "@nkmjs/ui-core": "^0.3.0",
     "@nkmjs/ui-data-controls": "^0.3.0",
-    "@nkmjs/ui-library": "^0.3.0",
+    "@nkmjs/ui-library": "^0.3.1",
     "@nkmjs/utils": "^0.0.40"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
