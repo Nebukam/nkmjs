@@ -140,7 +140,7 @@ class ControlBuilder {
             if (!cl) { cl = this._defaultControlClass; }
 
             control = this.Add(cl, config.css, config, false, fragment);
-            if (config.member) { this._owner[config.member] = control; }
+            if (config.member) { (config.owner || this._owner)[config.member] = control; }
 
         }
 
@@ -168,9 +168,8 @@ class ControlBuilder {
             this._configMap.set(ctrl, p_config);
             if (p_config.options && !p_configIsOptions) { ctrl.options = p_config.options; }
             else if (p_configIsOptions) { ctrl.options = p_config; }
-            if (p_config.hideWhen || p_config.disableWhen) {
-                conditional = true;
-            }
+            if (p_config.hideWhen || p_config.disableWhen) { conditional = true; }
+            if (p_config.cssInline) { for (var p in p_config.cssInline) { ctrl.style.setProperty(p, p_config.cssInline[p]); } }
         }
 
         ctrl.editor = this._editor;

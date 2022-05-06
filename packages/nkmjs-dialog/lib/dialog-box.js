@@ -62,7 +62,7 @@ class DialogBox extends base {
 
         return style.Extends({
             ':host': {
-                overflow: 'hidden'
+                overflow: 'clip'
             }
         }, base._Style());
 

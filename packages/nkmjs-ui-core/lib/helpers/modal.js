@@ -385,8 +385,8 @@ class Modal extends base {
                 'border': '1px solid red',
                 //'width':'0', 'height':'0',
                 'display': 'flex', // making sure things are properly sized,
-                'max-width': 'var(--screen-width)',
-                'max-height': 'var(--screen-height)',
+                'max-width': '100%',
+                'max-height': '100%',
                 'z-index': '100' //TODO : Need to update this is the modal is on top of an overlay
             },
             ':host(.mode-float-inside)': {

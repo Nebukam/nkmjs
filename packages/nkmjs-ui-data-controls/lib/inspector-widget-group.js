@@ -29,7 +29,7 @@ class InspectorWidgetGroup extends base {
     constructor() { super(); }
 
     static __controls = null;
-    static __clearBuilderOnRelease = false;
+    static __clearBuilderOnRelease = true;
     static __widgetExpandData = true;
     static __clearToolbarOnRelease = false;
 
@@ -38,6 +38,8 @@ class InspectorWidgetGroup extends base {
         super._Init();
 
         this._pointer.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
+
+        this._contentBuilt = false;
 
         this._extExpand = this._extensions.Add(ui.extensions.Expand);
         this._extExpand._toggled = false;
@@ -92,12 +94,12 @@ class InspectorWidgetGroup extends base {
             '.body': {
                 'position': `relative`,
                 'flex': '1 0 auto',
-                'display': `none`,
                 'min-width': 0,
                 'flex-flow': `column nowrap`,
             },
 
             ':host(.expanded) .body': { 'display': `flex` },
+            ':host(:not(.expanded)) .body': { 'display': `none` },
             ':host(.expanded) .header': { 'margin-bottom': `5px` },
 
         }, base._Style());
@@ -131,7 +133,7 @@ class InspectorWidgetGroup extends base {
 
         if (this._data) {
             if (this._data.expanded) {
-                this._extExpand.Expand();
+                this._extExpand.Expand(false);
             } else if (this._extExpand.isExpanded) {
                 if (this.constructor.__widgetExpandData) { this._data.expanded = true; }
                 else { this._extExpand.Collapse(); }
@@ -154,8 +156,12 @@ class InspectorWidgetGroup extends base {
     }
 
     _BuildContent() {
+        if (this._contentBuilt) { return false; }
+        if (!this.constructor.__clearBuilderOnRelease) { return false; }
         let controlList = this.constructor.__controls;
         if (controlList) { this._builder.Build(controlList); }
+        this._contentBuilt = true;
+        return true;
     }
 
     /**
@@ -168,7 +174,11 @@ class InspectorWidgetGroup extends base {
     }
 
     _ClearContent() {
+        if (!this.constructor.__clearBuilderOnRelease) { return false; }
+        if (!this._contentBuilt) { return false; }
         this._builder.Clear();
+        this._contentBuilt = false;
+        return true;
     }
 
     /**
@@ -184,6 +194,7 @@ class InspectorWidgetGroup extends base {
 
     _CleanUp() {
         if (this.constructor.__clearToolbarOnRelease) { this._toolbar.Clear(); }
+        this.Collapse();
         super._CleanUp();
     }
 

@@ -59,6 +59,9 @@ class ActionStackInspector extends base {
             '.item': {
                 'min-height': `${this.__default_actionItem.__itemHeight}px`
             },
+            '.streamer':{
+                'flex':`0 0 auto`
+            },
             '.toolbar': {
                 'padding': '10px',
                 'flex': '0 0 auto',

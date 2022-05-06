@@ -41,6 +41,8 @@ class Foldout extends base {
             .Watch(ui.SIGNAL.EXPANDED, this._Expand, this)
             .Watch(ui.SIGNAL.COLLAPSED, this._Collapse, this);
 
+        this.focusArea = this;
+
     }
 
     _PostInit() {
@@ -83,7 +85,7 @@ class Foldout extends base {
                 'position': `relative`,
 
                 'display': `flex`,
-                'flex-flow': `column nowrap`,
+                'flex-flow': `row wrap`,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
@@ -118,10 +120,22 @@ class Foldout extends base {
                 'flex': '1 0 auto',
                 'display': `none`,
                 'min-width': 0,
-                'flex-flow': `column nowrap`,
+                'max-width': `100%`,
+                'flex-flow': `row wrap`,
             },
             ':host(.expanded) .body': { 'display': `flex` },
             ':host(.expanded) .header': { 'margin-bottom': `5px` },
+            '.foldout-item': {
+                'flex': '1 1 auto',
+                'margin': '0',
+                'margin-bottom': '5px'
+            },
+            '.foldout-item.full': { 'flex': '1 1 100%', },
+            '.foldout-item.large': { 'flex': '1 1 75%', },
+            '.foldout-item.medium': { 'flex': '1 1 45%', },
+            '.foldout-item.small': { 'flex': '1 1 25%', },
+            '.foldout-item.vsmall': { 'flex': '1 1 15%', },
+            '.fixed': { 'flex-grow': '0', 'flex-shrink': '0', }
         };
     }
 
