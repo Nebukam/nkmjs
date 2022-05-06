@@ -100,8 +100,8 @@ class PointerExtension extends Extension {
         this._element = p_value;
 
         if (this._isEnabled) {
-            if (oldElement) { oldElement.removeEventListener(`mouseenter`, this._mOver); }
-            if (this._element) { this._element.addEventListener(`mouseenter`, this._mOver); }
+            if (oldElement) { oldElement.removeEventListener(`mouseover`, this._mOver); }
+            if (this._element) { this._element.addEventListener(`mouseover`, this._mOver); }
         }
 
     }
@@ -113,7 +113,7 @@ class PointerExtension extends Extension {
      */
     Enable() {
         if (!super.Enable()) { return false; }
-        if (this._element) { this._element.addEventListener(`mouseenter`, this._mOver); }
+        if (this._element) { this._element.addEventListener(`mouseover`, this._mOver); }
         return true;
     }
 
@@ -122,7 +122,7 @@ class PointerExtension extends Extension {
      */
     Disable() {
         if (!super.Disable()) { return false; }
-        if (this._element) { this._element.removeEventListener(`mouseenter`, this._mOver); }
+        if (this._element) { this._element.removeEventListener(`mouseover`, this._mOver); }
         return true;
     }
 
@@ -155,7 +155,7 @@ class PointerExtension extends Extension {
 
         this._element.addEventListener(`mousedown`, this._mDown);
         this._element.addEventListener(`mouseup`, this._mUp);
-        this._element.addEventListener(`mouseleave`, this._mOut);
+        this._element.addEventListener(`mouseout`, this._mOut);
 
         if (this._isAnyBtnDown) { POINTER.Unwatch(POINTER.MOUSE_UP, this._mUpOutside); }
         if (this._focusFn) { this._focusFn(true); }
@@ -173,7 +173,7 @@ class PointerExtension extends Extension {
 
         this._element.removeEventListener(`mousedown`, this._mDown);
         this._element.removeEventListener(`mouseup`, this._mUp);
-        this._element.removeEventListener(`mouseleave`, this._mOut);
+        this._element.removeEventListener(`mouseout`, this._mOut);
 
         if (this._isAnyBtnDown) { POINTER.Watch(POINTER.MOUSE_UP, this._mUpOutside); }
         else if (this._focusFn) { this._focusFn(false); }
