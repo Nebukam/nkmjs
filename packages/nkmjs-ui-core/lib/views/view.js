@@ -51,11 +51,6 @@ class View extends base {
 
         this.forwardData.To(this._commands, { mapping: `context` });
 
-        if (this._shortcutsRequireHover) {
-            this.addEventListener('mouseover', () => { this.isViewHover = true; });
-            this.addEventListener('mouseout', () => { this.isViewHover = false; });
-        }
-
     }
 
     CmdGet(p_key) { /* Replaced by this._commands.Get */ }
@@ -75,15 +70,6 @@ class View extends base {
 
     get displayed() { return this._isDisplayed; }
 
-    set isViewHover(p_toggle) {
-        if (this._isViewHover == p_toggle) { return; }
-        this._isViewHover = p_toggle;
-        if (this._shortcuts && this._shortcutsRequireHover) {
-            if (p_toggle) { if (this._isDisplayed) { this._shortcuts.Enable(); } }
-            else { this._shortcuts.Disable(); }
-        }
-    }
-
     /**
      * @description TODO
      */
@@ -99,6 +85,16 @@ class View extends base {
         this.Broadcast(SIGNAL.CLOSE_REQUESTED, this);
     }
 
+    _FocusGain() {
+        super._FocusGain();
+        if (this._shortcuts && this._shortcutsRequireHover) { this._shortcuts.Enable(); }
+    }
+
+    _FocusLost() {
+        super._FocusLost();
+        if (this._shortcuts && this._shortcutsRequireHover) { this._shortcuts.Disable(); }
+    }
+
     /**
      * @description Callback when RequestDisplay has been handled.
      */
@@ -106,7 +102,7 @@ class View extends base {
         if (this._isDisplayed) { return false; }
         this._isDisplayed = true;
         this._flags.Set(FLAGS.SHOWN, true);
-        if (this._shortcuts) { if (!this._shortcutsRequireHover || this._isViewHover) { this._shortcuts.Enable(); } }
+        if (this._shortcuts) { if (!this._shortcutsRequireHover || this._isFocused) { this._shortcuts.Enable(); } }
         this._OnDisplayGain();
         this.Broadcast(SIGNAL.DISPLAY_GAIN, this);
         return true;
