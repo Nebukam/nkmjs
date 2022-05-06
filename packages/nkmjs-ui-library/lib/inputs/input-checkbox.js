@@ -27,7 +27,12 @@ class InputCheckbox extends base {
         this._flags.Add(this, _flag_CHECKED);
         this._label = null;
         this._currentValue = this._changedValue = false;
+    }
 
+    _PostInit(){
+        super._PostInit();
+        this.iconOn = null;
+        this.iconOff = null;
     }
 
     // ----> DOM
@@ -35,15 +40,8 @@ class InputCheckbox extends base {
     get label() { return this._label; }
     set label(p_value) { this._label.Set(p_value); }
 
-    set iconOn(p_value) {
-        if (!p_value) { this.style.removeProperty(`--icon-on`); }
-        else { this.style.setProperty(`--icon-on`, `url(../assets/icons/icon_${p_value}.svg`); }
-    }
-
-    set iconOff(p_value) {
-        if (!p_value) { this.style.removeProperty(`--icon-off`); }
-        else { this.style.setProperty(`--icon-off`, `url(../assets/icons/icon_${p_value}.svg`); }
-    }
+    set iconOn(p_value) { this._iconOn = p_value || `checkbox-on`; this._UpdateIcon(); }
+    set iconOff(p_value) { this._iconOff = p_value || `checkbox-off`; this._UpdateIcon(); }
 
     static _Style() {
         return style.Extends({
@@ -68,6 +66,7 @@ class InputCheckbox extends base {
     _UpdatePreview() {
         this._inputField.checked = this.changedValue;
         this._flags.Set(_flag_CHECKED, this.changedValue);
+        this._UpdateIcon();
     }
 
     // ----> Mouse events
@@ -75,7 +74,19 @@ class InputCheckbox extends base {
     Activate(p_evt) {
         if (!super.Activate(p_evt)) { return false; }
         this.changedValue = !this.changedValue;
+        this._UpdateIcon();
         return true;
+    }
+
+    _UpdateIcon() {
+        if (this._inputField.checked) { this._inputField.setAttribute(`data-icon`, `${this._iconOn}`); }
+        else { this._inputField.setAttribute(`data-icon`, `${this._iconOff}`); }
+    }
+
+    _CleanUp(){
+        this.iconOn = null;
+        this.iconOff = null;
+        super._CleanUp();
     }
 
 }
