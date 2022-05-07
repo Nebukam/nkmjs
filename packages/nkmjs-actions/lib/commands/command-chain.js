@@ -8,7 +8,6 @@
 
 'use strict';
 
-const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
 const COMMAND_SIGNAL = require(`./command-signal`);

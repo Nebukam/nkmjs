@@ -2,7 +2,6 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const { isArrayBuffer } = require("@nkmjs/utils/lib/checks");
 
 const __NFO__ = `__NFO__`;
 

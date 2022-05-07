@@ -2,7 +2,6 @@
 
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
-const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 const ui = require("@nkmjs/ui-core");
 

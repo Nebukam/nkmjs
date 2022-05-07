@@ -4,7 +4,6 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`../signal`);
 const Metadata = require(`./metadata`);
-const ID = require(`../id/id`);
 
 /**
  * @description TODO

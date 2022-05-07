@@ -1,8 +1,6 @@
 'use strict';
 
-const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const data = require(`@nkmjs/data-core`);
 const documents = require(`@nkmjs/documents`);
 const ui = require(`@nkmjs/ui-core`);
 const dialog = require(`@nkmjs/dialog`);

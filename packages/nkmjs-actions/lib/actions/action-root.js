@@ -1,6 +1,5 @@
 'use strict';
 
-const com = require("@nkmjs/common");
 const Action = require(`./action`);
 const ACTION_STATE = require(`./action-state`);
 

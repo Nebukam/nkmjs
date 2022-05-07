@@ -17,7 +17,8 @@ class InputCheckbox extends base {
 
     static __distribute = base.__distribute.Ext()
         .To(`iconOn`, null, null)
-        .To(`iconOff`, null, null);
+        .To(`iconOff`, null, null)
+        .To(`iconMixed`, null, null);
 
     _Init() {
         super._Init();
@@ -27,12 +28,14 @@ class InputCheckbox extends base {
         this._flags.Add(this, _flag_CHECKED);
         this._label = null;
         this._currentValue = this._changedValue = false;
+        this._flip
     }
 
-    _PostInit(){
+    _PostInit() {
         super._PostInit();
         this.iconOn = null;
         this.iconOff = null;
+        this.iconMixed = null;
     }
 
     // ----> DOM
@@ -40,13 +43,20 @@ class InputCheckbox extends base {
     get label() { return this._label; }
     set label(p_value) { this._label.Set(p_value); }
 
-    set iconOn(p_value) { this._iconOn = p_value || `checkbox-on`; this._UpdateIcon(); }
-    set iconOff(p_value) { this._iconOff = p_value || `checkbox-off`; this._UpdateIcon(); }
+    set iconOn(p_value) { this._iconOn = p_value || `checkbox-on`; }
+    set iconOff(p_value) { this._iconOff = p_value || `checkbox-off`; }
+    set iconMixed(p_value) { this._iconMixed = p_value || `checkbox-mixed`; }
+
+    _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
+        super._OnOptionsUpdated(p_options, p_altOptions, p_defaults);
+        this._UpdateIcon();
+    }
 
     static _Style() {
         return style.Extends({
             '.field': {
-                'width': 'var(--size)'
+                'width': 'var(--size)',
+                'height': 'var(--size)'
             }
         }, base._Style());
     }
@@ -79,13 +89,18 @@ class InputCheckbox extends base {
     }
 
     _UpdateIcon() {
-        if (this._inputField.checked) { this._inputField.setAttribute(`data-icon`, `${this._iconOn}`); }
-        else { this._inputField.setAttribute(`data-icon`, `${this._iconOff}`); }
+        if (this._handler.currentValue == null) {
+            this._inputField.setAttribute(`data-icon`, `${this._iconMixed}`);
+        } else {
+            if (this._inputField.checked) { this._inputField.setAttribute(`data-icon`, `${this._iconOn}`); }
+            else { this._inputField.setAttribute(`data-icon`, `${this._iconOff}`); }
+        }
     }
 
-    _CleanUp(){
+    _CleanUp() {
         this.iconOn = null;
         this.iconOff = null;
+        this.iconMixed = null;
         super._CleanUp();
     }
 

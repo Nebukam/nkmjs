@@ -20,7 +20,6 @@ const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 const data = require(`@nkmjs/data-core`);
 const dialog = require(`@nkmjs/dialog`);
-const documents = require(`@nkmjs/documents`);
 
 const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);

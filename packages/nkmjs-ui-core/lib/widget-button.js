@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
+const style = require("@nkmjs/style");
 
 const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
@@ -99,6 +100,16 @@ class WidgetButton extends base {
         this._sizeEnum.Set(this.constructor.__defaultSize);
         this._flavorEnum.Set(this.constructor.__defaultFlavor);
         this._variantEnum.Set(this.constructor.__defaultVariant);
+    }
+
+    static _Style() {
+        return style.Extends({
+            ':host': {
+                'position': 'relative',
+                'box-sizing': `border-box`,
+                '--size':`32px`,
+            }
+        }, {});//base._Style());
     }
 
     /**

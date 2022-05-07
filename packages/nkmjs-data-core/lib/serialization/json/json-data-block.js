@@ -1,6 +1,5 @@
-const com = require("@nkmjs/common");
+'use strict';
 
-const DataBlock = require(`../../data/data-block`);
 const AbstractJSONSerializer = require(`./json-abstract-serializer`);
 
 

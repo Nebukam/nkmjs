@@ -3,8 +3,6 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
-const SIGNAL = require(`../signal`);
-
 /**
  * A simple FIFO object stack
  * @class

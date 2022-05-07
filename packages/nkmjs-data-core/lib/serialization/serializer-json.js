@@ -1,5 +1,4 @@
 const com = require("@nkmjs/common");
-const DataBlock = require(`../data/data-block`);
 
 const BaseSerializer = require(`./serializer-base`);
 const CONTEXT = require(`./context`);

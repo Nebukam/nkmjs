@@ -1,8 +1,9 @@
+'use strict';
+
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
 const DataBlock = require(`./data-block`);
-const SIGNAL = require(`../signal`);
 
 class SimpleDataBlock extends DataBlock {
     constructor() { super(); }

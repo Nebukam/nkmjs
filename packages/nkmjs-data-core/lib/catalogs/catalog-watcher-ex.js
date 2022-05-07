@@ -4,7 +4,6 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./catalog-signal`);
 
-const filters = require(`./filters`);
 const CatalogWatcher = require(`./catalog-watcher`);
 
 /**

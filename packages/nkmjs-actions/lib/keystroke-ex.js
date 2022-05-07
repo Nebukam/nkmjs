@@ -1,11 +1,8 @@
 'use strict';
 
-const com = require("@nkmjs/common"); //{ POOL, DisposableObject }
 const u = require(`@nkmjs/utils`);
 
 const SIGNAL = require(`./signal`);
-const KEYBOARD = require(`./keyboard`);
-
 const Keystroke = require(`./keystroke`);
 
 /**

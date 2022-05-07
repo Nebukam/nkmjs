@@ -1,8 +1,7 @@
-const com = require("@nkmjs/common");
+'use strict';
 
 const CONTEXT = require(`../context`);
 
-const DataBlock = require(`../../data/data-block`);
 const DataBlockJSONSerializer = require(`./json-data-block`);
 
 

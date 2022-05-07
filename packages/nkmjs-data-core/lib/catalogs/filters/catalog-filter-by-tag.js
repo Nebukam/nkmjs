@@ -1,12 +1,7 @@
 
 'use strict';
 
-const u = require("@nkmjs/utils");
-const com = require("@nkmjs/common");
 const collections = require("@nkmjs/collections");
-
-const SIGNAL = require(`../../signal`);
-const FILTER_SIGNAL = require(`./catalog-filter-signal`);
 
 const CatalogFilter = require(`./catalog-filter`);
 

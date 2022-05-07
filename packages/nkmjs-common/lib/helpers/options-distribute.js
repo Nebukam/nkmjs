@@ -1,8 +1,6 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
-
 
 const __direct = Symbol(`direct`);
 const __null = Symbol(`null`);

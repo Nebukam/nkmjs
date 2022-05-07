@@ -1,6 +1,7 @@
+'use strict';
+
 const u = require("@nkmjs/utils");
 
-const Metadata = require(`../../data/metadata`);
 const AbstractJSONSerializer = require(`./json-abstract-serializer`);
 
 class MetadataJSONSerializer extends AbstractJSONSerializer {

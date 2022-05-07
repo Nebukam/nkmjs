@@ -1,4 +1,4 @@
-const com = require("@nkmjs/common");
+'use strict';
 
 const CONTEXT = require(`../context`);
 const BaseSerializer = require(`../serializer-base`);

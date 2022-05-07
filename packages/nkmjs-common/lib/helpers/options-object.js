@@ -1,7 +1,5 @@
 'use strict';
 
-const u = require("@nkmjs/utils");
-
 const DisposableObjectEx = require(`../pool/disposable-object-ex`);
 const OptionsDistribute = require(`./options-distribute`);
 const SIGNAL = require(`../signal`);
