@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/dialog",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NKMjs Framework Dialog",
   "main": "index.js",
   "repository": {
@@ -17,12 +17,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^0.2.9",
+    "@nkmjs/actions": "^0.2.10",
     "@nkmjs/collections": "^0.1.20",
-    "@nkmjs/common": "^0.1.38",
-    "@nkmjs/services": "^0.0.48",
-    "@nkmjs/style": "^0.1.0",
-    "@nkmjs/ui-core": "^0.3.0",
+    "@nkmjs/common": "^0.1.39",
+    "@nkmjs/services": "^0.0.49",
+    "@nkmjs/style": "^0.1.1",
+    "@nkmjs/ui-core": "^0.3.1",
     "@nkmjs/utils": "^0.0.40"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"

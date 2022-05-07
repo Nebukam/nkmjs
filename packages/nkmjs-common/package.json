@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/common",
-  "version": "0.1.38",
+  "version": "0.1.39",
   "description": "NKMjs Framework Common",
   "main": "index.js",
   "repository": {
