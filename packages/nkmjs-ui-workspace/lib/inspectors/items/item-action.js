@@ -32,7 +32,8 @@ class ActionInspectorItem extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                'min-height': `${this.__itemHeight}px`
+                'min-height': `${this.__itemHeight}px`,
+                'cursor':`pointer`
             },
             ':host(.done)': {
                 'opacity': `1`

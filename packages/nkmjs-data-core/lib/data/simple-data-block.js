@@ -29,6 +29,7 @@ class SimpleDataBlock extends DataBlock {
     Set(p_id, p_value, p_silent = false) {
         let valueObject;
         let oldValue = null;
+        this._lastSetEffective = false;
         if (!(p_id in this._values)) {
             if (this.constructor.__lockedData) {
                 //console.warn(`Attempting to create value '${p_id}' on locked object.`, this);
@@ -43,6 +44,7 @@ class SimpleDataBlock extends DataBlock {
             if (oldValue === p_value) { return p_value; }
             valueObject.value = p_value;
         }
+        this._lastSetEffective = true;
         this.CommitValueUpdate(p_id, valueObject, oldValue, p_silent);
         return p_value;
     }
@@ -62,9 +64,19 @@ class SimpleDataBlock extends DataBlock {
     }
 
     BatchSet(p_values, p_silent = false) {
-        if (u.isInstanceOf(p_values, SimpleDataBlock)) { for (var p in p_values._values) { this.Set(p, p_values._values[p].value, true); } }
-        else { for (var p in p_values) { this.Set(p, p_values[p], true); } }
-        if (!p_silent) { this.CommitUpdate(); }
+        let anyChange = false;
+        if (u.isInstanceOf(p_values, SimpleDataBlock)) {
+            for (var p in p_values._values) {
+                this.Set(p, p_values._values[p].value, true);
+                if (this._lastSetEffective) { anyChange = true; }
+            }
+        } else {
+            for (var p in p_values) { 
+                this.Set(p, p_values[p], true); 
+                if (this._lastSetEffective) { anyChange = true; }
+            }
+        }
+        if (!p_silent && anyChange) { this.CommitUpdate(); }
     }
 
     CommitValueUpdate(p_id, p_valueObj, p_oldValue, p_silent = false) {

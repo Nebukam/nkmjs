@@ -23,6 +23,7 @@ const base = ui.Widget;
 class ControlWidget extends base {
     constructor() { super(); }
 
+    static __buildOnRender = true;
     static __clearBuilderOnRelease = false;
     static __useMetaObserver = false;
     static __distribute = com.helpers.OptionsDistribute.Ext(null,
@@ -155,8 +156,10 @@ class ControlWidget extends base {
 
     _Render() {
         super._Render();
-        let controlList = this.constructor.__controls;
-        if (controlList) { this._builder.Build(controlList); }
+        if (this.constructor.__buildOnRender) {
+            let controlList = this.constructor.__controls;
+            if (controlList) { this._builder.Build(controlList); }
+        }
     }
 
     //#endregion

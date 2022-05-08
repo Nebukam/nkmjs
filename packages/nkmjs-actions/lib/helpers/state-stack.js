@@ -20,6 +20,13 @@ class StateStack extends com.pool.DisposableObjectEx {
         this._index = -1;
         this._stack = [];
         this._maxItems = 50;
+        this._Bind(this.Previous);
+        this._Bind(this.Next);
+    }
+
+    HookButtons(p_prev, p_next) {
+        this._prevBtn = p_prev;
+        this._nextBtn = p_next;
     }
 
     /**
@@ -43,7 +50,7 @@ class StateStack extends com.pool.DisposableObjectEx {
         }
 
         this._stack.push(p_state);
-        this._index = this._stack.length-(p_multiHandle ? 0 : 1);
+        this._index = this._stack.length - (p_multiHandle ? 0 : 1);
 
         //console.log(this._stack, this._index);
 
@@ -51,6 +58,8 @@ class StateStack extends com.pool.DisposableObjectEx {
             this._index--;
             this._FlushState(this._stack.shift());
         }
+
+        this._RefreshBtns();
 
     }
 
@@ -97,10 +106,20 @@ class StateStack extends com.pool.DisposableObjectEx {
         //console.log(`Restore @${this._index}/${this._stack.length}`);
         u.Call(state.restore, state, p_forward);
         this._restoring = false;
+        this._RefreshBtns();
     }
 
     _FlushState(p_state) {
         for (var p in p_state) { p_state[p] = null; }
+    }
+
+    _RefreshBtns() {
+        if (!this._prevBtn || !this._nextBtn) { return; }
+
+        if (this._index >= this._stack.length-1) { this._nextBtn.disabled = true; }
+        else { this._nextBtn.disabled = false; }
+        if (this._index <= 0) { this._prevBtn.disabled = true; }
+        else { this._prevBtn.disabled = false; }
     }
 
     Clear() {

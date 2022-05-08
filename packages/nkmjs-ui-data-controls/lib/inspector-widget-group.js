@@ -29,8 +29,9 @@ class InspectorWidgetGroup extends base {
     constructor() { super(); }
 
     static __controls = null;
+    static __buildOnRender = false;
     static __clearBuilderOnRelease = true;
-    static __widgetExpandData = true;
+    static __widgetExpandData = false;
     static __clearToolbarOnRelease = false;
 
     _Init() {
@@ -132,12 +133,14 @@ class InspectorWidgetGroup extends base {
         super._OnDataChanged(p_oldData);
 
         if (this._data) {
+
             if (this._data.expanded) {
                 this._extExpand.Expand(false);
             } else if (this._extExpand.isExpanded) {
                 if (this.constructor.__widgetExpandData) { this._data.expanded = true; }
                 else { this._extExpand.Collapse(); }
             }
+
         } else {
             this._extExpand.Collapse();
         }
@@ -194,8 +197,8 @@ class InspectorWidgetGroup extends base {
 
     _CleanUp() {
         if (this.constructor.__clearToolbarOnRelease) { this._toolbar.Clear(); }
-        this.Collapse();
         super._CleanUp();
+        this.Collapse();
     }
 
 }
