@@ -28,11 +28,11 @@ class Action extends com.helpers.InfosObject {
     }
 
     get stack() { return this._stack; }
-    set stack(p_value) { 
-        this._stack = p_value; 
+    set stack(p_value) {
+        this._stack = p_value;
     }
 
-    _UpdateDisplayInfos(){
+    _UpdateDisplayInfos() {
 
     }
 
@@ -68,7 +68,7 @@ class Action extends com.helpers.InfosObject {
         this._InternalDo(p_operation, p_merge);
         this._UpdateDisplayInfos();
         if (this._stack) {
-            this._stack._OnActionStateChanged(this, this.state); 
+            this._stack._OnActionStateChanged(this, this.state);
         }
         return this;
     }
@@ -122,11 +122,8 @@ class Action extends com.helpers.InfosObject {
 
     _CleanUp() {
 
-        if (!this._undone) {
-            if (this.constructor.__deepCleanFn != null) {
-                this.constructor.__deepCleanFn(this);
-            }
-        }
+        if (this.constructor.__deepCleanFn != null) { this.constructor.__deepCleanFn(this); }
+        for (var p in this._operation) { this._operation[p] = null; }
         this._operation = null;
         this._undone = false;
         this._stack = null;
