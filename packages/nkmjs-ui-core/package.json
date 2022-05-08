@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-core",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "NKMjs Framework UI Core",
   "browser": "index.js",
   "repository": {
@@ -16,10 +16,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^0.2.10",
+    "@nkmjs/actions": "^0.2.11",
     "@nkmjs/collections": "^0.1.20",
     "@nkmjs/common": "^0.1.39",
-    "@nkmjs/data-core": "^0.0.62",
+    "@nkmjs/data-core": "^0.0.63",
     "@nkmjs/environment": "^0.1.42",
     "@nkmjs/style": "^0.1.1",
     "@nkmjs/utils": "^0.0.40"
