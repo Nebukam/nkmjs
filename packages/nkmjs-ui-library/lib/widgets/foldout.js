@@ -89,7 +89,7 @@ class Foldout extends base {
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
-                'box-sizing': `border-box`,
+                'box-sizing': `border-box`
 
             },
 

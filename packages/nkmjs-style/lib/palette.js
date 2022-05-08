@@ -200,14 +200,20 @@ class Palette extends com.pool.DisposableObject {
         // Check if the class __NFO__ has any specific css imports
         let nfos = com.NFOS.Get(p_class);
         let imports = ``;
+        
+        let fragment = document.createDocumentFragment();
+
         if (nfos) {
 
             // Change <link> to @import --> less nodes in DOM, no FOUC
+            // Few month later : heh, not sure it ever really solved anything.
+            // Less node for sure, still tons of FOUC, and overall less responsive UI :(
 
             if (nfos.css) {
                 for (let i = nfos.css.length - 1; i >= 0; i--) {
                     //style.push(dom.El(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }));
-                    imports += `@import url(${this.GetCSSLink(nfos.css[i])}); `;
+                    dom.El(`link`, { href: this.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type:`text/css` }, fragment);
+                    //imports += `@import url(${this.GetCSSLink(nfos.css[i])}); `;
                 }
             }
             /*
@@ -234,9 +240,11 @@ class Palette extends com.pool.DisposableObject {
 
         }
 
-        let styleElement = dom.El(`style`);
+        let styleElement = dom.El(`style`, {type:`text/css`}, fragment);
         styleElement.innerText = imports;
-        style.push(styleElement);
+
+        //style.push(styleElement);
+        style.push(fragment);
 
         this._cache.Set(p_class, style);
 

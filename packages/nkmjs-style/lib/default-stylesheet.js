@@ -131,7 +131,7 @@ class DefaultStylesheet extends PaletteBuilder{
         palette.AddProperties({
 
             'fade-in': {
-                'opacity': `0`,
+                'opacity': `0`
             },
 
             

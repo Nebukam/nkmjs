@@ -77,6 +77,7 @@ class DOMTemplate {
      * @description TODO
      * @type {array}
      */
+    static __fragment = null;
     static __HTMLtemplate = null;
     static __shelf = {};
     static __shelfIDs = {};
