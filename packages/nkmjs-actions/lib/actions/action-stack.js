@@ -109,6 +109,7 @@ class ActionStack extends com.pool.DisposableObjectEx {
 
         if (this._groupingActive) {
             if (!this._group) {
+                //Only create the group if we get at least a single action
                 let newGroup = com.Rent(ActionGroup);
                 newGroup.displayInfos = this._groupDisplayInfos;
                 this._group = this._Register(newGroup);
