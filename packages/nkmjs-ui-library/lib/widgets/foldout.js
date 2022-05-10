@@ -128,7 +128,8 @@ class Foldout extends base {
             '.foldout-item': {
                 'flex': '1 1 auto',
                 'margin': '0',
-                'margin-bottom': '5px'
+                'margin-bottom': '5px',
+                'min-width':`0`,
             },
             '.foldout-item.full': { 'flex': '1 1 100%', },
             '.foldout-item.large': { 'flex': '1 1 75%', },
