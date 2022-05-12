@@ -139,7 +139,7 @@ class TaskBuildElectronApp extends ScriptBase {
                         //app: shared.appDirectory,
                         buildResources: shared.buildResources
                     },
-                    files: shared.files,
+                    files: conf.files ? [...shared.files, ...conf.files] : shared.files,
 
                     ...conf.build,
                 },
@@ -148,6 +148,8 @@ class TaskBuildElectronApp extends ScriptBase {
                 author: { ...NKMjs.author },
             },
             builderConfig = { config: packageConfig.build };
+
+        console.log(conf.build);
 
         if (conf.platform == "win" || conf.platform == "windows") {
             builderConfig.targets = builder.Platform.WINDOWS.createTarget();
