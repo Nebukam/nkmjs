@@ -26,19 +26,21 @@ class RectTracker {
     }
 
     Enable() {
-        if (this._enabled) { return; }
+        if (this._enabled) { return false; }
         this._enabled = true;
         for (let i = 0; i < this._elements.length; i++) {
             this._observer.observe(this._elements[i]);
         }
+        return true;
     }
 
     Disable() {
-        if (!this._enabled) { return; }
+        if (!this._enabled) { return false; }
         this._enabled = false;
         this._observer.disconnect();
         this._cachedRects.clear();
         this._cachedIntersections.clear();
+        return true;
     }
 
     Add(p_element) {

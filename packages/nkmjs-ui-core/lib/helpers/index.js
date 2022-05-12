@@ -6,6 +6,7 @@ const WidgetSelection = require(`./widget-selection`);
 module.exports = {
 
     RectTracker: require(`./rect-tracker`),
+    SizeTracker: require(`./size-tracker`),
     CatalogBuilder: require(`./catalog-builder`),
     CatalogViewBuilder: require(`./catalog-view-builder`),
     FlagBox: require(`./flag-box`),

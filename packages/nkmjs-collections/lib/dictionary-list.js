@@ -147,6 +147,27 @@ class DictionaryList {
     }
 
     /**
+     * @description Remove a key from the dictionary and all of its associated values, if any.
+     * @param {*} p_key 
+     * @param {*} p_value 
+     * @returns {boolean} True if the KVP has been found and removed, otherwise false.
+     */
+    RemoveKey(p_key){
+
+        if (!p_value || !p_key) { return false; }
+
+        let list = this._map.get(p_key);
+
+        if (!list) { return false; }
+
+        list.length = 0;
+        this._map.delete(p_key);
+
+        return false;
+        
+    }
+
+    /**
      * @description TODO
      * @param {*} p_key 
      * @param  {...any} args 
