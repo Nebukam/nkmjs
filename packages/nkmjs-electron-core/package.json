@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/electron-core",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "NKMjs Framework Electron App Core",
   "main": "index.js",
   "repository": {
@@ -18,7 +18,7 @@
   "dependencies": {
     "@electron/remote": "^2.0.5",
     "@nkmjs/actions": "^0.2.12",
-    "@nkmjs/app-core": "^0.3.6",
+    "@nkmjs/app-core": "^0.3.7",
     "@nkmjs/collections": "^0.1.21",
     "@nkmjs/common": "^0.1.40",
     "@nkmjs/io-electron": "^0.1.14",

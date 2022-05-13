@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-core",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "NKMjs Framework UI Core",
   "browser": "index.js",
   "repository": {
