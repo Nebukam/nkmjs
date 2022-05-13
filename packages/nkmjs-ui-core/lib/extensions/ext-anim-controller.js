@@ -149,7 +149,6 @@ class AnimControllerExtension extends Extension {
 
         this._animations.forEach(anim => {
             if (i != 0) { serial += `, ` }
-            let anim = anim;
             serial += `${anim.dur}`;
             serial += ` ${anim.ease}`;
             if (anim.delay > 0) { serial += ` ${anim.delay}`; }
