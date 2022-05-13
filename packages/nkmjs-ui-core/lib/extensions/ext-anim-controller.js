@@ -146,18 +146,18 @@ class AnimControllerExtension extends Extension {
 
     _RefreshAnimationSerial() {
         var serial = ``;
-        for(let i = 0, n = this._animations.length; i < n; i++){
-            if(i != 0){serial += `, `}
-            let anim = this._animations[i];
+
+        this._animations.forEach(anim => {
+            if (i != 0) { serial += `, ` }
+            let anim = anim;
             serial += `${anim.dur}`;
             serial += ` ${anim.ease}`;
-            if(anim.delay > 0){ serial += ` ${anim.delay}`; }
-            if(anim.iterations > 0){ serial += ` ${anim.iterations}`; }
-            else if(anim.iterations == -1){ serial += ` infinite`; }
-            if(anim.extras > 0){ serial += ` ${anim.extras}`; }
+            if (anim.delay > 0) { serial += ` ${anim.delay}`; }
+            if (anim.iterations > 0) { serial += ` ${anim.iterations}`; }
+            else if (anim.iterations == -1) { serial += ` infinite`; }
+            if (anim.extras > 0) { serial += ` ${anim.extras}`; }
             serial += `${anim.name}`;
-        }
-        console.log(serial);
+        });
         this._element.style.animation = serial;
     }
 

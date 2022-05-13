@@ -14,7 +14,7 @@ const __editorMap = new collections.DictionaryList();
 const __activeData = new Set();
 
 function __CheckEditorMap() {
-    console.log(`__CheckEditorMap`, __editorMap, __activeData);
+    
     let stack = [];
     __activeData.forEach(p_data => {
         // Check if still edited.
@@ -24,7 +24,8 @@ function __CheckEditorMap() {
             __activeData.delete(d);
             d.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, d);
         }
-    })
+    });
+    
 }
 
 const __delayedCheckEditorMap = com.DelayedCall(__CheckEditorMap);

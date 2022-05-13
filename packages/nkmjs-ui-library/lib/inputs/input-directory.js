@@ -13,9 +13,9 @@ class InputDirectory extends InputFile {
         this._iconID = `directory-search`;
     }
 
-    _GrabValue() { 
-        let values = this._inputField.value.split(`,`); 
-        for(let i = 0; i < values.length; i++){ values[i] = values[i].trim(); }
+    _GrabValue() {
+        let values = this._inputField.value.split(`,`);
+        values.forEach((val, i) => { values[i] = val.trim(); });
         return values;
     }
 

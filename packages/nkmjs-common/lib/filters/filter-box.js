@@ -15,7 +15,7 @@ class FilterBox extends Filter {
 
     constructor() { super(); }
 
-    _Init(){
+    _Init() {
         super._Init();
         this._filters = [];
     }
@@ -25,26 +25,26 @@ class FilterBox extends Filter {
      * @param {common.filters.Filter} p_filter 
      * @param {object} [p_filterOptions]
      */
-    Add( p_filter, p_filterOptions = null ){
+    Add(p_filter, p_filterOptions = null) {
 
-        if(u.isFunc(p_filter)){
+        if (u.isFunc(p_filter)) {
             p_filter = POOL.Rent(p_filter);
-            if(p_filterOptions){
-                for(let key in p_filterOptions){ p_filter[key] = p_filterOptions[key]; }
+            if (p_filterOptions) {
+                for (let key in p_filterOptions) { p_filter[key] = p_filterOptions[key]; }
             }
             this._filters.push(p_filter);
             this._Reorder();
             return p_filter;
         }
 
-        if(this._filters.includes(p_filter)){ return null; }
+        if (this._filters.includes(p_filter)) { return null; }
 
         this._filters.push(p_filter);
         this._Reorder();
         return p_filter;
     }
 
-    _Reorder(){
+    _Reorder() {
         // Put loop-breaking filters at the top of the list
     }
 
@@ -52,7 +52,7 @@ class FilterBox extends Filter {
      * @description TODO
      * @param {*} p_obj 
      */
-    Check(p_obj){
+    Check(p_obj) {
         return true;
     }
 

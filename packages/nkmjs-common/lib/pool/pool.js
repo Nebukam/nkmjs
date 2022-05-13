@@ -146,12 +146,12 @@ class POOL extends Singleton {
      * @param {constructor|String} p_class Either a class constructor, or its associated string ID.
      * @group Renting
      */
-     static Preload(p_class) {
+    static Preload(p_class) {
         return this.instance._Preload(p_class);
     }
 
-    _Preload(p_class, p_num){
-        for(var i = 0; i < p_num; i++){
+    _Preload(p_class, p_num) {
+        for (var i = 0; i < p_num; i++) {
             this._Rent(p_class).Release();
         }
     }

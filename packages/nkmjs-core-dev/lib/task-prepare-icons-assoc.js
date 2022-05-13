@@ -15,36 +15,36 @@ class TaskPrepareIconsAssoc extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let fileAssociations = NKMjs.projectConfig.fileAssociations;
-        if(!fileAssociations){ this.End(); return; }
+        if (!fileAssociations) { this.End(); return; }
 
         let extIcons = [];
-        for(let i = 0; i < fileAssociations.length; i++){
+        for (let i = 0; i < fileAssociations.length; i++) {
             extIcons.push(fileAssociations[i].ext);
         }
 
         this.iconDest = FSUTILS.ensuredir(NKMjs.InBuildRsc());
 
-        for(let i = 0; i < extIcons.length; i++){
-            let 
-            iconName = extIcons[i],
-            sourcePath = NKMjs.InAssets(`icons`, `${iconName}.png`),
-            iconStats = fs.statSync(sourcePath);
+        for (let i = 0; i < extIcons.length; i++) {
+            let
+                iconName = extIcons[i],
+                sourcePath = NKMjs.InAssets(`icons`, `${iconName}.png`),
+                iconStats = fs.statSync(sourcePath);
 
-            if(!iconStats){
+            if (!iconStats) {
                 this._logWarn(`Could not find '${iconName}.png'.`, 1);
                 continue;
             }
 
             let pngContent = fs.readFileSync(sourcePath);
-            try{
+            try {
                 fs.writeFileSync(NKMjs.InBuildRsc(`${iconName}.ico`), createICO(pngContent, 2, 256, true, true));
-            }catch(e){
+            } catch (e) {
                 this._logError(`Could not prepare .ico file for '${iconName}'.`, 1);
             }
 
-            try{
+            try {
                 fs.writeFileSync(NKMjs.InBuildRsc(`${iconName}.icns`), createICNS(pngContent, 2, 256));
-            }catch(e){
+            } catch (e) {
                 this._logError(`Could not prepare .icns file for '${iconName}'.`, 1);
             }
 

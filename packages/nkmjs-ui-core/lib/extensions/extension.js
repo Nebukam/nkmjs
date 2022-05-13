@@ -25,7 +25,7 @@ class Extension extends com.pool.DisposableObjectEx {
     Add(p_ext) {
         if (!this._childExtensions) { this._childExtensions = []; }
         if (this._childExtensions.includes(p_ext)) { return p_ext; }
-        if(u.isFunc(p_ext)){ p_ext = com.Rent(p_ext); }
+        if (u.isFunc(p_ext)) { p_ext = com.Rent(p_ext); }
         this._childExtensions.push(p_ext);
         p_ext.enabled = this._isEnabled;
         return p_ext;
@@ -37,23 +37,21 @@ class Extension extends com.pool.DisposableObjectEx {
      */
     Remove(p_ext) {
         if (!this._childExtensions) { return null; }
-        let index =  this._childExtensions.indexOf(p_ext);
-        if(index == -1){ return null; }
+        let index = this._childExtensions.indexOf(p_ext);
+        if (index == -1) { return null; }
         this._childExtensions.splice(index, 1);
         p_ext.Disable();
         return p_ext;
     }
-    
+
     /**
      * @description Called by the widget owner when it is cleaned up. You can call
      * this method manually if you need to clean-up the extension.  
      * Calls CleanUp on children.
      */
-    CleanUp(){
-        if(!this._childExtensions){ return; }
-        for(let i = 0, n = this._childExtensions.length; i < n; i++){
-            this._childExtensions[i].CleanUp();
-        }
+    CleanUp() {
+        if (!this._childExtensions) { return; }
+        this._childExtensions.forEach(ext => { ext.CleanUp(); })
     }
 
     // ----> Availability
@@ -70,7 +68,7 @@ class Extension extends com.pool.DisposableObjectEx {
      * @type {boolean}
      * @customtag write-only
      */
-    set enabled(p_value){
+    set enabled(p_value) {
         if (p_value) { this.Enable(); }
         else { this.Disable(); }
     }

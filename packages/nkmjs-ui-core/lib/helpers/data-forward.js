@@ -52,34 +52,34 @@ class DataForward {
 
     Set(p_data) {
 
-        for (let i = 0; i < this._forwards.length; i++) {
+        this._forwards.forEach(fwd => {
 
-            let
-                fwd = this._forwards[i],
-                target;
-
+            let target;
 
             if (fwd.member) { target = this._owner[fwd.member]; }
             else { target = fwd.target; }
-            
-            if (!target) { continue; }
-            if (!p_data) { target.data = null; continue; }
 
-            let dataMember = fwd.dataMember ? p_data[fwd.dataMember] : p_data;
+            if (!target) { return; }
 
-            if (fwd.preprocess) { dataMember = u.Call(fwd.preprocess, dataMember, p_data); }
-            //else { target.data = dataMember; }
+            let dataMember = null;
+
+            if (p_data) {
+                dataMember = fwd.dataMember ? p_data[fwd.dataMember] : p_data;
+                if (fwd.preprocess) {
+                    dataMember = u.Call(fwd.preprocess, dataMember, p_data);
+                }
+            }
 
             if (fwd.mapping) {
                 let mapping = fwd.mapping;
                 if (u.isString(mapping)) { target[mapping] = dataMember; }
-                else if (u.isObject(mapping)) { u.Call(mapping, dataMember); }
+                else if (u.isObject(mapping) || u.isFunc(mapping)) { u.Call(mapping, dataMember); }
                 else { target.data = dataMember; }
             } else {
                 target.data = dataMember;
             }
 
-        }
+        });
 
     }
 
@@ -91,20 +91,18 @@ class DataForward {
      */
     _BatchSet(p_member, p_value) {
 
-        for (let i = 0, n = this._forwards.length; i < n; i++) {
+        this._forwards.forEach(fwd => {
 
-            let
-                fwd = this._forwards[i],
-                target;
+            let target;
 
             if (fwd.member) { target = this._owner[fwd.member]; }
             else { target = fwd.target; }
 
-            if (!target) { continue; }
+            if (!target) { return; }
 
             target[p_member] = p_value;
 
-        }
+        });
     }
 
 

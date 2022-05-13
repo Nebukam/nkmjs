@@ -31,27 +31,27 @@ class NKMCLI extends ScriptBase {
                 this.Run(`./${taskId}`, this.End);
             } catch (e) {
                 this._logError(`'${taskId}' is not a valid task name.`);
-                if(NKMjs.projectConfig.tasks){
+                if (NKMjs.projectConfig.tasks) {
                     this._log(`Avaialble tasks in project are :`, 1);
-                    for(let key in NKMjs.projectConfig.tasks){ this._logFwd(key, null, 2); }
+                    for (let key in NKMjs.projectConfig.tasks) { this._logFwd(key, null, 2); }
                 }
-                if(NKMjs.coreConfig.tasks){
+                if (NKMjs.coreConfig.tasks) {
                     this._log(`Avaialble tasks in core-dev are :`, 1);
-                    for(let key in NKMjs.coreConfig.tasks){ this._logFwd(key, null, 2); }
+                    for (let key in NKMjs.coreConfig.tasks) { this._logFwd(key, null, 2); }
                 }
                 this.End();
             }
             return;
         }
 
-        if (scriptList) { 
-            for(var i = 0, n = scriptList.length; i < n; i++){
+        if (scriptList) {
+            for (var i = 0, n = scriptList.length; i < n; i++) {
                 let scriptInfos = scriptList[i];
-                if(Array.isArray(scriptInfos)){ scriptInfos[0] = `./${scriptInfos[0]}`; }
-                else{ scriptInfos = `./${scriptInfos}`; }
+                if (Array.isArray(scriptInfos)) { scriptInfos[0] = `./${scriptInfos[0]}`; }
+                else { scriptInfos = `./${scriptInfos}`; }
                 scriptList[i] = scriptInfos;
             }
-            this.Run(scriptList, this.End); 
+            this.Run(scriptList, this.End);
         }
         else { this.End(); }
 
@@ -81,13 +81,13 @@ class NKMCLI extends ScriptBase {
 
     }
 
-    End(){
+    End() {
         super.End();
         let date = new Date();
-        if(this._start){
+        if (this._start) {
             let diff = u.tils.DateDiff(date, this._start);
             this._logFwd(`${u.tils.Pad(date.getHours())}:${u.tils.Pad(date.getMinutes())}:${u.tils.Pad(date.getSeconds())} (~${Math.round(diff.totalSeconds)}s)`, `✔`);
-        }else{
+        } else {
             this._logFwd(`${u.tils.Pad(date.getHours())}:${u.tils.Pad(date.getMinutes())}:${u.tils.Pad(date.getSeconds())}`, `✔`);
         }
     }

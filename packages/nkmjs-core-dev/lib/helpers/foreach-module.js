@@ -17,27 +17,24 @@ class ForEachModule {
         this._seen = [];
         this._list = [];
         this.Explore(p_module_dir, this._list, p_callback);
-        
-        if(this._list.length == 0){ return; }
+
+        if (this._list.length == 0) { return; }
 
         var sortList = p_sorting;
 
-        if(sortList != null){
-            this._list.sort((a, b) =>{
+        if (sortList != null) {
+            this._list.sort((a, b) => {
                 let ia = sortList.indexOf(a.name),
-                ib = sortList.indexOf(b.name);
-                if(ia == -1){ ia = sortList.length + 1; }
-                if(ib == -1){ ib = sortList.length + 1; }
+                    ib = sortList.indexOf(b.name);
+                if (ia == -1) { ia = sortList.length + 1; }
+                if (ib == -1) { ib = sortList.length + 1; }
 
                 return ia < ib ? -1 : ia > ib ? 1 : 0;
 
             });
         }
 
-        for(let i = 0, n = this._list.length; i < n; i++){
-            let item = this._list[i];
-            p_callback(item.package, item.name);
-        }
+        this._list.forEach(item => { p_callback(item.package, item.name); })
 
     }
 
@@ -67,7 +64,7 @@ class ForEachModule {
                             let dirPath = path.resolve(itemDir, nItem),
                                 pkg = new NKMJSPackageConfig(dirPath);
 
-                            if (pkg.__hasNKMConfig) { p_list.push({package:pkg, name:moduleName}); }
+                            if (pkg.__hasNKMConfig) { p_list.push({ package: pkg, name: moduleName }); }
 
                             this.Explore(path.resolve(dirPath, `node_modules`), this._list);
                         }
@@ -77,7 +74,7 @@ class ForEachModule {
                     this._seen.push(item);
 
                     let pkg = new NKMJSPackageConfig(itemDir);
-                    if (!pkg.__hasNKMConfig) { p_list.push({package:pkg, name:item}); }
+                    if (!pkg.__hasNKMConfig) { p_list.push({ package: pkg, name: item }); }
 
                     this.Explore(path.resolve(itemDir, `node_modules`), this._list);
 
