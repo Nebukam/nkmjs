@@ -57,6 +57,8 @@ module.exports = {
     Register: __UI.Register.bind(__UI),
     // to UI.RegisterGroup
     RegisterGroup: __UI.RegisterGroup.bind(__UI),
+    // to UI.FindFirstParentOfType
+    FindFirstParent : __UI.FindFirstParentOfType.bind(__UI),
     // to DOMTemplate.Render
     Render: __DOMtemplate.Render.bind(__DOMtemplate),
 
