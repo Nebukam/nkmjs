@@ -517,6 +517,8 @@ class Modal extends base {
 
         this._Ready(false);
 
+        this._margins = { x: 0, y: 0 };
+
         this.constructor.modalStack.Remove(this);
 
         POINTER.Unwatch(POINTER.MOUSE_DOWN, this._mDown);
