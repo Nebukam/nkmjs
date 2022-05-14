@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
   <g id="BG">
-    <rect x="-8205.78" y="-9234.64" width="16138.57" height="16138.57" fill="#333"/>
+    <rect x="-8205.78" y="-9837.83" width="16138.57" height="16138.57" fill="#333"/>
   </g>
   <g id="main">
+    <polyline points="43.16 89.87 10.85 89.87 10.85 10 90.72 10 90.72 42.67" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" opacity="0.5"/>
     <g>
-      <path d="M50.06,82.9H19.13V19H53.29l16,16v8.77" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
-      <polygon points="51.98 19 51.98 36.24 69.29 36.24 51.98 19" fill="#fff"/>
+      <line x1="39.19" y1="38.74" x2="39.19" y2="72.54" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"/>
+      <line x1="28.81" y1="49.47" x2="48.99" y2="49.47" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"/>
+      <path d="M39.19,38.74A12.44,12.44,0,0,1,62.4,32.52" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"/>
     </g>
   </g>
   <g id="accent">
