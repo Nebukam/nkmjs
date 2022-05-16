@@ -24,6 +24,7 @@ class FSUTILS {
 
             for (let i = 0, n = pathArray.length; i < n; i++) {
                 concatPath = i == 0 ? pathArray[i] : concatPath + path.sep + pathArray[i];
+                if (concatPath == ``) { continue; }
                 let stats;
                 try {
                     if (!fs.statSync(concatPath).isDirectory()) { throw new Error(); }
@@ -79,8 +80,8 @@ class FSUTILS {
                 let item = dirContent[i],
                     itemPath = path.resolve(p_path, item),
                     stats = fs.statSync(itemPath);
-                if(stats.isDirectory()){ this.rmdir(itemPath); }
-                else{ fs.unlinkSync(itemPath); }
+                if (stats.isDirectory()) { this.rmdir(itemPath); }
+                else { fs.unlinkSync(itemPath); }
             }
             fs.rmdirSync(p_path);
         } catch (e) { }
