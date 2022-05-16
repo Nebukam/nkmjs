@@ -123,9 +123,9 @@ class RESOURCES extends services.ServiceBase {
         let rsc = this.instance._Get(p_path, p_options);
 
         if(rsc.loaded){
-            if(p_options && !p_options.forceRead){
-                if(p_options.success){ p_options.success(rsc); }
-                if(p_options.any){ p_options.any(rsc); }
+            if(p_options && !p_options.forceRead && p_IOOptions){
+                if(p_IOOptions.success){ p_IOOptions.success(rsc); }
+                if(p_IOOptions.any){ p_IOOptions.any(rsc); }
             }else{
                 return rsc;
             }

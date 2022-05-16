@@ -93,12 +93,14 @@ class ENV extends com.helpers.SingletonEx {
         this._useFetchRequestAsDefault = false;
         this._manifestVersion = 0;
 
+        this._semVer = [0, 0, 0];
+
     }
 
-    set useFetchRequestAsDefault(p_value){ this._useFetchRequestAsDefault = p_value; }
-    get useFetchRequestAsDefault(){ return this._useFetchRequestAsDefault; }
+    set useFetchRequestAsDefault(p_value) { this._useFetchRequestAsDefault = p_value; }
+    get useFetchRequestAsDefault() { return this._useFetchRequestAsDefault; }
 
-    get manifestVersion(){return this._manifestVersion;}
+    get manifestVersion() { return this._manifestVersion; }
 
     /**
      * @description TODO
@@ -149,6 +151,22 @@ class ENV extends com.helpers.SingletonEx {
     }
 
     /**
+     * 
+     * @param {array} p_semVer [0,0,0]
+     * @return -1 : p_semVer is inferior, 1: p_semVer is superior, 0 : p_semVer == 
+     */
+    VersionDiff(p_semVer) {
+        
+        for (let i = 0; i < 3; i++) {
+            let t = p_semVer[i], c = this._semVer[i];
+            if (t < c) { return -1; }
+            else if (t > c) { return 1; }
+        }
+
+        return 0;
+    }
+
+    /**
      * @description Starts the environment : 
      * - process the provided config object
      * - register & initialize the registered services
@@ -166,11 +184,23 @@ class ENV extends com.helpers.SingletonEx {
         this._manifestVersion = p_config ? (p_config.manifestVersion || 0) : 0;
         ENV.instance._features._manifestVersion = this._manifestVersion;
 
+        if (p_config) {
+            if (p_config.version) {
+                try {
+                    this._semVer = p_config.version.split(`.`);
+                    this._semVer.length = 3;
+                    for (let i = 0; i < 3; i++) { this._semVer[i] = Number(this._semVer[i]); }
+                } catch (e) {
+                    console.warn(`Malformed version : ${p_config.version}`);
+                }
+            }
+        }
+
         // Use service worker to handle HTTP requests if extension manifest v3
         //if(this._manifestVersion == 3){ this._useFetchRequestAsDefault = true; }
 
         u.LOG._(`ENV : START`, `#33979b`, `#212121`);
-        
+
         ENV.instance._features.List();
 
         if (ENV.instance._features.isBrowser) {
