@@ -16,7 +16,7 @@ const ButtonEx = require(`../buttons/button-ex`);
 
 const base = ui.inputs.InputCatalogBase;
 
-class InputInlineSelect extends base {
+class InputSelectInline extends base {
     constructor() { super(); }
 
     static __inputProperties = {};
@@ -136,5 +136,5 @@ class InputInlineSelect extends base {
 
 }
 
-module.exports = InputInlineSelect;
-ui.Register(`nkmjs-input-inline-select`, InputInlineSelect);
+module.exports = InputSelectInline;
+ui.Register(`nkmjs-input-select-inline`, InputSelectInline);

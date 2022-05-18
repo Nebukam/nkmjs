@@ -15,10 +15,6 @@ $btnBorderRadius: 3px;
 
     transition: background-color 0.15s ease;
     
-    box-sizing: border-box;
-
-    position: relative;    
-
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -36,7 +32,7 @@ $btnBorderRadius: 3px;
 
     --flavor-primary-disabled:rgba(0,0,0,0.1);
     --flavor-secondary-disabled:rgba(0,0,0,0.1);
-    --flavor-contrast-disabled:rgba(0,0,0,0.5);
+    --flavor-contrast-disabled:rgba(127,127,127,0.5);
 
     @include state-color-variations( rgba(50,50,50,0.65), rgba(140,140,140,0.5), 0.65, 1) 
     using ( $index, $st, $p, $s, $c){
@@ -231,6 +227,7 @@ $pad: 0px;
 $pad2: $pad * 2;
 
 .ripple-wrapper{
+    pointer-events: none;
     position: absolute;
     top:-#{$pad};
     left:-#{$pad};
@@ -242,6 +239,7 @@ $pad2: $pad * 2;
 }
 
 .ripple-wrapper .ripple {
+    pointer-events: none;
     position: absolute;
     border-radius: 50%;
     opacity: 1;

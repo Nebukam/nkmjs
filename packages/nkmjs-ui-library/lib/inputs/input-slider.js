@@ -7,6 +7,7 @@ const dom = ui.dom;
 const style = require(`@nkmjs/style`);
 
 const InputNumber = require(`./input-number`);
+const InputSliderOnly = require(`./input-slider-only`);
 
 const base = ui.inputs.InputNumberBase;
 
@@ -46,42 +47,11 @@ class InputSlider extends base {
                 '--thumbSize':'calc(var(--size) * 0.5)',
                 'min-width':'calc(var(--size) * 2)'
             },
-            '.item': {
-                'position': 'relative'
-            },
             '.direct-field': {
                 'flex': '0 0 50px',
                 'margin-left': '4px'
-            },
-            '.slider-ctnr': {
-                'flex': '1 1 auto',
-                'height': 'var(--size)',
-                'margin-left': 'calc(var(--thumbSize) * 0.5)',
-                'margin-right': 'calc(var(--thumbSize) * 0.5)'
-            },
-            '.slider': {
-                'cursor': 'pointer',
-                'position': 'absolute',
-                'width': `100%`,
-                'height': `var(--size)`,
-                'outline': 'none',
-                'background-color': 'transparent',
-            },
-            '.slider-assets': {
-                'position': 'absolute',
-                'width': `calc(100% - var(--thumbSize))`,
-                'height': `var(--size)`,
-            },
-            '.slider::-webkit-slider-thumb, .slider::-moz-range-thumb': {
-
-            },
-            '.slider, .slider::-webkit-slider-thumb, .slider::-webkit-slider-runnable-track': {
-                '-webkit-appearance': `none`
-            },
-            '.slider::-moz-range-thumb, .slider::-moz-range-track, .slider::-moz-range-progress': {
-                'appearance': `none`,
             }
-        }, base._Style());
+        }, InputSliderOnly._Style());
     }
 
     _Render() {

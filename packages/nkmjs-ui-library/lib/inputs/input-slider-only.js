@@ -6,14 +6,17 @@ const ui = require(`@nkmjs/ui-core`);
 const dom = ui.dom;
 const style = require(`@nkmjs/style`);
 
+const InputNumber = require(`./input-number`);
+
 const base = ui.inputs.InputNumberBase;
 
 class InputSliderOnly extends base {
     constructor() { super(); }
 
-    static __inputProperties = { type: `range` };
+    static __inputProperties = { type: `range`, class: `slider` };
     static __default_useMin = true;
     static __default_useMax = true;
+    static __default_useStep = true;
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/inputs/slider.css`]
@@ -21,7 +24,10 @@ class InputSliderOnly extends base {
 
     _Init() {
         super._Init();
-        
+
+        this._handler._managedUpdateInput = false;
+        this._handler._managedUpdateChange = false;
+
         this._handler._updatePreviewOnInput = true;
         this._handler._changeOnInput = true;
 
@@ -34,17 +40,24 @@ class InputSliderOnly extends base {
         return style.Extends({
             ':host': {
                 'height': `var(--size)`,
-                'min-height': `var(--size)`,
                 'display': 'flex',
                 'flex-flow': 'row nowrap',
                 'align-items': 'center',
-                '--thumbSize': 'calc(var(--size) * 0.5)',
-                'min-width': 'calc(var(--size) * 2)'
+                '--thumbSize':'calc(var(--size) * 0.5)',
+                'min-width':'calc(var(--size) * 2)'
+            },
+            '.item': {
+                'position': 'relative'
+            },
+            '.direct-field': {
+                'flex': '0 0 50px',
+                'margin-left': '4px'
             },
             '.slider-ctnr': {
-                'position': 'relative',
                 'flex': '1 1 auto',
-                'height': 'var(--size)'
+                'height': 'var(--size)',
+                'margin-left': 'calc(var(--thumbSize) * 0.5)',
+                'margin-right': 'calc(var(--thumbSize) * 0.5)'
             },
             '.slider': {
                 'cursor': 'pointer',
@@ -52,7 +65,7 @@ class InputSliderOnly extends base {
                 'width': `100%`,
                 'height': `var(--size)`,
                 'outline': 'none',
-                'background-color': 'transparent'
+                'background-color': 'transparent',
             },
             '.slider-assets': {
                 'position': 'absolute',
@@ -76,11 +89,12 @@ class InputSliderOnly extends base {
         let sliderCtnr = dom.El(`div`, { class: `slider-ctnr item` }, this._host);
 
         dom.El(`div`, { class: `slider-assets` }, sliderCtnr);
-        this._inputField = dom.El(`input`, { class: 'slider', ...this.constructor.__inputProperties }, sliderCtnr);
+        this._inputField = dom.El(`input`, { class: 'field', ...this.constructor.__inputProperties }, sliderCtnr);
 
         this.useMin = true;
         this.useMax = true;
         this.useStep = this.constructor.__default_useStep;
+        
     }
 
     _GrabValue() {
@@ -93,9 +107,12 @@ class InputSliderOnly extends base {
         this.style.setProperty(`--fill`, `${u.tils.Map(this.inputValue, this._min, this._max, 0, 100)}%`);
     }
 
+    _onFocusIn(p_evt) {
+        super._onFocusIn(p_evt);
+        this._handler._updatePreviewOnInput = true;
+    }
 
     _CleanUp() {
-        this.SetSliderData();
         super._CleanUp();
     }
 

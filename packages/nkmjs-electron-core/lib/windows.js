@@ -100,13 +100,13 @@ class WINDOWS extends com.helpers.SingletonEx {
             }),
                 winOptions = {
                     webPreferences: webPreferences,
-                    width: 1920,
-                    height: 1080,
-                    minWidth: 1280,
-                    minHeight: 720,
+                    //width: 1920,
+                    //height: 1080,
+                    //minWidth: 1280,
+                    //minHeight: 720,
                     frame: true,
                     show: true,
-                    backgroundColor: '#2e2c29',
+                    backgroundColor: '#2b2b2b',
                     icon: path.join(__dirname, `./app-icon.png`)
                 }
 

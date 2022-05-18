@@ -17,7 +17,8 @@ module.exports = {
     File: require(`./input-file`),
     Directory: require(`./input-directory`),
     Select: require(`./input-select`),
-    InlineSelect: require(`./input-inline-select`),
+    SelectInline: require(`./input-select-inline`),
+    SelectSlider: require(`./input-select-slider`),
     Anchor: require(`./input-anchor`),
 
 }

@@ -57,7 +57,7 @@ class FolderItem extends base {
             ':host': {
                 'position': 'relative',
                 'min-width': 0,
-                '@': ['fade-in'],
+                //'@': ['fade-in'],
 
                 'box-sizing': `border-box`,
 

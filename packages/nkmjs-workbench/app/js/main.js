@@ -180,6 +180,10 @@ class StyleguideApp extends nkm.app.AppBase {
                 ]
             },
             {
+                cl: ui.inputs.InputNumberBase,
+                fn: this._Bind(this._OnNumberInputCreated)
+            },
+            {
                 cl: ui.inputs.InputCatalogBase, fn: this._Bind(this._FillCatalogInput)
             },
             {
@@ -385,6 +389,16 @@ class StyleguideApp extends nkm.app.AppBase {
 
     // ----
 
+    _OnNumberInputCreated(p_input){
+        console.warn(`YO`);
+        p_input.options = {
+            min:-10, 
+            max:10,
+            step:0.01,
+            currentValue:2
+        };
+    }
+
     _OnButtonCreated(p_btn) {
         p_btn.trigger = { fn: (btn) => { btn._flags.Toggle(ui.FLAGS.TOGGLED); }, arg: ui.FLAGS.SELF };
         p_btn.icon = `icon`;
@@ -404,6 +418,7 @@ class StyleguideApp extends nkm.app.AppBase {
     _TriggerTest(p_source) {
         console.log(`triggered : ${p_source}`);
     }
+    
 
     _Popin(p_btn) {
 
