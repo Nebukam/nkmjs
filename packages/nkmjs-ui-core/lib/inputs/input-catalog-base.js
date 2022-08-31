@@ -158,7 +158,8 @@ class InputCatalogBase extends base {
 
     _OnWheel(p_evt) {
 
-        let increase = p_evt.deltaY < 0 ? -1 : 1,
+        let
+            increase = p_evt.deltaY < 0 ? -1 : 1,
             itemList = this._data._items,
             maxValue = itemList.length - 1,
             index = this._data._items.indexOf(this.inputKeyItem) + increase;
