@@ -32,27 +32,43 @@ class Bindings extends com.helpers.BindingKit {
 
             // Inputs
             {
-                context: ui.CONTEXT.STANDALONE_INPUT,
+                context: ui.CONTEXT.INPUT, // REPLACED 'STANDALONE_INPUT'
                 kvps: [
+
                     { key: ui.inputs.KEYS.STRING, binding: inputs.Text },
                     { key: ui.inputs.KEYS.STRING_TEXT, binding: inputs.Textarea },
+                    { key: ui.inputs.KEYS.STRING_TEXT_INLINE, binding: inputs.Text },
+                    { key: ui.inputs.KEYS.STRING_TEXT_SEARCH, binding: inputs.Search },
                     { key: ui.inputs.KEYS.STRING_PATH, binding: inputs.Path },
                     { key: ui.inputs.KEYS.STRING_PATH_DIR, binding: inputs.Directory },
                     { key: ui.inputs.KEYS.STRING_IDENTIFIER, binding: inputs.Identifier },
 
-                    { key: ui.inputs.KEYS.FILE, binding: inputs.File },
-                    { key: ui.inputs.KEYS.DIRECTORY, binding: inputs.Directory },
+                    { key: ui.inputs.KEYS.FS_INPUT, binding: inputs.Path },
+                    { key: ui.inputs.KEYS.FS_FILE, binding: inputs.Path },
+                    { key: ui.inputs.KEYS.FS_DIRECTORY, binding: inputs.Directory },
 
                     { key: ui.inputs.KEYS.NUMBER, binding: inputs.Number },
-                    { key: ui.inputs.KEYS.NUMBER_SLIDER, binding: inputs.Number },
-                    { key: ui.inputs.KEYS.NUMBER_ANGLE, binding: inputs.Number },
+                    { key: ui.inputs.KEYS.NUMBER_DRAG, binding: inputs.NumberDrag },
+                    { key: ui.inputs.KEYS.NUMBER_SLIDER, binding: inputs.Slider },
+                    { key: ui.inputs.KEYS.NUMBER_SLIDER_ONLY, binding: inputs.SliderOnly },
+                    { key: ui.inputs.KEYS.NUMBER_ANGLE, binding: inputs.Slider },
 
                     { key: ui.inputs.KEYS.COLOR, binding: inputs.Color },
 
                     { key: ui.inputs.KEYS.BOOLEAN, binding: inputs.Boolean },
-                    { key: ui.inputs.KEYS.BOOLEAN_CHECK, binding: inputs.Boolean },
+                    { key: ui.inputs.KEYS.BOOLEAN_CHECK, binding: inputs.Checkbox },
+
+                    { key: ui.inputs.KEYS.ENUM, binding: inputs.Select },
+                    { key: ui.inputs.KEYS.ENUM_INLINE, binding: inputs.SelectInline },
+
+                    { key: ui.inputs.KEYS.FLAGS, binding: inputs.Select }, // TODO!!
+                    { key: ui.inputs.KEYS.FLAGS_INLINE, binding: inputs.SelectInline },// TODO!!
+
+                    { key: inputs.KEYS.CARDINAL_ANCHOR, binding: inputs.Anchor },
+                    
                 ]
             },
+            
 
             // ---
             {

@@ -1,5 +1,6 @@
 'use strict';
 const { spawn } = require("child_process");
+var {shell} = require('electron');
 const fs = require(`fs`);
 const path = require('path');
 
@@ -42,8 +43,12 @@ module.exports = {
         opts.detached = true;
 
         //console.log(`Opening ${p_targetPath} using ${p_editorPath}`);
-        spawn(p_editorPath, [`"${p_targetPath}"`], opts);
+        spawn(p_editorPath, [`${p_targetPath.replaceAll('/', path.sep)}`], opts); //[`"${p_targetPath}"`]
 
+    },
+
+    OpenPath: (path) =>{
+        shell.openPath(path);
     }
 
 }

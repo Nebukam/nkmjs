@@ -6,8 +6,6 @@ const collections = require(`@nkmjs/collections`);
 
 const Command = require(`./command`);
 
-const NULLOPTS = {};
-
 /**
  * A CommandBox is meant to be a repo of commands available for a single context.
  * It is also a mean to centralize command instances and have them act as "soft singleton" if needed,
@@ -70,7 +68,7 @@ class CommandBox {
      */
     Create(p_class, p_options = null) {
 
-        if (!p_options) { p_options = NULLOPTS; }
+        if (!p_options) { p_options = u.tils.EMPTY_OBJECT; }
 
         let cmd = u.isFunc(p_class) ? Command.Rent(p_class, p_options) : p_class;
         this._Register(cmd, p_options.hooks || null);
@@ -85,7 +83,7 @@ class CommandBox {
 
     Add(p_cmd, p_options = null) {
 
-        if (!p_options) { p_options = NULLOPTS; }
+        if (!p_options) { p_options = u.tils.EMPTY_OBJECT; }
 
         this._Register(p_cmd, p_options.hooks || null);
 

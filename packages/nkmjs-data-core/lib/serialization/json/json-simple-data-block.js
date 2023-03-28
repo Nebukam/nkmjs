@@ -1,6 +1,7 @@
 'use strict';
 
 const CONTEXT = require(`../context`);
+const IDS = require(`./../../ids`);
 
 const DataBlockJSONSerializer = require(`./json-data-block`);
 
@@ -40,11 +41,43 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      * @returns 
      */
     static SerializeContent(p_serial, p_data, p_options = null) {
-        let valuesOnly = {};
-        for (var p in p_data._values) {
-            valuesOnly[p] = p_data._values[p].value;
+
+        let recipient = null;
+        
+        if (p_data.constructor.__flattenSerialization) { recipient = p_serial; }
+        else { recipient = p_serial[CONTEXT.JSON.DATA_KEY] = {}; }
+
+        let definitions = p_data.constructor.__VALUES;
+        definitions.forEach(def => {
+            if (def[IDS.SKIP_SERIALIZATION]) { return; }
+            recipient[def.id] = p_data.Get(def.id);
+        });
+
+        let blocHeaders = p_data.constructor.__BLOCS;
+        if (blocHeaders) {
+
+            let blocsSerial = {};
+
+            for (var id in blocHeaders) {
+
+                let blocInfos = blocHeaders[id];
+
+                if (blocInfos[IDS.SKIP_SERIALIZATION]) { continue; }
+
+                let bloc = p_data[blocInfos.member],
+                    serializer = this.GetSerializer(bloc.constructor, -1, null);
+
+                if (!serializer) { throw new Error(`Could not find suitable serializer for bloc=${bloc}`); }
+
+                blocsSerial[id] = serializer.Serialize(p_data, p_options);
+
+            }
+
+            if (p_data.constructor.__flattenSerialization) { p_serial[IDS.BLOCS] = blocsSerial; }
+            else { p_serial[CONTEXT.JSON.DATA_KEY][IDS.BLOCS] = blocsSerial; }
+
         }
-        p_serial[CONTEXT.JSON.DATA_KEY] = p_data._values;
+
     }
 
     /**
@@ -54,8 +87,40 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      * @returns 
      */
     static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
-        // Need specific implementation.
-        p_data.BatchSet((p_serial[CONTEXT.JSON.DATA_KEY] || {}));
+
+        let blocHeaders = p_data.constructor.__BLOCS;
+        if (blocHeaders) {
+
+            let blocsSerial;
+            if (p_data.constructor.__flattenSerialization) { blocsSerial = p_serial[IDS.BLOCS]; }
+            else { blocsSerial = p_serial[CONTEXT.JSON.DATA_KEY][IDS.BLOCS]; }
+
+            if (blocsSerial) {
+
+                for (var id in blocsSerial) {
+
+                    let blocInfos = blocHeaders[id];
+                    if (!blocInfos || blocInfos[IDS.SKIP_SERIALIZATION]) { continue; }
+
+                    let bloc = p_data[blocInfos.member],
+                        serializer = this.GetSerializer(bloc.constructor, -1, null);
+
+                    if (!serializer) { throw new Error(`Could not find suitable serializer for bloc=${bloc}`); }
+
+                    serializer.Deserialize(p_data, blocsSerial[id], p_options, p_meta);
+
+                }
+
+                //!important, so it doesn't get set a value afterward.
+                if (p_data.constructor.__flattenSerialization) { p_serial[IDS.BLOCS]; }
+                else { delete p_serial[CONTEXT.JSON.DATA_KEY][IDS.BLOCS]; }
+            }
+
+        }
+
+        if (p_data.constructor.__flattenSerialization) { p_data.BatchSet((p_serial || {})); }
+        else { p_data.BatchSet((p_serial[CONTEXT.JSON.DATA_KEY] || {})); }
+
     }
 
 }

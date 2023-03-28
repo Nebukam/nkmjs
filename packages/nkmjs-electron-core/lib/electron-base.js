@@ -198,6 +198,7 @@ class ElectronBase {
             (new nkmElectron.core.IPCElectron()).Deploy();
 
             ENV.instance.Start({
+                appName:'${(this._constants.appName || 'nkmjs-app')}',
                 paths:{
                     exe:'${u.tils.FixSlash(app.getPath('exe'))}',
                     '${u.PATH.APP}':'${u.tils.FixSlash(app.getAppPath())}',

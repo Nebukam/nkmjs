@@ -6,7 +6,7 @@ const u = require("@nkmjs/utils");
 const dom = require(`./utils-dom`);
 const SIGNAL = require(`./signal`);
 
-const __unpainted = `unpainted`;
+const __unpainted = Object.freeze(`unpainted`);
 
 const __paintingObserver = new IntersectionObserver(
     (entries, observer) => {

@@ -67,7 +67,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static IMG = `img`;
+    static IMG = Object.freeze(`img`);
 
     /**
     * @description TODO
@@ -75,7 +75,7 @@ class IDS {
     * @customtag read-only
     * @group Common
     */
-    static FLAVOR = `flavor`;
+    static FLAVOR = Object.freeze(`flavor`);
 
     /**
    * @description TODO
@@ -83,7 +83,7 @@ class IDS {
    * @customtag read-only
    * @group Common
    */
-    static VARIANT = `variant`;
+    static VARIANT = Object.freeze(`variant`);
 
     /**
    * @description TODO
@@ -91,7 +91,7 @@ class IDS {
    * @customtag read-only
    * @group Common
    */
-     static SIZE = `size`;
+     static SIZE = Object.freeze(`size`);
 
     /**
      * @description TODO
@@ -147,7 +147,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static LABEL = `label`;
+    static LABEL = Object.freeze(`label`);
 
     /**
      * @description TODO
@@ -155,7 +155,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static SUBTITLE = `subtitle`;
+    static SUBTITLE = Object.freeze(`subtitle`);
 
     /**
      * @description TODO
@@ -163,7 +163,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static HEADER = `header`;
+    static HEADER = Object.freeze(`header`);
 
     /**
      * @description TODO
@@ -171,7 +171,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static BODY = `body`;
+    static BODY = Object.freeze(`body`);
 
     /**
      * @description TODO
@@ -179,7 +179,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static FOOTER = `footer`;
+    static FOOTER = Object.freeze(`footer`);
 
     /**
      * @description TODO
@@ -187,7 +187,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static VIEW = `view`;
+    static VIEW = Object.freeze(`view`);
 
     /**
      * @description TODO
@@ -195,7 +195,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static VIEW_CLASS = `viewClass`;
+    static VIEW_CLASS = Object.freeze(`viewClass`);
 
     /**
      * @description TODO
@@ -203,7 +203,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static CONTROLS = `controls`;
+    static CONTROLS = Object.freeze(`controls`);
 
     /**
      * @description TODO
@@ -211,7 +211,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static CSS_CL = `csscl`;
+    static CSS_CL = Object.freeze(`csscl`);
 
     /**
      * @description TODO
@@ -219,7 +219,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static TRIGGER = `trigger`;
+    static TRIGGER = Object.freeze(`trigger`);
 
     /**
    * @description TODO
@@ -227,7 +227,7 @@ class IDS {
    * @customtag read-only
    * @group Common
    */
-     static CMD = `command`;
+     static CMD = Object.freeze(`command`);
 
 }
 

@@ -3,6 +3,9 @@
 const uuid = require('uuid');
 const CHECKS = require(`./checks`);
 
+const ESCAPED_BACKSLACK = Object.freeze(`\\`);
+const SLASH = Object.freeze(`/`);
+
 /**
  * UTILS is a wrapper class that contains a bunch of utilitary static methods.
  * These include type-checking, object manipulation, etc.
@@ -14,14 +17,18 @@ class UTILS {
 
     constructor() { }
 
-    static DELIM_PROTOCOL = `://`;
-    static DELIM_DRIVE = `:/`;
-    static DELIM_DIR = `/`;
-    static DELIM_EXT = `.`;
-    static DELIM_COLON = `:`;
-    static DELIM_SEMI = `;`;
-    static DELIM_COMMA = `,`;
-    static DELIM_PIPE = `|`;
+    static EMPTY_OBJECT = Object.freeze({});
+
+    static DELIM_PROTOC = Object.freeze(`://`);
+    static DELIM_DRIVE = Object.freeze(`:/`);
+    static DELIM_DIR = Object.freeze(`/`);
+    static DELIM_EXT = Object.freeze(`.`);
+    static DELIM_COLON = Object.freeze(`:`);
+    static DELIM_SEMI = Object.freeze(`;`);
+    static DELIM_COMMA = Object.freeze(`,`);
+    static DELIM_PIPE = Object.freeze(`|`);
+
+
 
     static JSONStripEmpty(p_key, p_value) {
         if (CHECKS.isEmpty(p_value)) { return undefined; }
@@ -155,7 +162,7 @@ class UTILS {
      * @returns {string} Sanitized string
      */
     static FixSlash(p_string) {
-        return p_string.split('\\').join('/');
+        return p_string.split(ESCAPED_BACKSLACK).join(SLASH);
     }
 
     /**
@@ -643,7 +650,7 @@ class UTILS {
     }
     */
 
-    
+
 
     // ----> Regex
 
@@ -797,7 +804,7 @@ class UTILS {
 
     static Call(p_callConf, ...args) {
 
-        if(CHECKS.isFunc(p_callConf)){ return p_callConf.call(null, ...args);}
+        if (CHECKS.isFunc(p_callConf)) { return p_callConf.call(null, ...args); }
 
         let thisArg = p_callConf.thisArg || null;
         if (args) { return p_callConf.fn.call(thisArg, ...args); }
@@ -809,7 +816,7 @@ class UTILS {
 
     static CallPrepend(p_callConf, ...args) {
 
-        if(CHECKS.isFunc(p_callConf)){ return p_callConf.call(null, ...args);}
+        if (CHECKS.isFunc(p_callConf)) { return p_callConf.call(null, ...args); }
 
         let thisArg = p_callConf.thisArg || null;
 

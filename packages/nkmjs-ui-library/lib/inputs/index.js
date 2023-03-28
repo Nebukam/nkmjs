@@ -2,6 +2,8 @@
 
 module.exports = {
 
+    KEYS: require(`./keys`),
+
     Text: require(`./input-text`),
     Search: require(`./input-search`),
     Identifier: require(`./input-identifier`),

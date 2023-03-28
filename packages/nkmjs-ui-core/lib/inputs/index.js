@@ -1,5 +1,8 @@
 'use strict';
 
+const data = require(`@nkmjs/data-core`);
+const CONTEXT = require(`../context`);
+
 module.exports = {
 
     SIGNAL: require(`./input-signal`),
@@ -17,5 +20,40 @@ module.exports = {
     InputCatalogBase: require(`./input-catalog-base`),
 
     MovableHandle: require(`./movable-handle`),
+
+    /**
+     * Returns the input class mapped to a specific type
+     * @param {*} p_type 
+     * @param {*} [p_context] 
+     */
+    GetInput: (p_type, p_context = null) => {
+
+        p_context = p_context || CONTEXT.INPUT;
+
+        //Get the input key associated to a given data type
+        // TYPE:INPUT = DTX
+        let inputKey = com.BINDINGS.Get(CONTEXT.I_TYPE, p_type);
+        //Get the class associated to the input key within the given context
+        //Fallback to default INPUT context
+        let inputClass = com.BINDINGS.Get(p_context, inputKey,
+            com.BINDINGS.Get(CONTEXT.INPUT, inputKey));
+
+        return inputClass;
+
+    },
+
+    TryGetInput: (p_identifier = null, p_context = null, p_fallback = null) => {
+
+        let descriptor = data.SIMPLEX.GetDescriptor(p_identifier);
+
+        if (descriptor.inputType) { return descriptor.inputType; }
+
+        if (!descriptor.valueType) { return p_fallback; }
+
+        let inputClass = this.GetInput(descriptor.valueType, p_context);
+
+        return inputClass || p_fallback;
+
+    }
 
 }
