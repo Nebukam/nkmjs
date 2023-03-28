@@ -26,6 +26,7 @@ module.exports = {
     actions: require(`./lib/actions`),
     catalogs: require(`./lib/catalogs`),
     helpers: require(`./lib/helpers`),
+    search: require(`./lib/search`),
     serialization: require(`./lib/serialization`),
     tags: require(`./lib/tags`),
 

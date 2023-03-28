@@ -74,6 +74,7 @@ class SIGNAL {
    */
   static DIRTY_CLEARED = Symbol(`dirty-cleared`);
 
+  //#region Tag
 
   /**
    * @description TODO
@@ -95,6 +96,8 @@ class SIGNAL {
    * @customtag read-only
    */
   static TAGS_CLEARED = Symbol(`tagsCleared`);
+
+  //#endregion
 
   /**
    * @description TODO
@@ -122,7 +125,51 @@ class SIGNAL {
    * @type {symbol}
    * @customtag read-only
    */
-   static NO_ACTIVE_EDITOR = Symbol(`noActiveEditor`);
+  static NO_ACTIVE_EDITOR = Symbol(`noActiveEditor`);
+
+  //#region Search
+
+  /**
+  * @description TODO
+  * @type {symbol}
+  * @customtag read-only
+  * @group Search
+  */
+  static SEARCH_PARAMS_UPDATED = Symbol(`searchParamsUpdated`);
+
+  /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Search
+    */
+  static SEARCH_TOGGLED = Symbol(`searchToggled`);
+
+  /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Search
+    */
+  static SEARCH_STARTED = Symbol(`searchStarted`);
+
+  /**
+   * @description TODO
+   * @type {symbol}
+   * @customtag read-only
+   * @group Search
+   */
+  static SEARCH_COMPLETE = Symbol(`searchComplete`);
+
+  /**
+  * @description TODO
+  * @type {symbol}
+  * @customtag read-only
+  * @group Search
+  */
+  static SEARCH_PROGRESS = Symbol(`searchProgress`);
+
+  //#endregion
 
 }
 

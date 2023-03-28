@@ -5,6 +5,7 @@ const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const IDS = require(`./ids`);
+const TYPES = require(`./types`);
 
 /**
  * @description TODO
@@ -25,12 +26,47 @@ class SIMPLEX extends com.helpers.SingletonEx {
 
         this.constructor.RegisterDescriptors({
 
+            // Misc
+
             [IDS.GROUP_OTHERS]: {
                 title: `Others`,
-                icon:`icon`,
+                icon: `icon`,
                 desc: `Uncategorized.`
             },
-        
+
+            // Search
+
+            [IDS.SEARCH_ENABLED]: {
+                valueType: TYPES.BOOLEAN,
+                label: `Search`,
+                inputOptions: { placeholder: `...` }, //, size: nkm.ui.FLAGS.SIZE_XS
+                desc: `Enable filter within current glyph selection.\nSeparate terms with an empty space.\nNote : search can impact responsiveness.`
+            },
+
+            [IDS.SEARCH_TERMS]: {
+                recompute: true,
+                valueType: TYPES.TEXT_SEARCH,
+                label: `Search`,
+                inputOptions: { placeholder: `a b c square...`, changeOnInput: true, submitOnChange: true, },
+                desc: `Search for characters within Unicode.\nSeparate search terms with a space.`
+            },
+
+            [IDS.SEARCH_CASE_SENSITIVE]: {
+                recompute: true,
+                valueType: TYPES.BOOLEAN_CHECK,
+                label: `Insensitive`,
+                inputOptions: { placeholder: `...` },
+                desc: `Broad search doesn't care whether the case is uppercase or lowercase.`
+            },
+
+            [IDS.SEARCH_EXACT_MATCH]: {
+                recompute: true,
+                valueType: TYPES.BOOLEAN_CHECK,
+                label: `Exact Match`,
+                inputOptions: { placeholder: `...` },
+                desc: `Show only the results that have an exact match.`
+            }
+
         });
 
     }

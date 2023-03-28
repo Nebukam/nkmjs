@@ -46,6 +46,47 @@ class IDS {
      */
     static GROUP_OTHERS = Object.freeze(`group:others`);
 
+    //#region Search
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
+    static SEARCH_ENABLED = Object.freeze(`searchEnabled`);
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
+    static SEARCH_RESULTS = Object.freeze(`searchResults`);
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
+    static SEARCH_TERMS = Object.freeze(`searchTerms`);
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
+    static SEARCH_CASE_SENSITIVE = Object.freeze(`searchParamCaseSensitive`);
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
+    static SEARCH_EXACT_MATCH = Object.freeze(`searchParamExactMatch`);
+
+    //#endregion
+
 }
+
+
 
 module.exports = IDS;

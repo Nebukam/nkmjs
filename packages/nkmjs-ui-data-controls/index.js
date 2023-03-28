@@ -23,6 +23,7 @@ module.exports = {
     ListInspectorView: require(`./lib/list-inspector-view`),
 
     editors: require(`./lib/editors`),
+    views: require(`./lib/views`),
     helpers: require(`./lib/helpers`),
     inspectors: require(`./lib/inspectors`),
 
