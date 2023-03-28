@@ -115,23 +115,23 @@ class PathWatcher extends com.pool.DisposableObjectEx {
     }
 
     _OnFileAdded(p_path) {
-        this.Broadcast(SIGNAL.FILE_ADDED, this);
+        this.Broadcast(SIGNAL.FILE_ADDED, this, p_path);
     }
 
     _OnFileChange(p_path) {
-        this.Broadcast(SIGNAL.FILE_CHANGED, this);
+        this.Broadcast(SIGNAL.FILE_CHANGED, this, p_path);
     }
 
     _OnFileDeleted(p_path) {
-        this.Broadcast(SIGNAL.FILE_DELETE, this);
+        this.Broadcast(SIGNAL.FILE_DELETE, this, p_path);
     }
 
     _OnDirectoryAdded(p_path) {
-        this.Broadcast(SIGNAL.DIR_ADDED, this);
+        this.Broadcast(SIGNAL.DIR_ADDED, this, p_path);
     }
 
     _OnDirectoryDeleted(p_path) {
-        this.Broadcast(SIGNAL.DIR_DELETE, this);
+        this.Broadcast(SIGNAL.DIR_DELETE, this, p_path);
     }
 
     _CleanUp() {
