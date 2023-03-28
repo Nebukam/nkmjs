@@ -137,11 +137,11 @@ class BindingKit extends DisposableObjectEx {
                 context = assoc.context,
                 kvps = assoc.kvps;
 
-            kvps.foreach(kvp => { this.constructor._InternalSetClass(context, kvp); });
+            kvps.forEach(kvp => { this.constructor._InternalSetBinding(context, kvp); });
 
         }
 
-        this._CLASSES.foreach(cl => { this.constructor._InternalSetClass(cl, this); });
+        this._CLASSES.forEach(cl => { this.constructor._InternalSetClass(cl, this); });
 
         this._deployed = true;
     }

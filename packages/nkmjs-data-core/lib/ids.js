@@ -1,5 +1,7 @@
 'use strict';
 
+const SIMPLEX = require(`./simplex`);
+
 /**
  * @description TODO
  * @class

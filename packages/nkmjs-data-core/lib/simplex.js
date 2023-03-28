@@ -22,6 +22,17 @@ class SIMPLEX extends com.helpers.SingletonEx {
             [IDS.BLOCS]: { id: IDS.BLOCS } /* SYSTEM RESERVE */
         };
         this._descriptorList = [this._descriptors.blocs];
+
+        this.constructor.RegisterDescriptors({
+
+            [IDS.GROUP_OTHERS]: {
+                title: `Others`,
+                icon:`icon`,
+                desc: `Uncategorized.`
+            },
+        
+        });
+
     }
 
     //#region Descriptors
@@ -54,7 +65,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
      * @param {*} p_descriptor.inputOptions.itemKey Catalog to be used as enum
      */
     static RegisterDescriptor(p_id, p_descriptor) {
-        if (p_id in this._descriptors) {
+        if (p_id in this.instance._descriptors) {
             throw new Error(`Attempting to register a descriptor that already exists (${p_id})`, p_descriptor, this._descriptors[p_id]);
         }
         p_descriptor.id = p_id;

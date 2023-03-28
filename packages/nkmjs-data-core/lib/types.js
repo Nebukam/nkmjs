@@ -7,7 +7,7 @@ const com = require("@nkmjs/common");
  */
 class TYPE_KEY extends com.helpers.CKEY { constructor() { super(); } }
 
-class STRING extends com.helpers.TYPE_KEY { constructor() { super(); } }
+class STRING extends TYPE_KEY { constructor() { super(); } }
 class IDENTIFIER extends STRING { constructor() { super(); } }
 class TEXT extends STRING { constructor() { super(); } }
 class TEXT_INLINE extends TEXT { constructor() { super(); } }
@@ -19,15 +19,15 @@ class PATH extends TEXT_INLINE { constructor() { super(); } }
 class PATH_FILE extends PATH { constructor() { super(); } }
 class PATH_DIRECTORY extends PATH { constructor() { super(); } }
 
-class NUMBER extends com.helpers.TYPE_KEY { constructor() { super(); } }
+class NUMBER extends TYPE_KEY { constructor() { super(); } }
 class NUMBER_SOFT extends NUMBER { constructor() { super(); } }
 class MINMAX extends NUMBER { constructor() { super(); } }
 class MINMAX_SOFT extends NUMBER { constructor() { super(); } }
 
-class BOOLEAN extends com.helpers.TYPE_KEY { constructor() { super(); } }
+class BOOLEAN extends TYPE_KEY { constructor() { super(); } }
 class BOOLEAN_CHECK extends BOOLEAN { constructor() { super(); } }
 
-class ENUM extends com.helpers.TYPE_KEY { constructor() { super(); } }
+class ENUM extends TYPE_KEY { constructor() { super(); } }
 class ENUM_INLINE extends ENUM { constructor() { super(); } }
 
 class FLAGS extends TYPE_KEY { constructor() { super(); } }

@@ -30,7 +30,7 @@ class SimpleDataBlock extends DataBlock {
     static ExtBLOCS(p_base, p_list) { return [...p_base.__BLOCS, ...p_list]; }
     static ExtVALUES(p_base, p_list) { return [...p_base.__VALUES, ...p_list]; }
 
-    static #ctr = (function () {
+    static #ctr = (() => {
         this.__VALUES.forEach(definition => {
             this.__VALUES_MAP[definition.id] = definition;
             if (`_signal` in definition) {

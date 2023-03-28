@@ -33,16 +33,6 @@ class Bindings extends com.helpers.BindingKit {
                 ]
             });
 
-        nkm.data.RegisterDescriptors({
-
-            [IDS.GROUP_OTHERS]: {
-                title: `Others`,
-                icon:`icon`,
-                desc: `Uncategorized.`
-            },
-
-        });
-
     }
 }
 

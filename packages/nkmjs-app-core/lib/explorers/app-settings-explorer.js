@@ -1,10 +1,13 @@
-const nkm = require(`@nkmjs/core`);
-const ui = nkm.ui;
-const uilib = nkm.uilib;
+const style = require(`@nkmjs/style`);
+const data = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
+const uilib = require(`@nkmjs/ui-library`);
+const datacontrols = require(`@nkmjs/ui-data-controls`);
+const env = require(`@nkmjs/environment`);
 
-const widgets = require(`../widgets`);
+const IDS = require(`../ids`);
 
-const isAutoSave = (owner) => { return owner.data ? owner.data.Get(mkfData.IDS_PREFS.AUTOSAVE) : true; };
+const isAutoSave = (owner) => { return owner.data ? owner.data.Get(IDS.AUTOSAVE) : true; };
 
 const base = uilib.overlays.ControlDrawer;
 class AppSettingsExplorer extends base {
@@ -14,12 +17,12 @@ class AppSettingsExplorer extends base {
 
     _Init() {
         super._Init();
-        this._builder.defaultControlClass = widgets.PropertyControl;
+        this._builder.defaultControlClass = datacontrols.widgets.ValueControl;
         this._builder.defaultCSS = `control`;
     }
 
     static _Style() {
-        return nkm.style.Extends({
+        return style.Extends({
             ':host': {
                 'min-width': '350px',
                 //'flex': '0 0 auto',
@@ -57,11 +60,11 @@ class AppSettingsExplorer extends base {
 
         super._Render();
 
-        let groups = nkm.data.SIMPLEX.GetGroups(nkm.env.APP._appSettingsType);
+        let groups = data.SIMPLEX.GetGroups(env.APP._appSettingsType);
         groups.forEach(group => {
 
             let
-                groupDescriptor = nkm.data.SIMPLEX.GetDescriptor(group.id),
+                groupDescriptor = data.GetDescriptor(group.id),
                 header = {
                     ...groupDescriptor,
                     prefId: `appSettings:foldout:${groupDescriptor.id}`,
@@ -69,9 +72,9 @@ class AppSettingsExplorer extends base {
                 },
                 ctrls = [];
 
-            group.definitions.foreach(valueDef => {
+            group.definitions.forEach(valueDef => {
                 let
-                    descriptor = nkm.data.SIMPLEX.GetDescriptor(valueDef.id),
+                    descriptor = data.GetDescriptor(valueDef.id),
                     options = { options: { propertyId: valueDef.id } };
 
                 if (descriptor.controlOptions) {
@@ -89,12 +92,12 @@ class AppSettingsExplorer extends base {
 
     _Foldout(p_foldout, p_controls, p_css = ``, p_host = null) {
 
-        let foldout = this.Attach(nkm.uilib.widgets.Foldout, `item drawer${p_css ? ' ' + p_css : ''}`, p_host || this);
+        let foldout = this.Attach(uilib.widgets.Foldout, `item drawer${p_css ? ' ' + p_css : ''}`, p_host || this);
         foldout.options = p_foldout;
 
         if (p_controls) {
-            let builder = new nkm.datacontrols.helpers.ControlBuilder(this);
-            builder.options = { host: foldout, cl: widgets.PropertyControl, css: `foldout-item full` };
+            let builder = new datacontrols.helpers.ControlBuilder(this);
+            builder.options = { host: foldout, cl: datacontrols.widgets.ValueControl, css: `foldout-item full` };
             this.forwardData.To(builder);
             builder.Build(p_controls);
         }

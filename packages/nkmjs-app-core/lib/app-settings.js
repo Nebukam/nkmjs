@@ -2,6 +2,7 @@
 
 const com = require(`@nkmjs/common`);
 const data = require(`@nkmjs/data-core`);
+const ui = require(`@nkmjs/ui-core`);
 
 const IDS = require(`./ids`);
 
