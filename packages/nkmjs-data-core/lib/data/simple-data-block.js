@@ -5,6 +5,7 @@ const com = require("@nkmjs/common");
 
 const DataBlock = require(`./data-block`);
 const SIMPLEX = require(`../simplex`);
+const { DataList } = require("../helpers");
 
 const __noResolution = [];
 
@@ -23,12 +24,19 @@ class SimpleDataBlock extends DataBlock {
 
     /**
      * Expected format
-     * { id:ID, value:value, ?nullable:true, ?_signal:SIGNAL, ?_group:ID, ?[IDS.SKIP_SERIALIZATION]:true }
+     * { id:ID, value:value, ?_nullable:true, ?_signal:SIGNAL, ?_group:ID, ?[IDS.SKIP_SERIALIZATION]:true }
      */
     static __VALUES = [];
+    
+    /**
+     * Expected format
+     * { id:'uniqueId', member:'_propertyId', type:Class, ?[IDS.SKIP_SERIALIZATION]:true }
+     */
+    static __DATALISTS = [];
 
     static ExtBLOCS(p_base, p_list) { return [...p_base.__BLOCS, ...p_list]; }
     static ExtVALUES(p_base, p_list) { return [...p_base.__VALUES, ...p_list]; }
+    static ExtDATALISTS(p_base, p_list) { return [...p_base.__DATALISTS, ...p_list]; }
 
     static #ctr = (() => {
         this.__VALUES.forEach(definition => {
@@ -47,6 +55,13 @@ class SimpleDataBlock extends DataBlock {
             this._Bind(this.CommitUpdate);
             this.constructor.__BLOCS.forEach(blocInfos => {
                 this[blocInfos.member] = this._AddBloc(blocInfos);
+            });
+        }
+
+        if (this.constructor.__DATALISTS) {
+            this._Bind(this.CommitUpdate);
+            this.constructor.__DATALISTS.forEach(dataList => {
+                this[dataList.member] = new DataList();
             });
         }
 

@@ -2,6 +2,6 @@
 
 module.exports = {
     
-    SetProperty: require(`./cmd-action-set-property`),
+    SetProperty: new (require(`./cmd-action-set-property`)),
 
 }

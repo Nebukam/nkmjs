@@ -37,6 +37,13 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
+    static DATALISTS = Object.freeze(`datalists`);
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
     static SKIP_SERIALIZATION = Object.freeze(`skipSerialization`);
 
     /**

@@ -47,6 +47,7 @@ class ValueControl extends ControlWidget {
         this._directHidden = false;
         this._dataMemberId = null;
         this._valueType = null;
+        this._valueDescriptor = null;
 
         this._Bind(this._OnValueSubmit);
 
@@ -215,11 +216,13 @@ class ValueControl extends ControlWidget {
         super._OnDataChanged(p_oldData);
         if (this._data) {
             let dataObj = this.localValueObj;
-            this.isNullable = dataObj ? (`nullable` in dataObj) : false;
             this._valueType = data.SIMPLEX.GetValueType(this._descriptor.id);
+            this._valueDescriptor = data.SIMPLEX.GetValueDescriptor(this._data, this._descriptor.id);
+            this.isNullable = this._valueDescriptor._nullable ? this._valueDescriptor._nullable : false;
         } else {
-            this.isNullable = false;
             this._valueType = null;
+            this._valueDescriptor = null;
+            this.isNullable = false;
         }
 
         if (this._directSet && this._directHidden) { this.visible = false; }

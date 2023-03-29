@@ -1,6 +1,7 @@
 'use strict';
 
 const __ops = require(`./lib/operations`);
+const env = require(`@nkmjs/environment`);
 
 module.exports = {
 
@@ -17,6 +18,9 @@ module.exports = {
     operations: __ops,
     explorers: require(`./lib/explorers`),
 
-    OpenSettings: () => { __ops.commands.OpenAppSettings.Execute(); }
+    OpenSettings: () => { __ops.commands.OpenAppSettings.Execute(); },
+
+    get settings(){ return env.APP.appSettings; },
+    get main(){ return env.APP; },
 
 }

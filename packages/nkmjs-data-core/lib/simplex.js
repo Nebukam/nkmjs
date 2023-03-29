@@ -20,7 +20,8 @@ class SIMPLEX extends com.helpers.SingletonEx {
     _Init() {
         super._Init();
         this._descriptors = {
-            [IDS.BLOCS]: { id: IDS.BLOCS } /* SYSTEM RESERVE */
+            [IDS.BLOCS]: { id: IDS.BLOCS }, /* SYSTEM RESERVE */
+            [IDS.DATALISTS]: { id: IDS.DATALISTS } /* SYSTEM RESERVE */
         };
         this._descriptorList = [this._descriptors.blocs];
 
@@ -111,6 +112,15 @@ class SIMPLEX extends com.helpers.SingletonEx {
 
     static GetDescriptor(p_id) {
         return this.instance._descriptors[p_id];
+    }
+
+    static GetValueDescriptor(p_target, p_id) {
+        let descriptors = p_target.constructor.__VALUES;
+        for (let i = 0, n = descriptors.length; i < n; i++) {
+            let d = descriptors[i];
+            if (d.id == p_id) { return d; }
+        }
+        return null;
     }
 
     //#endregion
