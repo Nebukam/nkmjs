@@ -3,6 +3,7 @@
 const com = require("@nkmjs/common");
 const ui = require("@nkmjs/ui-core");
 const dialog = require("@nkmjs/dialog");
+const data = require(`@nkmjs/data-core`);
 
 const REQUEST = require(`./lib/request`);
 const overlays = require(`./lib/overlays`);
@@ -14,6 +15,8 @@ class Bindings extends com.helpers.BindingKit {
     constructor() { super(); }
     _Init() {
         super._Init();
+
+        data.GetDescriptor(data.IDS.SEARCH_ENABLED).inputOptions.size = ui.FLAGS.SIZE_XS;
 
         dialog.DialogOverlay.__default_overlayContentClass = dialogs.DialogBox;
 

@@ -53,11 +53,18 @@ class SearchHeader extends SimpleData {
 
         this._terms = this._exactMatch ? this.Get(IDS.SEARCH_TERMS).trim() : this.Get(IDS.SEARCH_TERMS).split(` `);
 
+        //Remove blanks
+        for (let i = 0; i < this._terms.length; i++) {
+            if (this._terms[i] == `` || this._terms[i].trim() == ``) {
+                this._terms.splice(i, 1);
+                i--;
+            }
+        }
+
+        // Uppercase all
         if (!this._caseSensitive) {
             for (let i = 0; i < this._terms.length; i++) {
-                let t = this._terms[i].trim();
-                if (t == ``) { this._terms.splice(i, 1); i--; }
-                this._terms[i] = t;
+                this._terms[i] = this._terms[i].toUpperCase();
             }
         }
 
@@ -77,9 +84,9 @@ class SearchHeader extends SimpleData {
                 identifierLoop: for (let i = 0, n = list.length; i < n; i++) {
 
                     let identifierValue = p_item[list[i]];
-                    if (!identifierValue || u.isString(identifierValue)) { continue; }
+                    if (!identifierValue || !u.isString(identifierValue)) { continue; }
 
-                    if (this._caseSensitive) { identifierValue = identifierValue.toUpperCase(); }
+                    if (!this._caseSensitive) { identifierValue = identifierValue.toUpperCase(); }
 
                     if (this._CheckTerms(identifierValue)) {
                         pass = true;
@@ -97,9 +104,9 @@ class SearchHeader extends SimpleData {
                 fetchLoop: for (let i = 0, n = list.length; i < n; i++) {
 
                     let identifierValue = list[i](p_item);
-                    if (!identifierValue || u.isString(identifierValue)) { continue; }
+                    if (!identifierValue || !u.isString(identifierValue)) { continue; }
 
-                    if (this._caseSensitive) { identifierValue = identifierValue.toUpperCase(); }
+                    if (!this._caseSensitive) { identifierValue = identifierValue.toUpperCase(); }
 
                     if (this._CheckTerms(identifierValue)) {
                         pass = true;
@@ -110,21 +117,22 @@ class SearchHeader extends SimpleData {
 
             }
 
-            if (!pass && p_from._checkFn) { pass = u.Call(p_from._checkFn, p_item); }
-
-            return pass;
-
         }
+
+        if (!pass && p_from._checkFn) { pass = u.Call(p_from._checkFn, p_item); }
+        else if (!pass && !this._terms.length) { pass = true; }
+
+        return pass;
 
     }
 
     _CheckTerms(p_value) {
 
         if (this._exactMatch) {
-            if (iValue == this._terms[0]) { return true; }
+            if (p_value == this._terms[0]) { return true; }
         } else {
-            for (let t = 0, n = this._terms.length; i < n; i++) {
-                if (iValue.includes(this._terms[i])) { return true; }
+            for (let i = 0, n = this._terms.length; i < n; i++) {
+                if (p_value.includes(this._terms[i])) { return true; }
             }
         }
 

@@ -49,7 +49,13 @@ class DataListSearch extends SimpleData {
         this._headerObserver = new com.signals.Observer();
         this._headerObserver
             .Hook(SIGNAL.SEARCH_PARAMS_UPDATED, this._OnHeaderSearchParamsUpdated, this)
-            .Hook(SIGNAL.SEARCH_TOGGLED, this._OnHeaderToggled, this);
+            .Hook(SIGNAL.SEARCH_TOGGLED, this._OnHeaderToggled, this)
+            .Hook(com.SIGNAL.UPDATED, this._OnHeaderUpdated, this);
+
+        this._sourceObserver = new com.signals.Observer();
+        this._sourceObserver
+            .Hook(com.SIGNAL.ITEM_ADDED, this._OnSourceItemAdded, this)
+            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnSourceItemRemoved, this);
 
         this._identifiers = [];
         this._fetchFns = [];
@@ -65,16 +71,43 @@ class DataListSearch extends SimpleData {
     get searchHeader() { return this._searchHeader; }
     set searchHeader(p_value) {
 
+        if (this._searchHeader == p_value) { return; }
+
+        let oldHeader = this._searchHeader;
         this._searchHeader = p_value;
         this._headerObserver.ObserveOnly(p_value);
 
         if (p_value) { this._OnHeaderToggled(); }
         else { this.Set(IDS.SEARCH_ENABLED, false); }
 
+        this.Broadcast(SIGNAL.SEARCH_HEADER_CHANGED, this, this._searchHeader, oldHeader);
+
     }
 
-    _ResetValues(p_values) {
-        p_values[IDS.SEARCH_RESULTS] = { value: null };
+    AddIdentifiers(...identifiers) {
+        identifiers.forEach((i) => {
+            if (!this._identifiers.includes(i)) { this._identifiers.push(i); }
+        })
+    }
+
+    RemoveIdentifiers(...identifiers) {
+        identifiers.forEach((i) => {
+            let index = this._identifiers.indexOf(i);
+            if (index >= 0) { this._identifiers.splice(index, 1); }
+        })
+    }
+
+    AddFetchFn(...fetchers) {
+        fetchers.forEach((i) => {
+            if (!this._fetchFns.includes(i)) { this._fetchFns.push(i); }
+        })
+    }
+
+    RemoveFetchFn(...fetchers) {
+        fetchers.forEach((i) => {
+            let index = this._fetchFns.indexOf(i);
+            if (index >= 0) { this._fetchFns.splice(index, 1); }
+        })
     }
 
     get ready() { return this._ready; }
@@ -85,6 +118,10 @@ class DataListSearch extends SimpleData {
     set sourceList(p_value) { this.SetSource(p_value); }
 
     get results() { return this._results; }
+
+    _OnHeaderUpdated() {
+        this.Broadcast(SIGNAL.SEARCH_HEADER_UPDATED, this, this._searchHeader);
+    }
 
     _OnHeaderToggled() {
         let toggle = this._searchHeader.Get(IDS.SEARCH_ENABLED);
@@ -108,7 +145,7 @@ class DataListSearch extends SimpleData {
         if (p_sourceList) { this._results._parent = this._sourceList.parent; }
         else { this._results._parent = null; }
 
-        if (!p_sourceList || !this._searchHeader) {
+        if (!p_sourceList || !this._searchHeader || !this.enabled) {
 
             if (this._running) {
                 this._delayedAdvance.Cancel();
@@ -116,16 +153,26 @@ class DataListSearch extends SimpleData {
             }
 
             this.Set(IDS.SEARCH_ENABLED, false);
+            this._sourceObserver.Flush();
 
             return;
 
         } else {
             this._running = true;
+            this._sourceObserver.ObserveOnly(this._sourceList);
         }
 
         this._AdvanceSearch();
         this.Broadcast(SIGNAL.SEARCH_STARTED, this);
 
+    }
+
+    _OnSourceItemAdded(p_source, p_item) {
+        this._InternalCheck(p_item);
+    }
+
+    _OnSourceItemRemoved(p_source, p_item) {
+        this._results.Remove(p_item);
     }
 
     _AdvanceSearch() {
@@ -152,15 +199,7 @@ class DataListSearch extends SimpleData {
         } else {
 
             for (let i = this._searchCovered, n = this._searchCovered + length; i < n; i++) {
-
-                let item = this._sourceList.At(i);
-
-                if (this._resultSet.has(item)) { continue; }
-                if (this._Check(item, this)) {
-                    this._resultSet.add(item);
-                    this._results.Add(item);
-                }
-
+                this._InternalCheck(this._sourceList.At(i));
             }
 
             this._searchCovered += length;
@@ -169,6 +208,14 @@ class DataListSearch extends SimpleData {
 
             this._delayedAdvance.Schedule();
 
+        }
+    }
+
+    _InternalCheck(p_iten) {
+        if (this._resultSet.has(p_iten)) { return; }
+        if (this._searchHeader._Check(p_iten, this)) {
+            this._resultSet.add(p_iten);
+            this._results.Add(p_iten);
         }
     }
 

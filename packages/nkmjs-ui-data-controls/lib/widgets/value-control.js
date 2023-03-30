@@ -124,8 +124,8 @@ class ValueControl extends base {
         this._nullifyBtn = this.Attach(ui.GetClass(`nkmjs-tool-button`), `nullify`, this._host);
         this._nullifyBtn.options = {
             size: ui.FLAGS.SIZE_XS, trigger: { fn: this._Bind(this._NullifyValue) },
-            htitle: `Link to Family Metrics.`,
-            icon: `link`
+            htitle: `Nullify`,
+            icon: `clear`
         }
 
     }

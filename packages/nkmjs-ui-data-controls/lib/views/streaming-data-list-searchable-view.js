@@ -16,11 +16,6 @@ class StreamingDataListSearchableView extends base {
         this._searchHeader = null;
 
         this._searchDataList = new data.search.DataListSearch();
-        this._searchDataList
-            .Watch(data.SIGNAL.SEARCH_TOGGLED, this._OnSearchToggled, this)
-            .Watch(data.SIGNAL.SEARCH_STARTED, this._OnSearchStarted, this)
-            .Watch(data.SIGNAL.SEARCH_COMPLETE, this._OnSearchComplete, this);
-
         this.forwardData.To(this._searchDataList, { mapping: `sourceList` });
 
         this._searchActive = false;
@@ -29,6 +24,12 @@ class StreamingDataListSearchableView extends base {
 
     _PostInit() {
         super._PostInit();
+
+        // Start listening AFTER the domStreamer is ready
+        this._searchDataList
+            .Watch(data.SIGNAL.SEARCH_TOGGLED, this._OnSearchToggled, this)
+            .Watch(data.SIGNAL.SEARCH_STARTED, this._OnSearchStarted, this)
+            .Watch(data.SIGNAL.SEARCH_COMPLETE, this._OnSearchComplete, this);
     }
 
     //#region Render
@@ -89,11 +90,11 @@ class StreamingDataListSearchableView extends base {
     _ReloadList() {
 
         // Called when this control' data has changed
-
         this._SetContentSource(null);
         this._searchDataList.SetSource(this._data);
 
         if (!this._searchActive) { this._SetContentSource(this._data); }
+        //else { this._SetContentSource(this._searchDataList._results); }
 
     }
 

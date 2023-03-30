@@ -169,6 +169,22 @@ class SIGNAL {
   */
   static SEARCH_PROGRESS = Symbol(`searchProgress`);
 
+  /**
+  * @description TODO
+  * @type {symbol}
+  * @customtag read-only
+  * @group Search
+  */
+  static SEARCH_HEADER_CHANGED = Symbol(`searchHeaderChanged`);
+
+  /**
+  * @description TODO
+  * @type {symbol}
+  * @customtag read-only
+  * @group Search
+  */
+  static SEARCH_HEADER_UPDATED = Symbol(`searchHeaderUpdated`);
+
   //#endregion
 
 }

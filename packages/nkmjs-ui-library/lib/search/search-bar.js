@@ -26,12 +26,16 @@ class SearchBar extends base {
         this._dataObserver
             .Hook(data.SIGNAL.SEARCH_COMPLETE, this._OnSearchComplete, this)
             .Hook(data.SIGNAL.SEARCH_TOGGLED, this._OnSearchToggle, this)
-            .Hook(data.SIGNAL.SEARCH_PROGRESS, this._OnSearchProgress, this);
+            .Hook(data.SIGNAL.SEARCH_PROGRESS, this._OnSearchProgress, this)
+            .Hook(data.SIGNAL.SEARCH_HEADER_CHANGED, this._OnSearchHeaderChanged, this)
+            .Hook(data.SIGNAL.SEARCH_HEADER_UPDATED, this._OnSearchHeaderUpdated, this);
 
         this._builder.defaultControlClass = datacontrols.widgets.ValueControl;
         this._builder.defaultCSS = `control`;
 
     }
+
+    _ForwardToBuilder() { this.forwardData.To(this._builder, { dataMember: `searchHeader` }); }
 
     static _Style() {
         return style.Extends({
@@ -39,6 +43,7 @@ class SearchBar extends base {
                 'position': 'relative',
                 '@': ['fade-in'],
                 'display': 'flex',
+                'flex': '0 1 auto',
                 'flex-flow': 'row wrap',
                 //'min-height': '0',
                 //'overflow': 'auto',
@@ -87,7 +92,7 @@ class SearchBar extends base {
         }
     }
 
-    get activeSearch() { return this._data ? this._data.Get(data.IDS.SEARCH_ENABLED) : false; }
+    get activeSearch() { return this._data ? this._data.searchHeader.Get(data.IDS.SEARCH_ENABLED) : false; }
 
     set status(p_value) {
         this._status = p_value;
@@ -96,31 +101,62 @@ class SearchBar extends base {
 
     _OnDataUpdated(p_data) {
         super._OnDataUpdated(p_data);
-        this._flags.Set(`enabled`, p_data.Get(data.IDS.SEARCH_ENABLED));
+        this._UpdateStatus();
     }
 
     _OnSearchProgress(p_progress) {
-        this._status.visible = this.activeSearch;
-        this._status.Progress(p_progress, this._data._results.length);
+        if (this._status) {
+            this._status.visible = this.activeSearch;
+            this._status.Progress(p_progress, this._data.count);
+        }
         this._progressBar.progress = p_progress;
     }
 
     _OnSearchComplete() {
         if (this._data._results.length == 0) {
-            this._status.NoResults();
-            this._status.visible = this.activeSearch;
+            if (this._status) {
+                this._status.NoResults();
+                this._status.visible = this.activeSearch;
+            }
         } else {
-            this._status.visible = false;
+            if (this._status) {
+                this._status.visible = false;
+            }
         }
     }
 
     _OnSearchToggle() {
         if (this.activeSearch) {
-            if (this._data.running) { this._status.visible = false; }
+            if (this._data.running) {
+                if (this._status) {
+                    this._status.visible = false;
+                }
+            }
             else { this._OnSearchComplete(); }
         } else {
-            this._status.visible = false;
+            if (this._status) {
+                this._status.visible = false;
+            }
         }
+    }
+
+    //
+
+    _UpdateStatus() {
+        if (this._data && this._data.searchHeader) {
+            this._flags.Set(`enabled`, this._data.searchHeader.Get(data.IDS.SEARCH_ENABLED));
+        } else {
+            this._flags.Set(`enabled`, false);
+        }
+    }
+
+    _OnSearchHeaderChanged(p_dataList, p_header, p_oldHeader) {
+        this._builder.data = p_header;
+        this._UpdateStatus();
+    }
+
+    _OnSearchHeaderUpdated(p_dataList, p_header) {
+        this._UpdateStatus();
     }
 
 

@@ -138,6 +138,7 @@ class PATH {
      */
     static name(p_path) {
         let splitBase = p_path.split('/');
+        if (splitBase.length <= 1) { splitBase = p_path.split('\\'); }
         if (splitBase.length <= 1) { return this.stripExt(p_path); }
         let splitEnd = splitBase.pop();
         while (splitEnd === `` && splitBase.length >= 1) { splitEnd = splitBase.pop(); }

@@ -13,6 +13,14 @@ class StreamingDataListView extends base {
 
     static __default_headerViewClass = null;
     static __default_footerViewClass = null;
+    static __default_widgetClass = null;
+    static __default_layoutOptions = {
+        itemWidth: 200,
+        itemHeight: 200,
+        itemCount: 0,
+        gap: 5,
+        //customArea:{ start:0, size:200 }
+    };
 
     _Init() {
         super._Init();
@@ -22,6 +30,9 @@ class StreamingDataListView extends base {
 
         this._inspectionDataForward = new helpers.InspectionDataBridge(this);
         this.forwardEditor.To(this._inspectionDataForward);
+
+        this._scheduledRefresh = com.DelayedCall(this._Bind(this._RefreshItems));
+        this._scheduledOnCountChanged = com.DelayedCall(this._Bind(this._ReloadList));
 
         this._dataObserver
             .Hook(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
@@ -103,13 +114,7 @@ class StreamingDataListView extends base {
             .Watch(ui.SIGNAL.ITEM_REQUESTED, this._OnItemRequested, this);
 
         this._domStreamer.options = {
-            layout: {
-                itemWidth: 200,
-                itemHeight: 200,
-                itemCount: 0,
-                gap: 5,
-                //customArea:{ start:0, size:200 }
-            }
+            layout: { ...this.constructor.__default_layoutOptions }
         };
 
         if (this.constructor.__default_footerViewClass) {
@@ -148,7 +153,6 @@ class StreamingDataListView extends base {
         this._domStreamer.itemCount = p_dataList ? p_dataList.count : 0;
 
         if (p_dataList != null) {
-            console.log(p_dataList);
             let index = p_dataList.IndexOf(this.editor.inspectedData.lastItem);
             if (index != -1) { this._domStreamer.SetFocusIndex(index); }
         }
@@ -163,7 +167,7 @@ class StreamingDataListView extends base {
 
 
         //TODO: 
-        let widgetClass = com.BINDINGS.Get(this, data, null);
+        let widgetClass = com.BINDINGS.Get(this, data, this.constructor.__default_widgetClass);
 
         if (!widgetClass) { return; }
 
@@ -222,9 +226,13 @@ class StreamingDataListView extends base {
 
     //#region Preview updates
 
-    _OnItemAdded(p_dataList, p_item) { }
+    _OnItemAdded(p_dataList, p_item) {
+        this._scheduledOnCountChanged.Schedule();
+    }
 
-    _OnItemRemoved(p_dataList, p_item) { }
+    _OnItemRemoved(p_dataList, p_item) {
+        this._scheduledOnCountChanged.Schedule();
+    }
 
     _ReloadList() {
         this._SetContentSource(this._data);

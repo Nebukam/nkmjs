@@ -25,7 +25,7 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
 
         this._selectionObserver = new com.signals.Observer();
         this._selectionObserver
-            .Hook(com.SIGNAL.ITEM_ADDED, this.OnSeAdded, this)
+            .Hook(com.SIGNAL.ITEM_ADDED, this.OnSelAdded, this)
             .Hook(com.SIGNAL.ITEM_REMOVED, this.OnSelRemoved, this)
             .Hook(com.SIGNAL.ITEM_BUMPED, this.OnSelBumped, this);
 
@@ -64,7 +64,7 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
 
     //#region Inspect selected data
 
-    OnSeAdded(p_item) {
+    OnSelAdded(p_item) {
         if (!this._inspectionData) { return; }
         if (this._smartClear && this._dataSelection) {
             if (this._dataSelection.stack.count == 1 && this._dataSelection.stack.last == p_item) {

@@ -26,7 +26,7 @@ class ControlView extends base {
     static __clearBuilderOnRelease = false;
     static __controls = null;
     static __useMetaObserver = false;
-    static __default_shortcutRequireFocus = true;    
+    static __default_shortcutRequireFocus = true;
 
     static __updateDataOnSameSet = true;
 
@@ -56,7 +56,7 @@ class ControlView extends base {
 
         this._editor = null;
 
-        this.forwardData.To(this._builder);
+        this._ForwardToBuilder();
 
         this._forwardContext = null;
         this._forwardEditor = null;
@@ -64,6 +64,8 @@ class ControlView extends base {
         this._defaultModalContentOptions = () => { return { editor: this.editor, data: this._data, context: this._context } };
 
     }
+
+    _ForwardToBuilder() { this.forwardData.To(this._builder); }
 
     _PostInit() {
         super._PostInit();

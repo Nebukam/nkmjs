@@ -28,7 +28,7 @@ class Bindings extends com.helpers.BindingKit {
                     { key: data.TYPES.IDENTIFIER, binding: INPUT_KEYS.STRING_IDENTIFIER },
                     { key: data.TYPES.TEXT, binding: INPUT_KEYS.STRING_TEXT },
                     { key: data.TYPES.TEXT_INLINE, binding: INPUT_KEYS.STRING_TEXT_INLINE },
-                    { key: data.TYPES.TEXT_SEARCH, binding: INPUT_KEYS.STRING_TEXT },
+                    { key: data.TYPES.TEXT_SEARCH, binding: INPUT_KEYS.STRING_TEXT_SEARCH },
 
                     { key: data.TYPES.COLOR, binding: INPUT_KEYS.COLOR },
 

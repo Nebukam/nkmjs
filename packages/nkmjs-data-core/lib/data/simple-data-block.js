@@ -39,12 +39,12 @@ class SimpleDataBlock extends DataBlock {
      */
     static __VALUES = [];
 
-    static ExtSIGNALMAP(p_base, p_list) { return this.__Ext(p_base.__VALUES_SIGNALS, p_list); }
-    static ExtBLOCS(p_base, p_list) { return this.__Ext(p_base.__BLOCS, p_list); }
-    static ExtDATALISTS(p_base, p_list) { return this.__Ext(p_base.__DATALISTS, p_list); }
-    static ExtVALUES(p_base, p_list) { return this.__Ext(p_base.__VALUES, p_list); }
+    static ExtSIGNALMAP(p_base, p_list, p_invert = false) { return this.__Ext(p_base.__VALUES_SIGNALS, p_list, p_invert); }
+    static ExtBLOCS(p_base, p_list, p_invert = false) { return this.__Ext(p_base.__BLOCS, p_list, p_invert); }
+    static ExtDATALISTS(p_base, p_list, p_invert = false) { return this.__Ext(p_base.__DATALISTS, p_list, p_invert); }
+    static ExtVALUES(p_base, p_list, p_invert = false) { return this.__Ext(p_base.__VALUES, p_list, p_invert); }
 
-    static __Ext(p_base, p_list) { return p_base ? [...p_base, ...p_list] : p_list; }
+    static __Ext(p_base, p_list, p_invert = false) { return p_base ? p_invert ? [...p_list, ...p_base] : [...p_base, ...p_list] : p_list; }
     static __ExtObj(p_base, p_list) { return p_base ? { ...p_base, ...p_list } : p_list; }
 
     _Init() {
