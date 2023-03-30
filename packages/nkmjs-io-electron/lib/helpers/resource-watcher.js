@@ -44,8 +44,8 @@ class ResourceWatcher extends base {
 
     set rscOptions(p_value) { this._rscOptions = p_value; }
 
-    Hook(p_evt, p_fn, p_subscriber = null) { this._rscObserver.Hook(p_evt, p_fn, p_subscriber); }
-    Unhook(p_evt, p_fn, p_subscriber = null) { this._rscObserver.Unhook(p_evt, p_fn, p_subscriber); }
+    Hook(p_evt, p_fn, p_subscriber = null) { this._rscObserver.Hook(p_evt, p_fn, p_subscriber); return this; }
+    Unhook(p_evt, p_fn, p_subscriber = null) { this._rscObserver.Unhook(p_evt, p_fn, p_subscriber); return this; }
 
     _OnPathChanged(p_path, p_oldPath) {
         this.currentRsc = p_path ? this._GetRsc(p_path) : null;
@@ -97,8 +97,8 @@ class ResourceWatcher extends base {
         super.Disable();
     }
 
-    _OnWatcherError() {
-        super._OnWatcherError();
+    _OnWatcherError(p_err) {
+        super._OnWatcherError(p_err);
     }
 
     _OnWatcherReady() {
@@ -110,6 +110,7 @@ class ResourceWatcher extends base {
     }
 
     _OnFileChange(p_path) {
+        console.log(`changed... ${this._readOnChange}`);
         super._OnFileChange(p_path);
         if (this._readOnChange) {
             this.Read(this._readOptions);

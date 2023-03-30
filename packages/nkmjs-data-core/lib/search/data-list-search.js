@@ -16,8 +16,12 @@ class DataListSearch extends SimpleData {
 
     static __VALUES = [
         { id: IDS.SEARCH_RESULTS, value: null },
-        { id: IDS.SEARCH_ENABLED, value: false, _signal: SIGNAL.SEARCH_TOGGLED },
+        { id: IDS.SEARCH_ENABLED, value: false },
     ];
+
+    static __VALUES_SIGNALS = {
+        [IDS.SEARCH_ENABLED]: SIGNAL.SEARCH_TOGGLED
+    }
 
     _Init() {
 

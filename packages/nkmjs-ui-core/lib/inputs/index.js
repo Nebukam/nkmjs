@@ -1,7 +1,24 @@
 'use strict';
 
+const com = require(`@nkmjs/common`);
 const data = require(`@nkmjs/data-core`);
 const CONTEXT = require(`../context`);
+
+function __GetInput(p_type, p_context = null) {
+
+    p_context = p_context || CONTEXT.INPUT;
+
+    //Get the input key associated to a given data type
+    // TYPE:INPUT = DTX
+    let inputKey = com.BINDINGS.Get(CONTEXT.I_TYPE, p_type);
+    //Get the class associated to the input key within the given context
+    //Fallback to default INPUT context
+    let inputClass = com.BINDINGS.Get(p_context, inputKey,
+        com.BINDINGS.Get(CONTEXT.INPUT, inputKey));
+
+    return inputClass;
+
+}
 
 module.exports = {
 
@@ -26,21 +43,7 @@ module.exports = {
      * @param {*} p_type 
      * @param {*} [p_context] 
      */
-    GetInput: (p_type, p_context = null) => {
-
-        p_context = p_context || CONTEXT.INPUT;
-
-        //Get the input key associated to a given data type
-        // TYPE:INPUT = DTX
-        let inputKey = com.BINDINGS.Get(CONTEXT.I_TYPE, p_type);
-        //Get the class associated to the input key within the given context
-        //Fallback to default INPUT context
-        let inputClass = com.BINDINGS.Get(p_context, inputKey,
-            com.BINDINGS.Get(CONTEXT.INPUT, inputKey));
-
-        return inputClass;
-
-    },
+    GetInput: __GetInput,
 
     TryGetInput: (p_identifier = null, p_context = null, p_fallback = null) => {
 
@@ -50,7 +53,7 @@ module.exports = {
 
         if (!descriptor.valueType) { return p_fallback; }
 
-        let inputClass = this.GetInput(descriptor.valueType, p_context);
+        let inputClass = __GetInput(descriptor.valueType, p_context);
 
         return inputClass || p_fallback;
 

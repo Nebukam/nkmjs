@@ -39,12 +39,12 @@ class Bindings extends com.helpers.BindingKit {
                     { key: ui.inputs.KEYS.STRING_TEXT, binding: inputs.Textarea },
                     { key: ui.inputs.KEYS.STRING_TEXT_INLINE, binding: inputs.Text },
                     { key: ui.inputs.KEYS.STRING_TEXT_SEARCH, binding: inputs.Search },
-                    { key: ui.inputs.KEYS.STRING_PATH, binding: inputs.Path },
+                    { key: ui.inputs.KEYS.STRING_PATH, binding: inputs.File },
                     { key: ui.inputs.KEYS.STRING_PATH_DIR, binding: inputs.Directory },
                     { key: ui.inputs.KEYS.STRING_IDENTIFIER, binding: inputs.Identifier },
 
-                    { key: ui.inputs.KEYS.FS_INPUT, binding: inputs.Path },
-                    { key: ui.inputs.KEYS.FS_FILE, binding: inputs.Path },
+                    { key: ui.inputs.KEYS.FS_INPUT, binding: inputs.File },
+                    { key: ui.inputs.KEYS.FS_FILE, binding: inputs.File },
                     { key: ui.inputs.KEYS.FS_DIRECTORY, binding: inputs.Directory },
 
                     { key: ui.inputs.KEYS.NUMBER, binding: inputs.Number },

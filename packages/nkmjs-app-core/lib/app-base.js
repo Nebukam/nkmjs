@@ -274,23 +274,29 @@ class AppBase extends com.helpers.SingletonEx {
 
     _InternalInitUserPreferences(p_userPreferences) {
         this._InitUserPreferences(p_userPreferences);
-        p_userPreferences[ID_APP_SETTINGS] = JSON.stringify(nkm.data.serialization.JSONSerializer.Serialize(this._appSettings));
+
+        let existingSerial = p_userPreferences.Get(ID_APP_SETTINGS);
+        if (existingSerial) { nkm.data.serialization.JSONSerializer.Deserialize(existingSerial, this._appSettings) }
+
+        let json = nkm.data.serialization.JSONSerializer.Serialize(this._appSettings);
+        p_userPreferences.Set(ID_APP_SETTINGS, json);
     }
 
     _InitUserPreferences(p_userPreferences) { }
 
     _OnAppSettingsUpdated(p_data) {
         let json = nkm.data.serialization.JSONSerializer.Serialize(this._appSettings);
-        this._userPreferences.Set(ID_APP_SETTINGS, JSON.stringify(json));
+        this._userPreferences.Set(ID_APP_SETTINGS, json);
     }
 
-    _OnAppReadyInternal(p_data) {
+    _OnAppReadyInternal(p_prefsData) {
 
         // Update app settings and then watch them
-        nkm.data.serialization.JSONSerializer.Deserialize(JSON.parse(p_data.Get(ID_APP_SETTINGS)), this._appSettings);
+        nkm.data.serialization.JSONSerializer.Deserialize(p_prefsData.Get(ID_APP_SETTINGS), this._appSettings);
+        console.log(p_prefsData);
         this._appSettings.Watch(com.SIGNAL.UPDATED, this._OnAppSettingsUpdated, this);
 
-        p_data.Watch(com.SIGNAL.UPDATED, this._OnPrefsUpdated, this);
+        p_prefsData.Watch(com.SIGNAL.UPDATED, this._OnPrefsUpdated, this);
         actions.RELAY.instance.Watch(actions.REQUEST.EDIT, this._OnEditRequest, this);
 
         // Load base kits... ?
@@ -307,7 +313,9 @@ class AppBase extends com.helpers.SingletonEx {
         this.AppReady();
 
         // Process file editing requests
-        this._fileBindings.Process(nkm.env.ARGV);
+        let argvs = [];
+        for (let n in nkm.env.ARGV) { argvs.push(n); }
+        this._fileBindings.Process(...argvs);
 
         this._InternalDisplayReadyCheck();
 

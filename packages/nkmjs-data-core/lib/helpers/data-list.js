@@ -178,7 +178,7 @@ class DataList extends collections.List {
     Unshift(p_item, p_silent = true) {
         let op = super.Unshift(p_item);
         if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, op, 0);
+            this.Broadcast(com.SIGNAL.ITEM_ADDED, this, op, 0);
             if (!p_silent) {
                 this.CommitUpdate();
             }

@@ -6,14 +6,12 @@ const data = require(`@nkmjs/data-core`);
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
-const operations = require(`../operations`);
-const commands = operations.commands;
-
 const __flag_inherited = `inherited`;
 
-const ControlWidget = require(`../control-widget`);
+const SetPropertyCmd = data.operations.commands.SetProperty;
 
-class ValueControl extends ControlWidget {
+const base = require(`../control-widget`);
+class ValueControl extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
@@ -29,14 +27,14 @@ class ValueControl extends ControlWidget {
     };
 
     static __distribute = base.__distribute.Ext()
-        .To(`descriptorId`, null, null)
+        .To(`propertyId`, null, null)
         .To(`dataMemberId`, null, null)
         .To(`inputOnly`, null, false)
         .To(`onSubmit`, `_onSubmitFn`, null)
         .To(`invertInputOrder`, null, false)
         .To(`directHidden`, `_directHidden`, false)
         .To(`directSet`, `_directSet`, false)
-        .To(`command`, null, commands.SetProperty);
+        .To(`command`, null, SetPropertyCmd);
 
     _Init() {
         super._Init();
@@ -122,6 +120,7 @@ class ValueControl extends ControlWidget {
         this._label = new ui.manipulators.Text(ui.dom.El(`span`, { class: `label` }, this._host), false, false);
         this._label.ellipsis = true;
 
+        console.log();
         this._nullifyBtn = this.Attach(ui.GetClass(`nkmjs-tool-button`), `nullify`, this._host);
         this._nullifyBtn.options = {
             size: ui.FLAGS.SIZE_XS, trigger: { fn: this._Bind(this._NullifyValue) },
@@ -156,8 +155,8 @@ class ValueControl extends ControlWidget {
         else { this._label._element.style.removeProperty(`display`); }
     }
 
-    get descriptorId() { return this._descriptor.id; }
-    set descriptorId(p_id) {
+    get propertyId() { return this._descriptor.id; }
+    set propertyId(p_id) {
 
         this._descriptor = data.GetDescriptor(p_id);
 
@@ -172,7 +171,7 @@ class ValueControl extends ControlWidget {
         this._label._element.setAttribute(`title`, this._descriptor.desc);
         this._label.Set(this._descriptor.label || this._descriptor.id);
 
-        this._input = this.Attach(this._GetInputClass(), `input-field`);
+        this._input = this.Attach(ui.inputs.TryGetInput(p_id, this), `input-field`);
         this._input.options = {
             size: ui.FLAGS.SIZE_S,
             onSubmit: { fn: this._OnValueSubmit },
@@ -215,13 +214,12 @@ class ValueControl extends ControlWidget {
     _OnDataChanged(p_oldData) {
         super._OnDataChanged(p_oldData);
         if (this._data) {
-            let dataObj = this.localValueObj;
-            this._valueType = data.SIMPLEX.GetValueType(this._descriptor.id);
             this._valueDescriptor = data.SIMPLEX.GetValueDescriptor(this._data, this._descriptor.id);
+            this._valueType = data.SIMPLEX.GetValueType(this._descriptor.id);
             this.isNullable = this._valueDescriptor._nullable ? this._valueDescriptor._nullable : false;
         } else {
-            this._valueType = null;
             this._valueDescriptor = null;
+            this._valueType = null;
             this.isNullable = false;
         }
 
@@ -294,20 +292,15 @@ class ValueControl extends ControlWidget {
 
         if (valueObj.value == null) { return; }
 
-        commands.SetProperty.emitter = this;
-        commands.SetProperty.inputValue = null;
-        commands.SetProperty.Execute();
+        SetPropertyCmd.SetProperty.emitter = this;
+        SetPropertyCmd.SetProperty.inputValue = null;
+        SetPropertyCmd.SetProperty.Execute();
 
-    }
-
-    _GetInputClass() {
-        if (this._descriptor.inputType) { return this._descriptor.inputType; }
-        return ui.inputs.GetInput(this._descriptor.valueType, this.constructor);
     }
 
     _CleanUp() {
 
-        this.descriptorId = null;
+        this.propertyId = null;
 
         this._onSubmitFn = null;
         this._cmd = null;

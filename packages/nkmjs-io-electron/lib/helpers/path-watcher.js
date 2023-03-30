@@ -17,7 +17,10 @@ class PathWatcher extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     static __distribute = com.helpers.OptionsDistribute.Ext()
-        .To(`path`);
+        .To(`path`)
+        .To(`depth`)
+        .To(`usePolling`)
+        .To(`ignoreInitial`);
 
     _Init() {
         super._Init();
@@ -35,9 +38,22 @@ class PathWatcher extends com.pool.DisposableObjectEx {
         this._watcher = null;
         this._enabled = false;
 
+        this._depth = 0;
+        this._usePolling = true;
+        this._ignoreInitial = true;
+
     }
 
     set options(p_options) { this.constructor.__distribute.Update(this, p_options); }
+
+    get depth() { return this._depth; }
+    set depth(p_value) { this._depth = p_value; }
+
+    get ignoreInitial() { return this._ignoreInitial; }
+    set ignoreInitial(p_value) { this._ignoreInitial = p_value; }
+
+    get usePolling() { return this._usePolling; }
+    set usePolling(p_value) { this._usePolling = p_value; }
 
     get path() { return this._path; }
     set path(p_value) {
@@ -84,7 +100,10 @@ class PathWatcher extends com.pool.DisposableObjectEx {
         if (p_stats.isDirectory() || p_stats.isFile()) {
             this._watcher = fileWatcher.watch(this._path, {
                 ignored: /[\/\\]\./,
-                persistent: true
+                persistent: true,
+                usePolling: true,
+                depth:this._depth,
+                ignoreInitial:this._ignoreInitial
             });
 
             this._watcher
@@ -137,6 +156,9 @@ class PathWatcher extends com.pool.DisposableObjectEx {
     _CleanUp() {
         this.Disable();
         this.path = null;
+        this._depth = 0;
+        this._usePolling = true;
+        this._ignoreInitial = true;
         super._CleanUp();
     }
 

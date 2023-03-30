@@ -77,8 +77,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
             }
 
-            if (p_data.constructor.__flattenSerialization) { p_serial[IDS.BLOCS] = blocsSerial; }
-            else { p_serial[CONTEXT.JSON.DATA_KEY][IDS.BLOCS] = blocsSerial; }
+            recipient[IDS.BLOCS] = blocsSerial;
 
         }
 
@@ -109,8 +108,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
             });
 
-            if (p_data.constructor.__flattenSerialization) { p_serial[IDS.DATALISTS] = listsSerial; }
-            else { p_serial[CONTEXT.JSON.DATA_KEY][IDS.DATALISTS] = listsSerial; }
+            recipient[IDS.DATALISTS] = listsSerial;
 
         }
 
@@ -124,12 +122,14 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      */
     static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
 
+        let container = null;
+        if (p_data.constructor.__flattenSerialization) { container = p_serial; }
+        else { container = p_serial[CONTEXT.JSON.DATA_KEY]; }
+
         let blocHeaders = p_data.constructor.__BLOCS;
         if (blocHeaders) {
 
-            let blocsSerial;
-            if (p_data.constructor.__flattenSerialization) { blocsSerial = p_serial[IDS.BLOCS]; }
-            else { blocsSerial = p_serial[CONTEXT.JSON.DATA_KEY][IDS.BLOCS]; }
+            let blocsSerial = container[IDS.BLOCS];
 
             if (blocsSerial) {
 
@@ -159,9 +159,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
         let dataLists = p_data.constructor.__DATALISTS;
         if (dataLists) {
 
-            let listsSerial;
-            if (p_data.constructor.__flattenSerialization) { listsSerial = p_serial[IDS.DATALISTS]; }
-            else { listsSerial = p_serial[CONTEXT.JSON.DATA_KEY][IDS.DATALISTS]; }
+            let listsSerial = container[IDS.DATALISTS];
 
             dataLists.forEach((dataListHeader) => {
 
@@ -188,8 +186,8 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
         }
 
-        if (p_data.constructor.__flattenSerialization) { p_data.BatchSet((p_serial || {})); }
-        else { p_data.BatchSet((p_serial[CONTEXT.JSON.DATA_KEY] || {})); }
+        if (p_data.constructor.__flattenSerialization) { p_data.BatchSet((container || {})); }
+        else { p_data.BatchSet((container || {})); }
 
     }
 

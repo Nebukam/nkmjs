@@ -43,13 +43,14 @@ class FileExtBinder extends com.pool.DisposableObjectEx {
             dataType = p_documentInfos.dataType,
             docType = p_documentInfos.docType || documents.bound.JSONDocument;
 
-        mkDocInfos = {
+
+        p_documentInfos = {
             docType: docType,
             dataType: dataType,
             fileInfos: { ...p_fileInfos }
         };
 
-        let definition = documents.DOCUMENTS.RegisterDefinition(p_documentInfos);
+        let definition = documents.RegisterDefinition(p_documentInfos);
 
         p_fileInfos.extensions.forEach(ext => {
             this.Register(ext, (p_path) => { return definition.LoadCmd.Execute(p_path); });
@@ -83,7 +84,7 @@ class FileExtBinder extends com.pool.DisposableObjectEx {
     Register(p_ext, ...p_callbacks) {
         if (!p_ext || p_ext.trim() == ``) { throw new Error(`p_ext must be a string, got:${p_ext}`); }
         if (p_ext[0] != `.`) { p_ext = `.${p_ext}`; }
-        p_callbacks.forEach(cb => { this._bindings.Set(p_ext, p_callback); });
+        p_callbacks.forEach(cb => { this._bindings.Set(p_ext, cb); });
     }
 
     /**
@@ -96,7 +97,7 @@ class FileExtBinder extends com.pool.DisposableObjectEx {
         let
             keys = this._bindings.keys,
             queued = false;
-
+            
         entries.forEach(entry => {
             let valid = false;
             keys.forEach(key => {

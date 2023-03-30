@@ -89,8 +89,8 @@ class UserPreferences extends com.pool.DisposableObjectEx {
     }
 
     _OnDocumentSaveSuccess() {
-        u.LOG._(`PREFS >> Saved`, `#c862e3`);
         this._Then();
+        u.LOG._(`PREFS >> Saved`, `#c862e3`);
     }
 
     // Definitely something wrong going on.

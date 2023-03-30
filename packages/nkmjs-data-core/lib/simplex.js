@@ -103,7 +103,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
      */
     static RegisterDescriptor(p_id, p_descriptor) {
         if (p_id in this.instance._descriptors) {
-            throw new Error(`Attempting to register a descriptor that already exists (${p_id})`, p_descriptor, this._descriptors[p_id]);
+            throw new Error(`Attempting to register a descriptor that already exists (${p_id})`, p_descriptor, this.instance._descriptors[p_id]);
         }
         p_descriptor.id = p_id;
         this.instance._descriptors[p_id] = p_descriptor;
@@ -266,7 +266,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
     }
 
     static GetValueType(p_id) {
-        return this.GetDescriptor(p_identifier).valueType;
+        return this.GetDescriptor(p_id).valueType;
     }
 
 

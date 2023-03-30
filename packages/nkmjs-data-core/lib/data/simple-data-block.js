@@ -12,9 +12,14 @@ const __noResolution = [];
 class SimpleDataBlock extends DataBlock {
     constructor() { super(); }
 
-    static __signalValueMap = null;
     static __lockedData = true;
     static __flattenSerialization = false;
+
+    /**
+     * Expected format
+     * { id:signal, id:signal }
+     */
+    static __VALUES_SIGNALS = null;
 
     /**
      * Expected format
@@ -24,29 +29,23 @@ class SimpleDataBlock extends DataBlock {
 
     /**
      * Expected format
-     * { id:ID, value:value, ?_nullable:true, ?_signal:SIGNAL, ?_group:ID, ?[IDS.SKIP_SERIALIZATION]:true }
-     */
-    static __VALUES = [];
-    
-    /**
-     * Expected format
      * { id:'uniqueId', member:'_propertyId', type:Class, ?[IDS.SKIP_SERIALIZATION]:true }
      */
-    static __DATALISTS = [];
+    static __DATALISTS = null;
 
-    static ExtBLOCS(p_base, p_list) { return [...p_base.__BLOCS, ...p_list]; }
-    static ExtVALUES(p_base, p_list) { return [...p_base.__VALUES, ...p_list]; }
-    static ExtDATALISTS(p_base, p_list) { return [...p_base.__DATALISTS, ...p_list]; }
+    /**
+     * Expected format
+     * { id:ID, value:value, ?_nullable:true, ?_group:ID, ?[IDS.SKIP_SERIALIZATION]:true }
+     */
+    static __VALUES = [];
 
-    static #ctr = (() => {
-        this.__VALUES.forEach(definition => {
-            this.__VALUES_MAP[definition.id] = definition;
-            if (`_signal` in definition) {
-                if (!this.__signalValueMap) { this.__signalValueMap = {}; }
-                this.__signalValueMap[definition.id] = (u.isSymbol(definition._signal) || u.isString(definition._signal)) ? definition._signal : definition.id;
-            }
-        });
-    })();
+    static ExtSIGNALMAP(p_base, p_list) { return this.__Ext(p_base.__VALUES_SIGNALS, p_list); }
+    static ExtBLOCS(p_base, p_list) { return this.__Ext(p_base.__BLOCS, p_list); }
+    static ExtDATALISTS(p_base, p_list) { return this.__Ext(p_base.__DATALISTS, p_list); }
+    static ExtVALUES(p_base, p_list) { return this.__Ext(p_base.__VALUES, p_list); }
+
+    static __Ext(p_base, p_list) { return p_base ? [...p_base, ...p_list] : p_list; }
+    static __ExtObj(p_base, p_list) { return p_base ? { ...p_base, ...p_list } : p_list; }
 
     _Init() {
         super._Init();
@@ -91,7 +90,7 @@ class SimpleDataBlock extends DataBlock {
 
         if (!this._blocs) {
             this._blocs = [];
-            this._blocsIDSet = new this.Set();
+            this._blocsIDSet = new Set();
         }
 
         if (this._blocsIDSet.has(p_conf.id)) {
@@ -119,14 +118,14 @@ class SimpleDataBlock extends DataBlock {
 
         let statics = this.constructor.__VALUES;
 
-        for (var id in statics) {
+        statics.forEach((definition) => {
 
             let
-                definition = statics[id],
+                id = definition.id,
                 valueObj = {};
 
-            if (u.isFunc(definition)) {
-                p_values[id] = definition(id, this);
+            if (definition._fn) {
+                p_values[id] = definition._fn(id, this);
             } else {
                 for (var prop in definition) {
                     if (prop[0] == `_`) { continue; }
@@ -138,7 +137,7 @@ class SimpleDataBlock extends DataBlock {
 
             p_values[id] = valueObj;
 
-        }
+        });
 
     }
 
@@ -229,8 +228,9 @@ class SimpleDataBlock extends DataBlock {
      * @param {*} [p_silent] 
      */
     CommitValueUpdate(p_id, p_valueObj, p_oldValue, p_silent = false) {
-        if (p_id in this.constructor.__signalValueMap) {
-            this.Broadcast(this.constructor.__signalValueMap[p_id], this, p_valueObj, p_oldValue);
+        if (this.constructor.__VALUES_SIGNALS &&
+            p_id in this.constructor.__VALUES_SIGNALS) {
+            this.Broadcast(this.constructor.__VALUES_SIGNALS[p_id], this, p_valueObj, p_oldValue);
         }
         this.Broadcast(com.SIGNAL.VALUE_CHANGED, this, p_id, p_valueObj, p_oldValue);
         if (!p_silent) { this.CommitUpdate(); }

@@ -10,7 +10,6 @@ const env = require("@nkmjs/environment");
 const CMD_TYPE = require(`./commands/cmd-type`);
 const CONTEXT = require(`./context`);
 const AutosaveHandler = require(`./helpers/autosave-handler`);
-const DocumentDefinition = require("./helpers/document-definition");
 
 /**
  * Helper class that hold windows data and help sort out ipcMessaging between windows
@@ -26,7 +25,7 @@ class DOCUMENTS extends com.helpers.SingletonEx {
     _Init() {
         super._Init();
 
-        this.instance._definitions = [];
+        this._definitions = [];
 
         this._dataMap = new collections.DictionaryList();
         this._rscMap = new collections.DictionaryList();
@@ -190,11 +189,6 @@ class DOCUMENTS extends com.helpers.SingletonEx {
     static ToggleAutoSave(p_toggle, p_delay = null) {
         if (p_toggle) { this.instance._autosaveHandler.Enable(p_delay); }
         else { this.instance._autosaveHandler.Disable(); }
-    }
-
-    static RegisterDefinition(p_docDefinition){
-        let definition = new DocumentDefinition(this, p_docDefinition);
-        return this.instance._definitions.push(definition);
     }
 
 }

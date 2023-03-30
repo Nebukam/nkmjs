@@ -17,9 +17,14 @@ class AppSettings extends data.SimpleDataBlock {
     };
 
     static __VALUES = [
-        { id: IDS.AUTOSAVE, value: false, _signal: IDS.AUTOSAVE },
-        { id: IDS.AUTOSAVE_TIMER, value: 10, _signal: IDS.AUTOSAVE_TIMER },
+        { id: IDS.AUTOSAVE, value: false },
+        { id: IDS.AUTOSAVE_TIMER, value: 10 },
     ];
+
+    static __VALUES_SIGNALS = {
+        [IDS.AUTOSAVE]: IDS.AUTOSAVE,
+        [IDS.AUTOSAVE_TIMER]: IDS.AUTOSAVE_TIMER
+    }
 
     _Init() {
         super._Init();
@@ -33,6 +38,8 @@ class AppSettings extends data.SimpleDataBlock {
 }
 
 //#region descriptors
+
+const isAutoSave = (owner) => { return owner.data ? owner.data.Get(IDS.AUTOSAVE) : true; };
 
 data.RegisterDescriptors({
 
@@ -48,6 +55,7 @@ data.RegisterDescriptors({
         valueType: data.TYPES.MINMAX,
         label: `Autosave interval`,
         inputOptions: { min: 1, max: 60, size: ui.FLAGS.SIZE_XS },
+        controlOptions: { disableWhen: { fn: isAutoSave } },
         desc: `Interval at which the autosave triggers (in minutes).\nMin 1min, max 60min.`
     },
 

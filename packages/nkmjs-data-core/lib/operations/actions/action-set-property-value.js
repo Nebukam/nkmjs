@@ -51,7 +51,7 @@ class ActionSetPropertyValue extends actions.Action {
     _UpdateDisplayInfos() {
 
         let
-            pInfos = SIMPLEX.GetDescriptor(this._operation.id);
+            pInfos = SIMPLEX.GetDescriptor(this._operation.id),
             label = pInfos ? pInfos.label : this._operation.id;
 
         this.displayInfos = {

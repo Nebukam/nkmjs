@@ -24,3 +24,5 @@ module.exports = {
     get main(){ return env.APP; },
 
 }
+
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

@@ -192,13 +192,12 @@ class BINDINGS {
 
                 if (dist == null) { continue; }
 
-                if (dist > 0 && (dist < currentDist || !binding)) {
+                if (dist >= 0 && (dist < currentDist || !binding)) {
                     binding = _contextMap.Get(p_context, key);
                     currentDist = dist;
                 }
 
             }
-
 
         }
 
@@ -224,8 +223,9 @@ class BINDINGS {
             let tpl = bindings[i];
 
             for (var p in tpl) {
-                if (!(p in p_keys)) { 
-                    continue outerloop; }
+                if (!(p in p_keys)) {
+                    continue outerloop;
+                }
             }
 
             return _contextTemplateMap.Get(p_context, tpl) || p_fallback;
