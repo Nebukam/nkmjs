@@ -82,6 +82,8 @@ class DataListSearch extends SimpleData {
     get enabled() { return this.Get(IDS.SEARCH_ENABLED); }
 
     get sourceList() { return this._sourceList; }
+    set sourceList(p_value) { this.SetSource(p_value); }
+
     get results() { return this._results; }
 
     _OnHeaderToggled() {

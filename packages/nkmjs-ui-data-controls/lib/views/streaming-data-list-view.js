@@ -148,6 +148,7 @@ class StreamingDataListView extends base {
         this._domStreamer.itemCount = p_dataList ? p_dataList.count : 0;
 
         if (p_dataList != null) {
+            console.log(p_dataList);
             let index = p_dataList.IndexOf(this.editor.inspectedData.lastItem);
             if (index != -1) { this._domStreamer.SetFocusIndex(index); }
         }

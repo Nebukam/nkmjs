@@ -4,7 +4,8 @@ const data = require(`@nkmjs/data-core`);
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
-const base = require(`./streaming-data-list-view`);
+const StreamingDataListView = require(`./streaming-data-list-view`);
+const base = StreamingDataListView;
 
 class StreamingDataListSearchableView extends base {
     constructor() { super(); }
@@ -14,7 +15,7 @@ class StreamingDataListSearchableView extends base {
 
         this._searchHeader = null;
 
-        this._searchDataList = new data.helpers.DataListSearch();
+        this._searchDataList = new data.search.DataListSearch();
         this._searchDataList
             .Watch(data.SIGNAL.SEARCH_TOGGLED, this._OnSearchToggled, this)
             .Watch(data.SIGNAL.SEARCH_STARTED, this._OnSearchStarted, this)

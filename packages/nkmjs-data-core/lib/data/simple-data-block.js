@@ -29,7 +29,7 @@ class SimpleDataBlock extends DataBlock {
 
     /**
      * Expected format
-     * { id:'uniqueId', member:'_propertyId', type:Class, ?[IDS.SKIP_SERIALIZATION]:true }
+     * { id:'uniqueId', member:'_propertyId', ?type:Class, ?[IDS.SKIP_SERIALIZATION]:true }
      */
     static __DATALISTS = null;
 
@@ -60,7 +60,7 @@ class SimpleDataBlock extends DataBlock {
         if (this.constructor.__DATALISTS) {
             this._Bind(this.CommitUpdate);
             this.constructor.__DATALISTS.forEach(dataList => {
-                this[dataList.member] = new DataList();
+                this[dataList.member] = new (dataList.type ? dataList.type : DataList)();
             });
         }
 

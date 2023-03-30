@@ -59,11 +59,13 @@ class RootWorkspace extends base {
 
     _HandleEditRequest(p_request) {
 
+
         if (p_request.isHandled) { return; }
 
         let editTarget = p_request.GetOption(`data`, null),
             editorClass = p_request.GetOption(`editor`, null);
 
+            
         if (!editTarget) {
             p_request.HandleFail(`Editing request has no data.`);
             return;
@@ -79,7 +81,7 @@ class RootWorkspace extends base {
             p_request.HandleFail(`Could not find editor association for ${editTarget}.`);
             return;
         }
-
+        
         u.LOG._(`Editing request for ${editTarget} will be handled using ${editorClass.name}`);
 
         this.Host({
