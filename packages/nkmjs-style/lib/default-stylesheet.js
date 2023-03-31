@@ -11,10 +11,10 @@ const PaletteBuilder = require("./palette-builder");
  * @augments style.PaletteBuilder
  * @memberof style
  */
-class DefaultStylesheet extends PaletteBuilder{
-    constructor(){ super(); }
+class DefaultStylesheet extends PaletteBuilder {
+    constructor() { super(); }
 
-    Build( palette ) {
+    Build(palette) {
 
         let defaultColors = {};
 
@@ -134,21 +134,36 @@ class DefaultStylesheet extends PaletteBuilder{
                 'opacity': `0`
             },
 
-            
-            'absolute-top-left':{ 'position': 'absolute', 'top': '0', 'left': '0' },
-            'absolute-top':{ 'position': 'absolute', 'top': '0', 'left': '50%', 'transform': 'translate(-50%, 0)' },            
-            'absolute-top-right':{ 'position': 'absolute', 'top': '0', 'right': '0' },
+            'sticky-top': {
+                'position': 'sticky',
+                'top': 0,
+                'z-index': 10,
+            },
 
-            'absolute-left':{ 'position': 'absolute', 'top': '50%', 'left': '0', 'transform': 'translate(0, -50%)' },
-            'absolute-center':{ 'position': 'absolute', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)' },
-            'absolute-right':{ 'position': 'absolute', 'top': '50%', 'right': '0', 'transform': 'translate(0, -50%)' },   
-                     
-            'absolute-bottom':{ 'position': 'absolute', 'bottom': '0', 'left': '50%', 'transform': 'translate(-50%, 0)' },
-            'absolute-bottom-left':{ 'position': 'absolute', 'bottom': '0', 'left': '0'},
-            'absolute-bottom-right':{ 'position': 'absolute', 'bottom': '0', 'right': '0' },
-            
-            
-            
+            'sticky-bottom': {
+                'position': 'sticky',
+                'bottom': 0,
+                'z-index': 10,
+            },
+
+            'bg-blur-10':{
+                'backdrop-filter': 'blur(10px)'
+            },
+
+            'absolute-top-left': { 'position': 'absolute', 'top': '0', 'left': '0' },
+            'absolute-top': { 'position': 'absolute', 'top': '0', 'left': '50%', 'transform': 'translate(-50%, 0)' },
+            'absolute-top-right': { 'position': 'absolute', 'top': '0', 'right': '0' },
+
+            'absolute-left': { 'position': 'absolute', 'top': '50%', 'left': '0', 'transform': 'translate(0, -50%)' },
+            'absolute-center': { 'position': 'absolute', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)' },
+            'absolute-right': { 'position': 'absolute', 'top': '50%', 'right': '0', 'transform': 'translate(0, -50%)' },
+
+            'absolute-bottom': { 'position': 'absolute', 'bottom': '0', 'left': '50%', 'transform': 'translate(-50%, 0)' },
+            'absolute-bottom-left': { 'position': 'absolute', 'bottom': '0', 'left': '0' },
+            'absolute-bottom-right': { 'position': 'absolute', 'bottom': '0', 'right': '0' },
+
+
+
 
             'layer': {
                 'position': `absolute`,

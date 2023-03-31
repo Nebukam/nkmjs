@@ -40,6 +40,7 @@ class DataList extends collections.List {
         this._signals = new com.signals.SignalBox(this);
         this._parent = null;
         this._defaultSortFunc = com.SORTING.NAME_ASC;
+        this._autoSort = false;
     }
 
     get parent() { return this._parent; }
@@ -47,6 +48,28 @@ class DataList extends collections.List {
 
     get defaultSortFunc() { return this._defaultSortFunc; }
     set defaultSortFunc(p_value) { this._defaultSortFunc = p_value || com.SORTING.NAME_ASC; }
+
+    get autoSort() { return this._autoSort; }
+    set autoSort(p_value) {
+        if (this._autoSort == p_value) { return; }
+        this._autoSort = p_value;
+        if (this._autoSort) {
+            if (!this._delayedSort) { this._delayedSort = com.DelayedCall(this._Bind(this._AutoSort)); }
+            this._delayedSort.Schedule();
+        } else if (this._delayedSort) {
+            this._delayedSort.Cancel();
+        }
+    }
+
+    /**
+     * @access protected
+     * @description Bind the given function to this object and returns it.
+     * Note that it replaces the function reference, hence referencing function before they are being bound in `_Init`,
+     * ( i.e in the constructor ) will target an obsolete function.
+     * @param {*} p_func 
+     * @group Utils
+     */
+    _Bind(p_func) { return this[p_func.name] = p_func.bind(this); }
 
     /**
      * @access protected
@@ -169,6 +192,7 @@ class DataList extends collections.List {
     Add(p_item, p_silent = true) {
         let op = super.Add(p_item);
         if (op) {
+            if (this._autoSort) { this._delayedSort.Schedule(); }
             this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, this._array.length - 1);
             if (!p_silent) {
                 this.CommitUpdate();
@@ -201,6 +225,7 @@ class DataList extends collections.List {
     RemoveAt(p_index, p_silent = true) {
         let op = super.RemoveAt(p_index);
         if (op) {
+            if (this._autoSort) { this._delayedSort.Schedule(); }
             this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, op, p_index);
             if (!p_silent) {
                 this.CommitUpdate();
@@ -218,6 +243,7 @@ class DataList extends collections.List {
     Insert(p_item, p_index, p_silent = true) {
         let op = super.Insert(p_item, p_index);
         if (op) {
+            if (this._autoSort) { this._delayedSort.Schedule(); }
             this.Broadcast(com.SIGNAL.ITEM_ADDED, this, op, p_index);
             if (!p_silent) {
                 this.CommitUpdate();
@@ -348,24 +374,28 @@ class DataList extends collections.List {
      * @param {string} p_options.id option id to check
      * @group Sorting
      */
-    Sort(p_options = null) {
+    Sort(p_method = null) {
+        if (!p_method) { return; }
+        this._array.sort(p_method);
+        this.Broadcast(com.SIGNAL.SORTED, this, p_method);
 
-        let sorted = false;
-        if (!p_options) {
-            this._items.sort(this._defaultSortFunc);
-            sorted = true;
-        } else {
-            if (p_options.id) {
-                com.SORTING.SortByMember(this, p_options.id, p_options.fn);
-                sorted = true;
-            } else if (p_options.fn) {
-                this._items.sort(p_options.fn);
-                sorted = true;
-            }
+    }
+
+    AutoSort(p_sorting = null) {
+        if (!p_sorting) {
+            this.autoSort = false;
+            this._autoSortingFn = null;
+            return;
         }
 
-        if (sorted) { this.Broadcast(com.SIGNAL.SORTED, this, p_options, this._defaultSortFunc); }
+        this._autoSortingFn = p_sorting;
+        this.autoSort = true;
 
+    }
+
+    _AutoSort() {
+        if (!this._autoSortingFn) { return; }
+        this.Sort(this._autoSortingFn);
     }
 
     //#endregion
@@ -429,6 +459,7 @@ class DataList extends collections.List {
 
     }
 
+
     /**
      * @access protected
      * @description Called when the object is released. Resets most properties to their initial values.  
@@ -449,6 +480,7 @@ class DataList extends collections.List {
      * @group Pooling 
      */
     _CleanUp() {
+        this.AutoSort(null);
         this._signals.Clear();
         this._parent = null;
         this.Clear();

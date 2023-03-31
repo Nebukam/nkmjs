@@ -176,9 +176,8 @@ class DataListSearch extends SimpleData {
         this._results.Remove(p_item);
     }
 
-    _OnSourceSorted(p_source, p_options, p_defaultSort) {
-        this._results.defaultSortFunc = p_defaultSort;
-        this._results.Sort(p_options);
+    _OnSourceSorted(p_source, p_sortingMethod) {
+        this._results.Sort(p_sortingMethod);
     }
 
     _AdvanceSearch() {

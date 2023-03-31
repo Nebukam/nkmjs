@@ -34,7 +34,7 @@ class ValueListInspector extends base {
                 'padding': '10px',
             },
             '.body': {
-                'padding': `20px 20px`,
+                'padding': `10px`,
             },
             '.control': {
                 'flex': '0 1 auto',
@@ -57,29 +57,19 @@ class ValueListInspector extends base {
 
     _Render() {
 
-        super._Render();
+        this._body = ui.dom.El(`div`, { class: `body` }, this._host);
+        this._builder.host = this._body;
 
-        /*
-        {
-            title: LOC.labelTr, icon: `font-bounds`, prefId: `transforms`, expanded: true,
-                handles: [
-                    {
-                        icon: 'clipboard-read', htitle: 'Paste transforms  [ Ctrl Alt V ]',
-                        trigger: { fn: () => { this.editor.cmdGlyphPasteTransform.Execute(this._data); } },
-                    }
-                ]
-        },
-        */
+        super._Render();
 
         this.constructor.__foldouts.forEach(foldout => {
             this._Foldout(foldout.foldout, foldout.controls);
         });
-
     }
 
     _Foldout(p_foldout, p_controls, p_css = ``, p_host = null) {
 
-        let foldout = this.Attach(Foldout, `item drawer${p_css ? ' ' + p_css : ''}`, p_host || this);
+        let foldout = this.Attach(Foldout, `item drawer${p_css ? ' ' + p_css : ''}`, p_host || this._body);
         foldout.options = p_foldout;
 
         if (p_controls) {

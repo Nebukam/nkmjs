@@ -33,7 +33,7 @@ class AppSettingsExplorer extends base {
                 'flex': '1 1 auto',
                 'min-height': '0',
                 'overflow': 'auto',
-                'padding': '10px',
+                'padding': '0px',
             },
             '.body': {
                 'padding': `20px 20px`,

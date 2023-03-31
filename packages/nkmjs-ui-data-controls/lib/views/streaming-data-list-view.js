@@ -90,6 +90,13 @@ class StreamingDataListView extends base {
             },
             '.header, .search, .footer': {
                 'flex': '0 0 auto',
+                '@': ['bg-blur-10']
+            },
+            '.header': {
+                '@': ['sticky-top']
+            },
+            '.footer': {
+                '@': ['sticky-bottom']
             },
             '.dom-stream': {
                 'position': 'relative',
@@ -235,7 +242,7 @@ class StreamingDataListView extends base {
         this._scheduledOnCountChanged.Schedule();
     }
 
-    _OnListSorted(){
+    _OnListSorted() {
         this._RefreshItems();
     }
 
