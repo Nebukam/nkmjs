@@ -36,7 +36,8 @@ class StreamingDataListView extends base {
 
         this._dataObserver
             .Hook(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
-            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this);
+            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
+            .Hook(com.SIGNAL.SORTED, this._OnListSorted, this);
 
         let dataSel = ui.helpers.HostSelStack(this, true, true, {
             add: {
@@ -232,6 +233,10 @@ class StreamingDataListView extends base {
 
     _OnItemRemoved(p_dataList, p_item) {
         this._scheduledOnCountChanged.Schedule();
+    }
+
+    _OnListSorted(){
+        this._RefreshItems();
     }
 
     _ReloadList() {

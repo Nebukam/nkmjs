@@ -55,7 +55,8 @@ class DataListSearch extends SimpleData {
         this._sourceObserver = new com.signals.Observer();
         this._sourceObserver
             .Hook(com.SIGNAL.ITEM_ADDED, this._OnSourceItemAdded, this)
-            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnSourceItemRemoved, this);
+            .Hook(com.SIGNAL.ITEM_REMOVED, this._OnSourceItemRemoved, this)
+            .Hook(com.SIGNAL.SORTED, this._OnSourceSorted, this);
 
         this._identifiers = [];
         this._fetchFns = [];
@@ -173,6 +174,11 @@ class DataListSearch extends SimpleData {
 
     _OnSourceItemRemoved(p_source, p_item) {
         this._results.Remove(p_item);
+    }
+
+    _OnSourceSorted(p_source, p_options, p_defaultSort) {
+        this._results.defaultSortFunc = p_defaultSort;
+        this._results.Sort(p_options);
     }
 
     _AdvanceSearch() {

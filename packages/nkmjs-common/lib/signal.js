@@ -190,6 +190,13 @@ class SIGNAL{
      */
      static VALUE_CHANGED = Symbol(`valueChanged`);
 
+     /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     */
+    static SORTED = Symbol(`sorted`);
+
 }
 
 module.exports = SIGNAL;

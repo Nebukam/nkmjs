@@ -48,8 +48,8 @@ class SIMPLEX extends com.helpers.SingletonEx {
                 recompute: true,
                 valueType: TYPES.TEXT_SEARCH,
                 label: `Search`,
-                inputOptions: { placeholder: `a b c square...`, changeOnInput: true, submitOnChange: true, },
-                desc: `Search for characters within Unicode.\nSeparate search terms with a space.`
+                inputOptions: { placeholder: `Search...`, changeOnInput: true, submitOnChange: true, },
+                desc: `Search for something!`
             },
 
             [IDS.SEARCH_CASE_SENSITIVE]: {

@@ -111,14 +111,14 @@ class SORTING {
 
     /**
      * @description c, b, a
-     * @param {data.core.Catalog} p_catalog 
-     * @param {string} p_optionId 
+     * @param {data.core.Catalog} p_array 
+     * @param {string} p_member 
      * @param {function} p_method 
      */
-    static SortByOption(p_catalog, p_optionId, p_method) {
-        _optionID = p_optionId;
+    static SortByMember(p_array, p_member, p_method) {
+        _optionID = p_member;
         _compareMethod = p_method;
-        p_catalog._items.sort(SORTING.OPTION);
+        p_array._items.sort(SORTING.OPTION);
     }
 
 }

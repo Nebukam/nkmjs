@@ -4,7 +4,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./catalog-signal`);
-const SORTING = require(`./catalog-sorting`);
+const SORTING = com.SORTING;
 const CatalogItem = require(`./catalog-item`);
 
 /**
@@ -592,7 +592,7 @@ class Catalog extends base {
             sorted = true;
         } else {
             if (p_options.id) {
-                SORTING.SortByOption(this, p_options.id, p_options.fn);
+                SORTING.SortByMember(this, p_options.id, p_options.fn);
                 sorted = true;
             } else if (p_options.fn) {
                 this._items.sort(p_options.fn);
@@ -600,7 +600,7 @@ class Catalog extends base {
             }
         }
 
-        if (sorted) { this.Broadcast(SIGNAL.SORTED, this); }
+        if (sorted) { this.Broadcast(com.SIGNAL.SORTED, this); }
 
     }
 

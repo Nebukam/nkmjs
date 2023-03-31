@@ -51,7 +51,7 @@ class CatalogWatcherEx extends CatalogWatcher {
             this._catalogObserver
                 .Unhook(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
                 .Unhook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
-                .Unhook(SIGNAL.SORTED, this._OnSorted, this);
+                .Unhook(com.SIGNAL.SORTED, this._OnSorted, this);
 
             // Hook root signals
             this._catalogObserver
@@ -74,7 +74,7 @@ class CatalogWatcherEx extends CatalogWatcher {
             this._catalogObserver
                 .Hook(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
                 .Hook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
-                .Hook(SIGNAL.SORTED, this._OnSorted, this);
+                .Hook(com.SIGNAL.SORTED, this._OnSorted, this);
 
             if (this._isEnabled && this._catalog) {
                 this._RemoveCatalogContent(this._catalog);

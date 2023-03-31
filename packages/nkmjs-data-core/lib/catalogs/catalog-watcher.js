@@ -38,7 +38,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
         this._catalogObserver
             .Hook(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
             .Hook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
-            .Hook(SIGNAL.SORTED, this._OnSorted, this);
+            .Hook(com.SIGNAL.SORTED, this._OnSorted, this);
 
         // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
         //both filtered AND flagged as 'flatten catalog'
@@ -259,7 +259,7 @@ class CatalogWatcher extends com.pool.DisposableObjectEx {
      * @customtag override-me
      */
     _OnSorted(p_catalog) {
-        this.Broadcast(SIGNAL.SORTED, this);
+        this.Broadcast(com.SIGNAL.SORTED, this);
     }
 
     // ----> Map

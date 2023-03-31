@@ -254,6 +254,9 @@ class List {
         return p_targetArray;
     }
 
+    
+    Sort(p_method) { this._array.sort(p_method); }
+
     /**
      * @description Clears the List
      */

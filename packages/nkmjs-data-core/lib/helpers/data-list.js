@@ -23,6 +23,9 @@ class DataList extends collections.List {
         this._isReleasing = false;
         this._Init();
         this._PostInit();
+
+        //TODO: Implement sorting events
+
     }
 
     /**
@@ -36,10 +39,14 @@ class DataList extends collections.List {
     _Init() {
         this._signals = new com.signals.SignalBox(this);
         this._parent = null;
+        this._defaultSortFunc = com.SORTING.NAME_ASC;
     }
 
-    set parent(p_value) { this._parent = p_value; }
     get parent() { return this._parent; }
+    set parent(p_value) { this._parent = p_value; }
+
+    get defaultSortFunc() { return this._defaultSortFunc; }
+    set defaultSortFunc(p_value) { this._defaultSortFunc = p_value || com.SORTING.NAME_ASC; }
 
     /**
      * @access protected
@@ -328,7 +335,38 @@ class DataList extends collections.List {
         if (!p_silent) { this.CommitUpdate(); }
     }
 
+    //#endregion
 
+    //#region Sorting
+
+    /**
+     * @description Sort this Catalog based on sorting options. Format :
+     * { id:'id to look for and test (optional)', fn:'sorting function' }.
+     * Triggers a 'SORTED' signal if the Catalog has been effectively sorted.
+     * @param {object} p_options Optional sorting options
+     * @param {function} p_options.fn sorting function
+     * @param {string} p_options.id option id to check
+     * @group Sorting
+     */
+    Sort(p_options = null) {
+
+        let sorted = false;
+        if (!p_options) {
+            this._items.sort(this._defaultSortFunc);
+            sorted = true;
+        } else {
+            if (p_options.id) {
+                com.SORTING.SortByMember(this, p_options.id, p_options.fn);
+                sorted = true;
+            } else if (p_options.fn) {
+                this._items.sort(p_options.fn);
+                sorted = true;
+            }
+        }
+
+        if (sorted) { this.Broadcast(com.SIGNAL.SORTED, this, p_options, this._defaultSortFunc); }
+
+    }
 
     //#endregion
 

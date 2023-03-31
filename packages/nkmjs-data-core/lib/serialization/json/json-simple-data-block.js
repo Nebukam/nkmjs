@@ -189,6 +189,8 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
         if (p_data.constructor.__flattenSerialization) { p_data.BatchSet((container || {})); }
         else { p_data.BatchSet((container || {})); }
 
+        if (`_OnDeserializationComplete` in p_data) { p_data._OnDeserializationComplete(); }
+
     }
 
 

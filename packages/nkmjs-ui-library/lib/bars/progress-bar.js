@@ -34,30 +34,63 @@ class ProgressBar extends base {
     set hideWhenComplete(p_value) { this._hideWhenComplete = p_value; }
     set size(p_value) { this._sizeEnum.Set(p_value); }
     set flavor(p_value) { this._flavorEnum.Set(p_value); }
+    set inverted(p_value) {
+        if (p_value) { this.classList.add(`inverted`) }
+        else { this.classList.remove(`inverted`) }
+    }
 
     static _Style() {
         return style.Extends({
             ':host': {
+                '@': ['fade-in'],
+                'opacity': 0,
                 'position': 'relative',
                 'height': 'var(--size)',
                 'min-height': 'var(--size)',
                 'max-height': 'var(--size)',
-                'background-color': 'rgba(var(--flavor-color-dark-rgb), 0.1)',
+                '--bg-color': 'var(--flavor-color-dark-rgb)',
+                '--bar-color': 'var(--flavor-color)',
+
+                'background-color': 'rgba(var(--bg-color), 0.1)',
+            },
+            ':host(.inverted)': {
+                //'backdrop-filter': 'blur(2px)'
+            },
+            ':host(.complete)': {
+                'display': 'none'
             },
             '.bar': {
                 'position': `absolute`,
                 'width': 'var(--progress, 0%)',
                 'height': '100%',
-                'background-color': 'var(--flavor-color)',
+                'background-color': 'var(--bar-color)',
+            },
+            ':host(.inverted) .bar': {
+                'backdrop-filter': 'blur(10px)',
+                'width': 'calc(100% - var(--progress, 0%))',
+                'right': '0px'
             }
         }, base._Style());
     }
 
-    _Render() { this._bar = ui.El(`div`, { class: `bar` }, this._host); }
+    _Render() {
+        this._bar = ui.El(`div`, { class: `bar` }, this._host);
+        this.style.opacity = 1;
+    }
+
+    SetColors(p_bg = null, p_bar = null) {
+        if (!p_bg && !p_bar) {
+            this.style.setProperty('--bg-color', 'var(--flavor-color-dark-rgb)');
+            this.style.setProperty('--bar-color', 'var(--flavor-color)');
+        } else {
+            if (p_bg) { this.style.setProperty('--bg-color', p_bg); }
+            if (p_bar) { this.style.setProperty('--bar-color', p_bar); }
+        }
+    }
 
     set progress(p_value) {
         let p = Math.max(Math.min(p_value, 1), 0);
-        if (this._hideWhenComplete) { if (p == 1) { p = 0; } }
+        if (this._hideWhenComplete) { if (p == 1) { this.classList.add('complete'); } else { this.classList.remove('complete'); } }
         this.style.setProperty(`--progress`, `${p * 100}%`)
     }
 
