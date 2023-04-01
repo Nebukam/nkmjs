@@ -256,6 +256,13 @@ class DOMStreamer extends base {
         this.Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment, this._ItemRequestCallback);
     }
 
+    _RequestUpdate(p_itemIndex) {
+        //TODO: Support swapping widgets if type changed (Dummy vs non-dummy, ...)
+        //!!! Right now this only works with unique widget class setups !!!
+        if (p_itemIndex < 0) { return; }
+        this.Broadcast(SIGNAL.ITEM_UPDATE_REQUESTED, this, p_itemIndex, this._indicesMap[p_itemIndex]);
+    }
+
     _RequestDummy(p_itemIndex) {
         if (p_itemIndex < 0) { return; }
         let dummy = UI.Rent(DOMStreamerPlaceholder);
@@ -567,6 +574,12 @@ class DOMStreamer extends base {
 
         return true;
 
+    }
+
+    UpdateInPlace() {
+        for (let i = this._indices.start; i < this._indices.end; i++) {
+            this._RequestUpdate(i);
+        }
     }
 
     /**

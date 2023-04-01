@@ -9,6 +9,7 @@ const SIMPLEX = require(`../simplex`);
 
 const SimpleData = require(`../data/simple-data-block`);
 const DataList = require(`../helpers/data-list`);
+const DataListProxy = require("../helpers/data-list-proxy");
 
 class DataListSearch extends SimpleData {
 
@@ -29,6 +30,8 @@ class DataListSearch extends SimpleData {
 
         this._searchCovered = 0;
         this._cachedAdvance = 0;
+
+        this._Bind(this._InternalSort);
 
         this._sourceList = null;
         this._rangeInfos = null;
@@ -60,6 +63,8 @@ class DataListSearch extends SimpleData {
 
         this._identifiers = [];
         this._fetchFns = [];
+
+        
 
     }
 
@@ -120,6 +125,8 @@ class DataListSearch extends SimpleData {
 
     get results() { return this._results; }
 
+
+
     _OnHeaderUpdated() {
         this.Broadcast(SIGNAL.SEARCH_HEADER_UPDATED, this, this._searchHeader);
     }
@@ -177,8 +184,32 @@ class DataListSearch extends SimpleData {
     }
 
     _OnSourceSorted(p_source, p_sortingMethod) {
-        this._results.Sort(p_sortingMethod);
+        this._lastSourceSortMethod = p_sortingMethod;
+        this._results.Sort(this._InternalSort);
+        this._lastSourceSortMethod = null;
     }
+
+    AutoSort(p_sorting = null) {
+        this._autoSortingFn = p_sorting;
+        this._results.AutoSort(p_sorting ? this._InternalSort : null);
+    }
+
+    RefreshSorting(){
+        this._results.Sort(this._InternalSort);
+    }
+
+    _InternalSort(a, b) {
+
+        let sorting = 0;
+        
+        if (this._lastSourceSortMethod) { sorting = this._lastSourceSortMethod(a, b); }
+        else if (this._sourceList.autosort && this._sourceList._autoSortingFn) { sorting = this._sourceList._autoSortingFn(a, b); }
+
+        if (this._autoSortingFn) { sorting += this._autoSortingFn(a, b); }
+        return sorting;
+
+    }
+
 
     _AdvanceSearch() {
 
@@ -225,6 +256,7 @@ class DataListSearch extends SimpleData {
     }
 
     _CleanUp() {
+        this.AutoSort(null);
         this.searchHeader = null;
         this.sourceList = null;
         super._CleanUp();

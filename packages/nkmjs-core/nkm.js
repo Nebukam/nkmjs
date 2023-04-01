@@ -42,6 +42,6 @@ globalThis.nkm = module.exports = {
     uiworkspace : require(`@nkmjs/ui-workspace`),
     
     //#endregion
-
+    get main(){ return nkm.app.main; },
 
 }

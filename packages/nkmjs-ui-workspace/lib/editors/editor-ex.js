@@ -26,6 +26,8 @@ class EditorEx extends base {
     static __default_headerClass = null;
     static __default_footerClass = null;
 
+    static __default_classicShortcuts = true;
+
     _Init() {
 
         super._Init();
@@ -51,6 +53,26 @@ class EditorEx extends base {
             .SetTriggerMask(ui.POINTER.MOUSE_PREV, true);
 
         this.focusArea = this;
+
+        if (this.constructor.__default_classicShortcuts) {
+
+            this.shortcuts.Create("Ctrl Z", this._actionStack.Undo);
+            this.shortcuts.Create("Ctrl Y", this._actionStack.Redo);
+
+            this.shortcuts.Create("escape", () => {
+                this._registerEmptySelection = true;
+                this._inspectedData.Clear();
+                this._registerEmptySelection = false;
+            });
+
+            this.shortcuts.Create("Ctrl A", {
+                fn: () => {
+                    this._viewport._selStack.data.RequestSelectAll();
+                    ui.dom.ClearHighlightedText();
+                }
+            }).Strict();
+
+        }
 
     }
 

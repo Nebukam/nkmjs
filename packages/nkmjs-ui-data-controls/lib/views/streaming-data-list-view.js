@@ -55,10 +55,10 @@ class StreamingDataListView extends base {
                 }, thisArg: this
             },
             count: {
-                fn: (p_sel) => { return this._contentSource ? this._contentSource.length : 0; }, thisArg: this
+                fn: (p_sel) => { return this._contentSource ? this._contentSource.count : 0; }, thisArg: this
             },
             index: {
-                fn: (p_sel, p_data) => { return this._contentSource ? this._contentSource.indexOf(p_data) : -1; }, thisArg: this
+                fn: (p_sel, p_data) => { return this._contentSource ? this._contentSource.IndexOf(p_data) : -1; }, thisArg: this
             },
         }).data;
 
@@ -119,7 +119,8 @@ class StreamingDataListView extends base {
         this._domStreamer = this.Attach(ui.helpers.DOMStreamer, 'dom-stream');
         this._domStreamer
             .Watch(ui.SIGNAL.ITEM_CLEARED, this._OnItemCleared, this)
-            .Watch(ui.SIGNAL.ITEM_REQUESTED, this._OnItemRequested, this);
+            .Watch(ui.SIGNAL.ITEM_REQUESTED, this._OnItemRequested, this)
+            .Watch(ui.SIGNAL.ITEM_UPDATE_REQUESTED, this._OnItemUpdateRequested, this);
 
         this._domStreamer.options = {
             layout: { ...this.constructor.__default_layoutOptions }
@@ -167,6 +168,10 @@ class StreamingDataListView extends base {
 
     }
 
+    RefreshSorting() {
+        if (this._contentSource) { this._contentSource.RefreshSorting(); }
+    }
+
     _OnItemRequested(p_streamer, p_index, p_fragment, p_returnFn) {
 
         let data = this._contentSource ? this._contentSource.At(p_index) : null;
@@ -193,6 +198,26 @@ class StreamingDataListView extends base {
             if (!this.editor.inspectedData.isEmpty) {
                 if (this.editor.inspectedData.Contains(data)) {
                     widget.Select(true);
+                }
+            }
+        }
+
+    }
+
+    _OnItemUpdateRequested(p_streamer, p_index, p_widget) {
+
+        let data = this._contentSource ? this._contentSource.At(p_index) : null;
+
+        if (!data) { return; }
+
+        p_widget.data = data;
+
+        if (this.selectionStack.data.isEmpty) {
+            if (!this.editor.inspectedData.isEmpty) {
+                if (this.editor.inspectedData.Contains(data)) {
+                    p_widget.Select(true);
+                } else {
+                    p_widget.Select(false);
                 }
             }
         }
@@ -227,7 +252,10 @@ class StreamingDataListView extends base {
     }
 
     _RefreshItems() {
-        this._domStreamer._Stream(null, null, true);
+        //this._domStreamer._Stream(null, null, true);
+        this._domStreamer.UpdateInPlace();
+        //TODO: Simply update currently displayed data, and re-create selection states...?
+
     }
 
     //#endregion

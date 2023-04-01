@@ -398,6 +398,8 @@ class DataList extends collections.List {
         this.Sort(this._autoSortingFn);
     }
 
+    RefreshSorting() { this._AutoSort(); }
+
     //#endregion
 
     /**

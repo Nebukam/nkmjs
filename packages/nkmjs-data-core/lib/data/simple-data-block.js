@@ -64,6 +64,7 @@ class SimpleDataBlock extends DataBlock {
             });
         }
 
+        this._parent = null;
         this._values = {};
         this._ResetValues(this._values);
     }

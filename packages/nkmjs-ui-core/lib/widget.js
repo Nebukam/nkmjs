@@ -32,6 +32,8 @@ class Widget extends base {
     static __usePaintCallback = true;
     static __defaultSelectOnActivation = false;
 
+    static __notifyDataChange = false;
+
     static __default_iState = FLAGS.IDLE;
     static __defaultInstanceOf = null;
 
