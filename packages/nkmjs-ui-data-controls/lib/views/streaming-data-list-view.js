@@ -229,7 +229,8 @@ class StreamingDataListView extends base {
     }
 
     _OnSelectionStackBump(p_data) {
-        this._domStreamer.SetFocusIndex(this._data.IndexOf(p_data), false);
+        if (!this._contentSource) { return; }
+        this._domStreamer.SetFocusIndex(this._contentSource.IndexOf(p_data), false);
     }
 
     //#endregion

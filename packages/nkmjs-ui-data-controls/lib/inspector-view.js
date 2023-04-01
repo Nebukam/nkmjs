@@ -54,13 +54,13 @@ class InspectorView extends base {
         this._editorObserver.ObserveOnly(this._editor);
         if (this._editorDataObserver) { this._editorObserver.ObserveOnly(this._editor ? this._editor.data : null); }
         if (this._editor) {
-            this._OnEditorDataChanged(this._editor.data, this._oldEditorData);
+            this._OnEditorDataChanged(this._editor, this._editor.data, this._oldEditorData);
         } else {
-            this._OnEditorDataChanged(null, this._oldEditorData);
+            this._OnEditorDataChanged(null, null, this._oldEditorData);
         }
     }
 
-    _OnEditorDataChanged(p_newData, p_oldData) {
+    _OnEditorDataChanged(p_editor, p_newData, p_oldData) {
         this._oldEditorData = p_newData;
         if (this._editorDataObserver) { this._editorDataObserver.ObserveOnly(p_newData); }
     }

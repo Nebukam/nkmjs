@@ -21,8 +21,6 @@ class DataListProxy extends com.pool.DisposableObjectEx {
 
     constructor() { super(); }
 
-
-
     _Init() {
         super._Init();
         this._sourceList = null;

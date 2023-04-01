@@ -145,7 +145,7 @@ class DataListSearch extends SimpleData {
 
         this._results.Clear(true);
         this._resultSet.clear();
-
+        
         this._ready = false;
         this._searchCovered = 0;
 
