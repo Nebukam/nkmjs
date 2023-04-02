@@ -170,6 +170,7 @@ class StreamingDataListView extends base {
 
     RefreshSorting() {
         if (this._contentSource) { this._contentSource.RefreshSorting(); }
+        this._scheduledRefresh.Schedule();
     }
 
     _OnItemRequested(p_streamer, p_index, p_fragment, p_returnFn) {
@@ -208,7 +209,7 @@ class StreamingDataListView extends base {
 
         let data = this._contentSource ? this._contentSource.At(p_index) : null;
 
-        if (!data) { return; }
+        if (!data || !p_widget) { return; }
 
         p_widget.data = data;
 

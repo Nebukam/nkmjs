@@ -36,6 +36,14 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
+    static CONTEXT  = Object.freeze(`context`);
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Generic
+     */
     static INSIDE  = Object.freeze(`inside`);
 
     /**

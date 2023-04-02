@@ -177,6 +177,8 @@ class INPUT extends com.helpers.SingletonEx {
         this._down = new collections.Dictionary();
         this._kcodes = {};
 
+        this._mouseDownPosition = { x: 0, y: 0, relX: 0, relY: 0 };
+
         this._Bind(this._KHandle);
         this._Bind(this._KBlur);
         this._Bind(this._MDown);
@@ -314,6 +316,12 @@ class INPUT extends com.helpers.SingletonEx {
     get mouse() { return this._pointer; }
 
     _MDown(p_evt) {
+
+        this._mouseDownPosition.x = p_evt.clientX;
+        this._mouseDownPosition.y = p_evt.clientY;
+        this._mouseDownPosition.relX = p_evt.clientX / window.innerWidth;
+        this._mouseDownPosition.relY = p_evt.clientY / window.innerHeight;
+
         if (INPUT.selectionModifier != INPUT.SELECT_MODIFIER_NONE) {
             //p_evt.preventDefault();
             dom.ClearHighlightedText();

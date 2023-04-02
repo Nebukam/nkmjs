@@ -127,6 +127,7 @@ class ValueControl extends base {
             htitle: `Nullify`,
             icon: `clear`
         }
+        this._nullifyBtn.visible = false;
 
     }
 

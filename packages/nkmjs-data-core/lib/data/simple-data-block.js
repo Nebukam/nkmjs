@@ -50,15 +50,15 @@ class SimpleDataBlock extends DataBlock {
     _Init() {
         super._Init();
 
+        this._Bind(this.CommitUpdate);
+
         if (this.constructor.__BLOCS) {
-            this._Bind(this.CommitUpdate);
             this.constructor.__BLOCS.forEach(blocInfos => {
                 this[blocInfos.member] = this._AddBloc(blocInfos);
             });
         }
 
         if (this.constructor.__DATALISTS) {
-            this._Bind(this.CommitUpdate);
             this.constructor.__DATALISTS.forEach(dataList => {
                 this[dataList.member] = new (dataList.type ? dataList.type : DataList)();
             });

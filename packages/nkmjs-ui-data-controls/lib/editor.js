@@ -99,6 +99,8 @@ class Editor extends base {
         this._skipNextSelectionState = false;
         this._registerEmptySelection = false;
 
+        this._defaultModalContentOptions = () => { return { editor: this, data: this._data, context: this._context } };
+
     }
 
     _PostInit() {

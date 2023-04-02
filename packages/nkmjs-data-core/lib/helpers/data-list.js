@@ -398,7 +398,29 @@ class DataList extends collections.List {
         this.Sort(this._autoSortingFn);
     }
 
-    RefreshSorting() { this._AutoSort(); }
+    RefreshSorting() {
+
+        if (!this._autoSortingFn) { return; }
+
+        let snapshot = [...this._array];
+        this._array.sort(this._autoSortingFn);
+
+        let reordered = false;
+
+        for (let i = 0, n = snapshot.length; i < n; i++) {
+            if (snapshot[i] != this._array[i]) {
+                reordered = true;
+                break;
+            }
+        }
+
+        snapshot.length = 0;
+
+        if (reordered) {
+            this.Broadcast(com.SIGNAL.SORTED, this, this._autoSortingFn);
+        }
+
+    }
 
     //#endregion
 

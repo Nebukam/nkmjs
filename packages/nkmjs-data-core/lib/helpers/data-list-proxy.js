@@ -47,9 +47,7 @@ class DataListProxy extends com.pool.DisposableObjectEx {
 
     _OnSourceListChanged(p_oldList) {
         this._proxyList.Clear();
-        
         if (this._sourceList) { this._sourceList._array.forEach(element => { this._proxyList.Add(element); }); }
-        console.log(`_OnSourceListChanged`, this._proxyList);
     }
 
     _CleanUp() {

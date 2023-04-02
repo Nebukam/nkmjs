@@ -5,10 +5,12 @@ const style = require("@nkmjs/style");
 const actions = require("@nkmjs/actions");
 
 const helpers = require(`../helpers`);
+const commands = require(`../commands`);
 
 const UI = require(`../ui`);
 const SIGNAL = require(`../signal`);
 const FLAGS = require(`../flags`);
+const ANCHORING = require(`../anchoring`);
 const WidgetOrientable = require(`../widget-orientable`);
 
 const base = WidgetOrientable;
@@ -50,6 +52,8 @@ class View extends base {
         this._flags.Add(this, FLAGS.SHOWN);
 
         this.forwardData.To(this._commands, { mapping: `context` });
+
+        this._defaultModalContentOptions = null;
 
     }
 
@@ -139,6 +143,40 @@ class View extends base {
      */
     _OnCmdRegister(p_cmd) {
 
+    }
+
+    /**
+     * 
+     * @param {object} p_commandOptions 
+     * @param {*} [p_commandOptions.id]
+     * 
+     * @param {object} p_modalOptions 
+     * @param {class|object} p_modalOptions.content
+     * @param {function} [p_modalOptions.contentOptionsGetter]
+     * @param {boolean} [p_modalOptions.anchorToEmitter]
+     * @param {string} [p_modalOptions.placement]
+     * @param {object} [p_modalOptions.margins]
+     * 
+     * @returns {Command}
+     * 
+     */
+    _CmdModal(p_commandOptions, p_modalOptions) {
+
+        p_commandOptions.id = p_commandOptions.id || p_modalOptions.content || null;
+
+        let cmd = this._commands.Create(commands.Modal, p_commandOptions);
+
+        p_modalOptions.contentOptionsGetter = p_modalOptions.contentOptionsGetter || this._defaultModalContentOptions;
+        p_modalOptions.anchorToEmitter = p_modalOptions.anchorToEmitter || true;
+        p_modalOptions.placement = p_modalOptions.placement || ANCHORING.BOTTOM_LEFT;
+
+        cmd.options = p_modalOptions;
+
+        return cmd;
+    }
+
+    _CmdMenu(p_commandOptions, p_modalOptions) {
+        //TODO : same as modal ?
     }
 
     //#region Selection

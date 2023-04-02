@@ -110,6 +110,10 @@ class Modal extends base {
         .To(`mode`)
         .To(`context`, null, __defaultBody)
         .To(`anchor`)
+        .To(`anchorToPosition`, null, false)
+        .To(`mouseSnapshot`)
+        .To(`anchorToMouse`, null, false)
+        .To(`killOnMDown`, null, false)
         .To(`margins`)
         .To(`keepWithinScreen`, null, true)
         .To(`static`, null, false)
@@ -131,6 +135,9 @@ class Modal extends base {
         this._origin = null;
         this._keepWithinScreen = true;
         this._margins = { x: 0, y: 0 };
+        this._anchorPosition = null;
+        this._killOnMDown = false;
+        this._mouseSnapshot = null;
 
         this._rectTracker = new RectTracker(this._UpdateAnchoredPosition, this);
 
@@ -194,7 +201,10 @@ class Modal extends base {
                     o = u.Call(this._contentOptionsGetter);
                 }
 
-                if (o) { this._content.options = o; }
+                if (o) {
+                    if (p_options.cmdContext) { o.data = p_options.cmdContext; }
+                    this._content.options = o;
+                }
             }
 
         } else { throw new Error(`Modal options has no content set.`); }
@@ -344,12 +354,32 @@ class Modal extends base {
 
     }
 
+    get anchorToPosition() { return this._anchorToPosition; }
+    set anchorToPosition(p_value) {
+        this._anchorToPosition = p_value;
+        this._anchorPosition = null;
+    }
+
+
+    get anchorToMouse() { return this._anchorToMouse; }
+    set anchorToMouse(p_value) {
+        this._anchorToMouse = p_value;
+        this._anchorPosition = this._mouseSnapshot;
+    }
+
+    get mouseSnapshot() { return this._mouseSnapshot; }
+    set mouseSnapshot(p_value) { this._mouseSnapshot = p_value; }
+
+    get killOnMDown() { return this._killOnMDown; }
+    set killOnMDown(p_value) { this._killOnMDown = p_value; }
+
     _Ready(p_toggle = true) {
         this._isReady = p_toggle;
         if (p_toggle) {
             //this.visible = true;
             this.classList.add(__isReady);
             this._delayedReady.Cancel();
+            //if (this._rectTracker._enabled) { this._UpdateAnchoredPosition(); }
         } else {
             //this.visible = false;
             this.classList.remove(__isReady);
@@ -438,11 +468,26 @@ class Modal extends base {
             x = anchorCX + aw * this._placement.x,
             y = anchorCY + ah * this._placement.y;
 
+        if (this._anchorToPosition) {
+            if (!this._anchorPosition) {
+                // If mouse is used as anchor, this will be set already.
+                // Otherwise, use the updated rect position.
+                this._anchorPosition.x = x;
+                this._anchorPosition.y = y;
+            } else {
+                x = this._anchorPosition.x;
+                y = this._anchorPosition.y;
+            }
+        }
+
+
         x -= this._origin.x * selfRect.width;
         y -= this._origin.y * selfRect.height;
 
         x += this._margins.x * this._placement.x;
         y += this._margins.y * this._placement.y;
+
+        //TODO : Cache valid anchor in case the anchor is removed from view.
 
         if (this._keepWithinScreen) {
 
@@ -474,17 +519,18 @@ class Modal extends base {
     }
 
     _mDown(p_evt) {
-        POINTER.Watch(POINTER.MOUSE_UP, this._mUp);
+        if (this._killOnMDown) { this._TryClose(); }
+        else { POINTER.Watch(POINTER.MOUSE_UP, this._mUp); }
     }
 
     _mUp(p_evt) {
-
         POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
+        this._TryClose();
+    }
 
+    _TryClose() {
         if (this._static || this.ChecksPointer()) { return; }
-
         this.Close();
-
     }
 
     ChecksPointer() {
@@ -531,6 +577,8 @@ class Modal extends base {
         this.context = null;
         this.content = null;
         this.anchor = null;
+        this.anchorToPosition = null;
+        this._killOnMDown = false;
         this.mode = null;
         this.static = false;
         this.keepWithinScreen = true;
