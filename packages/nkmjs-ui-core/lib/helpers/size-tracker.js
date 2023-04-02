@@ -105,10 +105,7 @@ class SizeTracker {
 
     _ToggleBP(p_breakpoint, p_elements, p_toggle) {
         this._owner._flags.Set(p_breakpoint.flag, p_toggle);
-        p_elements.forEach(element => {
-            if (p_toggle) { element.classList.add(p_breakpoint.flag); }
-            else { element.classList.remove(p_breakpoint.flag); }
-        });
+        dom.CSSClass(p_elements, p_breakpoint.flag, p_toggle);
     }
 
 }

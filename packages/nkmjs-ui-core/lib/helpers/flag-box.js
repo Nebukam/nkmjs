@@ -1,6 +1,7 @@
 'use strict';
 
 const collections = require(`@nkmjs/collections`);
+const dom = require(`../utils-dom`);
 
 const __NULL = Symbol(`null`);
 
@@ -92,8 +93,7 @@ class FlagBox {
 
         if (!list) { return; }
 
-        if (p_toggle) { for (let i = 0, n = list.length; i < n; i++) { list[i].classList.add(p_flag); } }
-        else { for (let i = 0, n = list.length; i < n; i++) { list[i].classList.remove(p_flag); } }
+        dom.CSSClass(list, p_flag, p_toggle);
 
     }
 
@@ -103,15 +103,7 @@ class FlagBox {
      */
     ApplyAll(p_toggle) {
         if (!this._elements) { return; }
-        let flagList = this._elements.keys;
-        for (let i = 0, n = flagList.length; i < n; i++) {
-            let flag = flagList[i],
-                elList = this._elements.Get(flag);
-            for (let e = 0, en = elList.length; e < en; e++) {
-                if (p_toggle) { elList[e].classList.add(flag); }
-                else { elList[e].classList.remove(flag); }
-            }
-        }
+        this._elements.keys.forEach(flag => { dom.CSSClass(this._elements.Get(flag), flag, p_toggle); });
     }
 
     /**

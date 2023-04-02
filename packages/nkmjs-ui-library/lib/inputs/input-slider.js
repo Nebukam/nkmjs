@@ -81,7 +81,7 @@ class InputSlider extends base {
 
     _UpdatePreview() {
         super._UpdatePreview();
-        this.style.setProperty(`--fill`, `${u.tils.Map(this.inputValue, this._min, this._max, 0, 100)}%`);
+        ui.dom.CSS(this, '--fill', `${u.tils.Map(this.inputValue, this._min, this._max, 0, 100)}%`);
     }
 
     _onFocusIn(p_evt) {

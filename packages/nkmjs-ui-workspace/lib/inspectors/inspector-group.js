@@ -155,7 +155,7 @@ class InspectorGroup extends base {
             this._BuildContent();
         }
 
-        this._expandIcon.element.classList.remove(ui.FLAGS.EXPANDED);
+        ui.dom.CSSClass(this._expandIcon.element, ui.FLAGS.EXPANDED, false);
         this._toolbar.hidden = false;
     }
 
@@ -166,7 +166,7 @@ class InspectorGroup extends base {
             this._ClearContent();
         }
 
-        this._expandIcon.element.classList.add(ui.FLAGS.EXPANDED);
+        ui.dom.CSSClass(this._expandIcon.element, ui.FLAGS.EXPANDED);
         this._toolbar.hidden = true;
     }
 

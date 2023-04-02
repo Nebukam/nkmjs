@@ -42,8 +42,6 @@ class InputSelectInline extends base {
 
         this._Bind(this._OnOptionToggle);
 
-        //this.classList.add(`group`);
-
         this._showIcon = true;
         this._showLabel = false;
 

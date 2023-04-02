@@ -17,13 +17,18 @@ class ImageHandler extends ContentURLManipulator {
      */
     constructor(p_element = null, p_autoHide = true, p_sizeControl = false) {
         super(p_element, p_autoHide, p_sizeControl);
+        p_element.classList.add(`easeload`);
+        p_element.setAttribute(`onload`, `this.style.opacity=1`)
     }
 
     get content() { return this._element ? this._element.src : null; }
 
     _ApplyPath(p_element, p_path = false, p_direct = false) {
-        if (!p_path) { p_element.src = ``; }
-        else { p_element.src = p_path; }
+        if (p_element.src == p_path) { return; }
+        p_element.classList.remove(`easeload`);
+        p_element.style.opacity = 0;
+        p_element.classList.add(`easeload`);
+        p_element.src = p_path ? p_path : ``;
     }
 
 }

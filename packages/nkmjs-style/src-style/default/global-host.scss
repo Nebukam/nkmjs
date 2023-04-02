@@ -169,3 +169,11 @@
     -o-animation: alphaPulse 1s ease-in-out infinite alternate;
     animation: alphaPulse 1s ease-in-out infinite alternate;
 }
+
+.easeload{
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-out; 
+    -moz-transition: all 0.3s ease-out; 
+    -ms-transition: all 0.3s ease-out; 
+    -o-transition: all 0.3s ease-out; 
+}

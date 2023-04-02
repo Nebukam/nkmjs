@@ -6,6 +6,7 @@ const com = require("@nkmjs/common");
 const FLAGS = require(`../flags`);
 const FlagEnum = require("../helpers/flag-enum");
 const UI = require("../ui");
+const dom = require(`../utils-dom`);
 
 const Manipulator = require(`./manipulator`);
 
@@ -27,7 +28,7 @@ class GridHandler extends Manipulator {
         // TODO : Add placement shortcuts etc
     }
 
-    _Init(p_width = null, p_height = null, p_default = `auto`){
+    _Init(p_width = null, p_height = null, p_default = `auto`) {
         this._ProcessValue = this._ProcessValue.bind(this);
         this._default = p_default;
         this._ConvertParams(p_width, p_height);
@@ -36,23 +37,27 @@ class GridHandler extends Manipulator {
     _OnElementChanged(p_oldElement) {
 
         if (p_oldElement) {
-            p_oldElement.style.removeProperty(`grid-template-columns`);
-            p_oldElement.style.removeProperty(`grid-template-rows`);
-            p_oldElement.style.removeProperty(`justify-items`);
-            p_oldElement.style.removeProperty(`align-items`);
-            p_oldElement.style.removeProperty(`display`);
+            dom.CSS(p_oldElement, {
+                'grid-template-columns': null,
+                'grid-template-rows': null,
+                'justify-items': null,
+                'align-items': null,
+                'display': null,
+            });
         }
 
         if (this._element) {
-            this._element.style.display = `grid`;
-            this._element.style.setProperty(`justify-items`, `stretch`);
-            this._element.style.setProperty(`align-items`, `stretch`);
-            this._Apply(this._element); 
+            dom.CSS(this._element, {
+                'display': `grid`,
+                'justify-items': `stretch`,
+                'align-items': `stretch`,
+            });
+            this._Apply(this._element);
         }
 
     }
 
-    _ConvertParams(p_width = null, p_height = null){
+    _ConvertParams(p_width = null, p_height = null) {
 
         this._width = p_width;
         if (p_width) {
@@ -95,12 +100,10 @@ class GridHandler extends Manipulator {
 
     _Apply(p_element) {
 
-        if (this._width) { p_element.style.setProperty(`grid-template-columns`, this._width); }
-        else { p_element.style.removeProperty(`grid-template-columns`); }
-
-        if (this._height) { p_element.style.setProperty(`grid-template-rows`, this._height); }
-        else { p_element.style.removeProperty(`grid-template-rows`); }
-
+        dom.CSS(p_element, {
+            'grid-template-columns': this._width ? this._width : null,
+            'grid-template-rows': this._height ? this._height : null,
+        });
         return true;
 
     }

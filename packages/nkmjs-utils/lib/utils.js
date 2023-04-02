@@ -834,6 +834,24 @@ class UTILS {
         p_owner[p_conf.id] = p_obj;
     }
 
+    static PadStart(p_number, p_count = 3, p_fill = '0', p_padStyle = null) {
+
+        let
+            base = p_number.toString(),
+            padded = base.padStart(p_count, p_fill),
+            diff = padded.length - base.length;
+
+        if (p_padStyle && diff > 0) {
+            let text = `<span style="`;
+            for (let p in p_padStyle) { text += `${p}:${p_padStyle[p]};`; }
+            text += `">${padded.substr(0, diff)}</span>${base}`;
+            return text;
+        } else {
+            return padded;
+        }
+
+    }
+
 }
 
 module.exports = UTILS;

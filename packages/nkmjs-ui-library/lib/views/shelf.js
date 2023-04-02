@@ -11,6 +11,10 @@ const ShelfNav = require(`./shelf-nav`);
 
 const base = ui.views.View;
 
+const NAV_END = Object.freeze(`nav-end`);
+const NAV_START = Object.freeze(`nav-start`);
+const NAV = Object.freeze(`navigation`);
+
 /**
  * @description TODO
  * @hideconstructor
@@ -95,8 +99,6 @@ class Shelf extends base {
     set isCollapsable(p_value) {
         if (this._isCollapsable == p_value) { return; }
         this._isCollapsable = p_value;
-        //if (p_value) { this.classList.add(`collapsable`); }
-        //else { this.classList.remove(`collapsable`); }
     }
 
     /**
@@ -105,15 +107,16 @@ class Shelf extends base {
      */
     get fixedSize() { return this._fixedSize; }
     set fixedSize(p_value) {
-        if (p_value) {
-            this._fixedSize = p_value;
-            this._flags.Set(ui.FLAGS.FIXED_SIZE, true);
-            this.style.setProperty(`--fixed-size`, `${p_value}`);
-        } else {
-            this._fixedSize = false;
-            this._flags.Set(ui.FLAGS.FIXED_SIZE, false);
-            this.style.removeProperty(`--fixed-size`);
-        }
+        this._fixedSize = p_value ? true : false;
+        if (this._fixedSize) { this.resizable = false; }
+        this._flags.Set(ui.FLAGS.FIXED_SIZE, this._fixedSize);
+        ui.dom.CSS(this, '--fixed-size', this._fixedSize ? `${p_value}` : null);
+    }
+
+    get resizable() { return this._resizable; }
+    set resizable(p_value) {
+        this._ToggleResize(p_value);
+        if (p_value) { this.fixedSize = null; }
     }
 
     /**
@@ -125,19 +128,24 @@ class Shelf extends base {
         switch (p_value) {
             case ui.FLAGS.VERTICAL:
                 this._fixedSizeAxis = ui.FLAGS.VERTICAL;
-                this.classList.add(`fixed-${ui.FLAGS.VERTICAL}`);
-                this.classList.remove(`fixed-${ui.FLAGS.HORIZONTAL}`);
+                ui.dom.CSSClass(this, {
+                    [`fixed-${ui.FLAGS.VERTICAL}`]: true,
+                    [`fixed-${ui.FLAGS.HORIZONTAL}`]: false,
+                });
                 break;
             case ui.FLAGS.HORIZONTAL:
                 this._fixedSizeAxis = ui.FLAGS.HORIZONTAL;
-                this.classList.remove(`fixed-${ui.FLAGS.VERTICAL}`);
-                this.classList.add(`fixed-${ui.FLAGS.HORIZONTAL}`);
+                ui.dom.CSSClass(this, {
+                    [`fixed-${ui.FLAGS.VERTICAL}`]: false,
+                    [`fixed-${ui.FLAGS.HORIZONTAL}`]: true,
+                });
                 break;
             default:
                 this._fixedSizeAxis = null;
-                this.classList.remove(
-                    `fixed-${ui.FLAGS.VERTICAL}`,
-                    `fixed-${ui.FLAGS.HORIZONTAL}`);
+                ui.dom.CSSClass(this, {
+                    [`fixed-${ui.FLAGS.VERTICAL}`]: false,
+                    [`fixed-${ui.FLAGS.HORIZONTAL}`]: false,
+                });
                 break;
         }
     }
@@ -181,8 +189,10 @@ class Shelf extends base {
                 case ui.FLAGS.TOP_RIGHT:
                 case ui.FLAGS.BOTTOM_RIGHT:
                 case ui.FLAGS.BOTTOM:
-                    this.classList.add(`nav-end`);
-                    this.classList.remove(`nav-start`);
+                    ui.dom.CSSClass(this, {
+                        [NAV_START]: false,
+                        [NAV_END]: true,
+                    });
                     this._nav.placement = ui.FLAGS.RIGHT;
                     break;
                 default:
@@ -190,8 +200,10 @@ class Shelf extends base {
                 case ui.FLAGS.TOP_LEFT:
                 case ui.FLAGS.BOTTOM_LEFT:
                 case ui.FLAGS.TOP:
-                    this.classList.add(`nav-start`);
-                    this.classList.remove(`nav-end`);
+                    ui.dom.CSSClass(this, {
+                        [NAV_START]: true,
+                        [NAV_END]: false,
+                    });
                     this._nav.placement = ui.FLAGS.LEFT;
                     break;
             }
@@ -203,8 +215,10 @@ class Shelf extends base {
                 case ui.FLAGS.BOTTOM_LEFT:
                 case ui.FLAGS.BOTTOM_RIGHT:
                 case ui.FLAGS.RIGHT:
-                    this.classList.add(`nav-end`);
-                    this.classList.remove(`nav-start`);
+                    ui.dom.CSSClass(this, {
+                        [NAV_START]: false,
+                        [NAV_END]: true,
+                    });
                     this._nav.placement = ui.FLAGS.BOTTOM;
                     break;
                 default:
@@ -212,8 +226,10 @@ class Shelf extends base {
                 case ui.FLAGS.TOP_LEFT:
                 case ui.FLAGS.TOP_RIGHT:
                 case ui.FLAGS.LEFT:
-                    this.classList.add(`nav-start`);
-                    this.classList.remove(`nav-end`);
+                    ui.dom.CSSClass(this, {
+                        [NAV_START]: true,
+                        [NAV_END]: false,
+                    });
                     this._nav.placement = ui.FLAGS.TOP;
                     break;
             }
@@ -230,13 +246,13 @@ class Shelf extends base {
                 'justify-content': `stretch`,
             },
 
-            ':host(.empty) .navigation': {
+            [`:host(.empty) .${NAV}`]: {
                 'display': 'none'
             },
-            '.navigation': {
+            [`.${NAV}`]: {
                 'flex': `0 0 auto` // was commented out but can't remember why
             },
-            '.view': {
+            [`.${ui.IDS.VIEW}`]: {
                 'flex': `1 1 auto`, // was commented out but can't remember why
             },
 
@@ -245,13 +261,13 @@ class Shelf extends base {
             ':host(.vertical)': {
                 'flex-flow': `row nowrap`,
             },
-            ':host(.vertical), :host(.vertical.nav-start)': {
+            [`:host(.vertical), :host(.vertical.${NAV_START})`]: {
                 'grid-template-columns': 'max-content auto'
             },
-            ':host(.vertical.nav-end)': {
+            [`:host(.vertical.${NAV_END})`]: {
                 'grid-template-columns': 'auto max-content'
             },
-            ':host(.vertical) .view': {
+            [`:host(.vertical) .${ui.IDS.VIEW}`]: {
                 //'flex-flow': `column nowrap`,//should be managed by the view
 
                 'overflow-x': `auto`,
@@ -260,20 +276,20 @@ class Shelf extends base {
                 'height': '100%',
                 'min-width': '0',
             },
-            ':host(.vertical) .navigation, :host(.vertical) .view': { 'grid-row': '1' },
-            ':host(.vertical) .navigation, :host(.vertical.nav-start) .navigation': { 'grid-column': '1' },
-            ':host(.vertical) .view, :host(.vertical.nav-start) .view': { 'grid-column': '2' },
-            ':host(.vertical.nav-end) .navigation': { 'grid-column': '2', },
-            ':host(.vertical.nav-end) .view': { 'grid-column': '1' },
+            [`:host(.vertical) .${NAV}, :host(.vertical) .${ui.IDS.VIEW}`]: { 'grid-row': '1' },
+            [`:host(.vertical) .${NAV}, :host(.vertical.${NAV_START}) .${NAV}`]: { 'grid-column': '1' },
+            [`:host(.vertical) .${ui.IDS.VIEW}, :host(.vertical.${NAV_START}) .${ui.IDS.VIEW}`]: { 'grid-column': '2' },
+            [`:host(.vertical.${NAV_END}) .${NAV}`]: { 'grid-column': '2', },
+            [`:host(.vertical.${NAV_END}) .${ui.IDS.VIEW}`]: { 'grid-column': '1' },
 
             // Horizontal ( nav on top or bottom )
-            ':host(.horizontal), :host(.horizontal.nav-start)': {
+            [`:host(.horizontal), :host(.horizontal.${NAV_START})`]: {
                 'grid-template-rows': 'max-content auto'
             },
-            ':host(.horizontal.nav-end)': {
+            [`:host(.horizontal.${NAV_END})`]: {
                 'grid-template-rows': 'auto max-content'
             },
-            ':host(.horizontal) .view': {
+            [`:host(.horizontal) .${ui.IDS.VIEW}`]: {
                 //'flex-flow': `row nowrap`,//should be managed by the view
 
                 'overflow-x': `auto`,
@@ -282,11 +298,11 @@ class Shelf extends base {
                 'width': '100%',
                 'min-height': '0',
             },
-            ':host(.horizontal) .navigation, :host(.horizontal) .view': { 'grid-column': '1' },
-            ':host(.horizontal) .navigation, :host(.horizontal.nav-start) .navigation': { 'grid-row': '1' },
-            ':host(.horizontal) .view, :host(.horizontal.nav-start) .view': { 'grid-row': '2' },
-            ':host(.horizontal.nav-end) .navigation': { 'grid-row': '2' },
-            ':host(.horizontal.nav-end) .view': { 'grid-row': '1' },
+            [`:host(.horizontal) .${NAV}, :host(.horizontal) .${ui.IDS.VIEW}`]: { 'grid-column': '1' },
+            [`:host(.horizontal) .${NAV}, :host(.horizontal.${NAV_START}) .${NAV}`]: { 'grid-row': '1' },
+            [`:host(.horizontal) .${ui.IDS.VIEW}, :host(.horizontal.${NAV_START}) .${ui.IDS.VIEW}`]: { 'grid-row': '2' },
+            [`:host(.horizontal.${NAV_END}) .${NAV}`]: { 'grid-row': '2' },
+            [`:host(.horizontal.${NAV_END}) .${ui.IDS.VIEW}`]: { 'grid-row': '1' },
 
 
             ':host(.fixed-horizontal.fixed-size:not(.collapsed))': {
@@ -305,7 +321,7 @@ class Shelf extends base {
 
     _Render() {
         super._Render();
-        this._nav = this.Attach(this._navClass, `navigation`);
+        this._nav = this.Attach(this._navClass, NAV);
 
         this._orientation.AddManaged(this._nav._orientation);
         this._nav.orientation = this.constructor.__defaultOrientation;
@@ -334,7 +350,7 @@ class Shelf extends base {
      */
     _OnCatalogItemAdded(p_builder, p_item, p_mappedView) {
 
-        
+
         let handle = this._nav.CreateNavItem(p_item);
         handle.Watch(ui.SIGNAL.CLOSE_REQUESTED, this._OnHandleCloseRequest, this);
 
@@ -343,7 +359,7 @@ class Shelf extends base {
             .Watch(ui.SIGNAL.CLOSE_REQUESTED, this._OnViewRequestClose, this);
 
         p_mappedView.visible = false;
-        p_mappedView.classList.add(ui.IDS.VIEW);
+        ui.dom.CSSClass(p_mappedView, ui.IDS.VIEW);
         this.Attach(p_mappedView);
 
         this.Broadcast(ui.SIGNAL.VIEW_ADDED, this, p_mappedView, handle);
@@ -388,7 +404,7 @@ class Shelf extends base {
      * @param {ui.core.views.ShelfNav} p_nav 
      * @param {ui.core.Widget} p_handle 
      */
-     _OnNavItemActivated(p_nav, p_handle) {
+    _OnNavItemActivated(p_nav, p_handle) {
         let view = this._catalogViewBuilder.Get(p_handle.data);
         if (!u.isInstanceOf(view, ui.views.View)) { return; }
 
@@ -520,9 +536,9 @@ class Shelf extends base {
         let catalogItem = this._currentHandle ? this._currentHandle.data : null,
             view = this._catalogViewBuilder.Get(catalogItem);
 
-        if (!view) { 
+        if (!view) {
             this.Broadcast(SIGNAL.CURRENT_HANDLE_CHANGED, this, catalogItem, p_oldHandle ? p_oldHandle.data : null);
-            return; 
+            return;
         }
 
         this.Broadcast(SIGNAL.CURRENT_HANDLE_CHANGED, this, catalogItem, p_oldHandle ? p_oldHandle.data : null);
@@ -547,7 +563,7 @@ class Shelf extends base {
             if (this._catalogViewBuilder.Owns(oldValue)) {
                 oldValue.visible = false;
             } else {
-                oldValue.classList.remove(ui.IDS.VIEW);
+                ui.dom.CSSClass(oldValue, ui.IDS.VIEW, false);
                 this.Detach(oldValue);
             }
 
@@ -558,7 +574,7 @@ class Shelf extends base {
             if (this._catalogViewBuilder.Owns(this._currentView)) {
                 this._currentView.visible = true;
             } else {
-                this._currentView.classList.add(ui.IDS.VIEW);
+                ui.dom.CSSClass(this._currentView, ui.IDS.VIEW);
                 this.Attach(this._currentView);
             }
         }
@@ -614,8 +630,10 @@ class Shelf extends base {
         // Move the nav back in if it has been taken out
         if (this._nav.parentElement != this._host) { ui.dom.AttachFirst(this._nav, this._host, false); }
         this._catalogViewBuilder.catalog = null;
-        this.classList.remove(`nav-end`);
-        this.classList.remove(`nav-start`);
+        ui.dom.CSSClass(this, {
+            [NAV_END]: false,
+            [NAV_START]: false
+        });
         super._CleanUp();
     }
 

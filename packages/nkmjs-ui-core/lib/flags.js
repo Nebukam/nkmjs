@@ -20,7 +20,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static NONE  = Object.freeze(`none`);
+    static NONE = Object.freeze(`none`);
 
     /**
      * @description TODO
@@ -28,7 +28,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static SELF  = Object.freeze(`self`);
+    static SELF = Object.freeze(`self`);
 
     /**
      * @description TODO
@@ -36,7 +36,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static CONTEXT  = Object.freeze(`context`);
+    static CONTEXT = Object.freeze(`context`);
 
     /**
      * @description TODO
@@ -44,7 +44,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static INSIDE  = Object.freeze(`inside`);
+    static INSIDE = Object.freeze(`inside`);
 
     /**
      * @description TODO
@@ -52,7 +52,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static OUTSIDE  = Object.freeze(`outside`);
+    static OUTSIDE = Object.freeze(`outside`);
 
     /**
      * @description TODO
@@ -60,7 +60,7 @@ class FLAGS {
      * @customtag read-only
      * @group Orientation
      */
-    static VERTICAL  = Object.freeze(`vertical`);
+    static VERTICAL = Object.freeze(`vertical`);
 
     /**
      * @description TODO
@@ -68,7 +68,7 @@ class FLAGS {
      * @customtag read-only
      * @group Orientation
      */
-    static HORIZONTAL  = Object.freeze(`horizontal`);
+    static HORIZONTAL = Object.freeze(`horizontal`);
 
     /**
      * @description TODO
@@ -76,7 +76,9 @@ class FLAGS {
      * @customtag read-only
      * @group Orientation
      */
-    static VERTICAL_AND_HORIZONTAL  = Object.freeze(`${this.VERTICAL} ${this.HORIZONTAL}`);
+    static VERTICAL_AND_HORIZONTAL = Object.freeze(`${this.VERTICAL} ${this.HORIZONTAL}`);
+
+    static BOTH = Object.freeze(`both`);
 
     /**
      * @description TODO
@@ -95,14 +97,14 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static EXPANDED  = Object.freeze(`expanded`);
+    static EXPANDED = Object.freeze(`expanded`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static COLLAPSED  = Object.freeze(`collapsed`);
+    static COLLAPSED = Object.freeze(`collapsed`);
 
     // Interactive states
 
@@ -112,7 +114,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static DISABLED  = Object.freeze(`disabled`);
+    static DISABLED = Object.freeze(`disabled`);
 
     /**
      * @description TODO
@@ -120,7 +122,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static IDLE  = Object.freeze(`idle`);
+    static IDLE = Object.freeze(`idle`);
 
     /**
      * @description TODO
@@ -128,7 +130,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static FOCUSED  = Object.freeze(`focused`);
+    static FOCUSED = Object.freeze(`focused`);
 
     /**
      * @description TODO
@@ -151,7 +153,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static ACTIVATED  = Object.freeze(`activated`);
+    static ACTIVATED = Object.freeze(`activated`);
 
     /**
      * @description TODO
@@ -159,7 +161,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static SELECTED  = Object.freeze(`selected`);
+    static SELECTED = Object.freeze(`selected`);
 
     /**
      * @description TODO
@@ -167,7 +169,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static TOGGLED  = Object.freeze(`toggled`);
+    static TOGGLED = Object.freeze(`toggled`);
 
     /**
      * @description TODO
@@ -175,7 +177,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static TOGGLABLE  = Object.freeze(`togglable`);
+    static TOGGLABLE = Object.freeze(`togglable`);
 
     // Placements
 
@@ -185,7 +187,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static LEFT  = Object.freeze(`left`);
+    static LEFT = Object.freeze(`left`);
 
     /**
      * @description TODO
@@ -193,7 +195,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static RIGHT  = Object.freeze(`right`);
+    static RIGHT = Object.freeze(`right`);
 
     /**
      * @description TODO
@@ -201,7 +203,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static TOP  = Object.freeze(`top`);
+    static TOP = Object.freeze(`top`);
 
     /**
      * @description TODO
@@ -209,7 +211,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static BOTTOM  = Object.freeze(`bottom`);
+    static BOTTOM = Object.freeze(`bottom`);
 
     /**
      * @description TODO
@@ -217,7 +219,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static TOP_LEFT  = Object.freeze(`${this.TOP} ${this.LEFT}`);
+    static TOP_LEFT = Object.freeze(`${this.TOP} ${this.LEFT}`);
 
     /**
      * @description TODO
@@ -225,7 +227,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static TOP_RIGHT  = Object.freeze(`${this.TOP} ${this.RIGHT}`);
+    static TOP_RIGHT = Object.freeze(`${this.TOP} ${this.RIGHT}`);
 
     /**
      * @description TODO
@@ -233,7 +235,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static BOTTOM_LEFT  = Object.freeze(`${this.BOTTOM} ${this.LEFT}`);
+    static BOTTOM_LEFT = Object.freeze(`${this.BOTTOM} ${this.LEFT}`);
 
     /**
      * @description TODO
@@ -241,7 +243,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static BOTTOM_RIGHT  = Object.freeze(`${this.BOTTOM} ${this.RIGHT}`);
+    static BOTTOM_RIGHT = Object.freeze(`${this.BOTTOM} ${this.RIGHT}`);
 
     /**
      * @description Contains the following values :  
@@ -349,35 +351,35 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static SHOWN  = Object.freeze(`shown`);
+    static SHOWN = Object.freeze(`shown`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static NO_ICON  = Object.freeze(`no-icon`);
+    static NO_ICON = Object.freeze(`no-icon`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static NO_LABEL  = Object.freeze(`no-label`);
+    static NO_LABEL = Object.freeze(`no-label`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static NO_SCALE  = Object.freeze(`no-scale`);
+    static NO_SCALE = Object.freeze(`no-scale`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static FIXED_SIZE  = Object.freeze(`fixed-size`);
+    static FIXED_SIZE = Object.freeze(`fixed-size`);
 
     // Sizes
 
@@ -387,7 +389,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_XXS  = Object.freeze(`size-xxs`);
+    static SIZE_XXS = Object.freeze(`size-xxs`);
 
     /**
      * @description TODO
@@ -395,7 +397,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_XS  = Object.freeze(`size-xs`);
+    static SIZE_XS = Object.freeze(`size-xs`);
 
     /**
      * @description TODO
@@ -403,7 +405,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_S  = Object.freeze(`size-s`);
+    static SIZE_S = Object.freeze(`size-s`);
 
     /**
      * @description TODO
@@ -411,7 +413,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_M  = Object.freeze(`size-m`);
+    static SIZE_M = Object.freeze(`size-m`);
 
     /**
      * @description TODO
@@ -419,7 +421,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_L  = Object.freeze(`size-l`);
+    static SIZE_L = Object.freeze(`size-l`);
 
     /**
      * @description TODO
@@ -427,7 +429,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_XL  = Object.freeze(`size-xl`);
+    static SIZE_XL = Object.freeze(`size-xl`);
 
     /**
      * @description TODO
@@ -435,15 +437,15 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-     static SIZE_FILL  = Object.freeze(`size-fill`);
+    static SIZE_FILL = Object.freeze(`size-fill`);
 
-     /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     * @group Sizes
-     */
-      static SIZE_CUSTOM  = Object.freeze(`size-custom`);
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Sizes
+    */
+    static SIZE_CUSTOM = Object.freeze(`size-custom`);
 
     /**
      * @description TODO
@@ -462,6 +464,51 @@ class FLAGS {
         this.SIZE_CUSTOM
     ];
 
+    
+     /**
+   * @description TODO
+   * @type {string}
+   * @customtag read-only
+   * @group Sizing
+   */
+     static INLINE = Object.freeze(`inline`);
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Sizing
+    */
+    static STRETCH = Object.freeze(`stretch`);
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Sizing
+    */
+    static STRETCH_SAME = Object.freeze(`stretch-same`);
+
+    /**
+    * @description TODO
+    * @type {string}
+    * @customtag read-only
+    * @group Sizing
+    */
+    static STRETCH_SQUEEZE = Object.freeze(`stretch-squeeze`);
+
+    /**
+    * @description TODO
+    * @type {array}
+    * @customtag read-only
+    * @group Sizing
+    */
+    static stretches = [
+        this.STRETCH,
+        this.STRETCH_SAME,
+        this.STRETCH_SQUEEZE
+    ]
+
     // Flavors
 
     /**
@@ -471,7 +518,7 @@ class FLAGS {
      * @group Flavors
      * @groupdescription Flavors are mostly taken from {@link common.FLAGS}.
      */
-    static CTA  = Object.freeze(`cta`);
+    static CTA = Object.freeze(`cta`);
 
     /**
      * @description TODO
@@ -513,7 +560,7 @@ class FLAGS {
      * @customtag read-only
      * @group Variants
      */
-    static MINIMAL  = Object.freeze(`minimal`);
+    static MINIMAL = Object.freeze(`minimal`);
 
     /**
      * @description TODO
@@ -521,7 +568,7 @@ class FLAGS {
      * @customtag read-only
      * @group Variants
      */
-    static FRAME  = Object.freeze(`frame`);
+    static FRAME = Object.freeze(`frame`);
 
     /**
      * @description TODO
@@ -542,7 +589,7 @@ class FLAGS {
      * @customtag read-only
      * @group Animation
      */
-    static A_START  = Object.freeze(`start`);
+    static A_START = Object.freeze(`start`);
 
     /**
      * @description TODO
@@ -550,7 +597,7 @@ class FLAGS {
      * @customtag read-only
      * @group Animation
      */
-    static A_END  = Object.freeze(`end`);
+    static A_END = Object.freeze(`end`);
 
     /**
      * @description TODO
@@ -558,7 +605,7 @@ class FLAGS {
      * @customtag read-only
      * @group Animation
      */
-    static A_ITERATION  = Object.freeze(`iteration`);
+    static A_ITERATION = Object.freeze(`iteration`);
 
     /**
      * @description TODO
@@ -566,7 +613,7 @@ class FLAGS {
      * @customtag read-only
      * @group Animation
      */
-    static A_CANCEL  = Object.freeze(`cancel`);
+    static A_CANCEL = Object.freeze(`cancel`);
 
     /**
     * @description TODO
@@ -574,7 +621,7 @@ class FLAGS {
     * @customtag read-only
     * @group Animation
     */
-    static A_ANY_END  = Object.freeze(`any-end`);
+    static A_ANY_END = Object.freeze(`any-end`);
 
     // Drag & Drop
 
@@ -584,7 +631,7 @@ class FLAGS {
      * @customtag read-only
      * @group Drag'n Drop
      */
-    static DRAGGED  = Object.freeze(`dragged`);
+    static DRAGGED = Object.freeze(`dragged`);
 
     /**
      * @description TODO
@@ -592,7 +639,7 @@ class FLAGS {
      * @customtag read-only
      * @group Drag'n Drop
      */
-    static ALLOW_DROP  = Object.freeze(`allow-drop`);
+    static ALLOW_DROP = Object.freeze(`allow-drop`);
 
     /**
      * @description TODO
@@ -600,7 +647,7 @@ class FLAGS {
      * @customtag read-only
      * @group Drag'n Drop
      */
-    static ALLOW_DROP_TOP  = Object.freeze(`allow-drop-top`);
+    static ALLOW_DROP_TOP = Object.freeze(`allow-drop-top`);
 
     /**
     * @description TODO
@@ -608,7 +655,7 @@ class FLAGS {
     * @customtag read-only
     * @group Drag'n Drop
     */
-    static ALLOW_DROP_BOTTOM  = Object.freeze(`allow-drop-bottom`);
+    static ALLOW_DROP_BOTTOM = Object.freeze(`allow-drop-bottom`);
 
     /**
    * @description TODO
@@ -616,7 +663,7 @@ class FLAGS {
    * @customtag read-only
    * @group Drag'n Drop
    */
-    static ALLOW_DROP_LEFT  = Object.freeze(`allow-drop-left`);
+    static ALLOW_DROP_LEFT = Object.freeze(`allow-drop-left`);
 
     /**
     * @description TODO
@@ -624,7 +671,7 @@ class FLAGS {
     * @customtag read-only
     * @group Drag'n Drop
     */
-    static ALLOW_DROP_RIGHT  = Object.freeze(`allow-drop-right`);
+    static ALLOW_DROP_RIGHT = Object.freeze(`allow-drop-right`);
 
     //
 
@@ -634,7 +681,7 @@ class FLAGS {
     * @customtag read-only
     * @group Views
     */
-    static EMPTY  = Object.freeze(`empty`);
+    static EMPTY = Object.freeze(`empty`);
 
 
 

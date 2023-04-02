@@ -389,13 +389,13 @@ class StyleguideApp extends nkm.app.AppBase {
 
     // ----
 
-    _OnNumberInputCreated(p_input){
+    _OnNumberInputCreated(p_input) {
         console.warn(`YO`);
         p_input.options = {
-            min:-10, 
-            max:10,
-            step:0.01,
-            currentValue:2
+            min: -10,
+            max: 10,
+            step: 0.01,
+            currentValue: 2
         };
     }
 
@@ -418,7 +418,7 @@ class StyleguideApp extends nkm.app.AppBase {
     _TriggerTest(p_source) {
         console.log(`triggered : ${p_source}`);
     }
-    
+
 
     _Popin(p_btn) {
 
@@ -447,7 +447,7 @@ class StyleguideApp extends nkm.app.AppBase {
     }
 
     _Stretch(p_source) {
-        p_source.parentElement.style.setProperty(`align-items`, `stretch`);
+        ui.dom.CSS(p_source.parentElement, 'align-items', `stretch`);
     }
 
 

@@ -33,7 +33,7 @@ const DisplayObject = require(`./display-object`);
  * @property {number} index Index of the removed object (before removal)
  */
 
- const base = DisplayObject;
+const base = DisplayObject;
 
 /**
  * A DisplayObjectContainer is `{@link ui.code.DisplayObject}` that manages an internal list of DisplayObjects childs.
@@ -153,12 +153,8 @@ class DisplayObjectContainer extends base {
         p_displayObject.parent = this;
 
         if (p_cssClass) {
-            if (p_cssClass.includes(' ')) {
-                let classes = p_cssClass.split(' ');
-                p_displayObject.classList.add(...classes);
-            } else {
-                p_displayObject.classList.add(p_cssClass);
-            }
+            if (p_cssClass.includes(' ')) { p_displayObject.classList.add(...p_cssClass.split(' ')); }
+            else { p_displayObject.classList.add(p_cssClass); }
         }
 
         this._OnChildAttached(p_displayObject, p_index);

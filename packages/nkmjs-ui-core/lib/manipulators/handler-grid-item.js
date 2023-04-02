@@ -6,6 +6,7 @@ const com = require("@nkmjs/common");
 const FLAGS = require(`../flags`);
 const FlagEnum = require("../helpers/flag-enum");
 const UI = require("../ui");
+const dom = require(`../utils-dom`);
 
 const Manipulator = require(`./manipulator`);
 
@@ -58,13 +59,12 @@ class GridItemHandler extends Manipulator {
 
     _Apply(p_element) {
 
-        p_element.style.setProperty(`grid-column-start`, this._x);
-        if (this._width > 0) { p_element.style.setProperty(`grid-column-end`, this._x + this._width); }
-        else { p_element.style.removeProperty(`grid-column-end`,); }
-
-        p_element.style.setProperty(`grid-row-start`, this._y);
-        if (this._height > 0) { p_element.style.setProperty(`grid-row-end`, this._y + this._height); }
-        else { p_element.style.removeProperty(`grid-row-end`); }
+        dom.CSS(p_element, {
+            'grid-column-start':this._x,
+            'grid-column-end':this._width > 0 ? this._x + this._width : null,
+            'grid-row-start':this._y,
+            'grid-row-end':this._height > 0 ? this._y + this._height : null
+        });
 
         return true;
 

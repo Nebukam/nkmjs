@@ -1,6 +1,7 @@
 'use strict';
 
 const ContentURLManipulator = require(`./manipulator-content-url`);
+const dom = require(`../utils-dom`);
 
 /**
  * @description TODO
@@ -24,13 +25,10 @@ class BackgroundHandler extends ContentURLManipulator {
         return this._element ? this._element.style.backgroundImage : null;
     }
 
+    set objectFit(p_value) { dom.CSS(this._element, 'object-fit', p_value); }
+
     _ApplyPath(p_element, p_path = false, p_direct = false) {
-        if (!p_path) { p_element.style.removeProperty(`backgroundImage`); }
-        else { 
-            if(p_direct){ p_element.style.backgroundImage = p_path; }
-            else{ p_element.style.backgroundImage = `url(${p_path})`; }
-            
-        }
+        dom.CSS(this._element, 'backgroundImage', p_path ? p_direct ? p_path : `url(${p_path})` : null);
     }
 
 }

@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
 const SIGNAL = require(`./signal`);
 const FLAGS = require(`./flags`);
@@ -311,7 +312,7 @@ class Widget extends base {
             this.style[`pointer-events`] = `none`;
         } else {
             this._istateEnum.Set(FLAGS.IDLE);
-            this.style.removeProperty(`pointer-events`);
+            dom.CSS(this, 'pointer-events');
         }
 
     }

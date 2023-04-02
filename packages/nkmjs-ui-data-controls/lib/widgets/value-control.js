@@ -137,23 +137,16 @@ class ValueControl extends base {
 
     set invertInputOrder(p_value) {
 
-        if (p_value) {
-            this._label._element.style.order = `1`;
-            this._inputOrder = 0;
-            this.classList.add(`input-first`);
-        } else {
-            this._label._element.style.order = `0`;
-            this._inputOrder = 1;
-            this.classList.remove(`input-first`);
-        }
+        this._inputOrder = p_value ? 0 : 1;
+        ui.dom.CSSClass(this, `input-first`, p_value);
+        ui.dom.CSS(this._label.element, ui.IDS.ORDER, p_value ? 1 : 0);
 
         if (this._input) { this._input.order = this._inputOrder; }
     }
 
     set inputOnly(p_value) {
         this._inputOnly = p_value;
-        if (p_value) { this._label._element.style.display = `none`; }
-        else { this._label._element.style.removeProperty(`display`); }
+        ui.dom.CSS(this._label.element, `display`, p_value ? `none` : null);
     }
 
     get propertyId() { return this._descriptor.id; }
@@ -255,9 +248,9 @@ class ValueControl extends base {
 
         // Red strikethrough on boolean input
 
-        if (u.isInstanceOf(this._valueType, data.TYPES.BOOLEAN)
-            && !this._input.currentValue) { this.classList.add(`false`); }
-        else { this.classList.remove(`false`); }
+        ui.dom.CSSClass(this, `false`,
+            u.isInstanceOf(this._valueType, data.TYPES.BOOLEAN)
+            && !this._input.currentValue);
 
     }
 

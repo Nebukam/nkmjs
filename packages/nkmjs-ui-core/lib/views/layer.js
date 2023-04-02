@@ -2,6 +2,7 @@
 
 const UI = require(`../ui`);
 const View = require(`./view`);
+const dom = require(`../utils-dom`);
 
 const base = View;
 
@@ -29,7 +30,7 @@ class Layer extends base {
     get layerIndex() { return this._layerIndex; }
     set layerIndex(p_value) { 
         this._layerIndex = p_value; 
-        this.style.setProperty(`--layer-depth`, p_value);
+        dom.CSS(this, `--layer-depth`, p_value);
         this._OnLayerIndexUpdated();
     }
 

@@ -146,9 +146,7 @@ class DefaultStylesheet extends PaletteBuilder {
                 'z-index': 10,
             },
 
-            'bg-blur-10':{
-                'backdrop-filter': 'blur(10px)'
-            },
+            'bg-blur-10': { 'backdrop-filter': 'blur(10px)' },
 
             'absolute-top-left': { 'position': 'absolute', 'top': '0', 'left': '0' },
             'absolute-top': { 'position': 'absolute', 'top': '0', 'left': '50%', 'transform': 'translate(-50%, 0)' },

@@ -92,7 +92,7 @@ class ActionStackInspector extends base {
         this._toolbar = this.Attach(ui.WidgetBar, `toolbar`, this._host);
         this._toolbar.options = {
             inline: true,
-            stretch: ui.WidgetBar.FLAG_STRETCH,
+            stretch: ui.FLAGS.STRETCH,
             defaultWidgetClass: uilib.buttons.Button,
             handles: [
                 {

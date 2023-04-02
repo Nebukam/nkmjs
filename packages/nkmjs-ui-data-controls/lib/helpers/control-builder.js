@@ -169,7 +169,7 @@ class ControlBuilder {
             if (p_config.options && !p_configIsOptions) { ctrl.options = p_config.options; }
             else if (p_configIsOptions) { ctrl.options = p_config; }
             if (p_config.hideWhen || p_config.disableWhen) { conditional = true; }
-            if (p_config.cssInline) { for (var p in p_config.cssInline) { ctrl.style.setProperty(p, p_config.cssInline[p]); } }
+            if (p_config.cssInline) { ui.dom.CSS(ctrl, p_config.cssInline); }
         }
 
         ctrl.editor = this._editor;
@@ -256,7 +256,7 @@ class ControlBuilder {
                 ctrl = this._controls[i],
                 conf = this._configMap.get(ctrl);
             if (conf) {
-                if (conf.css) { ctrl.classList.remove(conf.css); }
+                if (conf.css) { ui.dom.CSSClass(ctrl, conf.css, false); }
                 //TODO : Clear owner member, if any
             }
             ctrl.Release();

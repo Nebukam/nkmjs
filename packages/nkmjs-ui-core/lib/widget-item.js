@@ -28,7 +28,7 @@ class WidgetItem extends base {
     static __distribute = com.helpers.OptionsDistribute.Ext()
         .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
         .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
-        .To(`order`)
+        .To(IDS.ORDER)
         .To(IDS.FLAVOR)
         .To(IDS.DATA, `itemData`);
 

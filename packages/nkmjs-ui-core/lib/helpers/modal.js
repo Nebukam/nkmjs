@@ -377,13 +377,12 @@ class Modal extends base {
         this._isReady = p_toggle;
         if (p_toggle) {
             //this.visible = true;
-            this.classList.add(__isReady);
             this._delayedReady.Cancel();
             //if (this._rectTracker._enabled) { this._UpdateAnchoredPosition(); }
         } else {
             //this.visible = false;
-            this.classList.remove(__isReady);
         }
+        dom.CSSClass(this, __isReady, p_toggle);
     }
 
     _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
@@ -514,7 +513,7 @@ class Modal extends base {
 
         }
 
-        this.style.setProperty(`transform`, `translateX(${x}px) translateY(${y}px)`);
+        dom.CSS(this, `transform`, `translateX(${x}px) translateY(${y}px)`);
 
     }
 

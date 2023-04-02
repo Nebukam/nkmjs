@@ -2,6 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
+const dom = require(`../utils-dom`);
 
 /**
  * @description TODO
@@ -151,19 +152,14 @@ class FlagEnum {
         this._currentFlag = p_flag;
 
         if (!oldFlag && p_flag) {
-            for (let i = 0, n = this._elements.length; i < n; i++) {
-                this._elements[i].classList.add(prefixed_flag);
-            }
+            dom.CSSClass(this._elements, prefixed_flag);
         } else if (oldFlag && !p_flag) {
-            for (let i = 0, n = this._elements.length; i < n; i++) {
-                this._elements[i].classList.remove(prefixed_oldFlag);
-            }
+            dom.CSSClass(this._elements, prefixed_oldFlag, false);
         } else {
-            for (let i = 0, n = this._elements.length; i < n; i++) {
-                el = this._elements[i];
-                el.classList.add(prefixed_flag);
-                el.classList.remove(prefixed_oldFlag);
-            }
+            this._elements.forEach(el => {
+                dom.CSSClass(el, prefixed_flag);
+                dom.CSSClass(el, prefixed_oldFlag, false);
+            });
         }
 
         this._onFlagChanged.Dispatch(p_flag, oldFlag);

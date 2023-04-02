@@ -34,10 +34,7 @@ class ProgressBar extends base {
     set hideWhenComplete(p_value) { this._hideWhenComplete = p_value; }
     set size(p_value) { this._sizeEnum.Set(p_value); }
     set flavor(p_value) { this._flavorEnum.Set(p_value); }
-    set inverted(p_value) {
-        if (p_value) { this.classList.add(`inverted`) }
-        else { this.classList.remove(`inverted`) }
-    }
+    set inverted(p_value) { ui.dom.CSSClass(this, `inverted`, p_value); }
 
     static _Style() {
         return style.Extends({
@@ -80,18 +77,20 @@ class ProgressBar extends base {
 
     SetColors(p_bg = null, p_bar = null) {
         if (!p_bg && !p_bar) {
-            this.style.setProperty('--bg-color', 'var(--flavor-color-dark-rgb)');
-            this.style.setProperty('--bar-color', 'var(--flavor-color)');
+            ui.dom.CSS(this, {
+                ['--bg-color']: 'var(--flavor-color-dark-rgb)',
+                ['--bar-color']: 'var(--flavor-color)',
+            });
         } else {
-            if (p_bg) { this.style.setProperty('--bg-color', p_bg); }
-            if (p_bar) { this.style.setProperty('--bar-color', p_bar); }
+            if (p_bg) { ui.dom.CSS(this, '--bg-color', p_bg); }
+            if (p_bar) { ui.dom.CSS(this, '--bar-color', p_bar); }
         }
     }
 
     set progress(p_value) {
         let p = Math.max(Math.min(p_value, 1), 0);
-        if (this._hideWhenComplete) { if (p == 1) { this.classList.add('complete'); } else { this.classList.remove('complete'); } }
-        this.style.setProperty(`--progress`, `${p * 100}%`)
+        if (this._hideWhenComplete) { ui.dom.CSSClass(this, `complete`, p == 1); }
+        ui.dom.CSS(this, `--progress`, `${p * 100}%`);
     }
 
 }

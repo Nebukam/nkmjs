@@ -5,6 +5,7 @@ const style = require("@nkmjs/style");
 const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
+const dom = require(`../utils-dom`);
 const UI = require(`../ui`);
 const SIGNAL = require(`../signal`);
 const Layer = require(`./layer`);
@@ -56,7 +57,7 @@ class LayerContainer extends base {
         let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Add(layer);
-            layer.classList.add(this.constructor.__layerClassName);
+            dom.CSSClass(layer, this.constructor.__layerClassName);
             layer.Watch(SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }
@@ -67,7 +68,11 @@ class LayerContainer extends base {
         let layer = u.isInstanceOf(p_displayObject, Layer) ? p_displayObject : null;
         if (layer) {
             this._layerList.Remove(layer);
-            layer.classList.remove(this.constructor.__layerClassName, __className_topLayer, __className_subLayer);
+            dom.CSSClass(layer, {
+                [`${this.constructor.__layerClassName}`]: false,
+                [`${__className_topLayer}`]: false,
+                [`${__className_subLayer}`]: false
+            });
             layer.Unwatch(SIGNAL.DISPLAY_REQUESTED, this._OnLayerDisplayRequested, this);
             this._updateDepths.Schedule();
         }
@@ -90,19 +95,21 @@ class LayerContainer extends base {
         this._layerList
 
         for (let i = 0; i < layerCount; i++) {
-            let layer = this._layerList.At(i);
+            let
+                layer = this._layerList.At(i),
+                isTopLayer = false;
             lastLayer = layer;
             layer.layerSiblingsCount = layerCount;
             layer.layerIndex = index++;
 
+
             if (i == (layerCount - 1)) { // last layer
-                layer.classList.remove(__className_subLayer);
-                layer.classList.add(__className_topLayer);
+                isTopLayer = true;
                 layer.DisplayGranted();
-            } else {
-                layer.classList.remove(__className_subLayer);
-                layer.classList.add(__className_topLayer);
             }
+
+            dom.CSSClass(layer, __className_subLayer, !isTopLayer);
+            dom.CSSClass(layer, __className_topLayer, isTopLayer);
         }
 
         return lastLayer;

@@ -22,7 +22,7 @@ class InputFile extends base {
     _Init() {
 
         super._Init();
-        
+
         this._Bind(this._onPickerChange);
         this._Bind(this._OnPicked);
 
@@ -119,11 +119,7 @@ class InputFile extends base {
     // Drop
 
     _ToggleDropCandidate(p_toggle) {
-        if (p_toggle) {
-            this.style.setProperty(`border`, `1px solid red`);
-        } else {
-            this.style.removeProperty(`border`);
-        }
+        ui.dom.CSS(this, 'border', p_toggle ? `1px solid red` : null);
     }
 
     _CheckDrop(p_data) {

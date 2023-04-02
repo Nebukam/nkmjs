@@ -93,6 +93,14 @@ class IDS {
    */
      static SIZE = Object.freeze(`size`);
 
+     /**
+   * @description TODO
+   * @type {string}
+   * @customtag read-only
+   * @group Common
+   */
+     static ORDER = Object.freeze(`order`);
+
     /**
      * @description TODO
      * @type {string}
@@ -140,6 +148,22 @@ class IDS {
      * @group Common
      */
     static OWNER = com.IDS.OWNER;
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Common
+     */
+    static ITEM = Object.freeze(`item`);
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Common
+     */
+    static GROUP = Object.freeze(`group`);
 
     /**
      * @description TODO

@@ -11,6 +11,8 @@ const UI = require(`../ui`);
 const SIGNAL = require(`../signal`);
 const FLAGS = require(`../flags`);
 const ANCHORING = require(`../anchoring`);
+const dom = require(`../utils-dom`);
+
 const WidgetOrientable = require(`../widget-orientable`);
 
 const base = WidgetOrientable;
@@ -54,7 +56,7 @@ class View extends base {
         this.forwardData.To(this._commands, { mapping: `context` });
 
         this._defaultModalContentOptions = null;
-
+        this._resizable = false;
     }
 
     CmdGet(p_key) { /* Replaced by this._commands.Get */ }
@@ -63,7 +65,19 @@ class View extends base {
         return style.Extends({
             ':host': {
                 '@': [`fade-in`]
-            }
+            },
+            ':host(.resizable)':{
+                'flex':'0 0 auto !important'
+            },
+            ':host(.resize-horizontal)': {
+                'resize': 'horizontal',
+                'overflow': 'auto'
+            },
+            ':host(.resize-vertical)': {
+                'resize': 'vertical',
+                'overflow': 'auto'
+            },
+
         }, base._Style());
     }
 
@@ -73,6 +87,26 @@ class View extends base {
     }
 
     get displayed() { return this._isDisplayed; }
+
+    get resizable() { return this._resizable; }
+    set resizable(p_value) { this._ToggleResize(p_value); }
+
+    _ToggleResize(p_value) {
+        this._resizable = p_value;
+
+        dom.CSSClass(this, {
+            [`resize-${FLAGS.VERTICAL}`]: false,
+            [`resize-${FLAGS.HORIZONTAL}`]: false,
+        });
+
+        dom.CSSClass(this, `resize-${this._orientation._currentFlag}`, this._resizable);
+        dom.CSSClass(this, `resizable`, this._resizable);
+    }
+
+    _OnOrientationChanged(p_newValue, p_oldValue) {
+        super._OnOrientationChanged(p_newValue, p_oldValue);
+        this.resizable = this._resizable;
+    }
 
     /**
      * @description TODO
@@ -199,6 +233,7 @@ class View extends base {
 
     _CleanUp() {
         this.DisplayLost();
+        this.resizable = false;
         if (this._selStackOverride) { this.selStackOverride = null; }
         if (this._selStack) { this._selStack.Clear(); }
         super._CleanUp();

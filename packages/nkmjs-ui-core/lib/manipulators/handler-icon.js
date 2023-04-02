@@ -4,6 +4,8 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 
+const dom = require(`../utils-dom`);
+
 const IDS = require(`../ids`);
 const ContentManipulator = require(`./manipulator-content`);
 
@@ -27,7 +29,7 @@ class IconHandler extends ContentManipulator {
      */
     constructor(p_element = null, p_autoHide = true, p_sizeControl = false) {
         super(p_element, p_autoHide, p_sizeControl);
-        p_element.classList.add(`icon-element`);
+        dom.CSSClass(p_element, `icon-element`);
     }
 
     get content() { return this._element ? this._element.getAttribute(__id_i) : null; }

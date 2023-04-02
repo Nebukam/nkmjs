@@ -50,7 +50,7 @@ class ListItem extends base {
      * @type {number}
      */
     get depth() { return this._depth; }
-    set depth(p_value) { this._depth = p_value; this.style.setProperty(`--depth`, this._depth); }
+    set depth(p_value) { this._depth = p_value; dom.CSS(this, `--depth`, p_value); }
 
     static _Style() {
         return style.Extends({

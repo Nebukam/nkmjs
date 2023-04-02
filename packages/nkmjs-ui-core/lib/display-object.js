@@ -89,8 +89,7 @@ class DisplayObject extends base {
     set order(p_value) {
         if (this._order === p_value) { return; }
         this._order = p_value;
-        if (p_value === null) { this.style.removeProperty(`--order`); }
-        else { this.style.setProperty(`--order`, p_value); }
+        dom.CSS(this, `--order`, p_value);
     }
 
     //#region DOM
@@ -172,8 +171,7 @@ class DisplayObject extends base {
     set visible(p_value) {
         if (this._visible === p_value) { return; }
         this._visible = p_value;
-        if (!p_value) { this.style.display = `none`; }
-        else { this.style.removeProperty(`display`); }
+        dom.CSS(this, 'display', p_value ? null : `none`);
     }
 
     /**
@@ -456,7 +454,7 @@ class DisplayObject extends base {
         let t = this._transforms;
 
         if (!t) {
-            this.style.removeProperty(`transform`);
+            dom.CSS(this, 'transform');
             return;
         }
 
@@ -527,7 +525,7 @@ class DisplayObject extends base {
         this.order = this.constructor.__defaultOrder;
 
         this._transforms = {};
-        this.style.removeProperty(`transform`);
+        dom.CSS(this, 'transform');
 
         super._CleanUp();
 

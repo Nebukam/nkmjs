@@ -28,15 +28,15 @@ const __paintingObserver = new IntersectionObserver(
             if (entry.isIntersecting) {
                 if (target._isPainted) { continue; }
                 target._isPainted = true;
-                target.classList.remove(__unpainted);
                 if (target.constructor.__usePaintCallback) { target._OnPaintChange(); }
                 target._isFirstPaint = false;
             } else {
                 if (!target._isPainted) { continue; }
                 target._isPainted = false;
-                target.classList.add(__unpainted);
                 if (target.constructor.__usePaintCallback) { target._OnPaintChange(); }
             }
+
+            dom.CSSClass(target, __unpainted, !entry.isIntersecting);
         }
     },
 
@@ -134,7 +134,7 @@ class DisposableHTMLElement extends HTMLElement {
         this._isPainted = false;
         this._isFirstPaint = true;
 
-        if (this.constructor.__usePaintCallback) { this.classList.add(__unpainted); }
+        if (this.constructor.__usePaintCallback) { dom.CSSClass(this, __unpainted); }
 
     }
 
@@ -343,7 +343,7 @@ class DisposableHTMLElement extends HTMLElement {
 
         if (this._isPainted) {
             this._isPainted = false;
-            this.classList.add(__unpainted);
+            dom.CSSClass(this, __unpainted);
             if (this.constructor.__usePaintCallback) { this._OnPaintChange(); }
         }
 

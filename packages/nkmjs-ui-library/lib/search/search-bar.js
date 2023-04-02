@@ -84,7 +84,7 @@ class SearchBar extends base {
     _Render() {
         super._Render();
         this._progressBar = this.Attach(ProgressBar, `progress`);
-        this._progressBar.style.setProperty(`--size-custom`, `2px`);
+        ui.dom.CSS(this._progressBar, '--size-custom', `2px`);
         this._progressBar.options = {
             hideWhenComplete: true,
             size: ui.FLAGS.SIZE_CUSTOM,

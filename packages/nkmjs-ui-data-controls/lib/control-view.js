@@ -241,9 +241,11 @@ class ControlView extends base {
      * @group Presentation
      */
     _ResetMetaPresentation() {
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varname, `#000000`);
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, `0,0,0`);
-        this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, 0);
+        ui.dom.CSS(this, {
+            [META_IDS.P_PRES_COLOR.varname]: `#000000`,
+            [META_IDS.P_PRES_COLOR.varnameRGB]: `0,0,0`,
+            [META_IDS.P_PRES_WEIGHT.varname]: 0
+        });
     }
 
     /**
@@ -255,10 +257,11 @@ class ControlView extends base {
     _UpdateMetaPresentation() {
 
         let color = this._metadata.Get(META_IDS.P_PRES_COLOR.path, `#000000`);
-
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varname, color);
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, style.colors.RGBA.HexToRGBString(color));
-        this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, this._metadata.Get(META_IDS.P_PRES_WEIGHT.path, 0));
+        ui.dom.CSS(this, {
+            [META_IDS.P_PRES_COLOR.varname]: color,
+            [META_IDS.P_PRES_COLOR.varnameRGB]: style.colors.RGBA.HexToRGBString(color),
+            [META_IDS.P_PRES_WEIGHT.varname]: this._metadata.Get(META_IDS.P_PRES_WEIGHT.path, 0)
+        });
     }
 
     //#endregion
