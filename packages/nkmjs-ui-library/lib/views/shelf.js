@@ -421,6 +421,15 @@ class Shelf extends base {
         view.RequestDisplay();
     }
 
+    Collapse() {
+        this.currentView = null;
+        this._flags.Set(ui.FLAGS.COLLAPSED, true);
+    }
+    
+    Expand() {
+        this._flags.Set(ui.FLAGS.COLLAPSED, false);
+    }
+
     /**
      * @access protected
      * @description TODO

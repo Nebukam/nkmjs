@@ -8,6 +8,7 @@ module.exports = {
     
     Background: require(`./handler-background`),
     Image: require(`./handler-image`),
+    iFrame: require(`./handler-iframe`),
     Icon: require(`./handler-icon`),
     Text: require(`./handler-text`),
 
