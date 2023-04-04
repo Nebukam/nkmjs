@@ -14,7 +14,7 @@ const __editorMap = new collections.DictionaryList();
 const __activeData = new Set();
 
 function __CheckEditorMap() {
-    
+
     let stack = [];
     __activeData.forEach(p_data => {
         // Check if still edited.
@@ -25,7 +25,7 @@ function __CheckEditorMap() {
             d.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, d);
         }
     });
-    
+
 }
 
 const __delayedCheckEditorMap = com.DelayedCall(__CheckEditorMap);
@@ -172,6 +172,16 @@ class Editor extends base {
         super._OnChildAttached(p_displayObject, p_index);
     }
 
+    Wake() {
+        super.Wake();
+        this._displayList.ForEach(dO => {
+            if (`editor` in dO) { dO.editor = this; }
+        });
+
+        if (this._forwardData) { this._forwardData._BatchSet(`editor`, this); }
+        this._forwardContext._BatchSet(`editor`, this);
+    }
+
     //#region Selection stack
 
     /**
@@ -208,7 +218,7 @@ class Editor extends base {
                         this._inspectedData.SetList(p_self.data);
                     }
                 });
-                
+
             }
         } else {
             this._skipNextSelectionState = false;
@@ -260,6 +270,14 @@ class Editor extends base {
         this._skipNextSelectionState = false;
         this._stateStack.Clear();
         super._CleanUp();
+
+        this._displayList.ForEach(dO => {
+            if (`editor` in dO) { dO.editor = null; }
+        });
+
+        if (this._forwardData) { this._forwardData._BatchSet(`editor`, null); }
+        this._forwardContext._BatchSet(`editor`, null);
+
     }
 
 }

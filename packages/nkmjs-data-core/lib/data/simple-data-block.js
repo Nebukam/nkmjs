@@ -13,7 +13,6 @@ class SimpleDataBlock extends DataBlock {
     constructor() { super(); }
 
     static __lockedData = true;
-    static __flattenSerialization = false;
 
     /**
      * Expected format
@@ -60,7 +59,9 @@ class SimpleDataBlock extends DataBlock {
 
         if (this.constructor.__DATALISTS) {
             this.constructor.__DATALISTS.forEach(dataList => {
-                this[dataList.member] = new (dataList.type ? dataList.type : DataList)();
+                let newDataList = new (dataList.type ? dataList.type : DataList)();
+                newDataList.parent = this;
+                this[dataList.member] = newDataList;
             });
         }
 

@@ -92,7 +92,7 @@ class ElectronBase {
         ipcMain.on(APP_MESSAGES.DO_RELOAD_APP, this._OnRequestReload);
         ipcMain.on(APP_MESSAGES.OPEN_DIALOG, this._OnRequestDialog);
 
-        
+
 
     }
 
@@ -166,7 +166,7 @@ class ElectronBase {
             globalShortcut.register(`CommandOrControl+R`, this._OnRequestReload);
         }
 
-        if(this._openPathRequest){
+        if (this._openPathRequest) {
             this._OnSystemRequestOpenFile(null, this._openPathRequest);
         }
         // this._Boot();        
@@ -178,6 +178,9 @@ class ElectronBase {
      * @description TODO
      */
     _Boot() {
+
+        if (this._booted) { return; }
+        this._booted = true;
 
         console.log(`Boot app`);
 
@@ -228,6 +231,7 @@ class ElectronBase {
 
     _OnRequestReload() {
         console.log(`RELOAD_REQUEST`);
+        this._booted = false;
         this._mainWindow.reload();
         this._mainWindow.webContents.session.clearCache();
     }
@@ -301,13 +305,13 @@ class ElectronBase {
     _SendWarning(p_content) { this._mainWindow.webContents.send(APP_MESSAGES.WARNING, p_content); }
     _SendMessage(p_content) { this._mainWindow.webContents.send(APP_MESSAGES.MESSAGE, p_content); }
 
-    _OnSystemRequestOpenFile(p_evt, p_path){
-        if(!this._mainWindow){
+    _OnSystemRequestOpenFile(p_evt, p_path) {
+        if (!this._mainWindow) {
             this._openPathRequest = p_path;
             return;
         }
 
-        this._mainWindow.webContents.send(APP_MESSAGES.OPEN_FILE, { path:p_path });
+        this._mainWindow.webContents.send(APP_MESSAGES.OPEN_FILE, { path: p_path });
     }
 
     // ----> Dialog callbacks

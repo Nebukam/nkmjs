@@ -58,7 +58,6 @@ class UserPreferences extends com.pool.DisposableObjectEx {
             success: this._OnDocumentLoadSuccess,
             error: this._OnDocumentLoadError
         });
-
     }
 
     _OnDocumentLoadSuccess() {

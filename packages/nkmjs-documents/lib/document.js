@@ -249,6 +249,7 @@ class Document extends com.pool.DisposableObjectEx {
                 { cl: nfo.resource, encoding: nfo[IDS.ENCODING] });
 
         if (!rsc) { throw new Error(`No resource set.`); }
+        
         if (rsc.Read({
             io: u.tils.Get(p_options, `io`, nfo[IDS.TYPE_IO]),
             error: this._OnLoadError
@@ -263,6 +264,7 @@ class Document extends com.pool.DisposableObjectEx {
     }
 
     _OnLoadError(p_err) {
+        console.error(p_err);
         p_err.document = this;
         this._callbacks.OnError(p_err).Clear();
     }

@@ -136,6 +136,7 @@ class POOL extends Singleton {
             obj._returnFn = this._Return;
         }
 
+        if ('_InternalWake' in obj) { obj._InternalWake(); }
         if ('Wake' in obj) { obj.Wake(); }
         return obj;
 

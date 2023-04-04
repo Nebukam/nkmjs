@@ -42,6 +42,7 @@ class StreamingDataListView extends base {
         let dataSel = ui.helpers.HostSelStack(this, true, true, {
             add: {
                 fn: (p_sel, p_index) => {
+                    console.log(`REQUEST :: Add in ` + this);
                     let widget = this._domStreamer.GetItemAt(p_index);
                     if (widget) { widget.Select(true); }
                     else { p_sel.Add(this._contentSource[p_index]); }
@@ -64,7 +65,7 @@ class StreamingDataListView extends base {
 
         //dataSel.autoBump = true;
 
-        this._inspectionDataForward.dataSelection = dataSel;
+        this._inspectionDataForward.dataSelection = dataSel; //Will use dataSel.data internally
         dataSel
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackBump, this)
             .Watch(com.SIGNAL.ITEM_BUMPED, this._OnSelectionStackBump, this);
@@ -162,8 +163,11 @@ class StreamingDataListView extends base {
         this._domStreamer.itemCount = p_dataList ? p_dataList.count : 0;
 
         if (p_dataList != null) {
-            let index = p_dataList.IndexOf(this.editor.inspectedData.lastItem);
-            if (index != -1) { this._domStreamer.SetFocusIndex(index); }
+            let e = this.editor;
+            if (e) {
+                let index = p_dataList.IndexOf(e.inspectedData.lastItem);
+                if (index != -1) { this._domStreamer.SetFocusIndex(index); }
+            }
         }
 
     }
@@ -234,6 +238,13 @@ class StreamingDataListView extends base {
         this._domStreamer.SetFocusIndex(this._contentSource.IndexOf(p_data), false);
     }
 
+    FocusData(p_data) {
+        if (!this._contentSource) { return; }
+        let index = this._contentSource.IndexOf(p_data);
+        if (index < 0) { return; }
+        this._domStreamer.SetFocusIndex(index, true);
+    }
+
     //#endregion
 
     //#region Catalog Management
@@ -259,6 +270,7 @@ class StreamingDataListView extends base {
         //TODO: Simply update currently displayed data, and re-create selection states...?
 
     }
+
 
     //#endregion
 

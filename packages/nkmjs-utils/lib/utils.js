@@ -852,6 +852,21 @@ class UTILS {
 
     }
 
+    /**
+     * 
+     * @param {number} p_fullWidth 
+     * @param {number} p_fullHeight 
+     * @param {number} p_recipientWidth 
+     * @param {number} p_recipientHeight 
+     */
+    static ScaleRatio(p_fullWidth, p_fullHeight, p_recipientWidth, p_recipientHeight) {
+        let
+            rW = p_recipientWidth / p_fullWidth,
+            rH = p_recipientHeight / p_fullHeight;
+
+        return Math.min(rW, rH);
+    }
+
 }
 
 module.exports = UTILS;

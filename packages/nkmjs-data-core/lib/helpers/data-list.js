@@ -361,6 +361,8 @@ class DataList extends collections.List {
         if (!p_silent) { this.CommitUpdate(); }
     }
 
+    Flush() { while (!this.isEmpty) { this.Pop(); } }
+
     //#endregion
 
     //#region Sorting

@@ -18,7 +18,9 @@ const base = ResourceWatcher;
  * path/to/something
  */
 class TempResourceWatcher extends base {
-    constructor() { super(); }
+    constructor() { super(); this.constructor.__repository.push(this); }
+
+    static __repository = [];
 
     static __distribute = base.__distribute.Ext()
         .To(`rscOptions`);

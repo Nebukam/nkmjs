@@ -33,10 +33,16 @@ class IOElectron {
         };
 
         nkm.env.features.GetMemory = this._GetMemory.bind(nkm.env.FEATURES);
+        nkm.env.features._IOFlushFn = this._IOFlush.bind(nkm.env.FEATURES);
 
     }
 
-    _GetMemory(){
+    _IOFlush() {
+        let TempResourceWatcher = require(`./helpers/temp-resource-watcher`);
+        TempResourceWatcher.__repository.forEach(tempRsc => { tempRsc.Flush(); });
+    }
+
+    _GetMemory() {
         return process.getProcessMemoryInfo();
     }
 

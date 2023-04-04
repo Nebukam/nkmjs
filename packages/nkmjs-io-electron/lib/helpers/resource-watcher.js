@@ -110,7 +110,6 @@ class ResourceWatcher extends base {
     }
 
     _OnFileChange(p_path) {
-        console.log(`changed... ${this._readOnChange}`);
         super._OnFileChange(p_path);
         if (this._readOnChange) {
             this.Read(this._readOptions);

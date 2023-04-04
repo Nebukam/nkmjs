@@ -9,8 +9,6 @@ const IDS = require(`./ids`);
 class AppSettings extends data.SimpleDataBlock {
     constructor() { super(); }
 
-    static __flattenSerialization = true;
-
     static __NFO__ = {
         [com.IDS.UID]: `@nkmjs:app-settings`,
         [com.IDS.ICON]: `gear`

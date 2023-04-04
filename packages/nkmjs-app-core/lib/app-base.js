@@ -68,6 +68,7 @@ class AppBase extends com.helpers.SingletonEx {
         this._Bind(this._InternalDisplayReadyCheck);
 
         this._APPID = `${this.constructor.name}`;
+        this._IOFlushFn = null;
 
         this._darkPaletteBuilder = null;
         this._lightPaletteBuilder = null;
@@ -290,7 +291,6 @@ class AppBase extends com.helpers.SingletonEx {
     }
 
     _OnAppReadyInternal(p_prefsData) {
-
         // Update app settings and then watch them
         nkm.data.serialization.JSONSerializer.Deserialize(p_prefsData.Get(ID_APP_SETTINGS), this._appSettings);
         console.log(p_prefsData);
@@ -386,7 +386,13 @@ class AppBase extends com.helpers.SingletonEx {
     //#region Electron & Node
 
     _OnExternalCloseRequest() {
-        if (this._IsReadyToQuit()) { this.CloseWindow(); }
+        if (this._IsReadyToQuit()) {
+
+            //Flush temp resources
+            if (nkm.env.features._IOFlushFn) { nkm.env.features._IOFlushFn(); }
+
+            this.CloseWindow();
+        }
     }
 
     _IsReadyToQuit() {

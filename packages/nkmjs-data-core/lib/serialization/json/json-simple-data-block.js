@@ -44,15 +44,10 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      */
     static SerializeContent(p_serial, p_data, p_options = null) {
 
-        let recipient = null;
-
-        if (p_data.constructor.__flattenSerialization) { recipient = p_serial; }
-        else { recipient = p_serial[CONTEXT.JSON.DATA_KEY] = {}; }
-
         let definitions = p_data.constructor.__VALUES;
         definitions.forEach(def => {
             if (def[IDS.SKIP_SERIALIZATION]) { return; }
-            recipient[def.id] = p_data.Get(def.id);
+            p_serial[def.id] = p_data.Get(def.id);
         });
 
         // BLOCS
@@ -65,19 +60,12 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
             for (var id in blocHeaders) {
 
                 let blocInfos = blocHeaders[id];
-
                 if (blocInfos[IDS.SKIP_SERIALIZATION]) { continue; }
-
-                let bloc = p_data[blocInfos.member],
-                    serializer = this.GetSerializer(bloc.constructor, -1, null);
-
-                if (!serializer) { throw new Error(`Could not find suitable serializer for bloc=${bloc}`); }
-
-                blocsSerial[id] = serializer.Serialize(p_data, p_options);
+                blocsSerial[id] = this.__master.Serialize(p_data[blocInfos.member], p_options);
 
             }
 
-            recipient[IDS.BLOCS] = blocsSerial;
+            p_serial[IDS.BLOCS] = blocsSerial;
 
         }
 
@@ -96,19 +84,14 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                     contents = [];
 
                 for (let i = 0, n = dataList.count; i < n; i++) {
-                    let item = dataList.At(i),
-                        serializer = this.GetSerializer(item.constructor, -1, null);
-
-                    if (!serializer) { throw new Error(`Could not find suitable serializer for bloc=${item}`); }
-                    content.push(serializer.Serialize(item, p_options));
-
+                    contents.push(this.__master.Serialize(dataList.At(i), p_options));
                 }
 
                 listsSerial[dataListHeader.member] = contents;
 
             });
 
-            recipient[IDS.DATALISTS] = listsSerial;
+            p_serial[IDS.DATALISTS] = listsSerial;
 
         }
 
@@ -122,14 +105,10 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      */
     static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
 
-        let container = null;
-        if (p_data.constructor.__flattenSerialization) { container = p_serial; }
-        else { container = p_serial[CONTEXT.JSON.DATA_KEY]; }
-
         let blocHeaders = p_data.constructor.__BLOCS;
         if (blocHeaders) {
 
-            let blocsSerial = container[IDS.BLOCS];
+            let blocsSerial = p_serial[IDS.BLOCS];
 
             if (blocsSerial) {
 
@@ -138,18 +117,16 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                     let blocInfos = blocHeaders[id];
                     if (!blocInfos || blocInfos[IDS.SKIP_SERIALIZATION]) { continue; }
 
-                    let bloc = p_data[blocInfos.member],
-                        serializer = this.GetSerializer(bloc.constructor, -1, null);
+                    let
+                        blocData = p_data[blocInfos.member],
+                        blocSerial = blocSerial[id];
 
-                    if (!serializer) { throw new Error(`Could not find suitable serializer for bloc=${bloc}`); }
-
-                    serializer.Deserialize(p_data, blocsSerial[id], p_options, p_meta);
+                    this.__master.Deserialize(blocSerial, blocData, p_options);
 
                 }
 
                 //!important, so it doesn't get set a value afterward.
-                if (p_data.constructor.__flattenSerialization) { p_serial[IDS.BLOCS]; }
-                else { delete p_serial[CONTEXT.JSON.DATA_KEY][IDS.BLOCS]; }
+                delete p_serial[IDS.BLOCS];
             }
 
         }
@@ -159,7 +136,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
         let dataLists = p_data.constructor.__DATALISTS;
         if (dataLists) {
 
-            let listsSerial = container[IDS.DATALISTS];
+            let listsSerial = p_serial[IDS.DATALISTS];
 
             dataLists.forEach((dataListHeader) => {
 
@@ -170,26 +147,25 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
                 if (!contents) { return; }
 
-                if (dataListHeader.pushFn) {
-                    contents.forEach((itemSerial) => {
-                        let item = this.constructor.__master.Deserialize(itemSerial);
-                        u.Call(dataListHeader.pushFn, p_data, item, dataListHeader);
-                    });
-                } else {
-                    contents.forEach((itemSerial) => {
-                        let item = this.constructor.__master.Deserialize(itemSerial);
-                        dataList.Add(item);
-                    });
-                }
+                let callPushFn = dataListHeader.pushFn ? p_data[dataListHeader.pushFn] : null;
+
+                contents.forEach(itemSerial => {
+                    let item = this.__master.Deserialize(itemSerial, null, p_options);
+                    if (callPushFn) { u.Call(callPushFn, dataListHeader, item); }
+                    else { dataList.Add(item); }
+                });
 
             });
 
+            delete p_serial[IDS.BLOCS];
+
         }
 
-        if (p_data.constructor.__flattenSerialization) { p_data.BatchSet((container || {})); }
-        else { p_data.BatchSet((container || {})); }
+        p_data.BatchSet((p_serial || {}));
 
         if (`_OnDeserializationComplete` in p_data) { p_data._OnDeserializationComplete(); }
+
+        return p_data;
 
     }
 
