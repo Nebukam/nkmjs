@@ -41,6 +41,7 @@ class DataList extends collections.List {
         this._parent = null;
         this._defaultSortFunc = com.SORTING.NAME_ASC;
         this._autoSort = false;
+        this._skipSorting = false;
     }
 
     get parent() { return this._parent; }
@@ -361,7 +362,11 @@ class DataList extends collections.List {
         if (!p_silent) { this.CommitUpdate(); }
     }
 
-    Flush() { while (!this.isEmpty) { this.Pop(); } }
+    Flush() { 
+        this._skipSorting = true;
+        while (!this.isEmpty) { this.Pop(); } 
+        this._skipSorting = false;
+    }
 
     //#endregion
 
@@ -377,7 +382,7 @@ class DataList extends collections.List {
      * @group Sorting
      */
     Sort(p_method = null) {
-        if (!p_method) { return; }
+        if (!p_method || this._skipSorting) { return; }
         this._array.sort(p_method);
         this.Broadcast(com.SIGNAL.SORTED, this, p_method);
 
@@ -507,6 +512,7 @@ class DataList extends collections.List {
      */
     _CleanUp() {
         this.AutoSort(null);
+        this._skipSorting = false;
         this._signals.Clear();
         this._parent = null;
         this.Clear();
