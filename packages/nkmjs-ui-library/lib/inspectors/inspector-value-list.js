@@ -10,6 +10,7 @@ const base = datacontrols.InspectorView;
 class ValueListInspector extends base {
     constructor() { super(); }
 
+    static __width = `auto`;
     static __controls = [];
     static __foldouts = []; // [ {foldout:{}, controls:[]}, {foldout:{}, controls:[]} ]
 
@@ -22,22 +23,21 @@ class ValueListInspector extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                'min-width': '350px',
-                //'flex': '0 0 auto',
+                '@': ['fade-in'],
+                'flex-flow': 'row wrap',
+                'align-content': 'flex-start',
+                'width':`${this.__width}`,
             },
-            '.list': {
+            '.body': {
                 'display': 'flex',
-                'flex-flow': 'column nowrap',
+                'flex-flow': 'row wrap',
                 'flex': '1 1 auto',
                 'min-height': '0',
                 'overflow': 'auto',
-                'padding': '10px',
-            },
-            '.body': {
                 'padding': `10px`,
             },
             '.control': {
-                'flex': '0 1 auto',
+                'flex': '1 1 100%',
                 'margin': '0',
                 'margin-bottom': '5px'
             },
@@ -52,6 +52,12 @@ class ValueListInspector extends base {
                 'border-radius': '4px',
                 'margin-bottom': '5px',
             },
+
+            '.header': { 'margin': '5px 2px 5px 2px' },
+            '.small': { 'flex': '1 1 25%' },
+            '.vsmall': { 'flex': '1 1 15%' },
+            '.large': { 'flex': '1 1 80%' },
+
         }, base._Style());
     }
 

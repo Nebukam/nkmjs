@@ -11,6 +11,7 @@ const base = require(`../control-view`);
 class StreamingDataListView extends base {
     constructor() { super(); }
 
+    static __doSelectionForward = true;
     static __default_headerViewClass = null;
     static __default_footerViewClass = null;
     static __default_widgetClass = null;
@@ -22,14 +23,13 @@ class StreamingDataListView extends base {
         //customArea:{ start:0, size:200 }
     };
 
+    get doSelectionForward() { return this.constructor.__doSelectionForward; }
+
     _Init() {
         super._Init();
 
         this._domStreamer = null;
         this._dataMap = new Map();
-
-        this._inspectionDataForward = new helpers.InspectionDataBridge(this);
-        this.forwardEditor.To(this._inspectionDataForward);
 
         this._scheduledRefresh = com.DelayedCall(this._Bind(this._RefreshItems));
         this._scheduledOnCountChanged = com.DelayedCall(this._Bind(this._ReloadList));
@@ -65,10 +65,18 @@ class StreamingDataListView extends base {
 
         //dataSel.autoBump = true;
 
-        this._inspectionDataForward.dataSelection = dataSel; //Will use dataSel.data internally
-        dataSel
-            .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackBump, this)
-            .Watch(com.SIGNAL.ITEM_BUMPED, this._OnSelectionStackBump, this);
+        if (this.doSelectionForward) {
+
+            this._inspectionDataForward = new helpers.InspectionDataBridge(this);
+            this.forwardEditor.To(this._inspectionDataForward);
+
+
+            this._inspectionDataForward.dataSelection = dataSel; //Will use dataSel.data internally
+            dataSel
+                .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackBump, this)
+                .Watch(com.SIGNAL.ITEM_BUMPED, this._OnSelectionStackBump, this);
+
+        }
 
         this._contentSource = null;
 
@@ -218,13 +226,16 @@ class StreamingDataListView extends base {
         p_widget.data = data;
 
         if (this.selectionStack.data.isEmpty) {
-            if (!this.editor) { return; }
-            if (!this.editor.inspectedData.isEmpty) {
-                if (this.editor.inspectedData.Contains(data)) {
-                    p_widget.Select(true);
-                } else {
-                    p_widget.Select(false);
+            if (this.doSelectionForward) {
+                if (!this.editor.inspectedData.isEmpty) {
+                    if (this.editor.inspectedData.Contains(data)) {
+                        p_widget.Select(true);
+                    } else {
+                        p_widget.Select(false);
+                    }
                 }
+            }else{
+                //TODO : Handle local selection
             }
         }
 
