@@ -39,6 +39,10 @@ class SimpleDataBlock extends DataBlock {
         } return p_list;
     }
 
+    get DEFINITIONS() { return this.constructor.__VALUES; }
+    get BLOCS() { return this.constructor.__BLOCS; }
+    get DATALISTS() { return this.constructor.__DATALISTS; }
+
     _Init() {
         super._Init();
 
@@ -88,10 +92,6 @@ class SimpleDataBlock extends DataBlock {
         this._OnReset(false, true);
     }
 
-    get DEFINITIONS() { return this.constructor.__VALUES; }
-    get BLOCS() { return this.constructor.__BLOCS; }
-    get DATALISTS() { return this.constructor.__DATALISTS; }
-
     get iid() { return this._idd; }
     get parent() { return this._parent; }
 
@@ -99,7 +99,10 @@ class SimpleDataBlock extends DataBlock {
 
     _ResetValues(p_values) {
         let statics = this.DEFINITIONS;
-        for (var id in statics) { p_values[id] = statics[id].value; }
+        for (var id in statics) {
+            let def = statics[id];
+            p_values[id] = def.getter ? u.Call(def.getter, this) : def.value;
+        }
     }
 
     /**
@@ -217,13 +220,22 @@ class SimpleDataBlock extends DataBlock {
      */
     Reset(p_individualSet = true, p_silent = false) {
 
-        if (this._blocs) {
-            this._blocs.forEach(bloc => { bloc.Reset(p_individualSet, p_silent); });
+        let BLOCS = this.BLOCS;
+        if (BLOCS) {
+            for (var id in BLOCS) { this[BLOCS[id].member || `_${id}`].Reset(p_individualSet, p_silent); };
+        }
+
+        let DATALISTS = this.DATALISTS;
+        if (DATALISTS) {
+            for (var id in DATALISTS) { this[DATALISTS[id].member || `_${id}`].Clear(); }
         }
 
         if (p_individualSet) {
             let defs = definitions;
-            for (let id in defs) { this.Set(id, defs[id].value, p_silent); }
+            for (let id in defs) {
+                let def = defs[id];
+                this.Set(id, def.getter ? u.Call(def.getter, this) : def.value, p_silent);
+            }
             this._OnReset(p_individualSet, p_silent);
         } else {
             this._ResetValues(this._values);

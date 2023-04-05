@@ -47,7 +47,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
         let definitions = p_data.DEFINITIONS;
         for (var id in definitions) {
             let def = definitions[id];
-            if (def[IDS.SKIP_SERIALIZATION]) { return; }
+            if (def[IDS.SKIP_SERIALIZATION]) { continue; }
             p_serial[id] = p_data._values[id];
         }
 
@@ -110,10 +110,11 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      */
     static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
 
-        let blocHeaders = p_data.BLOCS;
-        if (blocHeaders) {
+        let
+            blocHeaders = p_data.BLOCS,
+            blocsSerial = p_serial[IDS.BLOCS];
 
-            let blocsSerial = p_serial[IDS.BLOCS];
+        if (blocHeaders && blocsSerial) {
 
             if (blocsSerial) {
 
@@ -130,19 +131,16 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
                 }
 
-                //!important, so it doesn't get set a value afterward.
-                delete p_serial[IDS.BLOCS];
             }
 
         }
 
         // DATALISTS
 
-        let dataLists = p_data.DATALISTS;
-        if (dataLists) {
+        let dataLists = p_data.DATALISTS,
+            listsSerial = p_serial[IDS.DATALISTS];
 
-            let listsSerial = p_serial[IDS.DATALISTS];
-
+        if (dataLists && listsSerial) {
             for (var id in dataLists) {
 
                 let dataListHeader = dataLists[id];
@@ -164,9 +162,6 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                 });
 
             };
-
-            delete p_serial[IDS.BLOCS];
-
         }
 
         if (p_serial) { p_data.BatchSet(p_serial); }
