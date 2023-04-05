@@ -1,6 +1,5 @@
 'use strict';
 
-const nkm = require(`@nkmjs/core`);
 const CmdFileDialog = require(`./cmd-system-dialog-file`);
 
 class CmdSaveFile extends CmdFileDialog {

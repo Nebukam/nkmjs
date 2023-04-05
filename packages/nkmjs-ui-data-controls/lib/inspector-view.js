@@ -37,7 +37,7 @@ class InspectorView extends base {
         this._editorObserver = new com.signals.Observer();
         this._editorObserver
             .Hook(ui.SIGNAL.DATA_CHANGED, this._Bind(this._OnEditorDataChanged));
-            
+
         this._editorDataObserver = null;
         this._oldEditorData = null;
     }
@@ -49,6 +49,7 @@ class InspectorView extends base {
             this._editorDataObserver = new com.signals.Observer();
             this._editorDataObserver.ObserveOnly(this._editor ? this._editor.data : null);
         }
+        return this._editorDataObserver;
     }
 
     _OnEditorChanged(p_oldEditor) {

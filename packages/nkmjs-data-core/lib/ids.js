@@ -30,14 +30,14 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
-    static BLOCS = Object.freeze(`blocs`);
+    static BLOCS = Object.freeze(`__blocs`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static DATALISTS = Object.freeze(`datalists`);
+    static DATALISTS = Object.freeze(`__datalists`);
 
     /**
      * @description TODO

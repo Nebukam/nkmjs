@@ -87,16 +87,6 @@ class ResourceWatcher extends base {
         if (this._resourceBound) { this.Release(); }
     }
 
-    Enable() {
-        if (this._enabled) { return; }
-        super.Enable();
-    }
-
-    Disable() {
-        if (!this._enabled) { return; }
-        super.Disable();
-    }
-
     _OnWatcherError(p_err) {
         super._OnWatcherError(p_err);
     }

@@ -15,14 +15,10 @@ class DataListSearch extends SimpleData {
 
     constructor() { super(); }
 
-    static __VALUES = [
-        { id: IDS.SEARCH_RESULTS, value: null },
-        { id: IDS.SEARCH_ENABLED, value: false },
-    ];
-
-    static __VALUES_SIGNALS = {
-        [IDS.SEARCH_ENABLED]: SIGNAL.SEARCH_TOGGLED
-    }
+    static __VALUES = {
+        [IDS.SEARCH_RESULTS]: { value: null },
+        [IDS.SEARCH_ENABLED]: { value: false, signal: SIGNAL.SEARCH_TOGGLED },
+    };
 
     _Init() {
 
@@ -64,7 +60,7 @@ class DataListSearch extends SimpleData {
         this._identifiers = [];
         this._fetchFns = [];
 
-        
+
 
     }
 
@@ -145,7 +141,7 @@ class DataListSearch extends SimpleData {
 
         this._results.Clear(true);
         this._resultSet.clear();
-        
+
         this._ready = false;
         this._searchCovered = 0;
 
@@ -194,14 +190,14 @@ class DataListSearch extends SimpleData {
         this._results.AutoSort(p_sorting ? this._InternalSort : null);
     }
 
-    RefreshSorting(){
+    RefreshSorting() {
         this._results.Sort(this._InternalSort);
     }
 
     _InternalSort(a, b) {
 
         let sorting = 0;
-        
+
         if (this._lastSourceSortMethod) { sorting = this._lastSourceSortMethod(a, b); }
         else if (this._sourceList.autosort && this._sourceList._autoSortingFn) { sorting = this._sourceList._autoSortingFn(a, b); }
 
@@ -224,7 +220,8 @@ class DataListSearch extends SimpleData {
             this._running = false;
             this._ready = true;
 
-            this._values[IDS.SEARCH_RESULTS].value = null;
+            // Force update
+            this._values[IDS.SEARCH_RESULTS] = null;
             this.Set(IDS.SEARCH_RESULTS, this._results);
 
             this._results.CommitUpdate();

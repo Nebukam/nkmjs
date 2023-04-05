@@ -28,7 +28,8 @@ class DataListProxy extends com.pool.DisposableObjectEx {
         this._sourceListObserver = new com.signals.Observer();
         this._sourceListObserver
             .Hook(com.SIGNAL.ITEM_ADDED, (p_source, p_item) => { this._proxyList.Add(p_item); }, this)
-            .Hook(com.SIGNAL.ITEM_REMOVED, (p_source, p_item) => { this._proxyList.Remove(p_item); }, this);
+            .Hook(com.SIGNAL.ITEM_REMOVED, (p_source, p_item) => { this._proxyList.Remove(p_item); }, this)
+            .Hook(com.SIGNAL.SORTED, () => { this._proxyList.RefreshSorting(); }, this);
     }
 
     get parent() { return this._proxyList.parent; }

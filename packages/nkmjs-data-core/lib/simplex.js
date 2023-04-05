@@ -23,7 +23,6 @@ class SIMPLEX extends com.helpers.SingletonEx {
             [IDS.BLOCS]: { id: IDS.BLOCS }, /* SYSTEM RESERVE */
             [IDS.DATALISTS]: { id: IDS.DATALISTS } /* SYSTEM RESERVE */
         };
-        this._descriptorList = [this._descriptors.blocs];
 
         this.constructor.RegisterDescriptors({
 
@@ -107,20 +106,10 @@ class SIMPLEX extends com.helpers.SingletonEx {
         }
         p_descriptor.id = p_id;
         this.instance._descriptors[p_id] = p_descriptor;
-        this.instance._descriptorList.push(p_descriptor);
     }
 
     static GetDescriptor(p_id) {
         return this.instance._descriptors[p_id];
-    }
-
-    static GetValueDescriptor(p_target, p_id) {
-        let descriptors = p_target.constructor.__VALUES;
-        for (let i = 0, n = descriptors.length; i < n; i++) {
-            let d = descriptors[i];
-            if (d.id == p_id) { return d; }
-        }
-        return null;
     }
 
     //#endregion
@@ -142,8 +131,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
         if (!p_data) { return null; }
 
         //console.log(`Resolve ${p_id} in ${p_self} -> ${p_fallbacks}`);
-        let valueObj = p_data._values[p_id];
-        let result = valueObj ? valueObj.value : null;
+        let result = p_data._values[p_id];
 
         if (result != null) { return result; }
 
@@ -175,9 +163,9 @@ class SIMPLEX extends com.helpers.SingletonEx {
             searchState = 0,
             backup = {};
 
-        if (backupList) { backupList.forEach(id => { backup[id] = refValues[id].value; }) }
+        if (backupList) { backupList.forEach(id => { backup[id] = refValues[id]; }) }
 
-        for (var v in refValues) { refValues[v].value = null; }
+        for (var v in refValues) { refValues[v] = null; }
 
         compareloop: for (let i = 0; i < dataCount; i++) {
 
@@ -215,14 +203,14 @@ class SIMPLEX extends com.helpers.SingletonEx {
 
         if (backupList) {
             backupList.forEach(id => {
-                refValues[id].value = backup[id];
+                refValues[id] = backup[id];
                 delete commonValues[id];
             })
         }
 
         if (searchState == 2) {
             if (ignoreCount == valCount) { return false; }
-            for (var v in commonValues) { refValues[v].value = commonValues[v]; }
+            for (var v in commonValues) { refValues[v] = commonValues[v]; }
             return true;
         }
 
@@ -244,22 +232,34 @@ class SIMPLEX extends com.helpers.SingletonEx {
         let
             groupMap = {},
             groupList = [],
-            noGroup = { id: IDS.GROUP_OTHERS, definitions: [] };
+            noGroup = { id: IDS.GROUP_OTHERS, definitions: [], order: Number.MAX_SAFE_INTEGER };
 
-        definitions.forEach(def => {
-            let group;
-            if (def._group) {
-                if (!(def._group in groupMap)) {
-                    group = { id: def._group, definitions: [] };
-                    groupMap[def._group] = group;
+        for (let id in definitions) {
+
+            let
+                def = definitions[id],
+                group;
+
+            def.id = id; //Hah.
+
+            if (def.group) {
+                if (!(def.group in groupMap)) {
+                    group = { id: def.group, definitions: [], order: 0 };
+                    groupMap[def.group] = group;
                     groupList.push(group);
-                } else { group = groupMap[def._group]; }
+                } else { group = groupMap[def.group]; }
             } else { group = noGroup; }
+
+            if (def.groupOrder) { group.order = def.groupOrder; }
             group.definitions.push(def);
-        });
+
+        };
 
         groupMap = null;
         groupList.push(noGroup);
+
+        groupList.sort((a, b) => { return a.order - b.order; })
+        groupList.forEach(group => { group.definitions.sort((a, b) => { return a.order || 0 - b.order || 0; }); })
 
         return groupList;
 

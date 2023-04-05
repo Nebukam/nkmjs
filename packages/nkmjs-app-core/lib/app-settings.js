@@ -14,15 +14,10 @@ class AppSettings extends data.SimpleDataBlock {
         [com.IDS.ICON]: `gear`
     };
 
-    static __VALUES = [
-        { id: IDS.AUTOSAVE, value: false },
-        { id: IDS.AUTOSAVE_TIMER, value: 10 },
-    ];
-
-    static __VALUES_SIGNALS = {
-        [IDS.AUTOSAVE]: IDS.AUTOSAVE,
-        [IDS.AUTOSAVE_TIMER]: IDS.AUTOSAVE_TIMER
-    }
+    static __VALUES = {
+        [IDS.AUTOSAVE]: { value: false, signal: IDS.AUTOSAVE },
+        [IDS.AUTOSAVE_TIMER]: { value: 10, signal: IDS.AUTOSAVE_TIMER },
+    };
 
     _Init() {
         super._Init();

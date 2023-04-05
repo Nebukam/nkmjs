@@ -13,16 +13,12 @@ class SearchHeader extends SimpleData {
 
     constructor() { super(); }
 
-    static __VALUES = [
-        { id: IDS.SEARCH_ENABLED, value: false },
-        { id: IDS.SEARCH_TERMS, value: `` },
-        { id: IDS.SEARCH_CASE_SENSITIVE, value: false },
-        { id: IDS.SEARCH_EXACT_MATCH, value: false },
-    ];
-
-    static __VALUES_SIGNALS = {
-        [IDS.SEARCH_ENABLED]: SIGNAL.SEARCH_TOGGLED
-    }
+    static __VALUES = {
+        [IDS.SEARCH_ENABLED]: { value: false, signal: SIGNAL.SEARCH_TOGGLED },
+        [IDS.SEARCH_TERMS]: { value: `` },
+        [IDS.SEARCH_CASE_SENSITIVE]: { value: false },
+        [IDS.SEARCH_EXACT_MATCH]: { value: false },
+    };
 
     _Init() {
         super._Init();

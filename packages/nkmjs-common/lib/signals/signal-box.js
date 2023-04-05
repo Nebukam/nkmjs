@@ -3,7 +3,6 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 
-const DisposableObject = require(`../pool/disposable-object`);
 const POOL = require(`../pool/pool`);
 const SignalBroadcaster = require(`./signal-broadcaster`);
 
@@ -11,13 +10,11 @@ const SignalBroadcaster = require(`./signal-broadcaster`);
  * A boilerplate object to manage signals.
  * Usually a single object has a single signalBox.  
  * @class
- * @augments common.pool.DisposableObjectEx
  * @memberof common.signals
  */
-class SignalBox extends DisposableObject {
+class SignalBox {
 
     constructor(p_owner = null) {
-        super();
 
         if (p_owner) {
             p_owner.Broadcast = this._Bind(this.Broadcast);
@@ -29,6 +26,16 @@ class SignalBox extends DisposableObject {
         this._signals = new collections.Dictionary();
         this._silent = false;
     }
+
+    /**
+     * @access protected
+     * @description Bind the given function to this object and returns it.
+     * Note that it replaces the function reference, hence referencing function before they are being bound in `_Init`,
+     * ( i.e in the constructor ) will target an obsolete function.
+     * @param {*} p_func 
+     * @group Utils
+     */
+    _Bind(p_func) { return this[p_func.name] = p_func.bind(this); }
 
     /**
      * @description TODO

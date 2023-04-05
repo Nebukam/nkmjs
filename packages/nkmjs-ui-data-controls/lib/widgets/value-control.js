@@ -45,7 +45,7 @@ class ValueControl extends base {
         this._directHidden = false;
         this._dataMemberId = null;
         this._valueType = null;
-        this._valueDescriptor = null;
+        this._definition = null;
 
         this._Bind(this._OnValueSubmit);
 
@@ -163,7 +163,7 @@ class ValueControl extends base {
         if (!p_id) { return; }
 
         this._label._element.setAttribute(`title`, this._descriptor.desc);
-        this._label.Set(this._descriptor.label || this._descriptor.id);
+        this._label.Set(this._descriptor.label || this.propertyId);
 
         this._input = this.Attach(ui.inputs.TryGetInput(p_id, this), `input-field`);
         this._input.options = {
@@ -183,18 +183,14 @@ class ValueControl extends base {
         this._nullifyBtn.visible = p_value;
     }
 
-    get localValueObj() {
-        return this._data._values[this._descriptor.id];
-    }
-
     get localValue() {
         if (!this._data) { return null; }
-        return this._data.Get(this._descriptor.id);
+        return this._data.Get(this.propertyId);
     }
 
     get resolvedValue() {
         if (!this._data) { return null; }
-        return this._data.Resolve(this._descriptor.id);
+        return this._data.Resolve(this.propertyId);
     }
 
     set command(p_value) {
@@ -207,12 +203,13 @@ class ValueControl extends base {
 
     _OnDataChanged(p_oldData) {
         super._OnDataChanged(p_oldData);
+
         if (this._data) {
-            this._valueDescriptor = data.SIMPLEX.GetValueDescriptor(this._data, this._descriptor.id);
-            this._valueType = data.SIMPLEX.GetValueType(this._descriptor.id);
-            this.isNullable = this._valueDescriptor._nullable ? this._valueDescriptor._nullable : false;
+            this._definition = this._data.DEFINITIONS[this.propertyId];
+            this._valueType = data.SIMPLEX.GetValueType(this.propertyId);
+            this.isNullable = this._definition.nullable ? this._definition.nullable : false;
         } else {
-            this._valueDescriptor = null;
+            this._definition = null;
             this._valueType = null;
             this.isNullable = false;
         }
@@ -226,7 +223,7 @@ class ValueControl extends base {
 
         super._OnDataUpdated(p_data);
 
-        this._inherited = this._isNullable ? this.localValueObj.value == null : false;
+        this._inherited = this._isNullable ? this.localValue == null : false;
 
         this._flags.Set(__flag_inherited, this._inherited);
 
@@ -241,7 +238,7 @@ class ValueControl extends base {
             this._nullifyBtn.disabled = false;
         }
 
-        if (this.localValueObj.value == null &&
+        if (this.localValue == null &&
             (this._descriptor.inputOptions && this._descriptor.inputOptions.nullPlaceholder)) {
             this._input.placeholderValue = this._descriptor.inputOptions.nullPlaceholder;
         }
@@ -259,32 +256,33 @@ class ValueControl extends base {
         if (this._releasing || this._released || !this._data) { return; }
 
         if (this._directSet) {
-            this._data.Set(this._descriptor.id, p_value);
+            this._data.Set(this.propertyId, p_value);
             return;
         }
 
         if (this._onSubmitFn) {
-            this._onSubmitFn(this, this._descriptor.id, p_value);
+            this._onSubmitFn(this, this.propertyId, p_value);
         } else if (this._cmd) {
             this._cmd.emitter = this;
             this._cmd.inputValue = p_value;
             this._cmd.Execute();
         } else {
-            this._data.Set(this._descriptor.id, p_value);
+            this._data.Set(this.propertyId, p_value);
         }
     }
 
     _NullifyValue(p_input) {
 
-        let valueObj = this.localValueObj;
+
+        let oldValue = this._data._values[this.propertyId];
 
         if (this._directSet) {
-            valueObj.value = null;
-            this._data.CommitValueUpdate(this._descriptor.id, valueObj, null, false);
+            this._data._values[this.propertyId] = null;
+            this._data.CommitValueUpdate(this.propertyId, null, null, false);
             return;
         }
 
-        if (valueObj.value == null) { return; }
+        if (oldValue == null) { return; }
 
         SetPropertyCmd.SetProperty.emitter = this;
         SetPropertyCmd.SetProperty.inputValue = null;

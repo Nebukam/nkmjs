@@ -7,62 +7,75 @@ const DataBlock = require(`./data-block`);
 const SIMPLEX = require(`../simplex`);
 const { DataList } = require("../helpers");
 
-const __noResolution = [];
+const __noResolution = Object.freeze([]);
 
 class SimpleDataBlock extends DataBlock {
     constructor() { super(); }
 
-    static __lockedData = true;
-
     /**
      * Expected format
-     * { id:signal, id:signal }
-     */
-    static __VALUES_SIGNALS = null;
-
-    /**
-     * Expected format
-     * { id:'uniqueId', member:'_propertyId', type:Class, ?[IDS.SKIP_SERIALIZATION]:true }
+     * [ID]{ member:'_propertyId', type:Class, ?[IDS.SKIP_SERIALIZATION]:true, ?watch:true }
      */
     static __BLOCS = null;
 
     /**
      * Expected format
-     * { id:'uniqueId', member:'_propertyId', ?type:Class, ?[IDS.SKIP_SERIALIZATION]:true }
+     * [ID]{ member:'_propertyId', ?type:Class, ?[IDS.SKIP_SERIALIZATION]:true }
      */
     static __DATALISTS = null;
 
     /**
      * Expected format
-     * { id:ID, value:value, ?_nullable:true, ?_group:ID, ?[IDS.SKIP_SERIALIZATION]:true }
+     * [ID]:{ value:value, ?nullable:true, ?signal:SIGNAL, ?group:ID, ?_order:0, ?[IDS.SKIP_SERIALIZATION]:true, ?sanitizeFn }
      */
-    static __VALUES = [];
+    static __VALUES = {};
 
-    static ExtSIGNALMAP(p_base, p_list, p_invert = false) { return this.__Ext(p_base.__VALUES_SIGNALS, p_list, p_invert); }
-    static ExtBLOCS(p_base, p_list, p_invert = false) { return this.__Ext(p_base.__BLOCS, p_list, p_invert); }
-    static ExtDATALISTS(p_base, p_list, p_invert = false) { return this.__Ext(p_base.__DATALISTS, p_list, p_invert); }
-    static ExtVALUES(p_base, p_list, p_invert = false) { return this.__Ext(p_base.__VALUES, p_list, p_invert); }
-
-    static __Ext(p_base, p_list, p_invert = false) { return p_base ? p_invert ? [...p_list, ...p_base] : [...p_base, ...p_list] : p_list; }
-    static __ExtObj(p_base, p_list) { return p_base ? { ...p_base, ...p_list } : p_list; }
+    static Ext(p_base, p_list) {
+        for (var id in p_base) {
+            if (!(id in p_list)) {
+                p_list[id] = p_base[id];
+                //TODO: Copy instead of reference and check if properties have different values
+            }
+        } return p_list;
+    }
 
     _Init() {
         super._Init();
 
         this._Bind(this.CommitUpdate);
 
-        if (this.constructor.__BLOCS) {
-            this.constructor.__BLOCS.forEach(blocInfos => {
-                this[blocInfos.member] = this._AddBloc(blocInfos);
-            });
+        let BLOCS = this.BLOCS;
+        if (BLOCS) {
+            for (var id in BLOCS) {
+
+                let
+                    definition = BLOCS[id],
+                    memberId = definition.member || `_${id}`;
+
+                let newBloc = com.Rent(definition.type);
+                newBloc._iid = id;
+                newBloc._parent = this;
+
+                this[memberId] = newBloc;
+
+                if (definition.watch) { newBloc.Watch(com.SIGNAL.UPDATED, this.CommitUpdate); }
+
+            };
         }
 
-        if (this.constructor.__DATALISTS) {
-            this.constructor.__DATALISTS.forEach(dataList => {
-                let newDataList = new (dataList.type ? dataList.type : DataList)();
+        let DATALISTS = this.DATALISTS;
+        if (DATALISTS) {
+            for (var id in DATALISTS) {
+                let
+                    definition = DATALISTS[id],
+                    memberId = definition.member || `_${id}`;
+
+                let newDataList = new (definition.type ? definition.type : DataList)();
                 newDataList.parent = this;
-                this[dataList.member] = newDataList;
-            });
+
+                if (this[memberId]) { throw new Error(`Datalist member ID "${memberId}" overlaps with existing Bloc ID.`); }
+                this[memberId] = newDataList;
+            }
         }
 
         this._parent = null;
@@ -75,72 +88,18 @@ class SimpleDataBlock extends DataBlock {
         this._OnReset(false, true);
     }
 
-    //#region Blocs
+    get DEFINITIONS() { return this.constructor.__VALUES; }
+    get BLOCS() { return this.constructor.__BLOCS; }
+    get DATALISTS() { return this.constructor.__DATALISTS; }
 
     get iid() { return this._idd; }
     get parent() { return this._parent; }
-    get blocs() { return this._blocs; }
-
-    /**
-     * Blocs should be create during intialization, not after.
-     * Simplex & Serialization assumed blocs are defined as defining members of a SimpleDataBlock
-     * not a dynamic list of content.
-     * @param {*} p_conf 
-     * @returns 
-     */
-    _AddBloc(p_conf) {
-
-        if (!this._blocs) {
-            this._blocs = [];
-            this._blocsIDSet = new Set();
-        }
-
-        if (this._blocsIDSet.has(p_conf.id)) {
-            throw new Error(`Duplicate child id.`);
-        }
-
-        let bloc = new p_conf.type();
-        bloc._iid = p_conf.id;
-        bloc._parent = this;
-
-        this._blocs.push(bloc);
-        this._blocsIDSet.add(p_conf.id);
-
-        if (p_conf.watch) { bloc.Watch(com.SIGNAL.UPDATED, this.CommitUpdate); }
-
-        return bloc;
-
-    }
-
-    //#endregion
 
     //#region Values
 
     _ResetValues(p_values) {
-
-        let statics = this.constructor.__VALUES;
-
-        statics.forEach((definition) => {
-
-            let
-                id = definition.id,
-                valueObj = {};
-
-            if (definition._fn) {
-                p_values[id] = definition._fn(id, this);
-            } else {
-                for (var prop in definition) {
-                    if (prop[0] == `_`) { continue; }
-                    let value = definition[prop];
-                    if (u.isFunc(value)) { value = value(id, this); }
-                    valueObj[prop] = value;
-                }
-            }
-
-            p_values[id] = valueObj;
-
-        });
-
+        let statics = this.DEFINITIONS;
+        for (var id in statics) { p_values[id] = statics[id].value; }
     }
 
     /**
@@ -151,25 +110,20 @@ class SimpleDataBlock extends DataBlock {
      * @returns 
      */
     Set(p_id, p_value, p_silent = false) {
-        let valueObject;
-        let oldValue = null;
+
         this._lastSetEffective = false;
-        if (!(p_id in this._values)) {
-            if (this.constructor.__lockedData) {
-                //console.warn(`Attempting to create value '${p_id}' on locked object.`, this);
-                return;
-            }
-            valueObject = { value: p_value };
-            this._values[p_id] = valueObject;
-        }
-        else {
-            valueObject = this._values[p_id];
-            oldValue = valueObject.value;
-            if (oldValue === p_value) { return p_value; }
-            valueObject.value = p_value;
-        }
+
+        let definition = this.DEFINITIONS[p_id];
+        if (!definition) { return null; }
+
+        let oldValue = this._values[p_id];
+        if (oldValue == p_value) { return p_value; }
+
+        this._values[p_id] = p_value;
+
         this._lastSetEffective = true;
-        this.CommitValueUpdate(p_id, valueObject, oldValue, p_silent);
+        this.CommitValueUpdate(p_id, p_value, oldValue, p_silent);
+
         return p_value;
     }
 
@@ -182,7 +136,7 @@ class SimpleDataBlock extends DataBlock {
      */
     Get(p_id, p_fallback = null, p_fallbackIfNullValue = false) {
         if (!(p_id in this._values)) { return p_fallback; }
-        let value = this._values[p_id].value;
+        let value = this._values[p_id];
         if (p_fallbackIfNullValue && value == null) { return p_fallback; }
         return value;
     }
@@ -195,10 +149,10 @@ class SimpleDataBlock extends DataBlock {
      * @returns 
      */
     GetOrSet(p_id, p_fallback = null, p_silent = false) {
-        if (!(p_id in this._values)) {
-            return this.Set(p_id, p_fallback, p_silent);
-        }
-        return this._values[p_id].value;
+        if (!(p_id in this._values)) { return null; }
+        let value = this._values[p_id];
+        if (value == null) { return this.Set(p_id, p_fallback, p_silent); }
+        else { return value; }
     }
 
     /**
@@ -207,62 +161,51 @@ class SimpleDataBlock extends DataBlock {
      * @param {*} [p_silent]
      */
     BatchSet(p_values, p_silent = false) {
-        let anyChange = false;
-        if (u.isInstanceOf(p_values, SimpleDataBlock)) {
-            for (var p in p_values._values) {
-                this.Set(p, p_values._values[p].value, true);
-                if (this._lastSetEffective) { anyChange = true; }
-            }
-        } else {
-            for (var p in p_values) {
-                this.Set(p, p_values[p], true);
-                if (this._lastSetEffective) { anyChange = true; }
-            }
+
+        let
+            anyChange = false,
+            defs = this.DEFINITIONS;
+
+        if (u.isInstanceOf(p_values, SimpleDataBlock)) { p_values = p_values._values; }
+
+        for (var id in p_values) {
+            if (!(id in defs)) { continue; }
+            this.Set(id, p_values[id], true);
+            if (this._lastSetEffective) { anyChange = true; }
         }
+
         if (!p_silent && anyChange) { this.CommitUpdate(); }
+
     }
 
     /**
      * 
      * @param {*} p_id 
-     * @param {*} p_valueObj 
+     * @param {*} p_newValue 
      * @param {*} p_oldValue 
      * @param {*} [p_silent] 
      */
-    CommitValueUpdate(p_id, p_valueObj, p_oldValue, p_silent = false) {
-        if (this.constructor.__VALUES_SIGNALS &&
-            p_id in this.constructor.__VALUES_SIGNALS) {
-            this.Broadcast(this.constructor.__VALUES_SIGNALS[p_id], this, p_valueObj, p_oldValue);
-        }
-        this.Broadcast(com.SIGNAL.VALUE_CHANGED, this, p_id, p_valueObj, p_oldValue);
+    CommitValueUpdate(p_id, p_newValue, p_oldValue, p_silent = false) {
+        let definition = this.DEFINITIONS[p_id];
+        if (definition.signal) { this.Broadcast(definition.signal, this, p_newValue, p_oldValue); }
+        this.Broadcast(com.SIGNAL.VALUE_CHANGED, this, p_id, p_newValue, p_oldValue);
         if (!p_silent) { this.CommitUpdate(); }
     }
 
     /**
      * 
      * @param {*} [p_ids] Array or object of IDs to copy. If left empty, all values are returned. 
-     * @param {*} [p_reciptient] object to write the values into
+     * @param {*} [p_recipient] object to write the values into
      * @returns 
      */
-    Values(p_ids = null, p_reciptient = null) {
-        let v = p_reciptient ? p_reciptient : {};
+    Values(p_ids = null, p_recipient = null) {
+        let v = p_recipient ? p_recipient : {};
         if (u.isArray(p_ids)) {
-            for (let p in this._values) {
-                if (!p_ids.includes(p)) { continue; }
-                let obj = this._values[p];
-                v[p] = obj.value;
-            }
+            p_ids.forEach(id => { if (id in this._values) { v[id] = this._values[id]; } });
         } else if (u.isObject(p_ids)) {
-            for (let p in this._values) {
-                if (!(p in p_ids)) { continue; }
-                let obj = this._values[p];
-                v[p] = obj.value;
-            }
+            for (let id in p_ids) { if (id in this._values) { v[id] = this._values[id]; } }
         } else {
-            for (let p in this._values) {
-                let obj = this._values[p];
-                v[p] = obj.value;
-            }
+            for (let id in this._values) { v[id] = this._values[id]; }
         }
         return v;
     }
@@ -279,9 +222,8 @@ class SimpleDataBlock extends DataBlock {
         }
 
         if (p_individualSet) {
-            let copy = { ...this._values };
-            this._ResetValues(copy);
-            this.BatchSet(copy, p_silent);
+            let defs = definitions;
+            for (let id in defs) { this.Set(id, defs[id].value, p_silent); }
             this._OnReset(p_individualSet, p_silent);
         } else {
             this._ResetValues(this._values);
@@ -294,6 +236,7 @@ class SimpleDataBlock extends DataBlock {
     get resolutionFallbacks() { return __noResolution; }
 
     Resolve(p_id) {
+        if (this.resolutionFallbacks == __noResolution) { return this.Get(p_id); }
         return SIMPLEX.Resolve(p_id, this, ...this.resolutionFallbacks);
     }
 

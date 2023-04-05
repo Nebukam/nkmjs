@@ -218,6 +218,7 @@ class StreamingDataListView extends base {
         p_widget.data = data;
 
         if (this.selectionStack.data.isEmpty) {
+            if (!this.editor) { return; }
             if (!this.editor.inspectedData.isEmpty) {
                 if (this.editor.inspectedData.Contains(data)) {
                     p_widget.Select(true);
