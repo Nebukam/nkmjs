@@ -7,7 +7,7 @@ const ContentURLManipulator = require(`./manipulator-content-url`);
  * @augments ui.core.manipulators.ContentURLManipulator
  * @memberof ui.core.manipulators
  */
-class iFrameHandler extends ContentURLManipulator {
+class EmbedHandler extends ContentURLManipulator {
 
     /**
      * @description TODO
@@ -19,13 +19,13 @@ class iFrameHandler extends ContentURLManipulator {
         super(p_element, p_autoHide, p_sizeControl);
     }
 
-    get content() { return this._element ? this._element.src : null; }
+    get content() { return this._element ? this._element.data : null; }
 
     _ApplyPath(p_element, p_path = false, p_direct = false) {
-        if (p_element.src == p_path) { return; }
-        p_element.src = p_path ? p_path : ``;
+        if (p_element.data == p_path) { return; }
+        p_element.data = p_path ? p_path : ``;
     }
 
 }
 
-module.exports = iFrameHandler;
+module.exports = EmbedHandler;

@@ -9,20 +9,20 @@ class ActionSetPropertyValue extends actions.Action {
 
     static get mergeable() { return true; }
 
-    CanMerge(p_operation) {
+    CanMerge(p_op) {
         //Also check if operation target is array, this mean it's a group op
-        return (this._operation.target == p_operation.target && this._operation.id == p_operation.id);
+        return (this._operation.target == p_op.target && this._operation.id == p_op.id);
     }
 
     // Expected operation format : { target:SimpleDataBlock, id:`ID`, value:* }
 
-    _InternalDo(p_operation, p_merge = false) {
+    _InternalDo(p_op, p_merge = false) {
 
         let
-            target = p_operation.target,
-            propertyId = p_operation.id,
+            target = p_op.target,
+            propertyId = p_op.id,
             oldValue,
-            newValue = p_operation.value;
+            newValue = p_op.value;
 
         if (u.isArray(target)) {
             oldValue = [];
@@ -31,7 +31,7 @@ class ActionSetPropertyValue extends actions.Action {
             oldValue = target.Get(propertyId);
         }
 
-        if (!p_merge) { p_operation.oldValue = oldValue; }
+        if (!p_merge) { p_op.oldValue = oldValue; }
         else { this._operation.value = newValue; }
 
         if (u.isArray(target)) {

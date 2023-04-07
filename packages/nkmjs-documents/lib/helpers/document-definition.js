@@ -36,6 +36,11 @@ class DocumentDefinition {
     get LoadCmd() { return this._loadCmd; }
     get ReleaseCmd() { return this._releaseCmd; }
 
+    set defaultSaveLocation(p_value){
+        this._saveCmd.defaultSaveLocation = p_value;
+        this._defaultsSaveCmd.defaultSaveLocation = p_value;
+    }
+
 }
 
 module.exports = DocumentDefinition;

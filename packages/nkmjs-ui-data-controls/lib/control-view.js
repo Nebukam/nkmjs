@@ -270,11 +270,11 @@ class ControlView extends base {
      * @access protected
      * @description Registers & executes an action.
      * @param {constructor} p_actionClass Action class to be executed
-     * @param {object} p_operation Action' operation parameters
+     * @param {object} p_op Action' operation parameters
      * @group Actions
      */
-    _Do(p_actionClass, p_operation) {
-        actions.CommandAction.Do(this, p_actionClass, p_operation);
+    _Do(p_actionClass, p_op) {
+        actions.CommandAction.Do(this, p_actionClass, p_op);
     }
 
     _CleanUp() {

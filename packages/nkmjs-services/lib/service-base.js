@@ -19,7 +19,7 @@ class ServiceBase extends com.helpers.SingletonEx {
         this._initialized = false;
         this._started = false;
         this._running = false;
-        this._tick = new com.time.DelayedCall(this._Bind(this._Tick));
+        this._tick = com.DelayedCall(this._Bind(this._Tick));
     }
 
     /**

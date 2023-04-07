@@ -50,22 +50,22 @@ class Action extends com.helpers.InfosObject {
      * @description Checks whether the given operation can be merged with the current one.
      * This is especially useful for small-increment actions that can be merged into a 
      * single one instead of clogging the undo/redo stack.
-     * @param {object} p_operation 
+     * @param {object} p_op 
      * @returns {boolean} True if the operations can be merged into a single action, otherwise false.
      */
-    CanMerge(p_operation) { return false; }
+    CanMerge(p_op) { return false; }
 
     // ----> Do / undo
 
     /**
      * @description Performs the action.
-     * @param {object} p_operation 
+     * @param {object} p_op 
      * @param {boolean} p_merge True if the operation should be merged, otherwise false.
      * @returns {actions.Action} self
      */
-    Do(p_operation, p_merge = false) {
-        if (!p_merge) { this._operation = p_operation; }
-        this._InternalDo(p_operation, p_merge);
+    Do(p_op, p_merge = false) {
+        if (!p_merge) { this._operation = p_op; }
+        this._InternalDo(p_op, p_merge);
         this._UpdateDisplayInfos();
         if (this._stack) {
             this._stack._OnActionStateChanged(this, this.state);
@@ -94,11 +94,11 @@ class Action extends com.helpers.InfosObject {
     /**
      * @access protected
      * @description TODO
-     * @param {object} p_operation 
+     * @param {object} p_op 
      * @param {boolean} p_merge 
      * @customtag override-me
      */
-    _InternalDo(p_operation, p_merge = false) {
+    _InternalDo(p_op, p_merge = false) {
 
     }
 

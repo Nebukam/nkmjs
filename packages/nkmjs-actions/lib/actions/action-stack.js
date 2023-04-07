@@ -101,9 +101,9 @@ class ActionStack extends com.pool.DisposableObjectEx {
     /**
      * @description TODO
      * @param {actions.Action} p_actionClass constructor
-     * @param {object} p_operation 
+     * @param {object} p_op 
      */
-    Do(p_actionClass, p_operation) {
+    Do(p_actionClass, p_op) {
 
         if (!this._isEnabled) { return null; }
 
@@ -126,17 +126,17 @@ class ActionStack extends com.pool.DisposableObjectEx {
 
         if (p_actionClass.mergeable) {
             if (u.isInstanceOf(lastAction, p_actionClass)) {
-                if (lastAction.CanMerge(p_operation)) {
+                if (lastAction.CanMerge(p_op)) {
                     //Merge if mergeable & can merge current options
-                    return lastAction.Do(p_operation, true);;
+                    return lastAction.Do(p_op, true);;
                 }
             }
         }
 
         if (this._group) {
-            return this._group._Register(com.Rent(p_actionClass).Do(p_operation, false));
+            return this._group._Register(com.Rent(p_actionClass).Do(p_op, false));
         } else {
-            return this._Register(com.Rent(p_actionClass).Do(p_operation, false));
+            return this._Register(com.Rent(p_actionClass).Do(p_op, false));
         }
 
     }

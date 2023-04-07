@@ -168,6 +168,7 @@ class Overlay extends base {
         }
 
         this._content = this.Attach(contentClass, 'content');
+        this._data.currentContent = this._content;
 
         dom.CSSClass(this._content, FLAGS.SHOWN);
         dom.CSS(this._content, `transform`, `translateX(0%)`);

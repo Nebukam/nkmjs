@@ -72,7 +72,7 @@ class TaskPrepareHTMLMeta extends ScriptBase {
             let item = map[i],
                 mime = MIME.Get(path.extname(item));
 
-            if (item.substr(0, 2) == `./`) {
+            if (item.startsWith(`./`)) {
                 //item = item.substr(2);
             }
 

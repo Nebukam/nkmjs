@@ -242,12 +242,12 @@ class Editor extends base {
      * @access public
      * @description Registers & executes an action in the local ActionStack.
      * @param {constructor} p_actionClass Action class to be executed
-     * @param {object} p_operation Action' operation parameters
+     * @param {object} p_op Action' operation parameters
      * @group Actions
      */
-    Do(p_actionClass, p_operation) {
+    Do(p_actionClass, p_op) {
         //this._actionStack.ToggleGrouping(ui.POINTER.DRAG_MULTIPLE); //TODO : Need a better approach for Group drag-related actions 
-        this._actionStack.Do(p_actionClass, p_operation);
+        this._actionStack.Do(p_actionClass, p_op);
     }
 
     /**

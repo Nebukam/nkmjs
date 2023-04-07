@@ -2,6 +2,7 @@
 
 const io = require(`@nkmjs/io-core`);
 const fs = require(`fs`);
+const path = require(`path`);
 
 class IOElectron {
 
@@ -50,10 +51,10 @@ class IOElectron {
         return fs.statSync(p_path);
     }
 
-    _IOID(p_ioId, p_operation) {
+    _IOID(p_ioId, p_op) {
         if (nkm.u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
             try {
-                let url = new URL(p_operation.fullPath);
+                let url = new URL(p_op.fullPath);
                 if (!url.protocol.includes(`file`)) {
                     return nkm.io.IO_TYPE.REMOTE;
                 }

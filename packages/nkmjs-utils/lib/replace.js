@@ -33,7 +33,7 @@ class REPLACE {
                 if (p_tokens.suffix) { key = `${key}${p_tokens.suffix}`; }
             }
 
-            try { p_inputString = p_inputString.split(key).join(value); }
+            try { p_inputString = p_inputString.replaceAll(key, value); }
             catch (e) { }
 
         }

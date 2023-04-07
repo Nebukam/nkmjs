@@ -29,7 +29,7 @@ class UI extends com.helpers.SingletonEx {
         this._dirtyElements = new collections.List(0);
 
         this._Bind(this._Return);
-        this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._UpdateDirty));
+        this._delayedUpdate = com.DelayedCall(this._Bind(this._UpdateDirty));
 
     }
 

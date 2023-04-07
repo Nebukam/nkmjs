@@ -1,4 +1,4 @@
-const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, dialog } = require(`electron`);
+const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, dialog, protocol } = require(`electron`);
 
 const path = require(`path`);
 const url = require(`url`);
@@ -73,7 +73,6 @@ class ElectronBase {
 
 
         //app.commandLine.appendSwitch('js-flags', '--max-old-space-size=4096'); //Increase available memory
-        app.allowRendererProcessReuse = false;
 
         app.on('second-instance', this._Bind(this._OnSecondInstance));
 
@@ -122,6 +121,11 @@ class ElectronBase {
     get mainWindow() { return this._mainWindow; }
 
     _CreateMainWindow() {
+
+        protocol.registerFileProtocol('file', (request, callback) => {
+            let pathname = decodeURI(request.url.replace('file:///', ''));
+            callback(pathname);
+        });
 
         // Create main window
         console.log(`Create main window`);

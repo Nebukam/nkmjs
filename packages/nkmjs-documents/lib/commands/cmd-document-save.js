@@ -16,7 +16,11 @@ class CommandDocumentSave extends CommandDocumentBase {
     _Init() {
         super._Init();
         this._Bind(this._OnPicked);
+        this._defaultSaveLocation = null;
     }
+
+    get defaultSaveLocation() { return this._defaultSaveLocation; }
+    set defaultSaveLocation(p_value) { this._defaultSaveLocation = p_value; }
 
     _InternalExecute() {
 
@@ -31,11 +35,18 @@ class CommandDocumentSave extends CommandDocumentBase {
                     error: this._Fail,
                 });
             } else {
-                actions.RELAY.ShowOpenDialog({
+
+                let dialogOptions = {
                     filters: [{ ...this._fileInfos }],
                     type: `save`,
-                    title:`Save "${document.title}"`
-                }, this._OnPicked);
+                    title: `Save "${document.title}"`
+                };
+
+                if (this._defaultSaveLocation) {
+                    dialogOptions.defaultPath = this._defaultSaveLocation;
+                }
+
+                actions.RELAY.ShowOpenDialog(dialogOptions, this._OnPicked);
             }
         }
 

@@ -87,21 +87,16 @@ class ResourceWatcher extends base {
         if (this._resourceBound) { this.Release(); }
     }
 
-    _OnWatcherError(p_err) {
-        super._OnWatcherError(p_err);
-    }
+    //_OnWatcherError(p_err) { super._OnWatcherError(p_err); }
 
-    _OnWatcherReady() {
-        super._OnWatcherReady();
-    }
+    //_OnWatcherReady() { super._OnWatcherReady(); }
 
-    _OnFileAdded(p_path) {
-        super._OnFileAdded(p_path);
-    }
+    //_OnFileAdded(p_path) { super._OnFileAdded(p_path); }
 
     _OnFileChange(p_path) {
         super._OnFileChange(p_path);
-        if (this._readOnChange) {
+        p_path = nkm.u.FULL(p_path);
+        if (this._path == p_path && this._readOnChange) {
             this.Read(this._readOptions);
         }
     }
@@ -112,18 +107,18 @@ class ResourceWatcher extends base {
 
     _OnFileDeleted(p_path) {
         super._OnFileDeleted(p_path);
-        if (this._releaseRscOnDelete) {
+        p_path = nkm.u.FULL(p_path);
+        if (this._path == p_path && this._releaseRscOnDelete) {
             if (this._currentRsc) { this._currentRsc.Release(); }
         }
     }
 
-    _OnDirectoryAdded(p_path) {
-        super._OnDirectoryAdded(p_path);
-    }
+    //_OnDirectoryAdded(p_path) { super._OnDirectoryAdded(p_path); }
 
     _OnDirectoryDeleted(p_path) {
         super._OnDirectoryDeleted(p_path);
-        if (this._releaseRscOnDelete) {
+        p_path = nkm.u.FULL(p_path);
+        if (this._path == p_path && this._releaseRscOnDelete) {
             if (this._currentRsc) { this._currentRsc.Release(); }
         }
     }

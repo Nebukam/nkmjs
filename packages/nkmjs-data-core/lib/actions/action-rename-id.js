@@ -16,10 +16,10 @@ class ActionRenameID extends actions.Action {
 
     static get mergeable() { return true; }
 
-    CanMerge(p_operation) {
+    CanMerge(p_op) {
         let operation = this._operation;
 
-        if (operation.target === p_operation.target) {
+        if (operation.target === p_op.target) {
             return true;
         } else {
             return false;
@@ -28,24 +28,24 @@ class ActionRenameID extends actions.Action {
 
     // ----> Do / undo
 
-    Do(p_operation, p_merge = false) {
+    Do(p_op, p_merge = false) {
 
-        let id = p_operation.target,
+        let id = p_op.target,
             originalValue = null;
 
         if (!p_merge) {
-            this._operation = p_operation;
+            this._operation = p_op;
             originalValue = id.name;
-            p_operation.originalValue = originalValue;
+            p_op.originalValue = originalValue;
         } else {
-            this._operation.value = p_operation.value;
+            this._operation.value = p_op.value;
             originalValue = this._operation.originalValue;
-            p_operation = this._operation;
+            p_op = this._operation;
         }
 
-        id.name = p_operation.value;
+        id.name = p_op.value;
 
-        console.log(`%cDO : ${originalValue} => ${p_operation.value}`, 'color: #909090');
+        console.log(`%cDO : ${originalValue} => ${p_op.value}`, 'color: #909090');
         return this;
 
     }

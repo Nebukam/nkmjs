@@ -16,11 +16,11 @@ class ActionMetadataSet extends actions.Action {
 
     static get mergeable() { return true; }
 
-    CanMerge(p_operation) {
+    CanMerge(p_op) {
         let operation = this._operation;
 
-        if (operation.target === p_operation.target
-            && operation.path === p_operation.path) {
+        if (operation.target === p_op.target
+            && operation.path === p_op.path) {
             return true;
         } else {
             return false;
@@ -32,12 +32,12 @@ class ActionMetadataSet extends actions.Action {
     /**
      * @access private
      * @description TODO
-     * @param {*} p_operation 
+     * @param {*} p_op 
      * @param {*} p_merge 
      */
-    _InternalDo(p_operation, p_merge = false) {
+    _InternalDo(p_op, p_merge = false) {
 
-        let op = p_operation,
+        let op = p_op,
             mData = op.target,
             mPath = op.path,
             originalValue = null;

@@ -163,7 +163,7 @@ class POINTER extends com.helpers.SingletonEx {
         this._using = [];
         this._usingDeprecated = [];
         this._position = { x: 0, y: 0 };
-        this._clearUsing = new com.time.DelayedCall(this._Bind(this._ClearUsing));
+        this._clearUsing = com.DelayedCall(this._Bind(this._ClearUsing));
 
         this._Bind(this._mExternalDragEnter);
         this._Bind(this._mExternalDragOver);

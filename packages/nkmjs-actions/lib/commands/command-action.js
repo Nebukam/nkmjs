@@ -28,9 +28,9 @@ class CommandAction extends Command {
      * @description TODO
      * @param {*} p_emitter 
      * @param {actions.Action} p_actionClass constructor
-     * @param {object} p_operation 
+     * @param {object} p_op 
      */
-    static Do(p_emitter, p_actionClass, p_operation) {
+    static Do(p_emitter, p_actionClass, p_op) {
 
         let A = this._COMMAND_ACTION;
 
@@ -38,7 +38,7 @@ class CommandAction extends Command {
 
         A.emitter = p_emitter;
         A.actionClass = p_actionClass;
-        A.Execute(p_operation);
+        A.Execute(p_op);
 
     }
 

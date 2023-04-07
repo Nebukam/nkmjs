@@ -137,6 +137,8 @@ class WINDOWS extends com.helpers.SingletonEx {
             newWindow.on(`close`, this._OnWindowClosing);
             newWindow.on(`closed`, this._OnWindowClosed);
 
+            console.log(`[+] ${winOptions.id}`);
+
         }
 
         if (`pathname` in p_options) {
@@ -196,6 +198,9 @@ class WINDOWS extends com.helpers.SingletonEx {
 
         this._mapIDToWrapper.Remove(winID);
         this._mapWindowToID.Remove(p_win);
+
+        console.log(`[x] ${winID}`);
+
     }
 
     // ----> Messages handling

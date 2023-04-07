@@ -176,7 +176,7 @@ class Catalog extends base {
         this._sortPending = false;
         this._autoSort = true;
         this._defaultSortFunc = null;
-        this._delayedSort = new com.time.DelayedCall(this._Bind(this.Sort));
+        this._delayedSort = com.DelayedCall(this._Bind(this.Sort));
 
         this._localItemClass = null;
         this._localCatalogClass = null;

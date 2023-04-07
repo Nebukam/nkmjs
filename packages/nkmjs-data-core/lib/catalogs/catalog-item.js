@@ -36,7 +36,7 @@ class CatalogItem extends base {
         this._autoRelease = true;
         this._isFirstUpdate = true;
 
-        this._delayedUpdate = new com.time.DelayedCall(this._Bind(this._OnUpdate));
+        this._delayedUpdate = com.DelayedCall(this._Bind(this._OnUpdate));
         
     }
 

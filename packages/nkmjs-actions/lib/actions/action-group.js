@@ -45,20 +45,20 @@ class ActionGroup extends Action {
 
     /**
      * @description TODO
-     * @param {object} p_operation 
+     * @param {object} p_op 
      * @param {boolean} p_merge 
      */
-    Do(p_operation, p_merge = false) {
+    Do(p_op, p_merge = false) {
         //Do nothing
     }
 
     /**
      * @access protected
      * @description TODO
-     * @param {object} p_operation 
+     * @param {object} p_op 
      * @param {boolean} p_merge 
      */
-    _InternalDo(p_operation, p_merge = false) {
+    _InternalDo(p_op, p_merge = false) {
         //Do nothing
     }
 

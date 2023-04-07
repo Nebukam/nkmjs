@@ -7,14 +7,14 @@ class ActionSetPropertyValueMultiple extends actions.Action {
 
     // Expected operation format : { target:SimpleDataBlock, values:{ id:* } }
 
-    _InternalDo(p_operation, p_merge = false) {
+    _InternalDo(p_op, p_merge = false) {
 
         let
-            target = p_operation.target,
-            values = p_operation.values,
+            target = p_op.target,
+            values = p_op.values,
             oldValues = target.Values(values);
 
-        p_operation.oldValues = oldValues;
+        p_op.oldValues = oldValues;
         target.BatchSet(values);
         this._UpdateValues(target, values, oldValues);
         target.CommitUpdate();

@@ -778,8 +778,8 @@ class UTILS {
 
     static ToCustomElementID(p_id, p_addGUID = false) {
         return this.CamelSplit(`${p_id}${p_addGUID ? this.unsafeUID : ''}`, `-`)
-            .replace(`_`, `-`)
-            .replace(` `, `-`)
+            .replaceAll(`_`, `-`)
+            .replaceAll(` `, `-`)
             .toLowerCase();
     }
 

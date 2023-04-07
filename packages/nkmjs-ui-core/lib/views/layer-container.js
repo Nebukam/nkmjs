@@ -31,7 +31,7 @@ class LayerContainer extends base {
 
     _Init() {
         super._Init();
-        this._updateDepths = new com.time.DelayedCall(this._Bind(this._UpdateLayerDepth));
+        this._updateDepths = com.DelayedCall(this._Bind(this._UpdateLayerDepth));
         this._layerList = new collections.List(0);
     }
 

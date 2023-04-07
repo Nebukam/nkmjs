@@ -28,7 +28,7 @@ class UserPreferences extends com.pool.DisposableObjectEx {
         this._Bind(this._OnDocumentSaveSuccess);
         this._Bind(this._OnDocumentSaveError);
 
-        this._delayedSave = new com.time.DelayedCall(this._Bind(this.Save));
+        this._delayedSave = com.DelayedCall(this._Bind(this.Save));
 
     }
 
