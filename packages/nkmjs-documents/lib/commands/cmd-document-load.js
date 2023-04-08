@@ -22,10 +22,16 @@ class CommandDocumentLoad extends CommandDocumentBase {
         this._Bind(this._OnPicked);
         //this._Bind(this._OnReadError);
         this._Bind(this._OnReadSuccess);
+
+        this._bumpOnly = false;
+
     }
 
-    get defaultSaveLocation() { return this._defaultSaveLocation; }
-    set defaultSaveLocation(p_value) { this._defaultSaveLocation = p_value; }
+    get bumpOnly() { return this._bumpOnly; }
+    set bumpOnly(p_value) { this._bumpOnly = p_value; }
+
+    get defaultDialogLocation() { return this._defaultDialogLocation; }
+    set defaultDialogLocation(p_value) { this._defaultDialogLocation = p_value; }
 
     _InternalExecute() {
 
@@ -39,8 +45,8 @@ class CommandDocumentLoad extends CommandDocumentBase {
                     properties: ['openFile']
                 };
 
-                if (this._defaultSaveLocation) {
-                    dialogOptions.defaultPath = this._defaultSaveLocation.replaceAll(`/`, path.sep);
+                if (this._defaultDialogLocation) {
+                    dialogOptions.defaultPath = this._defaultDialogLocation.replaceAll(`/`, path.sep);
                 }
 
                 actions.RELAY.ShowOpenDialog(dialogOptions, this._OnPicked);
@@ -83,6 +89,7 @@ class CommandDocumentLoad extends CommandDocumentBase {
         document.Load({
             success: this._OnReadSuccess,
             error: this._Fail,
+            bumpOnly:this._bumpOnly
         });
 
     }

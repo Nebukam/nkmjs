@@ -250,6 +250,14 @@ class Document extends com.pool.DisposableObjectEx {
      */
     Load(p_options = null) {
 
+        if (p_options && p_options.bumpOnly) {
+            if (this._readOnce && this._currentRsc) { 
+                this._OnReadComplete(this._currentRsc);
+                if(p_options.success){u.Call(p_options.success, this);}
+                return true; 
+            }
+        }
+
         this._readOnce = false;
 
         let nfo = com.NFOS.Get(this),
@@ -409,7 +417,7 @@ class Document extends com.pool.DisposableObjectEx {
 
         this._readOnce = false;
         this._updateDataOnEveryRead = false;
-        
+
         this.currentData = null;
         this.currentRsc = null;
         this._currentPath = null;

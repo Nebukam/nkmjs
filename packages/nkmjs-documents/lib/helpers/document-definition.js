@@ -36,11 +36,16 @@ class DocumentDefinition {
     get LoadCmd() { return this._loadCmd; }
     get ReleaseCmd() { return this._releaseCmd; }
 
-    set defaultSaveLocation(p_value){
-        this._saveCmd.defaultSaveLocation = p_value;
-        this._defaultsSaveCmd.defaultSaveLocation = p_value;
-        this._loadCmd.defaultSaveLocation = p_value;
-        this._defaultsLoadCmd.defaultSaveLocation = p_value;
+    set bumpOnly(p_value) {
+        this._loadCmd.bumpOnly = p_value;
+        this._defaultsLoadCmd.bumpOnly = p_value;
+    }
+
+    set defaultDialogLocation(p_value) {
+        this._saveCmd.defaultDialogLocation = p_value;
+        this._defaultsSaveCmd.defaultDialogLocation = p_value;
+        this._loadCmd.defaultDialogLocation = p_value;
+        this._defaultsLoadCmd.defaultDialogLocation = p_value;
     }
 
 }

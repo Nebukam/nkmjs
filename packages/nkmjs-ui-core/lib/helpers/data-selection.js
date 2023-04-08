@@ -116,7 +116,6 @@ class DataSelection extends com.pool.DisposableObjectEx {
      */
     Add(p_data, p_dataIndex = -1, p_mode = null) {
 
-
         if (p_data == null) { return false; }
 
         if (this._isInsideRange || !p_mode) { p_mode = INPUT.SELECT_MODIFIER_ADD; }

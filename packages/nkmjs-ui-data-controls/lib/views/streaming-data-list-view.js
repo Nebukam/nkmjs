@@ -45,17 +45,17 @@ class StreamingDataListView extends base {
         let dataSel = ui.helpers.HostSelStack(this, true, true, {
             add: {
                 fn: (p_sel, p_index) => {
-                    console.log(`REQUEST :: Add in ` + this);
+                    //console.log(`REQUEST :: Add in ${this} @${p_index}`,p_sel);
                     let widget = this._domStreamer.GetItemAt(p_index);
-                    if (widget) { widget.Select(true); }
-                    else { p_sel.Add(this._contentSource[p_index]); }
+                    if (widget) { widget.Select(true);}
+                    else { p_sel.Add(this._contentSource.At(p_index));}
                 }, thisArg: this
             },
             remove: {
                 fn: (p_sel, p_index, p_data) => {
                     let widget = this._domStreamer.GetItemAt(p_index);
                     if (widget) { widget.Select(false); }
-                    else { p_sel.Remove(this._contentSource[p_index]); }
+                    else { p_sel.Remove(this._contentSource.At(p_index)); }
                 }, thisArg: this
             },
             count: {

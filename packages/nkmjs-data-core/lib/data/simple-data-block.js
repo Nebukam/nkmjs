@@ -97,6 +97,14 @@ class SimpleDataBlock extends DataBlock {
 
     get iid() { return this._idd; }
     get parent() { return this._parent; }
+    set parent(p_value) {
+        if (this._parent == p_value) { return; }
+        let oldParent = this._parent;
+        this._parent = p_value;
+        this._OnParentChanged(oldParent);
+    }
+
+    _OnParentChanged(p_oldParent) { }
 
     //#region Values
 
@@ -269,6 +277,7 @@ class SimpleDataBlock extends DataBlock {
 
     _CleanUp() {
         super._CleanUp();
+        this.parent = null;
         this.Reset(false, true);
     }
 

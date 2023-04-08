@@ -68,6 +68,7 @@ class EditorEx extends base {
             this.shortcuts.Create("Ctrl A", {
                 fn: () => {
                     this._viewport._selStack.data.RequestSelectAll();
+                    console.log(this._viewport._selStack);
                     ui.dom.ClearHighlightedText();
                 }
             }).Strict();

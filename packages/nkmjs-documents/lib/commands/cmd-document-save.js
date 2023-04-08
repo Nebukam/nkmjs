@@ -17,11 +17,11 @@ class CommandDocumentSave extends CommandDocumentBase {
     _Init() {
         super._Init();
         this._Bind(this._OnPicked);
-        this._defaultSaveLocation = null;
+        this._defaultDialogLocation = null;
     }
 
-    get defaultSaveLocation() { return this._defaultSaveLocation; }
-    set defaultSaveLocation(p_value) { this._defaultSaveLocation = p_value; }
+    get defaultDialogLocation() { return this._defaultDialogLocation; }
+    set defaultDialogLocation(p_value) { this._defaultDialogLocation = p_value; }
 
     _InternalExecute() {
 
@@ -43,8 +43,8 @@ class CommandDocumentSave extends CommandDocumentBase {
                     title: `Save "${document.title}"`
                 };
 
-                if (this._defaultSaveLocation) {
-                    dialogOptions.defaultPath = this._defaultSaveLocation.replaceAll(`/`, path.sep);
+                if (this._defaultDialogLocation) {
+                    dialogOptions.defaultPath = this._defaultDialogLocation.replaceAll(`/`, path.sep);
                 }
 
                 actions.RELAY.ShowOpenDialog(dialogOptions, this._OnPicked);
