@@ -59,7 +59,7 @@ class WidgetBar extends base {
 
         this._flags.Add(this, FLAGS.STRETCH, FLAGS.STRETCH_SAME);
 
-        this._stretchEnum = new FlagEnum(IDS.stretches, true);
+        this._stretchEnum = new FlagEnum(FLAGS.stretches, true);
         this._stretchEnum.Add(this);
 
         this._sizeEnum = new FlagEnum(FLAGS.sizes, true);

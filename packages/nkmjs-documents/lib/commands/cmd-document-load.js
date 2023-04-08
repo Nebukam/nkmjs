@@ -1,6 +1,7 @@
 
 const u = require("@nkmjs/utils");
 const actions = require("@nkmjs/actions");
+const path = require(`path`);
 
 const CMD_TYPE = require(`./cmd-type`);
 const CommandDocumentBase = require(`./cmd-document-base`);
@@ -23,6 +24,9 @@ class CommandDocumentLoad extends CommandDocumentBase {
         this._Bind(this._OnReadSuccess);
     }
 
+    get defaultSaveLocation() { return this._defaultSaveLocation; }
+    set defaultSaveLocation(p_value) { this._defaultSaveLocation = p_value; }
+
     _InternalExecute() {
 
         if (u.isVoid(this._context) ||
@@ -30,11 +34,17 @@ class CommandDocumentLoad extends CommandDocumentBase {
 
             if (nkm.env.isNodeEnabled) {
 
-                actions.RELAY.ShowOpenDialog({
+                let dialogOptions = {
                     filters: [{ ...this._fileInfos }],
                     properties: ['openFile']
-                }, this._OnPicked);
-                
+                };
+
+                if (this._defaultSaveLocation) {
+                    dialogOptions.defaultPath = this._defaultSaveLocation.replaceAll(`/`, path.sep);
+                }
+
+                actions.RELAY.ShowOpenDialog(dialogOptions, this._OnPicked);
+
             } else {
                 this._Cancel();
             }
@@ -60,7 +70,7 @@ class CommandDocumentLoad extends CommandDocumentBase {
         this._docPath = p_filePath;
         let document = this._FindDoc();
 
-        if(document){
+        if (document) {
             console.log(`document already exists!`);
             this._doc.currentData.CommitUpdate();
             this._doc.currentData.ClearDirty();

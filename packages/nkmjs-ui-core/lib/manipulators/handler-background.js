@@ -28,7 +28,7 @@ class BackgroundHandler extends ContentURLManipulator {
     set objectFit(p_value) { dom.CSS(this._element, 'object-fit', p_value); }
 
     _ApplyPath(p_element, p_path = false, p_direct = false) {
-        dom.CSS(this._element, 'backgroundImage', p_path ? p_direct ? p_path : `url(${p_path})` : null);
+        dom.CSS(this._element, 'background-image', p_path ? p_direct ? p_path : `url(${p_path})` : null);
     }
 
 }

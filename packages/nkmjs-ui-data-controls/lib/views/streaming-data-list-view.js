@@ -3,13 +3,16 @@
 const com = require(`@nkmjs/common`);
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
+const data = require(`@nkmjs/data-core`);
 
 const helpers = require(`../helpers`);
 
-const base = require(`../control-view`);
 
+const base = require(`../control-view`);
 class StreamingDataListView extends base {
     constructor() { super(); }
+
+    static __defaultInstanceOf = data.helpers.DataList;
 
     static __doSelectionForward = true;
     static __default_headerViewClass = null;
@@ -234,7 +237,7 @@ class StreamingDataListView extends base {
                         p_widget.Select(false);
                     }
                 }
-            }else{
+            } else {
                 //TODO : Handle local selection
             }
         }

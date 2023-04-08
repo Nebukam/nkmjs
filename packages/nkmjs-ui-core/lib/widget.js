@@ -461,11 +461,15 @@ class Widget extends base {
     get data() { return this._data; }
     set data(p_value) {
 
+        if (p_value) {
+            if (this._dataPreProcessor || this.constructor.__dataPreProcessor) {
+                p_value = u.Call((this._dataPreProcessor || this.constructor.__dataPreProcessor), this, p_value);
+            }
+        }
+
         if (this.constructor.__defaultInstanceOf) {
             if (!u.isInstanceOf(p_value, this.constructor.__defaultInstanceOf)) { p_value = null; }
         }
-
-        if (this._dataPreProcessor && p_value) { p_value = u.Call(this._dataPreProcessor, this, p_value); }
 
         if (this._data === p_value) {
             if (this._data && this.constructor.__updateDataOnSameSet) {

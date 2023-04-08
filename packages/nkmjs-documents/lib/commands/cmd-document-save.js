@@ -1,6 +1,7 @@
 
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
+const path = require(`path`);
 
 const CMD_TYPE = require(`./cmd-type`);
 const CommandDocumentBase = require(`./cmd-document-base`);
@@ -43,7 +44,7 @@ class CommandDocumentSave extends CommandDocumentBase {
                 };
 
                 if (this._defaultSaveLocation) {
-                    dialogOptions.defaultPath = this._defaultSaveLocation;
+                    dialogOptions.defaultPath = this._defaultSaveLocation.replaceAll(`/`, path.sep);
                 }
 
                 actions.RELAY.ShowOpenDialog(dialogOptions, this._OnPicked);

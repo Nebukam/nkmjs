@@ -5,28 +5,59 @@ const com = require("@nkmjs/common");
 
 const DataBlock = require(`./data-block`);
 const SIMPLEX = require(`../simplex`);
-const { DataList } = require("../helpers");
+const DataList = require("../helpers/data-list");
 
 const __noResolution = Object.freeze([]);
+
+/**
+ * @typedef BlocDefinition
+ * @property {String} member Name of the member inside the parent data
+ * @property {Class} type Bloc' instance class
+ * @property {Boolean} [IDS.SKIP_SERIALIZATION] Whether serialization should be skipped
+ * @property {Array} [watch] Hooks to be added to the the bloc. Format is { signal:, fn:String|Func, ?thisArg: }
+ */
+
+/**
+ * @typedef DataListDefinition
+ * @property {String} member Layer class constructor
+ * @property {Class} type Bloc' instance class
+ * @property {Boolean} [IDS.SKIP_SERIALIZATION] Whether serialization should be skipped
+ * @property {Array} [watch] Hooks to be added to the the datalist. Format is { signal:, fn:String|Func, ?thisArg: }
+ * @property {Array} [hooks] Hooks to be added to the item observer of the datalist. Format is { signal:, fn:String|Func, ?thisArg: }
+ * @property {Function} [autoSort] Function used to autoSort the values inserted into the list.
+ * @property {DataList.FLUSH_MODE} [flush] Flush behavior on release
+ */
+
+/**
+ * @typedef ValueDefinition
+ * @property {*} value Layer class constructor
+ * @property {Boolean} [nullable] Whether this value is nullable or not (primarily used by UI)
+ * @property {*} [signal] Signal dispatched when this value is changed
+ * @property {String} [group] Group ID (primarily used by UI)
+ * @property {Number} [order] Order of value (primarily used by UI)
+ * @property {Boolean} [IDS.SKIP_SERIALIZATION] Whether serialization should be skipped
+ * @property {Function} [sanitizeFn] Function used to sanitize the value before it is set.
+ */
 
 class SimpleDataBlock extends DataBlock {
     constructor() { super(); }
 
     /**
      * Expected format
-     * [ID]{ member:'_propertyId', type:Class, ?[IDS.SKIP_SERIALIZATION]:true, ?watch:true }
+     * { [ID]:BlocDefinition }
      */
     static __BLOCS = null;
 
+
     /**
      * Expected format
-     * [ID]{ member:'_propertyId', ?type:Class, ?[IDS.SKIP_SERIALIZATION]:true }
+     * { [ID]:DataListDefinition }
      */
     static __DATALISTS = null;
 
     /**
      * Expected format
-     * [ID]:{ value:value, ?nullable:true, ?signal:SIGNAL, ?group:ID, ?_order:0, ?[IDS.SKIP_SERIALIZATION]:true, ?sanitizeFn }
+     * { [ID]:ValueDefinition }
      */
     static __VALUES = {};
 
@@ -48,49 +79,21 @@ class SimpleDataBlock extends DataBlock {
 
         this._Bind(this.CommitUpdate);
 
-        let BLOCS = this.BLOCS;
-        if (BLOCS) {
-            for (var id in BLOCS) {
-
-                let
-                    definition = BLOCS[id],
-                    memberId = definition.member || `_${id}`;
-
-                let newBloc = com.Rent(definition.type);
-                newBloc._iid = id;
-                newBloc._parent = this;
-
-                this[memberId] = newBloc;
-
-                if (definition.watch) { newBloc.Watch(com.SIGNAL.UPDATED, this.CommitUpdate); }
-
-            };
-        }
-
-        let DATALISTS = this.DATALISTS;
-        if (DATALISTS) {
-            for (var id in DATALISTS) {
-                let
-                    definition = DATALISTS[id],
-                    memberId = definition.member || `_${id}`;
-
-                let newDataList = new (definition.type ? definition.type : DataList)();
-                newDataList.parent = this;
-
-                if (this[memberId]) { throw new Error(`Datalist member ID "${memberId}" overlaps with existing Bloc ID.`); }
-                this[memberId] = newDataList;
-            }
-        }
-
         this._parent = null;
         this._values = {};
         this._ResetValues(this._values);
+
+        SIMPLEX.InitSimpleDataBlock(this);
+
     }
 
     _PostInit() {
         super._PostInit();
         this._OnReset(false, true);
     }
+
+    _InitBloc(p_bloc, p_definition) { }
+    _InitDatalist(p_dataList, p_definition) { }
 
     get iid() { return this._idd; }
     get parent() { return this._parent; }
@@ -118,6 +121,8 @@ class SimpleDataBlock extends DataBlock {
 
         let definition = this.DEFINITIONS[p_id];
         if (!definition) { return null; }
+
+        if (definition.sanitizeFn) { p_value = definition.sanitizeFn(p_value); }
 
         let oldValue = this._values[p_id];
         if (oldValue == p_value) { return p_value; }
@@ -227,7 +232,13 @@ class SimpleDataBlock extends DataBlock {
 
         let DATALISTS = this.DATALISTS;
         if (DATALISTS) {
-            for (var id in DATALISTS) { this[DATALISTS[id].member || `_${id}`].Clear(); }
+            for (var id in DATALISTS) {
+                let def = DATALISTS[id];
+                if (def.flush && def.flush == DataList.FLUSH_DEFAULT) {
+                    console.warn(`Flushing ${this} DataList[${id}] is not releasing its items.`);
+                }
+                this[def.member || `_${id}`].Flush(def.flush || DataList.FLUSH_DIRECT_RELEASE);
+            }
         }
 
         if (p_individualSet) {

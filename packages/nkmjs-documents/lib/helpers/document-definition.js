@@ -39,6 +39,8 @@ class DocumentDefinition {
     set defaultSaveLocation(p_value){
         this._saveCmd.defaultSaveLocation = p_value;
         this._defaultsSaveCmd.defaultSaveLocation = p_value;
+        this._loadCmd.defaultSaveLocation = p_value;
+        this._defaultsLoadCmd.defaultSaveLocation = p_value;
     }
 
 }

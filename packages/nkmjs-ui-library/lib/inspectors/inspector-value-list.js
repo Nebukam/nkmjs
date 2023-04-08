@@ -34,12 +34,13 @@ class ValueListInspector extends base {
                 'flex': '1 1 auto',
                 'min-height': '0',
                 'overflow': 'auto',
+                'gap':'8px 5px',
                 'padding': `10px`,
             },
             '.control': {
                 'flex': '1 1 100%',
                 'margin': '0',
-                'margin-bottom': '5px'
+                //'margin-bottom': '5px'
             },
             '.separator': {
                 //'border-top':'1px solid gray'
@@ -50,7 +51,7 @@ class ValueListInspector extends base {
                 'padding': `10px`,
                 'background-color': `rgba(19, 19, 19, 0.15)`,
                 'border-radius': '4px',
-                'margin-bottom': '5px',
+                //'margin-bottom': '5px',
             },
 
             '.header': { 'margin': '5px 2px 5px 2px' },

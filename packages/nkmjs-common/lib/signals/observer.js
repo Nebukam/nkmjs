@@ -105,6 +105,11 @@ class Observer extends DisposableObjectEx {
         return this;
     }
 
+    ClearHooks(){
+        this.Flush();
+        this._hooks.length = 0;
+    }
+
     /**
      * @description TODO
      * @type {array}

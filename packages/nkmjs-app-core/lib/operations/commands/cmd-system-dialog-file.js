@@ -21,7 +21,7 @@ class CmdSystemDialogFile extends actions.Command {
         this._preLoopFn = null;
         this._postLoopFn = null;
         //If continue is overriden, if must call either _Success or _Cancel when done.
-        this._continueFn = this._Success;
+        this._continueFn = this._Bind(this._Success);
 
     }
 
@@ -67,7 +67,7 @@ class CmdSystemDialogFile extends actions.Command {
         if (env.isNodeEnabled) {
             actions.RELAY.ShowOpenDialog(
                 this._GetDialogSettings(),
-                this._InternalOnPick);
+                this._OnInternalPicked);
         } else { this._Cancel(); }
 
     }

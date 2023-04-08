@@ -55,10 +55,10 @@ class StyleguideApp extends nkm.app.AppBase {
 
         this._buttonConfigs = [
             { htitle: `htitle A text`, label: 'Overlay', trigger: { fn: this._Overlay }, variant: ui.FLAGS.FRAME },
-            { htitle: `htitle B text`, group: 'A', label: 'Label B', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF }, flavor: FLAGS.WARNING },
-            { htitle: `htitle C text`, group: 'A', icon: 'download', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: ui.FLAGS.SELF } },
+            { htitle: `htitle B text`, group: 'A', label: 'Label B', toggle: { thisArg: this, fn: this._TriggerTest, arg: com.FLAGS.SELF }, flavor: FLAGS.WARNING },
+            { htitle: `htitle C text`, group: 'A', icon: 'download', label: 'Label C', toggle: { thisArg: this, fn: this._TriggerTest, arg: com.FLAGS.SELF } },
             { htitle: `htitle D text`, label: 'Popup', trigger: { fn: this._Dialog }, flavor: ui.FLAGS.CTA },
-            { htitle: `htitle E text`, icon: 'refresh', trigger: { thisArg: this, fn: this._Popin, arg: ui.FLAGS.SELF }, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING }
+            { htitle: `htitle E text`, icon: 'refresh', trigger: { thisArg: this, fn: this._Popin, arg: com.FLAGS.SELF }, variant: ui.FLAGS.FRAME, flavor: FLAGS.WARNING }
         ];
 
         let newData = (p_id, p_dirty = false) => {
@@ -400,7 +400,7 @@ class StyleguideApp extends nkm.app.AppBase {
     }
 
     _OnButtonCreated(p_btn) {
-        p_btn.trigger = { fn: (btn) => { btn._flags.Toggle(ui.FLAGS.TOGGLED); }, arg: ui.FLAGS.SELF };
+        p_btn.trigger = { fn: (btn) => { btn._flags.Toggle(ui.FLAGS.TOGGLED); }, arg: com.FLAGS.SELF };
         p_btn.icon = `icon`;
         //this._PopInTag(p_btn);
     }

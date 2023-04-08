@@ -139,8 +139,8 @@ class CommandBox {
             let hooks = this._commandHooks.Get(p_cmd);
             if (hooks) {
                 this._commandHooks.Remove(p_cmd);
-                for (let i = 0, n = p_hooks.length; i < n; i++) {
-                    let hook = p_hooks[i];
+                for (let i = 0, n = hooks.length; i < n; i++) {
+                    let hook = hooks[i];
                     p_cmd.Unwatch(hook.evt, hook.fn, (hook.thisArg || null));
                 }
             }

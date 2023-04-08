@@ -86,7 +86,7 @@ class InputSelectInline extends base {
         } else {
             control = this.Attach(ButtonEx, 'item inline');
             control.options = {
-                toggle: { fn: this._OnOptionToggle, arg: ui.FLAGS.SELF }
+                toggle: { fn: this._OnOptionToggle, arg: com.FLAGS.SELF }
             };
             control.data = p_item;
 

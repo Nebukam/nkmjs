@@ -342,7 +342,7 @@ class WidgetButton extends base {
         // ----> Trigger
 
         if (this._trigger) {
-            if (this._trigger.arg === FLAGS.SELF) { u.Call(this._trigger, this); }
+            if (this._trigger.arg === com.FLAGS.SELF) { u.Call(this._trigger, this); }
             else { u.Call(this._trigger); }
         }
 
@@ -398,11 +398,11 @@ class WidgetButton extends base {
 
         if (cbs) {
             if (this._isToggled) {
-                if (cbs.arg === FLAGS.SELF) { u.Call(cbs, this); }
+                if (cbs.arg === com.FLAGS.SELF) { u.Call(cbs, this); }
                 else { u.Call(cbs); }
             } else {
                 if (cbs.fnOff) {
-                    if (cbs.fnOff.arg === FLAGS.SELF) { u.Call(cbs.fnOff, this); }
+                    if (cbs.fnOff.arg === com.FLAGS.SELF) { u.Call(cbs.fnOff, this); }
                     else { u.Call(cbs.fnOff); }
                 }
             }

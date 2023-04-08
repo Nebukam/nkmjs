@@ -160,6 +160,7 @@ class Catalog extends base {
 
     static __distribute = base.__distribute.Ext({ beginFn: `_OnOptionsWillUpdate` })
         .To(`autoSort`)
+        .To(`defaultSortFunc`)
         .To(`localItemClass`, `_localItemClass`, null)
         .To(`localCatalogClass`, `_localCatalogClass`, null)
         .To(`expanded`);

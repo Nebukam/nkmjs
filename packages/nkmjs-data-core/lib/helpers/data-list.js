@@ -18,12 +18,16 @@ const SIGNAL = require(`../signal`);
  */
 class DataList extends collections.List {
 
+    static FLUSH_DEFAULT = Symbol(`default`);
+    static FLUSH_DIRECT_RELEASE = Symbol(`directRelease`);
+    static FLUSH_RELEASE_POST = Symbol(`releasePost`);
+
     constructor() {
         super();
         this._isReleasing = false;
         this._Init();
         this._PostInit();
-
+        this._itemObserver = null;
         //TODO: Implement sorting events
 
     }
@@ -42,6 +46,7 @@ class DataList extends collections.List {
         this._defaultSortFunc = com.SORTING.NAME_ASC;
         this._autoSort = false;
         this._skipSorting = false;
+        this._flushing = false;
     }
 
     get parent() { return this._parent; }
@@ -60,6 +65,33 @@ class DataList extends collections.List {
         } else if (this._delayedSort) {
             this._delayedSort.Cancel();
         }
+    }
+
+    get itemObserver() {
+        if (!this._itemObserver) { this._itemObserver = new com.signals.Observer(); }
+        return this._itemObserver;
+    }
+
+    /**
+     * @description Register a signal subscription
+     * @param {Symbol} p_evt 
+     * @param {function} p_fn 
+     * @param {*} p_subscriber 
+     */
+    Hook(p_evt, p_fn, p_subscriber = null) {
+        this.itemObserver.Hook(p_evt, p_fn, p_subscriber);
+        return this;
+    }
+
+    /**
+     * @description Unregister a signal subscription
+     * @param {Symbol} p_evt 
+     * @param {function} p_fn 
+     * @param {*} p_subscriber 
+     */
+    Unhook(p_evt, p_fn, p_subscriber = null) {
+        this.itemObserver.Unhook(p_evt, p_fn, p_subscriber);
+        return this;
     }
 
     /**
@@ -150,10 +182,7 @@ class DataList extends collections.List {
      * @returns {common.pool.DisposableObjectEx}
      * @group Broadcasting
      */
-    Unwatch(p_signal, p_fn, p_listener = null) {
-        //this._signals.Remove(p_signal, p_fn, p_listener);
-        //return this;
-    }
+    Unwatch(p_signal, p_fn, p_listener = null) { /* owned by local SignalBox */ }
 
     //#endregion
 
@@ -191,15 +220,9 @@ class DataList extends collections.List {
      * @returns {boolean} True if the item has been added to the list, otherwise false.
     */
     Add(p_item, p_silent = true) {
-        let op = super.Add(p_item);
-        if (op) {
-            if (this._autoSort) { this._delayedSort.Schedule(); }
-            this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, this._array.length - 1);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        return super.Add(p_item) ?
+            this._OnItemAdded(p_item, this._array.length - 1, p_silent) :
+            false;
     }
 
     /**
@@ -208,14 +231,9 @@ class DataList extends collections.List {
      * @returns {boolean} True if the item has been added to the list, otherwise false.
     */
     Unshift(p_item, p_silent = true) {
-        let op = super.Unshift(p_item);
-        if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_ADDED, this, op, 0);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        return super.Unshift(p_item) ?
+            this._OnItemAdded(p_item, 0, p_silent) :
+            false;
     }
 
     /**
@@ -224,15 +242,10 @@ class DataList extends collections.List {
      * @returns {*} 
      */
     RemoveAt(p_index, p_silent = true) {
-        let op = super.RemoveAt(p_index);
-        if (op) {
-            if (this._autoSort) { this._delayedSort.Schedule(); }
-            this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, op, p_index);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        let item = super.RemoveAt(p_index);
+        return item ?
+            this._OnItemRemoved(item, p_index, p_silent) :
+            false;
     }
 
     /**
@@ -242,15 +255,9 @@ class DataList extends collections.List {
      * @returns {*} 
      */
     Insert(p_item, p_index, p_silent = true) {
-        let op = super.Insert(p_item, p_index);
-        if (op) {
-            if (this._autoSort) { this._delayedSort.Schedule(); }
-            this.Broadcast(com.SIGNAL.ITEM_ADDED, this, op, p_index);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        return super.Insert(p_item, p_index) ?
+            this._OnItemAdded(p_index, p_index, p_silent) :
+            false;
     }
 
     /**
@@ -260,36 +267,21 @@ class DataList extends collections.List {
      * @returns {*} 
      */
     Move(p_item, p_index, p_silent = true) {
-        let op = super.Move(p_item, p_index);
-        if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_MOVED, this, p_item, p_index);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        return super.Move(p_item, p_index) ?
+            this._OnItemMoved(p_item, p_index, p_silent) :
+            false;
     }
 
     MoveBefore(p_item, p_beforeItem, p_silent = true) {
-        let op = super.MoMoveBeforeve(p_item, p_beforeItem);
-        if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_MOVED, this, p_item);//TODO
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        return super.MoveBefore(p_item, p_beforeItem) ?
+            this._OnItemMoved(p_item, -1, p_silent) ://TODO: compute index
+            false;
     }
 
     MoveAfter(p_item, p_afterItem, p_silent = true) {
-        let op = super.MoMoveBeforeve(p_item, p_afterItem);
-        if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_MOVED, this, p_item);//TODO
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        return super.MoveAfter(p_item, p_beforeItem) ?
+            this._OnItemMoved(p_item, -1, p_silent) ://TODO: compute index
+            false;
     }
 
     /**
@@ -298,14 +290,9 @@ class DataList extends collections.List {
      * @returns {*}
      */
     ToStart(p_item, p_silent = true) {
-        let op = super.ToStart(p_item);
-        if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_MOVED, this, p_item, 0);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        return super.ToStart(p_item) ?
+            this._OnItemMoved(p_item, 0, p_silent) :
+            false;
     }
 
     /**
@@ -314,14 +301,9 @@ class DataList extends collections.List {
      * @returns {*}
      */
     ToEnd(p_item, p_silent = true) {
-        let op = super.ToEnd(p_item);
-        if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_MOVED, this, p_item, this._array.length - 1);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        return super.ToEnd(p_item) ?
+            this._OnItemMoved(p_item, this._array.length - 1, p_silent) :
+            false;
     }
 
     /**
@@ -329,14 +311,10 @@ class DataList extends collections.List {
      * @returns {*} 
      */
     Pop(p_silent = true) {
-        let op = super.Pop();
-        if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, op, this._array.length);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        let item = super.Pop();
+        return item ?
+            this._OnItemRemoved(item, this._array.length, p_silent) :
+            false;
     }
 
     /**
@@ -344,29 +322,81 @@ class DataList extends collections.List {
      * @returns {*} 
      */
     Shift(p_silent = true) {
-        let op = super.Shift();
-        if (op) {
-            this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, op, 0);
-            if (!p_silent) {
-                this.CommitUpdate();
-            }
-        }
-        return op;
+        let item = super.Shift();
+        return item ?
+            this._OnItemRemoved(item, 0, p_silent) :
+            false;
     }
 
     /**
      * @description Clears the List
      */
     Clear(p_silent = true) {
+        if (this._itemObserver) { this._itemObserver.Flush(); }
         super.Clear();
         if (!p_silent) { this.CommitUpdate(); }
     }
 
-    Flush() { 
+    /**
+     * Clears the list by removing each item individually,
+     * thus triggering add/remove events.
+     * @param {*} p_behavior 
+     */
+    Flush(p_behavior = null, p_silent = true) {
+
         this._skipSorting = true;
-        while (!this.isEmpty) { this.Pop(); } 
+        this._flushing = true;
+
+        switch (p_behavior) {
+            case this.constructor.FLUSH_DIRECT_RELEASE:
+                while (!this.isEmpty) { this.Pop(true).Release(); }
+                break;
+            case this.constructor.FLUSH_RELEASE_POST:
+                let rStack = [];
+                while (!this.isEmpty) { rStack.push(this.Pop(true)); }
+                rStack.forEach(item => { item.Release(); });
+                rStack.length = 0;
+                break;
+            case this.constructor.FLUSH_DEFAULT:
+            default:
+                while (!this.isEmpty) { this.Pop(true); }
+                break;
+        }
+
+        if (this._itemObserver) { this._itemObserver.Flush(); }
+
         this._skipSorting = false;
+        this._flushing = false;
+        if (!p_silent) { this.CommitUpdate(); }
+
     }
+
+    //#endregion
+
+    //#region Events
+
+    _OnItemAdded(p_item, p_index, p_silent) {
+        if (this._itemObserver) { this._itemObserver.Observe(p_item); }
+        if (this._autoSort) { this._delayedSort.Schedule(); }
+        this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item, p_index);
+        if (!p_silent) { this.CommitUpdate(); }
+        return p_item;
+    }
+
+    _OnItemRemoved(p_item, p_index, p_silent) {
+        if (this._itemObserver) { this._itemObserver.Unobserve(p_item); }
+        if (this._autoSort) { this._delayedSort.Schedule(); }
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, p_index);
+        if (!p_silent) { this.CommitUpdate(); }
+        return p_item;
+    }
+
+    _OnItemMoved(p_item, p_index, p_silent) {
+        this.Broadcast(com.SIGNAL.ITEM_MOVED, this, p_item, p_index);
+        if (!p_silent) { this.CommitUpdate(); }
+        return p_item;
+    }
+
 
     //#endregion
 
@@ -389,6 +419,7 @@ class DataList extends collections.List {
     }
 
     AutoSort(p_sorting = null) {
+
         if (!p_sorting) {
             this.autoSort = false;
             this._autoSortingFn = null;
@@ -511,6 +542,7 @@ class DataList extends collections.List {
      * @group Pooling 
      */
     _CleanUp() {
+        if (this._itemObserver) { this._itemObserver.ClearHooks(); }
         this.AutoSort(null);
         this._skipSorting = false;
         this._signals.Clear();

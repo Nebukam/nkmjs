@@ -166,8 +166,6 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
         if (p_serial) { p_data.BatchSet(p_serial); }
 
-        if (`_OnDeserializationComplete` in p_data) { p_data._OnDeserializationComplete(); }
-
         return p_data;
 
     }

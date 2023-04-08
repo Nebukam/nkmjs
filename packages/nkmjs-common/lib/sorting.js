@@ -31,6 +31,10 @@ class SORTING {
      * @param {*} p_b 
      */
     static NAME_ASC(p_a, p_b) {
+        if(typeof p_a === 'string' && typeof p_b === 'string'){
+            return p_a.localeCompare(p_b);
+        }
+
         let a = p_a.isDir, b = p_b.isDir;
         if ((a && b) || (!a && !b)) {
             return p_a.name.localeCompare(p_b.name);
@@ -47,6 +51,10 @@ class SORTING {
      * @param {*} p_b 
      */
     static NAME_DSC(p_a, p_b) {
+        if(typeof p_a === 'string' && typeof p_b === 'string'){
+            return p_a.localeCompare(p_b) * -1;
+        }
+
         let a = p_a.isDir, b = p_b.isDir;
         if ((a && b) || (!a && !b)) {
             return p_a.name.localeCompare(p_b.name) * -1;

@@ -79,6 +79,7 @@ class ActionGroup extends Action {
      */
     _InternalRedo() {
         let list = this._actions;
+
         for (let i = 0, n = list.length; i < n; i++) {
             list[i].Redo();
         }

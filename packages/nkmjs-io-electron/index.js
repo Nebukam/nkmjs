@@ -19,19 +19,21 @@ module.exports = {
 
     LaunchExternalEditor: (p_editorPath, p_targetPath, p_spawnOptions = null) => {
 
+        p_editorPath = nkm.u.FULL(p_editorPath).replaceAll('/', path.sep);
+        p_targetPath = nkm.u.FULL(p_targetPath).replaceAll('/', path.sep);
+
         try {
-            p_editorPath = path.join(...p_editorPath.split(nkm.u.tils.DELIM_DIR));
-            fs.statSync(p_editorPath);
+            let stat = fs.statSync(p_editorPath);
+            if (!stat.isFile()) { throw new Error(`Editor path is not pointing to a file.`) }
         } catch (e) {
-            console.error(`editor (${p_editorPath}) not found`);
+            console.error(`LaunchExternalEditor (editorPath:${p_editorPath}) :: ${e.message}`);
             return;
         }
 
         try {
-            p_targetPath = path.join(...p_targetPath.split(nkm.u.tils.DELIM_DIR));
-            fs.statSync(p_editorPath);
+            let stat = fs.statSync(p_editorPath);
         } catch (e) {
-            console.error(`targetPath (${p_targetPath}) not found`);
+            console.error(`LaunchExternalEditor (targetPath:${p_targetPath}) :: ${e.message}`);
             return;
         }
 
@@ -42,13 +44,13 @@ module.exports = {
         // Desktop app is closed.
         opts.detached = true;
 
-        //console.log(`Opening ${p_targetPath} using ${p_editorPath}`);
-        spawn(p_editorPath, [`${p_targetPath.replaceAll('/', path.sep)}`], opts); //[`"${p_targetPath}"`]
+        console.log(`Opening "${p_targetPath}" using "${p_editorPath}"`);
+        spawn(p_editorPath, [`${p_targetPath}`], opts); //[`"${p_targetPath}"`]
 
     },
 
-    OpenPath: (path) => {
-        shell.openPath(path);
+    OpenPath: (p_path) => {
+        shell.openPath(nkm.u.FULL(p_path).replaceAll('/', path.sep));
     },
 
     /**
@@ -72,6 +74,8 @@ module.exports = {
             if (!stat.isDirectory()) { return false; }
 
             let contents = fs.readdirSync(basedir);
+            if (p_options.sort) { contents.sort(p_options.sort); }
+
             contents.forEach(entry => {
                 try {
 

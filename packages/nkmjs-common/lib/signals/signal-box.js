@@ -17,10 +17,13 @@ class SignalBox {
     constructor(p_owner = null) {
 
         if (p_owner) {
+            this._owner = p_owner;
             p_owner.Broadcast = this._Bind(this.Broadcast);
             p_owner.Watch = this._Bind(this.Watch);
             p_owner.WatchOnce = this._Bind(this.WatchOnce);
             p_owner.Unwatch = this._Bind(this.Unwatch);
+        }else{
+            this._owner = null;
         }
 
         this._signals = new collections.Dictionary();
@@ -75,7 +78,7 @@ class SignalBox {
         if (!signal) { return; }
         signal.Dispatch(...args);
 
-        return this;
+        return this._owner || this;
     }
 
     /**
@@ -93,7 +96,7 @@ class SignalBox {
         }
 
         signal.Add(p_fn, p_listener);
-        return this;
+        return this._owner || this;
     }
 
     /**
@@ -111,7 +114,7 @@ class SignalBox {
         }
 
         signal.AddOnce(p_fn, p_listener);
-        return this;
+        return this._owner || this;
     }
 
     /**
@@ -132,7 +135,7 @@ class SignalBox {
             signal.Release();
         }
 
-        return this;
+        return this._owner || this;
 
     }
 

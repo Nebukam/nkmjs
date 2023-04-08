@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
+const DataList = require("./helpers/data-list");
 
 const IDS = require(`./ids`);
 const TYPES = require(`./types`);
@@ -116,6 +117,83 @@ class SIMPLEX extends com.helpers.SingletonEx {
 
 
     //#region Utils
+
+    static InitSimpleDataBlock(p_dataBlock) {
+
+        let BLOCS = p_dataBlock.BLOCS;
+
+        if (BLOCS) {
+            for (var id in BLOCS) {
+
+                let
+                    definition = BLOCS[id],
+                    memberId = definition.member || `_${id}`;
+
+                let newBloc = com.Rent(definition.type);
+                newBloc._iid = id;
+                newBloc._parent = p_dataBlock;
+
+                p_dataBlock[memberId] = newBloc;
+
+                if (definition.watch) {
+                    definition.watch.forEach(watch => {
+                        newBloc.Watch(
+                            watch.signal,
+                            u.isString(watch.fn) ? p_dataBlock[watch.fn] : watch.fn,
+                            watch.thisArg ? watch.thisArg : p_dataBlock
+                        )
+                    });
+                }
+
+                p_dataBlock._InitBloc(newBloc, definition);
+
+            };
+        }
+
+        let DATALISTS = p_dataBlock.DATALISTS;
+
+        if (DATALISTS) {
+            for (var id in DATALISTS) {
+                let
+                    definition = DATALISTS[id],
+                    memberId = definition.member || `_${id}`;
+
+                let newDataList = new (definition.type ? definition.type : DataList)();
+                newDataList.parent = p_dataBlock;
+
+                if (p_dataBlock[memberId]) { throw new Error(`Datalist member ID "${memberId}" overlaps with existing Bloc ID.`); }
+                p_dataBlock[memberId] = newDataList;
+
+                if (definition.watch) {
+                    definition.watch.forEach(watch => {
+                        newDataList.Watch(
+                            watch.signal,
+                            u.isString(watch.fn) ? p_dataBlock[watch.fn] : watch.fn,
+                            watch.thisArg ? watch.thisArg : p_dataBlock
+                        )
+                    });
+                }
+
+                if (definition.hooks) {
+                    definition.hooks.forEach(hook => {
+                        newDataList.Hook(
+                            hook.signal,
+                            u.isString(hook.fn) ? p_dataBlock[hook.fn] : hook.fn,
+                            hook.thisArg ? hook.thisArg : p_dataBlock
+                        )
+                    });
+                }
+
+                if (definition.autoSort) { 
+                    newDataList.AutoSort(definition.autoSort); 
+                }
+
+                p_dataBlock._InitDatalist(newDataList, definition);
+
+            }
+        }
+
+    }
 
     /**
      * Attempts to find the value of a given ID in a given object
