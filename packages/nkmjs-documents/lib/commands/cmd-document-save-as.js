@@ -1,0 +1,70 @@
+
+const com = require("@nkmjs/common");
+const actions = require("@nkmjs/actions");
+const path = require(`path`);
+
+const CMD_TYPE = require(`./cmd-type`);
+const CommandDocumentBase = require(`./cmd-document-base`);
+
+class CommandDocumentSaveAs extends CommandDocumentBase {
+    constructor() { super(); }
+
+    static __docCmdType = CMD_TYPE.SAVE;
+
+    static __displayName = `Save document`;
+    static __displayIcon = `save`;
+
+    _Init() {
+        super._Init();
+        this._Bind(this._OnPicked);
+        this._defaultDialogLocation = null;
+    }
+
+    get defaultDialogLocation() { return this._defaultDialogLocation; }
+    set defaultDialogLocation(p_value) { this._defaultDialogLocation = p_value; }
+
+    _InternalExecute() {
+
+        let document = this._FindDoc();
+
+        if (!document) {
+            this._Fail(`Could not find bound document`);
+        } else {
+
+            console.log(`Yo?`);
+
+            let dialogOptions = {
+                filters: [{ ...this._fileInfos }],
+                type: `save`,
+                title: `Save "${document.title}"`
+            };
+
+            if (this._defaultDialogLocation) {
+                dialogOptions.defaultPath = this._defaultDialogLocation.replaceAll(`/`, path.sep);
+            }
+
+            actions.RELAY.ShowOpenDialog(dialogOptions, this._OnPicked);
+
+        }
+
+    }
+
+    _OnPicked(p_response) {
+
+        if (p_response.canceled) {
+            this._Cancel();
+            return;
+        }
+
+        this._doc.currentPath = p_response.filePath;
+        this._doc.Save({
+            success: this._Success,
+            error: this._Fail,
+        });
+
+    }
+
+
+}
+
+module.exports = CommandDocumentSaveAs;

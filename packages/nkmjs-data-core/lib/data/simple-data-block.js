@@ -112,7 +112,7 @@ class SimpleDataBlock extends DataBlock {
         let statics = this.DEFINITIONS;
         for (var id in statics) {
             let def = statics[id];
-            p_values[id] = def.getter ? u.Call(def.getter, this) : def.value;
+            p_values[id] = def.getter ? u.Call(def.getter, this) || def.value : def.value;
         }
     }
 
