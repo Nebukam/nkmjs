@@ -60,14 +60,11 @@ class WidgetItem extends base {
 
     _PostInit() {
         super._PostInit();
-        if (this._extDrag) { this._extDrag.Setup(this, this._dragActivator, this._dragFeedbackHost); }
+        if (this._extDrag) {
+            this._extDrag.activator = this._dragActivator;
+            this._extDrag.feedbackHost = this._dragFeedbackHost;
+        }
     }
-
-    _Wake() {
-        super._Wake();
-        if (this._extDrag) { this._extDrag.owner = this; }
-    }
-
 
     // ----> DOM
 

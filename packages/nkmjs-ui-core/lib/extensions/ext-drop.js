@@ -7,6 +7,8 @@ const POINTER = require(`../pointer`);
 const FLAGS = require(`../flags`);
 const SIGNAL = require(`../signal`);
 
+const RectTracker = require(`../helpers/rect-tracker`);
+
 const Extension = require("./extension");
 
 let _activeTarget = null;
@@ -15,13 +17,23 @@ let _activeTarget = null;
  * @description The DropExtension enable drop capabilities to a widget.
  * @class
  * @hideconstructor
- * @example //Basic setup
- * dropHandler = this._extensions.Add(ui.extensions.Drop);
- * dropHandler.Hook({
- *      check: { fn: (p_data) => { return true; } }, // Required
- *      drop: { fn: (p_data) => { } }, // Required
- *      dropCandidate:{ fn:(p_isDropCandidate) => { } ) } // Optional (force watchGlobalBroadcasts = true if set)
- * });
+ * @example //Basic setup 
+    // in _Init()
+
+    this._extDrop = this._extensions.Add(ui.extensions.Drop);
+    this._extDrop.Hook({
+        check: { fn: (p_data) => { return true; }
+        drop: {
+            fn: (p_data) => {
+                p_data = p_data[0]; //Data is an array.
+                let nfos = this._extDrop.mouseInfos;
+                if (nfos.ry > 0.5) { ... } //Dropped in the lower half of the element
+                else { ... } //Dropped in the upper half of the element
+            }
+        }, // Required
+    }
+    );
+
  * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
  */
@@ -45,7 +57,7 @@ class DropExtension extends Extension {
     _Init() {
 
         super._Init();
-        this._target = null;
+        this._activator = null;
         this._feedbackHost = null;
 
         //TODO : Gotta emulate dragenter/leave
@@ -57,6 +69,8 @@ class DropExtension extends Extension {
         this._allowedHooks = [];
         this._onDragOverHooks = [];
         this._onLeaveHooks = [];
+
+        this._useHint = true;
 
         this._isAcceptingCurrentData = false;
         this._isActive = false;
@@ -70,30 +84,63 @@ class DropExtension extends Extension {
         this._Bind(this._mDragOver);
         this._Bind(this._mDrop);
 
-        this._hintElement = null;
+        this._hintOverlay = null;
 
-        this._mouseInfos = { x: 0, y: 0 };
+        this._mouseInfos = {
+            x: 0, y: 0,
+            inner_x: 0, inner_y: 0,
+            rx: 0, ry: 0,
+            rect: null,
+        };
+
+        this._rectTracker = new RectTracker(this._Bind(this._UpdateDropRect));
 
         //TODO : Add event callbacks to handle differently different types of drop
         //check if a drop is acceptable etc
     }
 
+    _OnOwnerChanged(p_oldOwner) {
+        super._OnOwnerChanged(p_oldOwner);
+        this.activator = this._owner;
+    }
+
+    get useHint() { return this._useHint; }
+    set useHint(p_value) { this._useHint = p_value; }
+
     /**
-     * @description TODO
+     * @description The target object that will be listening to drop events
      * @type {Element}
      */
-    get target() { return this._target; }
-    set target(p_value) {
-        if (this._target === p_value) { return; }
-        let oldValue = this._target;
-        this._target = p_value;
+    get activator() { return this._activator; }
+    set activator(p_value) {
+
+        p_value = p_value || this._owner;
+
+        if (this._activator === p_value) { return; }
+
+        let oldActivator = this.activator;
+        this._activator = p_value;
+        this.feedbackHost = this.feedbackHost || p_value;
+
+        this._rectTracker.Remove(oldActivator);
+        this._rectTracker.Add(this._activator);
 
         if (this._isEnabled) {
-            if (oldValue) { oldValue.removeEventListener(`dragenter`, this._mDragEnter); }
+            if (oldActivator) { oldActivator.removeEventListener(`dragenter`, this._mDragEnter); }
             if (p_value) { p_value.addEventListener(`dragenter`, this._mDragEnter); }
         }
 
+        if (oldActivator) { oldActivator.flags.Remove(oldActivator, FLAGS.ALLOW_DROP); }
+        if (p_value) { p_value.flags.Add(p_value, FLAGS.ALLOW_DROP); }
+
     }
+
+    /**
+     * @description HTML element that will host drop feedback/highlights
+     * @type {Element}
+     */
+    get feedbackHost() { return this._feedbackHost; }
+    set feedbackHost(p_value) { this._feedbackHost = p_value || this.activator; }
 
     get watchGlobalBroadcasts() { return this._watchGlobalBroadcasts; }
     set watchGlobalBroadcasts(p_value) {
@@ -107,23 +154,6 @@ class DropExtension extends Extension {
 
     get mouseInfos() { return this._mouseInfos; }
 
-    /**
-     * @description TODO
-     * @param {*} p_target The target object that will be listening to drop events
-     * @param {*} [p_feedbackHost] HTML element that will host drop feedback/highlights
-     */
-    Setup(p_target, p_feedbackHost = null) {
-
-        let oldTarget = this._target;
-        this.target = p_target;
-
-        this._feedbackHost = p_feedbackHost ? p_feedbackHost : p_target;
-
-        if (oldTarget) { oldTarget.flags.Remove(oldTarget, FLAGS.ALLOW_DROP); }
-        if (p_target) { p_target.flags.Add(p_target, FLAGS.ALLOW_DROP); }
-
-    }
-
     // ----> Availability
 
     /**
@@ -131,7 +161,7 @@ class DropExtension extends Extension {
      */
     Enable() {
         if (!super.Enable()) { return false; }
-        if (this._target) { this._target.addEventListener(`dragenter`, this._mDragEnter); }
+        if (this._activator) { this._activator.addEventListener(`dragenter`, this._mDragEnter); }
         if (this._watchGlobalBroadcasts) { POINTER.Watch(SIGNAL.DRAG_STARTED, this._OnPointerDragStarted); }
         return true;
 
@@ -142,7 +172,7 @@ class DropExtension extends Extension {
      */
     Disable() {
         if (!super.Disable()) { return false; }
-        if (this._target) { this._target.removeEventListener(`dragenter`, this._mDragEnter); }
+        if (this._activator) { this._activator.removeEventListener(`dragenter`, this._mDragEnter); }
         if (this._watchGlobalBroadcasts) { POINTER.Unwatch(SIGNAL.DRAG_STARTED, this._OnPointerDragStarted); }
         return true;
     }
@@ -198,9 +228,10 @@ class DropExtension extends Extension {
             for (let i = 0, n = this._candidatesHooks.length; i < n; i++) {
                 let candidate = this._candidatesHooks[i].dropCandidate;
                 if (candidate.fn) { candidate.fn(p_toggle); }
-                if (candidate.flag) { this._target.flags.Set(candidate.flag, p_toggle); }
+                if (candidate.flag) { this._activator.flags.Set(candidate.flag, p_toggle); }
             }
         }
+
     }
 
     _getDragData(p_evt) {
@@ -216,6 +247,8 @@ class DropExtension extends Extension {
     }
 
     _mDragEnter(p_evt) {
+
+        this._rectTracker.Enable();
 
         this._allowedHooks.length = 0;
         this._onDragOverHooks.length = 0;
@@ -265,9 +298,11 @@ class DropExtension extends Extension {
             this._Clear();
         } else {
             this._isAcceptingCurrentData = true;
-            this._target.addEventListener(`dragleave`, this._mDragLeave);
-            this._target.addEventListener(`dragover`, this._mDragOver);
+            this._activator.addEventListener(`dragleave`, this._mDragLeave);
+            this._activator.addEventListener(`dragover`, this._mDragOver);
         }
+
+        return this._isAcceptingCurrentData;
 
     }
 
@@ -308,18 +343,7 @@ class DropExtension extends Extension {
 
     _mDrop(p_evt) {
 
-        let rect = this._target.getBoundingClientRect();
-        this._mouseInfos = {
-            x: p_evt.clientX,
-            y: p_evt.clientY,
-            inner_x: p_evt.clientX - rect.x,
-            inner_y: p_evt.clientY - rect.y,
-            rx: (p_evt.clientX - rect.x) / rect.width,
-            ry: (p_evt.clientY - rect.y) / rect.height,
-            targetRect: rect
-        };
-
-        console.log(`DROP COORDINATES`, this._mouseInfos);
+        this._UpdateMouseInfos();
 
         let dragData = this._getDragData(p_evt);
 
@@ -332,6 +356,28 @@ class DropExtension extends Extension {
         }
 
         this._Clear();
+
+    }
+
+    _UpdateDropRect() { this._UpdateMouseInfos(); }
+
+    _UpdateMouseInfos() {
+
+        let
+            rect = this._rectTracker.GetRect(this._activator) || this._activator.getBoundingClientRect(),
+            mx = POINTER.position.x,
+            my = POINTER.position.y,
+            m = this._mouseInfos;
+
+        m.x = mx;
+        m.y = my;
+        m.inner_x = mx - rect.x;
+        m.inner_y = my - rect.y;
+        m.rx = (mx - rect.x) / rect.width;
+        m.ry = (my - rect.y) / rect.height;
+        m.rect = rect;
+
+        return m;
 
     }
 
@@ -356,34 +402,31 @@ class DropExtension extends Extension {
         this._isActive = p_toggle;
 
         if (this._feedbackHost) {
+
             this._feedbackHost.flags.Set(FLAGS.ALLOW_DROP, p_toggle);
 
-            for (let i = 0, n = this._allowedHooks.length; i < n; i++) {
-
-                let hook = this._allowedHooks[i],
-                    flags = hook.flag;
-
-                if (!flags) { continue; }
-                if (Array.isArray(flags)) {
-                    for (let i = 0, n2 = flags.length; i < n2; i++) {
-                        this._feedbackHost.flags.Set(flags[i], p_toggle);
-                    }
+            this._allowedHooks.forEach(hook => {
+                let flag = hook.flag;
+                if (!flag) { return; }
+                if (Array.isArray(flag)) {
+                    flag.forEach(f => { this._feedbackHost.flags.Set(f, p_toggle) });
                 } else {
-                    this._feedbackHost.flags.Set(flags, p_toggle);
+                    this._feedbackHost.flags.Set(flag, p_toggle);
                 }
-            }
+            });
 
         }
 
         if (p_toggle) {
             //Becomes the main drop target        
             DropExtension.ACTIVE_TARGET = this;
-            this._target.addEventListener(`drop`, this._mDrop);
+            this.activator.addEventListener(`drop`, this._mDrop);
             POINTER.instance.Unwatch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
+            this._ShowHint();
         } else {
             //Stops being the main drop target
             if (DropExtension.ACTIVE_TARGET === this) { DropExtension.ACTIVE_TARGET = null; }
-            this._target.removeEventListener(`drop`, this._mDrop);
+            this.activator.removeEventListener(`drop`, this._mDrop);
             POINTER.instance.Watch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
         }
 
@@ -399,13 +442,17 @@ class DropExtension extends Extension {
             u.Call(this._onLeaveHooks[i], dragData);
         }
 
-        this._target.removeEventListener(`dragleave`, this._mDragLeave);
-        this._target.removeEventListener(`dragover`, this._mDragOver);
+        this._activator.removeEventListener(`dragleave`, this._mDragLeave);
+        this._activator.removeEventListener(`dragover`, this._mDragOver);
         this._Activate(false);
 
         this._allowedHooks.length = 0;
         this._onDragOverHooks.length = 0;
         this._onLeaveHooks.length = 0;
+
+        this._rectTracker.Disable();
+
+        this._HideHint();
 
     }
 
@@ -415,14 +462,13 @@ class DropExtension extends Extension {
     //in order to provide visual feedback/text on what's going to happen when item is dropped
 
     _ShowHint() {
-        if (this._feedbackHost) {
-            if (this._hintElement) { dom.Attach(this._hintElement, this._feedbackHost); }
-            else { this._hintElement = dom.El(`div`, { class: `ext-overlay drag-overlay` }, this._feedbackHost); }
-        }
+        if (!this._useHint) { return; }
+        if (this._hintOverlay) { dom.Attach(this._hintOverlay, this._feedbackHost); }
+        else { this._hintOverlay = dom.El(`div`, { class: `ext-overlay drop-target-overlay` }, this._feedbackHost); }
     }
 
     _HideHint() {
-        if (this._hintElement) { dom.Detach(this._hintElement); }
+        if (this._hintOverlay) { dom.Detach(this._hintOverlay); }
     }
 
     // ----> Check

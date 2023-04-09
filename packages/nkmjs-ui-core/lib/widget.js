@@ -66,7 +66,7 @@ class Widget extends base {
         this._isActivable = true;
         this._dataIndex = -1;
 
-        this._extensions = new extensions.Extension();
+        this._extensions = new extensions.Extension(this);
 
         this._pointer = this._extensions.Add(extensions.Pointer);
         this._pointer.focusFn = this._Bind(this.Focus);

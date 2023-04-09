@@ -18,7 +18,6 @@ class MiniHeader extends base {
 
     _Init() {
         super._Init();
-        this._extensions.Remove(this._extDrag);
         this._notifiesSelectionStack = true;
     }
 

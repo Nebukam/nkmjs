@@ -18,8 +18,15 @@ let _dragDataContent = [];
  * @description TODO
  * @class
  * @hideconstructor
+ * @example //Basic setup 
+    // in _Init()
+
+    this._extDrag = this._extensions.Add(ui.extensions.Drag);
+    this._extDrag.grabDataCallback = this._Bind(this._GrabDragData);
+
  * @augments ui.core.extensions.Extension
  * @memberof ui.core.extensions
+ * 
  */
 class DragExtension extends Extension {
     constructor() { super(); }
@@ -39,8 +46,7 @@ class DragExtension extends Extension {
         this._ownerObserver = new com.signals.Observer();
         this._ownerObserver
             .Hook(SIGNAL.DRAG_STARTED, this._OnOwnerDragStarted, this)
-            .Hook(SIGNAL.DRAG_ENDED, this._OnOwnerDragEnded, this)
-            .Hook(com.SIGNAL.RELEASED, this._OnOwnerReleased, this);
+            .Hook(SIGNAL.DRAG_ENDED, this._OnOwnerDragEnded, this);
 
         this._Bind(this._mUp);
         this._Bind(this._mDown);
@@ -53,8 +59,55 @@ class DragExtension extends Extension {
         //The trick is not to add the draggable attribute until the drag handle gets the mousedown event.
     }
 
-    _OnOwnerReleased(p_was) {
-        this.owner = null;
+    _OnOwnerChanged(p_oldOwner) {
+        super._OnOwnerChanged(p_oldOwner);
+        this._ownerObserver.ObserveOnly(this._owner);
+        this.target = this._owner;
+    }
+
+    /**
+     * @description The target object that will be listening to drop events
+     * @type {Element}
+     */
+    get target() { return this._target; }
+    set target(p_value) {
+
+        p_value = p_value || this._owner;
+        if (this._target === p_value) { return; }
+
+        let oldTarget = this._target;
+        this._target = p_value;
+
+        this.activator = this.activator || p_value;
+        this.feedbackHost = this.feedbackHost || p_value;
+
+        if (oldTarget) { oldTarget.flags.Remove(oldTarget, FLAGS.DRAGGED); }
+        if (p_value) { p_value.flags.Add(p_value, FLAGS.DRAGGED); }
+
+    }
+
+    /**
+     * @description Element that will host drag feedback/highlights
+     * @type {Element}
+     */
+    get feedbackHost() { return this._feedbackHost; }
+    set feedbackHost(p_value) { this._feedbackHost = p_value || this.target; }
+
+    /**
+     * @description Element that activates the drag action
+     * @type {Element}
+     */
+    get activator() { return this._activator; }
+    set activator(p_value) {
+        if (this._activator === p_value) { return; }
+        let oldValue = this._activator;
+        this._activator = p_value || this.target;
+
+        if (this._isEnabled) {
+            if (oldValue) { oldValue.removeEventListener(`mousedown`, this._mDown); }
+            if (this._activator) { this._activator.addEventListener(`mousedown`, this._mDown); }
+        }
+
     }
 
     /**
@@ -64,50 +117,9 @@ class DragExtension extends Extension {
     get grabDataCallback() { return this._grabDataCallback; }
     set grabDataCallback(p_value) { this._grabDataCallback = p_value; }
 
-    /**
-     * @description TODO
-     * @type {Element}
-     */
-    get activator() { return this._activator; }
-    set activator(p_value) {
-        if (this._activator === p_value) { return; }
-        let oldValue = this._activator;
-        this._activator = p_value;
-
-        if (this._isEnabled) {
-            if (oldValue) { oldValue.removeEventListener(`mousedown`, this._mDown); }
-            if (p_value) { p_value.addEventListener(`mousedown`, this._mDown); }
-        }
-
-    }
-
-    /**
-     * @description TODO
-     * @type {*}
-     */
-    get owner() { return this._owner; }
-    set owner(p_value) {
-        if (this._owner === p_value) { return; }
-        this._owner = p_value;
-        this._ownerObserver.ObserveOnly(p_value);
-    }
-
-    /**
-     * @description TODO
-     * @param {*} p_target 
-     * @param {*} [p_activator] 
-     * @param {*} [p_feedback] 
-     */
-    Setup(p_target, p_activator = null, p_feedback = null) {
-
-        let oldTarget = this._target;
-        this._target = p_target;
-
-        this.activator = p_activator ? p_activator : p_target;
-        this._feedbackHost = p_feedback ? p_feedback : p_target;
-
-        if (oldTarget) { oldTarget.flags.Remove(oldTarget, FLAGS.DRAGGED); }
-        if (p_target) { p_target.flags.Add(p_target, FLAGS.DRAGGED); }
+    _OnOwnerChanged(p_oldOwner) {
+        this._ownerObserver.ObserveOnly(this._owner);
+        this.target = this._owner;
     }
 
     // ----> Availability

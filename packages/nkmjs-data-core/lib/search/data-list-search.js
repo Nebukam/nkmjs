@@ -244,11 +244,11 @@ class DataListSearch extends SimpleData {
         }
     }
 
-    _InternalCheck(p_iten) {
-        if (this._resultSet.has(p_iten)) { return; }
-        if (this._searchHeader._Check(p_iten, this)) {
-            this._resultSet.add(p_iten);
-            this._results.Add(p_iten);
+    _InternalCheck(p_item) {
+        if (this._resultSet.has(p_item)) { return; }
+        if (this._searchHeader._Check(p_item, this)) {
+            this._resultSet.add(p_item);
+            this._results.Add(p_item);
         }
     }
 
