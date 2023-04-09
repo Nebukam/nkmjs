@@ -204,7 +204,15 @@ class SIGNAL {
      */
     static DRAG_ENDED = Symbol(`dragEnded`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Drag and drop
+     */
+    static DROPPED = Symbol(`dropped`);
 
+    
     /**
      * @description TODO
      * @type {symbol}

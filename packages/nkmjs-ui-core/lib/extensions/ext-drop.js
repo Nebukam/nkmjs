@@ -72,6 +72,8 @@ class DropExtension extends Extension {
 
         this._hintElement = null;
 
+        this._mouseInfos = { x: 0, y: 0 };
+
         //TODO : Add event callbacks to handle differently different types of drop
         //check if a drop is acceptable etc
     }
@@ -102,6 +104,8 @@ class DropExtension extends Extension {
             else { POINTER.Unwatch(SIGNAL.DRAG_STARTED, this._OnPointerDragStarted); }
         }
     }
+
+    get mouseInfos() { return this._mouseInfos; }
 
     /**
      * @description TODO
@@ -201,14 +205,14 @@ class DropExtension extends Extension {
 
     _getDragData(p_evt) {
 
-        if(POINTER.DRAG_DATA){
+        if (POINTER.DRAG_DATA) {
             POINTER.EXTERNAL_DRAG = false;
             return POINTER.DRAG_DATA;
-        }else{
+        } else {
             POINTER.EXTERNAL_DRAG = true;
             return p_evt.dataTransfer;
         }
-        
+
     }
 
     _mDragEnter(p_evt) {
@@ -303,6 +307,19 @@ class DropExtension extends Extension {
     }
 
     _mDrop(p_evt) {
+
+        let rect = this._target.getBoundingClientRect();
+        this._mouseInfos = {
+            x: p_evt.clientX,
+            y: p_evt.clientY,
+            inner_x: p_evt.clientX - rect.x,
+            inner_y: p_evt.clientY - rect.y,
+            rx: (p_evt.clientX - rect.x) / rect.width,
+            ry: (p_evt.clientY - rect.y) / rect.height,
+            targetRect: rect
+        };
+
+        console.log(`DROP COORDINATES`, this._mouseInfos);
 
         let dragData = this._getDragData(p_evt);
 
