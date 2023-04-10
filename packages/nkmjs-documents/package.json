@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/documents",
-  "version": "0.1.21",
+  "version": "1.0.0",
   "description": "NKMjs Framework Documents management",
   "main": "index.js",
   "repository": {
@@ -16,13 +16,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^0.2.14",
-    "@nkmjs/collections": "^0.1.21",
-    "@nkmjs/common": "^0.1.41",
-    "@nkmjs/data-core": "^0.0.67",
-    "@nkmjs/environment": "^0.1.45",
-    "@nkmjs/io-core": "^0.1.49",
-    "@nkmjs/utils": "^0.0.40"
+    "@nkmjs/actions": "^1.0.0",
+    "@nkmjs/collections": "^1.0.0",
+    "@nkmjs/common": "^1.0.0",
+    "@nkmjs/data-core": "^1.0.0",
+    "@nkmjs/environment": "^1.0.0",
+    "@nkmjs/io-core": "^1.0.0",
+    "@nkmjs/utils": "^1.0.0"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }
