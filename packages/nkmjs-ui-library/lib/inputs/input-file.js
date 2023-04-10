@@ -44,11 +44,6 @@ class InputFile extends base {
 
     }
 
-    _PostInit() {
-        super._PostInit();
-        this._dropExt.Setup(this);
-    }
-
     // ----> DOM
 
     static _Style() {

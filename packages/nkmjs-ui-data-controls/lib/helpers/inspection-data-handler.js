@@ -2,6 +2,7 @@
 
 const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
+const ui = require(`@nkmjs/ui-core`);
 
 const SIGNAL = require(`../signal`);
 
@@ -31,7 +32,8 @@ class InspectionDataHandler extends com.pool.DisposableObjectEx {
             .Hook(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
             .Hook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
             .Hook(com.SIGNAL.ITEM_BUMPED, this._OnItemBumped, this)
-            .Hook(com.SIGNAL.UPDATED, this._OnListUpdated, this);
+            .Hook(com.SIGNAL.UPDATED, this._OnListUpdated, this)
+            .Hook(ui.SIGNAL.SEL_CLEARED, this._OnListCleared, this);
 
         this._cachedSharedType = null;
         this._cachedSingleType = null;
@@ -92,6 +94,10 @@ class InspectionDataHandler extends com.pool.DisposableObjectEx {
         this._RefreshLastType(p_sel.lastType);
         this._RefreshSharedType();
         this.Broadcast(com.SIGNAL.UPDATED, p_sel);
+    }
+
+    _OnListCleared(p_sel){
+        this.Broadcast(ui.SIGNAL.SEL_CLEARED, p_sel);
     }
 
     _RefreshLastType(p_type) {

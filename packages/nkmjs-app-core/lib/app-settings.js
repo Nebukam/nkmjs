@@ -15,8 +15,8 @@ class AppSettings extends data.SimpleDataBlock {
     };
 
     static __VALUES = {
-        [IDS.AUTOSAVE]: { value: false, signal: IDS.AUTOSAVE },
-        [IDS.AUTOSAVE_TIMER]: { value: 10, signal: IDS.AUTOSAVE_TIMER },
+        [IDS.AUTOSAVE]: { value: false, signal: IDS.AUTOSAVE, group:IDS.GROUP_SAVE },
+        [IDS.AUTOSAVE_TIMER]: { value: 10, signal: IDS.AUTOSAVE_TIMER, group:IDS.GROUP_SAVE },
     };
 
     _Init() {
@@ -51,6 +51,13 @@ data.RegisterDescriptors({
         controlOptions: { disableWhen: { fn: isAutoSave } },
         desc: `Interval at which the autosave triggers (in minutes).\nMin 1min, max 60min.`
     },
+
+    [IDS.GROUP_SAVE]: {
+        title: `Save`,
+        icon: `save`,
+        desc: `Options related to saving content.`
+    },
+
 
 });
 

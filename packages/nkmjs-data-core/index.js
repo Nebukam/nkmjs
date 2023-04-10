@@ -22,8 +22,7 @@ module.exports = {
     IDDispenser: require(`./lib/id/id-dispenser`),
 
     // namespaces
-    operations: require(`./lib/operations`),
-    actions: require(`./lib/actions`),
+    ops: require(`./lib/operations`),
     catalogs: require(`./lib/catalogs`),
     helpers: require(`./lib/helpers`),
     search: require(`./lib/search`),

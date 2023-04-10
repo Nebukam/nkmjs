@@ -12,6 +12,7 @@ module.exports = {
 
     OptionsDistribute: require(`./options-distribute`),
     OptionsObject: require(`./options-object`),
+    Setter:require(`./setter`),
 
     Singleton: require(`./singleton`),
     SingletonEx: require(`./singleton-ex`),

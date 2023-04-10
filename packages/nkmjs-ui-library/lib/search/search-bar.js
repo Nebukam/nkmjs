@@ -33,9 +33,9 @@ class SearchBar extends base {
         this._builder.defaultControlClass = datacontrols.widgets.ValueControl;
         this._builder.defaultCSS = `control`;
 
-    }
+        this._forwardData.Update(this._builder, { dataMember: `searchHeader` });
 
-    _ForwardToBuilder() { this.forwardData.To(this._builder, { dataMember: `searchHeader` }); }
+    }
 
     static _Style() {
         return style.Extends({

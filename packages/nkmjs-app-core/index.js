@@ -15,7 +15,7 @@ module.exports = {
     AutoUpdateDialogBox: require(`./lib/dialogs/dialog-box-auto-update`),
     GlobalOverlayHandler: require(`./lib/global-overlay-handler`),
 
-    operations: __ops,
+    ops: __ops,
     explorers: require(`./lib/explorers`),
 
     OpenSettings: () => { __ops.commands.OpenAppSettings.Execute(); },

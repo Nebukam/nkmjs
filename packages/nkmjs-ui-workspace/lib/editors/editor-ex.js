@@ -109,10 +109,11 @@ class EditorEx extends base {
 
             if (view) {
 
-                if (`forwardData` in conf && !conf.forwardData) { }
+                if (!conf.forwardData) { }
                 else { this.forwardData.To(view); }
 
                 this._forwardContext.To(view);
+                this._forwardEditor.To(view);
 
                 if (assign) { this[assign] = view; }
 
@@ -120,9 +121,7 @@ class EditorEx extends base {
 
         }
 
-        this._inspectorShell.RequestDisplay();
-
-        this.forwardData
+        this._forwardData
             .To(this._header)
             .To(this._viewport)
             .To(this._footer);
@@ -132,6 +131,14 @@ class EditorEx extends base {
             .To(this._viewport)
             .To(this._footer)
             .To(this._inspectorShell);
+
+        this._forwardEditor
+            .To(this._header)
+            .To(this._viewport)
+            .To(this._footer)
+            .To(this._inspectorShell);
+
+        this._inspectorShell.RequestDisplay();
 
     }
 

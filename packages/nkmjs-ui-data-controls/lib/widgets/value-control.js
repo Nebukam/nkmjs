@@ -8,7 +8,7 @@ const ui = require(`@nkmjs/ui-core`);
 
 const __flag_inherited = `inherited`;
 
-const SetPropertyCmd = data.operations.commands.SetProperty;
+const SetPropertyCmd = data.ops.commands.SetProperty;
 
 const base = require(`../control-widget`);
 class ValueControl extends base {

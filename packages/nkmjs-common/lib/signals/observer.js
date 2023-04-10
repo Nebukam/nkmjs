@@ -130,7 +130,7 @@ class Observer extends DisposableObjectEx {
      */
     Observe(p_target) {
         if (!p_target) { throw new Error(`Target cannot be null.`); }
-        if (!isObservable(p_target)) { console.warn(`Attempting to observe a non-observable target : `, this);return p_target; }
+        if (!isObservable(p_target)) { return p_target; } //console.warn(`Attempting to observe a non-observable target : `, this);
         if (this._targets.includes(p_target)) { return p_target; }
         this._targets.push(p_target);
         if (this._isEnabled) { this._WatchAll(p_target); }

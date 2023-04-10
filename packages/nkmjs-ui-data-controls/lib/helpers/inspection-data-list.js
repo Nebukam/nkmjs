@@ -175,7 +175,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
 
         this._lastItemType = p_data.constructor;
 
-        if(this._lastBump != p_data){
+        if (this._lastBump != p_data) {
             this._lastBump = p_data;
             this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, p_data);
         }
@@ -317,6 +317,8 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         this._clearing = true;
         while (!this._stack.isEmpty) { this.Remove(this._stack.last, false); }
         this._clearing = false;
+        this._lastItemType = null;
+        this.Broadcast(com.SIGNAL.UPDATED, this);
         this.Broadcast(ui.SIGNAL.SEL_CLEARED, this);
     }
 

@@ -107,6 +107,17 @@ class AppBase extends com.helpers.SingletonEx {
             ui.dom.Detach(this._loadingOverlay);
         }
 
+        if (window) {
+            //window.onerror = (message, file, line, col, error) => { return this._OnWindowError(error); };
+            //window.addEventListener("error", (e) => { return this._OnWindowError(e.error); });
+        }
+
+    }
+
+    _OnWindowError(p_err) {
+        nkm.u.LOG._(`An error occured.`, `#ffffff`, `#ff0000`);
+        console.error(p_err);
+        return false;
     }
 
     /**
@@ -133,11 +144,11 @@ class AppBase extends com.helpers.SingletonEx {
 
         this._appSettings = com.Rent(this._appSettingsType);
         this._appSettings
-            .Watch(IDS.AUTOSAVE, (p_data, p_valueObj, p_oldValue) => {
-                documents.ToggleAutoSave(p_valueObj.value);
+            .Watch(IDS.AUTOSAVE, (p_data, p_newValue, p_oldValue) => {
+                documents.ToggleAutoSave(p_newValue);
             })
-            .Watch(IDS.AUTOSAVE_TIMER, (p_data, p_valueObj, p_oldValue) => {
-                documents.ToggleAutoSave(this._appSettings.Get(IDS.AUTOSAVE), p_valueObj.value * 1000 * 60);
+            .Watch(IDS.AUTOSAVE_TIMER, (p_data, p_newValue, p_oldValue) => {
+                documents.ToggleAutoSave(this._appSettings.Get(IDS.AUTOSAVE), p_newValue * 1000 * 60);
             });
 
     }

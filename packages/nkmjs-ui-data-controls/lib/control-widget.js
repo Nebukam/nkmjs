@@ -8,6 +8,7 @@ const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
 const helpers = require(`./helpers`);
+const IDS = require(`./ids`);
 const META_IDS = require(`./meta-ids`);
 const Editor = require(`./editor`);
 
@@ -64,6 +65,15 @@ class ControlWidget extends base {
         this._ResetMetaPresentation();
     }
 
+    get forwardContext() {
+        if (!this._forwardContext) { this._forwardContext = new com.helpers.Setter(this, IDS.CONTEXT); }
+        return this._forwardContext;
+    }
+    get forwardEditor() {
+        if (!this._forwardEditor) { this._forwardEditor = new com.helpers.Setter(this, IDS.EDITOR); }
+        return this._forwardEditor;
+    }
+
     /**
      * @description The high-level editor in which this widget is used, if any.
      * This function recursively looks in the widget' parent until it finds one of Editor type, and returns it.
@@ -84,6 +94,7 @@ class ControlWidget extends base {
         let oldEditor = this._editor;
         this._editor = p_value;
         this._builder.editor = p_value;
+        if (this._forwardEditor) { this._forwardEditor.Set(p_value); }
         if (`_OnEditorChanged` in this) { this._OnEditorChanged(oldEditor); }
     }
 
@@ -128,6 +139,7 @@ class ControlWidget extends base {
         this._context = p_value;
         this._OnContextChanged(oldValue);
         this._builder.context = p_value;
+        if (this._forwardContext) { this._forwardContext.Set(p_value); }
         this._contextObserver.ObserveOnly(this._context);
     }
 
@@ -246,9 +258,14 @@ class ControlWidget extends base {
 
     _CleanUp() {
         if (this.constructor.__clearBuilderOnRelease) { this._builder.Clear(); }
+        
         this.context = null;
         this.editor = null;
+        
         super._CleanUp();
+
+        if (this._forwardContext) { this._forwardContext.Clear(); }
+        if (this._forwardEditor) { this._forwardEditor.Clear(); }
     }
 
 }

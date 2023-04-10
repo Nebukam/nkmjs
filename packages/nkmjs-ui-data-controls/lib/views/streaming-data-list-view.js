@@ -73,7 +73,6 @@ class StreamingDataListView extends base {
             this._inspectionDataForward = new helpers.InspectionDataBridge(this);
             this.forwardEditor.To(this._inspectionDataForward);
 
-
             this._inspectionDataForward.dataSelection = dataSel; //Will use dataSel.data internally
             dataSel
                 .Watch(com.SIGNAL.ITEM_ADDED, this._OnSelectionStackBump, this)

@@ -27,9 +27,9 @@ class SearchHeader extends SimpleData {
 
     get enabled() { return this.Get(IDS.SEARCH_ENABLED); }
 
-    CommitValueUpdate(p_id, p_valueObj, p_oldValue, p_silent = false) {
+    CommitValueUpdate(p_id, p_newValue, p_oldValue, p_silent = false) {
 
-        super.CommitValueUpdate(p_id, p_valueObj, p_oldValue, p_silent);
+        super.CommitValueUpdate(p_id, p_newValue, p_oldValue, p_silent);
 
         if (!this.enabled) { return; }
 

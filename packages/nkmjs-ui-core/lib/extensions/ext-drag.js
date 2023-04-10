@@ -61,7 +61,7 @@ class DragExtension extends Extension {
 
     _OnOwnerChanged(p_oldOwner) {
         super._OnOwnerChanged(p_oldOwner);
-        this._ownerObserver.ObserveOnly(this._owner);
+        if (this._isEnabled) { this._ownerObserver.ObserveOnly(this._owner); }
         this.target = this._owner;
     }
 
@@ -130,6 +130,7 @@ class DragExtension extends Extension {
     Enable() {
         if (!super.Enable()) { return false; }
         if (this._activator) { this._activator.addEventListener(`mousedown`, this._mDown); }
+        this._ownerObserver.ObserveOnly(this._owner);
         return true;
     }
 
@@ -139,6 +140,7 @@ class DragExtension extends Extension {
     Disable() {
         if (!super.Disable()) { return false; }
         if (this._activator) { this._activator.removeEventListener(`mousedown`, this._mDown); }
+        this._ownerObserver.ObserveOnly(null);
         return true;
     }
 
@@ -173,6 +175,8 @@ class DragExtension extends Extension {
         POINTER.DragStarted(_dragDataContent, this._target);
 
         this._ShowHint();
+
+        console.log(`DRAG START! in ${this._owner}`);
 
     }
 

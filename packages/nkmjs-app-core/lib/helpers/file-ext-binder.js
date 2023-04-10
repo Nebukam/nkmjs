@@ -15,6 +15,7 @@ class FileExtBinder extends com.pool.DisposableObjectEx {
     }
 
     _Init() {
+        
         super._Init();
         this._bindings = new collections.DictionaryList();
         this._queue = [];

@@ -5,7 +5,7 @@ const actions = require(`@nkmjs/actions`);
 
 const SetPropertyValue = require(`../actions/action-set-property-value`);
 
-class CmdActionProperty extends actions.CommandAction {
+class CmdActionSetProperty extends actions.CommandAction {
     constructor() { super(); }
 
     _Init() {
@@ -27,4 +27,4 @@ class CmdActionProperty extends actions.CommandAction {
 
 }
 
-module.exports = CmdActionProperty;
+module.exports = CmdActionSetProperty;

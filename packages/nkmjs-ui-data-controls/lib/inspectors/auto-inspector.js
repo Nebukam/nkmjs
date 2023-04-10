@@ -43,7 +43,10 @@ class AutoInspector extends base {
             .Watch(com.SIGNAL.ITEM_BUMPED, this._OnItemBumped, this)
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
-            .Watch(com.SIGNAL.UPDATED, this._OnSelectionUpdated, this);
+            .Watch(com.SIGNAL.UPDATED, this._OnSelectionUpdated, this)
+            .Watch(ui.SIGNAL.SEL_CLEARED, this._OnSelectionCleared, this);
+
+        this.forwardEditor.To(this._inspectionHandler);
 
     }
 
@@ -57,21 +60,23 @@ class AutoInspector extends base {
 
     //#region Data
 
-    _OnEditorChanged(p_oldEditor) { this._inspectionHandler.editor = this._editor; }
-
     _OnItemBumped(p_item) {
 
     }
 
-    _OnItemAdded(p_item){
+    _OnItemAdded(p_item) {
 
     }
 
-    _OnItemRemoved(p_item){
+    _OnItemRemoved(p_item) {
 
     }
 
     _OnSelectionUpdated(p_sel) {
+
+    }
+
+    _OnSelectionCleared(p_sel) {
 
     }
 

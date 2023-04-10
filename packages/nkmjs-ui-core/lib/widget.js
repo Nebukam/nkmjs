@@ -10,9 +10,7 @@ const FLAGS = require(`./flags`);
 const INPUT = require(`./input`);
 const POINTER = require(`./pointer`);
 const DisplayObjectContainer = require(`./display-object-container`);
-const WidgetSelection = require(`./helpers/widget-selection`);
 const FlagEnum = require(`./helpers/flag-enum`);
-const DataForward = require(`./helpers/data-forward`);
 
 const extensions = require(`./extensions`);
 
@@ -448,10 +446,9 @@ class Widget extends base {
     //#region DATA
 
     get forwardData() {
-        if (!this._forwardData) { this._forwardData = new DataForward(this); }
+        if (!this._forwardData) { this._forwardData = new com.helpers.Setter(this, com.IDS.DATA); }
         return this._forwardData;
     }
-
 
     /**
      * @description TODO
@@ -493,6 +490,7 @@ class Widget extends base {
             this._OnDataUpdated(p_value);
         }
 
+
         this.Broadcast(SIGNAL.DATA_CHANGED, this, p_value, oldValue);
 
     }
@@ -504,7 +502,9 @@ class Widget extends base {
      * @customtag override-me
      * @group Data
      */
-    _OnDataChanged(p_oldData) { if (this._forwardData) { this._forwardData.Set(this._data); } }
+    _OnDataChanged(p_oldData) {
+        if (this._forwardData) { this._forwardData.Set(this._data, !this._releasing); }
+    }
 
     /**
      * @access protected
