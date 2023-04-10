@@ -25,8 +25,13 @@ class StateStack extends com.pool.DisposableObjectEx {
     }
 
     HookButtons(p_prev, p_next) {
+        
         this._prevBtn = p_prev;
+        if (this._prevBtn) { this._prevBtn.trigger = this.Previous; }
+
         this._nextBtn = p_next;
+        if (this._nextBtn) { this._nextBtn.trigger = this.Next; }
+        
     }
 
     /**
@@ -116,7 +121,7 @@ class StateStack extends com.pool.DisposableObjectEx {
     _RefreshBtns() {
         if (!this._prevBtn || !this._nextBtn) { return; }
 
-        if (this._index >= this._stack.length-1) { this._nextBtn.disabled = true; }
+        if (this._index >= this._stack.length - 1) { this._nextBtn.disabled = true; }
         else { this._nextBtn.disabled = false; }
         if (this._index <= 0) { this._prevBtn.disabled = true; }
         else { this._prevBtn.disabled = false; }

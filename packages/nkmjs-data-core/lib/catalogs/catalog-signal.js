@@ -45,13 +45,6 @@ class SIGNAL{
      */
     static ITEM_DATA_UPDATED = Symbol(`dataItemUpdated`);
 
-    /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     */
-    static SORTED = Symbol(`sorted`);
-
 }
 
 module.exports = SIGNAL;

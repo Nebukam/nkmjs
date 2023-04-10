@@ -17,6 +17,7 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
         super();
         this._owner = p_owner;
         this._smartClear = true;
+        this._mirroring = false;
         this._dataSelection = null;
     }
 
@@ -25,7 +26,7 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
 
         this._selectionObserver = new com.signals.Observer();
         this._selectionObserver
-            .Hook(com.SIGNAL.ITEM_ADDED, this.OnSeAdded, this)
+            .Hook(com.SIGNAL.ITEM_ADDED, this.OnSelAdded, this)
             .Hook(com.SIGNAL.ITEM_REMOVED, this.OnSelRemoved, this)
             .Hook(com.SIGNAL.ITEM_BUMPED, this.OnSelBumped, this);
 
@@ -53,26 +54,34 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
         this._inspectionObserver.ObserveOnly(p_value);
 
         if (oldValue) {
-            // Clear item from local dataSelection ? 
+            // Clear item from local widgetSelection ? 
         }
 
         if (p_value) {
-            // Forward items from local dataSelection
+            // Forward items from local widgetSelection
         }
 
     }
 
     //#region Inspect selected data
 
-    OnSeAdded(p_item) {
+    OnSelAdded(p_item) {
         if (!this._inspectionData) { return; }
+        
+        if (this._inspectionData.lastItem == p_item) {
+            this.OnSelBumped(p_item);
+            return;
+        }
+
         if (this._smartClear && this._dataSelection) {
             if (this._dataSelection.stack.count == 1 && this._dataSelection.stack.last == p_item) {
                 // Clear the inspected selection if the managed selection is a fresh new one
                 if (!this._mirroring) { this._inspectionData.Clear(); }
             }
         }
+
         this._inspectionData.Add(p_item);
+
     }
 
     OnSelRemoved(p_item) {
@@ -81,13 +90,15 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
     }
 
     OnSelBumped(p_item) {
-        if (!this._inspectionData) { return; }
+        if (!this._inspectionData || this._mirroring) { return; }
         this._inspectionData.Bump(p_item);
     }
 
     //#endregion
 
     //#region Maintain data from inspection
+    // This is about attempting to replicate data selection
+    // at the widget level.
 
     OnInspectionAdded(p_sel, p_item) {
         if (!this._dataSelection) { return; }
@@ -95,7 +106,7 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
         this._mirroring = true;
         let index = this._dataSelection.RequestIndex(p_item);
         if (index != -1) { this._dataSelection.RequestAdd(index); }
-        else { this._dataSelection.Add(p_item, -1, ui.INPUT.SELECT_MODIFIER_ADD); }
+        else { this._dataSelection.Add(p_item, -1, ui.INPUT.SELECT_MODIFIER_ADD); } // Need to add the data, somehow the widget gets found but triggers an infinite loop
         this._mirroring = false;
     }
 
@@ -110,8 +121,11 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
     }
 
     OnInspectionBumped(p_sel, p_item) {
-        if (!this._dataSelection) { return; }
-        //TODO : Huh.
+        if (!this._dataSelection || this._mirroring) { return; }
+        if (!this._dataSelection._dataSet.has(p_item)) { return; }
+        this._mirroring = true;
+        this._dataSelection.Bump(p_item);
+        this._mirroring = false;
     }
 
     //#endregion

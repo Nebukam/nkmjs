@@ -4,8 +4,7 @@ const __Catalog = require(`./catalog`);
 
 module.exports = {
     SIGNAL: require(`./catalog-signal`),
-    SORTING: require(`./catalog-sorting`),
-    
+        
     CatalogItem: require(`./catalog-item`),
     Catalog: __Catalog,
     CatalogSelection: require(`./catalog-selection`),

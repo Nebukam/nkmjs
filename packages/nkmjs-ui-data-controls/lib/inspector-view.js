@@ -34,6 +34,33 @@ class InspectorView extends base {
 
     _Init() {
         super._Init();
+        this._editorObserver = new com.signals.Observer();
+        this._editorObserver
+            .Hook(ui.SIGNAL.DATA_CHANGED, this._Bind(this._OnEditorDataChanged));
+
+        this._editorDataObserver = null;
+        this._oldEditorData = null;
+    }
+
+    get editorObserver() { return this._editorObserver; }
+
+    get editorDataObserver() {
+        if (!this._editorDataObserver) {
+            this._editorDataObserver = new com.signals.Observer();
+            this._editorDataObserver.ObserveOnly(this._editor ? this._editor.data : null);
+        }
+        return this._editorDataObserver;
+    }
+
+    _OnEditorChanged(p_oldEditor) {
+        this._editorObserver.ObserveOnly(this._editor);
+        if (this._editor) { this._OnEditorDataChanged(this._editor, this._editor.data, this._oldEditorData); }
+        else { this._OnEditorDataChanged(null, null, this._oldEditorData); }
+    }
+
+    _OnEditorDataChanged(p_editor, p_newData, p_oldData) {
+        this._oldEditorData = p_newData;
+        if (this._editorDataObserver) { this._editorDataObserver.ObserveOnly(p_newData); }
     }
 
     static _Style() {
@@ -43,6 +70,11 @@ class InspectorView extends base {
                 'overflow-y': `auto`
             },
         }, base._Style());
+    }
+
+    _CleanUp() {
+        super._CleanUp();
+        this._oldEditorData = null;
     }
 
 }

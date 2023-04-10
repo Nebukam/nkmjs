@@ -42,8 +42,6 @@ class InputSelectInline extends base {
 
         this._Bind(this._OnOptionToggle);
 
-        //this.classList.add(`group`);
-
         this._showIcon = true;
         this._showLabel = false;
 
@@ -88,7 +86,7 @@ class InputSelectInline extends base {
         } else {
             control = this.Attach(ButtonEx, 'item inline');
             control.options = {
-                toggle: { fn: this._OnOptionToggle, arg: ui.FLAGS.SELF }
+                toggle: { fn: this._OnOptionToggle, arg: com.FLAGS.SELF }
             };
             control.data = p_item;
 

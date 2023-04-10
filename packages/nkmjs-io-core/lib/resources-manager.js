@@ -122,11 +122,11 @@ class RESOURCES extends services.ServiceBase {
     static GetAndRead(p_path, p_options = null, p_IOOptions = null) {
         let rsc = this.instance._Get(p_path, p_options);
 
-        if(rsc.loaded){
-            if(p_options && !p_options.forceRead && p_IOOptions){
-                if(p_IOOptions.success){ p_IOOptions.success(rsc); }
-                if(p_IOOptions.any){ p_IOOptions.any(rsc); }
-            }else{
+        if (rsc.loaded) {
+            if (p_options && !p_options.forceRead && p_IOOptions) {
+                if (p_IOOptions.success) { p_IOOptions.success(rsc); }
+                if (p_IOOptions.any) { p_IOOptions.any(rsc); }
+            } else {
                 return rsc;
             }
         }
@@ -258,11 +258,11 @@ class RESOURCES extends services.ServiceBase {
     /**
      * @access private
      * @param {string} p_ioId 
-     * @param {io.core.ResourceOperation} p_operation 
+     * @param {io.core.ResourceOperation} p_op 
      * @returns {string}
      */
-    _IOID(p_ioId, p_operation) {
-        
+    _IOID(p_ioId, p_op) {
+
         if (u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
             return IO_TYPE.DEFAULT;
             /*
@@ -275,66 +275,66 @@ class RESOURCES extends services.ServiceBase {
 
     /**
      * @access private
-     * @param {io.core.ResourceOperation} p_operation 
+     * @param {io.core.ResourceOperation} p_op 
      */
-    _RequestRead(p_operation) {
-        let ioProcess = com.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].read);
-        ioProcess.operation = p_operation;
+    _RequestRead(p_op) {
+        let ioProcess = com.Rent(this._io[this._IOID(p_op.ioType, p_op)].read);
+        ioProcess.operation = p_op;
         this._PushIOProcess(ioProcess);
     }
 
     /**
      * @access private
-     * @param {io.core.ResourceOperation} p_operation 
+     * @param {io.core.ResourceOperation} p_op 
      */
-    _RequestWrite(p_operation) {
-        let ioProcess = com.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].write);
-        ioProcess.operation = p_operation;
+    _RequestWrite(p_op) {
+        let ioProcess = com.Rent(this._io[this._IOID(p_op.ioType, p_op)].write);
+        ioProcess.operation = p_op;
         this._PushIOProcess(ioProcess);
     }
 
     /**
      * @access private
-     * @param {io.core.ResourceOperation} p_operation 
+     * @param {io.core.ResourceOperation} p_op 
      */
-    _RequestDelete(p_operation) {
-        let ioProcess = com.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].delete);
-        ioProcess.operation = p_operation;
+    _RequestDelete(p_op) {
+        let ioProcess = com.Rent(this._io[this._IOID(p_op.ioType, p_op)].delete);
+        ioProcess.operation = p_op;
         this._PushIOProcess(ioProcess);
     }
 
     /**
      * @access private
-     * @param {io.core.ResourceOperation} p_operation 
+     * @param {io.core.ResourceOperation} p_op 
      * @param {string} p_newPath 
      */
-    _RequestRename(p_operation, p_newPath) {
-        let ioProcess = com.Rent(this._io[this._IOID(p_operation.ioType, p_operation)].rename);
-        ioProcess.operation = p_operation;
+    _RequestRename(p_op, p_newPath) {
+        let ioProcess = com.Rent(this._io[this._IOID(p_op.ioType, p_op)].rename);
+        ioProcess.operation = p_op;
         ioProcess.targetPath = p_newPath;
         this._PushIOProcess(ioProcess);
     }
 
     /**
      * @access private
-     * @param {io.core.IOProcess} p_ioProcess 
+     * @param {io.core.IOProcess} p_iop 
      */
-    _PushIOProcess(p_ioProcess) {
-        p_ioProcess._globalResourceMap = this._resources;
-        if (p_ioProcess.operation.isParallel) {
-            p_ioProcess.Process();
+    _PushIOProcess(p_iop) {
+        p_iop._globalResourceMap = this._resources;
+        if (p_iop.operation.isParallel) {
+            p_iop.Process();
         } else {
-            this._IOQueue.Add(p_ioProcess, p_ioProcess.operation.isImportant);
+            this._IOQueue.Add(p_iop, p_iop.operation.isImportant);
             this._tick.Schedule();
         }
     }
 
     /**
      * 
-     * @param {io.core.ResourceOperation|io.core.IOProcess} p_operation 
+     * @param {io.core.ResourceOperation|io.core.IOProcess} p_op 
      */
-    _BumpOperation(p_operation) {
-        this._IOQueue.Bump(p_operation);
+    _BumpOperation(p_op) {
+        this._IOQueue.Bump(p_op);
     }
 
     /**
@@ -387,12 +387,8 @@ class RESOURCES extends services.ServiceBase {
 
     _Tick(p_delta) {
         super._Tick(p_delta);
-        this._UpdateQueue(this._IOQueue);
-    }
-
-    _UpdateQueue(p_queue) {
-        if (!p_queue.isEmpty) { this._tick.Schedule(); } //TODO : This won't do
-        if (!p_queue.running && !p_queue.isEmpty) { p_queue.ProcessNext(); }
+        if (!this._IOQueue.isEmpty) { this._tick.Schedule(); } 
+        if (!this._IOQueue.running && !this._IOQueue.isEmpty) { this._IOQueue.ProcessNext(); }
     }
 
 

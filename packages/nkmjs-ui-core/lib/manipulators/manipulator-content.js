@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+const dom = require(`../utils-dom`);
 const FLAGS = require(`../flags`);
 const FlagEnum = require("../helpers/flag-enum");
 const Manipulator = require("./manipulator");
@@ -33,6 +34,13 @@ class ContentManipulator extends Manipulator {
         if (p_sizeControl) { this._sizeFlags = new FlagEnum(FLAGS.sizes, true); }
         else { this._sizeFlags = null; }
     }
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag write-only
+     */
+    set opacity(p_value) { dom.CSS(this._element, 'opacity', p_value != null ? `${p_value}` : p_value); }
 
     /**
      * @description TODO
@@ -104,16 +112,16 @@ class ContentManipulator extends Manipulator {
     }
 
     TryReplace(p_value, p_direct = false) {
-        
+
         let oldContent = this.content,
             result = this._Apply(this._element, p_value, p_direct);
 
-        if (!result) { 
-            this._Apply(this._element, oldContent, p_direct); 
+        if (!result) {
+            this._Apply(this._element, oldContent, p_direct);
             return false;
         }
-        else { 
-            this._Toggle(result); 
+        else {
+            this._Toggle(result);
             return true;
         }
 
@@ -127,8 +135,7 @@ class ContentManipulator extends Manipulator {
 
         if (this._isVisible != p_toggle && this._autoHide) {
             this._isVisible = p_toggle;
-            if (!p_toggle) { this._element.style.setProperty(`display`, `none`); }
-            else { this._element.style.removeProperty(`display`); }
+            dom.CSS(this._element, `display`, p_toggle ? null : `none`);
         }
 
         return p_toggle;

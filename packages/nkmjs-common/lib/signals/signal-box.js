@@ -3,7 +3,6 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 
-const DisposableObject = require(`../pool/disposable-object`);
 const POOL = require(`../pool/pool`);
 const SignalBroadcaster = require(`./signal-broadcaster`);
 
@@ -11,24 +10,35 @@ const SignalBroadcaster = require(`./signal-broadcaster`);
  * A boilerplate object to manage signals.
  * Usually a single object has a single signalBox.  
  * @class
- * @augments common.pool.DisposableObjectEx
  * @memberof common.signals
  */
-class SignalBox extends DisposableObject {
+class SignalBox {
 
     constructor(p_owner = null) {
-        super();
 
         if (p_owner) {
+            this._owner = p_owner;
             p_owner.Broadcast = this._Bind(this.Broadcast);
             p_owner.Watch = this._Bind(this.Watch);
             p_owner.WatchOnce = this._Bind(this.WatchOnce);
             p_owner.Unwatch = this._Bind(this.Unwatch);
+        }else{
+            this._owner = null;
         }
 
         this._signals = new collections.Dictionary();
         this._silent = false;
     }
+
+    /**
+     * @access protected
+     * @description Bind the given function to this object and returns it.
+     * Note that it replaces the function reference, hence referencing function before they are being bound in `_Init`,
+     * ( i.e in the constructor ) will target an obsolete function.
+     * @param {*} p_func 
+     * @group Utils
+     */
+    _Bind(p_func) { return this[p_func.name] = p_func.bind(this); }
 
     /**
      * @description TODO
@@ -68,7 +78,7 @@ class SignalBox extends DisposableObject {
         if (!signal) { return; }
         signal.Dispatch(...args);
 
-        return this;
+        return this._owner || this;
     }
 
     /**
@@ -86,7 +96,7 @@ class SignalBox extends DisposableObject {
         }
 
         signal.Add(p_fn, p_listener);
-        return this;
+        return this._owner || this;
     }
 
     /**
@@ -104,7 +114,7 @@ class SignalBox extends DisposableObject {
         }
 
         signal.AddOnce(p_fn, p_listener);
-        return this;
+        return this._owner || this;
     }
 
     /**
@@ -125,7 +135,7 @@ class SignalBox extends DisposableObject {
             signal.Release();
         }
 
-        return this;
+        return this._owner || this;
 
     }
 

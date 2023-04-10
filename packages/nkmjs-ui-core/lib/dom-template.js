@@ -7,7 +7,7 @@ const manipulators = require(`./manipulators`);
 
 const IDS = require(`./ids`);
 
-const __hide = `autoHide`;
+const __hide  = Object.freeze(`autoHide`);
 
 /**
  * // Important note : when setting a custom owner, property are prefixed with an underscore. 

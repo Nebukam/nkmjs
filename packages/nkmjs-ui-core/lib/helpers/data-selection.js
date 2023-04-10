@@ -36,6 +36,8 @@ class DataSelection extends com.pool.DisposableObjectEx {
     _Init() {
         super._Init();
 
+        this._lastBump = null;
+
         this._stack = new collections.List();
         this._indices = new collections.List();
         this._dataSet = new Set();
@@ -113,7 +115,6 @@ class DataSelection extends com.pool.DisposableObjectEx {
      * @returns {boolean} True if the data was added for the first time, otherwise false
      */
     Add(p_data, p_dataIndex = -1, p_mode = null) {
-
 
         if (p_data == null) { return false; }
 
@@ -252,7 +253,10 @@ class DataSelection extends com.pool.DisposableObjectEx {
             this._indices._array.push(this._indices._array.splice(index, 1)[0]);
         }
 
-        this.Broadcast(com.SIGNAL.ITEM_BUMPED, p_data);
+        if(this._lastBump != p_data){
+            this._lastBump = p_data;
+            this.Broadcast(com.SIGNAL.ITEM_BUMPED, p_data);
+        }
 
         return true;
 
@@ -363,6 +367,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
      * @description Clear all item in the stack
      */
     Clear() {
+        this._lastBump = null;
         this._cachedRangeStart = -1;
         if (this._stack.isEmpty) { return; }
         this._clearing = true;

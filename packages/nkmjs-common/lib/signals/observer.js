@@ -105,6 +105,11 @@ class Observer extends DisposableObjectEx {
         return this;
     }
 
+    ClearHooks(){
+        this.Flush();
+        this._hooks.length = 0;
+    }
+
     /**
      * @description TODO
      * @type {array}
@@ -125,7 +130,7 @@ class Observer extends DisposableObjectEx {
      */
     Observe(p_target) {
         if (!p_target) { throw new Error(`Target cannot be null.`); }
-        if (!isObservable(p_target)) { return p_target; }
+        if (!isObservable(p_target)) { return p_target; } //console.warn(`Attempting to observe a non-observable target : `, this);
         if (this._targets.includes(p_target)) { return p_target; }
         this._targets.push(p_target);
         if (this._isEnabled) { this._WatchAll(p_target); }
@@ -163,10 +168,7 @@ class Observer extends DisposableObjectEx {
      * @param {*} p_target 
      */
     _WatchAll(p_target) {
-        for (let i = 0, n = this._hooks.length; i < n; i++) {
-            let hook = this._hooks[i];
-            p_target.Watch(hook.evt, hook.fn, hook.thisArg);
-        }
+        this._hooks.forEach(hook => { p_target.Watch(hook.evt, hook.fn, hook.thisArg); });
     }
 
     /**
@@ -175,22 +177,14 @@ class Observer extends DisposableObjectEx {
      */
     _UnwatchAll(p_target) {
         if (p_target.isReleasing) { return; }
-        for (let i = 0, n = this._hooks.length; i < n; i++) {
-            let hook = this._hooks[i];
-            p_target.Unwatch(hook.evt, hook.fn, hook.thisArg);
-        }
+        this._hooks.forEach(hook => { p_target.Unwatch(hook.evt, hook.fn, hook.thisArg); });
     }
 
     /**
      * Stop watching targets and flushes them
      */
     Flush() {
-        if (this._isEnabled) {
-            for (let i = 0, n = this._targets.length; i < n; i++) {
-                this._UnwatchAll(this._targets[i]);
-            }
-        }
-
+        if (this._isEnabled) { this._targets.forEach(target => { this._UnwatchAll(target) }); }
         this._targets.length = 0;
     }
 

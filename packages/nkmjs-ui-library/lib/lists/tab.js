@@ -123,9 +123,7 @@ class Tab extends base {
     //
 
     _HighlightGain() {
-        if (!env.isTouchEnabled) {
-            this._closeIcon.element.style.removeProperty(`opacity`);
-        }
+        if (!env.isTouchEnabled) { ui.dom.CSS(this._closeIcon.element, 'opacity'); }
     }
 
     _HighlightLost() {

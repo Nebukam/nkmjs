@@ -8,6 +8,7 @@ const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
 const helpers = require(`./helpers`);
+const IDS = require(`./ids`);
 const META_IDS = require(`./meta-ids`);
 const Editor = require(`./editor`);
 
@@ -64,6 +65,15 @@ class ControlWidget extends base {
         this._ResetMetaPresentation();
     }
 
+    get forwardContext() {
+        if (!this._forwardContext) { this._forwardContext = new com.helpers.Setter(this, IDS.CONTEXT); }
+        return this._forwardContext;
+    }
+    get forwardEditor() {
+        if (!this._forwardEditor) { this._forwardEditor = new com.helpers.Setter(this, IDS.EDITOR); }
+        return this._forwardEditor;
+    }
+
     /**
      * @description The high-level editor in which this widget is used, if any.
      * This function recursively looks in the widget' parent until it finds one of Editor type, and returns it.
@@ -84,6 +94,7 @@ class ControlWidget extends base {
         let oldEditor = this._editor;
         this._editor = p_value;
         this._builder.editor = p_value;
+        if (this._forwardEditor) { this._forwardEditor.Set(p_value); }
         if (`_OnEditorChanged` in this) { this._OnEditorChanged(oldEditor); }
     }
 
@@ -128,6 +139,7 @@ class ControlWidget extends base {
         this._context = p_value;
         this._OnContextChanged(oldValue);
         this._builder.context = p_value;
+        if (this._forwardContext) { this._forwardContext.Set(p_value); }
         this._contextObserver.ObserveOnly(this._context);
     }
 
@@ -209,9 +221,11 @@ class ControlWidget extends base {
      * @group Presentation
      */
     _ResetMetaPresentation() {
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varname, `#000000`);
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, `0,0,0`);
-        this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, 0);
+        ui.dom.CSS(this, {
+            [META_IDS.P_PRES_COLOR.varname]: `#000000`,
+            [META_IDS.P_PRES_COLOR.varnameRGB]: `0,0,0`,
+            [META_IDS.P_PRES_WEIGHT.varname]: 0
+        });
     }
 
     /**
@@ -221,9 +235,12 @@ class ControlWidget extends base {
      * @customtag override-me
      */
     _UpdateMetaPresentation() {
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varname, this._metadata.Get(META_IDS.P_PRES_COLOR.path, `#000000`));
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, `0,0,0`);
-        this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, this._metadata.Get(META_IDS.P_PRES_WEIGHT.path, 0));
+        let color = this._metadata.Get(META_IDS.P_PRES_COLOR.path, `#000000`);
+        ui.dom.CSS(this, {
+            [META_IDS.P_PRES_COLOR.varname]: color,
+            [META_IDS.P_PRES_COLOR.varnameRGB]: style.colors.RGBA.HexToRGBString(color),
+            [META_IDS.P_PRES_WEIGHT.varname]: this._metadata.Get(META_IDS.P_PRES_WEIGHT.path, 0)
+        });
     }
 
     //#endregion
@@ -232,18 +249,23 @@ class ControlWidget extends base {
      * @access protected
      * @description Registers & executes an action.
      * @param {constructor} p_actionClass Action class to be executed
-     * @param {object} p_operation Action' operation parameters
+     * @param {object} p_op Action' operation parameters
      * @group Actions
      */
-    _Do(p_actionClass, p_operation) {
-        actions.CommandAction.Do(this, p_actionClass, p_operation);
+    _Do(p_actionClass, p_op) {
+        actions.CommandAction.Do(this, p_actionClass, p_op);
     }
 
     _CleanUp() {
         if (this.constructor.__clearBuilderOnRelease) { this._builder.Clear(); }
+        
         this.context = null;
         this.editor = null;
+        
         super._CleanUp();
+
+        if (this._forwardContext) { this._forwardContext.Clear(); }
+        if (this._forwardEditor) { this._forwardEditor.Clear(); }
     }
 
 }

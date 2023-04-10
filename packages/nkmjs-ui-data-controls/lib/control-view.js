@@ -7,6 +7,7 @@ const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
+const IDS = require(`./ids`);
 const helpers = require(`./helpers`);
 const META_IDS = require(`./meta-ids`);
 const Editor = require(`./editor`);
@@ -21,12 +22,12 @@ const base = ui.views.View;
  * @memberof ui.datacontrols
  */
 class ControlView extends base {
-    constructor() { super(); }
+    constructor() { super(); this._fullyInitialized = true; }
 
     static __clearBuilderOnRelease = false;
     static __controls = null;
     static __useMetaObserver = false;
-    static __default_shortcutRequireFocus = true;    
+    static __default_shortcutRequireFocus = true;
 
     static __updateDataOnSameSet = true;
 
@@ -38,10 +39,33 @@ class ControlView extends base {
         .To(`data`);
 
     _Init() {
+
         super._Init();
 
+        this._forwardData = this._forwardData;
+        this._forwardContext = new com.helpers.Setter(this, IDS.CONTEXT);
+        this._forwardEditor = new com.helpers.Setter(this, IDS.EDITOR);
+
+        let getEditor = () => { return this._releasing ? null : this._editor; };
+        let getContext = () => { return this._releasing ? null : this._context; };
+
+        this._forwardData.AddRelatives(this._forwardEditor, getEditor);
+        this._forwardData.AddRelatives(`editor`, getEditor, true);
+
+        this._forwardData.AddRelatives(this._forwardContext, getContext);
+        this._forwardData.AddRelatives(`context`, getContext, true);
+
+        this._forwardContext.AddRelatives(this._forwardEditor, getEditor);
+        this._forwardContext.AddRelatives(`editor`, getEditor, true);
+
         this._dataObserver.Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this);
+
+        this._contextObserver = new com.signals.Observer();
+
         this._builder = new helpers.ControlBuilder(this);
+        this._forwardData.To(this._builder);
+        this._forwardContext.To(this._builder);
+        this._forwardEditor.To(this._builder);
 
         if (this.constructor.__useMetaPresentation) {
             this._metadataObserver = new data.helpers.MetadataObserver();
@@ -52,15 +76,7 @@ class ControlView extends base {
             this._metadata = null;
         }
 
-        this._contextObserver = new com.signals.Observer();
-
         this._editor = null;
-
-        this.forwardData.To(this._builder);
-
-        this._forwardContext = null;
-        this._forwardEditor = null;
-
         this._defaultModalContentOptions = () => { return { editor: this.editor, data: this._data, context: this._context } };
 
     }
@@ -70,15 +86,8 @@ class ControlView extends base {
         this._ResetMetaPresentation();
     }
 
-    get forwardContext() {
-        if (!this._forwardContext) { this._forwardContext = new ui.helpers.DataForward(this); }
-        return this._forwardContext;
-    }
-
-    get forwardEditor() {
-        if (!this._forwardEditor) { this._forwardEditor = new ui.helpers.DataForward(this); }
-        return this._forwardEditor;
-    }
+    get forwardContext() { return this._forwardContext; }
+    get forwardEditor() { return this._forwardEditor; }
 
     /**
      * @description The high-level editor in which this widget is used, if any.
@@ -86,7 +95,9 @@ class ControlView extends base {
      * @type {ui.datacontrols.Editor}
      */
     get editor() {
+
         if (this._editor) { return this._editor; }
+
         let p = this._parent;
         while (p != null) {
             p = p.editor;
@@ -94,14 +105,21 @@ class ControlView extends base {
             p = p ? p.parent : null;
         }
         return null;
+
     }
     set editor(p_value) {
+
         if (this._editor == p_value) { return; }
+
         let oldEditor = this._editor;
         this._editor = p_value;
-        this._builder.editor = p_value;
-        if (this._forwardEditor) { this._forwardEditor._BatchSet(`editor`, p_value); }
+
+        this._forwardEditor.Set(p_value);
+        this._forwardContext._BatchSet(`editor`, p_value);
+        this._forwardData._BatchSet(`editor`, p_value);
+
         if (`_OnEditorChanged` in this) { this._OnEditorChanged(oldEditor); }
+
     }
 
     //#region Options handling
@@ -139,13 +157,16 @@ class ControlView extends base {
      */
     get context() { return this._context; }
     set context(p_value) {
+        
         if (this._context === p_value) { return; }
+
         let oldValue = this._context;
         this._context = p_value;
+        this._forwardContext.Set(p_value);
         this._OnContextChanged(oldValue);
-        this._builder.context = p_value;
-        if (this._forwardContext) { this._forwardContext._BatchSet(`context`, p_value); }
+
         this._contextObserver.ObserveOnly(this._context);
+
     }
 
     /**
@@ -157,44 +178,6 @@ class ControlView extends base {
      */
     _OnContextChanged(p_oldValue) {
 
-    }
-
-    //#endregion
-
-    //#region Commands
-
-    /**
-     * 
-     * @param {object} p_commandOptions 
-     * @param {*} [p_commandOptions.id]
-     * 
-     * @param {object} p_modalOptions 
-     * @param {class|object} p_modalOptions.content
-     * @param {function} [p_modalOptions.contentOptionsGetter]
-     * @param {boolean} [p_modalOptions.anchorToEmitter]
-     * @param {string} [p_modalOptions.placement]
-     * @param {object} [p_modalOptions.margins]
-     * 
-     * @returns {Command}
-     * 
-     */
-    _CmdModal(p_commandOptions, p_modalOptions) {
-
-        p_commandOptions.id = p_commandOptions.id || p_modalOptions.content || null;
-
-        let cmd = this._commands.Create(ui.commands.Modal, p_commandOptions);
-
-        p_modalOptions.contentOptionsGetter = p_modalOptions.contentOptionsGetter || this._defaultModalContentOptions;
-        p_modalOptions.anchorToEmitter = p_modalOptions.anchorToEmitter || true;
-        p_modalOptions.placement = p_modalOptions.placement || ui.ANCHORING.BOTTOM_LEFT;
-
-        cmd.options = p_modalOptions;
-
-        return cmd;
-    }
-
-    _CmdMenu(p_commandOptions, p_modalOptions) {
-        //TODO : same as modal ?
     }
 
     //#endregion
@@ -277,9 +260,11 @@ class ControlView extends base {
      * @group Presentation
      */
     _ResetMetaPresentation() {
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varname, `#000000`);
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, `0,0,0`);
-        this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, 0);
+        ui.dom.CSS(this, {
+            [META_IDS.P_PRES_COLOR.varname]: `#000000`,
+            [META_IDS.P_PRES_COLOR.varnameRGB]: `0,0,0`,
+            [META_IDS.P_PRES_WEIGHT.varname]: 0
+        });
     }
 
     /**
@@ -291,10 +276,11 @@ class ControlView extends base {
     _UpdateMetaPresentation() {
 
         let color = this._metadata.Get(META_IDS.P_PRES_COLOR.path, `#000000`);
-
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varname, color);
-        this.style.setProperty(META_IDS.P_PRES_COLOR.varnameRGB, style.colors.RGBA.HexToRGBString(color));
-        this.style.setProperty(META_IDS.P_PRES_WEIGHT.varname, this._metadata.Get(META_IDS.P_PRES_WEIGHT.path, 0));
+        ui.dom.CSS(this, {
+            [META_IDS.P_PRES_COLOR.varname]: color,
+            [META_IDS.P_PRES_COLOR.varnameRGB]: style.colors.RGBA.HexToRGBString(color),
+            [META_IDS.P_PRES_WEIGHT.varname]: this._metadata.Get(META_IDS.P_PRES_WEIGHT.path, 0)
+        });
     }
 
     //#endregion
@@ -303,18 +289,26 @@ class ControlView extends base {
      * @access protected
      * @description Registers & executes an action.
      * @param {constructor} p_actionClass Action class to be executed
-     * @param {object} p_operation Action' operation parameters
+     * @param {object} p_op Action' operation parameters
      * @group Actions
      */
-    _Do(p_actionClass, p_operation) {
-        actions.CommandAction.Do(this, p_actionClass, p_operation);
+    _Do(p_actionClass, p_op) {
+        actions.CommandAction.Do(this, p_actionClass, p_op);
     }
 
     _CleanUp() {
+
         if (this.constructor.__clearBuilderOnRelease) { this._builder.Clear(); }
+
+        this.data = null;
         this.context = null;
         this.editor = null;
+
         super._CleanUp();
+
+        this._forwardContext.Clear();
+        this._forwardEditor.Clear();
+
     }
 
 }

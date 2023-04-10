@@ -17,7 +17,7 @@ class IDS {
      * @customtag read-only
      * @order 1000
      */
-    static METAPREFIX = `META@`;
+    static METAPREFIX = Object.freeze(`META@`);
 
     /**
      * @description A property often expected to be found in a constructor `{@link common.NFOS|NFO}`.  
@@ -26,7 +26,7 @@ class IDS {
      * @customtag read-only
      * @order 1000
      */
-     static VER = `ver`;
+     static VER = Object.freeze(`ver`);
 
     /**
      * @description A property often expected to be found in a constructor `{@link common.NFOS|NFO}`.  
@@ -35,79 +35,79 @@ class IDS {
      * @customtag read-only
      * @order 1000
      */
-    static UID = `uid`;
+    static UID = Object.freeze(`uid`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static NAME = `name`;
+    static NAME = Object.freeze(`name`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static VALUE = `value`;
+    static VALUE = Object.freeze(`value`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static TITLE = `title`;
+    static TITLE = Object.freeze(`title`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static MESSAGE = `message`;
+    static MESSAGE = Object.freeze(`message`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static ICON = `icon`;
+    static ICON = Object.freeze(`icon`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static PATH = `path`;
+    static PATH = Object.freeze(`path`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static DATA = `data`;
+    static DATA = Object.freeze(`data`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static CMD_PRIMARY = `primaryCommand`;
+    static CMD_PRIMARY = Object.freeze(`primaryCommand`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static CMD_SECONDARY = `secondaryCommand`;
+    static CMD_SECONDARY = Object.freeze(`secondaryCommand`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static CMD_LIST = `commandList`;
+    static CMD_LIST = Object.freeze(`commandList`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static OWNER = `owner`;
+    static OWNER = Object.freeze(`owner`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static STATIC = `static`;
+    static STATIC = Object.freeze(`static`);
 
 }
 

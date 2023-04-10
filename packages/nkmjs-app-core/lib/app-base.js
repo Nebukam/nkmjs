@@ -20,12 +20,17 @@ const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 const data = require(`@nkmjs/data-core`);
 const dialog = require(`@nkmjs/dialog`);
+const documents = require(`@nkmjs/documents`);
 
 const APP_MESSAGES = require(`./app-messages`);
 const UserPreferences = require(`./helpers/user-preferences`);
 const GlobalOverlayHandler = require(`./global-overlay-handler`);
 const AppBody = require(`./app-body`);
 const UnsavedDocHandler = require(`./helpers/unsaved-doc-handler`);
+const FileExtBinder = require(`./helpers/file-ext-binder`);
+const AppSettings = require(`./app-settings`);
+
+const IDS = require(`./ids`);
 
 /**
  * @typedef LayerDefinition
@@ -46,6 +51,8 @@ const UnsavedDocHandler = require(`./helpers/unsaved-doc-handler`);
 
 */
 
+const ID_APP_SETTINGS = `appSettings`;
+
 class AppBase extends com.helpers.SingletonEx {
 
     constructor() { super(); }
@@ -61,11 +68,14 @@ class AppBase extends com.helpers.SingletonEx {
         this._Bind(this._InternalDisplayReadyCheck);
 
         this._APPID = `${this.constructor.name}`;
+        this._IOFlushFn = null;
 
         this._darkPaletteBuilder = null;
         this._lightPaletteBuilder = null;
 
         this._userPreferences = com.Rent(UserPreferences);
+        this._appSettingsType = AppSettings;
+
         this._defaultUserPreferences = {};
 
         this._appBodyClass = AppBody;
@@ -79,6 +89,8 @@ class AppBase extends com.helpers.SingletonEx {
         this._unsavedDocHandler = new UnsavedDocHandler(this);
 
         this._commands = new actions.CommandBox();
+
+        this._fileBindings = new FileExtBinder(this);
 
         this._ipcBindings = [
             { evt: APP_MESSAGES.NODE_MESSAGE, fn: this._Bind(this._onNodeMessage) },
@@ -95,6 +107,17 @@ class AppBase extends com.helpers.SingletonEx {
             ui.dom.Detach(this._loadingOverlay);
         }
 
+        if (window) {
+            //window.onerror = (message, file, line, col, error) => { return this._OnWindowError(error); };
+            //window.addEventListener("error", (e) => { return this._OnWindowError(e.error); });
+        }
+
+    }
+
+    _OnWindowError(p_err) {
+        nkm.u.LOG._(`An error occured.`, `#ffffff`, `#ff0000`);
+        console.error(p_err);
+        return false;
     }
 
     /**
@@ -119,6 +142,15 @@ class AppBase extends com.helpers.SingletonEx {
 
         if (env.features.isNodeEnabled) { this.__StartMonitoring(); }
 
+        this._appSettings = com.Rent(this._appSettingsType);
+        this._appSettings
+            .Watch(IDS.AUTOSAVE, (p_data, p_newValue, p_oldValue) => {
+                documents.ToggleAutoSave(p_newValue);
+            })
+            .Watch(IDS.AUTOSAVE_TIMER, (p_data, p_newValue, p_oldValue) => {
+                documents.ToggleAutoSave(this._appSettings.Get(IDS.AUTOSAVE), p_newValue * 1000 * 60);
+            });
+
     }
 
     __StartMonitoring() {
@@ -134,11 +166,6 @@ class AppBase extends com.helpers.SingletonEx {
      * @type {LayerContainer}
      */
     get body() { return this._appBody; }
-
-    /**
-     * @type {data.Metadata}
-     */
-    get userPreferences() { return this._userPreferences; }
 
     /**
      * Called once by the environment when the DOM
@@ -204,6 +231,14 @@ class AppBase extends com.helpers.SingletonEx {
 
     }
 
+    _RegisterDocDefinition(p_fileInfos, p_documentInfos, p_defaultEditor = null) {
+        return this._fileBindings.AddDefinition(
+            p_fileInfos,
+            p_documentInfos,
+            p_defaultEditor
+        );
+    }
+
     //#endregion
 
     //#region Start
@@ -229,7 +264,7 @@ class AppBase extends com.helpers.SingletonEx {
         this._userPreferences.Load(
             `${this._APPID}Preferences`,
             this._defaultUserPreferences,
-            this._Bind(this._InitUserPreferences),
+            this._Bind(this._InternalInitUserPreferences),
             this._Bind(this._OnAppReadyInternal)
         );
 
@@ -239,11 +274,40 @@ class AppBase extends com.helpers.SingletonEx {
 
     //#region Preferences
 
+    /**
+     * @type {data.Metadata}
+     */
+    get userPreferences() { return this._userPreferences; }
+
+    /**
+     * @type {AppSettings}
+     */
+    get appSettings() { return this._appSettings; }
+
+    _InternalInitUserPreferences(p_userPreferences) {
+        this._InitUserPreferences(p_userPreferences);
+
+        let existingSerial = p_userPreferences.Get(ID_APP_SETTINGS);
+        if (existingSerial) { nkm.data.serialization.JSONSerializer.Deserialize(existingSerial, this._appSettings) }
+
+        let json = nkm.data.serialization.JSONSerializer.Serialize(this._appSettings);
+        p_userPreferences.Set(ID_APP_SETTINGS, json);
+    }
+
     _InitUserPreferences(p_userPreferences) { }
 
-    _OnAppReadyInternal(p_data) {
+    _OnAppSettingsUpdated(p_data) {
+        let json = nkm.data.serialization.JSONSerializer.Serialize(this._appSettings);
+        this._userPreferences.Set(ID_APP_SETTINGS, json);
+    }
 
-        p_data.Watch(com.SIGNAL.UPDATED, this._OnPrefsUpdated, this);
+    _OnAppReadyInternal(p_prefsData) {
+        // Update app settings and then watch them
+        nkm.data.serialization.JSONSerializer.Deserialize(p_prefsData.Get(ID_APP_SETTINGS), this._appSettings);
+        console.log(p_prefsData);
+        this._appSettings.Watch(com.SIGNAL.UPDATED, this._OnAppSettingsUpdated, this);
+
+        p_prefsData.Watch(com.SIGNAL.UPDATED, this._OnPrefsUpdated, this);
         actions.RELAY.instance.Watch(actions.REQUEST.EDIT, this._OnEditRequest, this);
 
         // Load base kits... ?
@@ -258,6 +322,12 @@ class AppBase extends com.helpers.SingletonEx {
         u.LOG._(`${this._APPID} : READY`, `#030107`, `#339a6e`);
 
         this.AppReady();
+
+        // Process file editing requests
+        let argvs = [];
+        for (let n in nkm.env.ARGV) { argvs.push(n); }
+        this._fileBindings.Process(...argvs);
+
         this._InternalDisplayReadyCheck();
 
     }
@@ -268,11 +338,7 @@ class AppBase extends com.helpers.SingletonEx {
 
     //#endregion
 
-    AppReady(p_data) {
-
-
-
-    }
+    AppReady() { }
 
     /**
      * Checks if the app is ready to be displayed to the user
@@ -331,7 +397,13 @@ class AppBase extends com.helpers.SingletonEx {
     //#region Electron & Node
 
     _OnExternalCloseRequest() {
-        if (this._IsReadyToQuit()) { this.CloseWindow(); }
+        if (this._IsReadyToQuit()) {
+
+            //Flush temp resources
+            if (nkm.env.features._IOFlushFn) { nkm.env.features._IOFlushFn(); }
+
+            this.CloseWindow();
+        }
     }
 
     _IsReadyToQuit() {

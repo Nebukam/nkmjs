@@ -134,6 +134,8 @@ class POINTER extends com.helpers.SingletonEx {
      */
     static get POINTER() { return this.instance.mouse; }
 
+    static get position() { return this.instance._position; }
+
     /**
      * @description TODO
      * @param {Element} p_el 
@@ -163,7 +165,7 @@ class POINTER extends com.helpers.SingletonEx {
         this._using = [];
         this._usingDeprecated = [];
         this._position = { x: 0, y: 0 };
-        this._clearUsing = new com.time.DelayedCall(this._Bind(this._ClearUsing));
+        this._clearUsing = com.DelayedCall(this._Bind(this._ClearUsing));
 
         this._Bind(this._mExternalDragEnter);
         this._Bind(this._mExternalDragOver);
@@ -402,7 +404,7 @@ class POINTER extends com.helpers.SingletonEx {
 
         this.DRAG_DATA = null;
         this.EXTERNAL_DRAG = p_external;
-        
+
         this._dragMultiple = p_multiple;
 
         let dLength = -1;
@@ -423,7 +425,7 @@ class POINTER extends com.helpers.SingletonEx {
 
         this.DRAG_TARGET = p_target;
         this.instance.Broadcast(SIGNAL.DRAG_STARTED, p_data);
-        
+
     }
 
     /**

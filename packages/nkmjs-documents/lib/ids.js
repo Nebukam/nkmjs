@@ -16,31 +16,31 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
-    static TYPE_RSC = `resource`;
+    static TYPE_RSC = Object.freeze(`resource`);
 
     /**
      * @type {string}
      * @customtag read-only
      */
-    static ENCODING = `encoding`;
+    static ENCODING = Object.freeze(`encoding`);
 
     /**
     * @type {string}
     * @customtag read-only
     */
-    static SERIAL_CTX = `serializationContext`;
+    static SERIAL_CTX = Object.freeze(`serializationContext`);
 
     /**
     * @type {string}
     * @customtag read-only
     */
-    static TYPE_IO = `defaultIOType`;
+    static TYPE_IO = Object.freeze(`defaultIOType`);
 
     /**
     * @type {string}
     * @customtag read-only
     */
-     static DATA_BOUND = `dataBound`;
+    static DATA_BOUND = Object.freeze(`dataBound`);
 
 }
 

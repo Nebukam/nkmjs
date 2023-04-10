@@ -19,7 +19,7 @@ class AutosaveHandler {
         this.AutoSave = this.AutoSave.bind(this);
 
         this._delayedAdvance = com.DelayedCall(this.Advance);
-        this._delayedAutosave = new com.time.DelayedCall(this.AutoSave, 1000 * 600);
+        this._delayedAutosave = com.DelayedCall(this.AutoSave, 1000 * 600);
 
         this._isEnabled = false;
 

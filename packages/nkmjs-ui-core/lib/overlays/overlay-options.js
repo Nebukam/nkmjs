@@ -19,9 +19,9 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
     }
 
     static __distribute = com.helpers.OptionsDistribute.Ext()
-    .To(`overlayClass`, `_overlayClass`)
-    .To(`contentClass`, `_contentClass`)
-    .To(`origin`, `_origin`)
+        .To(`overlayClass`, `_overlayClass`)
+        .To(`contentClass`, `_contentClass`)
+        .To(`origin`, `_origin`)
 
     constructor() { super(); }
 
@@ -31,6 +31,7 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
     }
 
     _Reset() {
+        this._currentContent = null;
         this._overlayClass = null;
         this._contentClass = null;
         this._origin = null;
@@ -78,6 +79,9 @@ class OverlayOptions extends com.pool.DisposableObjectEx {
 
     get request() { return this._request; }
     set request(p_value) { this._request = p_value; }
+
+    get currentContent() { return this._currentContent; }
+    set currentContent(p_value) { this._currentContent = p_value; }
 
     /**
      * @description TODO

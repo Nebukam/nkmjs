@@ -73,8 +73,7 @@ class DialogBox extends base {
     }
 
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
-        if (p_options.grow) { this.style.removeProperty(`max-width`); }
-        else { this.style.setProperty(`max-width`, p_options.maxwidth || `500px`); }
+        ui.dom.CSS(this, `max-width`, p_options.grow ? null : p_options.maxwidth || `500px`);
     }
 
     set message(p_message) {

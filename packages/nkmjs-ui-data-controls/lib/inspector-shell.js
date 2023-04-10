@@ -49,11 +49,14 @@ class InspectorShell extends base {
             .Watch(com.SIGNAL.ITEM_BUMPED, this._OnItemBumped, this)
             .Watch(SIGNAL.SEL_LASTTYPE_CHANGED, this._OnLastTypeChanged, this)
             .Watch(SIGNAL.SEL_SHAREDTYPE_CHANGED, this._OnSharedTypeChanged, this)
-            .Watch(com.SIGNAL.UPDATED, this._OnSelectionUpdated, this);
+            .Watch(com.SIGNAL.UPDATED, this._OnSelectionUpdated, this)
+            .Watch(ui.SIGNAL.SEL_CLEARED, this._OnSelectionCleared, this);
 
         this._inspectionHandler
             .AddSingleContexts(CONTEXT.DEFAULT_INSPECTOR)
             .AddListContexts(CONTEXT.DEFAULT_LIST_INSPECTOR);
+
+        this.forwardEditor.To(this._inspectionHandler);
 
         this._inspectorPlaceholderClass = this.constructor.__placeholderViewClass;
         this._singleInspectorClass = null;
@@ -76,8 +79,6 @@ class InspectorShell extends base {
     }
 
     //#region Data
-
-    _OnEditorChanged(p_oldEditor) { this._inspectionHandler.editor = this._editor; }
 
     _OnLastTypeChanged(p_sel, p_newType, p_oldType) {
 
@@ -138,8 +139,6 @@ class InspectorShell extends base {
             inspectorClass = null;
         }
 
-
-
         if (!needUpdate) { return; }
 
         this._useListInspector = isListInspector;
@@ -194,6 +193,8 @@ class InspectorShell extends base {
 
     }
 
+    _OnSelectionCleared(p_sel) { this.Clear(); }
+
     //#endregion
 
     _Render() {
@@ -206,13 +207,35 @@ class InspectorShell extends base {
 
     //#region View
 
+    _OnContextChanged(p_oldValue) {
+        super._OnContextChanged(p_oldValue);
+        if (!this._context) { this.Clear(); }
+    }
+
+    Clear() {
+
+        if (this._inspector) {
+            this._builder.Remove(this._inspector);
+            this._inspector = null;
+        }
+
+        this._singleInspectorNeedUpdate = true;
+        this._listInspectorNeedUpdate = true;
+        this._useListInspector = false;
+
+        if (this._inspectorPlaceholder) {
+            this._inspectorPlaceholder.visible = true;
+        }
+
+    }
+
     _OnInspectorRequestDisplay() { this.RequestDisplay(); }
 
     //#endregion
 
     _CleanUp() {
         if (this._inspector) {
-            this._inspector.Release();
+            this._builder.Remove(this._inspector);
             this._inspector = null;
         }
 

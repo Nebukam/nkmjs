@@ -1,6 +1,7 @@
 
 const u = require("@nkmjs/utils");
 const actions = require("@nkmjs/actions");
+const path = require(`path`);
 
 const CMD_TYPE = require(`./cmd-type`);
 const CommandDocumentBase = require(`./cmd-document-base`);
@@ -21,7 +22,16 @@ class CommandDocumentLoad extends CommandDocumentBase {
         this._Bind(this._OnPicked);
         //this._Bind(this._OnReadError);
         this._Bind(this._OnReadSuccess);
+
+        this._bumpOnly = false;
+
     }
+
+    get bumpOnly() { return this._bumpOnly; }
+    set bumpOnly(p_value) { this._bumpOnly = p_value; }
+
+    get defaultDialogLocation() { return this._defaultDialogLocation; }
+    set defaultDialogLocation(p_value) { this._defaultDialogLocation = p_value; }
 
     _InternalExecute() {
 
@@ -30,11 +40,17 @@ class CommandDocumentLoad extends CommandDocumentBase {
 
             if (nkm.env.isNodeEnabled) {
 
-                actions.RELAY.ShowOpenDialog({
+                let dialogOptions = {
                     filters: [{ ...this._fileInfos }],
                     properties: ['openFile']
-                }, this._OnPicked);
-                
+                };
+
+                if (this._defaultDialogLocation) {
+                    dialogOptions.defaultPath = this._defaultDialogLocation.replaceAll(`/`, path.sep);
+                }
+
+                actions.RELAY.ShowOpenDialog(dialogOptions, this._OnPicked);
+
             } else {
                 this._Cancel();
             }
@@ -60,7 +76,7 @@ class CommandDocumentLoad extends CommandDocumentBase {
         this._docPath = p_filePath;
         let document = this._FindDoc();
 
-        if(document){
+        if (document) {
             console.log(`document already exists!`);
             this._doc.currentData.CommitUpdate();
             this._doc.currentData.ClearDirty();
@@ -73,6 +89,7 @@ class CommandDocumentLoad extends CommandDocumentBase {
         document.Load({
             success: this._OnReadSuccess,
             error: this._Fail,
+            bumpOnly:this._bumpOnly
         });
 
     }

@@ -2,6 +2,7 @@
 
 const com = require("@nkmjs/common");
 const ui = require("@nkmjs/ui-core");
+const data = require(`@nkmjs/data-core`);
 
 const items = require(`./items`);
 const CONTEXT = require(`../context`);
@@ -21,15 +22,15 @@ class FieldGroupInspector extends base {
         super._PostInit();
         this._inputHandler.Build([
             {
-                member: `title`, cl: com.BINDINGS.Get(ui.CONTEXT.STANDALONE_INPUT, ui.inputs.KEYS.STRING),
+                member: `title`, cl: ui.inputs.GetInput(data.TYPES.TEXT_INLINE),
                 onSubmit: { fn: (p_input, p_newValue) => { this._data.title = p_newValue; } }
             },
             {
-                member: `comment`, cl: com.BINDINGS.Get(ui.CONTEXT.STANDALONE_INPUT, ui.inputs.KEYS.STRING_TEXT),
+                member: `comment`, cl: ui.inputs.GetInput(data.TYPES.TEXT),
                 onSubmit: { fn: (p_input, p_newValue) => { this._data.comment = p_newValue; } }
             },
             {
-                member: `order`, cl: com.BINDINGS.Get(ui.CONTEXT.STANDALONE_INPUT, ui.inputs.KEYS.NUMBER),
+                member: `order`, cl: ui.inputs.GetInput(data.TYPES.NUMBER),
                 onSubmit: { fn: (p_input, p_newValue) => { this._data.order = p_newValue; } }
             },
         ]);

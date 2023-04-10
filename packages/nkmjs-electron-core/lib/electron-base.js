@@ -1,4 +1,4 @@
-const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, dialog } = require(`electron`);
+const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, dialog, protocol } = require(`electron`);
 
 const path = require(`path`);
 const url = require(`url`);
@@ -73,7 +73,6 @@ class ElectronBase {
 
 
         //app.commandLine.appendSwitch('js-flags', '--max-old-space-size=4096'); //Increase available memory
-        app.allowRendererProcessReuse = false;
 
         app.on('second-instance', this._Bind(this._OnSecondInstance));
 
@@ -92,7 +91,7 @@ class ElectronBase {
         ipcMain.on(APP_MESSAGES.DO_RELOAD_APP, this._OnRequestReload);
         ipcMain.on(APP_MESSAGES.OPEN_DIALOG, this._OnRequestDialog);
 
-        
+
 
     }
 
@@ -122,6 +121,11 @@ class ElectronBase {
     get mainWindow() { return this._mainWindow; }
 
     _CreateMainWindow() {
+
+        protocol.registerFileProtocol('file', (request, callback) => {
+            let pathname = decodeURI(request.url.replace('file:///', ''));
+            callback(pathname);
+        });
 
         // Create main window
         console.log(`Create main window`);
@@ -166,7 +170,7 @@ class ElectronBase {
             globalShortcut.register(`CommandOrControl+R`, this._OnRequestReload);
         }
 
-        if(this._openPathRequest){
+        if (this._openPathRequest) {
             this._OnSystemRequestOpenFile(null, this._openPathRequest);
         }
         // this._Boot();        
@@ -178,6 +182,9 @@ class ElectronBase {
      * @description TODO
      */
     _Boot() {
+
+        if (this._booted) { return; }
+        this._booted = true;
 
         console.log(`Boot app`);
 
@@ -198,6 +205,7 @@ class ElectronBase {
             (new nkmElectron.core.IPCElectron()).Deploy();
 
             ENV.instance.Start({
+                appName:'${(this._constants.appName || 'nkmjs-app')}',
                 paths:{
                     exe:'${u.tils.FixSlash(app.getPath('exe'))}',
                     '${u.PATH.APP}':'${u.tils.FixSlash(app.getAppPath())}',
@@ -227,6 +235,7 @@ class ElectronBase {
 
     _OnRequestReload() {
         console.log(`RELOAD_REQUEST`);
+        this._booted = false;
         this._mainWindow.reload();
         this._mainWindow.webContents.session.clearCache();
     }
@@ -300,13 +309,13 @@ class ElectronBase {
     _SendWarning(p_content) { this._mainWindow.webContents.send(APP_MESSAGES.WARNING, p_content); }
     _SendMessage(p_content) { this._mainWindow.webContents.send(APP_MESSAGES.MESSAGE, p_content); }
 
-    _OnSystemRequestOpenFile(p_evt, p_path){
-        if(!this._mainWindow){
+    _OnSystemRequestOpenFile(p_evt, p_path) {
+        if (!this._mainWindow) {
             this._openPathRequest = p_path;
             return;
         }
 
-        this._mainWindow.webContents.send(APP_MESSAGES.OPEN_FILE, { path:p_path });
+        this._mainWindow.webContents.send(APP_MESSAGES.OPEN_FILE, { path: p_path });
     }
 
     // ----> Dialog callbacks

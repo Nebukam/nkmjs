@@ -42,22 +42,13 @@ class Tag extends base {
     get flavor() { return this._flavorEnum.currentFlag; }
     set flavor(p_value) { this._flavorEnum.Set(p_value); }
 
-    set bgColor(p_value) {
-        if (!p_value) { this.style.removeProperty(`background-color`); }
-        else { this.style.setProperty(`background-color`, p_value); }
-    }
+    set bgColor(p_value) { ui.dom.CSS(this, 'background-color', p_value ? p_value : null); }
 
-    set textColor(p_value) {
-        if (!p_value) { this._label._element.style.removeProperty(`color`); }
-        else { this._label._element.style.setProperty(`color`, p_value); }
-    }
+    set textColor(p_value) { ui.dom.CSS(this, 'color', p_value ? p_value : null); }
 
     set maxWidth(p_value) {
-        if (!p_value) { this._label._element.style.removeProperty(`max-width`); }
-        else {
-            this._label._element.style.setProperty(`max-width`, p_value);
-            this._label.ellipsis = true;
-        }
+        if (p_value) { this._label.ellipsis = true; }
+        ui.dom.CSS(this, 'max-width', p_value ? p_value : null);
     }
 
     // ----> DOM

@@ -31,7 +31,7 @@ class PATH {
     static MUSIC = '%MUSIC%';
     static STYLE = '%STYLE%';
 
-    static SYSTEM_MAP = [
+    static __systemPaths = [
         this.APP_DATA,
         this.USER_DATA,
         this.HOME,
@@ -46,7 +46,7 @@ class PATH {
         this.STYLE,
     ];
 
-    static MAP = {};
+    static __pathMap = {};
 
     /**
      * @description Registers a shortcut/path pair to PATH.
@@ -55,19 +55,26 @@ class PATH {
      * @order 1
      */
     static SET(p_envShortcut, p_path) {
-        if (this.SYSTEM_MAP.includes(p_envShortcut) && this.MAP.hasOwnProperty(p_envShortcut)) {
+
+        if (this.__systemPaths.includes(p_envShortcut) && this.__pathMap.hasOwnProperty(p_envShortcut)) {
             throw new Error(`Cannot override system path (${p_envShortcut})`);
         }
 
         if (p_envShortcut.length < 3
-            || p_envShortcut.substr(0, 1) != '%'
-            || p_envShortcut.substr(p_envShortcut.length - 1, 1) != '%') {
-            //console.warn(`Did not register PATH shorthand "${p_envShortcut}" since it doesn't match the pattern %S%`);
-            return;
+            || !p_envShortcut.startsWith('%')
+            || !p_envShortcut.endsWith('%')
+            || p_envShortcut.split('%').length > 3) {
+            console.log(`Cannot create path shortcut (${`Did not register PATH shorthand "${p_envShortcut}" since it doesn't match the pattern %S%`})`);
+            return null;
         }
 
-        this.MAP[p_envShortcut] = p_path;
+        p_path = this.Sanitize(p_path);
+
+        this.__pathMap[p_envShortcut] = p_path;
         LOG._(`⮥ ${p_envShortcut} ⮧ ${p_path}`, `#7f7f7f`);
+
+        return p_envShortcut;
+
     }
 
     /**
@@ -75,9 +82,7 @@ class PATH {
      * @param {string} p_envShortcut 
      * @order 1
      */
-    static UNSET(p_envShortcut) {
-        delete this.MAP[p_envShortcut];
-    }
+    static UNSET(p_envShortcut) { delete this.__pathMap[p_envShortcut]; }
 
     /**
      * @description Replaces ``\`` with `/`
@@ -85,7 +90,8 @@ class PATH {
      * @returns {string} Sanitized string
      */
     static Sanitize(p_string) {
-        return p_string.split('\\').join('/');
+        if (!p_string) { return ``; }
+        return p_string.replaceAll('\\', '/');
     }
 
     /**
@@ -97,9 +103,8 @@ class PATH {
      * @example PATH.SHORT('./style/default/global.css') == '%STYLE%/global.css'
      */
     static SHORT(p_path) {
-        if (!p_path) { return p_path; }
         p_path = this.Sanitize(p_path);
-        for (let n in this.MAP) { if (this.MAP[n] === ``) { continue; } p_path = p_path.replace(this.MAP[n], n); }
+        for (let id in this.__pathMap) { p_path = p_path.replaceAll(this.__pathMap[id], id); }
         return p_path;
     }
 
@@ -112,9 +117,9 @@ class PATH {
      * @example PATH.FULL('%STYLE%/global.css'); == './style/default/global.css'
      */
     static FULL(p_path) {
-        if (!p_path) { return p_path; }
-        for (let n in this.MAP) { p_path = p_path.replace(n, this.MAP[n]); }
-        return this.Sanitize(p_path);
+        p_path = this.Sanitize(p_path);
+        for (let id in this.__pathMap) { p_path = p_path.replaceAll(id, this.__pathMap[id]); }
+        return p_path;
     }
 
     /**
@@ -137,7 +142,7 @@ class PATH {
      * @example PATH.name('./style/default/global/')  === 'global'
      */
     static name(p_path) {
-        let splitBase = p_path.split('/');
+        let splitBase = this.Sanitize(p_path).split('/');
         if (splitBase.length <= 1) { return this.stripExt(p_path); }
         let splitEnd = splitBase.pop();
         while (splitEnd === `` && splitBase.length >= 1) { splitEnd = splitBase.pop(); }
@@ -185,9 +190,9 @@ class PATH {
      */
     static get extras() {
         let extras = {};
-        for (let n in this.MAP) {
-            if (!this.SYSTEM_MAP.includes(n)) {
-                extras[n] = this.MAP[n];
+        for (let id in this.__pathMap) {
+            if (!this.__systemPaths.includes(id)) {
+                extras[id] = this.__pathMap[id];
             }
         }
         return extras;

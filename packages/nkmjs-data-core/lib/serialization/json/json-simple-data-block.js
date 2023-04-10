@@ -1,6 +1,9 @@
 'use strict';
 
+const u = require(`@nkmjs/utils`);
+
 const CONTEXT = require(`../context`);
+const IDS = require(`./../../ids`);
 
 const DataBlockJSONSerializer = require(`./json-data-block`);
 
@@ -40,11 +43,63 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      * @returns 
      */
     static SerializeContent(p_serial, p_data, p_options = null) {
-        let valuesOnly = {};
-        for (var p in p_data._values) {
-            valuesOnly[p] = p_data._values[p].value;
+
+        let definitions = p_data.DEFINITIONS;
+        for (var id in definitions) {
+            let def = definitions[id];
+            if (def[IDS.SKIP_SERIALIZATION]) { continue; }
+            p_serial[id] = p_data._values[id];
         }
-        p_serial[CONTEXT.JSON.DATA_KEY] = p_data._values;
+
+        // BLOCS
+
+        let blocHeaders = p_data.BLOCS;
+        if (blocHeaders) {
+
+            let blocsSerial = {};
+
+            for (var id in blocHeaders) {
+
+                let blocInfos = blocHeaders[id];
+
+                if (blocInfos[IDS.SKIP_SERIALIZATION]) { continue; }
+                blocsSerial[id] = this.__master.Serialize(p_data[blocInfos.member || `_${id}`], p_options);
+
+            }
+
+            p_serial[IDS.BLOCS] = blocsSerial;
+
+        }
+
+        // DATALISTS
+
+        let dataLists = p_data.DATALISTS;
+        if (dataLists) {
+
+            let listsSerial = {};
+
+            for (var id in dataLists) {
+
+                let dataListHeader = dataLists[id];
+
+                if (dataListHeader[IDS.SKIP_SERIALIZATION]) { continue; }
+
+                let
+                    dataList = p_data[dataListHeader.member || `_${id}`],
+                    contents = [];
+
+                for (let i = 0, n = dataList.count; i < n; i++) {
+                    contents.push(this.__master.Serialize(dataList.At(i), p_options));
+                }
+
+                listsSerial[id] = contents;
+
+            };
+
+            p_serial[IDS.DATALISTS] = listsSerial;
+
+        }
+
     }
 
     /**
@@ -54,9 +109,68 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      * @returns 
      */
     static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
-        // Need specific implementation.
-        p_data.BatchSet((p_serial[CONTEXT.JSON.DATA_KEY] || {}));
+
+        let
+            blocHeaders = p_data.BLOCS,
+            blocsSerial = p_serial[IDS.BLOCS];
+
+        if (blocHeaders && blocsSerial) {
+
+            if (blocsSerial) {
+
+                for (var id in blocsSerial) {
+
+                    let blocInfos = blocHeaders[id];
+                    if (!blocInfos || blocInfos[IDS.SKIP_SERIALIZATION]) { continue; }
+
+                    let
+                        blocData = p_data[blocInfos.member || `_${id}`],
+                        blocSerial = blocSerial[id];
+
+                    this.__master.Deserialize(blocSerial, blocData, p_options);
+
+                }
+
+            }
+
+        }
+
+        // DATALISTS
+
+        let dataLists = p_data.DATALISTS,
+            listsSerial = p_serial[IDS.DATALISTS];
+
+        if (dataLists && listsSerial) {
+            for (var id in dataLists) {
+
+                let dataListHeader = dataLists[id];
+
+                if (dataListHeader[IDS.SKIP_SERIALIZATION]) { continue; }
+
+                let
+                    dataList = p_data[dataListHeader.member || `_${id}`],
+                    contents = listsSerial[id];
+
+                if (!contents) { continue; }
+
+                let callPushFn = dataListHeader.pushFn ? p_data[dataListHeader.pushFn] : null;
+
+                contents.forEach(itemSerial => {
+                    let item = this.__master.Deserialize(itemSerial, null, p_options);
+                    if (callPushFn) { u.Call(callPushFn, dataListHeader, item); }
+                    else { dataList.Add(item); }
+                });
+
+            };
+        }
+
+        if (p_serial) { p_data.BatchSet(p_serial); }
+
+        return p_data;
+
     }
+
+
 
 }
 

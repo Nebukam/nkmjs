@@ -65,21 +65,21 @@ class InputAnchor extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                '@':[`fade-in`],
+                '@': [`fade-in`],
                 position: `relative`,
-                display:`flex`,
-                'justify-content':`center`,
-                'align-content':`center`,
+                display: `flex`,
+                'justify-content': `center`,
+                'align-content': `center`,
             },
-            '.grid':{
-                position:'relative',
-                flex:`0 0 auto`,
+            '.grid': {
+                position: 'relative',
+                flex: `0 0 auto`,
                 display: `grid`,
                 'grid-template-columns': 'repeat(3, calc(var(--size) / 3))',
                 'grid-template-rows': 'repeat(3, calc(var(--size) / 3))',
             },
             '.anch': {
-                position:'relative',
+                position: 'relative',
                 flex: `1 1 auto`,
             }
         }, base._Style());
@@ -91,8 +91,8 @@ class InputAnchor extends base {
         this._slots = [];
 
         let
-         aList = this.constructor.ANCHORS,
-         ctnr = ui.El(`div`, {class:`grid`}, this._host);
+            aList = this.constructor.ANCHORS,
+            ctnr = ui.El(`div`, { class: `grid` }, this._host);
 
         aList.forEach(element => {
             let slot = ui.El(`div`, { class: `anch` }, ctnr);
@@ -121,12 +121,8 @@ class InputAnchor extends base {
         let inputValue = this._handler.inputValue;
         this._val = null;
         this._slots.forEach((slot, i) => {
-            if (inputValue == i) {
-                slot.classList.add(`selected`);
-                this._val = i;
-            } else {
-                slot.classList.remove(`selected`);
-            }
+            if (inputValue == i) { this._val = i; }
+            ui.dom.CSSClass(slot, `selected`, inputValue == i);
         });
     }
 

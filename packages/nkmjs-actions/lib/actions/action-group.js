@@ -45,20 +45,20 @@ class ActionGroup extends Action {
 
     /**
      * @description TODO
-     * @param {object} p_operation 
+     * @param {object} p_op 
      * @param {boolean} p_merge 
      */
-    Do(p_operation, p_merge = false) {
+    Do(p_op, p_merge = false) {
         //Do nothing
     }
 
     /**
      * @access protected
      * @description TODO
-     * @param {object} p_operation 
+     * @param {object} p_op 
      * @param {boolean} p_merge 
      */
-    _InternalDo(p_operation, p_merge = false) {
+    _InternalDo(p_op, p_merge = false) {
         //Do nothing
     }
 
@@ -79,6 +79,7 @@ class ActionGroup extends Action {
      */
     _InternalRedo() {
         let list = this._actions;
+
         for (let i = 0, n = list.length; i < n; i++) {
             list[i].Redo();
         }

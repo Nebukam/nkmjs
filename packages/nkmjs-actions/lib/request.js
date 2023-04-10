@@ -112,6 +112,7 @@ class Request extends com.helpers.OptionsObject {
      */
     _Fail(p_reason) {
         this._failReason = p_reason ? p_reason : `undocumented`;
+        console.warn(`Request failed :: ${this._failReason}`);
         if (this._onFail) {
             this._onFail.call(this._emitter, this);
         }

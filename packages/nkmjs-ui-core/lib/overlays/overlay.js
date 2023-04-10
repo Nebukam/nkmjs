@@ -101,7 +101,7 @@ class Overlay extends base {
     set contentPlacement(p_value) {
 
         if (this._contentPlacement) {
-            this.classList.remove(`content-${this._contentPlacement}`);
+            dom.CSSClass(this, `content-${this._contentPlacement}`, false);
         }
 
         let simplified = FLAGS.SimplifyPlacement(
@@ -110,8 +110,10 @@ class Overlay extends base {
 
         if (simplified) {
             this._contentPlacement = simplified;
-            this.classList.add(`content-${this._contentPlacement}`);
+            dom.CSSClass(this, `content-${this._contentPlacement}`);
         }
+
+
 
         if (`placement` in this._content) {
             this._content.placement = simplified;
@@ -142,8 +144,10 @@ class Overlay extends base {
         super._OnDataChanged(p_oldData);
 
         if (this._content) {
-            this._content.classList.remove(FLAGS.SHOWN);
-            this._content.style.removeProperty(`transform`);
+
+            dom.CSSClass(this._content, FLAGS.SHOWN, false);
+            dom.CSS(this._content, `transform`, null);
+
             if (this._content._flags) { this._content._flags.Set(FLAGS.SHOWN, false); }
             this._content.Release();
             this._content = null;
@@ -164,8 +168,10 @@ class Overlay extends base {
         }
 
         this._content = this.Attach(contentClass, 'content');
-        this._content.classList.add(FLAGS.SHOWN);
-        this._content.style.setProperty(`transform`, `translateX(0%)`);
+        this._data.currentContent = this._content;
+
+        dom.CSSClass(this._content, FLAGS.SHOWN);
+        dom.CSS(this._content, `transform`, `translateX(0%)`);
 
         if (this._content._flags) { this._content._flags.Set(FLAGS.SHOWN, true); }
         this._content.data = contentData;
@@ -224,8 +230,8 @@ class Overlay extends base {
 
     _OnDisplayGain() {
         super._OnDisplayGain();
-        this.style.setProperty(`transform`, `translateX(0%)`);
-        this._bg.style.setProperty(`transform`, `translateY(0%)`);
+        dom.CSS(this, `transform`, `translateX(0%)`);
+        dom.CSS(this._bg, `transform`, `translateY(0%)`);
     }
 
     /**
@@ -238,8 +244,8 @@ class Overlay extends base {
     }
 
     _CleanUp() {
-        this.style.removeProperty(`transform`);
-        this._bg.style.removeProperty(`transform`);
+        dom.CSS(this, 'transform');
+        dom.CSS(this._bg, 'transform');
         super._CleanUp();
     }
 

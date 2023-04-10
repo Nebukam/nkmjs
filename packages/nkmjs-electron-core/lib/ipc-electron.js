@@ -41,13 +41,13 @@ class IPCElectron {
     }
 
     _externalCloseRequest(p_evt) {
-        nkm.env.APP._OnExternalCloseRequest();
+        nkm.main._OnExternalCloseRequest();
     }
 
     _externalOpenFile(p_evt, p_data) {
         if (!p_data) { return; }
         if (!p_data.path) { return; }
-        nkm.env.APP._OnOpenPathRequest(p_data.path);
+        nkm.main._OnOpenPathRequest(p_data.path);
     }
 
 }

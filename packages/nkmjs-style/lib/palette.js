@@ -364,7 +364,7 @@ class Palette extends com.pool.DisposableObject {
      * @param {*} p_str 
      */
     _ReplaceVars(p_str) {
-        for (let name in this._variables) { p_str = p_str.replace(name, this._variables[name]); }
+        for (let name in this._variables) { p_str = p_str.replaceAll(name, this._variables[name]); }
         return p_str;
     }
 

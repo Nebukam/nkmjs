@@ -25,6 +25,8 @@ class DOCUMENTS extends com.helpers.SingletonEx {
     _Init() {
         super._Init();
 
+        this._definitions = [];
+
         this._dataMap = new collections.DictionaryList();
         this._rscMap = new collections.DictionaryList();
         this._defaultCommands = new collections.KDictionary();

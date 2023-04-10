@@ -36,10 +36,12 @@ class FSIOReader extends nkm.io.IOProcess {
     }
 
     _OnPathRead(p_err, p_data) {
+        
         if (p_err) { return this._OnError(p_err); }
         this._OnProgress(1);
         this.rsc.raw = p_data; //if dir, p_data = file list
         this._OnSuccess();
+        
     }
 
     _CleanUp() {

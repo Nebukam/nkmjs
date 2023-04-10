@@ -18,7 +18,9 @@ const base = ResourceWatcher;
  * path/to/something
  */
 class TempResourceWatcher extends base {
-    constructor() { super(); }
+    constructor() { super(); this.constructor.__repository.push(this); }
+
+    static __repository = [];
 
     static __distribute = base.__distribute.Ext()
         .To(`rscOptions`);
@@ -51,43 +53,23 @@ class TempResourceWatcher extends base {
         }
     }
 
-    Enable() {
-        if (this._enabled) { return; }
-        super.Enable();
-    }
+    //Enable() { if (this._enabled) { return; } super.Enable(); }
 
-    Disable() {
-        if (!this._enabled) { return; }
-        super.Disable();
-    }
+    //Disable() { if (!this._enabled) { return; } super.Disable(); }
 
-    _OnWatcherError() {
-        super._OnWatcherError();
-    }
+    //_OnWatcherError() { super._OnWatcherError(); }
 
-    _OnWatcherReady() {
-        super._OnWatcherReady();
-    }
+    //_OnWatcherReady() { super._OnWatcherReady(); }
 
-    _OnFileAdded(p_path) {
-        super._OnFileAdded(p_path);
-    }
+    //_OnFileAdded(p_path) { super._OnFileAdded(p_path); }
 
-    _OnFileChange(p_path) {
-        super._OnFileChange(p_path);
-    }
+    //_OnFileChange(p_path) { super._OnFileChange(p_path); }
 
-    _OnFileDeleted(p_path) {
-        super._OnFileDeleted(p_path);
-    }
+    //_OnFileDeleted(p_path) { super._OnFileDeleted(p_path); }
 
-    _OnDirectoryAdded(p_path) {
-        super._OnDirectoryAdded(p_path);
-    }
+    //_OnDirectoryAdded(p_path) { super._OnDirectoryAdded(p_path); }
 
-    _OnDirectoryDeleted(p_path) {
-        super._OnDirectoryDeleted(p_path);
-    }
+    //_OnDirectoryDeleted(p_path) { super._OnDirectoryDeleted(p_path); }
 
     _CleanUp() {
         this.Flush();

@@ -8,15 +8,12 @@ const dom = require(`./utils-dom`);
 const UI = require(`./ui.js`);
 const FLAGS = require('./flags');
 const SIGNAL = require('./signal');
+const IDS = require(`./ids`);
 
 const WidgetOrientable = require(`./widget-orientable`);
 const WidgetButton = require(`./widget-button`);
 const FlagEnum = require('./helpers/flag-enum');
 const InputBase = require(`./inputs/input-base`);
-
-const _flag_STRETCH = `stretch`;
-const _flag_STRETCH_SAME = `stretch-same`;
-const _flag_STRETCH_SQUEEZE = `stretch-squeeze`;
 
 const base = WidgetOrientable;
 
@@ -34,20 +31,14 @@ class WidgetBar extends base {
         css: [`@/widgets/widget-bar.css`]
     }, base, ['css']);
 
-    static get FLAG_STRETCH() { return _flag_STRETCH; }
-    static get FLAG_STRETCH_SAME() { return _flag_STRETCH_SAME; }
-    static get FLAG_STRETCH_SQUEEZE(){ return _flag_STRETCH_SQUEEZE; }
-    
-    static __stretchENUMs = [_flag_STRETCH, _flag_STRETCH_SAME, _flag_STRETCH_SQUEEZE];
-
     // ----> Init
 
     static __defaultSize = FLAGS.SIZE_M;
     static __defaultWidgetClass = WidgetButton;
     static __distribute = com.helpers.OptionsDistribute.Ext()
-        .To(`size`, null, null, `__defaultSize`)
-        .To(`order`)
-        .To(`inline`)
+        .To(IDS.SIZE, null, null, `__defaultSize`)
+        .To(IDS.ORDER)
+        .To(FLAGS.INLINE)
         .To(`stretch`)
         .To(`defaultWidgetClass`, `_defaultWidgetClass`)
         .To(`defaultWidgetOptions`)
@@ -66,11 +57,9 @@ class WidgetBar extends base {
         this._groups = {};
         this._radioMap = {};
 
-        this._flags.Add(this,
-            WidgetBar.FLAG_STRETCH,
-            WidgetBar.FLAG_STRETCH_SAME);
+        this._flags.Add(this, FLAGS.STRETCH, FLAGS.STRETCH_SAME);
 
-        this._stretchEnum = new FlagEnum(this.constructor.__stretchENUMs, true);
+        this._stretchEnum = new FlagEnum(FLAGS.stretches, true);
         this._stretchEnum.Add(this);
 
         this._sizeEnum = new FlagEnum(FLAGS.sizes, true);
@@ -108,10 +97,7 @@ class WidgetBar extends base {
      */
     set inline(p_value) {
         this._inline = p_value;
-        for (let i = 0, n = this._handles.length; i < n; i++) {
-            if (p_value) { this._handles[i].classList.add(`inline`); }
-            else { this._handles[i].classList.remove(`inline`); }
-        }
+        dom.CSSClass(this._handles, FLAGS.INLINE, p_value);
     }
 
     /**
@@ -137,7 +123,7 @@ class WidgetBar extends base {
             ':host(.vertical)': { 'flex-flow': `column nowrap` },
             ':host(.horizontal)': { 'flex-flow': `row nowrap` },
 
-            '.group': {
+            [`.${IDS.GROUP}`]: {
                 'position': `relative`,
                 'flex': `0 0 auto`,
 
@@ -146,30 +132,29 @@ class WidgetBar extends base {
                 'align-items': `center`
             },
 
-            '.item': {
+            [`.${IDS.ITEM}`]: {
                 'position': `relative`,
                 'flex': `0 0 auto`,
                 'min-width': '0',
                 'min-height': '0',
             },
-            ':host(.stretch) .group': {
+            [`:host(.${FLAGS.STRETCH}) .${IDS.GROUP}`]: {
                 'flex': `1 0 auto`,
             },
-            ':host(.stretch) .item': {
+            [`:host(.${FLAGS.STRETCH}) .${IDS.ITEM}`]: {
                 'flex': `1 0 auto`,
             },
 
-            ':host(.stretch-squeeze) .group': {
+            [`:host(.${FLAGS.STRETCH_SQUEEZE}) .${IDS.GROUP}`]: {
                 'flex': `1 1 auto`,
             },
-            ':host(.stretch-squeeze) .item': {
+            [`:host(.${FLAGS.STRETCH_SQUEEZE}) .${IDS.ITEM}`]: {
                 'flex': `1 1 auto`,
             },
-
-            ':host(.vertical.stretch) .item': {
+            [`:host(.vertical.${FLAGS.STRETCH}) .${IDS.ITEM}`]: {
                 'max-height': `100% !important`,
             },
-            ':host(.horizontal.stretch) .item': {
+            [`:host(.horizontal.${FLAGS.STRETCH}) .${IDS.ITEM}`]: {
                 'max-width': `100% !important`,
             }
         };
@@ -184,7 +169,7 @@ class WidgetBar extends base {
     }
 
     _OnSizeChanged(p_newValue, p_oldValue) {
-        this._sizeEnum.Apply(`size`, this._handles);
+        this._sizeEnum.Apply(IDS.SIZE, this._handles);
     }
 
     // ----> Handle management
@@ -212,13 +197,13 @@ class WidgetBar extends base {
 
         let cl = (p_class || (p_options ? p_options.cl : null) || this._defaultWidgetClass),
             handle,
-            group = u.tils.Get(p_options, `group`, null),
+            group = u.tils.Get(p_options, IDS.GROUP, null),
             radio = group ? u.tils.Get(p_options, `radio`, null) : null;
 
         if (group) {
 
             group = this.GetGroup(group, true);
-            handle = this.Attach(cl, `item`, group.element);
+            handle = this.Attach(cl, IDS.ITEM, group.element);
             group.handles.push(handle);
 
             if (radio) {
@@ -228,10 +213,10 @@ class WidgetBar extends base {
             }
 
         } else {
-            handle = this.Attach(cl, `item`);
+            handle = this.Attach(cl, IDS.ITEM);
         }
 
-        if (this._inline) { handle.classList.add(`inline`); }
+        dom.CSSClass(handle, FLAGS.INLINE, this._inline);
 
         this._optionsMap.get(handle, p_options);
 
@@ -294,7 +279,7 @@ class WidgetBar extends base {
 
         handle.flags.Set(this._orientation, true);
 
-        if (`size` in handle) { handle.size = this._sizeEnum.currentFlag; }
+        if (IDS.SIZE in handle) { handle.size = this._sizeEnum.currentFlag; }
         if (`placement` in handle) { handle.placement = this._placement.currentFlag; }
 
         this._handles.push(handle);
@@ -329,7 +314,7 @@ class WidgetBar extends base {
         if (!p_create) { return null; }
 
         let group = {
-            element: dom.El(`span`, { class: `group` }, this),
+            element: dom.El(`span`, { class: IDS.GROUP }, this),
             handles: []
         };
 
@@ -389,7 +374,7 @@ class WidgetBar extends base {
     _OnHandleReleased(p_handle) {
 
         let options = this._optionsMap.get(p_handle),
-            groupId = u.tils.Get(options, `group`, null);
+            groupId = u.tils.Get(options, IDS.GROUP, null);
 
         if (groupId) {
 
@@ -406,7 +391,7 @@ class WidgetBar extends base {
 
         }
 
-        p_handle.classList.remove(`item`);
+        dom.CSSClass(p_handle, IDS.ITEM, false);
         this._optionsMap.delete(p_handle);
 
         // TODO : Check if radio & remove

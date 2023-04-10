@@ -28,7 +28,7 @@ class UserPreferences extends com.pool.DisposableObjectEx {
         this._Bind(this._OnDocumentSaveSuccess);
         this._Bind(this._OnDocumentSaveError);
 
-        this._delayedSave = new com.time.DelayedCall(this._Bind(this.Save));
+        this._delayedSave = com.DelayedCall(this._Bind(this.Save));
 
     }
 
@@ -58,7 +58,6 @@ class UserPreferences extends com.pool.DisposableObjectEx {
             success: this._OnDocumentLoadSuccess,
             error: this._OnDocumentLoadError
         });
-
     }
 
     _OnDocumentLoadSuccess() {
@@ -89,8 +88,8 @@ class UserPreferences extends com.pool.DisposableObjectEx {
     }
 
     _OnDocumentSaveSuccess() {
-        u.LOG._(`PREFS >> Saved`, `#c862e3`);
         this._Then();
+        u.LOG._(`PREFS >> Saved`, `#c862e3`);
     }
 
     // Definitely something wrong going on.

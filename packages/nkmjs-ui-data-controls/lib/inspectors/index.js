@@ -6,6 +6,7 @@ module.exports = {
 
     DataBlock: require(`./inspector-data-block`),
     DataBlockExtendable: require(`./inspector-data-block-extendable`),
+
     FieldSlot: require(`./inspector-field-slot`),
     FieldGroup: require(`./inspector-field-group`),
     DataModel: require(`./inspector-data-model`),

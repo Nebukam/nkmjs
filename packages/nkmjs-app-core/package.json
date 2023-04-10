@@ -29,6 +29,7 @@
     "@nkmjs/ui-core": "^0.3.14",
     "@nkmjs/ui-library": "^0.3.15",
     "@nkmjs/ui-workspace": "^0.3.15",
+    "@nkmjs/ui-data-controls": "^0.3.14",
     "@nkmjs/utils": "^0.0.40"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"

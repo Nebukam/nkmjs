@@ -21,8 +21,10 @@ class AppBody extends base {
 
         com.time.TIME.Watch(com.SIGNAL.TICK, this._OnTick, this);
 
-        this.style.setProperty(`--screen-width`, this._screenWidt);
-        this.style.setProperty(`--screen-height`, this._screenHeight);
+        ui.dom.CSS(this, {
+            [`--screen-width`]: this._screenWidth,
+            [`--screen-height`]: this._screenWidth,
+        });
 
         this._layerConfigs = null;
         this._overlayHandler = null;
@@ -70,12 +72,12 @@ class AppBody extends base {
             h = window.innerHeight;
 
         if (this._screenWidth != w) {
-            this.style.setProperty(`--screen-width`, w);
+            ui.dom.CSS(this, `--screen-width`, w);
             this._screenWidth = w;
         }
 
         if (this._screenHeight != h) {
-            this.style.setProperty(`--screen-height`, h);
+            ui.dom.CSS(this, `--screen-height`, h);
             this._screenHeight = h;
         }
 

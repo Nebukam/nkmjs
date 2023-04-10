@@ -3,15 +3,14 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
+const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
 const SIGNAL = require(`./signal`);
 const FLAGS = require(`./flags`);
 const INPUT = require(`./input`);
 const POINTER = require(`./pointer`);
 const DisplayObjectContainer = require(`./display-object-container`);
-const WidgetSelection = require(`./helpers/widget-selection`);
 const FlagEnum = require(`./helpers/flag-enum`);
-const DataForward = require(`./helpers/data-forward`);
 
 const extensions = require(`./extensions`);
 
@@ -31,6 +30,8 @@ class Widget extends base {
 
     static __usePaintCallback = true;
     static __defaultSelectOnActivation = false;
+
+    static __notifyDataChange = false;
 
     static __default_iState = FLAGS.IDLE;
     static __defaultInstanceOf = null;
@@ -63,7 +64,7 @@ class Widget extends base {
         this._isActivable = true;
         this._dataIndex = -1;
 
-        this._extensions = new extensions.Extension();
+        this._extensions = new extensions.Extension(this);
 
         this._pointer = this._extensions.Add(extensions.Pointer);
         this._pointer.focusFn = this._Bind(this.Focus);
@@ -309,7 +310,7 @@ class Widget extends base {
             this.style[`pointer-events`] = `none`;
         } else {
             this._istateEnum.Set(FLAGS.IDLE);
-            this.style.removeProperty(`pointer-events`);
+            dom.CSS(this, 'pointer-events');
         }
 
     }
@@ -445,10 +446,9 @@ class Widget extends base {
     //#region DATA
 
     get forwardData() {
-        if (!this._forwardData) { this._forwardData = new DataForward(this); }
+        if (!this._forwardData) { this._forwardData = new com.helpers.Setter(this, com.IDS.DATA); }
         return this._forwardData;
     }
-
 
     /**
      * @description TODO
@@ -458,11 +458,15 @@ class Widget extends base {
     get data() { return this._data; }
     set data(p_value) {
 
+        if (p_value) {
+            if (this._dataPreProcessor || this.constructor.__dataPreProcessor) {
+                p_value = u.Call((this._dataPreProcessor || this.constructor.__dataPreProcessor), this, p_value);
+            }
+        }
+
         if (this.constructor.__defaultInstanceOf) {
             if (!u.isInstanceOf(p_value, this.constructor.__defaultInstanceOf)) { p_value = null; }
         }
-
-        if (this._dataPreProcessor) { p_value = u.Call(this._dataPreProcessor, this, p_value); }
 
         if (this._data === p_value) {
             if (this._data && this.constructor.__updateDataOnSameSet) {
@@ -486,6 +490,7 @@ class Widget extends base {
             this._OnDataUpdated(p_value);
         }
 
+
         this.Broadcast(SIGNAL.DATA_CHANGED, this, p_value, oldValue);
 
     }
@@ -497,7 +502,9 @@ class Widget extends base {
      * @customtag override-me
      * @group Data
      */
-    _OnDataChanged(p_oldData) { if (this._forwardData) { this._forwardData.Set(this._data); } }
+    _OnDataChanged(p_oldData) {
+        if (this._forwardData) { this._forwardData.Set(this._data, !this._releasing); }
+    }
 
     /**
      * @access protected

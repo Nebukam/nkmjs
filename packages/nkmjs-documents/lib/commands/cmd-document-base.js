@@ -33,6 +33,8 @@ class CommandDocumentBase extends actions.Command {
         newCmd.dataType = p_options.dataType || com.BINDINGS.Get(CONTEXT.DOCUMENT_DATA, newCmd.docType, null);
         newCmd.fileInfos = p_options.fileInfos || null;
         newCmd.shortcutSequence = p_options.shortcutSequence || null;
+        newCmd.updateDataOnEveryRead = p_options.updateDataOnEveryRead || false;
+        
 
         if (p_registerAsDefault && this.__docCmdType != null) {
             //Register as default command within
@@ -65,6 +67,9 @@ class CommandDocumentBase extends actions.Command {
 
     get fileInfos() { return this._fileInfos; }
     set fileInfos(p_value) { this._fileInfos = p_value || this.constructor.__fileInfos; }
+
+    get updateDataOnEveryRead() { return this._updateDataOnEveryRead; }
+    set updateDataOnEveryRead(p_value) { this._updateDataOnEveryRead = p_value; }
 
     set shortcutSequence(p_value) {
         if (p_value) {
@@ -103,6 +108,8 @@ class CommandDocumentBase extends actions.Command {
             document: this._docType,
             path: this._docPath
         }, p_forceNew);
+
+        this._doc.updateDataOnEveryRead = this._updateDataOnEveryRead;
 
         return this._doc;
 

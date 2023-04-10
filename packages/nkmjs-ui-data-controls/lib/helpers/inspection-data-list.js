@@ -39,6 +39,8 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
 
         super._Init();
 
+        this._lastBump = null;
+
         this._stack = new collections.List();
         this._itemObserver = new com.signals.Observer();
         this._itemObserver.Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this);
@@ -172,10 +174,19 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         if (this._invalidateAnalyticsOnBump) { this._analyticsDirty = true; }
 
         this._lastItemType = p_data.constructor;
-        this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, p_data);
+
+        if (this._lastBump != p_data) {
+            this._lastBump = p_data;
+            this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, p_data);
+        }
 
         return true;
 
+    }
+
+    AddOrBump(p_data, p_preProcess = true) {
+        if (!this.Add(p_data, p_preProcess)) { this.Bump(p_data, p_preProcess); }
+        else { this.Bump(p_data, p_preProcess); }
     }
 
     DelayedUpdate(p_dirtyAnalytics = false) {
@@ -301,10 +312,13 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
      * @description Clear all item in the stack
      */
     Clear() {
+        this._lastBump = null;
         if (this._stack.isEmpty) { return; }
         this._clearing = true;
         while (!this._stack.isEmpty) { this.Remove(this._stack.last, false); }
         this._clearing = false;
+        this._lastItemType = null;
+        this.Broadcast(com.SIGNAL.UPDATED, this);
         this.Broadcast(ui.SIGNAL.SEL_CLEARED, this);
     }
 

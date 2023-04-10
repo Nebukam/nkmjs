@@ -15,35 +15,35 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static INFOS = `infos`;
+    static INFOS = Object.freeze(`infos`);
 
     /**
      * @description Semantic for anything related to anything that should be important & emphasized to the used.
      * @type {string}
      * @customtag read-only
      */
-    static WARNING = `warning`;
+    static WARNING = Object.freeze(`warning`);
 
     /**
      * @description Semantic for anything related to an error, or dangerous behavior that often requires user action.
      * @type {string}
      * @customtag read-only
      */
-    static ERROR = `error`;
+    static ERROR = Object.freeze(`error`);
 
     /**
      * @description Semantic for anything related to something being ready.
      * @type {string}
      * @customtag read-only
      */
-    static READY = `ready`;
+    static READY = Object.freeze(`ready`);
 
     /**
      * @description Semantic for anything related to something that has been changed, and is not yet saved.
      * @type {string}
      * @customtag read-only
      */
-    static DIRTY = `dirty`;
+    static DIRTY = Object.freeze(`dirty`);
 
     /**
      * @description Semantic for something that is loading and will lead to a noticeable outcome.  
@@ -51,7 +51,7 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static LOADING = `loading`;
+    static LOADING = Object.freeze(`loading`);
 
     /**
      * @description Semantic for anything related to processing.  
@@ -59,7 +59,7 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static PROCESSING = `processing`;
+    static PROCESSING = Object.freeze(`processing`);
 
     /**
      * @description Semantic for anything that requires the user to wait.  
@@ -67,7 +67,7 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static WAITING = `waiting`;
+    static WAITING = Object.freeze(`waiting`);
 
     /**
      * @description Semantic for anything related to something currently active.  
@@ -75,7 +75,14 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static ACTIVE = `active`;
+    static ACTIVE = Object.freeze(`active`);
+
+    /**
+     * @description Semantic for anything related to general information.
+     * @type {string}
+     * @customtag read-only
+     */
+    static SELF = Object.freeze(`self`);
 
 }
 

@@ -26,6 +26,8 @@ class EditorEx extends base {
     static __default_headerClass = null;
     static __default_footerClass = null;
 
+    static __default_classicShortcuts = true;
+
     _Init() {
 
         super._Init();
@@ -51,6 +53,27 @@ class EditorEx extends base {
             .SetTriggerMask(ui.POINTER.MOUSE_PREV, true);
 
         this.focusArea = this;
+
+        if (this.constructor.__default_classicShortcuts) {
+
+            this.shortcuts.Create("Ctrl Z", this._actionStack.Undo);
+            this.shortcuts.Create("Ctrl Y", this._actionStack.Redo);
+
+            this.shortcuts.Create("escape", () => {
+                this._registerEmptySelection = true;
+                this._inspectedData.Clear();
+                this._registerEmptySelection = false;
+            });
+
+            this.shortcuts.Create("Ctrl A", {
+                fn: () => {
+                    this._viewport._selStack.data.RequestSelectAll();
+                    console.log(this._viewport._selStack);
+                    ui.dom.ClearHighlightedText();
+                }
+            }).Strict();
+
+        }
 
     }
 
@@ -86,10 +109,11 @@ class EditorEx extends base {
 
             if (view) {
 
-                if (`forwardData` in conf && !conf.forwardData) { }
+                if (!conf.forwardData) { }
                 else { this.forwardData.To(view); }
 
                 this._forwardContext.To(view);
+                this._forwardEditor.To(view);
 
                 if (assign) { this[assign] = view; }
 
@@ -97,9 +121,7 @@ class EditorEx extends base {
 
         }
 
-        this._inspectorShell.RequestDisplay();
-
-        this.forwardData
+        this._forwardData
             .To(this._header)
             .To(this._viewport)
             .To(this._footer);
@@ -109,6 +131,14 @@ class EditorEx extends base {
             .To(this._viewport)
             .To(this._footer)
             .To(this._inspectorShell);
+
+        this._forwardEditor
+            .To(this._header)
+            .To(this._viewport)
+            .To(this._footer)
+            .To(this._inspectorShell);
+
+        this._inspectorShell.RequestDisplay();
 
     }
 

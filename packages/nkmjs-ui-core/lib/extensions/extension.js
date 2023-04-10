@@ -12,11 +12,29 @@ const com = require("@nkmjs/common");
  */
 class Extension extends com.pool.DisposableObjectEx {
 
-    constructor() {
+    constructor(p_owner) {
         super();
         this._isEnabled = false;
         this._childExtensions = null;
+        this._owner = p_owner;
     }
+
+    /**
+     * @description TODO
+     * @type {*}
+     */
+    get owner() { return this._owner; }
+    set owner(p_value) {
+        if (this._owner === p_value) { return; }
+        let oldOwner = this._owner;
+        this._owner = p_value;
+        if (this._childExtensions) {
+            this._childExtensions.forEach(ext => { ext.owner = this._owner; })
+        }
+        this._OnOwnerChanged(oldOwner);
+    }
+
+    _OnOwnerChanged(p_oldOwner){ }
 
     /**
      * @description TODO
@@ -26,6 +44,7 @@ class Extension extends com.pool.DisposableObjectEx {
         if (!this._childExtensions) { this._childExtensions = []; }
         if (this._childExtensions.includes(p_ext)) { return p_ext; }
         if (u.isFunc(p_ext)) { p_ext = com.Rent(p_ext); }
+        p_ext.owner = this._owner;
         this._childExtensions.push(p_ext);
         p_ext.enabled = this._isEnabled;
         return p_ext;
@@ -40,6 +59,7 @@ class Extension extends com.pool.DisposableObjectEx {
         let index = this._childExtensions.indexOf(p_ext);
         if (index == -1) { return null; }
         this._childExtensions.splice(index, 1);
+        if(p_ext.owner === this._owner){p_ext.owner = null;}
         p_ext.Disable();
         return p_ext;
     }

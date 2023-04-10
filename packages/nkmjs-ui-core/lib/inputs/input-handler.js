@@ -51,7 +51,7 @@ class InputHandler extends com.pool.DisposableObjectEx {
         this._managed = new collections.List();
         this._manager = null;
 
-        this._delayedPreviewUpdate = new com.time.DelayedCall(this._Bind(this._RequestPreviewUpdate));
+        this._delayedPreviewUpdate = com.DelayedCall(this._Bind(this._RequestPreviewUpdate));
 
     }
 

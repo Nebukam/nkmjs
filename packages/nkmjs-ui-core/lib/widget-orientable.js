@@ -25,7 +25,7 @@ class WidgetOrientable extends base {
      * @description TODO
      * @type {symbol}
      */
-    static CONTROL_ACTIVATED = Symbol(`controlActivated`);
+    //static CONTROL_ACTIVATED = Symbol(`controlActivated`);
 
     // ----> Init
 

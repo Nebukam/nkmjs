@@ -1,12 +1,13 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const u = require(`@nkmjs/utils`);
 const actions = require("@nkmjs/actions");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const collections = require(`@nkmjs/collections`);
 
-
+const IDS = require(`./ids`);
 const SIGNAL = require(`./signal`);
 const InspectionDataList = require(`./helpers/inspection-data-list`);
 
@@ -14,7 +15,7 @@ const __editorMap = new collections.DictionaryList();
 const __activeData = new Set();
 
 function __CheckEditorMap() {
-    
+
     let stack = [];
     __activeData.forEach(p_data => {
         // Check if still edited.
@@ -25,7 +26,7 @@ function __CheckEditorMap() {
             d.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, d);
         }
     });
-    
+
 }
 
 const __delayedCheckEditorMap = com.DelayedCall(__CheckEditorMap);
@@ -43,7 +44,7 @@ const base = ui.views.View;
  * @memberof ui.datacontrols
  */
 class Editor extends base {
-    constructor() { super(); }
+    constructor() { super(); this._fullyInitialized = true; }
     /*
         static __NFO__ = com.NFOS.Ext({
             css: [`@/views/global-editor.css`]
@@ -70,14 +71,28 @@ class Editor extends base {
 
     _Init() {
 
+        this._forwardData = this.forwardData; //Ensure it exists
+        this._forwardContext = new com.helpers.Setter(this, IDS.CONTEXT);
+        this._forwardEditor = new com.helpers.Setter(this, IDS.EDITOR);
+
+        let getSelf = () => { return this._releasing ? null : this; };
+        let getData = () => { return this._releasing ? null : this._data; };
+
+        this._forwardData.AddRelatives(this._forwardEditor, getSelf);
+        this._forwardData.AddRelatives(`editor`, getSelf, true);
+
+        this._forwardData.AddRelatives(this._forwardContext, getData);
+        this._forwardData.AddRelatives(`context`, getData, true);
+
+        this._forwardContext.AddRelatives(this._forwardEditor, getSelf);
+        this._forwardContext.AddRelatives(`editor`, getSelf, true);
+
         super._Init();
 
         //TODO : Find a way to invalidate action stacks // <--- WTF ?
         this._actionStack = new actions.ActionStack();
 
         this._flags.Add(this, com.FLAGS.WARNING);
-
-        this._forwardContext = new ui.helpers.DataForward(this);
 
         this._dataObserver
             .Hook(data.SIGNAL.DIRTY, this._OnDataDirty, this)
@@ -99,6 +114,8 @@ class Editor extends base {
         this._skipNextSelectionState = false;
         this._registerEmptySelection = false;
 
+        this._defaultModalContentOptions = () => { return { editor: this, data: this._data, context: this._context } };
+
     }
 
     _PostInit() {
@@ -106,12 +123,12 @@ class Editor extends base {
         super._PostInit();
         this._RegisterEditorBits();
 
-        if (this._forwardData) { this._forwardData._BatchSet(`editor`, this); }
-        this._forwardContext._BatchSet(`editor`, this);
-
         this._inspectedData.preProcessData = this._inspectedDataPreProcessor;
 
     }
+
+    get forwardContext() { return this._forwardContext; }
+    get forwardEditor() { return this._forwardEditor; }
 
     _RegisterEditorBits() {
 
@@ -133,9 +150,12 @@ class Editor extends base {
     _OnDataChanged(p_oldData) {
 
         this._actionStack.Clear();
-        this._forwardContext._BatchSet(`context`, this._data);
+
+        if (this._data) { this._forwardContext.Set(this._data); }
 
         super._OnDataChanged(p_oldData);
+
+        if (!this._data) { this._forwardContext.Set(null); }
 
         this.inspectedData.Clear();
 
@@ -165,9 +185,11 @@ class Editor extends base {
 
     }
 
-    _OnChildAttached(p_displayObject, p_index) {
-        if (`editor` in p_displayObject) { p_displayObject.editor = this; }
-        super._OnChildAttached(p_displayObject, p_index);
+    Wake() {
+        super.Wake();
+        this._forwardEditor.Set(this);
+        this._forwardContext._BatchSet(`editor`, this);
+        this._forwardData._BatchSet(`editor`, this);
     }
 
     //#region Selection stack
@@ -206,7 +228,7 @@ class Editor extends base {
                         this._inspectedData.SetList(p_self.data);
                     }
                 });
-                
+
             }
         } else {
             this._skipNextSelectionState = false;
@@ -230,12 +252,12 @@ class Editor extends base {
      * @access public
      * @description Registers & executes an action in the local ActionStack.
      * @param {constructor} p_actionClass Action class to be executed
-     * @param {object} p_operation Action' operation parameters
+     * @param {object} p_op Action' operation parameters
      * @group Actions
      */
-    Do(p_actionClass, p_operation) {
+    Do(p_actionClass, p_op) {
         //this._actionStack.ToggleGrouping(ui.POINTER.DRAG_MULTIPLE); //TODO : Need a better approach for Group drag-related actions 
-        this._actionStack.Do(p_actionClass, p_operation);
+        this._actionStack.Do(p_actionClass, p_op);
     }
 
     /**
@@ -255,9 +277,20 @@ class Editor extends base {
     //#endregion
 
     _CleanUp() {
+
         this._skipNextSelectionState = false;
         this._stateStack.Clear();
+
+        this.data = null;
+
         super._CleanUp();
+
+        this._forwardContext.Set(null);
+        this._forwardEditor.Set(null);
+
+        this._forwardContext.Clear();
+        this._forwardEditor.Clear();
+
     }
 
 }

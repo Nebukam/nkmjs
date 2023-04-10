@@ -400,6 +400,59 @@ class UTILS_DOM {
         else if (document.getSelection) { document.getSelection().removeAllRanges(); }
     }
 
+
+    //#region Style helpers
+
+    static CSS(p_el, p_id, p_value = null) {
+        if (u.isObject(p_id)) {
+            if (u.isArray(p_el)) {
+                p_el.forEach(el => {
+                    for (let p in p_id) { this._TStyle(el, p, p_id[p]); }
+                });
+            } else {
+                for (let p in p_id) { this._TStyle(p_el, p, p_id[p]); }
+            }
+        } else {
+            if (u.isArray(p_el)) {
+                p_el.forEach(el => {
+                    this._TStyle(el, p_id, p_value);
+                });
+            } else {
+                this._TStyle(p_el, p_id, p_value);
+            }
+        }
+    }
+
+    static _TStyle(p_el, p_id, p_value = null) {
+        if (p_value === null || p_value === undefined || p_value === false) { p_el.style.removeProperty(p_id); }
+        else { p_el.style.setProperty(p_id, p_value); }
+    }
+
+    static CSSClass(p_el, p_cl, p_toggle = true) {
+        if (u.isObject(p_cl)) {
+            if (u.isArray(p_el)) {
+                p_el.forEach(el => {
+                    for (let p in p_cl) { this._TClass(el, p, p_cl[p] ? true : false); }
+                });
+            } else {
+                for (let p in p_cl) { this._TClass(p_el, p, p_cl[p] ? true : false); }
+            }
+        } else {
+            if (u.isArray(p_el)) {
+                p_el.forEach(el => { this._TClass(el, p_cl, p_toggle); });
+            } else {
+                this._TClass(p_el, p_cl, p_toggle);
+            }
+        }
+    }
+
+    static _TClass(p_el, p_id, p_toggle = null) {
+        if (p_toggle) { p_el.classList.add(p_id); }
+        else { p_el.classList.remove(p_id); }
+    }
+
+    //#endregion
+
 }
 
 module.exports = UTILS_DOM;

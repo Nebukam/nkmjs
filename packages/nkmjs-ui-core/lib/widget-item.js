@@ -28,7 +28,7 @@ class WidgetItem extends base {
     static __distribute = com.helpers.OptionsDistribute.Ext()
         .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
         .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
-        .To(`order`)
+        .To(IDS.ORDER)
         .To(IDS.FLAVOR)
         .To(IDS.DATA, `itemData`);
 
@@ -60,14 +60,11 @@ class WidgetItem extends base {
 
     _PostInit() {
         super._PostInit();
-        if (this._extDrag) { this._extDrag.Setup(this, this._dragActivator, this._dragFeedbackHost); }
+        if (this._extDrag) {
+            this._extDrag.activator = this._dragActivator;
+            this._extDrag.feedbackHost = this._dragFeedbackHost;
+        }
     }
-
-    _Wake() {
-        super._Wake();
-        if (this._extDrag) { this._extDrag.owner = this; }
-    }
-
 
     // ----> DOM
 

@@ -1,6 +1,7 @@
 
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
+const path = require(`path`);
 
 const CMD_TYPE = require(`./cmd-type`);
 const CommandDocumentBase = require(`./cmd-document-base`);
@@ -16,7 +17,11 @@ class CommandDocumentSave extends CommandDocumentBase {
     _Init() {
         super._Init();
         this._Bind(this._OnPicked);
+        this._defaultDialogLocation = null;
     }
+
+    get defaultDialogLocation() { return this._defaultDialogLocation; }
+    set defaultDialogLocation(p_value) { this._defaultDialogLocation = p_value; }
 
     _InternalExecute() {
 
@@ -31,11 +36,18 @@ class CommandDocumentSave extends CommandDocumentBase {
                     error: this._Fail,
                 });
             } else {
-                actions.RELAY.ShowOpenDialog({
+
+                let dialogOptions = {
                     filters: [{ ...this._fileInfos }],
                     type: `save`,
-                    title:`Save "${document.title}"`
-                }, this._OnPicked);
+                    title: `Save "${document.title}"`
+                };
+
+                if (this._defaultDialogLocation) {
+                    dialogOptions.defaultPath = this._defaultDialogLocation.replaceAll(`/`, path.sep);
+                }
+
+                actions.RELAY.ShowOpenDialog(dialogOptions, this._OnPicked);
             }
         }
 

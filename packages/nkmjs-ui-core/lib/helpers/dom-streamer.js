@@ -16,7 +16,7 @@ const base = DisposableHTMLElement;
 const __empty = `empty`;
 
 class DOMStreamerPlaceholder extends DisposableHTMLElement {
-    constructor() { super(); this.classList.add(`dom-streamer-dummy`); }
+    constructor() { super(); dom.CSSClass(this, `dom-streamer-dummy`); }
 }
 
 /**
@@ -256,6 +256,13 @@ class DOMStreamer extends base {
         this.Broadcast(SIGNAL.ITEM_REQUESTED, this, p_itemIndex, this._activeFragment, this._ItemRequestCallback);
     }
 
+    _RequestUpdate(p_itemIndex) {
+        //TODO: Support swapping widgets if type changed (Dummy vs non-dummy, ...)
+        //!!! Right now this only works with unique widget class setups !!!
+        if (p_itemIndex < 0) { return; }
+        this.Broadcast(SIGNAL.ITEM_UPDATE_REQUESTED, this, p_itemIndex, this._indicesMap[p_itemIndex]);
+    }
+
     _RequestDummy(p_itemIndex) {
         if (p_itemIndex < 0) { return; }
         let dummy = UI.Rent(DOMStreamerPlaceholder);
@@ -280,7 +287,7 @@ class DOMStreamer extends base {
     }
 
     _ItemRequestCallback(p_itemIndex, p_item) {
-        p_item.classList.add(`dom-streamer-item`);
+        dom.CSSClass(p_item, `dom-streamer-item`);
         p_item.dataIndex = p_itemIndex;
         this._indicesMap[p_item.dataIndex] = p_item;
         this._requestResult = p_item;
@@ -369,8 +376,7 @@ class DOMStreamer extends base {
             this._itemStyle.innerHTML = sstr;
         }
 
-        if (items == 0) { this.classList.add(__empty); }
-        else { this.classList.remove(__empty); }
+        dom.CSSClass(this, __empty, items == 0);
 
         if (p_updateRect) { this._UpdateStreamRect(); }
 
@@ -425,7 +431,7 @@ class DOMStreamer extends base {
 
         if (!streamed) { return; }
 
-        this._fixture.style.setProperty(`grid-row-end`, `span ${lineStart + 1}`);
+        dom.CSS(this._fixture, `grid-row-end`, `span ${lineStart + 1}`);
 
     }
 
@@ -464,7 +470,7 @@ class DOMStreamer extends base {
 
         if (!streamed) { return; }
 
-        this._fixture.style.setProperty(`grid-row-end`, `span ${lineStart + 1}`);
+        dom.CSS(this._fixture, `grid-row-end`, `span ${lineStart + 1}`);
 
     }
 
@@ -567,6 +573,12 @@ class DOMStreamer extends base {
 
         return true;
 
+    }
+
+    UpdateInPlace() {
+        for (let i = this._indices.start; i < this._indices.end; i++) {
+            this._RequestUpdate(i);
+        }
     }
 
     /**

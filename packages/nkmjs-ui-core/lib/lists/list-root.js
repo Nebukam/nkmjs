@@ -35,7 +35,8 @@ class ListRoot extends base {
         this._searchBtn = null;
         helpers.HostSelStack(this, true, false);
 
-        this.style.setProperty(`--tree-size`, `var(--size-s)`);
+        dom.CSS(this, `--tree-size`, `var(--size-s)`);
+        
         // TODO : If 'flattened', make directories non-expandable items
 
     }

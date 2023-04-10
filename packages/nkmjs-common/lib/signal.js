@@ -172,6 +172,14 @@ class SIGNAL{
      * @customtag read-only
      * @group ListItem Management
      */
+    static ITEM_MOVED = Symbol(`itemMoved`);
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group ListItem Management
+     */
     static ITEM_UPDATED = Symbol(`itemUpdated`);
 
     /**
@@ -181,6 +189,13 @@ class SIGNAL{
      * @group ListItem Management
      */
      static VALUE_CHANGED = Symbol(`valueChanged`);
+
+     /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     */
+    static SORTED = Symbol(`sorted`);
 
 }
 

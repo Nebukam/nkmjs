@@ -37,6 +37,7 @@ class ENV extends com.helpers.SingletonEx {
      * @customtag read-only
      */
     static get APP() { return this.instance._app; }
+    static get APP_NAME(){ return this.instance._appName; }
 
     /**
      * @description TODO
@@ -73,6 +74,7 @@ class ENV extends com.helpers.SingletonEx {
             .Watch(SIGNAL.OFFLINE, this._OnEnvOffline, this);
 
         this._app = null;
+        this._appName = `nkmjs-app`;
         this._config = null;
 
         this._updateQueued = false;
@@ -185,6 +187,9 @@ class ENV extends com.helpers.SingletonEx {
         ENV.instance._features._manifestVersion = this._manifestVersion;
 
         if (p_config) {
+
+            this._appName = p_config.appName || `nkmjs-app`;
+
             if (p_config.version) {
                 try {
                     this._semVer = p_config.version.split(`.`);

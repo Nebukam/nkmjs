@@ -3,6 +3,11 @@ const com = require("@nkmjs/common");
 const BaseSerializer = require(`./serializer-base`);
 const CONTEXT = require(`./context`);
 
+const S11N_BEGIN = `_OnSerializationBegins`;
+const S11N_COMPLETE = `_OnSerializationComplete`;
+const D13N_BEGINS = `_OnDeserializationBegins`;
+const D13N_COMPLETE = `_OnDeserializationComplete`;
+
 /*
     expected input/output :
 
@@ -39,6 +44,8 @@ class JSONSerializer extends BaseSerializer {
      */
     static Serialize(p_data, p_options = null) {
 
+        if (S11N_BEGIN in p_data) { p_data[S11N_BEGIN](); }
+
         // Retrieve serializer
         let serializer = this.GetSerializer(p_data.constructor, -1, null);
 
@@ -70,6 +77,8 @@ class JSONSerializer extends BaseSerializer {
         let uid = p_data.id;
         if (uid) { metas[com.IDS.UID] = uid.toString(); }
 
+        if (S11N_COMPLETE in p_data) { p_data[S11N_COMPLETE](); }
+
         return serial;
 
     }
@@ -83,6 +92,8 @@ class JSONSerializer extends BaseSerializer {
      */
     static Deserialize(p_serial, p_data = null, p_options = null) {
 
+
+
         let targetClass = null,
             version = -1,
             metas = p_serial[CONTEXT.JSON.META_KEY];
@@ -91,6 +102,7 @@ class JSONSerializer extends BaseSerializer {
         if (p_data != null) {
             targetClass = p_data.constructor;
             version = metas[com.IDS.VER] || -1;
+            if (p_data && D13N_BEGINS in p_data) { p_data[D13N_BEGINS](); }
         } else {
             if (!metas) { throw new Error(`Cannot unserialize without nfos`); }
 
@@ -100,6 +112,7 @@ class JSONSerializer extends BaseSerializer {
             if (!targetClass) { throw new Error(`Could not find constructor ${metas[CONTEXT.JSON.CONSTRUCTOR]}`); }
 
             p_data = com.Rent(targetClass);
+            if (p_data && D13N_BEGINS in p_data) { p_data[D13N_BEGINS](); }
         }
 
         let dataWrapper = null;
@@ -112,7 +125,11 @@ class JSONSerializer extends BaseSerializer {
         if (!serializer) { throw new Error(`Could not find suitable de-serializer for target=${targetClass ? targetClass.name : null}`); }
 
         // Deserialize !
-        return serializer.Deserialize(dataWrapper, p_data, p_options, metas);
+        let result = serializer.Deserialize(dataWrapper, p_data, p_options, metas);
+
+        if (D13N_COMPLETE in p_data) { p_data[D13N_COMPLETE](); }
+
+        return result;
 
     }
 

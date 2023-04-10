@@ -204,7 +204,15 @@ class SIGNAL {
      */
     static DRAG_ENDED = Symbol(`dragEnded`);
 
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Drag and drop
+     */
+    static DROPPED = Symbol(`dropped`);
 
+    
     /**
      * @description TODO
      * @type {symbol}
@@ -260,6 +268,15 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
     */
+    static ITEM_UPDATE_REQUESTED = Symbol(`itemUpdateRequested`);
+
+    
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+    */
     static ITEM_CLEARED = Symbol(`itemCleared`);
 
     /**
@@ -269,6 +286,7 @@ class SIGNAL {
      * @group Selection
     */
     static ITEM_REQUEST_RANGE_UPDATE = Symbol(`itemRequestRangeUpdate`);
+    
 
     /**
      * @description TODO

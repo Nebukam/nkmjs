@@ -129,8 +129,7 @@ class DisposableCanvasElement extends base {
     set visible(p_value) {
         if (this._visible === p_value) { return; }
         this._visible = p_value;
-        if (!p_value) { this.style.display = `none`; }
-        else { this.style.removeProperty(`display`); }
+        dom.CSS(this, 'display', p_value ? null : `none`);
     }
 
     //#region Canvas logic

@@ -10,6 +10,7 @@ module.exports = {
     SIGNAL: require(`./lib/signal`),
     FLAGS: require(`./lib/flags`),
     IDS: require(`./lib/ids`),    
+    SORTING: require(`./lib/sorting`),
 
     filters: require(`./lib/filters`),
     helpers: require(`./lib/helpers`),

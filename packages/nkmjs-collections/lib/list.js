@@ -73,7 +73,7 @@ class List {
         if (isVoid(p_item)) { return false; }
         if (this._array.includes(p_item)) { return false; }
         this._array.push(p_item);
-        return true;
+        return p_item;
     }
 
     /**
@@ -88,7 +88,7 @@ class List {
             if (index != 0) { this._array.splice(index, 1); }
         }
         this._array.unshift(p_item);
-        return true;
+        return p_item;
     }
 
 
@@ -253,6 +253,9 @@ class List {
         }
         return p_targetArray;
     }
+
+    
+    Sort(p_method) { this._array.sort(p_method); }
 
     /**
      * @description Clears the List

@@ -3,9 +3,7 @@
 class LOG {
     constructor() { }
 
-    static toggle(p_toggle) {
-        this._enabled = p_toggle;
-    }
+    static toggle(p_toggle) { this._enabled = p_toggle; }
 
     static _(p_text, p_color = `#818181`, p_bg = null) {
         if (!this._enabled) { return; }

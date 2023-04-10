@@ -2,6 +2,7 @@
 
 const com = require("@nkmjs/common");
 
+const IDS = require(`../ids`);
 const SIGNAL = require(`../signal`);
 const extensions = require(`../extensions`);
 const CatalogBuilder = require(`../helpers/catalog-builder`);
@@ -207,7 +208,7 @@ class List extends base {
      * @param {*} p_widget 
      */
     _OnBuilderItemAdded(p_builder, p_item, p_widget) {
-        p_widget.classList.add(`item`);
+        dom.CSSClass(p_widget, IDS.ITEM);
         p_widget.depth = this._depth + 1;
         //Re-order items ?
     }
@@ -220,7 +221,7 @@ class List extends base {
      * @param {*} p_widget 
      */
     _OnBuilderItemRemoved(p_builder, p_item, p_widget) {
-        p_widget.classList.remove(`item`);
+        dom.CSSClass(p_widget, IDS.ITEM, false);
     }
 
     // ----> Pooling

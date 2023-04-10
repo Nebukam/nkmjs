@@ -3,6 +3,9 @@
 const data = require("@nkmjs/data-core");
 const u = require("@nkmjs/utils");
 
+const FLAGS = require(`../flags`);
+const dom = require(`../utils-dom`);
+
 const ContentManipulator = require("./manipulator-content");
 
 /**
@@ -32,64 +35,52 @@ class TextHandler extends ContentManipulator {
      * @type {boolean}
      * @customtag write-only
      */
-    set uppercase(p_value) {
-        if (p_value) { this._element.style.setProperty('text-transform', `uppercase`); }
-        else { this._element.style.removeProperty('text-transform'); }
-    }
+    set uppercase(p_value) { dom.CSS(this._element, 'text-transform', p_value ? `uppercase` : null); }
 
     /**
      * @description TODO
      * @type {boolean}
      * @customtag write-only
      */
-    set ellipsis(p_value) {
-        if (p_value) {
-            this._element.classList.add('ellispsis');
-        } else {
-            this._element.classList.remove('ellispsis');
-        }
-    }
+    set ellipsis(p_value) { dom.CSSClass(this._element, 'ellispsis', p_value); }
 
     /**
      * @description TODO
      * @type {boolean}
      * @customtag write-only
      */
-    set selectable(p_value) {
-        if (p_value) { this._element.style.setProperty('user-select', `text`); }
-        else { this._element.style.removeProperty('user-select'); }
-    }
+    set selectable(p_value) { dom.CSS(this._element, 'user-select', p_value ? `text` : null); }
 
     /**
      * @description TODO
      * @type {boolean}
      * @customtag write-only
      */
-    set bold(p_value) {
-        if (p_value) { this._element.style.setProperty('font-weight', `bolder`); }
-        else { this._element.style.removeProperty('font-weight'); }
-    }
+    set bold(p_value) { dom.CSS(this._element, 'font-weight', p_value ? `bolder` : null); }
 
     /**
      * @description TODO
      * @type {boolean}
      * @customtag write-only
      */
-    set italic(p_value) {
-        if (p_value) { this._element.style.setProperty('font-style', `italic`); }
-        else { this._element.style.removeProperty('font-style'); }
-    }
+    set italic(p_value) { dom.CSS(this._element, 'font-style', p_value ? `italic` : null); }
 
     /**
      * @description TODO
      * @type {string}
      * @customtag write-only
      */
-    set color(p_value) {
-        if (p_value) { this._element.style.setProperty('color', p_value); }
-        else { this._element.style.removeProperty('color'); }
-    }
+    set color(p_value) { dom.CSS(this._element, 'color', p_value ? p_value : null); }
 
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag write-only
+     */
+    set textSize(p_value) {
+        if (FLAGS.sizes.includes(p_value)) { p_value = `var(--font-${p_value})`; }
+        dom.CSS(this._element, 'font-size', p_value);
+    }
 
     /**
      * @access private

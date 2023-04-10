@@ -125,7 +125,6 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
      */
     Add(p_item, p_mode = null) {
 
-        if (p_mode == null) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
         //if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
         if (this._stack.Contains(p_item)) {

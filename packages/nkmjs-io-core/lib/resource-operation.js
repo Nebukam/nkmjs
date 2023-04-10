@@ -23,6 +23,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._important = false;
         this._parallel = false;
         this._preparationOptions = null;
+        this._running = false;
         this._Reset();
     }
 
@@ -62,9 +63,15 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
      * @type {boolean}
      * @customtag read-only
      */
-     get isParallel() { return this._parallel; }
+    get isParallel() { return this._parallel; }
 
     _Reset() {
+
+        if (this._running) {
+            this.Cancel();
+            console.error(`Looks like an operation is being reset while running.\nThis can occur when loading a resources and releasing it elsewhere, especially when sharing multiple references to a unique path.`);
+        }
+
         this._rsc = null; // Ressource
         this._originalState = null;
         this._callbacks.Clear();
@@ -128,13 +135,13 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
         this._rsc._state.currentState = this._states.prepare.state;
         this._important = this.GetOption(`important`, false);
         this._parallel = this.GetOption(`parallel`, false);
-        
+
         args.unshift(this);
-        p_fn.apply(null, args);
+        u.Call(p_fn, ...args);
 
     }
 
-    GetOption(p_id, p_fallback){
+    GetOption(p_id, p_fallback) {
         return u.tils.Get(this._preparationOptions, p_id, p_fallback);
     }
 
@@ -154,7 +161,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
     OnStart() {
         this._rsc._state.currentState = this._states.start;
         this._rsc.Broadcast(this._states.start.evt, this._rsc);
-        
+
         if (this._states.start.fn) {
             try {
                 this._states.start.fn();
@@ -218,6 +225,7 @@ class ResourceOperation extends com.pool.DisposableObjectEx {
      * @description TODO
      */
     OnEnd() {
+        this._running = false;
         if (this._rsc._operation === this) { this._rsc._operation = null; }
         this.Release();
     }

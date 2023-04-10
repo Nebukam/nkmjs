@@ -41,6 +41,8 @@ class Document extends com.pool.DisposableObjectEx {
         this._currentRsc = null;
         this._options = null;
         this._isDirty = false;
+        this._readOnce = false;
+        this._updateDataOnEveryRead = false;
 
         this._callbacks = new com.helpers.Callbacks();
 
@@ -81,6 +83,9 @@ class Document extends com.pool.DisposableObjectEx {
         return docName;
     }
 
+    get updateDataOnEveryRead() { return this._updateDataOnEveryRead; }
+    set updateDataOnEveryRead(p_value) { this._updateDataOnEveryRead = p_value; }
+
     /**
      * @description TODO
      * @type {string}
@@ -112,6 +117,8 @@ class Document extends com.pool.DisposableObjectEx {
     set currentRsc(p_value) {
 
         if (this._currentRsc === p_value) { return; }
+
+        this._readOnce = false;
 
         let oldRsc = this._currentRsc; //TODO : Take a stance on what to do with the old resource.
         this._currentRsc = p_value;
@@ -243,12 +250,23 @@ class Document extends com.pool.DisposableObjectEx {
      */
     Load(p_options = null) {
 
+        if (p_options && p_options.bumpOnly) {
+            if (this._readOnce && this._currentRsc) { 
+                this._OnReadComplete(this._currentRsc);
+                if(p_options.success){u.Call(p_options.success, this);}
+                return true; 
+            }
+        }
+
+        this._readOnce = false;
+
         let nfo = com.NFOS.Get(this),
             rsc = this._GetRsc(
                 u.tils.Get(p_options, `path`, null),
                 { cl: nfo.resource, encoding: nfo[IDS.ENCODING] });
 
         if (!rsc) { throw new Error(`No resource set.`); }
+
         if (rsc.Read({
             io: u.tils.Get(p_options, `io`, nfo[IDS.TYPE_IO]),
             error: this._OnLoadError
@@ -263,6 +281,7 @@ class Document extends com.pool.DisposableObjectEx {
     }
 
     _OnLoadError(p_err) {
+        console.error(p_err);
         p_err.document = this;
         this._callbacks.OnError(p_err).Clear();
     }
@@ -274,8 +293,16 @@ class Document extends com.pool.DisposableObjectEx {
      * @param {*} p_rsc
      */
     _OnReadComplete(p_rsc) {
-        this.currentData = this._Unpack(p_rsc.content, this._currentData);
+
+        if (!this._updateDataOnEveryRead && this._readOnce && this.currentData) {
+            // Do not update existing data.
+        } else {
+            this.currentData = this._Unpack(p_rsc.content, this._currentData);
+        }
+
         this._callbacks.OnSuccess(this).Clear();
+        this._readOnce = true;
+
     }
 
     /**
@@ -387,6 +414,9 @@ class Document extends com.pool.DisposableObjectEx {
     }
 
     _CleanUp() {
+
+        this._readOnce = false;
+        this._updateDataOnEveryRead = false;
 
         this.currentData = null;
         this.currentRsc = null;

@@ -14,112 +14,112 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
-    static ROAMING = `roaming`;
+    static ROAMING = Object.freeze(`roaming`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static MODEL = `model`;
+    static MODEL = Object.freeze(`model`);
 
     /**
     * @description TODO
     * @type {string}
     * @customtag read-only
     */
-    static ENTRY = `entry`;
+    static ENTRY = Object.freeze(`entry`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static FIELD = `field`;
+    static FIELD = Object.freeze(`field`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static DESCRIPTOR = `descriptor`;
+    static DESCRIPTOR = Object.freeze(`descriptor`);
 
     /**
     * @description TODO
     * @type {string}
     * @customtag read-only
     */
-    static SETTINGS = `settings`;
+    static SETTINGS = Object.freeze(`settings`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static BASE = `base`;
+    static BASE = Object.freeze(`base`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static GROUP = `group`;
+    static GROUP = Object.freeze(`group`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static KEY = `key`;
+    static KEY = Object.freeze(`key`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static SLOTS = `slots`;
+    static SLOTS = Object.freeze(`slots`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static VALUE = `value`;
+    static VALUE = Object.freeze(`value`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static VALUE2 = `value2`;
+    static VALUE2 = Object.freeze(`value2`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static VALUE3 = `value3`;
+    static VALUE3 = Object.freeze(`value3`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static VALUE4 = `value4`;
+    static VALUE4 = Object.freeze(`value4`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static TYPE = `type`;
+    static TYPE = Object.freeze(`type`);
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static VALUE_TYPE = `valueType`;
+    static VALUE_TYPE = Object.freeze(`valueType`);
 
 }
 

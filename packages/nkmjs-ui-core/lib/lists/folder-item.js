@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
+const dom = require(`../utils-dom`);
 
 const WidgetBar = require(`../widget-bar`);
 const WidgetItem = require("../widget-item");
@@ -17,8 +18,8 @@ const base = WidgetItem;
  * @memberof ui.core.tree
  */
 class FolderItem extends base {
-    constructor() { 
-        super(); 
+    constructor() {
+        super();
         this.depth = this.constructor.__defaultDepth;
     }
 
@@ -50,7 +51,7 @@ class FolderItem extends base {
      * @type {number}
      */
     get depth() { return this._depth; }
-    set depth(p_value) { this._depth = p_value; this.style.setProperty(`--depth`, this._depth); }
+    set depth(p_value) { this._depth = p_value; dom.CSS(this, `--depth`, p_value); }
 
     static _Style() {
         return style.Extends({

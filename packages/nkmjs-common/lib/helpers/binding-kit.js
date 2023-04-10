@@ -137,35 +137,40 @@ class BindingKit extends DisposableObjectEx {
                 context = assoc.context,
                 kvps = assoc.kvps;
 
-            for (let k = 0, n = kvps.length; k < n; k++) {
-                let kvp = kvps[k];
-                
-                if (kvp.key) { BINDINGS.Set(context, kvp.key, kvp.binding); }
-                if (kvp.keys) { BINDINGS.SetTemplate(context, kvp.keys, kvp.binding); }
+            kvps.forEach(kvp => { this.constructor._InternalSetBinding(context, kvp); });
 
-                if (true) {
-                    // TODO : REMOVE, FOR DEV ONLY
-                    let cName = u.isFunc(context) ? context.name : context,
-                        kName = u.isFunc(kvp.key) ? kvp.key.name : kvp.key,
-                        vName = u.isFunc(kvp.binding) ? kvp.binding.name : kvp.binding;
-                    u.LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
-                }
-
-            }
         }
 
-        for (let i = 0, n = this._CLASSES.length; i < n; i++) {
-
-            let cl = this._CLASSES[i],
-                uid = u.tils.Get(NFOS.Get(cl), `uid`, null);
-
-            if (!uid) { throw new Error(`No valid NFO found for ${this._CLASSES[i]}`); }
-            this._classDict.Set(cl, uid);
-            BINDINGS.SetClass(uid, cl);
-            u.LOG._(`⧉ ${uid} ⤞ ${cl.name}`, `#7f7f7f`);
-        }
+        this._CLASSES.forEach(cl => { this.constructor._InternalSetClass(cl, this); });
 
         this._deployed = true;
+    }
+
+    static _InternalSetBinding(p_context, p_kvp) {
+
+        if (p_kvp.key) { BINDINGS.Set(p_context, p_kvp.key, p_kvp.binding); }
+        if (p_kvp.keys) { BINDINGS.SetTemplate(p_context, p_kvp.keys, p_kvp.binding); }
+
+        if (true) {
+            // TODO : REMOVE, FOR DEV ONLY
+            let cName = u.isFunc(p_context) ? p_context.name : p_context,
+                kName = u.isFunc(p_kvp.key) ? p_kvp.key.name : p_kvp.key,
+                vName = u.isFunc(p_kvp.binding) ? p_kvp.binding.name : p_kvp.binding;
+            u.LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
+        }
+
+    }
+
+    static _InternalSetClass(p_class, p_wrapper = null) {
+
+        let uid = u.tils.Get(NFOS.Get(p_class), `uid`, null);
+        if (!uid) { throw new Error(`No valid NFO found for ${p_class}`); }
+
+        if (p_wrapper) { p_wrapper._classDict.Set(p_class, uid); }
+
+        BINDINGS.SetClass(uid, p_class);
+        u.LOG._(`⧉ ${uid} ⤞ ${p_class.name}`, `#7f7f7f`);
+
     }
 
     /**

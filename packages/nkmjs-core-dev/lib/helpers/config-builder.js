@@ -11,6 +11,7 @@ class ConfigBuilder {
     constructor(p_context, p_contextDetail = null) {
         let config = ``;
         config += `\tlang:'${NKMjs.projectConfig.lang}',\n`;
+        config += `\tappName:'${NKMjs.projectConfig.name}',\n`;
 
         let localesList = NKMjs.Get(`locales-list`, null);
         if (localesList) {

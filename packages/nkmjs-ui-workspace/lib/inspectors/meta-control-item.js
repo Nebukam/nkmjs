@@ -98,7 +98,7 @@ class MetaControlItem extends Inspec__BASE__torItem {
         let mData = u.isInstanceOf(this._data, data.Metadata) ? this._data : this._data.metadata;
         let mPath = this._metaPath;
 
-        this._Do(data.actions.ActionMetadataSet, {
+        this._Do(data.ops.actions.ActionMetadataSet, {
             target: mData,
             path: mPath,
             value: p_changedValue

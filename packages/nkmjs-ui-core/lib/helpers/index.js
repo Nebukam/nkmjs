@@ -16,7 +16,6 @@ module.exports = {
     WidgetSelection: WidgetSelection,
     Canvas: require(`./disposable-canvas-element`),
     DOMStreamer: require(`./dom-streamer`),
-    DataForward: require(`./data-forward`),
 
     /**
      * @access protected

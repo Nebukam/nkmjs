@@ -162,24 +162,27 @@ class NFOS {
         if (!u.isFunc(p_a)) { p_a = p_a.constructor; }
         if (!u.isFunc(p_b)) { p_b = p_b.constructor; }
 
-        if (p_a == p_b) { return 0; } // Exact match
+        // Drop the "Signed" for now
+        if (!u.isInstanceOf(p_a, p_b)) { return null; }
 
-        if (u.isInstanceOf(p_a, p_b) || u.isInstanceOf(p_b, p_a)) {
-            // There is a relationship
-            let
-                dist_a = this.GetDistanceToObject(p_a),
-                dist_b = this.GetDistanceToObject(p_b),
-                diff = dist_a - dist_b;
+        return this._GetDistance(p_a, p_b);
 
-            if (dist_a == -1 || dist_b == -1) { return null; }
-            // If diff > 0, B is a child of A with a distance of (diff) in inheritance chain.
-            // If diff < 0, A is a child of B, with a distance of (abs(diff))
-            // If diff == 0, A == B, but somehow hasn't been catched earlier?
-            return diff;
-        } else {
-            return null;
-        } //No match
+    }
 
+    static _GetDistance(p_child, p_parent) {
+
+        if (!u.isInstanceOf(p_child, p_parent)) { return null; }
+
+        let
+            dist = 0,
+            parent = Object.getPrototypeOf(p_child);
+
+        while (parent) {
+            if (p_parent == parent) { return dist; }
+            dist++;
+            parent = Object.getPrototypeOf(parent);
+        }
+        return parent ? dist : null;
     }
 
 

@@ -41,8 +41,6 @@ class InputSelectSlider extends base {
 
         this._selectedOption = null;
 
-        //this.classList.add(`group`);
-
         this._showIcon = true;
         this._showLabel = false;
 
@@ -149,7 +147,8 @@ class InputSelectSlider extends base {
 
         this._inputField.setAttribute(`max`, max);
 
-        this.style.setProperty(`--fill`, `${u.tils.Map(index, 0, max, 0, 100)}%`);
+        ui.dom.CSS(this, '--fill', `${u.tils.Map(index, 0, max, 0, 100)}%`);
+        
     }
 
     _CleanUp() {

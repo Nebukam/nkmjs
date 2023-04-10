@@ -2,8 +2,9 @@
 
 const com = require("@nkmjs/common");
 
-const { Metadata, DataBlock } = require(`./lib/data`);
+const { Metadata, DataBlock, SimpleDataBlock } = require(`./lib/data`);
 const serialization = require(`./lib/serialization`);
+const IDS = require(`./lib/ids`);
 
 class Bindings extends com.helpers.BindingKit {
     constructor() { super(); }
@@ -27,7 +28,8 @@ class Bindings extends com.helpers.BindingKit {
                 context: serialization.CONTEXT.JSON,
                 kvps: [
                     { key: Metadata, binding: serialization.json.Metadata },
-                    { key: DataBlock, binding: serialization.json.DataBlock }
+                    { key: DataBlock, binding: serialization.json.DataBlock },
+                    { key: SimpleDataBlock, binding: serialization.json.SimpleDataBlock }
                 ]
             });
 

@@ -94,10 +94,10 @@ class NKMjs {
 
         if (projectPackageJson) {
             if (projectPackageJson.author) {
-                if(u.isString(projectPackageJson.author)){
+                if (u.isString(projectPackageJson.author)) {
                     //TODO : Try parse format such as "name <email@email.com> (url)"
                     author.name = projectPackageJson.author;
-                }else{
+                } else {
                     author.name = u.tils.Get(projectPackageJson.author, `name`, `author_name`);
                     author.email = u.tils.Get(projectPackageJson.author, `email`, `mail@mail.com`);
                 }
@@ -125,7 +125,7 @@ class NKMjs {
         this.projectConfig.__keys[`build-uid`] = this.shortargs[`print-build-guid`] ? this.buildUID : ``;
         this.projectConfig.__keys[`version`] = projectPackageJson ? projectPackageJson.version : `0.0.0`;
 
-        
+
 
     }
 
@@ -264,26 +264,23 @@ class NKMjs {
 
     static Short(p_path, p_prefix, p_rep = `.`, p_sanitize = false) {
         let p = p_path.split(p_prefix).join(p_rep);
-        return p_sanitize ? p.split('\\').join('/') : p;
+        return p_sanitize ? p.replaceAll('\\', '/') : p;
     }
 
     static Sanitize(p_name) {
-        p_name = p_name.split(`@`).join(`external-`);
-        p_name = p_name.split(`/`).join(`-`);
-        p_name = p_name.split(`\\`).join(`-`);
-        return p_name;
+        return p_name
+            .replaceAll(`@`, `external-`)
+            .replaceAll(`/`, `-`)
+            .replaceAll(`\\`, `-`);
     }
 
     static ExternalName(p_name) {
-        p_name = p_name.split(`@`).join(`external-`);
-        p_name = p_name.split(`/`).join(`-`);
-        p_name = p_name.split(`\\`).join(`-`);
-        return `lib-${p_name}`;
+        return `lib-${this.Sanitize(p_name)}`;
     }
 
     static ModuleOwner(p_filePath) {
 
-        p_filePath = p_filePath.split(path.sep).join(`/`);
+        p_filePath = p_filePath.replaceAll(path.sep, `/`);
         if (!p_filePath.includes(`node_modules/`)) { return null; }
 
         try {

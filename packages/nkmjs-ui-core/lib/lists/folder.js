@@ -3,7 +3,9 @@
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 
+const IDS = require(`../ids`);
 const SIGNAL = require(`../signal`);
+const dom = require(`../utils-dom`);
 const extensions = require(`../extensions`);
 const DOMStreamer = require(`../helpers/dom-streamer`);
 
@@ -51,7 +53,7 @@ class Folder extends base {
             fixedSize: true
         };
 
-        this.style.setProperty(`--folder-size`, `${this.constructor.__itemHeight}px`);
+        dom.CSS(this, `--folder-size`, `${this.constructor.__itemHeight}px`);
 
         this._builder = com.Rent(CatalogFolderBuilder);
         this._builder.owner = this;
@@ -233,7 +235,7 @@ class Folder extends base {
      * @param {*} p_widget 
      */
     _OnBuilderItemAdded(p_builder, p_item, p_widget) {
-        p_widget.classList.add(`item`);
+        dom.CSSClass(p_widget, IDS.ITEM);
         p_widget.depth = this._depth + 1;
         //Re-order items ?
     }
@@ -246,7 +248,7 @@ class Folder extends base {
      * @param {*} p_widget 
      */
     _OnBuilderItemRemoved(p_builder, p_item, p_widget) {
-        p_widget.classList.remove(`item`);
+        dom.CSSClass(p_widget, IDS.ITEM, false);
     }
 
     // ----> Pooling

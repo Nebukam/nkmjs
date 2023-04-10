@@ -104,6 +104,13 @@ class RELAY extends services.ServiceBase {
     static ipcOn(p_evt, p_fn) { this.instance._ipcOn(p_evt, p_fn); }
 
     /**
+     * @description TODO
+     * @param {string} p_evt 
+     * @param {function} p_fn 
+     */
+    static ipcOff(p_evt, p_fn) { this.instance._ipcOff(p_evt, p_fn); }
+
+    /**
      * @access protected
      * @description TODO
      * @param {string} p_evt 
@@ -111,6 +118,16 @@ class RELAY extends services.ServiceBase {
      */
     _ipcOn(p_evt, p_fn) { 
         if(this._extIpc){ this._extIpc.Watch(p_evt, p_fn); }
+    }
+
+    /**
+     * @access protected
+     * @description TODO
+     * @param {string} p_evt 
+     * @param {function} p_fn 
+     */
+    _ipcOff(p_evt, p_fn) { 
+        if(this._extIpc){ this._extIpc.Unwatch(p_evt, p_fn); }
     }
 
     /**
