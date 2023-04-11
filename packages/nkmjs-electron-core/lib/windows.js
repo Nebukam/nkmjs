@@ -152,7 +152,7 @@ class WINDOWS extends com.helpers.SingletonEx {
             }
 
             if (p_options.onDomReady) {
-                wrapper.window.webContents.on(`did-frame-finish-load`, p_options.onDomReady);
+                wrapper.window.webContents.once(`did-finish-load`, p_options.onDomReady);  //did-frame-finish-load
             }
 
             // Load index.html into main window
