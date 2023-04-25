@@ -4,6 +4,8 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 
+const dom = require(`../utils-dom`);
+
 const WidgetBar = require(`../widget-bar`);
 const WidgetItem = require("../widget-item");
 
