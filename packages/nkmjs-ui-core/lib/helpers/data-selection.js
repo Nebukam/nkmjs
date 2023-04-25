@@ -148,13 +148,14 @@ class DataSelection extends com.pool.DisposableObjectEx {
         this.Broadcast(com.SIGNAL.ITEM_ADDED, p_data);
 
         if (pushRange) { this.AddRange(-1, p_dataIndex, false); }
-        if (this._autoBump) { this._delayedBump.Schedule(); }
+        if (this._autoBump) { this._delayedBump.Bump(); }
 
         return true;
 
     }
 
     AddRange(p_from = -1, p_to = -1, p_clearFirst = false) {
+
 
         if (this._currentRangeContent) {
             // Clear active selection range
@@ -253,7 +254,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
             this._indices._array.push(this._indices._array.splice(index, 1)[0]);
         }
 
-        if(this._lastBump != p_data){
+        if (this._lastBump != p_data) {
             this._lastBump = p_data;
             this.Broadcast(com.SIGNAL.ITEM_BUMPED, p_data);
         }
