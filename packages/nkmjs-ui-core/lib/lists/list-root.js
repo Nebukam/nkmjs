@@ -3,7 +3,9 @@
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 
+const dom = require(`../utils-dom`);
 const helpers = require(`../helpers`);
+
 const UI = require(`../ui`);
 const List = require(`./list`);
 
