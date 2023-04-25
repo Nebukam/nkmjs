@@ -201,7 +201,7 @@ class InspectionDataList extends com.pool.DisposableObjectEx {
         }
         let data = this._stack.last;
         this._lastItemType = data.constructor;
-        this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, data);
+        //this.Broadcast(com.SIGNAL.ITEM_BUMPED, this, data);
         this.Broadcast(com.SIGNAL.UPDATED, this);
     }
 

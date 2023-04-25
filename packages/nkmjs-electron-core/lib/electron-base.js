@@ -236,8 +236,9 @@ class ElectronBase {
     _OnRequestReload() {
         console.log(`RELOAD_REQUEST`);
         this._booted = false;
-        this._mainWindow.reload();
+        this._mainWindow.webContents.once(`did-finish-load`, this._Boot); 
         this._mainWindow.webContents.session.clearCache();
+        this._mainWindow.reload();
     }
 
 
