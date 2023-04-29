@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/io-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NKMjs Framework IO Core",
   "main": "index.js",
   "repository": {
@@ -17,9 +17,9 @@
   "license": "MIT",
   "dependencies": {
     "@nkmjs/collections": "^1.0.0",
-    "@nkmjs/common": "^1.0.0",
-    "@nkmjs/environment": "^1.0.0",
-    "@nkmjs/services": "^1.0.0",
+    "@nkmjs/common": "^1.0.1",
+    "@nkmjs/environment": "^1.0.1",
+    "@nkmjs/services": "^1.0.1",
     "@nkmjs/utils": "^1.0.0"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
