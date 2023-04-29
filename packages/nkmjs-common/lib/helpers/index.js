@@ -23,4 +23,6 @@ module.exports = {
     InfosObject: require(`./infos-object`),
     InfosObjectEx: require(`./infos-object-ex`),
 
+    Keys: require(`./keys`),
+
 }

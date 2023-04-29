@@ -27,6 +27,24 @@ class StyleguideApp extends nkm.app.AppBase {
         this._mainContainer = null;
         this._delayedScrollIntoView = nkm.com.DelayedCall(this._Bind(this._ScrollToTarget));
 
+        let keySource = {
+            valA: "I'm A",
+            valB: "I'm B, but A says: '%valA%'",
+            valC: {
+                A: "I'm A, but inside C",
+                B: "I'm B, but inside C (with nested A: '%valA%')",
+                C: () => { return `caca` },
+                D: { fn: () => { return `meh` } }
+            }
+        };
+
+        let testKeys = new nkm.com.helpers.Keys(keySource);
+        let testString = "%valA%, %valC.A%, %valC.C%, %valC.B%, %valC.D%,";
+
+        console.log(testKeys.ReplaceAll(testString));
+
+
+
         this._Bind(this._Dialog);
         this._Bind(this._Overlay);
 
