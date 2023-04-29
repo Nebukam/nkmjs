@@ -1,9 +1,9 @@
 {
-    "name": "nkm-workbench",
+    "name": "nkmjs-workbench",
     "version": "1.0.3",
     "description": "NKMjs Framework Workbench",
     "main": "./src/index-electron.js",
-    "repository": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-tests",
+    "repository": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-workbench",
     "private": true,
     "scripts": {
         "nkmjs": "nkmjs"
