@@ -6,7 +6,8 @@
     "repository": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-workbench",
     "private": true,
     "scripts": {
-        "nkmjs": "nkmjs"
+        "nkmjs": "nkmjs",
+        "start-server": "nodemon app/server.js"
     },
     "author": {
         "name": "Timothé Lapetite",
@@ -14,11 +15,12 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@nkmjs/core": "../nkmjs-core"
+        "@nkmjs/core": "../nkmjs-core",
+        "nodemon": "^2.0.22"
     },
     "devDependencies": {
         "@nkmjs/core-dev": "../nkmjs-core-dev",
-        "electron": "^17.1.0"
+        "electron": "^24.1.2"
     },
     "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
 }

@@ -7,8 +7,14 @@
 
 This is the server-side version of @nkmjs/app-core
 
+`.env` is expected to contain the following infos:
 
-
+```
+CLIENT_ID=`auth0-clientID`
+ISSUER_BASE_URL=https://localhost
+SECRET='open-id-connect-secret'
+PORT=8080
+```
 
 
 

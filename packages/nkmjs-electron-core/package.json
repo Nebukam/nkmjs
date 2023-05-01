@@ -26,7 +26,7 @@
     "@nkmjs/utils": "^1.0.0"
   },
   "devDependencies": {
-    "electron": "^17.1.0"
+    "electron": "^24.1.2"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }
