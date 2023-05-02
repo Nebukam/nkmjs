@@ -26,8 +26,10 @@ globalThis.nkm = module.exports = {
 
     documents : core.documents,
     data : core.data,
-    datalib : core.datalib
+    datalib : core.datalib,
 
     //#endregion
+
+    get main(){ return nkm.env.APP; },
 
 }

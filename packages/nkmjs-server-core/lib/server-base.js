@@ -1,6 +1,7 @@
 'use strict';
 
 const u = require(`@nkmjs/utils`);
+const env = require(`@nkmjs/environment`);
 
 const dotenv = require('dotenv');
 const collections = require(`@nkmjs/collections`);
@@ -18,6 +19,8 @@ class ServerBase {
     constructor(p_constants) {
 
         this._config = p_constants;
+        env.ENV.instance.Start(p_constants);
+        env.ENV.instance._app = this;
 
         this._authConfig = {
             authRequired: this._config.authRequired || false,
