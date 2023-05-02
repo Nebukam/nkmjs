@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/io-electron",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "NKMjs Framework IO Electron",
   "main": "index.js",
   "repository": {
@@ -17,9 +17,9 @@
   "license": "MIT",
   "dependencies": {
     "@nkmjs/collections": "^1.0.0",
-    "@nkmjs/common": "^1.0.2",
-    "@nkmjs/io-core": "^1.0.2",
-    "@nkmjs/utils": "^1.0.1",
+    "@nkmjs/common": "^1.0.3",
+    "@nkmjs/io-core": "^1.0.3",
+    "@nkmjs/utils": "^1.0.2",
     "chokidar": "^3.5.3",
     "sanitize-filename": "^1.6.3",
     "tmp": "^0.2.1"
