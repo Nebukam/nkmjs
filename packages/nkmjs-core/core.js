@@ -16,7 +16,7 @@ globalThis.nkmin = module.exports = {
     env : require(`@nkmjs/environment`),
     metrics : require(`@nkmjs/metrics`),
     services : require(`@nkmjs/services`),
-    utils : require("@nkmjs/utils"),
+    u : require("@nkmjs/utils"),
 
     //#endregion
 
@@ -27,5 +27,7 @@ globalThis.nkmin = module.exports = {
     datalib : require(`@nkmjs/data-library`),
     
     //#endregion
+
+    actions : require("@nkmjs/actions"),
 
 }
