@@ -15,7 +15,7 @@ globalThis.nkm = module.exports = {
     collections : nkmin.collections,
     com : nkmin.com,
     io : nkmin.io,
-    env : nkmin.io,
+    env : nkmin.env,
     metrics : nkmin.metrics,
     services : nkmin.services,
     u : nkmin.u,
