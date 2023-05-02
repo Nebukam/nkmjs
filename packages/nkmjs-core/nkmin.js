@@ -26,25 +26,8 @@ globalThis.nkm = module.exports = {
 
     documents : core.documents,
     data : core.data,
-    datalib : core.datalib,
-    datacontrols : require(`@nkmjs/ui-data-controls`),
-    
-    //#endregion
+    datalib : core.datalib
 
-    //#region renderer
-
-    actions : core.actions,
-    app : require(`@nkmjs/app-core`),
-    localisation : require(`@nkmjs/localisation`),
-    dialog : require(`@nkmjs/dialog`),
-    style : require(`@nkmjs/style`),
-    ui : require(`@nkmjs/ui-core`),
-    uilib : require(`@nkmjs/ui-library`),
-    uiworkspace : require(`@nkmjs/ui-workspace`),
-    
     //#endregion
-    
-    get settings(){ return nkm.app.settings; },
-    get main(){ return nkm.app.main; },
 
 }

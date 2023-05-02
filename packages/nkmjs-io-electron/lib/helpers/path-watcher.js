@@ -56,7 +56,7 @@ class PathWatcher extends com.pool.DisposableObjectEx {
 
     get path() { return this._path; }
     set path(p_value) {
-        p_value = nkm.u.FULL(p_value);
+        p_value = nkmcore.u.FULL(p_value);
         if (this._path == p_value) { return; }
         let oldPath = this._path;
         this._path = p_value;

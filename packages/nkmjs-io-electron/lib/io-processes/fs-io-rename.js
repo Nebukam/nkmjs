@@ -7,7 +7,7 @@ const fs = require(`fs`);
  * Desktop IO Reader
  */
 
-class FSIORename extends nkm.io.IOProcess {
+class FSIORename extends nkmcore.io.IOProcess {
 
     constructor() { super(); }
 
@@ -21,14 +21,14 @@ class FSIORename extends nkm.io.IOProcess {
 
     }
 
-    set targetPath(p_value) { this._targetPath = nkm.u.FULL(p_value); }
+    set targetPath(p_value) { this._targetPath = nkmcore.u.FULL(p_value); }
     get targetPath() { return this._targetPath; }
 
     Validate() {
 
         if (!super.Validate()) { return false; }
 
-        let existing = this._resources.Get(nkm.u.SHORT(this._targetPath));
+        let existing = this._resources.Get(nkmcore.u.SHORT(this._targetPath));
         if (existing && existing != this.rsc) {
             this._OnError(new Error(`Cannot rename resource from '${this.rsc.path}' to '${this._targetPath}' : destination already exists`));
             return false;
