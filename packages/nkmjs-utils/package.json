@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "uuid": "^8.3.2"
+    "uuid": "^9.0.0"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }

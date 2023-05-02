@@ -20,7 +20,7 @@ const __noResolution = Object.freeze([]);
 /**
  * @typedef DataListDefinition
  * @property {String} member Layer class constructor
- * @property {Class} type Bloc' instance class
+ * @property {Class} type DataList' instance class
  * @property {Boolean} [IDS.SKIP_SERIALIZATION] Whether serialization should be skipped
  * @property {Array} [watch] Hooks to be added to the the datalist. Format is { signal:, fn:String|Func, ?thisArg: }
  * @property {Array} [hooks] Hooks to be added to the item observer of the datalist. Format is { signal:, fn:String|Func, ?thisArg: }
