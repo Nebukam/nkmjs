@@ -6,7 +6,8 @@
  * 
  * It encapsulate all available libraries except electron & server specifics.
  */
-let nkmin = require(`./core`);
+
+let nkmin = globalThis.nkm ? globalThis.nkm : require(`./core`);
 
 globalThis.nkm = module.exports = {
     
