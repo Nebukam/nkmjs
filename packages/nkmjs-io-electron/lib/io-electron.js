@@ -10,31 +10,31 @@ class IOElectron {
 
     Deploy() {
 
-        let RESOURCES = nkmcore.io.RESOURCES.instance;
+        let RESOURCES = nkmCore.io.RESOURCES.instance;
         let iop = require(`./io-processes`);
 
         // Overwrite default or RESOURCES (IOWriter, IOReader, IORename + Directory support)
         RESOURCES._GetStats = this._GetStats.bind(io.RESOURCES.instance);
         RESOURCES._IOID = this._IOID.bind(io.RESOURCES.instance);
-        RESOURCES._io[nkmcore.io.IO_TYPE.FILE_SYSTEM] = {
+        RESOURCES._io[nkmCore.io.IO_TYPE.FILE_SYSTEM] = {
             read: iop.FSIOReader,
             write: iop.FSIOWriter,
             rename: iop.FSIORename,
             delete: iop.FSIODelete
         };
-        RESOURCES._io[nkmcore.io.IO_TYPE.DEFAULT] = {
+        RESOURCES._io[nkmCore.io.IO_TYPE.DEFAULT] = {
             read: iop.FSIOReader,
             write: iop.FSIOWriter,
             rename: iop.FSIORename,
             delete: iop.FSIODelete
         };
 
-        RESOURCES._io[nkmcore.io.IO_TYPE.DOCUMENT] = {
-            ...RESOURCES._io[nkmcore.io.IO_TYPE.FILE_SYSTEM]
+        RESOURCES._io[nkmCore.io.IO_TYPE.DOCUMENT] = {
+            ...RESOURCES._io[nkmCore.io.IO_TYPE.FILE_SYSTEM]
         };
 
-        nkmcore.env.features.GetMemory = this._GetMemory.bind(nkmcore.env.FEATURES);
-        nkmcore.env.features._IOFlushFn = this._IOFlush.bind(nkmcore.env.FEATURES);
+        nkmCore.env.features.GetMemory = this._GetMemory.bind(nkmCore.env.FEATURES);
+        nkmCore.env.features._IOFlushFn = this._IOFlush.bind(nkmCore.env.FEATURES);
 
     }
 
@@ -52,15 +52,15 @@ class IOElectron {
     }
 
     _IOID(p_ioId, p_op) {
-        if (nkmcore.u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
+        if (nkmCore.u.isEmpty(p_ioId) || !(p_ioId in this._io)) {
             try {
                 let url = new URL(p_op.fullPath);
                 if (!url.protocol.includes(`file`)) {
-                    return nkmcore.io.IO_TYPE.REMOTE;
+                    return nkmCore.io.IO_TYPE.REMOTE;
                 }
             } catch (e) { }
 
-            return nkmcore.io.IO_TYPE.DEFAULT;
+            return nkmCore.io.IO_TYPE.DEFAULT;
         }
         return p_ioId;
     }

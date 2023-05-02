@@ -19,8 +19,8 @@ module.exports = {
 
     LaunchExternalEditor: (p_editorPath, p_targetPath, p_spawnOptions = null) => {
 
-        p_editorPath = nkmcore.u.FULL(p_editorPath).replaceAll('/', path.sep);
-        p_targetPath = nkmcore.u.FULL(p_targetPath).replaceAll('/', path.sep);
+        p_editorPath = nkmCore.u.FULL(p_editorPath).replaceAll('/', path.sep);
+        p_targetPath = nkmCore.u.FULL(p_targetPath).replaceAll('/', path.sep);
 
         try {
             let stat = fs.statSync(p_editorPath);
@@ -50,7 +50,7 @@ module.exports = {
     },
 
     OpenPath: (p_path) => {
-        shell.openPath(nkmcore.u.FULL(p_path).replaceAll('/', path.sep));
+        shell.openPath(nkmCore.u.FULL(p_path).replaceAll('/', path.sep));
     },
 
     /**
@@ -68,7 +68,7 @@ module.exports = {
     ForEach: (p_path, p_fn, p_options = null) => {
         try {
             let
-                basedir = nkmcore.u.FULL(p_path),
+                basedir = nkmCore.u.FULL(p_path),
                 stat = fs.statSync(basedir);
 
             if (!stat.isDirectory()) { return false; }
@@ -96,7 +96,7 @@ module.exports = {
 
                     p_fn({
                         name: entry,
-                        path: nkmcore.u.SHORT(fullPath),
+                        path: nkmCore.u.SHORT(fullPath),
                         isFile: isFile,
                         isDirectory: isDirectory
                     });

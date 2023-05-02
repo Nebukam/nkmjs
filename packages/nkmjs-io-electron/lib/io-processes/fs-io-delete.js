@@ -8,7 +8,7 @@ const fs = require(`fs`);
  * Desktop IO Reader
  */
 
-class FSIODelete extends nkmcore.io.IOProcess {
+class FSIODelete extends nkmCore.io.IOProcess {
 
     constructor() { super(); }
 
@@ -27,7 +27,7 @@ class FSIODelete extends nkmcore.io.IOProcess {
 
     _OnStatRead(p_err, p_stats) {
         if (p_err) { return this._OnError(p_err); }
-        nkmcore.com.Rent(PathDelete).Do(this._operation.fullPath, null, p_stats, this._OnPathDeleted);
+        nkmCore.com.Rent(PathDelete).Do(this._operation.fullPath, null, p_stats, this._OnPathDeleted);
     }
 
     _OnPathDeleted(p_err) {

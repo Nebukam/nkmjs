@@ -7,7 +7,7 @@
  * It is meant to be used on node-side only (electron or server)
  */
 
-globalThis.nkmcore = module.exports = {
+globalThis.nkmCore = module.exports = {
 
     //#region core
 

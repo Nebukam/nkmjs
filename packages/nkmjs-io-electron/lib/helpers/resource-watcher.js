@@ -37,8 +37,8 @@ class ResourceWatcher extends base {
         this._readOptions = null;
         this._rscOptions = null;
 
-        this._rscObserver = new nkmcore.com.signals.Observer();
-        this._rscObserver.Hook(nkmcore.io.IO_SIGNAL.READ_COMPLETE, this._OnReadComplete, this);
+        this._rscObserver = new nkmCore.com.signals.Observer();
+        this._rscObserver.Hook(nkmCore.io.IO_SIGNAL.READ_COMPLETE, this._OnReadComplete, this);
 
     }
 
@@ -52,7 +52,7 @@ class ResourceWatcher extends base {
         super._OnPathChanged(p_path, p_oldPath);
     }
 
-    _GetRsc(p_path) { return nkmcore.io.Get(p_path, this._rscOptions); }
+    _GetRsc(p_path) { return nkmCore.io.Get(p_path, this._rscOptions); }
 
     get readOptions() { return this._readOptions; }
     set readOptions(p_value) { this._readOptions = p_value; }
@@ -77,9 +77,9 @@ class ResourceWatcher extends base {
     }
 
     _OnRscChanged(p_new, p_old) {
-        if (p_old) { p_old.Unwatch(nkmcore.com.SIGNAL.RELEASED, this._OnRscReleased, this); }
-        if (p_new) { p_new.Watch(nkmcore.com.SIGNAL.RELEASED, this._OnRscReleased, this); }
-        this.Broadcast(nkmcore.com.SIGNAL.ITEM_UPDATED, this, p_new, p_old);
+        if (p_old) { p_old.Unwatch(nkmCore.com.SIGNAL.RELEASED, this._OnRscReleased, this); }
+        if (p_new) { p_new.Watch(nkmCore.com.SIGNAL.RELEASED, this._OnRscReleased, this); }
+        this.Broadcast(nkmCore.com.SIGNAL.ITEM_UPDATED, this, p_new, p_old);
     }
 
     _OnRscReleased() {
@@ -95,19 +95,19 @@ class ResourceWatcher extends base {
 
     _OnFileChange(p_path) {
         super._OnFileChange(p_path);
-        p_path = nkmcore.u.FULL(p_path);
+        p_path = nkmCore.u.FULL(p_path);
         if (this._path == p_path && this._readOnChange) {
             this.Read(this._readOptions);
         }
     }
 
     _OnReadComplete(p_rsc) {
-        this.Broadcast(nkmcore.io.IO_SIGNAL.READ_COMPLETE, this, p_rsc);
+        this.Broadcast(nkmCore.io.IO_SIGNAL.READ_COMPLETE, this, p_rsc);
     }
 
     _OnFileDeleted(p_path) {
         super._OnFileDeleted(p_path);
-        p_path = nkmcore.u.FULL(p_path);
+        p_path = nkmCore.u.FULL(p_path);
         if (this._path == p_path && this._releaseRscOnDelete) {
             if (this._currentRsc) { this._currentRsc.Release(); }
         }
@@ -117,7 +117,7 @@ class ResourceWatcher extends base {
 
     _OnDirectoryDeleted(p_path) {
         super._OnDirectoryDeleted(p_path);
-        p_path = nkmcore.u.FULL(p_path);
+        p_path = nkmCore.u.FULL(p_path);
         if (this._path == p_path && this._releaseRscOnDelete) {
             if (this._currentRsc) { this._currentRsc.Release(); }
         }

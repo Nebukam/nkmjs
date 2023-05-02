@@ -6,7 +6,7 @@
  * 
  * It encapsulate all available libraries except electron & server specifics.
  */
-const core = globalThis.nkmcore ? globalThis.nkmcore : require(`./core`);
+const core = globalThis.nkmCore ? globalThis.nkmCore : require(`./core`);
 
 globalThis.nkm = module.exports = {
     

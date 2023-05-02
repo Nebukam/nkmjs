@@ -10,7 +10,7 @@ const PathCreate = require(`../helpers/path-create`);
  * Desktop IO Reader
  */
 
-class FSIOWriter extends nkmcore.io.IOProcess {
+class FSIOWriter extends nkmCore.io.IOProcess {
 
     constructor() { super(); }
 
@@ -29,9 +29,9 @@ class FSIOWriter extends nkmcore.io.IOProcess {
         this._OnProgress(0);
 
         let dirPath = this._operation.fullPath;
-        if (!this.rsc.isDir) { dirPath = nkmcore.u.PATH.dir(dirPath); }
+        if (!this.rsc.isDir) { dirPath = nkmCore.u.PATH.dir(dirPath); }
 
-        nkmcore.com.Rent(PathCreate).Do(dirPath, this._OnPathCreated);
+        nkmCore.com.Rent(PathCreate).Do(dirPath, this._OnPathCreated);
 
     }
 

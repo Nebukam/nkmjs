@@ -8,7 +8,7 @@ const fs = require(`fs`);
  * Desktop IO Reader
  */
 
-class FSIOReader extends nkmcore.io.IOProcess {
+class FSIOReader extends nkmCore.io.IOProcess {
 
     constructor() { super(); }
 
