@@ -6,33 +6,34 @@
  * 
  * It encapsulate all available libraries except electron & server specifics.
  */
+let nkmin = require(`./core`);
 
 globalThis.nkm = module.exports = {
     
     //#region core
 
-    collections : require(`@nkmjs/collections`),
-    com : require("@nkmjs/common"),
-    io : require(`@nkmjs/io-core`),
-    env : require(`@nkmjs/environment`),
-    metrics : require(`@nkmjs/metrics`),
-    services : require(`@nkmjs/services`),
-    u : require("@nkmjs/utils"),
+    collections : nkmin.collections,
+    com : nkmin.com,
+    io : nkmin.io,
+    env : nkmin.io,
+    metrics : nkmin.metrics,
+    services : nkmin.services,
+    u : nkmin.u,
 
     //#endregion
 
     //#region data
 
-    documents : require(`@nkmjs/documents`),
-    data : require(`@nkmjs/data-core`),
-    datalib : require(`@nkmjs/data-library`),
+    documents : nkmin.documents,
+    data : nkmin.data,
+    datalib : nkmin.datalib,
     datacontrols : require(`@nkmjs/ui-data-controls`),
     
     //#endregion
 
     //#region renderer
 
-    actions : require("@nkmjs/actions"),
+    actions : nkmin.actions,
     app : require(`@nkmjs/app-core`),
     localisation : require(`@nkmjs/localisation`),
     dialog : require(`@nkmjs/dialog`),
@@ -42,6 +43,7 @@ globalThis.nkm = module.exports = {
     uiworkspace : require(`@nkmjs/ui-workspace`),
     
     //#endregion
+    
     get settings(){ return nkm.app.settings; },
     get main(){ return nkm.app.main; },
 

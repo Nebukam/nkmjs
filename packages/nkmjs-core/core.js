@@ -6,7 +6,7 @@
  * 
  * It is meant to be used on node-side only (electron or server)
  */
-globalThis.nkmin = module.exports = {
+globalThis.nkm = module.exports = {
 
     //#region core
 
