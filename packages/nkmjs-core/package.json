@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/core",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "NKMjs Framework Core Assembly",
   "main": "./nkm.js",
   "repository": {
@@ -24,10 +24,10 @@
     "@nkmjs/data-library": "^1.0.3",
     "@nkmjs/dialog": "^1.0.5",
     "@nkmjs/documents": "^1.0.3",
-    "@nkmjs/electron-core": "^1.0.5",
+    "@nkmjs/electron-core": "^1.0.6",
     "@nkmjs/environment": "^1.0.3",
     "@nkmjs/io-core": "^1.0.3",
-    "@nkmjs/io-electron": "^1.0.3",
+    "@nkmjs/io-electron": "^1.0.4",
     "@nkmjs/localisation": "^1.0.3",
     "@nkmjs/metrics": "^1.0.3",
     "@nkmjs/server-core": "^1.0.3",
