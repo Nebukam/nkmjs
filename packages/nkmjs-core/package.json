@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/core",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "NKMjs Framework Core Assembly",
   "main": "./nkm.js",
   "repository": {
