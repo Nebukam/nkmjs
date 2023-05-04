@@ -60,7 +60,7 @@ class APIDefinition extends com.pool.DisposableObjectEx {
         if (this._running) { return; }
 
         this._running = true;
-        
+
         if (this._isPost) {
             if (this._requireAuth) { this._express.post(this._route, this._requireAuth(), this._Handle); }
             else { this._express.post(this._route, this._Handle); }
@@ -103,6 +103,16 @@ class APIDefinition extends com.pool.DisposableObjectEx {
      * @param {*} p_response 
      */
     _Handle(p_request, p_response) {
+
+        if (this.requireAuth) {
+            //TODO: Make this flexible so it can support multiple authentication
+            //methods & middlewares
+            if (!req.oidc.isAuthenticated()) {
+                p_request.sendStatus(401).end();
+                return;
+            }
+        }
+
         let newHandler = com.Rent(this._handlerClass || handlers.Fn);
         newHandler.def = this;
         this._activeHandlers.Add(newHandler);

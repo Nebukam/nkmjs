@@ -22,12 +22,6 @@ class HandlerBase extends com.pool.DisposableObjectEx {
     set res(p_value) { this._res = p_value; }
 
     _InternalHandle(p_req, p_res) {
-        if (this._def.requireAuth) {
-            if (!p_req.oidc.isAuthenticated()) {
-                p_res.sendStatus(401).end();
-                return;
-            }
-        }
         if (!this._SanitizeRequest(p_req)) {
             p_res.sendStatus(400).end();
             return;
