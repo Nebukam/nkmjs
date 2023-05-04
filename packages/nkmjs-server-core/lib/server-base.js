@@ -204,6 +204,7 @@ class ServerBase {
         api.route = p_config.route;
         api.handlerClass = p_config.handler;
         api.requireAuth = p_config.requireAuth ? this._requireAuth : false;
+        api.isPost = p_config.post ? true : false;
         api.options = p_config;
 
         this._apiMap.Set(p_identifier, api);

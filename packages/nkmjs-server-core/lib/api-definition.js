@@ -18,6 +18,7 @@ class APIDefinition extends com.pool.DisposableObjectEx {
 
         this._activeHandlers = new collections.List();
 
+        this._isPost = false;
         this._options = null;
         this._id = ``;
         this._route = `/`;
@@ -30,6 +31,9 @@ class APIDefinition extends com.pool.DisposableObjectEx {
 
     get id() { return this._id; }
     set id(p_value) { this._id = p_value; }
+
+    get isPost() { return this._isPost; }
+    set isPost(p_value) { this._isPost = p_value; }
 
     get route() { return this._route; }
     set route(p_value) { this._route = p_value; }
@@ -56,8 +60,14 @@ class APIDefinition extends com.pool.DisposableObjectEx {
         if (this._running) { return; }
 
         this._running = true;
-        if (this._requireAuth) { this._express.get(this._route, this._requireAuth(), this._Handle); }
-        else { this._express.get(this._route, this._Handle); }
+        
+        if (this._isPost) {
+            if (this._requireAuth) { this._express.post(this._route, this._requireAuth(), this._Handle); }
+            else { this._express.post(this._route, this._Handle); }
+        } else {
+            if (this._requireAuth) { this._express.get(this._route, this._requireAuth(), this._Handle); }
+            else { this._express.get(this._route, this._Handle); }
+        }
 
     }
 
