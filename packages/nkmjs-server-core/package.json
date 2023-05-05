@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/server-core",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "NKMjs Server-side core, built on top of express",
   "main": "index.js",
   "repository": {
