@@ -3,11 +3,11 @@
 const HandlerBase = require(`./handler-base`);
 const FLAGS = require(`../flags`);
 
-class HandlerGet extends HandlerBase {
+class HandlerPost extends HandlerBase {
     constructor() { super(); }
 
-    static __MODE = FLAGS.GET;
+    static __MODE = FLAGS.POST;
 
 }
 
-module.exports = HandlerGet;
+module.exports = HandlerPost;

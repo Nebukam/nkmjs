@@ -2,16 +2,16 @@
 
 const u = require(`@nkmjs/utils`);
 const HandlerBase = require(`./handler-base`);
+const STATUSES = require("../status-codes");
 
 class HandlerFn extends HandlerBase {
-
     constructor() { super(); }
 
     Handle() {
         try {
             u.Call(this._def.options.fn, this._req, this._res);
         } catch (e) {
-            this._res.sendStatus(520).end();
+            this.Abort(STATUSES.INTERNAL_SERVER_ERROR);
             throw e;
         }
     }

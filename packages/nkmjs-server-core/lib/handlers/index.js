@@ -1,8 +1,12 @@
 'use strict';
 
 module.exports = {
-    HandlerBase: require(`./handler-base`),
+
+    GET: require(`./handler-get`),
+    POST: require(`./handler-post`),
+
+    Action: require(`./handler-action`),
+    Upload: require(`./handler-upload`),
     Fn: require(`./handler-fn`),
-    Get: require(`./handler-get`),
     Fetch: require(`./handler-fetch`),
 }

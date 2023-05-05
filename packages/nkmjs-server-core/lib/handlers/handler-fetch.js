@@ -1,10 +1,11 @@
 'use strict';
 
 const com = require(`@nkmjs/common`);
-const HandlerGet = require(`./handler-get`);
 const axios = require(`axios`);
+const STATUSES = require("../status-codes");
 
-class HandlerFetch extends HandlerGet {
+const base = require(`./handler-get`);
+class HandlerFetch extends base {
 
     constructor() { super(); }
 
@@ -31,12 +32,7 @@ class HandlerFetch extends HandlerGet {
     }
 
     _OnFetchError(p_err) {
-        if (p_err.response) {
-            this._res.status(p_err.response.status);
-        } else {
-            this._res.status(404).end();
-        }
-        this._OnHandled();
+        this.Abort(p_err.response ? STATUSES.getStatus(p_err.response.status) : STATUSES.NOT_FOUND);
     }
 
 }

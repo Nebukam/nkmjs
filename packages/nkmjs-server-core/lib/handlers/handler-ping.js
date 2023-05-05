@@ -1,10 +1,9 @@
 'use strict';
 
 const com = require(`@nkmjs/common`);
-const HandlerBase = require(`./handler-base`);
 
-class HandlerPing extends HandlerBase {
-
+const base = require(`./handler-get`);
+class HandlerPing extends base {
     constructor() { super(); }
 
     Handle(){

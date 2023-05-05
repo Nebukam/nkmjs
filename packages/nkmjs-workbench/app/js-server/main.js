@@ -4,11 +4,7 @@ const handlers = require(`./handlers`);
 class ServerProcess extends server.core.ServerBase {
     constructor(p_config) { super(p_config); }
 
-    static __USE_AUTH = false;
-
-    _Init(p_express) {
-
-        super._Init(p_express);
+    _InitAPIs() {
 
         this._RegisterAPIs({
 

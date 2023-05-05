@@ -1,10 +1,15 @@
 'use strict';
 
 const com = require(`@nkmjs/common`);
+const u = require(`@nkmjs/utils`);
+
+const FLAGS = require(`../flags`);
+const STATUSES = require("../status-codes");
 
 class HandlerBase extends com.pool.DisposableObjectEx {
-
     constructor() { super(); }
+
+    static __MODE = FLAGS.GET;
 
     _Init() {
         super._Init();
@@ -16,38 +21,82 @@ class HandlerBase extends com.pool.DisposableObjectEx {
     set def(p_value) { this._def = p_value; }
 
     get req() { return this._req; }
-    set req(p_value) { this._req = p_value; }
 
     get res() { return this._res; }
-    set res(p_value) { this._res = p_value; }
 
+    /**
+     * 
+     * @param {*} p_req 
+     * @param {*} p_res 
+     * @returns 
+     */
     _InternalHandle(p_req, p_res) {
-        if (!this._SanitizeRequest(p_req)) {
-            p_res.sendStatus(400).end();
-            return;
+
+        let status = this._SanitizeRequest(p_req);
+
+        if (status !== true) {
+            if (u.isNumber(status)) { status = STATUSES.getStatus(status); }
+            if (!status) { status = STATUSES.BAD_REQUEST; }
+            return this.Abort(status);
         }
+
         this._req = p_req;
         this._res = p_res;
+
         this.Handle();
+
     }
 
-    _SanitizeRequest(p_req) {
-        return true;
+    /**
+     * 
+     * @param {*} p_req 
+     * @returns 
+     */
+    _SanitizeRequest(p_req) { return true; }
+
+    /**
+     * 
+     * @returns 
+     */
+    Handle() { return this.Abort(STATUSES.NOT_IMPLEMENTED); }
+
+    Complete(p_response = null) {
+
+        if (!p_response) { p_response = STATUSES.OK; }
+        else if (u.isNumber(p_status)) { p_status = STATUSES.getStatus(p_status); }
+
+        if (STATUSES.isStatus(p_response)) {
+            this._res.status(p_response.code);
+            this._res.send(p_response.msg);
+        } else {
+            this._res.status(STATUSES.OK.code);
+            this._res.send(p_response);
+        }
+
+        this._OnHandled();
+
     }
 
-    Handle() {
-        p_res.sendStatus(400).end();
-        throw new Error(`Handle not implemented.`);
+    /**
+     * 
+     * @param {*} p_status 
+     */
+    Abort(p_status = null) {
+
+        if (!p_status) { p_status = STATUSES.NO_RESPONSE; }
+
+        if (u.isNumber(p_status)) { p_status = STATUSES.getStatus(p_status); }
+
+        if (this._res) {
+            p_req.status(p_status.code);
+            p_req.send({ error: p_status.msg });
+        }
+
+        this._OnHandled();
+
     }
 
-    _OnHandled() {
-        this.Release();
-    }
-
-    Cancel() {
-        if (this._res) { this._res.sendStatus(444).end(); }
-        this.Release();
-    }
+    _OnHandled() { this.Release(); }
 
     _CleanUp() {
         super._CleanUp();

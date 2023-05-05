@@ -9,6 +9,9 @@
 class FLAGS {
     constructor() { }
 
+    static POST = Object.freeze(`POST`);
+    static GET = Object.freeze(`GET`);
+
 }
 
 module.exports = FLAGS;

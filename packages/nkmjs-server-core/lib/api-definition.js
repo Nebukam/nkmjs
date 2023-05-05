@@ -4,6 +4,9 @@ const collections = require(`@nkmjs/collections`);
 const com = require(`@nkmjs/common`);
 const handlers = require(`./handlers`);
 
+const STATUSES = require("./status-codes");
+const FLAGS = require("./flags");
+
 class APIDefinition extends com.pool.DisposableObjectEx {
 
     constructor(p_express, p_app) {
@@ -18,7 +21,6 @@ class APIDefinition extends com.pool.DisposableObjectEx {
 
         this._activeHandlers = new collections.List();
 
-        this._isPost = false;
         this._options = null;
         this._id = ``;
         this._route = `/`;
@@ -31,9 +33,6 @@ class APIDefinition extends com.pool.DisposableObjectEx {
 
     get id() { return this._id; }
     set id(p_value) { this._id = p_value; }
-
-    get isPost() { return this._isPost; }
-    set isPost(p_value) { this._isPost = p_value; }
 
     get route() { return this._route; }
     set route(p_value) { this._route = p_value; }
@@ -60,8 +59,9 @@ class APIDefinition extends com.pool.DisposableObjectEx {
         if (this._running) { return; }
 
         this._running = true;
+        if (!this._handlerClass) { this._handlerClass = handlers.Fn; }
 
-        if (this._isPost) {
+        if (this._handlerClass.__MODE == FLAGS.POST) {
             if (this._requireAuth) { this._express.post(this._route, this._requireAuth(), this._Handle); }
             else { this._express.post(this._route, this._Handle); }
         } else {
@@ -92,36 +92,49 @@ class APIDefinition extends com.pool.DisposableObjectEx {
         }
 
         while (!this._activeHandlers.isEmpty) {
-            this._activeHandlers.Pop().Cancel();
+            this._activeHandlers.Pop().Abort();
         }
 
     }
 
     /**
      * 
-     * @param {*} p_request 
-     * @param {*} p_response 
+     * @param {*} p_req 
+     * @param {*} p_res 
      */
-    _Handle(p_request, p_response) {
+    _Handle(p_req, p_res) {
 
-        if (this.requireAuth) {
-            //TODO: Make this flexible so it can support multiple authentication
-            //methods & middlewares
-            if (!req.oidc.isAuthenticated()) {
-                p_request.sendStatus(401).end();
-                return;
-            }
+        if (this.requireAuth &&
+            !this._app.IsAuthenticated(p_req)) {
+            return this.SendError(STATUSES.UNAUTHORIZED);
         }
 
-        let newHandler = com.Rent(this._handlerClass || handlers.Fn);
+        let newHandler = com.Rent(this._handlerClass);
         newHandler.def = this;
         this._activeHandlers.Add(newHandler);
         newHandler.Watch(com.SIGNAL.RELEASED, this._OnHandlerReleased, this);
-        newHandler._InternalHandle(p_request, p_response);
+        newHandler._InternalHandle(p_req, p_res);
+
     }
 
+    /**
+     * 
+     * @param {*} p_handler 
+     */
     _OnHandlerReleased(p_handler) {
         this._activeHandlers.Remove(p_handler);
+    }
+
+    /**
+     * 
+     * @param {*} p_req 
+     * @param {*} p_status 
+     * @returns 
+     */
+    SendError(p_req, p_status) {
+        p_req.status(p_status.code);
+        p_req.send({ error: p_status.msg });
+        return;
     }
 
     _CleanUp() {
