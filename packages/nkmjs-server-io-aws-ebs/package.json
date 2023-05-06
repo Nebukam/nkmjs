@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/server-io-aws-ebs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "NKMjs Server-side AWS EBS IO Module",
   "main": "index.js",
   "repository": {
@@ -16,8 +16,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/core": "^1.0.16",
-    "@nkmjs/server-io-aws": "^0.0.3"
+    "@nkmjs/core": "^1.0.17",
+    "@nkmjs/server-io-aws": "^0.0.4"
   },
   "gitHead": "0d8288538220b63e0bddac446f6acb47e3d39fb7"
 }

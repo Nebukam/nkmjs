@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/data-core",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "NKMjs Framework Core Data",
   "main": "index.js",
   "repository": {
@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^1.0.5",
+    "@nkmjs/actions": "^1.0.6",
     "@nkmjs/collections": "^1.0.2",
     "@nkmjs/common": "^1.0.5",
     "@nkmjs/utils": "^1.0.4"
