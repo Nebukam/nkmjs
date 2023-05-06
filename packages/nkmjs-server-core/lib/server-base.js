@@ -6,7 +6,6 @@ const env = require(`@nkmjs/environment`);
 const collections = require(`@nkmjs/collections`);
 
 const dotenv = require('dotenv');
-dotenv.config({ path: this._config.envPath });
 
 const http = require('http');
 const express = require(`express`);
@@ -24,6 +23,7 @@ class ServerBase {
 
         this._starting = false;
         this._config = p_constants;
+        dotenv.config({ path: this._config.envPath });
 
         let ioservices = [];
         this._RegisterIOServices(ioservices);
@@ -91,7 +91,7 @@ class ServerBase {
             res.locals.user = env.APP.GetUser(req);
             next();
         });
-
+        
 
     }
 
