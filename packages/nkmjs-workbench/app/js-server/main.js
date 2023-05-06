@@ -1,8 +1,17 @@
 const nkm = require(`@nkmjs/core/nkmserver`);
+const iofs = require(`@nkmjs/server-io-fs`);
+
 const handlers = require(`./handlers`);
 
 class ServerProcess extends nkm.server.ServerBaseAuth0 {
     constructor(p_config) { super(p_config); }
+
+    _RegisterIOServices(p_ioClasses) {
+        p_ioClasses.push({
+            cl:iofs.IO,
+            config:{ }
+        });
+    }
 
     _InitAPIs() {
 
@@ -37,6 +46,12 @@ class ServerProcess extends nkm.server.ServerBaseAuth0 {
                 handler: handlers.PagePublish
             },
         });
+
+    }
+
+    _Boot() {
+
+        //iofs.IO.public.
 
     }
 

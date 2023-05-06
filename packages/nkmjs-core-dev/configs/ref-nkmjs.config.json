@@ -31,6 +31,8 @@
     "dirs": {
         "app": "app",
         "styleSource": "src-style",
+        "src-server":"js-server",
+        "src-views":"%src-server%/views",
         "style": "style",
         "assets": "assets",
         "icons": "%dirs.assets%/icons",

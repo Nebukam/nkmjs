@@ -4,14 +4,16 @@
  * If you want to customize this file behavior & contents, do so using the nkmjs.config.json.
  */
 
-const MAIN_SERVER = require(`./js-server/main`);
+const MAIN_SERVER = require(`./app/js-server/main`);
 const path = require(`path`);
-const serverDir = path.join(__dirname, `js-server`);
+const dirServer = path.join(__dirname, `app/js-server`);
+const dirViews = path.join(dirServer, `views`);
 
 new MAIN_SERVER({
 	dirname:__dirname,
-	serverDir:serverDir,
-	envPath:path.join(serverDir, `/.env`),
+	dirServer:dirServer,
+	dirViews:dirViews,
+	envPath:path.join(dirServer, `/.env`),
 	version:'1.0.3',
 	lang:'en',
 	locales:[],

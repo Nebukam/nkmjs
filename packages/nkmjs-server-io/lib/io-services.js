@@ -27,17 +27,44 @@ class IO_SERVICES extends com.helpers.SingletonEx {
     static set defaultIO(p_value) { this.instance._defaultIO = p_value; }
 
     /**
-     * 
-     * @param {*} p_serviceClass 
+     * @typedef TokensSettings
+     * @property {object} tokens
+     * @property {string} [start]
+     * @property {string} [end]
      */
-    static Use(p_serviceClass, p_options, p_setAsDefault = false) {
+
+    /**
+     * @typedef TransceiverSettings
+     * @property {string} [id]
+     * @property {string} [delimiter]
+     * @property {boolean} [readOnly]
+     * @property {TokensSettings} [tokens]
+     * @property {boolean} [recursive]
+     */
+
+    /**
+     * @typedef IOServiceConfig
+     * @property {class} cl IO_CLASS
+     * @property {object} config
+     * @property {[TransceiverSettings]} config.transceivers
+     */
+
+    /**
+     * 
+     * @param {Class} p_serviceClass 
+     * @param {IOServiceConfig} [p_config] 
+     * @param {boolean} [p_setAsDefault] 
+     * @returns 
+     */
+    static Use(p_serviceClass, p_config, p_setAsDefault = false) {
 
         if (!this.instance._ioServices.Add(p_serviceClass)) { return p_serviceClass; }
 
         this.instance._servicesCount++;
         p_serviceClass.instance.Watch(services.SIGNAL.STARTED, this.instance._OnServiceStarted);
 
-        env.ENV.RegisterServices(p_serviceClass);
+        p_serviceClass.instance._config = p_config;
+        env.ENV.instance.RegisterServices(p_serviceClass);
 
         if (p_setAsDefault || !this.defaultIO) {
             this.defaultIO = p_serviceClass;

@@ -5,6 +5,8 @@ const com = require(`@nkmjs/common`);
 const env = require(`@nkmjs/environment`);
 const collections = require(`@nkmjs/collections`);
 
+env.ENV.instance.features._isNodeEnabled = true;
+
 const dotenv = require('dotenv');
 
 const http = require('http');
@@ -21,27 +23,41 @@ class ServerBase {
 
     constructor(p_constants) {
 
+        env.ENV.instance._app = this;
+        
+        u.LOG.toggle(true);
+
         this._starting = false;
         this._config = p_constants;
         dotenv.config({ path: this._config.envPath });
+
+        this._dirServer = this._config.dirServer;
+        this._dirViews = this._config.dirViews;
+        this._dirPublic = path.join(this._config.dirname, 'public');
 
         let ioservices = [];
         this._RegisterIOServices(ioservices);
 
         this._waitForIO = ioservices.length ? true : false;
         if (this._waitForIO) {
-            ioservices.forEach(cl => { io.IO_SERVICES.Use(cl); });
+            ioservices.forEach(conf => { io.IO_SERVICES.Use(conf.cl, conf.config); });
             io.IO_SERVICES.instance.WatchOnce(com.SIGNAL.READY, this._OnIOReady.bind(this));
+        } else {
+            console.warn(`⚠️  No IO Service registered.`);
+            console.log(__dirname);
         }
 
-        env.ENV.instance._app = this;
         env.ENV.instance.Start(p_constants);
 
     }
 
+    get dirServer() { return this._dirServer; }
+    get dirViews() { return this._dirViews; }
+    get dirPublic() { return this._dirPublic; }
+
     /**
-     * 
-     * @param {*} p_ioClasses 
+     * Register services in the form { cl:IO_CLASS, options:{} }
+     * @param {IOServiceSettings} p_ioClasses 
      */
     _RegisterIOServices(p_ioClasses) {
 
@@ -91,7 +107,7 @@ class ServerBase {
             res.locals.user = env.APP.GetUser(req);
             next();
         });
-        
+
 
     }
 
@@ -107,7 +123,7 @@ class ServerBase {
             tempFileDir: '/tmp/',
             createParentPath: true
         }))
-        p_express.use(express.static(path.join(__dirname, 'public')));
+        p_express.use(express.static(this._dirPublic));
         p_express.use(express.json());
         p_express.use(express.urlencoded({ extended: true }))
 
@@ -131,7 +147,7 @@ class ServerBase {
      */
     _InitRenderEngine(p_express) {
 
-        let viewPath = path.join(this._config.serverDir, 'views');
+        let viewPath = this._dirViews;
         console.log(`>>> Render engine view directory: '${viewPath}'`);
         p_express.set('views', viewPath);
         p_express.set('view engine', 'ejs');

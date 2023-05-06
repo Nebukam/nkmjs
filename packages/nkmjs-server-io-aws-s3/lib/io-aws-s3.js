@@ -1,7 +1,7 @@
 const nkm = require(`@nkmjs/core/nkmserver`);
 const nkmAWS = require(`@nkmjs/server-io-aws`);
 
-class IO extends nkmAWS.IO {
+class SERVER_IO_AWS_S3 extends nkmAWS.IO {
     constructor() { super(); }
 
     static __transceiverClass = require(`./transceiver`);
@@ -12,4 +12,4 @@ class IO extends nkmAWS.IO {
 
 }
 
-module.exports = IO;
+module.exports = SERVER_IO_AWS_S3;

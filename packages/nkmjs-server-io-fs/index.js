@@ -2,6 +2,7 @@
 'use strict';
 
 module.exports = {
-    BaseIOService: require(`./lib/base-io-service`),
 
+    IO: require(`./lib/io-fs`),
+    
 }

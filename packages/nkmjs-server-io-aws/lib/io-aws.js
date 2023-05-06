@@ -1,9 +1,7 @@
 const nkm = require(`@nkmjs/core/nkmserver`);
 
-class IO extends nkm.io.BaseIOService {
+class SERVER_IO_AWS extends nkm.io.BaseIOService {
     constructor() { super(); }
-
-    static __transceiverClass = require(`./transceiver`);
 
     _Init() {
         super._Init();
@@ -11,4 +9,4 @@ class IO extends nkm.io.BaseIOService {
 
 }
 
-module.exports = IO;
+module.exports = SERVER_IO_AWS;

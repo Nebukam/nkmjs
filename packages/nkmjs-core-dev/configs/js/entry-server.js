@@ -6,12 +6,13 @@
 
 const MAIN_SERVER = require(`./%dirs.src-server%/main`);
 const path = require(`path`);
-const serverDir = path.join(__dirname, `%dirs.src-server%`);
+const dirServer = path.join(__dirname, `%dirs.src-server%`);
 
 new MAIN_SERVER({
     dirname:__dirname,
-    serverDir:serverDir,
-    envPath:path.join(serverDir, `/.env`),
+    dirServer:dirServer,
+    dirViews:`%dirs.src-views%`,
+    envPath:path.join(dirServer, `/.env`),
     version:'%version%',
 %config%
 });

@@ -30,6 +30,7 @@
         "src": "js",
         "src-electron":"js-electron",
         "src-server":"js-server",
+        "src-views":"%src-server%/views",
         "styleSource": "src-style",
         "style": "style",
         "assets": "assets",

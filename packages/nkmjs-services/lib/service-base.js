@@ -19,6 +19,7 @@ class ServiceBase extends com.helpers.SingletonEx {
     _Init() {
         super._Init();
         this._initialized = false;
+        this._starting = false;
         this._started = false;
         this._running = false;
         this._tick = com.DelayedCall(this._Bind(this._Tick));
@@ -42,6 +43,8 @@ class ServiceBase extends com.helpers.SingletonEx {
         this.Start();
     }
 
+    get starting() { return this._starting; }
+
     /**
      * @description TODO
      * @type {boolean}
@@ -64,8 +67,11 @@ class ServiceBase extends com.helpers.SingletonEx {
             console.error(`Attempting to start a service (${this.constructor.name}) that hasn't been initialized yet.`);
             return false;
         }
-        if (this._started) { return false; }
-        this._started = true;
+        if (this._starting || this._started) { return false; }
+        u.LOG._(`STARTING :· ${this.constructor.name}`, `#add800`, `#2e3a00`);
+        this._started = false;
+        this._starting = true;
+        this.Broadcast(SIGNAL.STARTING, this);
         this._InternalStart();
         return true;
     }
@@ -75,6 +81,8 @@ class ServiceBase extends com.helpers.SingletonEx {
     }
 
     _OnStarted() {
+        this._starting = false;
+        this._started = true;
         u.LOG._(`STARTED :· ${this.constructor.name}`, `#add800`, `#2e3a00`);
         this.Broadcast(SIGNAL.STARTED, this);
     }
@@ -84,6 +92,7 @@ class ServiceBase extends com.helpers.SingletonEx {
      */
     Stop() {
         if (!this._started) { return; }
+        //TODO: Handle situation is this._starting == true
         this._started = false;
         u.LOG._(`STOPPED :: ${this.constructor.name}`, `#ef8700`, `#492900`);
     }
