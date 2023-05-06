@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-library",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "NKMjs Framework UI Library",
   "browser": "index.js",
   "repository": {
@@ -16,18 +16,18 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^1.0.3",
-    "@nkmjs/collections": "^1.0.0",
-    "@nkmjs/common": "^1.0.3",
-    "@nkmjs/data-core": "^1.0.3",
-    "@nkmjs/dialog": "^1.0.5",
-    "@nkmjs/documents": "^1.0.3",
-    "@nkmjs/environment": "^1.0.3",
-    "@nkmjs/io-core": "^1.0.3",
-    "@nkmjs/style": "^1.0.3",
-    "@nkmjs/ui-core": "^1.0.5",
-    "@nkmjs/ui-data-controls": "^1.0.5",
-    "@nkmjs/utils": "^1.0.2"
+    "@nkmjs/actions": "^1.0.4",
+    "@nkmjs/collections": "^1.0.1",
+    "@nkmjs/common": "^1.0.4",
+    "@nkmjs/data-core": "^1.0.4",
+    "@nkmjs/dialog": "^1.0.6",
+    "@nkmjs/documents": "^1.0.4",
+    "@nkmjs/environment": "^1.0.4",
+    "@nkmjs/io-core": "^1.0.4",
+    "@nkmjs/style": "^1.0.4",
+    "@nkmjs/ui-core": "^1.0.6",
+    "@nkmjs/ui-data-controls": "^1.0.6",
+    "@nkmjs/utils": "^1.0.3"
   },
   "gitHead": "731a93892ef79a2eee7816a4a2baaca8df327596"
 }
