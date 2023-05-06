@@ -1,0 +1,27 @@
+{
+    "name": "@nkmjs/server-io",
+    "version": "0.0.1",
+    "description": "NKMjs Server-side IO Module",
+    "main": "index.js",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-server-io"
+    },
+    "scripts": {
+      "test": "node ./test/test-server.js"
+    },
+    "author": {
+      "name": "Timothé Lapetite",
+      "email": "nebukam@gmail.com"
+    },
+    "license": "MIT",
+    "dependencies": {
+      "@nkmjs/collections": "^1.0.0",
+      "@nkmjs/common": "^1.0.3",
+      "@nkmjs/services": "^1.0.3",
+      "@nkmjs/environment": "^1.0.3",
+      "@nkmjs/utils": "^1.0.2"
+    },
+    "gitHead": "fdaa7c91e15db40db3b1cf7a3acb2de9c55b592f"
+  }
+  

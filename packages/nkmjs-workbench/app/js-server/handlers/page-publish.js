@@ -1,8 +1,8 @@
 'use strict';
 
-const server = require(`@nkmjs/core/server`).core;
+const nkm = require(`@nkmjs/core/nkmserver`);
 
-class PagePublish extends server.handlers.POST{
+class PagePublish extends nkm.server.handlers.POST{
     constructor() { super(); }
 
     Handle(){

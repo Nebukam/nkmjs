@@ -2,7 +2,9 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
+
 const ServicesManager = require(`./services-manager`);
+const SIGNAL = require(`./signal`);
 
 /**
  * @description TODO
@@ -64,8 +66,17 @@ class ServiceBase extends com.helpers.SingletonEx {
         }
         if (this._started) { return false; }
         this._started = true;
-        u.LOG._(`STARTED :· ${this.constructor.name}`, `#add800`, `#2e3a00`);
+        this._InternalStart();
         return true;
+    }
+
+    _InternalStart() {
+        this._OnStarted();
+    }
+
+    _OnStarted() {
+        u.LOG._(`STARTED :· ${this.constructor.name}`, `#add800`, `#2e3a00`);
+        this.Broadcast(SIGNAL.STARTED, this);
     }
 
     /**

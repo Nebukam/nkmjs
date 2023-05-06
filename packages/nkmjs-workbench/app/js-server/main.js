@@ -1,7 +1,7 @@
-const server = require(`@nkmjs/core/server`);
+const nkm = require(`@nkmjs/core/nkmserver`);
 const handlers = require(`./handlers`);
 
-class ServerProcess extends server.core.ServerBase {
+class ServerProcess extends nkm.server.ServerBaseAuth0 {
     constructor(p_config) { super(p_config); }
 
     _InitAPIs() {

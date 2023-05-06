@@ -11,9 +11,15 @@ const u = require(`@nkmjs/utils`);
  */
 
 class Keys {
-    constructor(p_source = null, p_defaults = null) {
+    constructor(
+        p_source = null,
+        p_defaults = null,
+        p_tokenStart = '%',
+        p_tokenEnd = '%') {
 
         this.__keys = {};
+        this._tokenStart = p_tokenStart;
+        this._tokenEnd = p_tokenEnd;
 
         if (p_defaults) {
             // Ensure some default key exists
@@ -97,7 +103,8 @@ class Keys {
      */
     ReplaceAll(p_string, p_recursion = 3) {
 
-        if (!p_string.includes(`%`)) { return p_string; }
+        if (!p_string.includes(this._tokenStart) ||
+            !p_string.includes(this._tokenEnd)) { return p_string; }
 
         p_recursion = Math.max(1, p_recursion);
 
@@ -105,7 +112,7 @@ class Keys {
             for (var key in this.__keys) {
                 let value = this.__keys[key];
                 if (u.isFunc(value) || u.isObject(value)) { value = u.Call(value); }
-                p_string = p_string.replaceAll(`%${key}%`, value);
+                p_string = p_string.replaceAll(`${this._tokenStart}${key}${this._tokenEnd}`, value);
             }
         }
 

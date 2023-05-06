@@ -37,7 +37,7 @@ class ENV extends com.helpers.SingletonEx {
      * @customtag read-only
      */
     static get APP() { return this.instance._app; }
-    static get APP_NAME(){ return this.instance._appName; }
+    static get APP_NAME() { return this.instance._appName; }
 
     /**
      * @description TODO
@@ -140,15 +140,14 @@ class ENV extends com.helpers.SingletonEx {
      */
     RegisterServices(...args) {
 
-        let serviceClass;
-
-        if (this._running) {
-            console.warn(`RegisterServices called post-Start. Be sure this is intended.`);
-            args.forEach(this._BootService);
-            return;
-        }
-
-        for (let i = 0, n = args.length; i < n; i++) { this._services.Add(args[i]); }
+        args.forEach(serviceClass => {
+            if (this._services.Add(serviceClass)) {
+                if (this._running) {
+                    console.warn(`RegisterServices called post-Start. Be sure this is intended.`);
+                    this._BootService(serviceClass);
+                }
+            }
+        });
 
     }
 
@@ -158,7 +157,7 @@ class ENV extends com.helpers.SingletonEx {
      * @return -1 : p_semVer is inferior, 1: p_semVer is superior, 0 : p_semVer == 
      */
     VersionDiff(p_semVer) {
-        
+
         for (let i = 0; i < 3; i++) {
             let t = p_semVer[i], c = this._semVer[i];
             if (t < c) { return -1; }

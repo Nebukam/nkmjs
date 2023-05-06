@@ -1,3 +1,8 @@
+# ignore package-lock to enforce up-to-date nkmjs-dependencies.
+# the goal of these packages is to only depends on themselves.
+package-lock.json
+yarn.lock
+
 # Logs
 logs
 *.log

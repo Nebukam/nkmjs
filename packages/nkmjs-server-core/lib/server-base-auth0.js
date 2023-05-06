@@ -1,9 +1,10 @@
 'use strict';
 
 const oidc = require('express-openid-connect');
+const env = require(`@nkmjs/environment`);
 
 const base = require(`./server-base`);
-class ServerBaseAuth0 extends base{
+class ServerBaseAuth0 extends base {
     constructor(p_constants) { super(p_constants); }
 
     _InitAuthenticationMiddleware(p_express) {
@@ -17,12 +18,6 @@ class ServerBaseAuth0 extends base{
         };
 
         p_express.use(oidc.auth(authConfig));
-
-        // Add middleware to make the `user` object available for all views
-        this._express.use(function (req, res, next) {
-            res.locals.user = this.GetUser(req);
-            next();
-        });
 
         return true;
     }

@@ -106,10 +106,10 @@ class Bundler {
                 parse: { bare_returns: true },
                 mangle: {
                     reserved: [`require`],
-                    //keep_classnames : true,
+                    keep_classnames: true,
                     keep_fnames: true,
                     //module : true,
-                    //toplevel : true,
+                    toplevel: true,
                 },
                 compress: {
                     defaults: true,
@@ -127,6 +127,8 @@ class Bundler {
         this.script._logFwd(chalk.italic(`swap-externals » ${this.moduleID}`), `|`, 1);
 
         let transformed = this._ReplaceExternal(p_response.code);//this._ReplaceKeys(this._ReplaceExternal(p_response.code));
+        transformed = this._ShrinkRequires(transformed);
+        //transformed = transformed.replaceAll(`require`, `_r_`);
 
         NKMjs.WriteTempSync(this.output, transformed);
         this.script._logFwd(`${NKMjs.Shorten(this.output)}`, `+`, 1);
@@ -137,15 +139,44 @@ class Bundler {
 
     _ReplaceExternal(p_content) {
 
+        console.log(this.externals);
         for (let i = 0, n = this.externals.length; i < n; i++) {
             let id = this.externals[i];
             if (id === this.moduleID) { continue; }
-            p_content = p_content.split(`require("${id}")`).join(`globalThis.nkmdefs[${i}]`);
-            p_content = p_content.split(`"${id}":void 0`).join(``);
+            //p_content = p_content.split(`require("${id}")`).join(`globalThis.nkmdefs[${i}]`);
+            //p_content = p_content.split(`"${id}":void 0`).join(``);
+            p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs[${i}]`);
+            p_content = p_content.replaceAll(`"${id}":void 0`, ``);
         }
 
         return p_content;
 
+    }
+
+    _ShrinkRequires(p_content) {
+
+        let
+            reqMap = {},
+            reqs = p_content.split(`require("`),
+            index = 0;
+
+        reqs.shift();
+
+        reqs.forEach(r => {
+            let p = r.split(`")`)[0];
+            if (p in reqMap) { return; }
+            reqMap[p] = index++;
+        });
+
+        for (var id in reqMap) {
+            if (this.externals.includes(id) ||
+                id == 'uuid' ||
+                id == '_process' ||
+                id == 'path') { continue; }
+            p_content = p_content.replaceAll(`"${id}"`, `"_${reqMap[id]}"`);
+        }
+
+        return p_content;
     }
 
     _ReplaceKeys(p_content) {
@@ -176,7 +207,7 @@ class Bundler {
         p_content = p_content.split(`(require,`).join(`(${req},`);
 
         for (let key in this.shrinkMap) {
-           p_content = p_content.split(key).join(this.shrinkMap[key]);
+            p_content = p_content.split(key).join(this.shrinkMap[key]);
         }
 
         return p_content;

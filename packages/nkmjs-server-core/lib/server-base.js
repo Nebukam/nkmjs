@@ -1,9 +1,11 @@
 'use strict';
-const dotenv = require('dotenv');
-
+const io = require(`@nkmjs/server-io`);
 const u = require(`@nkmjs/utils`);
+const com = require(`@nkmjs/common`);
 const env = require(`@nkmjs/environment`);
 const collections = require(`@nkmjs/collections`);
+
+const dotenv = require('dotenv');
 
 const http = require('http');
 const express = require(`express`);
@@ -19,30 +21,59 @@ class ServerBase {
 
     constructor(p_constants) {
 
+        this._starting = false;
         this._config = p_constants;
-
-        env.ENV.instance.Start(p_constants);
-        env.ENV.instance._app = this;
-
         dotenv.config({ path: this._config.envPath });
+
+        let ioservices = [];
+        this._RegisterIOServices(ioservices);
+
+        this._waitForIO = ioservices.length ? true : false;
+        if (this._waitForIO) {
+            ioservices.forEach(cl => { io.IO_SERVICES.Use(cl); });
+            io.IO_SERVICES.instance.WatchOnce(com.SIGNAL.READY, this._OnIOReady.bind(this));
+        }
+
+        env.ENV.instance._app = this;
+        env.ENV.instance.Start(p_constants);
+
+    }
+
+    /**
+     * 
+     * @param {*} p_ioClasses 
+     */
+    _RegisterIOServices(p_ioClasses) {
+
+    }
+
+    _InternalStart() {
+        this._starting = true;
+        if (!this._waitForIO || io.IO_SERVICES.ready) { this._OnIOReady(); }
+    }
+
+    _InternalInit() {
 
         this._requireAuth = false;
         this._port = process.env.PORT || 8080;
         this._baseURL = process.env.BASE_URL || `http://localhost:${this._port}`;
 
-
-        console.log(this._port);
-
-        this._whitelist = p_constants.whitelist;
+        this._whitelist = this._config.whitelist;
         this._authFn = null;
 
         this._Init();
         this._PostInit();
 
         this._InternalBoot = this._InternalBoot.bind(this);
+
         this._server = http.createServer(this._express)
             .listen(this._port, this._InternalBoot);
 
+    }
+
+    _OnIOReady() {
+        if (!this._starting) { return; }
+        this._InternalInit();
     }
 
     _Init() {
@@ -53,7 +84,14 @@ class ServerBase {
         this._InitRenderEngine(this._express);
         this._InitExpress(this._express);
 
-        this._requireAuth = this._InitAuthenticationMiddleware();
+        this._requireAuth = this._InitAuthenticationMiddleware(this._express);
+
+        // Add middleware to make the `user` object available for all views
+        this._express.use(function (req, res, next) {
+            res.locals.user = env.APP.GetUser(req);
+            next();
+        });
+        
 
     }
 
@@ -65,9 +103,9 @@ class ServerBase {
 
         //p_express.use(logger('dev'));
         p_express.use(fileUpload({
-            useTempFiles : true,
-            tempFileDir : '/tmp/',
-            createParentPath:true
+            useTempFiles: true,
+            tempFileDir: '/tmp/',
+            createParentPath: true
         }))
         p_express.use(express.static(path.join(__dirname, 'public')));
         p_express.use(express.json());

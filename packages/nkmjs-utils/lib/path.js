@@ -104,7 +104,11 @@ class PATH {
      */
     static SHORT(p_path) {
         p_path = this.Sanitize(p_path);
-        for (let id in this.__pathMap) { p_path = p_path.replaceAll(this.__pathMap[id], id); }
+        for (let id in this.__pathMap) {
+            let v = this.__pathMap[id];
+            if (!v || !v.length) { continue; }
+            p_path = p_path.replaceAll(v, id);
+        }
         return p_path;
     }
 

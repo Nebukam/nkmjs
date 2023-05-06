@@ -1,0 +1,23 @@
+{
+  "name": "@nkmjs/server-io-aws",
+  "version": "0.0.1",
+  "description": "NKMjs Server-side AWS facade",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-server-io-aws"
+  },
+  "scripts": {
+    "test": "node ./test/test-server.js"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/core": "^1.0.14",
+    "aws-sdk": "^2.1373.0"
+  },
+  "gitHead": "fdaa7c91e15db40db3b1cf7a3acb2de9c55b592f"
+}

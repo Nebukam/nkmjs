@@ -31,11 +31,10 @@ class DIALOG extends services.ServiceBase {
 
     }
 
-    _Start() {
-        if (!super.Start()) { return false; }
+    _InternalStart(){
+        super._InternalStart();
         //Some dialog push can occur prior to the service being started
         this._ProcessNext();
-        return true;
     }
 
     /**
