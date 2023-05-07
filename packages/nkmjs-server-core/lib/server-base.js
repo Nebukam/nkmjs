@@ -41,7 +41,7 @@ class ServerBase {
 
         this._waitForIO = ioservices.length ? true : false;
         env.ENV.instance.Start(p_constants);
-        
+
         if (this._waitForIO) {
 
             let
@@ -86,9 +86,9 @@ class ServerBase {
 
     /**
      * Register services in the form { cl:IO_CLASS, options:{} }
-     * @param {IOServiceSettings} p_ioClasses 
+     * @param {IOServiceSettings} p_ioConfigs 
      */
-    _RegisterIOServices(p_ioClasses) {
+    _RegisterIOServices(p_ioConfigs) {
 
     }
 

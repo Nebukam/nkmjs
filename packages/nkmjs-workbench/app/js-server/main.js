@@ -6,8 +6,8 @@ const handlers = require(`./handlers`);
 class ServerProcess extends nkm.server.ServerBaseAuth0 {
     constructor(p_config) { super(p_config); }
 
-    _RegisterIOServices(p_ioClasses) {
-        p_ioClasses.push({
+    _RegisterIOServices(p_ioConfigs) {
+        p_ioConfigs.push({
             cl: iofs.IO,
             config: {
                 transceivers: [
