@@ -40,6 +40,8 @@ class ServerBase {
         this._RegisterIOServices(ioservices);
 
         this._waitForIO = ioservices.length ? true : false;
+        env.ENV.instance.Start(p_constants);
+        
         if (this._waitForIO) {
 
             let
@@ -74,7 +76,7 @@ class ServerBase {
             console.log(__dirname);
         }
 
-        env.ENV.instance.Start(p_constants);
+        
 
     }
 
