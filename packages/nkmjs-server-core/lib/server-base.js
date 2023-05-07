@@ -41,7 +41,33 @@ class ServerBase {
 
         this._waitForIO = ioservices.length ? true : false;
         if (this._waitForIO) {
-            ioservices.forEach(conf => { io.IO_SERVICES.Use(conf.cl, conf.config); });
+
+            let
+                dict = new collections.Dictionary(),
+                ios = [];
+
+            ioservices.forEach(conf => {
+
+                let mainConf = dict.Get(conf.cl);
+                if (!mainConf) {
+                    ios.push(conf.cl);
+                    mainConf = { ...conf.config };
+                    if (!mainConf.transceivers) { mainConf.transceivers = []; }
+                    dict.Set(conf.cl, mainConf);
+                    return;
+                }
+
+                for (var p in conf.config) {
+                    let value = conf.config[p];
+                    if (p == `transceivers`) {
+                        mainConf.transceivers.push(...value);
+                    } else { mainConf[p] = value; }
+                }
+
+            });
+
+            ios.forEach(ioss => { io.IO_SERVICES.Use(ioss, dict.Get(ioss)); });
+            dict.Clear();
             io.IO_SERVICES.instance.WatchOnce(com.SIGNAL.READY, this._OnIOReady.bind(this));
         } else {
             console.warn(`⚠️  No IO Service registered.`);

@@ -22,12 +22,8 @@ class BaseIOService extends services.ServiceBase {
             })
             .Hook(services.SIGNAL.STARTED, (p_transceiver) => {
                 this._startedTransceivers++;
-                if (p_transceiver.id) {
-                    this.constructor[p_transceiver.id] = p_transceiver;
-                    console.log(` ┗ ${this.constructor.name} ━ New Transceiver (${p_transceiver.id}) registered ('${p_transceiver.identifier}')`);
-                } else {
-                    console.log(` ┗ ${this.constructor.name} ━ New Transceiver (NO ID) registered ('${p_transceiver.identifier}')`);
-                }
+                this.constructor[p_transceiver.uid] = p_transceiver;
+                console.log(` ┗ ${this.constructor.name} ━ New Transceiver (${p_transceiver.uid} >> '${p_transceiver.prefix}${p_transceiver.root}')`);
                 if (this._starting) {
                     if (this._startedTransceivers == this._registeredTransceivers) {
                         this._MountingComplete();
@@ -79,7 +75,7 @@ class BaseIOService extends services.ServiceBase {
         let transceivers = this._config.transceivers;
         if (transceivers) {
             this._registeredTransceivers += transceivers.length;
-            transceivers.forEach(t => { this.Mount(t.identifier, t); });
+            transceivers.forEach(t => { this.Mount(t); });
         } else {
             this._MountingComplete();
         }
@@ -89,22 +85,29 @@ class BaseIOService extends services.ServiceBase {
         this._OnStarted();
     }
 
-    Mount(p_identifier, p_options = null) {
+    Mount(p_config) {
 
-        if (p_identifier in this._map) {
-            throw new Error(`Transceiver '${p_identifier}' already exists.`);
+        if (!p_config.uid) { p_config.uid = `@${p_config.root}`; }
+
+        let uid = p_config.uid;
+        if (uid in this._map) {
+            throw new Error(`Transceiver '${uid}' already exists.`);
         }
 
         if (!this._starting) { this._registeredTransceivers++; }
 
         let newTransceiver = com.Rent(this.constructor.__transceiverClass);
-        newTransceiver.service = this;
-        newTransceiver.identifier = p_identifier;
 
-        this._map[p_identifier] = newTransceiver;
+        newTransceiver.service = this;
+        newTransceiver.root = p_config.root;
+        newTransceiver.uid = uid;
+
+
+
+        this._map[uid] = newTransceiver;
 
         this._transceiverObserver.Observe(newTransceiver);
-        newTransceiver.Start(p_options);
+        newTransceiver.Start(p_config);
 
         return newTransceiver;
 

@@ -2,20 +2,20 @@ const nkm = require(`@nkmjs/core/nkmserver`);
 
 class SERVER_IO_FS extends nkm.io.BaseIOService {
     constructor() { super(); }
-    
+
     static __transceiverClass = require(`./transceiver-fs`);
 
-    _Init(){
+    _Init() {
         super._Init();
-        this._defaultConfig ={
-            transceivers:[
+        this._defaultConfig = {
+            transceivers: [
                 {
-                    identifier:nkm.main.dirServer,
-                    id:`dirServer`
+                    root: nkm.main.dirServer,
+                    uid: `dirServer`
                 },
                 {
-                    identifier:nkm.main.dirPublic,
-                    id:`dirPublic`
+                    root: nkm.main.dirPublic,
+                    uid: `dirPublic`
                 }
             ]
         }

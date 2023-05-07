@@ -17,7 +17,7 @@ class Transceiver extends com.pool.DisposableObjectEx {
     constructor() { super(); }
 
     static __distribute = com.helpers.OptionsDistribute.Ext()
-        .To(`id`)
+        .To(`prefix`, ``)
         .To(`delimiter`, `/`)
         .To(`readOnly`)
         .To(`tokens`)
@@ -25,14 +25,15 @@ class Transceiver extends com.pool.DisposableObjectEx {
 
     _Init() {
         super._Init();
-        
+
         this._delimiter = `/`;
-        this._identifier = ``;
+        this._root = ``;
+        this._prefix = ``;
         this._running = false;
         this._recursive = true;
         this._service = null;
         this._tokens = null;
-        this._id = null;
+        this._uid = null;
 
         this._backedWrites = {};
         __writeMethods.forEach(mtd => { this._backedWrites[mtd] = this._Bind(this[mtd]); });
@@ -42,17 +43,20 @@ class Transceiver extends com.pool.DisposableObjectEx {
     get service() { return this._service; }
     set service(p_value) { this._service = p_value; }
 
-    get id() { return this._id; }
-    set id(p_value) { 
-        if(this._id){throw new Error(`Cannot overwrite transceiver id once it's been set.`);}
-        this._id = p_value; 
+    get prefix() { return this._prefix; }
+    set prefix(p_value) { this._prefix = p_value; }
+
+    get uid() { return this._uid; }
+    set uid(p_value) {
+        if (this._uid) { throw new Error(`Cannot overwrite transceiver id once it's been set.`); }
+        this._uid = p_value;
     }
 
     get del() { return this._delimiter; }
     set del(p_value) { this._delimiter = p_value; }
 
-    get identifier() { return this._identifier; }
-    set identifier(p_value) { this._identifier = p_value; }
+    get root() { return this._root; }
+    set root(p_value) { this._root = p_value; }
 
     /**
      * { keys:{key:'value'}, [start:]`%`, [end:]`%` }
@@ -84,7 +88,7 @@ class Transceiver extends com.pool.DisposableObjectEx {
 
     Join(...args) {
         let joined = args.join(this._delimiter);
-        if (!joined.startsWith(this._identifier)) { joined = `${this._identifier}${this._delimiter}${joined}`; }
+        if (!joined.startsWith(this._root)) { joined = `${this._root}${this._delimiter}${joined}`; }
         return joined;
     }
 
@@ -98,7 +102,7 @@ class Transceiver extends com.pool.DisposableObjectEx {
         return true;
     }
 
-    _OnStarted(){
+    _OnStarted() {
         this.Broadcast(services.SIGNAL.STARTED, this);
     }
 
@@ -108,12 +112,14 @@ class Transceiver extends com.pool.DisposableObjectEx {
         this._running = false;
     }
 
-    _OnStopped(){
+    _OnStopped() {
         this.Broadcast(services.SIGNAL.STOPPED, this);
     }
 
     _SanitizePath(p_path) {
-        return this._tokens ? this._tokens.ReplaceAll(p_path) : p_path;
+        p_path = this._tokens ? this._tokens.ReplaceAll(p_path) : p_path;
+        if (!p_path.startsWith(this._prefix)) { p_path = `${this._prefix}${p_path}`; }
+        return p_path;
     }
 
     _opt(p_options, p_name, p_fallback) {
@@ -219,12 +225,13 @@ class Transceiver extends com.pool.DisposableObjectEx {
     _CleanUp() {
 
         this.Stop();
-        
+
         this.readOnly = false;
         this.tokens = null;
 
-        this._id = null;
-        this._identifier = ``;
+        this._uid = null;
+        this._root = ``;
+        this._prefix = ``;
         this._delimiter = `/`;
         this._recursive = true;
         this._service = null;
