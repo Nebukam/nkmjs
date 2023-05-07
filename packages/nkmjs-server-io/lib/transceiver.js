@@ -27,7 +27,7 @@ class Transceiver extends com.pool.DisposableObjectEx {
         super._Init();
         
         this._delimiter = `/`;
-        this._root = ``;
+        this._identifier = ``;
         this._running = false;
         this._recursive = true;
         this._service = null;
@@ -51,8 +51,8 @@ class Transceiver extends com.pool.DisposableObjectEx {
     get del() { return this._delimiter; }
     set del(p_value) { this._delimiter = p_value; }
 
-    get root() { return this._root; }
-    set root(p_value) { this._root = p_value; }
+    get identifier() { return this._identifier; }
+    set identifier(p_value) { this._identifier = p_value; }
 
     /**
      * { keys:{key:'value'}, [start:]`%`, [end:]`%` }
@@ -84,7 +84,7 @@ class Transceiver extends com.pool.DisposableObjectEx {
 
     Join(...args) {
         let joined = args.join(this._delimiter);
-        if (!joined.startsWith(this._root)) { joined = `${this._root}${this._delimiter}${joined}`; }
+        if (!joined.startsWith(this._identifier)) { joined = `${this._identifier}${this._delimiter}${joined}`; }
         return joined;
     }
 
@@ -224,7 +224,7 @@ class Transceiver extends com.pool.DisposableObjectEx {
         this.tokens = null;
 
         this._id = null;
-        this._root = ``;
+        this._identifier = ``;
         this._delimiter = `/`;
         this._recursive = true;
         this._service = null;

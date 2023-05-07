@@ -18,13 +18,14 @@ const path = require(`path`);
 
 const APIDefinition = require("./api-definition");
 const STATUSES = require('./status-codes');
+const handlers = require('./handlers');
 
 class ServerBase {
 
     constructor(p_constants) {
 
         env.ENV.instance._app = this;
-        
+
         u.LOG.toggle(true);
 
         this._starting = false;
@@ -211,9 +212,12 @@ class ServerBase {
      */
     _RegisterAPIs(p_apis) {
         if (u.isArray(p_apis)) {
-            p_apis.forEach(api => { this._RegisterAPI(`@${api.route}`, p_apis[identifier]); });
+            p_apis.forEach(api => { this._RegisterAPI(`@${api.route}`, api); });
         } else {
-            for (var identifier in p_apis) { this._RegisterAPI(identifier, p_apis[identifier]); }
+            for (var identifier in p_apis) {
+                let api = p_apis[identifier];
+                this._RegisterAPI(`@${api.route}`, api);
+            }
         }
     }
 

@@ -3,18 +3,60 @@ const nkm = require(`@nkmjs/core/nkmserver`);
 /**
  * AWS S3 Bucket controller
  */
-class Transceiver extends nkm.io.Transceiver {
+const base = nkm.io.Transceiver;
+class Transceiver extends base {
     constructor() { super(); }
+
+    static __distribute = nkm.com.helpers.OptionsDistribute.Ext(base)
+        .To(`allowCreate`, false);
+
+    _Init() {
+        super._Init();
+        this._allowCreate = false;
+        this._bucketCORS = null;
+        this._location = null;
+        this._bucketParams = null;
+    }
+
+    get allowCreate() { return this._allowCreate; }
+    set allowCreate(p_value) { this._allowCreate = p_value; }
 
     Start(p_options = null) {
         if (!super.Start(p_options)) { return false; }
-        //Read/write CORS configuration for this bucket
-        setTimeout(() => { this._OnStarted(); }, 100); //Obviously not
-        return true;
+
+        //Check if bucket exists
+        this._bucketParams = { Bucket: this._identifier };
+
+        this._service.api.getBucketCors(this._bucketParams, (err, data) => {
+            if (err) { this._OnBucketMissing(); }
+            else { this._OnBucketExists(); }
+        });
+
     }
 
-    SetCORS(){
-        
+    _OnBucketMissing() {
+        if (this._allowCreate) {
+            this._service.CreateBucket(
+                this._identifier,
+                (err, data) => {
+                    if (err) {
+                        throw new Error(`Bucket creation failed.`);
+                    } else {
+                        this._OnBucketExists();
+                    }
+                });
+        } else {
+            throw new Error(`Bucket does not exist, creation is not allowed.`);
+        }
+    }
+
+    _OnBucketExists() {
+        this._OnStarted();
+    }
+
+
+    SetCORS() {
+
     }
 
     CreateReadStream(p_path, p_options = null) { throw new Error(__noImplemented); }

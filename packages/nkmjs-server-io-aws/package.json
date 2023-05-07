@@ -16,8 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/core": "^1.0.17",
-    "aws-sdk": "^2.1373.0"
+    "@nkmjs/core": "^1.0.17"
   },
   "gitHead": "0d8288538220b63e0bddac446f6acb47e3d39fb7"
 }

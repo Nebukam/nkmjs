@@ -17,6 +17,12 @@ class ServerBaseAuth0 extends base {
             baseURL: this._baseURL
         };
 
+        // Note:
+        // When using auth0 server, default auth0 routes are enabled.
+        // use:
+        //  href="/login" to redirect to universal login
+        //  href="/logout" to logout
+
         p_express.use(oidc.auth(authConfig));
 
         return true;

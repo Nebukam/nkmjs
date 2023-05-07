@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-ebs": "^3.328.0",
     "@nkmjs/core": "^1.0.17",
     "@nkmjs/server-io-aws": "^0.0.4"
   },

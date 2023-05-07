@@ -7,45 +7,39 @@ class ServerProcess extends nkm.server.ServerBaseAuth0 {
     constructor(p_config) { super(p_config); }
 
     _RegisterIOServices(p_ioClasses) {
-        p_ioClasses.push({
-            cl:iofs.IO,
-            config:{ }
-        });
+        p_ioClasses.push({ cl: iofs.IO });
     }
 
     _InitAPIs() {
 
-        this._RegisterAPIs({
-
-            viewHome: {
+        this._RegisterAPIs([
+            {
                 route: '/',
                 fn: (req, res) => {
                     res.render('index', {
                         title: 'Auth0 Webapp sample Nodejs',
-                        isAuthenticated: req.oidc.isAuthenticated()
+                        isAuthenticated: this.IsAuthenticated()
                     });
                 }
             },
-
-            viewProfile: {
+            {
                 route: '/profile',
                 requireAuth: true,
                 fn:
                     (req, res) => {
                         console.log(req, res);
                         res.render('profile', {
-                            userProfile: JSON.stringify(req.oidc.user, null, 2),
+                            userProfile: JSON.stringify(this.GetUser(req), null, 2),
                             title: 'Profile page'
                         });
                     },
                 start: true
             },
-
-            actionPagePublish: {
+            {
                 route: `/action/page/publish/:id`,
                 handler: handlers.PagePublish
             },
-        });
+        ]);
 
     }
 

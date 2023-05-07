@@ -4,10 +4,39 @@ const nkmAWS = require(`@nkmjs/server-io-aws`);
 class SERVER_IO_AWS_S3 extends nkmAWS.IO {
     constructor() { super(); }
 
-    static __transceiverClass = require(`./transceiver`);
+    static __SDK = require(`@aws-sdk/client-s3`).S3;
+    static __transceiverClass = require(`./transceiver-s3`);
 
     _Init() {
         super._Init();
+    }
+
+    static CreateBucket(p_identifier, p_callback) {
+        this.api.createBucket(
+            { Bucket: p_identifier },
+            function (err, data) {
+                if (err) { throw err; }
+                else {
+                    p_callback(data.Location);
+                    if (p_identifier in this.instance._map) {
+                        //this.instance._map[p_identifier];
+                    }
+                }
+            });
+    }
+
+    static DeleteBucket(p_identifier, p_callback) {
+        this.api.createBucket(
+            { Bucket: p_identifier },
+            function (err, data) {
+                if (err) { throw err; }
+                else {
+                    p_callback(data.Location);
+                    if (p_identifier in this.instance._map) {
+                        this.instance._map[p_identifier].Stop();
+                    }
+                }
+            });
     }
 
 }
