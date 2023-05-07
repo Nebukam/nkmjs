@@ -14,6 +14,10 @@ class ServerProcess extends nkm.server.ServerBaseAuth0 {
                     {
                         root: `test`,
                         uid: `lol`
+                    },
+                    {
+                        root: `nope`,
+                        uid: `lol`
                     }
                 ]
             }

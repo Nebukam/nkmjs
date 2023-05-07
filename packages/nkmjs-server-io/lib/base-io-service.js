@@ -1,5 +1,6 @@
-const services = require(`@nkmjs/services`);
+const collections = require(`@nkmjs/collections`);
 const com = require(`@nkmjs/common`);
+const services = require(`@nkmjs/services`);
 
 class BaseIOService extends services.ServiceBase {
     constructor() { super(); }
@@ -8,7 +9,9 @@ class BaseIOService extends services.ServiceBase {
 
     _Init() {
         super._Init();
+
         this._map = {};
+        this._transceivers = new collections.List();
         this._defaultConfig = null;
         this._config = null;
 
@@ -91,18 +94,17 @@ class BaseIOService extends services.ServiceBase {
 
         let uid = p_config.uid;
         if (uid in this._map) {
-            throw new Error(`Transceiver '${uid}' already exists.`);
+            console.log(`⚠️     Transceiver '${uid}' already exists will be overwritten.   ⚠️`);
         }
 
         if (!this._starting) { this._registeredTransceivers++; }
 
         let newTransceiver = com.Rent(this.constructor.__transceiverClass);
+        this._transceivers.Add(newTransceiver)
 
         newTransceiver.service = this;
         newTransceiver.root = p_config.root;
         newTransceiver.uid = uid;
-
-
 
         this._map[uid] = newTransceiver;
 
