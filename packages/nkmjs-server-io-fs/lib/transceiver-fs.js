@@ -105,7 +105,11 @@ class Transceiver_FS extends base {
                 p_callback(null, p_path, true);
             } catch (e) { p_callback(e, p_path, false); }
         } else {
-            fs.mkdir(p_path, opts, (err, p) => { p_callback(err, p_path, err ? false : true); })
+            fs.mkdir(p_path, opts, (err, p) => {
+                if (err.code == 'ENOENT' && opts.recursive) {
+                }
+                p_callback(err, p_path, err ? false : true);
+            })
         }
 
     }
@@ -165,7 +169,7 @@ class Transceiver_FS extends base {
                 p_callback(null, p_path, content);
             } catch (e) { p_callback(e, p_path, null); }
         } else {
-            fs.readdir(p_path, opts, (err, content) => { p_callback(err, p_path, content); });
+            fs.readFile(p_path, opts, (err, content) => { p_callback(err, p_path, content); });
         }
     }
 
@@ -224,6 +228,8 @@ class Transceiver_FS extends base {
      */
     WriteFile(p_path, p_data, p_callback, p_options = null) {
 
+
+
         p_path = this._SanitizePath(p_path);
 
         if (this._sync) {
@@ -238,7 +244,27 @@ class Transceiver_FS extends base {
             // - if not, throw.
             // - if true, create directory
             // - once directory is created, finally write file.
-            fs.writeFile(p_path, p_data, p_options, (err) => { p_callback(err, p_path, true); });
+            //fs.writeFile(p_path, p_data, p_options, (err) => { p_callback(err, p_path, true); });
+            fs.writeFile(p_path, p_data, p_options, (err) => {
+                if (err) {
+                    let recursive = this._opt(p_options, `recursive`, this._recursive);
+                    if (err.code == 'ENOENT' && recursive) {
+                        fs.mkdir(path.dirname(p_path), { recursive: true }, (direrr) => {
+                            if (direrr) { p_callback(direrr, p_path, false); } else {
+                                fs.writeFile(p_path, p_data, p_options, (fserr) => {
+                                    if (fserr) { p_callback(fserr, p_path, false); }
+                                    else { p_callback(null, p_path, true); }
+                                });
+                            }
+                        });
+                    } else {
+                        p_callback(err, p_path, false);
+                    }
+                } else {
+                    p_callback(null, p_path, true);
+                }
+
+            });
         }
 
     }

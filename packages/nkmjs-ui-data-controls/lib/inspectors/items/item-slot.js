@@ -14,7 +14,7 @@ class SlotInspectorItem extends base{
     _Init(){
         super._Init();
         this._descriptor = null;
-        this._dataObserver.Hook(datalib.SIGNAL.DESCRIPTOR_CHANGED, this._OnSlotDescriptorChanged, this);
+        //this._dataObserver.Hook(datalib.SIGNAL.DESCRIPTOR_CHANGED, this._OnSlotDescriptorChanged, this);
     }
 
     _OnSlotDescriptorChanged(p_slot, p_newDescriptor, p_oldDescriptor){

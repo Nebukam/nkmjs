@@ -25,7 +25,7 @@ globalThis.nkmCore = module.exports = {
 
     documents : require(`@nkmjs/documents`),
     data : require(`@nkmjs/data-core`),
-    datalib : require(`@nkmjs/data-library`),
+    //datalib : require(`@nkmjs/data-library`),
     
     //#endregion
 

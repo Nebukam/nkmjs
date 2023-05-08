@@ -57,13 +57,13 @@ class WorkbenchServer extends nkm.server.ServerBaseAuth0 {
     _Boot() {
 
         iofs.IO.lol.WriteFile(
-            iofs.IO.lol.Join(`a`,`b`,`c`,`test.json`),
+            iofs.IO.lol.Join(`a`, `b`, `c`, `test.json`),
             JSON.stringify({ property: 'value', answer: 42 }),
             (p_err, p_path, p_success) => {
                 console.log(p_success);
                 console.log(p_err);
                 console.log(p_path);
-            });
+            }, { recursive: true });
 
     }
 
