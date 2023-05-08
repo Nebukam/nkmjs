@@ -15,10 +15,10 @@ const DOCUMENTS = require(`./documents-manager`);
  * It bridges a resource, a serializer and a data instance.
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof documents
  */
-class Document extends com.pool.DisposableObjectEx {
+class Document extends com.Observable {
 
     constructor() { super(); }
 
@@ -124,13 +124,13 @@ class Document extends com.pool.DisposableObjectEx {
         this._currentRsc = p_value;
         if (oldRsc) {
             if (this.constructor.__registerableType) {
-                DOCUMENTS.instance._MapToRsc(oldRsc, this);
+                DOCUMENTS._MapToRsc(oldRsc, this);
             }
             this._resourceObserver.Unobserve(oldRsc);
         }
         if (p_value) {
             if (this.constructor.__registerableType) {
-                DOCUMENTS.instance._UnmapFromRsc(p_value, this);
+                DOCUMENTS._UnmapFromRsc(p_value, this);
             }
             this._resourceObserver.Observe(p_value);
             this.currentPath = p_value.path; // Only update path if we're provided with a valid resource.
@@ -157,13 +157,13 @@ class Document extends com.pool.DisposableObjectEx {
         this._currentData = p_value;
         if (oldData) {
             if (this.constructor.__registerableType) {
-                DOCUMENTS.instance._UnmapFromData(oldData, this);
+                DOCUMENTS._UnmapFromData(oldData, this);
             }
             this._dataObserver.Unobserve(oldData);
         }
         if (p_value) {
             if (this.constructor.__registerableType) {
-                DOCUMENTS.instance._MapToData(p_value, this);
+                DOCUMENTS._MapToData(p_value, this);
             }
             this._dataObserver.Observe(p_value);
             // Dirty document if data is dirty
@@ -238,7 +238,7 @@ class Document extends com.pool.DisposableObjectEx {
 
     _OnDataNoActiveEditor(p_data) {
         if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
-            DOCUMENTS.instance.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, this);
+            DOCUMENTS.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, this);
         }
     }
 
@@ -409,7 +409,7 @@ class Document extends com.pool.DisposableObjectEx {
 
     Wake() {
         if (this.constructor.__registerableType) {
-            DOCUMENTS.instance._Register(this);
+            DOCUMENTS._Register(this);
         }
     }
 
@@ -424,7 +424,7 @@ class Document extends com.pool.DisposableObjectEx {
         this._options = null;
 
         if (this.constructor.__registerableType) {
-            DOCUMENTS.instance._Unregister(this);
+            DOCUMENTS._Unregister(this);
         }
 
         super._CleanUp();

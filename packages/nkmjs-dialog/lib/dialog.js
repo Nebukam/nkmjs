@@ -6,11 +6,13 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
-const services= require(`@nkmjs/services`);
+const services = require(`@nkmjs/services`);
 const actions = require("@nkmjs/actions");
 const ui = require("@nkmjs/ui-core");
 
 const REQUEST = require(`./request`);
+
+const _dialogs = new collections.List();
 
 /**
  * @description TODO
@@ -24,25 +26,14 @@ class DIALOG extends services.ServiceBase {
 
     _Init() {
         super._Init();
-        this._dialogs = new collections.List();
-
         this._Bind(this._ProcessNext);
         this._inDialog = false;
 
     }
 
-    _InternalStart(){
+    _InternalStart() {
         super._InternalStart();
-        //Some dialog push can occur prior to the service being started
         this._ProcessNext();
-    }
-
-    /**
-     * @description TODO
-     * @param {object} p_options 
-     */
-    static Push(p_options) {
-        return this.instance._Push(p_options);
     }
 
     /**
@@ -50,7 +41,7 @@ class DIALOG extends services.ServiceBase {
      * @description TODO
      * @param {*} p_options 
      */
-    _Push(p_options) {
+    Push(p_options) {
 
         let dialogOptions = null;
 
@@ -66,7 +57,7 @@ class DIALOG extends services.ServiceBase {
             //i.e store a LIFO stack of dialogs [A <-> B <-> C]
         }
 
-        if (!this._dialogs.Add(dialogOptions)) {
+        if (!_dialogs.Add(dialogOptions)) {
             throw Error(`OverlayOptions already exists in stack. Are you trying to push the same dialogInfo multiple times ?`);
         }
 
@@ -86,7 +77,7 @@ class DIALOG extends services.ServiceBase {
 
         if (this._inDialog) { return null; }
 
-        let next = this._dialogs.Shift();
+        let next = _dialogs.Shift();
 
         if (!next) {
             this._inDialog = false;
@@ -114,7 +105,7 @@ class DIALOG extends services.ServiceBase {
     }
 
     _OnDialogConsumed(p_dialogOptions) {
-        this._dialogs.Remove(p_dialogOptions);
+        _dialogs.Remove(p_dialogOptions);
         this._inDialog = false;
         this._ProcessNext();
     }
@@ -123,4 +114,4 @@ class DIALOG extends services.ServiceBase {
 
 }
 
-module.exports = DIALOG;
+module.exports = new DIALOG();

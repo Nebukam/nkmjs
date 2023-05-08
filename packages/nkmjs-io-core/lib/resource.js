@@ -12,10 +12,10 @@ const RESPONSE_TYPE = require(`./response-type.js`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof io.core
  */
-class Resource extends com.pool.DisposableObjectEx {
+class Resource extends com.Observable {
 
     constructor() { super(); }
 
@@ -376,7 +376,7 @@ class Resource extends com.pool.DisposableObjectEx {
     }
 
     _OnDeleteSuccess() {
-        if (u.isInstanceOf(this._content, com.pool.DisposableObject)) { this._content.Release(); } // this might be dangerous
+        if (u.isInstanceOf(this._content, com.Disposable)) { this._content.Release(); } // this might be dangerous
         this._content = null;
         this._raw = null;
         this._loaded = false;

@@ -14,7 +14,7 @@ const FlagEnum = require(`../helpers/flag-enum`);
 
 const SIGNAL = require(`./input-signal`);
 
-class InputHandler extends com.pool.DisposableObjectEx {
+class InputHandler extends com.Observable {
     constructor() { super(); }
 
     // ----> Init

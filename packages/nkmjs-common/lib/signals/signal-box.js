@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 
-const POOL = require(`../pool/pool`);
+const POOL = require(`../pool`);
 const SignalBroadcaster = require(`./signal-broadcaster`);
 
 /**

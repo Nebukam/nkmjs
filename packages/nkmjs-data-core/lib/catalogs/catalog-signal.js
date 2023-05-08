@@ -6,22 +6,21 @@
  * @hideconstructor
  * @memberof data.core.catalog
  */
-class SIGNAL{
-    constructor() {}
+module.exports = {
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static ROOT_ITEM_ADDED = Symbol(`rootItemAdded`);
+    ROOT_ITEM_ADDED: Symbol(`rootItemAdded`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static ROOT_ITEM_REMOVED = Symbol(`rootItemRemoved`);
+    ROOT_ITEM_REMOVED: Symbol(`rootItemRemoved`),
 
 
     /**
@@ -29,22 +28,20 @@ class SIGNAL{
      * @type {symbol}
      * @customtag read-only
      */
-    static ITEM_DATA_CHANGED = Symbol(`dataItemAdded`);
+    ITEM_DATA_CHANGED: Symbol(`dataItemAdded`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static ITEM_DATA_RELEASED = Symbol(`dataItemRemoved`);
+    ITEM_DATA_RELEASED: Symbol(`dataItemRemoved`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static ITEM_DATA_UPDATED = Symbol(`dataItemUpdated`);
+    ITEM_DATA_UPDATED: Symbol(`dataItemUpdated`),
 
 }
-
-module.exports = SIGNAL;

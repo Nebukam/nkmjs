@@ -91,7 +91,7 @@ class PointerStaticExtension extends PointerExtension {
 
         this._element.addEventListener(`mouseleave`, this._mOut);
 
-        if (this._isAnyBtnDown) { POINTER.Unwatch(POINTER.MOUSE_UP, this._mUpOutside); }
+        if (this._isAnyBtnDown) { POINTER.Unwatch(SIGNAL.MOUSE_UP, this._mUpOutside); }
         if (this._focusFn) { this._focusFn(true); }
 
 
@@ -106,7 +106,7 @@ class PointerStaticExtension extends PointerExtension {
 
         this._element.removeEventListener(`mouseleave`, this._mOut);
 
-        if (this._isAnyBtnDown) { POINTER.Watch(POINTER.MOUSE_UP, this._mUpOutside); }
+        if (this._isAnyBtnDown) { POINTER.Watch(SIGNAL.MOUSE_UP, this._mUpOutside); }
         else if (this._focusFn) { this._focusFn(false); }
 
 

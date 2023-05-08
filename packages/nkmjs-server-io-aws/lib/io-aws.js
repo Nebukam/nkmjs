@@ -20,7 +20,6 @@ class SERVER_IO_AWS extends nkm.io.BaseIOService {
 
     }
 
-    static get api() { return this.instance._api; }
     get api() { return this._api; }
 
 }

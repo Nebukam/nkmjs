@@ -38,7 +38,7 @@ class InspectorWidgetGroup extends base {
 
         super._Init();
 
-        this._pointer.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
+        this._pointer.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE_TWICE, this._Bind(this.AltActivate));
 
         this._contentBuilt = false;
 

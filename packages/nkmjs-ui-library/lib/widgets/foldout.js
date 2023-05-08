@@ -30,7 +30,7 @@ class Foldout extends base {
     _Init() {
         super._Init();
 
-        this._pointer.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
+        this._pointer.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE_TWICE, this._Bind(this.AltActivate));
 
         this._extExpand = this._extensions.Add(ui.extensions.Expand);
         this._extExpand._toggled = false;

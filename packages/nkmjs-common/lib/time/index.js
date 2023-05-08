@@ -1,11 +1,11 @@
 'use strict';
 
-const __time = require(`./time`);
+const TIME = require(`./time`);
 
 module.exports = {
-    TIME: __time,
+    TIME: TIME,
     DelayedCall: require(`./delayed-call`),
 
-    NextTick:__time.NextTick.bind(__time),
+    WatchNextTick:TIME.WatchNextTick.bind(TIME),
 
 }

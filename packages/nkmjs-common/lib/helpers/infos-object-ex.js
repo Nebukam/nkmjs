@@ -1,16 +1,16 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const DisposableObjectEx = require(`../pool/disposable-object-ex`);
+const Observable = require(`../observable`);
 
 /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof actions
  */
-class InfosObjectEx extends DisposableObjectEx {
+class InfosObjectEx extends Observable {
     
     constructor() {
         super();

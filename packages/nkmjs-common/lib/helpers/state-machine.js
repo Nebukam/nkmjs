@@ -2,17 +2,17 @@
 
 const u = require("@nkmjs/utils");
 const SIGNAL = require(`../signal`);
-const DisposableObjectEx = require(`../pool/disposable-object-ex`);
+const Observable = require(`../observable`);
 const SignalBox = require(`../signals/signal-box`);
 const StateBase = require(`./state-base`);
 
 /**
  * @description TODO
  * @class
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof common.helpers
  */
-class StateMachine extends DisposableObjectEx {
+class StateMachine extends Observable {
     constructor() {
         super();
         this._currentState = null;
@@ -22,7 +22,7 @@ class StateMachine extends DisposableObjectEx {
 
     /**
      * State machine owner
-     * @type {DisposableObjectEx}
+     * @type {Observable}
      */
     set owner(p_value) {
         if (u.isVoid(p_value)) { p_value = this; }

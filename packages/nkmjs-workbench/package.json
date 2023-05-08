@@ -7,7 +7,7 @@
     "private": true,
     "scripts": {
         "nkmjs": "nkmjs",
-        "start-server": "nodemon server.js"
+        "start-server": "nodemon --watch app server.js"
     },
     "author": {
         "name": "Timothé Lapetite",

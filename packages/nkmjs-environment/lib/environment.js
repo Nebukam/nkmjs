@@ -20,38 +20,22 @@ const ServiceWorkerHandler = require(`./helpers/service-worker-handler`);
  * @hideconstructor
  * @memberof environment
  */
-class ENV extends com.helpers.SingletonEx {
-
+class ENV extends com.Observable {
     constructor() { super(); }
-
-    /**
-     * @description TODO
-     * @type {environment.helpers.Features}
-     * @customtag read-only
-     */
-    static get FEATURES() { return this.instance._features; }
-
-    /**
-     * @description TODO
-     * @type {nkm.app.AppBase}
-     * @customtag read-only
-     */
-    static get APP() { return this.instance._app; }
-    static get APP_NAME() { return this.instance._appName; }
 
     /**
      * @description TODO
      * @type {utils.Argv}
      * @customtag read-only
      */
-    static get ARGV() { return this.instance._config.argv; }
+    get ARGV() { return this._config.argv; }
 
     /**
      * @description TODO
      * @param {function} p_fn 
      * @customtag write-only
      */
-    static onStart(p_fn) { this.instance._onStart.Add(p_fn); }
+    onStart(p_fn) { this._onStart.Add(p_fn); }
 
     /**
      * @description Checks whether nodejs is enabled and return the value
@@ -60,8 +44,8 @@ class ENV extends com.helpers.SingletonEx {
      * @param {*} p_ifNodeIsDisabled 
      * @returns {*} p_ifNodeIsEnabled if node is enabled, otherwise p_ifNodeIsDisabled
      */
-    static IF_NODE(p_ifNodeIsEnabled, p_ifNodeIsDisabled) {
-        return this.instance.features.isNodeEnabled ? p_ifNodeIsEnabled : p_ifNodeIsDisabled;
+    IF_NODE(p_ifNodeIsEnabled, p_ifNodeIsDisabled) {
+        return this.features.isNodeEnabled ? p_ifNodeIsEnabled : p_ifNodeIsDisabled;
     }
 
     _Init() {
@@ -143,7 +127,7 @@ class ENV extends com.helpers.SingletonEx {
         args.forEach(serviceClass => {
             if (this._services.Add(serviceClass)) {
                 if (this._running) {
-                    console.warn(`RegisterServices called post-Start. Be sure this is intended.`);
+                    console.warn(`RegisterServices called post-Start. Make sure this is intended.`);
                     this._BootService(serviceClass);
                 }
             }
@@ -179,11 +163,11 @@ class ENV extends com.helpers.SingletonEx {
      */
     Start(p_config) {
 
-        if (this._started) { throw new Error(`Cannot ENV.Start more than once.`); }
+        if (this._started) { throw new Error(`Cannot this.Start more than once.`); }
         this._started = true;
 
         this._manifestVersion = p_config ? (p_config.manifestVersion || 0) : 0;
-        ENV.instance._features._manifestVersion = this._manifestVersion;
+        this._features._manifestVersion = this._manifestVersion;
 
         if (p_config) {
 
@@ -205,9 +189,9 @@ class ENV extends com.helpers.SingletonEx {
 
         u.LOG._(`ENV : START`, `#33979b`, `#212121`);
 
-        ENV.instance._features.List();
+        this._features.List();
 
-        if (ENV.instance._features.isBrowser) {
+        if (this._features.isBrowser) {
             if (!p_config.argv) {
                 // Feed URL params to argv
                 var argvs = new u.Argv();
@@ -222,7 +206,6 @@ class ENV extends com.helpers.SingletonEx {
         }
 
         this._config = p_config;
-        console.log(this._config);
 
         if (p_config.argv.Has(`offline`)) {
             this._features._isOnline = false;
@@ -273,17 +256,54 @@ class ENV extends com.helpers.SingletonEx {
         let paths = this._config.paths;
         if (paths) { for (let member in paths) { u.PATH.SET(member, paths[member]); } }
 
-        // Initialize app, if any.
-        let appClass = u.tils.Get(this._config, `renderer`, null);
-        if (appClass) {
-            u.LOG._(`ENV : App found (${appClass.name})`, `#33979b`, `#212121`);
-            this._app = new appClass();
+        if (!this._app) {
+            // Initialize app, if any.
+            let appClass = u.tils.Get(this._config, `renderer`, null);
+            if (appClass) {
+                u.LOG._(`ENV : App found (${appClass.name})`, `#33979b`, `#212121`);
+                this._app = new appClass();
+            } else {
+                u.LOG._(`ENV : App not found`, `#fff`, `#980700`);
+            }
         } else {
-            u.LOG._(`ENV : App not found`, `#fff`, `#980700`);
+            u.LOG._(`ENV : App set to ${this._app.constructor.name}`, `#fff`, `#980700`);
         }
 
 
-        services.ServicesManager.instance.Boot();
+        services.ServicesManager.Boot();
+        this._ProcessNextService();
+
+    }
+
+    _ProcessNextService() {
+        if (this._services.isEmpty) {
+            this._OnServicesReady();
+            return;
+        }
+
+        let newService = this._services.Shift();
+        newService.WatchOnce(services.SIGNAL.STARTED, () => { this._ProcessNextService(); });
+
+        this._BootService(newService);
+
+    }
+
+    /**
+     * @access private
+     * @description InitializeAndStart a single service from its constructor
+     * @param {services.ServiceBase} p_serviceClass 
+     */
+    _BootService(p_serviceClass) {
+        if (!u.isInstanceOf(p_serviceClass, services.ServiceBase)) {
+            throw new Error(`${p_serviceClass} is not a service.`);
+        }
+        u.LOG._(`Booting : ${p_serviceClass.constructor.name}...`, `#33979b`, `#212121`);
+        p_serviceClass.InitializeAndStart(this);
+    }
+
+    _OnServicesReady() {
+
+        u.LOG._(`All services ready!`, `#33979b`, `#212121`);
         this._services.ForEach(this._BootService);
 
         // Only dispatch SIGNAL.START once the DOM is ready.
@@ -345,18 +365,6 @@ class ENV extends com.helpers.SingletonEx {
 
     }
 
-    /**
-     * @access private
-     * @description InitializeAndStart a single service from its constructor
-     * @param {services.ServiceBase} p_serviceClass 
-     */
-    _BootService(p_serviceClass) {
-        if (!u.isInstanceOf(p_serviceClass, services.ServiceBase)) {
-            throw new Error(`${p_serviceClass} is not a service.`);
-        }
-        p_serviceClass.instance.InitializeAndStart(this);
-    }
-
     //
 
     /**
@@ -371,4 +379,4 @@ class ENV extends com.helpers.SingletonEx {
 
 }
 
-module.exports = ENV;
+module.exports = new ENV();

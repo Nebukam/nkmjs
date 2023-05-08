@@ -23,12 +23,12 @@ const INPUT = require(`../input`);
  * It is designed to work with streamed widgets (i.e widgets that gets released and thus unselected)
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof ui.core.helpers
  * @signal SignalDataSelected Broadcasted right after a data item has been added to the selection
  * @signal SignalDataUnselected Broadcasted right after a data item has been removed from the selection
  */
-class DataSelection extends com.pool.DisposableObjectEx {
+class DataSelection extends com.Observable {
     constructor() { super(); }
 
     // ----> Init
@@ -98,7 +98,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
     _OnSelectionModifierChanged(p_mod) {
         this._cachedRangeStart = -1;
-        if (p_mod == INPUT.SELECT_MODIFIER_RANGE) {
+        if (p_mod == INPUT.MODIFIERS.RANGE) {
             if (!this._currentRangeContent) { this._currentRangeContent = []; }
             this._cachedRangeStart = this._indices.last;
         } else {
@@ -118,24 +118,24 @@ class DataSelection extends com.pool.DisposableObjectEx {
 
         if (p_data == null) { return false; }
 
-        if (this._isInsideRange || !p_mode) { p_mode = INPUT.SELECT_MODIFIER_ADD; }
+        if (this._isInsideRange || !p_mode) { p_mode = INPUT.MODIFIERS.ADD; }
 
         //if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
         if (this._dataSet.has(p_data)) { return false; }
 
         // Clear selection multiple selection isn't allowed.
-        if (!this._allowMultiple || p_mode == INPUT.SELECT_MODIFIER_NONE) { this.Clear(); }
+        if (!this._allowMultiple || p_mode == INPUT.MODIFIERS.NONE) { this.Clear(); }
 
 
         let pushRange = false;
-        if (p_mode == INPUT.SELECT_MODIFIER_RANGE && !this._isInsideRange
+        if (p_mode == INPUT.MODIFIERS.RANGE && !this._isInsideRange
             && this._allowMultiple && p_dataIndex >= 0 && this._cachedRangeStart != -1) {
-            p_mode = INPUT.SELECT_MODIFIER_ADD;
+            p_mode = INPUT.MODIFIERS.ADD;
             pushRange = true;
         }
 
-        if (p_mode == INPUT.SELECT_MODIFIER_ADD && this._currentRangeContent) {
+        if (p_mode == INPUT.MODIFIERS.ADD && this._currentRangeContent) {
             this._currentRangeContent.push(p_data);
         }
 
@@ -243,7 +243,7 @@ class DataSelection extends com.pool.DisposableObjectEx {
         if (!this._dataSet.has(p_data)) { return false; }
 
         let dataIndex = this._indices.At(this._stack.IndexOf(p_data));
-        if (INPUT.selectionModifier == INPUT.SELECT_MODIFIER_RANGE && !this._isInsideRange
+        if (INPUT.selectionModifier == INPUT.MODIFIERS.RANGE && !this._isInsideRange
             && this._allowMultiple && dataIndex >= 0 && this._cachedRangeStart != -1) {
             return this.AddRange(-1, dataIndex, false);
         }

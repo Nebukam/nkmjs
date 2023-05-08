@@ -1,22 +1,23 @@
 'use strict';
 
-const DisposableObject = require(`./disposable-object`);
-const SignalBox = require(`../signals/signal-box`);
+const Disposable = require(`./disposable`);
+const SignalBox = require(`./signals/signal-box`);
 
-const SIGNAL = require(`../signal`);
+const SIGNAL = require(`./signal`);
 
 /**
- * Add broadcasting capabilities to `{@link common.pool.DisposableObject}`.
+ * Add broadcasting capabilities to `{@link common.Disposable}`.
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObject
+ * @augments common.Disposable
  * @memberof common.pool
  * 
  */
-class DisposableObjectEx extends DisposableObject {
-    constructor() { super(); }
+class Observable extends Disposable {
+    constructor(p_initOptions = null) { super(p_initOptions); }
 
-    _Init() {
+    _Init(p_initOptions) {
+        super._Init(p_initOptions);
         this._signals = new SignalBox(this);
     }
 
@@ -38,7 +39,7 @@ class DisposableObjectEx extends DisposableObject {
      * @param {*} p_signal The signal to watch for
      * @param {function} p_fn The callback to trigger when the signal fires
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {common.pool.DisposableObjectEx}
+     * @returns {common.Observable}
      * @group Broadcasting
      * @example let foo = someFunction;
      * object.Watch(SIGNAL.RELEASED, foo);
@@ -53,7 +54,7 @@ class DisposableObjectEx extends DisposableObject {
      * @param {*} p_signalId The signal to watch for
      * @param {function} p_fn The callback to trigger when the signal fires
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {common.pool.DisposableObjectEx}
+     * @returns {common.Observable}
      * @group Broadcasting
      */
     WatchOnce(p_signalId, p_fn, p_listener = null) { /* owned by local SignalBox */ }
@@ -63,7 +64,7 @@ class DisposableObjectEx extends DisposableObject {
      * @param {*} p_signal The signal that was being watched
      * @param {function} p_fn The callback to be removed
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {common.pool.DisposableObjectEx}
+     * @returns {common.Observable}
      * @group Broadcasting
      */
     Unwatch(p_signal, p_fn, p_listener = null) {
@@ -120,7 +121,7 @@ class DisposableObjectEx extends DisposableObject {
 
         this.Broadcast(SIGNAL.RELEASED, this);
         this._CleanUp();
-        
+
         if (this._returnFn != undefined) { this._returnFn(this); }
         this._isReleasing = false;
 
@@ -135,4 +136,4 @@ class DisposableObjectEx extends DisposableObject {
 
 }
 
-module.exports = DisposableObjectEx;
+module.exports = Observable;

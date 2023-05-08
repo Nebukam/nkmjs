@@ -3,7 +3,7 @@ const iofs = require(`@nkmjs/server-io-fs`);
 
 const handlers = require(`./handlers`);
 
-class ServerProcess extends nkm.server.ServerBaseAuth0 {
+class WorkbenchServer extends nkm.server.ServerBaseAuth0 {
     constructor(p_config) { super(p_config); }
 
     _RegisterIOServices(p_ioConfigs) {
@@ -12,12 +12,9 @@ class ServerProcess extends nkm.server.ServerBaseAuth0 {
             config: {
                 transceivers: [
                     {
-                        root: `test`,
-                        uid: `lol`
-                    },
-                    {
-                        root: `nope`,
-                        uid: `lol`
+                        root: `D:/GIT/nkmjs/packages/nkmjs-workbench/dump/`,
+                        uid: `lol`,
+                        prependRoot: true
                     }
                 ]
             }
@@ -59,10 +56,17 @@ class ServerProcess extends nkm.server.ServerBaseAuth0 {
 
     _Boot() {
 
-        //iofs.IO.public.
+        iofs.IO.lol.WriteFile(
+            iofs.IO.lol.Join(`a`,`b`,`c`,`test.json`),
+            JSON.stringify({ property: 'value', answer: 42 }),
+            (p_err, p_path, p_success) => {
+                console.log(p_success);
+                console.log(p_err);
+                console.log(p_path);
+            });
 
     }
 
 }
 
-module.exports = ServerProcess;
+module.exports = WorkbenchServer;

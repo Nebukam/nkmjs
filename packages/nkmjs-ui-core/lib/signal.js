@@ -1,13 +1,13 @@
 'use strict';
 
+
 /**
  * @description TODO
  * @class
  * @hideconstructor
  * @memberof ui.core
  */
-class SIGNAL {
-    constructor() { }
+module.exports = {
 
     /**
      * @description TODO
@@ -15,7 +15,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
-    static RESIZE = Symbol(`resize`);
+    RESIZE: Symbol(`resize`),
 
     /**
      * @description TODO
@@ -23,7 +23,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
-    static PAINTED = Symbol(`painted`);
+    PAINTED: Symbol(`painted`),
 
     /**
      * @description TODO
@@ -31,7 +31,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
-    static UNPAINTED = Symbol(`unpainted`);
+    UNPAINTED: Symbol(`unpainted`),
 
     /**
      * @description TODO
@@ -39,7 +39,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
-    static FIRST_PAINT = Symbol(`first-paint`);
+    FIRST_PAINT: Symbol(`first-paint`),
 
     /**
      * @description TODO
@@ -47,7 +47,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Child management
      */
-    static CHILD_ATTACHED = Symbol(`childAdded`);
+    CHILD_ATTACHED: Symbol(`childAdded`),
 
     /**
      * @description TODO
@@ -55,7 +55,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Child management
      */
-    static CHILD_MOVED = Symbol(`childMoved`);
+    CHILD_MOVED: Symbol(`childMoved`),
 
     /**
      * @description TODO
@@ -63,7 +63,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Child management
      */
-    static CHILD_DETACHED = Symbol(`childRemoved`);
+    CHILD_DETACHED: Symbol(`childRemoved`),
 
     /**
      * @description TODO
@@ -71,7 +71,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static SEL_GAIN = Symbol(`selectionGain`);
+    SEL_GAIN: Symbol(`selectionGain`),
 
     /**
      * @description TODO
@@ -79,7 +79,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static SEL_LOST = Symbol(`selectionLost`);
+    SEL_LOST: Symbol(`selectionLost`),
 
     /**
      * @description TODO
@@ -87,7 +87,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static FOCUS_GAIN = Symbol(`focusGain`);
+    FOCUS_GAIN: Symbol(`focusGain`),
 
     /**
      * @description TODO
@@ -95,7 +95,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static FOCUS_LOST = Symbol(`focusLost`);
+    FOCUS_LOST: Symbol(`focusLost`),
 
     /**
      * @description TODO
@@ -103,7 +103,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static ACTIVATED = Symbol(`activated`);
+    ACTIVATED: Symbol(`activated`),
 
     /**
      * @description TODO
@@ -111,7 +111,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static ALT_ACTIVATED = Symbol(`altActivated`);
+    ALT_ACTIVATED: Symbol(`altActivated`),
 
     /**
      * @description TODO
@@ -119,7 +119,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static TRIGGERED = Symbol(`triggered`);
+    TRIGGERED: Symbol(`triggered`),
 
     /**
      * @description TODO
@@ -127,7 +127,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Interactivity
      */
-    static DEACTIVATED = Symbol(`deactivated`);
+    DEACTIVATED: Symbol(`deactivated`),
 
     /**
      * @description TODO
@@ -135,14 +135,14 @@ class SIGNAL {
      * @customtag read-only
      * @group Data
      */
-    static DATA_CHANGED = Symbol(`dataChanged`);
+    DATA_CHANGED: Symbol(`dataChanged`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static DISPLAY_REQUESTED = Symbol(`displayRequested`);
+    DISPLAY_REQUESTED: Symbol(`displayRequested`),
 
 
     /**
@@ -150,43 +150,35 @@ class SIGNAL {
      * @type {symbol}
      * @customtag read-only
      */
-    static CLOSE_REQUESTED = Symbol(`closeRequested`);
+    CLOSE_REQUESTED: Symbol(`closeRequested`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static DISPLAY_GAIN = Symbol(`displayGain`);
+    DISPLAY_GAIN: Symbol(`displayGain`),
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     */
-    static DISPLAY_LOST = Symbol(`displayLost`);
+    DISPLAY_LOST: Symbol(`displayLost`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static EXPANDED = Symbol(`expanded`);
+    EXPANDED: Symbol(`expanded`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static COLLAPSED = Symbol(`collapsed`);
-
-    /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     * @group Drag and drop
-     */
-    static DRAG_STARTED = Symbol(`dragStarted`);
+    COLLAPSED: Symbol(`collapsed`),
 
     /**
      * @description TODO
@@ -194,7 +186,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Drag and drop
      */
-    static DRAGGED = Symbol(`dragged`);
+    DRAG_STARTED: Symbol(`dragStarted`),
 
     /**
      * @description TODO
@@ -202,7 +194,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Drag and drop
      */
-    static DRAG_ENDED = Symbol(`dragEnded`);
+    DRAGGED: Symbol(`dragged`),
 
     /**
      * @description TODO
@@ -210,16 +202,16 @@ class SIGNAL {
      * @customtag read-only
      * @group Drag and drop
      */
-    static DROPPED = Symbol(`dropped`);
+    DRAG_ENDED: Symbol(`dragEnded`),
 
-    
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
-     * @group Views
+     * @group Drag and drop
      */
-    static VIEW_ADDED = Symbol(`viewAdded`);
+    DROPPED: Symbol(`dropped`),
+
 
     /**
      * @description TODO
@@ -227,7 +219,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Views
      */
-    static EMPTY = Symbol(`empty`);
+    VIEW_ADDED: Symbol(`viewAdded`),
 
     /**
      * @description TODO
@@ -235,7 +227,15 @@ class SIGNAL {
      * @customtag read-only
      * @group Views
      */
-    static NON_EMPTY = Symbol(`non-empty`);
+    EMPTY: Symbol(`empty`),
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Views
+     */
+    NON_EMPTY: Symbol(`non-empty`),
 
     /**
      * @description TODO
@@ -243,7 +243,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
-    static DRAW_REQUEST_BEFORE = Symbol(`drawRequestBefore`);
+    DRAW_REQUEST_BEFORE: Symbol(`drawRequestBefore`),
 
     /**
     * @description TODO
@@ -251,16 +251,8 @@ class SIGNAL {
     * @customtag read-only
     * @group Rendering
     */
-    static DRAW_REQUEST_AFTER = Symbol(`drawRequestAfter`);
+    DRAW_REQUEST_AFTER: Symbol(`drawRequestAfter`),
 
-    
-    /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     * @group Rendering
-    */
-    static ITEM_REQUESTED = Symbol(`itemRequested`);
 
     /**
      * @description TODO
@@ -268,16 +260,24 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
     */
-    static ITEM_UPDATE_REQUESTED = Symbol(`itemUpdateRequested`);
+    ITEM_REQUESTED: Symbol(`itemRequested`),
 
-    
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      * @group Rendering
     */
-    static ITEM_CLEARED = Symbol(`itemCleared`);
+    ITEM_UPDATE_REQUESTED: Symbol(`itemUpdateRequested`),
+
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Rendering
+    */
+    ITEM_CLEARED: Symbol(`itemCleared`),
 
     /**
      * @description TODO
@@ -285,8 +285,8 @@ class SIGNAL {
      * @customtag read-only
      * @group Selection
     */
-    static ITEM_REQUEST_RANGE_UPDATE = Symbol(`itemRequestRangeUpdate`);
-    
+    ITEM_REQUEST_RANGE_UPDATE: Symbol(`itemRequestRangeUpdate`),
+
 
     /**
      * @description TODO
@@ -294,49 +294,94 @@ class SIGNAL {
      * @customtag read-only
      * @group Selection
     */
-    static SEL_REQ_ADD = Symbol(`selectionAddRequest`);
+    SEL_REQ_ADD: Symbol(`selectionAddRequest`),
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     * @group Selection
-   */
-     static SEL_REQ_INDEX = Symbol(`selectionIndexRequest`);
-    
-    /**
-    * @description TODO
-    * @type {symbol}
-    * @customtag read-only
-    * @group Selection
-   */
-     static SEL_REQ_LENGTH = Symbol(`selectionTotalCountRequest`);
+    */
+    SEL_REQ_INDEX: Symbol(`selectionIndexRequest`),
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     * @group Selection
-   */
-    static SEL_REQ_REMOVE = Symbol(`selectionRemoveRequest`);
+    */
+    SEL_REQ_LENGTH: Symbol(`selectionTotalCountRequest`),
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     * @group Selection
-   */
-    static SEL_MODIFIER_CHANGED = Symbol(`selectionModifierChanged`);
+    */
+    SEL_REQ_REMOVE: Symbol(`selectionRemoveRequest`),
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     * @group Selection
-   */
-     static SEL_CLEARED = Symbol(`selectionCleared`);
+    */
+    SEL_MODIFIER_CHANGED: Symbol(`selectionModifierChanged`),
 
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Selection
+    */
+    SEL_CLEARED: Symbol(`selectionCleared`),
+
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    * @group Key Signal
+    */
+    KEY_UP: Symbol('keyUp'),
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Key Signal
+     */
+    KEY_DOWN: Symbol('keyDown'),
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Key Signal
+     */
+    KEY_REPEAT: Symbol('keyRepeat'),
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Button State
+     */
+    MOUSE_UP: Symbol('mouseUp'),
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Button State
+     */
+    MOUSE_DOWN: Symbol('mouseDown'),
+
+    /**
+     * @description TODO
+     * @type {symbol}
+     * @customtag read-only
+     * @group Button State
+     */
+    MOUSE_MOVE: Symbol('mouseMove'),
 
 }
-
-module.exports = SIGNAL;

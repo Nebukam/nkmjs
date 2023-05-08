@@ -12,7 +12,7 @@ const RootAction = require(`./action-root`);
  * @hideconstructor
  * @memberof actions
  */
-class ActionStack extends com.pool.DisposableObjectEx {
+class ActionStack extends com.Observable {
 
     constructor() { super(); }
 

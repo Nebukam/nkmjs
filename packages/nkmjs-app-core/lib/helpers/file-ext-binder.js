@@ -7,7 +7,7 @@ const data = require(`@nkmjs/data-core`);
 const documents = require(`@nkmjs/documents`);
 const datacontrols = require(`@nkmjs/ui-data-controls`);
 
-class FileExtBinder extends com.pool.DisposableObjectEx {
+class FileExtBinder extends com.Observable {
 
     constructor(p_owner) {
         super();

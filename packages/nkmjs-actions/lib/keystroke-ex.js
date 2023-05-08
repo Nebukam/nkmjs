@@ -10,7 +10,7 @@ const Keystroke = require(`./keystroke`);
  * A Keystroke object that represents an ordered chain of keys
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObject
+ * @augments common.Disposable
  * @memberof actions 
  */
 class KeystrokeEx extends Keystroke {

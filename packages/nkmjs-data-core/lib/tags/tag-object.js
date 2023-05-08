@@ -8,10 +8,10 @@ const SIGNAL = require(`../signal`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObject
+ * @augments common.Disposable
  * @memberof data.core
  */
-class TagObject extends com.pool.DisposableObjectEx {
+class TagObject extends com.Observable {
 
     constructor() {
         super();

@@ -30,6 +30,6 @@ globalThis.nkm = module.exports = {
 
     //#endregion
 
-    get main(){ return nkm.env.APP; },
+    get main(){ return nkm.env.app; },
 
 }

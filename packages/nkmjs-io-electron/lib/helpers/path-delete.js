@@ -9,7 +9,7 @@ const path = require(`path`);
  * Delete a file or directory.
  * In case of a directory, recursively deletes everything inside.
  */
-class PathDelete extends com.pool.DisposableObject {
+class PathDelete extends com.Disposable {
     constructor() { super(); }
 
     _Init() {

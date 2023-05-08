@@ -4,7 +4,7 @@ const nkm = require(`@nkmjs/core/nkmserver`);
  * AWS S3 Bucket controller
  */
 const base = nkm.io.Transceiver;
-class Transceiver extends base {
+class Transceiver_AWS_S3 extends base {
     constructor() { super(); }
 
     static __distribute = nkm.com.helpers.OptionsDistribute.Ext(base)
@@ -156,4 +156,4 @@ class Transceiver extends base {
 
 }
 
-module.exports = Transceiver;
+module.exports = Transceiver_AWS_S3;

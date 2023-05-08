@@ -1,19 +1,18 @@
 'use strict';
 
 /**
- * This class contains the common, static SIGNAL identifiers. They are semantic values, the _like_ of an enum
+ * This class contains the common, SIGNAL identifiers. They are semantic values, the _like_ of an enum
  * in other programming languages.
  * These values are primarily used by the broadcasting system or core nkmjs' objects; They are like
  * regular event's string value, only these are unique Symbols as opposed to mutable Strings.
  * <div class="tip warning" data-title="Important note"> The exact meaning & documentation of a signal is done on a per-class basis : each class is
- * responsible for its own implementation of a signal. A good example of that is the `{@link common.pool.DisposableObjectEx}`'s doc.
+ * responsible for its own implementation of a signal. A good example of that is the `{@link common.Observable}`'s doc.
  * </div>
  * @class
  * @hideconstructor
  * @memberof common
  */
-class SIGNAL{
-    constructor() {}
+module.exports = {
 
     /**
      * @description Commonly used by disposable objects to signal they are about to be released.
@@ -21,14 +20,14 @@ class SIGNAL{
      * @customtag read-only
      * @group Pooling
      */
-    static RELEASING = Symbol(`releasing`);
+    RELEASING: Symbol(`releasing`),
     /**
      * @description Commonly used by disposable objects to signal they have been released.
      * @type {symbol}
      * @customtag read-only
      * @group Pooling
      */
-    static RELEASED = Symbol(`released`);
+    RELEASED: Symbol(`released`),
 
     /**
      * @description Commonly used by an object to signal it has been updated.
@@ -36,15 +35,15 @@ class SIGNAL{
      * @customtag read-only
      * @group Updates
      */
-    static UPDATED = Symbol(`updated`);
-    
+    UPDATED: Symbol(`updated`),
+
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      * @group Updates
      */
-    static RENAMING = Symbol(`renaming`);
+    RENAMING: Symbol(`renaming`),
 
     /**
      * @description TODO
@@ -52,7 +51,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static RENAMED = Symbol(`renamed`);
+    RENAMED: Symbol(`renamed`),
 
     /**
      * @description TODO
@@ -60,7 +59,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static STATE_CHANGING = Symbol(`stateChanging`);
+    STATE_CHANGING: Symbol(`stateChanging`),
 
     /**
      * @description TODO
@@ -68,7 +67,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static STATE_CHANGED = Symbol(`stateChanged`);
+    STATE_CHANGED: Symbol(`stateChanged`),
 
     /**
      * @description TODO
@@ -76,7 +75,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static STARTED = Symbol(`started`);
+    STARTED: Symbol(`started`),
 
     /**
      * @description TODO
@@ -84,7 +83,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static STOPPED = Symbol(`stopped`);
+    STOPPED: Symbol(`stopped`),
 
     /**
      * @description TODO
@@ -92,7 +91,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static PROGRESS = Symbol(`progress`);
+    PROGRESS: Symbol(`progress`),
 
     /**
      * @description TODO
@@ -100,7 +99,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static COMPLETE = Symbol(`complete`);
+    COMPLETE: Symbol(`complete`),
 
     /**
      * @description TODO
@@ -108,7 +107,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static FAIL = Symbol(`fail`);
+    FAIL: Symbol(`fail`),
 
     /**
      * @description TODO
@@ -116,7 +115,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static CANCELED = Symbol(`canceled`);
+    CANCELED: Symbol(`canceled`),
 
     /**
      * @description TODO
@@ -124,7 +123,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static READY = Symbol(`ready`);
+    READY: Symbol(`ready`),
 
     /**
      * @description TODO
@@ -132,7 +131,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-    static TICK = Symbol(`tick`);
+    TICK: Symbol(`tick`),
 
     /**
      * @description TODO
@@ -140,7 +139,7 @@ class SIGNAL{
      * @customtag read-only
      * @group Generic
      */
-     static CONSUMED = Symbol(`consumed`);
+    CONSUMED: Symbol(`consumed`),
 
     /**
      * @description TODO
@@ -148,7 +147,7 @@ class SIGNAL{
      * @customtag read-only
      * @group ListItem Management
      */
-    static ITEM_ADDED = Symbol(`itemAdded`);
+    ITEM_ADDED: Symbol(`itemAdded`),
 
     /**
      * @description TODO
@@ -156,7 +155,7 @@ class SIGNAL{
      * @customtag read-only
      * @group ListItem Management
      */
-     static ITEM_BUMPED = Symbol(`itemBumped`);
+    ITEM_BUMPED: Symbol(`itemBumped`),
 
     /**
      * @description TODO
@@ -164,7 +163,7 @@ class SIGNAL{
      * @customtag read-only
      * @group ListItem Management
      */
-    static ITEM_REMOVED = Symbol(`itemRemoved`);
+    ITEM_REMOVED: Symbol(`itemRemoved`),
 
     /**
      * @description TODO
@@ -172,7 +171,7 @@ class SIGNAL{
      * @customtag read-only
      * @group ListItem Management
      */
-    static ITEM_MOVED = Symbol(`itemMoved`);
+    ITEM_MOVED: Symbol(`itemMoved`),
 
     /**
      * @description TODO
@@ -180,7 +179,7 @@ class SIGNAL{
      * @customtag read-only
      * @group ListItem Management
      */
-    static ITEM_UPDATED = Symbol(`itemUpdated`);
+    ITEM_UPDATED: Symbol(`itemUpdated`),
 
     /**
      * @description TODO
@@ -188,15 +187,13 @@ class SIGNAL{
      * @customtag read-only
      * @group ListItem Management
      */
-     static VALUE_CHANGED = Symbol(`valueChanged`);
+    VALUE_CHANGED: Symbol(`valueChanged`),
 
-     /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     */
-    static SORTED = Symbol(`sorted`);
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    */
+    SORTED: Symbol(`sorted`),
 
 }
-
-module.exports = SIGNAL;

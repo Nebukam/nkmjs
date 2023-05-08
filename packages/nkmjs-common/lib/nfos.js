@@ -4,6 +4,7 @@
 const u = require("@nkmjs/utils");
 
 const __NFO__ = `__NFO__`;
+const __legacyCountCache = new Map();
 
 /**
  * NFOS wraps a few methods to consistantly fetch a class' NFO.  
@@ -18,11 +19,9 @@ const __NFO__ = `__NFO__`;
  * @hideconstructor
  * @memberof common
  */
-class NFOS {
+module.exports = {
 
-    constructor() { }
-
-    static KEY = __NFO__;
+    get KEY() { return __NFO__; },
 
     /**
      * @descriptionAttempts to retrieve constructor-level metadata.
@@ -33,7 +32,7 @@ class NFOS {
      * @returns {object} The meta information linked to the provided object, or null.
      * @order 1
      */
-    static Get(p_obj, p_fallback = null) {
+    Get: function (p_obj, p_fallback = null) {
 
         if (u.isObject(p_obj)) {
             if (__NFO__ in p_obj) { return p_obj[__NFO__]; }
@@ -44,11 +43,11 @@ class NFOS {
 
         return p_fallback;
 
-    }
+    },
 
-    static GetOption(p_obj, p_id, p_fallback = null) {
-        return u.tils.Get(this.Get(p_obj), p_id, p_fallback);
-    }
+    GetOption: function (p_obj, p_id, p_fallback = null) {
+        return u.tils.Get(module.exports.Get(p_obj), p_id, p_fallback);
+    },
 
     /**
      * Extends another class NFO by copying properties & value from that class NFO that are missing 
@@ -85,7 +84,7 @@ class NFOS {
      *     someArray:['A', 'B', 'C', 'CustomValue']
      * }
      */
-    static Ext(p_baseObject, p_baseClass, p_merge = null) {
+    Ext: function (p_baseObject, p_baseClass, p_merge = null) {
 
         let source = p_baseClass[__NFO__];
 
@@ -95,7 +94,7 @@ class NFOS {
                 if (u.isArray(sourceValue)) {
                     p_baseObject[key] = [...sourceValue];
                 } else if (u.isObject()) {
-                    p_baseObject[key] = this.Ext({}, sourceValue);
+                    p_baseObject[key] = module.exports.Ext({}, sourceValue);
                 } else {
                     p_baseObject[key] = sourceValue;
                 }
@@ -108,7 +107,7 @@ class NFOS {
                         }
                     }
                 } else if (u.isObject(baseValue) && UTILS.isObject(sourceValue)) {
-                    this.Ext(baseValue, sourceValue, p_merge);
+                    module.exports.Ext(baseValue, sourceValue, p_merge);
                 } else {
                     // Ignore
                 }
@@ -117,21 +116,20 @@ class NFOS {
 
         return p_baseObject;
 
-    }
+    },
 
     //#region inheritance utils
 
-    static __legacyCountCache = new Map();
 
-    static GetDistanceToObject(p_obj) {
+    GetDistanceToObject: function (p_obj) {
 
         if (!u.isFunc(p_obj)) { p_obj = p_obj.constructor; }
 
-        let dist = this.__legacyCountCache.get(p_obj);
+        let dist = __legacyCountCache.get(p_obj);
         if (dist != undefined) { return dist; }
 
         if (!u.isObject(p_obj)) {
-            this.__legacyCountCache.set(p_obj, -1);
+            __legacyCountCache.set(p_obj, -1);
             return -1;
         }
 
@@ -140,14 +138,14 @@ class NFOS {
 
         while (c) {
             if (c == Object) {
-                this.__legacyCountCache.set(p_obj, dist);
+                __legacyCountCache.set(p_obj, dist);
                 return dist;
             }
             c = c.constructor;
             dist++;
         }
 
-    }
+    },
 
     /**
      * 
@@ -155,7 +153,7 @@ class NFOS {
      * @param {*} p_b 
      * @returns {number}
      */
-    static GetSignedDistance(p_a, p_b) {
+    GetSignedDistance: function (p_a, p_b) {
 
         if (!p_a || !p_b) { return null; }
 
@@ -165,11 +163,11 @@ class NFOS {
         // Drop the "Signed" for now
         if (!u.isInstanceOf(p_a, p_b)) { return null; }
 
-        return this._GetDistance(p_a, p_b);
+        return module.exports._GetDistance(p_a, p_b);
 
-    }
+    },
 
-    static _GetDistance(p_child, p_parent) {
+    _GetDistance: function (p_child, p_parent) {
 
         if (!u.isInstanceOf(p_child, p_parent)) { return null; }
 
@@ -183,11 +181,9 @@ class NFOS {
             parent = Object.getPrototypeOf(parent);
         }
         return parent ? dist : null;
-    }
+    },
 
 
     //#endregion
 
 }
-
-module.exports = NFOS;

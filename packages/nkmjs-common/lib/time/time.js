@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 
 const SIGNAL = require(`../signal`);
 const helpers = require(`../helpers`);
+const Observable = require(`../observable`);
 
 /**
  * A ticker singleton that allow for easy manipulation of time & frame.
@@ -11,21 +12,8 @@ const helpers = require(`../helpers`);
  * @class
  * @memberof common.time
  */
-class TIME extends helpers.SingletonEx {
+class TIME extends Observable {
     constructor() { super(); }
-
-    /**
-     * @description TODO
-     * @type {function}
-     * @customtag write-only
-     */
-    static set NEXT_TICK(p_fn) { TIME.instance.NextTickAdd(p_fn); }
-
-    /**
-     * @description TODO
-     * @type {function}
-     */
-    static NextTick(p_fn){ TIME.instance.NextTickAdd(p_fn); }
 
     _Init() {
 
@@ -46,7 +34,7 @@ class TIME extends helpers.SingletonEx {
 
     _PostInit() {
         super._PostInit();
-        if (this._isBrowser) { window.requestAnimationFrame(this._Tick); }
+        if (typeof window !== 'undefined') { window.requestAnimationFrame(this._Tick); }
     }
 
     /**
@@ -72,7 +60,7 @@ class TIME extends helpers.SingletonEx {
      * @description Add a callback to next frame's tick (if browser) or process.nextTick (if nodejs).
      * @param {function} p_fn 
      */
-    NextTickAdd(p_fn) {
+    WatchNextTick(p_fn) {
         if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
         this._nextTick.Add(p_fn);
         this._ScheduleNextTick();
@@ -82,7 +70,7 @@ class TIME extends helpers.SingletonEx {
      * @description Add a callback to next frame's tick (if browser) or process.nextTick (if nodejs).
      * @param {function} p_fn 
      */
-    NextTickRemove(p_fn) {
+    UnwatchNextTick(p_fn) {
         if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
         this._nextTick.Remove(p_fn);
     }
@@ -91,9 +79,9 @@ class TIME extends helpers.SingletonEx {
      * @access private
      */
     _ScheduleNextTick() {
-        if (!this._isBrowser
+        if (typeof window !== 'undefined'
             && !this._nextTickScheduled) {
-            // In node only schedule NextTick once, otherwise the process stays open.
+            // In node only schedule WatchNextTick once, otherwise the process stays open.
             this._nextTickScheduled = true;
             process.nextTick(this._Tick);
         }
@@ -119,7 +107,7 @@ class TIME extends helpers.SingletonEx {
         currentCl.Notify(this._deltaTime).Clear();
         this.Broadcast(SIGNAL.TICK, this._deltaTime);
 
-        if (this._isBrowser) {
+        if (typeof window !== 'undefined') {
             window.requestAnimationFrame(this._Tick);
         }
         else {
@@ -130,4 +118,4 @@ class TIME extends helpers.SingletonEx {
 
 }
 
-module.exports = TIME;
+module.exports = new TIME();

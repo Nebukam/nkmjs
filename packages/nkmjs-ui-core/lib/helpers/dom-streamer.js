@@ -24,7 +24,7 @@ class DOMStreamerPlaceholder extends DisposableHTMLElement {
  * It works by leveraging resize & intersection observer, and requests
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof common.helpers
  */
 class DOMStreamer extends base {

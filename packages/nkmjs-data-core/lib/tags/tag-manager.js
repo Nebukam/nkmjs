@@ -9,10 +9,10 @@ const Tag = require(`./tag-object`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class TagManager extends com.pool.DisposableObjectEx {
+class TagManager extends com.Observable {
     constructor() { super(); }
 
     _Init() {

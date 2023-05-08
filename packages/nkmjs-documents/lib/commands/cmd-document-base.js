@@ -38,7 +38,7 @@ class CommandDocumentBase extends actions.Command {
 
         if (p_registerAsDefault && this.__docCmdType != null) {
             //Register as default command within
-            DOCUMENTS.instance._RegisterDefaultCommand(
+            DOCUMENTS._RegisterDefaultCommand(
                 this.__docCmdType,
                 newCmd);
         }

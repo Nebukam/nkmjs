@@ -9,7 +9,7 @@ const collections = require(`@nkmjs/collections`);
 const SIGNAL = require(`./input-signal`);
 const InputBase = require(`./input-base`);
 
-class InputFormHandler extends com.pool.DisposableObjectEx {
+class InputFormHandler extends com.Observable {
     constructor() { super(); }
 
     _Init() {

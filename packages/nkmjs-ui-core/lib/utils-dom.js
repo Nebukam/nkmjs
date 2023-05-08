@@ -82,22 +82,20 @@ const __rectObserver = new IntersectionObserver(
 var __urid = 0;
 
 /**
- * UTILS_DOM is a wrapper class that contains a bunch of utilitary static methods to manipulate the DOM.
+ * UTILS_DOM is a wrapper class that contains a bunch of utilitary methods to manipulate the DOM.
  * Since the NKMjs library isn't heavy on DOM manipulation, these are mostly shortcut to common operations such
  * as additions & deletions
  * @class
  * @hideconstructor
  * @memberof utils
  */
-class UTILS_DOM {
+module.exports = {
 
-    constructor() { }
-
-    static get URID() { return __urid++; }
+    get URID() { return __urid++; },
 
     //#region Observable
 
-    static ObserveRect(p_element, p_callback) {
+    ObserveRect: function (p_element, p_callback) {
 
         if (!__observedCallbacks.Set(p_element, p_callback)) { return; }
 
@@ -110,9 +108,9 @@ class UTILS_DOM {
 
         console.log(`ObserveRect :: ${p_element} / ${p_callback} (${index})`);
 
-    }
+    },
 
-    static UnobserveRect(p_element, p_callback) {
+    UnobserveRect: function (p_element, p_callback) {
 
         if (!__observedCallbacks.Remove(p_element, p_callback)) { return; }
 
@@ -124,7 +122,7 @@ class UTILS_DOM {
         }
 
         console.log(`UnobserveRect :: ${p_element} / ${p_callback} (${index} // ${count})`);
-    }
+    },
 
     //#endregion
 
@@ -136,7 +134,7 @@ class UTILS_DOM {
      * @example let newNode = this.New(`div`, { class:`foo`, ['data-title']:`bar` });
      * //<div class="foo" data-title:"bar"></div> //dom element
      */
-    static El(p_element, p_attributes = null, p_container = null) {
+    El: function (p_element, p_attributes = null, p_container = null) {
 
         let element = document.createElement(p_element);
 
@@ -145,39 +143,39 @@ class UTILS_DOM {
             for (let att in p_attributes) { element.setAttribute(att, p_attributes[att]); }
         }
 
-        if (!u.isVoid(p_container)) { this.Attach(element, p_container); }
+        if (!u.isVoid(p_container)) { module.exports.Attach(element, p_container); }
 
         return element;
-    }
+    },
 
     /**
      * @description Create a clone of an existing DOM element.
      * @param {Node} p_element Node to clone
      * @param {Node} [p_container] Parent node to append the new node into
      */
-    static ElClone(p_element, p_container = null) {
+    ElClone: function (p_element, p_container = null) {
         let element = p_element.cloneNode(true);
-        if (!u.isVoid(p_container)) { this.Attach(element, p_container); }
+        if (!u.isVoid(p_container)) { module.exports.Attach(element, p_container); }
         return element;
-    }
+    },
 
     /**
      * @description Appends a dom element into another one
      * @param {Node} p_element The element to be appended
      * @param {Node} p_parent Parent node to append the element into
      */
-    static Attach(p_element, p_parent) {
+    Attach: function (p_element, p_parent) {
         if (`_wrapper` in p_parent) { p_parent._wrapper.appendChild(p_element); }
         else { p_parent.appendChild(p_element); }
-    }
+    },
 
-    static AttachAfter(p_element, p_refNode) {
+    AttachAfter: function (p_element, p_refNode) {
         p_refNode.parentNode.insertBefore(p_element, p_refNode.nextSibling);
-    }
+    },
 
-    static AttachBefore(p_element, p_refNode) {
+    AttachBefore: function (p_element, p_refNode) {
         p_refNode.parentNode.insertBefore(p_element, p_refNode);
-    }
+    },
 
 
     /**
@@ -187,7 +185,7 @@ class UTILS_DOM {
      * @param {Node} p_parent Parent node to append or move the element into
      * @param {boolean} [p_firstChild] If true, attach before the firstChild, otherwise attach before the firstElementChild
      */
-    static AttachFirst(p_element, p_parent, p_firstChild = true) {
+    AttachFirst: function (p_element, p_parent, p_firstChild = true) {
 
         if (p_firstChild && p_parent.firstChild) {
             p_parent.insertBefore(p_element, p_parent.firstChild);
@@ -196,19 +194,19 @@ class UTILS_DOM {
         } else {
             p_parent.appendChild(p_element);
         }
-    }
+    },
 
     /**
      * Remove a node from its parent, if any
      * @param {Node} p_element 
      */
-    static Detach(p_element) {
+    Detach: function (p_element) {
         if (!u.isVoid(p_element.parentNode)) {
             p_element.parentNode.removeChild(p_element);
         } else {
             p_element.remove();
         }
-    }
+    },
 
 
     /**
@@ -216,7 +214,7 @@ class UTILS_DOM {
      * @param {Node} p_node 
      * @param {boolean} [p_frontOfNode] If true, move the node at the front of the last child. Otherwise last childElement.
      */
-    static ToFront(p_node, p_frontOfNode = false) {
+    ToFront: function (p_node, p_frontOfNode = false) {
         if (!u.isVoid(p_node.parentNode)) {
             if (p_node.parentNode.lastChild != p_node) {
                 p_node.parentNode.appendChild(p_node);
@@ -237,14 +235,14 @@ class UTILS_DOM {
         } else {
             throw new Error(`Node has no parent.`);
         }
-    }
+    },
 
     /**
      * @description Move a node at the beginning (back) of the child list
      * @param {Node} p_node 
      * @param {boolean} [p_backOfNode] If true, move the node at the back of the first child. Otherwise first childElement.
      */
-    static ToBack(p_node, p_backOfNode = false) {
+    ToBack: function (p_node, p_backOfNode = false) {
         if (!u.isVoid(p_node.parentNode)) {
             if (p_backOfNode) {
                 if (p_node.parentNode.firstChild) {
@@ -264,7 +262,7 @@ class UTILS_DOM {
         } else {
             throw new Error(`Node has no parent.`);
         }
-    }
+    },
 
     // ----> Rect utils
 
@@ -274,7 +272,7 @@ class UTILS_DOM {
      * @param {Node} p_element 
      * @param {Node} [p_relative] 
      */
-    static Rect(p_element, p_relative = null) {
+    Rect: function (p_element, p_relative = null) {
 
         let domRect = p_element.getBoundingClientRect();
         if (!p_relative) { return domRect; }
@@ -287,7 +285,7 @@ class UTILS_DOM {
             height: domRect.height
         });
 
-    }
+    },
 
     /**
      * Set a group or unique attribute value to element
@@ -295,12 +293,12 @@ class UTILS_DOM {
      * @param {string|object} p_att 
      * @param {*} p_value 
      */
-    static SAtt(p_element, p_att, p_value = null, p_removeWhenNull = false) {
+    SAtt: function (p_element, p_att, p_value = null, p_removeWhenNull = false) {
         if (u.isObject(p_att)) {
             if (u.isString(p_value)) {
                 for (let att in p_att) {
                     let value = p_att[att][p_value];
-                    if (p_removeWhenNull && value == null) { this.RAtt(p_element, att); }
+                    if (p_removeWhenNull && value == null) { module.exports.RAtt(p_element, att); }
                     else { p_element.setAttribute(att, value); }
                 }
             } else {
@@ -311,17 +309,17 @@ class UTILS_DOM {
             }
 
         } else {
-            if (p_removeWhenNull && p_value == null) { this.RAtt(p_element, p_att); }
+            if (p_removeWhenNull && p_value == null) { module.exports.RAtt(p_element, p_att); }
             else { p_element.setAttribute(p_att, p_value); }
         }
-    }
+    },
 
     /**
      * Remove a group or unique attribute from element
      * @param {HTMLElement} p_element 
      * @param {string|object} p_att 
      */
-    static RAtt(p_element, p_att) {
+    RAtt: function (p_element, p_att) {
         if (u.isObject(p_att)) {
             for (let att in p_att) {
                 p_element.removeAttribute(att);
@@ -329,7 +327,7 @@ class UTILS_DOM {
         } else {
             p_element.removeAttribute(p_att);
         }
-    }
+    },
 
     // ----> Scrolling
 
@@ -338,23 +336,23 @@ class UTILS_DOM {
      * @param {Node} p_element 
      * @returns {boolean} True if the element currently overflows over the X axis, otherwise false
      */
-    static OverflowsY(p_element) {
+    OverflowsY: function (p_element) {
         return p_element.scrollHeight > p_element.clientHeight;
-    }
+    },
 
     /**
      * @description TODO
      * @param {Node} p_element 
      * @returns {boolean} True if the element currently overflows over the Y axis, otherwise false
      */
-    static OverflowsX(p_element) {
+    OverflowsX: function (p_element) {
         return p_element.scrollWidth > p_element.clientWidth;
-    }
+    },
 
 
     //#region  Cookies
 
-    static SetCookie(name, value, days) {
+    SetCookie: function (name, value, days) {
         var expires = "";
         if (days) {
             var date = new Date();
@@ -362,9 +360,9 @@ class UTILS_DOM {
             expires = "; expires=" + date.toUTCString();
         }
         document.cookie = name + "=" + (value || "") + expires + "; path=/";
-    }
+    },
 
-    static GetCookie(name) {
+    GetCookie: function (name) {
         var nameEQ = name + "=";
         var ca = document.cookie.split(';');
         for (var i = 0; i < ca.length; i++) {
@@ -373,86 +371,84 @@ class UTILS_DOM {
             if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
         }
         return null;
-    }
+    },
 
-    static EraseCookie(name) {
+    EraseCookie: function (name) {
         document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    }
+    },
 
     //#endregion
 
 
-    static get isTextHighlighted() {
-        let t = this.highlightedText;
+    get isTextHighlighted() {
+        let t = module.exports.highlightedText;
         return !u.isVoid(t) && t != '';
-    }
+    },
 
-    static get highlightedText() {
+    get highlightedText() {
         let txt = '';
         if (window.getSelection) { txt = window.getSelection(); }
         else if (document.getSelection) { txt = document.getSelection(); }
         else if (document.selection) { txt = document.selection.createRange().text; }
         return txt.toString();
-    }
+    },
 
-    static ClearHighlightedText() {
+    ClearHighlightedText: function () {
         if (window.getSelection) { window.getSelection().removeAllRanges(); }
         else if (document.getSelection) { document.getSelection().removeAllRanges(); }
-    }
+    },
 
 
     //#region Style helpers
 
-    static CSS(p_el, p_id, p_value = null) {
+    CSS: function (p_el, p_id, p_value = null) {
         if (u.isObject(p_id)) {
             if (u.isArray(p_el)) {
                 p_el.forEach(el => {
-                    for (let p in p_id) { this._TStyle(el, p, p_id[p]); }
+                    for (let p in p_id) { module.exports._TStyle(el, p, p_id[p]); }
                 });
             } else {
-                for (let p in p_id) { this._TStyle(p_el, p, p_id[p]); }
+                for (let p in p_id) { module.exports._TStyle(p_el, p, p_id[p]); }
             }
         } else {
             if (u.isArray(p_el)) {
                 p_el.forEach(el => {
-                    this._TStyle(el, p_id, p_value);
+                    module.exports._TStyle(el, p_id, p_value);
                 });
             } else {
-                this._TStyle(p_el, p_id, p_value);
+                module.exports._TStyle(p_el, p_id, p_value);
             }
         }
-    }
+    },
 
-    static _TStyle(p_el, p_id, p_value = null) {
+    _TStyle: function (p_el, p_id, p_value = null) {
         if (p_value === null || p_value === undefined || p_value === false) { p_el.style.removeProperty(p_id); }
         else { p_el.style.setProperty(p_id, p_value); }
-    }
+    },
 
-    static CSSClass(p_el, p_cl, p_toggle = true) {
+    CSSClass: function (p_el, p_cl, p_toggle = true) {
         if (u.isObject(p_cl)) {
             if (u.isArray(p_el)) {
                 p_el.forEach(el => {
-                    for (let p in p_cl) { this._TClass(el, p, p_cl[p] ? true : false); }
+                    for (let p in p_cl) { module.exports._TClass(el, p, p_cl[p] ? true : false); }
                 });
             } else {
-                for (let p in p_cl) { this._TClass(p_el, p, p_cl[p] ? true : false); }
+                for (let p in p_cl) { module.exports._TClass(p_el, p, p_cl[p] ? true : false); }
             }
         } else {
             if (u.isArray(p_el)) {
-                p_el.forEach(el => { this._TClass(el, p_cl, p_toggle); });
+                p_el.forEach(el => { module.exports._TClass(el, p_cl, p_toggle); });
             } else {
-                this._TClass(p_el, p_cl, p_toggle);
+                module.exports._TClass(p_el, p_cl, p_toggle);
             }
         }
-    }
+    },
 
-    static _TClass(p_el, p_id, p_toggle = null) {
+    _TClass: function (p_el, p_id, p_toggle = null) {
         if (p_toggle) { p_el.classList.add(p_id); }
         else { p_el.classList.remove(p_id); }
-    }
+    },
 
     //#endregion
 
 }
-
-module.exports = UTILS_DOM;

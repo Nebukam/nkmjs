@@ -10,10 +10,10 @@ const ID = require(`./id`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class IDDispenser extends com.pool.DisposableObjectEx {
+class IDDispenser extends com.Observable {
     constructor() { super(); }
 
     _Init() {

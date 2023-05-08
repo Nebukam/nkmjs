@@ -4,7 +4,7 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./input-signal`);
 
-class InputListHandler extends com.pool.DisposableObjectEx {
+class InputListHandler extends com.Observable {
     constructor(p_owner) {
         super();
         this._owner = p_owner;

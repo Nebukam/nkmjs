@@ -11,7 +11,7 @@ const CatalogWatcher = require(`./catalog-watcher`);
 * It's an abstract class, look for actual implementations in `CatalogHandler` & `CatalogBuilder`
 * @class
 * @hideconstructor
-* @augments common.pool.DisposableObjectEx
+* @augments common.Observable
 * @memberof data.core.catalog
 */
 class CatalogWatcherEx extends CatalogWatcher {

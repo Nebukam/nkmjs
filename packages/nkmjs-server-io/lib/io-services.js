@@ -3,7 +3,7 @@ const env = require(`@nkmjs/environment`);
 const collections = require(`@nkmjs/collections`);
 const services = require(`@nkmjs/services`);
 
-class IO_SERVICES extends com.helpers.SingletonEx {
+class IO_SERVICES extends com.Observable { // PORT_TO_MODULE
     constructor() { super(); }
 
     _Init() {
@@ -15,16 +15,16 @@ class IO_SERVICES extends com.helpers.SingletonEx {
 
         this._servicesCount = 0;
         this._startCount = 0;
-        this._ready = false;
+        this._ready = true;
 
         this._Bind(this._OnServiceStarted);
 
     }
 
-    static get ready() { return this.instance._ready; }
+    get ready() { return this._ready; }
 
-    static get defaultIO() { return this.instance._defaultIO; }
-    static set defaultIO(p_value) { this.instance._defaultIO = p_value; }
+    get defaultIO() { return this._defaultIO; }
+    set defaultIO(p_value) { this._defaultIO = p_value; }
 
     /**
      * @typedef TokensSettings
@@ -56,15 +56,17 @@ class IO_SERVICES extends com.helpers.SingletonEx {
      * @param {boolean} [p_setAsDefault] 
      * @returns 
      */
-    static Use(p_serviceClass, p_config, p_setAsDefault = false) {
+    Use(p_serviceClass, p_config, p_setAsDefault = false) {
 
-        if (!this.instance._ioServices.Add(p_serviceClass)) { return p_serviceClass; }
+        if (!this._ioServices.Add(p_serviceClass)) { return p_serviceClass; }
 
-        this.instance._servicesCount++;
-        p_serviceClass.instance.Watch(services.SIGNAL.STARTED, this.instance._OnServiceStarted);
+        this._ready = false;
+        
+        this._servicesCount++;
+        p_serviceClass.Watch(services.SIGNAL.STARTED, this._OnServiceStarted);
 
-        p_serviceClass.instance._config = p_config;
-        env.ENV.instance.RegisterServices(p_serviceClass);
+        p_serviceClass._config = p_config;
+        env.ENV.RegisterServices(p_serviceClass);
 
         if (p_setAsDefault || !this.defaultIO) {
             this.defaultIO = p_serviceClass;
@@ -86,4 +88,4 @@ class IO_SERVICES extends com.helpers.SingletonEx {
 
 }
 
-module.exports = IO_SERVICES;
+module.exports = new IO_SERVICES();

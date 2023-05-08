@@ -1,6 +1,6 @@
 'use strict';
 
-const com = require("@nkmjs/common"); //{ POOL, DisposableObject }
+const com = require("@nkmjs/common"); //{ POOL, Disposable }
 
 const RELAY = require(`./relay`);
 

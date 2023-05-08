@@ -6,31 +6,41 @@ const CHECKS = require(`./checks`);
 const ESCAPED_BACKSLACK = Object.freeze(`\\`);
 const SLASH = Object.freeze(`/`);
 
+const EMPTY_OBJECT = Object.freeze({});
+const _delimiters = {
+    DELIM_PROTOC: Object.freeze(`://`),
+    DELIM_DRIVE: Object.freeze(`:/`),
+    DELIM_DIR: Object.freeze(`/`),
+    DELIM_EXT: Object.freeze(`.`),
+    DELIM_COLON: Object.freeze(`:`),
+    DELIM_SEMI: Object.freeze(`;`),
+    DELIM_COMMA: Object.freeze(`,`),
+    DELIM_PIPE: Object.freeze(`|`),
+};
+
 /**
- * UTILS is a wrapper class that contains a bunch of utilitary static methods.
+ * UTILS is a wrapper class that contains a bunch of utilitary methods.
  * These include type-checking, object manipulation, etc.
  * @class
  * @hideconstructor
  * @memberof utils
  */
-class UTILS {
+module.exports = {
 
-    constructor() { }
+    EMPTY_OBJECT: EMPTY_OBJECT,
 
-    static EMPTY_OBJECT = Object.freeze({});
-
-    static DELIM_PROTOC = Object.freeze(`://`);
-    static DELIM_DRIVE = Object.freeze(`:/`);
-    static DELIM_DIR = Object.freeze(`/`);
-    static DELIM_EXT = Object.freeze(`.`);
-    static DELIM_COLON = Object.freeze(`:`);
-    static DELIM_SEMI = Object.freeze(`;`);
-    static DELIM_COMMA = Object.freeze(`,`);
-    static DELIM_PIPE = Object.freeze(`|`);
+    DELIM_PROTOC: _delimiters.DELIM_PROTOC,
+    DELIM_DRIVE: _delimiters.DELIM_DRIVE,
+    DELIM_DIR: _delimiters.DELIM_DIR,
+    DELIM_EXT: _delimiters.DELIM_EXT,
+    DELIM_COLON: _delimiters.DELIM_COLON,
+    DELIM_SEMI: _delimiters.DELIM_SEMI,
+    DELIM_COMMA: _delimiters.DELIM_COMMA,
+    DELIM_PIPE: _delimiters.DELIM_PIPE,
 
 
 
-    static JSONStripEmpty(p_key, p_value) {
+    JSONStripEmpty: function (p_key, p_value) {
         if (CHECKS.isEmpty(p_value)) { return undefined; }
         if (CHECKS.isObject(p_value)) {
             for (let k in p_value) {
@@ -41,20 +51,20 @@ class UTILS {
             return undefined;
         }
         return p_value;
-    }
+    },
 
     /**
      * @description Returns the first non-void value
      * @param {*} args A list of values to test
      * @returns {*} The first non-void value, otherwise null.
      */
-    static Default(...args) {
+    Default: function (...args) {
         for (let i = 0, n = args.length; i < n; i++) {
             let val = args[i];
             if (!CHECKS.isVoid(val)) { return val; }
         }
         return null;
-    }
+    },
 
     /**
      * @description Attempts to get the property value on a given object.
@@ -64,12 +74,12 @@ class UTILS {
      * or if its value is 'void'
      * @returns {*} The value, otherwise the provided fallback.
      */
-    static Get(p_obj, p_key, p_fallback = null) {
+    Get: function (p_obj, p_key, p_fallback = null) {
         if (CHECKS.isVoid(p_obj)) { return p_fallback; }
         let val = p_obj[p_key];
         if (CHECKS.isVoid(val)) { return p_fallback; }
         else { return val; }
-    }
+    },
 
     /**
      * Resolve a path
@@ -77,14 +87,14 @@ class UTILS {
      * @param  {...any} path 
      * @returns 
      */
-    static GetPath(p_obj, p_fallback, ...path) {
+    GetPath: function (p_obj, p_fallback, ...path) {
         let value = p_obj;
         for (let i = 0, n = path.length; i < n; i++) {
             value = value[path[i]];
             if (!value) { return p_fallback; }
         }
         return value ? value : p_fallback;
-    }
+    },
 
     /**
      * @description Ensure a value is set on a object.
@@ -92,20 +102,20 @@ class UTILS {
      * @param {string} p_key The property's name
      * @param {*} p_value The default value to set the property to if it does not exists
      */
-    static Ensure(p_obj, p_key, p_value) {
+    Ensure: function (p_obj, p_key, p_value) {
         if (!(p_key in p_obj)) { p_obj[p_key] = p_value; }
         return p_obj;
-    }
+    },
 
     /**
      * @description Ensure a value is set on a object.
      * @param {object} p_obj The target object
      * @param {object} p_kvp The property's name
      */
-    static EnsureMultiple(p_obj, p_kvp) {
+    EnsureMultiple: function (p_obj, p_kvp) {
         for (let key in p_kvp) { if (!(key in p_obj)) { p_obj[key] = p_kvp[key]; } }
         return p_obj;
-    }
+    },
 
     /**
      * @description Breaks down a path into an object to the following format :
@@ -116,54 +126,54 @@ class UTILS {
      * }
      * @param {string} p_stringPath 
      */
-    static ParsePath(p_stringPath) {
+    ParsePath: function (p_stringPath) {
 
         if (CHECKS.isVoid(p_stringPath)) { return null; }
 
         let parseResult = {};
 
-        let hasProtocol = p_stringPath.includes(this.DELIM_PROTOCOL);
+        let hasProtocol = p_stringPath.includes(_delimiters.DELIM_PROTOCOL);
         if (hasProtocol) {
-            let protocolSplit = p_stringPath.split(this.DELIM_PROTOCOL);
+            let protocolSplit = p_stringPath.split(_delimiters.DELIM_PROTOCOL);
             if (protocolSplit.length != 2) { throw new Error(`Path '${p_stringPath}' cannot be parsed (protocol malformed).`); }
-            parseResult.protocol = protocolSplit[0] + this.DELIM_PROTOCOL;
+            parseResult.protocol = protocolSplit[0] + _delimiters.DELIM_PROTOCOL;
             p_stringPath = protocolSplit[1];
         }
 
-        let hasDrive = p_stringPath.includes(this.DELIM_DRIVE);
+        let hasDrive = p_stringPath.includes(_delimiters.DELIM_DRIVE);
         if (hasDrive) {
-            let driveSplit = p_stringPath.split(this.DELIM_DRIVE);
+            let driveSplit = p_stringPath.split(_delimiters.DELIM_DRIVE);
             if (driveSplit.length > 2) { throw new Error(`Path '${p_stringPath}' cannot be parsed (drive malformed).`); }
-            parseResult.drive = driveSplit[0] + this.DELIM_PROTOCOL;
+            parseResult.drive = driveSplit[0] + _delimiters.DELIM_PROTOCOL;
             p_stringPath = driveSplit[1];
         }
 
-        let split = p_stringPath.split(this.DELIM_DIR),
+        let split = p_stringPath.split(_delimiters.DELIM_DIR),
             lastIndex = split.length - 1,
             fname = split[lastIndex],
-            splitEx = fname.split(this.DELIM_EXT);
+            splitEx = fname.split(_delimiters.DELIM_EXT);
 
         split.splice(lastIndex, 1);
 
         for (let i = 0, n = split.length; i < n; i++) { if (split[i] === ``) { split.splice(i, 1); i--; } }
 
-        parseResult.path = split.join(this.DELIM_DIR) + this.DELIM_DIR;
+        parseResult.path = split.join(_delimiters.DELIM_DIR) + _delimiters.DELIM_DIR;
         parseResult.pathArray = split;
         parseResult.name = splitEx[0];
-        parseResult.ext = this.DELIM_EXT + splitEx[splitEx.length - 1];
+        parseResult.ext = _delimiters.DELIM_EXT + splitEx[splitEx.length - 1];
 
         return parseResult;
 
-    }
+    },
 
     /**
      * @description Replaces ``\`` with `/`
      * @param {string} p_string The string to sanitize
      * @returns {string} Sanitized string
      */
-    static FixSlash(p_string) {
+    FixSlash: function (p_string) {
         return p_string.split(ESCAPED_BACKSLACK).join(SLASH);
-    }
+    },
 
     /**
      * @description Checks whether a value is not equal to any of the provided ones
@@ -171,12 +181,12 @@ class UTILS {
      * @param {*} args The values to test against
      * @returns {boolean} False if any of the args values equals the test value, otherwise true.
      */
-    static isNot(p_value, ...args) {
+    isNot: function (p_value, ...args) {
         for (let i = 0, n = args.length; i < n; i++) {
             if (args[i] === p_value) { return false; }
         }
         return true;
-    }
+    },
 
     /**
      * @description Appends the value of an Object into another. 
@@ -185,7 +195,7 @@ class UTILS {
      * @param {object} p_source The reference object to fetch values from
      * @returns {object} The p_base object
      */
-    static Append(p_base, p_source) {
+    Append: function (p_base, p_source) {
 
         if (CHECKS.isVoid(p_base)) { p_base = {}; }
         if (CHECKS.isVoid(p_source)) { return p_base; }
@@ -194,7 +204,7 @@ class UTILS {
             p_base[member] = p_source[member];
         }
         return p_base;
-    }
+    },
 
     /**
      * @description Copy values from p_source currently missing in p_base.
@@ -203,7 +213,7 @@ class UTILS {
      * @param {*} p_source 
      * @param {number} p_mergeArrays 0 doesn't merge, -1 unshifts missing values, 1 pushes them.
      */
-    static SetMissing(p_base, p_source, p_mergeArrays = 0) {
+    SetMissing: function (p_base, p_source, p_mergeArrays = 0) {
 
         for (let key in p_source) {
             let sourceValue = p_source[key];
@@ -211,7 +221,7 @@ class UTILS {
                 if (CHECKS.isArray(sourceValue)) {
                     p_base[key] = [...sourceValue];
                 } else if (CHECKS.isObject(sourceValue)) {
-                    p_base[key] = this.SetMissing({}, sourceValue);
+                    p_base[key] = module.exports.SetMissing({}, sourceValue);
                 } else {
                     p_base[key] = sourceValue;
                 }
@@ -227,7 +237,7 @@ class UTILS {
                         }
                     }
                 } else if (CHECKS.isObject(baseValue) && CHECKS.isObject(sourceValue)) {
-                    this.SetMissing(baseValue, sourceValue);
+                    module.exports.SetMissing(baseValue, sourceValue);
                 } else {
                     // Ignore
                 }
@@ -236,7 +246,7 @@ class UTILS {
 
         return p_base;
 
-    }
+    },
 
     /**
      * @description Set values from p_source to p_base, overriding existing values.
@@ -244,7 +254,7 @@ class UTILS {
      * @param {*} p_base 
      * @param {*} p_source 
      */
-    static SetOverwrite(p_base, p_source) {
+    SetOverwrite: function (p_base, p_source) {
 
         for (let key in p_source) {
             let sourceValue = p_source[key];
@@ -261,7 +271,7 @@ class UTILS {
                 if (CHECKS.isArray(baseValue)) {
                     p_base[key] = sourceValue;
                 } else if (CHECKS.isObject(sourceValue)) {
-                    if (CHECKS.isObject(baseValue)) { this.SetOverwrite(baseValue, sourceValue); }
+                    if (CHECKS.isObject(baseValue)) { module.exports.SetOverwrite(baseValue, sourceValue); }
                     else { p_base[key] = sourceValue; }
                 } else {
                     p_base[key] = sourceValue;
@@ -271,7 +281,7 @@ class UTILS {
 
         return p_base;
 
-    }
+    },
 
     /**
      * @description Add missing content from p_source into p_base (no duplicates)
@@ -280,7 +290,7 @@ class UTILS {
      * @param {int} p_mode <0 unshift, >=0 push
      * @returns {array}
      */
-    static MergeArray(p_base, p_source, p_mode = 1) {
+    MergeArray: function (p_base, p_source, p_mode = 1) {
 
         if (!p_base) {
             p_base = [];
@@ -305,27 +315,27 @@ class UTILS {
 
 
         return p_base;
-    }
+    },
 
     /**
      * @description Clone an Object.
      * @param {object} p_base The base object to clone
      * @returns {object} Clone of p_base
      */
-    static Clone(p_base) {
+    Clone: function (p_base) {
         if (!CHECKS.isObject(p_base)) { throw new Error(`Cannot Clone the non-object '${p_base}'`); }
         let clone = {};
         for (let member in p_base) {
             if (!p_base.hasOwnProperty(member)) { continue; }
             let value = p_base[member];
             if (value != null) {
-                if (CHECKS.isArray(value)) { value = this.CloneArray(value); }
-                else if (CHECKS.isObject(value)) { value = this.Clone(value); }
+                if (CHECKS.isArray(value)) { value = module.exports.CloneArray(value); }
+                else if (CHECKS.isObject(value)) { value = module.exports.Clone(value); }
             }
             clone[member] = value;
         }
         return clone;
-    }
+    },
 
     /**
      * @description Clone an Array.
@@ -333,26 +343,26 @@ class UTILS {
      * @param {array} p_base The base object to clone
      * @returns {array} Clone of p_base
      */
-    static CloneArray(p_base) {
+    CloneArray: function (p_base) {
         if (!CHECKS.isArray(p_base)) { throw new Error(`Cannot CloneArray the non-array '${p_base}'`); }
         let arr = [];
         for (let i = 0, n = p_base.length; i < n; i++) {
             let arrValue = p_base[i];
             if (arrValue != null) {
-                if (CHECKS.isArray(arrValue)) { arrValue = this.CloneArray(arrValue); }
-                else if (CHECKS.isObject(arrValue)) { arrValue = this.Clone(arrValue); }
+                if (CHECKS.isArray(arrValue)) { arrValue = module.exports.CloneArray(arrValue); }
+                else if (CHECKS.isObject(arrValue)) { arrValue = module.exports.Clone(arrValue); }
             }
             arr.push(arrValue);
         }
         return arr;
-    }
+    },
 
     /**
      * @description Split a 'CamelCase' string into a 'Camel Case' one
      * @param {string} p_string The string to split
      * @returns {string} Spaced string
      */
-    static CamelSplit(p_string, p_spacer = ` `) { return p_string.replace(/([a-z0-9])([A-Z#])/g, `$1${p_spacer}$2`); }
+    CamelSplit: function (p_string, p_spacer = ` `) { return p_string.replace(/([a-z0-9])([A-Z#])/g, `$1${p_spacer}$2`); },
 
     /**
      * @description Creates a diff of two array, and 'old' one and a 'new' one,
@@ -365,7 +375,7 @@ class UTILS {
      * @param {array} p_in Empty Array, will be filled with the items 
      * that are not in p_oldArray, but present in p_newArray
      */
-    static ArrayDiff(p_oldArray, p_newArray, p_out, p_in) {
+    ArrayDiff: function (p_oldArray, p_newArray, p_out, p_in) {
         //Checks the difference between old and new.
         //p_out is the items from oldArray not in the new one
         //p_int are the items from the newArray not in the old one
@@ -394,7 +404,7 @@ class UTILS {
             let item = p_oldArray[i];
             if (!p_newArray.includes(item)) { p_in.push(item); }
         }
-    }
+    },
 
     /**
      * @description Creates a diff of two array, and 'old' one and a 'new' one,
@@ -406,7 +416,7 @@ class UTILS {
      * @param {array} p_inCallback Will be called each time an item
      * is not in p_oldArray, but present in p_newArray
      */
-    static ArrayDiffCallbacks(p_oldArray, p_newArray, p_outCallback, p_inCallback) {
+    ArrayDiffCallbacks: function (p_oldArray, p_newArray, p_outCallback, p_inCallback) {
 
 
         if (CHECKS.isVoid(p_oldArray)) {
@@ -438,7 +448,7 @@ class UTILS {
             }
         }
 
-    }
+    },
 
     /**
      * @description Checks the 'inheritance distance' between two Classe or Instances thereof.
@@ -447,7 +457,7 @@ class UTILS {
      * @param {Object|class} p_to The target Class or Instance
      * @returns {number} The 'distance' if any, otherwise -1
      */
-    static InheritanceDistance(p_from, p_to) {
+    InheritanceDistance: function (p_from, p_to) {
         //Return -1 if no inheritance
         let dist = 0;
         if (!CHECKS.isInstanceOf(p_from, p_to)) { return -1; }
@@ -464,7 +474,7 @@ class UTILS {
         if (dist === 100) { console.warn(`InheritanceDistance reached 100 iterations. Stopping.`); }
 
         return -1;
-    }
+    },
 
     /**
      * @description Deletes all properties on an a given object.
@@ -473,10 +483,10 @@ class UTILS {
      * @param {boolean} p_returnNewEmpty Wether to return a new empty object or not
      * @returns {object} Either a new object, or the emptied one.
      */
-    static Clear(p_obj, p_returnNewEmpty = false) {
+    Clear: function (p_obj, p_returnNewEmpty = false) {
         for (let member in p_obj) { delete p_obj[member]; }
         if (p_returnNewEmpty) { return {}; }
-    }
+    },
 
     /**
      * @description Deletes all properties on an a given object, 
@@ -486,31 +496,31 @@ class UTILS {
      * @param {boolean} p_returnNewEmpty Wether to return a new empty object or not
      * @returns {object} Either a new object, or the emptied one.
      */
-    static DeepClear(p_obj, p_returnNewEmpty = false) {
+    DeepClear: function (p_obj, p_returnNewEmpty = false) {
 
         let value = null;
         for (let member in p_obj) {
             value = p_obj[member];
-            if (CHECKS.isArray(value)) { this.DeepClearArray(value); }
-            else if (CHECKS.isObject(value)) { this.DeepClear(value); }
+            if (CHECKS.isArray(value)) { module.exports.DeepClearArray(value); }
+            else if (CHECKS.isObject(value)) { module.exports.DeepClear(value); }
             p_obj[member] = null; // delete is too slow
         }
         if (p_returnNewEmpty) { return {}; }
-    }
+    },
 
     /**
      * @description Empty an array and clears any value that is an object or an array itself.
      * Recursive.
      * @param {array} p_arr The object to be emptied
      */
-    static DeepClearArray(p_arr) {
+    DeepClearArray: function (p_arr) {
         let value = null;
         while (p_arr.length != 0) {
             value = p_arr.pop();
-            if (CHECKS.isArray(value)) { this.DeepClearArray(value); }
-            else if (CHECKS.isObject(value)) { this.DeepClear(value); }
+            if (CHECKS.isArray(value)) { module.exports.DeepClearArray(value); }
+            else if (CHECKS.isObject(value)) { module.exports.DeepClear(value); }
         }
-    }
+    },
 
     /**
      * @description Checks whether two objects contains exactly the same values
@@ -518,7 +528,7 @@ class UTILS {
      * @param {object} p_other The object to test against
      * @returns {boolean} True if the objects contains the exact same values, otherwise false
      */
-    static isSame(p_source, p_other) {
+    isSame: function (p_source, p_other) {
         if (p_source === p_other) { return true; }
         let i = 0;
         for (let member in p_source) {
@@ -535,9 +545,9 @@ class UTILS {
 
                     if (tof === otherTof) {
                         if (CHECKS.isArray(value)) {
-                            if (!this.isSameArray(value, otherValue)) { return false; }
+                            if (!module.exports.isSameArray(value, otherValue)) { return false; }
                         } else if (tof === 'object') {
-                            if (!this.isSame(value, otherValue)) { return false; }
+                            if (!module.exports.isSame(value, otherValue)) { return false; }
                         } else {
                             return false;
                         }
@@ -555,7 +565,7 @@ class UTILS {
 
         if (i != j) { return false; }
         return true;
-    }
+    },
 
     /**
      * @description Checks whether two arrays contains exactly the same values at the same index
@@ -563,7 +573,7 @@ class UTILS {
      * @param {array} p_other The array to test against
      * @returns {boolean} True if the arrays contains the exact same values, otherwise false
      */
-    static isSameArray(p_source, p_other) {
+    isSameArray: function (p_source, p_other) {
 
         if (p_source === p_other) { return true; }
 
@@ -583,9 +593,9 @@ class UTILS {
 
                 if (tof === otherTof) {
                     if (CHECKS.isArray(value)) {
-                        if (!this.isSameArray(value, otherValue)) { return false; }
+                        if (!module.exports.isSameArray(value, otherValue)) { return false; }
                     } else if (tof === 'object') {
-                        if (!this.isSame(value, otherValue)) { return false; }
+                        if (!module.exports.isSame(value, otherValue)) { return false; }
                     } else {
                         return false;
                     }
@@ -595,7 +605,7 @@ class UTILS {
             }
         }
         return true;
-    }
+    },
 
     /**
      * @description Join the content of an array from/to specific indices
@@ -605,7 +615,7 @@ class UTILS {
      * @param {number} p_toIndex End join index
      * @returns {string} The joined result
      */
-    static Join(p_array, p_join, p_fromIndex = 0, p_toIndex = -1) {
+    Join: function (p_array, p_join, p_fromIndex = 0, p_toIndex = -1) {
         if (p_toIndex === -1) { p_toIndex = p_array.length - 1; }
         let str = `${p_array[p_fromIndex]}`;
         p_fromIndex++;
@@ -613,9 +623,9 @@ class UTILS {
             str += `${p_join}${p_array[i]}`;
         }
         return str;
-    }
+    },
 
-    static Resolve(p_obj, p_path) {
+    Resolve: function (p_obj, p_path) {
         let paths = p_path.split('.'),
             current = p_obj;
 
@@ -627,15 +637,15 @@ class UTILS {
             }
         }
         return current;
-    }
+    },
 
     /*
-    static Set(){
+    Set(){
         
 
-        if(this._val === p_value){return;}
-        let oldValue = this._val;
-        this._val = p_value;
+        if(module.exports._val === p_value){return;}
+        let oldValue = module.exports._val;
+        module.exports._val = p_value;
 
         if(oldValue){
 
@@ -644,7 +654,7 @@ class UTILS {
 
         }
 
-        this.UpdateCallback(oldValue);
+        module.exports.UpdateCallback(oldValue);
 
         
     }
@@ -660,7 +670,7 @@ class UTILS {
      * @param {string} p_str String to test
      * @returns {boolean} True if the provided string is a valid identifier, otherwise false.
      */
-    static ValidIdentifier(p_str) { return /^[A-Za-z_][A-Za-z0-9_]*$/.test(p_str); }
+    ValidIdentifier: function (p_str) { return /^[A-Za-z_][A-Za-z0-9_]*$/.test(p_str); },
 
     /**
      * @description Checks whether a string starts with a digit.
@@ -668,8 +678,8 @@ class UTILS {
      * @param {string} p_str String to test
      * @returns {boolean} True if the provided string starts with a number, otherwise false.
      */
-    static StartWithNumber(p_str) { return /^\d/.test(p_str); }
-    static ContainsAnySpace(p_str) {
+    StartWithNumber: function (p_str) { return /^\d/.test(p_str); },
+    ContainsAnySpace: function (p_str) {
         return p_str.includes(
             ` `,
             ` `, //No break space
@@ -692,39 +702,39 @@ class UTILS {
             `　`, //ideographic space
             `﻿`, //zero width nobreak space
         );
-    }
+    },
 
     /**
      * @description Compute an 'unsafe' UID. While unsafe, it'll still do a decent job of being unique
      * over the course of a session, but is based on Math.random() so limited and possibly redundant
      * @type {string}
      */
-    static get unsafeUID() {
+    get unsafeUID() {
         return `_${Math.random().toString(36).substr(2, 9)}`;
-    }
+    },
 
     /**
      * @description Compute an 'safe' RFC4122 UUID.
      * @type {string}
      */
-    static get UUID() {
+    get UUID() {
         return uuid.v4();
-    }
+    },
 
-    static Move(p_array, p_currentIndex, p_newIndex) {
+    Move: function (p_array, p_currentIndex, p_newIndex) {
         if (p_currentIndex === p_newIndex) { return; }
         if (p_currentIndex === -1) { throw new Error(`ListItem is not in array`); }
         p_array.splice(p_newIndex, 0, p_array.splice(p_currentIndex, 1)[0]);
-    }
+    },
 
     /**
      * Pad a number with leading 0's
      * @param {number} p_num 
      * @param {number} p_size 
      */
-    static Pad(p_num, p_size = 2) {
+    Pad: function (p_num, p_size = 2) {
         return p_size < 0 ? p_num.toString().padEnd(p_size * -1, `0`) : p_num.toString().padStart(p_size, `0`);
-    }
+    },
 
 
 
@@ -733,7 +743,7 @@ class UTILS {
      * @param {*} p_a 
      * @param {*} p_b 
      */
-    static DateDiff(p_a, p_b) {
+    DateDiff: function (p_a, p_b) {
 
         let totalMs = p_a.getTime() - p_b.getTime(),
             totalSeconds = (totalMs / 1000),
@@ -774,35 +784,35 @@ class UTILS {
         result.string = str;
 
         return result;
-    }
+    },
 
-    static ToCustomElementID(p_id, p_addGUID = false) {
-        return this.CamelSplit(`${p_id}${p_addGUID ? this.unsafeUID : ''}`, `-`)
+    ToCustomElementID: function (p_id, p_addGUID = false) {
+        return module.exports.CamelSplit(`${p_id}${p_addGUID ? module.exports.unsafeUID : ''}`, `-`)
             .replaceAll(`_`, `-`)
             .replaceAll(` `, `-`)
             .toLowerCase();
-    }
+    },
 
-    static Map(p_value, p_oMin, p_oMax, p_nMin, p_nMax) {
+    Map: function (p_value, p_oMin, p_oMax, p_nMin, p_nMax) {
         return p_nMin + (p_value - p_oMin) * (p_nMax - p_nMin) / (p_oMax - p_oMin);
-    }
+    },
 
-    static ArrayBufferToBase64(buffer) {
-        return this.BytesToBase64(new Uint8Array(buffer));
-    }
+    ArrayBufferToBase64: function (buffer) {
+        return module.exports.BytesToBase64(new Uint8Array(buffer));
+    },
 
-    static BytesToBase64(bytes) {
+    BytesToBase64: function (bytes) {
         let binary = '';
         let len = bytes.byteLength;
         for (var i = 0; i < len; i++) {
             binary += String.fromCharCode(bytes[i]);
         }
         return window.btoa(binary);
-    }
+    },
 
     //
 
-    static Call(p_callConf, ...args) {
+    Call: function (p_callConf, ...args) {
 
         if (CHECKS.isFunc(p_callConf)) { return p_callConf.call(null, ...args); }
 
@@ -812,9 +822,9 @@ class UTILS {
         else if (p_callConf.arg) { return p_callConf.fn.call(thisArg, p_callConf.arg, ...args); }
         else { return p_callConf.fn.call(thisArg, ...args); }
 
-    }
+    },
 
-    static CallPrepend(p_callConf, ...args) {
+    CallPrepend: function (p_callConf, ...args) {
 
         if (CHECKS.isFunc(p_callConf)) { return p_callConf.call(null, ...args); }
 
@@ -825,16 +835,16 @@ class UTILS {
         else if (args) { return p_callConf.fn.call(thisArg, ...args); }
         else { return p_callConf.fn.call(thisArg, ...args); }
 
-    }
+    },
 
-    static Assign(p_conf, p_obj, p_owner = null) {
+    Assign: function (p_conf, p_obj, p_owner = null) {
         if (!p_conf) { return; }
         if (p_conf.member) { p_conf = p_conf.member; }
         if (p_conf.owner) { if (!p_owner) { return; } p_owner = p_conf.owner; }
         p_owner[p_conf.id] = p_obj;
-    }
+    },
 
-    static PadStart(p_number, p_count = 3, p_fill = '0', p_padStyle = null) {
+    PadStart: function (p_number, p_count = 3, p_fill = '0', p_padStyle = null) {
 
         let
             base = p_number.toString(),
@@ -850,7 +860,7 @@ class UTILS {
             return padded;
         }
 
-    }
+    },
 
     /**
      * 
@@ -859,14 +869,12 @@ class UTILS {
      * @param {number} p_recipientWidth 
      * @param {number} p_recipientHeight 
      */
-    static ScaleRatio(p_fullWidth, p_fullHeight, p_recipientWidth, p_recipientHeight) {
+    ScaleRatio: function (p_fullWidth, p_fullHeight, p_recipientWidth, p_recipientHeight) {
         let
             rW = p_recipientWidth / p_fullWidth,
             rH = p_recipientHeight / p_fullHeight;
 
         return Math.min(rW, rH);
-    }
+    },
 
 }
-
-module.exports = UTILS;

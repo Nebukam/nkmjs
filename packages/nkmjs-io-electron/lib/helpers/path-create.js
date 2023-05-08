@@ -10,7 +10,7 @@ const path = require(`path`);
  * Input path is assumed to be a directory, not a file.
  * path/to/something
  */
-class PathCreate extends com.pool.DisposableObject {
+class PathCreate extends com.Disposable {
     constructor() { super(); }
 
     _Init() {

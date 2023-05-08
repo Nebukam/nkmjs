@@ -35,7 +35,7 @@ class InspectorGroup extends base {
         this._staticContent = true; //Always build controllers
         this._alwaysExpanded = false; //Keep group expanded after release (static content only)
 
-        this._pointer.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
+        this._pointer.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE_TWICE, this._Bind(this.AltActivate));
 
     }
 

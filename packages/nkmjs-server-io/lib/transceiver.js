@@ -13,12 +13,13 @@ const __writeMethods = [
     'WriteFile'
 ];
 
-class Transceiver extends com.pool.DisposableObjectEx {
+class Transceiver extends com.Observable {
     constructor() { super(); }
 
     static __distribute = com.helpers.OptionsDistribute.Ext()
         .To(`prefix`, ``)
         .To(`delimiter`, `/`)
+        .To(`prependRoot`)
         .To(`readOnly`)
         .To(`tokens`)
         .To(`recursive`, true);
@@ -34,6 +35,7 @@ class Transceiver extends com.pool.DisposableObjectEx {
         this._service = null;
         this._tokens = null;
         this._uid = null;
+        this._prependRoot = false;
 
         this._backedWrites = {};
         __writeMethods.forEach(mtd => { this._backedWrites[mtd] = this._Bind(this[mtd]); });
@@ -42,6 +44,9 @@ class Transceiver extends com.pool.DisposableObjectEx {
 
     get service() { return this._service; }
     set service(p_value) { this._service = p_value; }
+
+    get prependRoot() { return this._prependRoot; }
+    set prependRoot(p_value) { this._prependRoot = p_value; }
 
     get prefix() { return this._prefix; }
     set prefix(p_value) { this._prefix = p_value; }
@@ -88,7 +93,11 @@ class Transceiver extends com.pool.DisposableObjectEx {
 
     Join(...args) {
         let joined = args.join(this._delimiter);
-        if (!joined.startsWith(this._root)) { joined = `${this._root}${this._delimiter}${joined}`; }
+        if (!joined.startsWith(this._root)) {
+            joined = this._root.endsWith(this._delimiter) ?
+                `${this._root}${joined}` :
+                `${this._root}${this._delimiter}${joined}`;
+        }
         return joined;
     }
 
@@ -118,6 +127,7 @@ class Transceiver extends com.pool.DisposableObjectEx {
 
     _SanitizePath(p_path) {
         p_path = this._tokens ? this._tokens.ReplaceAll(p_path) : p_path;
+        if (this._prependRoot) { p_path = this.Join(p_path); }
         if (!p_path.startsWith(this._prefix)) { p_path = `${this._prefix}${p_path}`; }
         return p_path;
     }

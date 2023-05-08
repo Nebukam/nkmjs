@@ -52,7 +52,7 @@ class DelayedCall {
     Schedule() {
         if (this._scheduled) { return; }
         this._scheduled = true;
-        TIME.instance.NextTickAdd(this._Call);
+        TIME.WatchNextTick(this._Call);
     }
 
     Bump() {
@@ -66,7 +66,7 @@ class DelayedCall {
     Cancel() {
         if (!this._scheduled) { return; }
         this._scheduled = false;
-        TIME.instance.NextTickRemove(this._Call);
+        TIME.UnwatchNextTick(this._Call);
         this._elapsed = 0;
     }
 
@@ -78,7 +78,7 @@ class DelayedCall {
         if (this._delay > 0) {
             this._elapsed += p_delta;
             if (this._elapsed < this._delay) {
-                TIME.instance.NextTickAdd(this._Call);
+                TIME.WatchNextTick(this._Call);
                 return;
             }
         }

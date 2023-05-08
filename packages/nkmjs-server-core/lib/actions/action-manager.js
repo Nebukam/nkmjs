@@ -1,41 +1,34 @@
 'use strict';
 
 const com = require(`@nkmjs/common`);
+const _actions = {};
 
-class ActionManager extends com.helpers.SingletonEx {
-    constructor() { super(); }
+module.exports = {// PORT_TO_MODULE
 
-    _Init() {
-        super._Init();
-        this._actions = {};
-    }
-
-    static GetModel(p_actionId) {
-        let cl = this._actions[p_id];
+    GetModel: function (p_actionId) {
+        let cl = _actions[p_id];
         if (!cl) { return null; }
         return cl.__model;
-    }
+    },
 
-    static Get(p_actionId) {
-        let cl = this._actions[p_id];
+    Get: function (p_actionId) {
+        let cl = _actions[p_id];
         if (!cl) { return null; }
         return com.Rent(cl);
-    }
+    },
 
     /**
      * 
      * @param {Object} p_actions { action:actionClass }
      */
-    static AddMultiple(p_actions) {
+    AddMultiple: function (p_actions) {
         for (let id in p_actions) {
-            this._actions[id] = p_actions[id];
+            _actions[id] = p_actions[id];
         }
-    }
+    },
 
-    static Add(p_id, p_actionClass) {
-        this.instance._actions[p_id] = p_actionClass;
+    Add: function (p_id, p_actionClass) {
+        _actions[p_id] = p_actionClass;
     }
 
 }
-
-module.exports = ActionManager;

@@ -92,13 +92,13 @@ class ContentManipulator extends Manipulator {
         let result = this._Apply(this._element, p_value, p_direct);
 
         let oldContent = this._content;
-        if (oldContent && u.isInstanceOf(oldContent, com.pool.DisposableObjectEx)) {
+        if (oldContent && u.isInstanceOf(oldContent, com.Observable)) {
             oldContent
                 .Unwatch(com.SIGNAL.UPDATED, this._OnContentUpdate, this)
                 .Unwatch(com.SIGNAL.RENAMED, this._OnContentUpdate, this)
                 .Unwatch(com.SIGNAL.RELEASED, this._OnContentReleased, this);
         }
-        if (p_value && u.isInstanceOf(this._content, com.pool.DisposableObjectEx)) {
+        if (p_value && u.isInstanceOf(this._content, com.Observable)) {
             this._content = p_value;
             this._content
                 .Watch(com.SIGNAL.UPDATED, this._OnContentUpdate, this)

@@ -6,51 +6,48 @@
  * @hideconstructor
  * @memberof io.core
  */
-class IO_TYPE {
-    constructor() { }
+module.exports = {
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static DEFAULT = `default`;
+    DEFAULT: Object.freeze(`default`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-     static DOCUMENT = `document`;
+    DOCUMENT: Object.freeze(`document`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-     static FETCH = `fetch`;
+    FETCH: Object.freeze(`fetch`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static REMOTE = `remote`;
+    REMOTE: Object.freeze(`remote`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static LOCAL_STORAGE = `local-storage`;
+    LOCAL_STORAGE: Object.freeze(`local - storage`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static FILE_SYSTEM = `file-system`;
+    FILE_SYSTEM: Object.freeze(`file - system`),
 
 }
-
-module.exports = IO_TYPE;

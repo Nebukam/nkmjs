@@ -53,7 +53,7 @@ class ControlDrawer extends base {
         this._Bind(this._CloseRequest);
 
         this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
-        this._closeBtn.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE, this._CloseRequest);
+        this._closeBtn.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE, this._CloseRequest);
 
         this._dataPreProcessor = this.constructor.__ppdata;
 

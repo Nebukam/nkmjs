@@ -13,7 +13,7 @@ const SIGNAL = require(`../signal`);
  * @hideconstructor
  * @memberof ui.datacontrols.helpers
  */
-class InspectionDataHandler extends com.pool.DisposableObjectEx {
+class InspectionDataHandler extends com.Observable {
 
     constructor(p_owner) {
         super();

@@ -28,7 +28,7 @@ paths[PATH.STYLE] = '%dirs.style%';
 LOG.toggle(true);
 
 // TODO : argv should be the parsed URL.
-ENV.instance.Start({
+ENV.Start({
     paths: paths,
     argv: [],
     renderer: require(`%js_main%`),

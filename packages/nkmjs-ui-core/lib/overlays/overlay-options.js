@@ -7,10 +7,10 @@ var checkValue = 0;
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof dialog
  */
-class OverlayOptions extends com.pool.DisposableObjectEx {
+class OverlayOptions extends com.Observable {
 
     static Create(p_options) {
         let overlayOptions = com.Rent(OverlayOptions);

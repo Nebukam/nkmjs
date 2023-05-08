@@ -154,7 +154,7 @@ class ElectronBase {
 
         for (let name in this._bootWinOptions) { winOptions[name] = this._bootWinOptions[name]; }
 
-        this._mainWindow = WINDOWS.instance.CreateWindow(winOptions).window;
+        this._mainWindow = WINDOWS.CreateWindow(winOptions).window;
 
         // Open devtools
         if (DEV_MODE) { this._mainWindow.webContents.openDevTools(); }
@@ -198,13 +198,13 @@ class ElectronBase {
             LOG.toggle(true);
 
             let ENV = nkm.env.ENV;
-            ENV.instance.features._isNodeEnabled = true;
-            ENV.instance.DEV_MODE = ${DEV_MODE};
+            ENV.features._isNodeEnabled = true;
+            ENV.DEV_MODE = ${DEV_MODE};
 
             (new nkmElectron.io.IOElectron()).Deploy();
             (new nkmElectron.core.IPCElectron()).Deploy();
 
-            ENV.instance.Start({
+            ENV.Start({
                 appName:'${(this._constants.appName || 'nkmjs-app')}',
                 paths:{
                     exe:'${u.tils.FixSlash(app.getPath('exe'))}',

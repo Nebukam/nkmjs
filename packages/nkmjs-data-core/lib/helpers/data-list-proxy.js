@@ -14,10 +14,10 @@ const DataList = require(`./data-list`);
  * @description Exists for custom sorting purposes only
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class DataListProxy extends com.pool.DisposableObjectEx {
+class DataListProxy extends com.Observable {
 
     constructor() { super(); }
 

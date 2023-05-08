@@ -7,14 +7,13 @@ const com = require("@nkmjs/common");
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.helpers.SingletonEx
+ * @augments common.Observable
  * @memberof services
  */
-class ServicesManager extends com.helpers.SingletonEx{
-    constructor() {super();}
+class ServicesManager extends com.Observable {
+    constructor() { super(); }
 
-    _Init()
-    {
+    _Init() {
         super._Init();
         this._services = new collections.List();
     }
@@ -22,7 +21,7 @@ class ServicesManager extends com.helpers.SingletonEx{
     /**
      * @description TODO
      */
-    Boot(){
+    Boot() {
 
     }
 
@@ -30,11 +29,10 @@ class ServicesManager extends com.helpers.SingletonEx{
      * @description TODO
      * @param {services.ServiceBase} p_instance 
      */
-    Register( p_instance ) 
-    {     
+    Register(p_instance) {
         this._services.Add(p_instance.constructor);
     }
 
 }
 
-module.exports = ServicesManager;
+module.exports = new ServicesManager();

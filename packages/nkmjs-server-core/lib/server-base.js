@@ -5,7 +5,7 @@ const com = require(`@nkmjs/common`);
 const env = require(`@nkmjs/environment`);
 const collections = require(`@nkmjs/collections`);
 
-env.ENV.instance.features._isNodeEnabled = true;
+env.ENV.features._isNodeEnabled = true;
 
 const dotenv = require('dotenv');
 
@@ -20,11 +20,12 @@ const APIDefinition = require("./api-definition");
 const STATUSES = require('./status-codes');
 const handlers = require('./handlers');
 
-class ServerBase {
+class ServerBase extends com.Observable {
 
     constructor(p_constants) {
+        super();
 
-        env.ENV.instance._app = this;
+        env.ENV._app = this;
 
         u.LOG.toggle(true);
 
@@ -40,7 +41,7 @@ class ServerBase {
         this._RegisterIOServices(ioservices);
 
         this._waitForIO = ioservices.length ? true : false;
-        env.ENV.instance.Start(p_constants);
+        this._ioReady = !this._waitForIO;
 
         if (this._waitForIO) {
 
@@ -70,13 +71,13 @@ class ServerBase {
 
             ios.forEach(ioss => { io.IO_SERVICES.Use(ioss, dict.Get(ioss)); });
             dict.Clear();
-            io.IO_SERVICES.instance.WatchOnce(com.SIGNAL.READY, this._OnIOReady.bind(this));
+            io.IO_SERVICES.WatchOnce(com.SIGNAL.READY, this._OnIOReady.bind(this));
         } else {
             console.warn(`⚠️  No IO Service registered.`);
             console.log(__dirname);
         }
 
-        
+        env.ENV.Start(p_constants);
 
     }
 
@@ -92,9 +93,17 @@ class ServerBase {
 
     }
 
+    _OnIOReady() {
+        console.log(`IO REady`);
+        if (!this._starting) { return; }
+        this._InternalInit();
+    }
+
     _InternalStart() {
+        if (this._starting) { return; }
         this._starting = true;
-        if (!this._waitForIO || io.IO_SERVICES.ready) { this._OnIOReady(); }
+
+        if (io.IO_SERVICES.ready) { this._InternalInit(); }
     }
 
     _InternalInit() {
@@ -106,8 +115,8 @@ class ServerBase {
         this._whitelist = this._config.whitelist;
         this._authFn = null;
 
-        this._Init();
-        this._PostInit();
+        this._InitServer();
+        this._PostInitServer();
 
         this._InternalBoot = this._InternalBoot.bind(this);
 
@@ -116,12 +125,7 @@ class ServerBase {
 
     }
 
-    _OnIOReady() {
-        if (!this._starting) { return; }
-        this._InternalInit();
-    }
-
-    _Init() {
+    _InitServer() {
 
         this._apiMap = new collections.Dictionary();
 
@@ -133,7 +137,7 @@ class ServerBase {
 
         // Add middleware to make the `user` object available for all views
         this._express.use(function (req, res, next) {
-            res.locals.user = env.APP.GetUser(req);
+            res.locals.user = env.app.GetUser(req);
             next();
         });
 
@@ -190,7 +194,7 @@ class ServerBase {
     GetUser(p_req) { return null; }
     IsAuthenticated(p_req) { return true; }
 
-    _PostInit() {
+    _PostInitServer() {
 
         this._InitAPIs();
 

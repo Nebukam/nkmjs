@@ -147,15 +147,15 @@ class DragExtension extends Extension {
     //
 
     _mDown(p_evt) {
-        if (!this._isEnabled || p_evt.button !== POINTER.MOUSE_LEFT) { return; }
+        if (!this._isEnabled || p_evt.button !== POINTER.KEYS.MOUSE_LEFT) { return; }
         this._target.setAttribute(`draggable`, true);
         this._target.addEventListener(`dragstart`, this._mDragStart);
-        POINTER.Watch(POINTER.MOUSE_UP, this._mUp);
+        POINTER.Watch(SIGNAL.MOUSE_UP, this._mUp);
     }
 
     _mUp(p_evt) {
-        if (!this._isEnabled || p_evt.button !== POINTER.MOUSE_LEFT) { return; }
-        POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
+        if (!this._isEnabled || p_evt.button !== POINTER.KEYS.MOUSE_LEFT) { return; }
+        POINTER.Unwatch(SIGNAL.MOUSE_UP, this._mUp);
         this._EndDrag();
     }
 
@@ -165,7 +165,7 @@ class DragExtension extends Extension {
             //p_evt.dataTransfer.setDragImage(this._feedbackHost);//, -10, -10);
         }
 
-        POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
+        POINTER.Unwatch(SIGNAL.MOUSE_UP, this._mUp);
 
         this._target.addEventListener(`dragend`, this._mDragEnd);
         this._target.addEventListener(`drag`, this._mDrag);
@@ -183,7 +183,7 @@ class DragExtension extends Extension {
     _mDrag(p_evt) {
         //Keep mouse position up-to-date in POINTER
         //mousemove being muted on drag :/
-        POINTER.instance._mMove(p_evt);
+        POINTER._mMove(p_evt);
         this._OwnerBroadcast(SIGNAL.DRAGGED);
     }
 

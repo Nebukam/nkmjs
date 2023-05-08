@@ -1,16 +1,16 @@
 'use strict';
 
-const com = require("@nkmjs/common"); //{ POOL, DisposableObject }
+const com = require("@nkmjs/common"); //{ POOL, Disposable }
 
 const SIGNAL = require(`./signal`);
-const KEYBOARD = require(`./keyboard`);
+const KB = require(`./keyboard`);
 
 /**
  * @description
  * A Keystroke object that represents an ordered chain of keys
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObject
+ * @augments common.Disposable
  * @memberof actions 
  */
 class Keystroke extends com.helpers.InfosObjectEx {
@@ -41,8 +41,8 @@ class Keystroke extends com.helpers.InfosObjectEx {
                 char = arr[i],
                 key = -1;
 
-            if (char in KEYBOARD._map) {
-                key = KEYBOARD._map[char].code;
+            if (char in KB.KEYS.map) {
+                key = KB.KEYS.map[char].code;
             }
 
             if (key == -1) { continue; }
@@ -115,14 +115,14 @@ class Keystroke extends com.helpers.InfosObjectEx {
     Enable() {
         if (this._enabled) { return; }
         this._enabled = true;
-        KEYBOARD.instance._Register(this);
+        KB._Register(this);
         this.Broadcast(SIGNAL.ENABLED, this);
     }
 
     Disable() {
         if (!this._enabled) { return; }
         this._enabled = false;
-        KEYBOARD.instance._Unregister(this);
+        KB._Unregister(this);
         if (this._active) { this.Deactivate(); }
         this.Broadcast(SIGNAL.DISABLED, this);
     }

@@ -1,13 +1,13 @@
 'use strict';
 
-const __DOCUMENTS = require(`./lib/documents-manager`);
+const DOC_MANAGER = require(`./lib/documents-manager`);
 const docs = require(`./lib/documents`);
 const DocumentDefinition = require(`./lib/helpers/document-definition`);
 
 module.exports = {
 
     IDS: require(`./lib/ids`),
-    DOCUMENTS: __DOCUMENTS,
+    DOCUMENTS: DOC_MANAGER,
     CONTEXT: require(`./lib/context`),
 
     commands: require(`./lib/commands`),
@@ -17,14 +17,14 @@ module.exports = {
     bound: docs.bound,
     unbound: docs.unbound,
 
-    Get: __DOCUMENTS.Get.bind(__DOCUMENTS),
-    HasUnsavedDocuments: __DOCUMENTS.HasUnsavedDocuments.bind(__DOCUMENTS),
-    Find: __DOCUMENTS.FindDocument.bind(__DOCUMENTS),
-    ToggleAutoSave: __DOCUMENTS.ToggleAutoSave.bind(__DOCUMENTS),
+    Get: DOC_MANAGER.Get.bind(DOC_MANAGER),
+    HasUnsavedDocuments: DOC_MANAGER.HasUnsavedDocuments.bind(DOC_MANAGER),
+    Find: DOC_MANAGER.FindDocument.bind(DOC_MANAGER),
+    ToggleAutoSave: DOC_MANAGER.ToggleAutoSave.bind(DOC_MANAGER),
     
     RegisterDefinition: (p_docDefinition) => {
         let definition = new DocumentDefinition(this, p_docDefinition);
-        __DOCUMENTS.instance._definitions.push(definition);
+        DOC_MANAGER._definitions.push(definition);
         return definition;
     },
 

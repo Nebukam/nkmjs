@@ -60,7 +60,7 @@ class AppSettingsExplorer extends base {
 
         super._Render();
 
-        let groups = data.SIMPLEX.GetGroups(env.APP._appSettingsType);
+        let groups = data.SIMPLEX.GetGroups(env.app._appSettingsType);
         groups.forEach(group => {
 
             let

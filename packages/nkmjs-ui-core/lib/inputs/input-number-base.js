@@ -144,7 +144,7 @@ class InputNumberBase extends base {
 
     _OnWheel(p_evt) {
         let increase = p_evt.deltaY < 0 ? this._step : -this._step;
-        if (INPUT.shift) { increase *= 10; }
+        if (INPUT.shiftKey) { increase *= 10; }
         let value = this._GrabValue() + increase;
 
         if (this._useMin && value < this._min) { value = this._min; }

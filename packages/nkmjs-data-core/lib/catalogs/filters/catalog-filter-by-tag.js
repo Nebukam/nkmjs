@@ -9,7 +9,7 @@ const CatalogFilter = require(`./catalog-filter`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
 class FilterByTag extends CatalogFilter {

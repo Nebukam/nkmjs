@@ -15,10 +15,10 @@ const AutosaveHandler = require(`./helpers/autosave-handler`);
  * Helper class that hold windows data and help sort out ipcMessaging between windows
  * @class
  * @hideconstructor
- * @augments common.helper.SingletonEx
+ * @augments common.Observable
  * @memberof documents
  */
-class DOCUMENTS extends com.helpers.SingletonEx {
+class DOCUMENTS extends com.Observable {// PORT_TO_MODULE
 
     constructor() { super(); }
 
@@ -52,21 +52,11 @@ class DOCUMENTS extends com.helpers.SingletonEx {
         return this._defaultCommands.Get(p_type, p_doc.constructor, p_doc.currentData.constructor);
     }
 
-    static get lastDirtyDoc() { return this.instance._dirtyDocuments.last; }
+    get lastDirtyDoc() { return this._dirtyDocuments.last; }
 
-    static HasUnsavedDocuments() {
-        return !this.instance._dirtyDocuments.isEmpty;
+    HasUnsavedDocuments() {
+        return !this._dirtyDocuments.isEmpty;
     }
-
-    /**
-     * @description TODO
-     * @param {object} p_options 
-     * @param {object} p_options.path Document's resource path
-     * @param {Document|Function} p_options.document Document object or constructor
-     * @param {data.DataBlock|Function} p_options.data DataBlock object or constructor
-     * @returns {Document}
-     */
-    static Get(p_options, p_forceNew = false) { return this.instance._Get(p_options, p_forceNew); }
 
     /**
      * @access private
@@ -76,7 +66,7 @@ class DOCUMENTS extends com.helpers.SingletonEx {
      * @param {data.DataBlock|Function} p_options.data DataBlock object or constructor
      * @returns {Document}
      */
-    _Get(p_options, p_forceNew = false) {
+    Get(p_options, p_forceNew = false) {
 
         let docClass, data, path;
         // First, check if data is set. If so, it should drive the type of document (if not set)
@@ -88,7 +78,7 @@ class DOCUMENTS extends com.helpers.SingletonEx {
         if (!docClass) { throw new Error(`Not enough options set to create a new document.`); }
 
         if (!p_forceNew) {
-            let existingDoc = this._FindDocument(data, docClass, path);
+            let existingDoc = this.FindDocument(data, docClass, path);
             if (existingDoc) { return existingDoc; }
         }
 
@@ -150,11 +140,7 @@ class DOCUMENTS extends com.helpers.SingletonEx {
 
     }
 
-    static FindDocument(p_data = null, p_docType = null, p_path = null) {
-        return this.instance._FindDocument(p_data, p_docType, p_path);
-    }
-
-    _FindDocument(p_data = null, p_docType = null, p_path = null) {
+    FindDocument(p_data = null, p_docType = null, p_path = null) {
 
         p_path = u.SHORT(p_path);
 
@@ -186,11 +172,11 @@ class DOCUMENTS extends com.helpers.SingletonEx {
     _OnDocDirty(p_doc) { this._dirtyDocuments.Add(p_doc); }
     _OnDocDirtyCleared(p_doc) { this._dirtyDocuments.Remove(p_doc); }
 
-    static ToggleAutoSave(p_toggle, p_delay = null) {
-        if (p_toggle) { this.instance._autosaveHandler.Enable(p_delay); }
-        else { this.instance._autosaveHandler.Disable(); }
+    ToggleAutoSave(p_toggle, p_delay = null) {
+        if (p_toggle) { this._autosaveHandler.Enable(p_delay); }
+        else { this._autosaveHandler.Disable(); }
     }
 
 }
 
-module.exports = DOCUMENTS;
+module.exports = new DOCUMENTS();

@@ -16,15 +16,15 @@ let DEV_MODE = false;
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.helpers.SingletonEx
+ * @augments common.Observable
  * @memberof electron.core
  */
-class WINDOWS extends com.helpers.SingletonEx {
+class WINDOWS extends com.Observable {// PORT_TO_MODULE
 
     constructor() { super(); }
 
-    static get ID_MAIN() { return '__MAIN'; }
-    static get mainWindow() { return this.instance._mainWindow; }
+    get ID_MAIN() { return '__MAIN'; }
+    get mainWindow() { return this._mainWindow; }
 
     _Init() {
 
@@ -367,4 +367,4 @@ class WINDOWS extends com.helpers.SingletonEx {
 
 
 
-module.exports = WINDOWS;
+module.exports = (typeof window === 'undefined') ? new WINDOWS() : null;

@@ -7,9 +7,9 @@ const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const services = require(`@nkmjs/services`);
 const env = require(`@nkmjs/environment`);
-const { signals } = require("@nkmjs/common");
+const com = require("@nkmjs/common");
 
-var test = 0;
+const _requests = new collections.List();
 
 /**
  * @description TODO
@@ -22,38 +22,22 @@ class RELAY extends services.ServiceBase {
 
     constructor() { super(); }
 
-    /**
-     * @description TODO
-     * @param {*} p_request 
-     */
-    static HandleRequest(p_request) {
-        u.LOG._(`⚡ ${p_request}`, 'color: #bebebe');
-        this.instance.HandleRequest(p_request);
-    }
+    _InternalStart() {
 
-    /**
-     * @description TODO
-     * @param {*} p_evt 
-     * @param  {...any} args 
-     */
-    static Broadcast(p_evt, ...args) {
-        this.instance.Broadcast(p_evt, ...args);
-    }
-
-    
-
-    _Init() {
-        super._Init();
-        this._requests = new collections.List();
         if (env.isExtension) {
-            this._extIpc = new signals.SignalBox();
+
+            this._extIpc = new com.signals.SignalBox();
             env.runtime.onMessage.addListener(function (request, sender, response) {
                 let signal = request.signal,
                     data = request;
                 request.respond = response;
-                RELAY.instance._extIpc.Broadcast(signal, data);
+                this._extIpc.Broadcast(signal, data);
             });
+
         }
+
+        super._InternalStart();
+
     }
 
     /**
@@ -61,7 +45,8 @@ class RELAY extends services.ServiceBase {
      * @param {actions.Request} p_request 
      */
     HandleRequest(p_request) {
-        this._requests.Add(p_request);
+        u.LOG._(`⚡ ${p_request}`, 'color: #bebebe');
+        _requests.Add(p_request);
         this.Broadcast(p_request.requestType, p_request);
         this._tick.Schedule();
     }
@@ -70,7 +55,7 @@ class RELAY extends services.ServiceBase {
         super._Tick(p_delta);
 
         //Clear requests stack
-        let list = this._requests;
+        let list = _requests;
 
         for (let i = 0; i < list.count; i++) {
 
@@ -101,14 +86,14 @@ class RELAY extends services.ServiceBase {
      * @param {string} p_evt 
      * @param {function} p_fn 
      */
-    static ipcOn(p_evt, p_fn) { this.instance._ipcOn(p_evt, p_fn); }
+    ipcOn(p_evt, p_fn) { this._ipcOn(p_evt, p_fn); }
 
     /**
      * @description TODO
      * @param {string} p_evt 
      * @param {function} p_fn 
      */
-    static ipcOff(p_evt, p_fn) { this.instance._ipcOff(p_evt, p_fn); }
+    ipcOff(p_evt, p_fn) { this._ipcOff(p_evt, p_fn); }
 
     /**
      * @access protected
@@ -116,8 +101,8 @@ class RELAY extends services.ServiceBase {
      * @param {string} p_evt 
      * @param {function} p_fn 
      */
-    _ipcOn(p_evt, p_fn) { 
-        if(this._extIpc){ this._extIpc.Watch(p_evt, p_fn); }
+    _ipcOn(p_evt, p_fn) {
+        if (this._extIpc) { this._extIpc.Watch(p_evt, p_fn); }
     }
 
     /**
@@ -126,8 +111,8 @@ class RELAY extends services.ServiceBase {
      * @param {string} p_evt 
      * @param {function} p_fn 
      */
-    _ipcOff(p_evt, p_fn) { 
-        if(this._extIpc){ this._extIpc.Unwatch(p_evt, p_fn); }
+    _ipcOff(p_evt, p_fn) {
+        if (this._extIpc) { this._extIpc.Unwatch(p_evt, p_fn); }
     }
 
     /**
@@ -135,7 +120,7 @@ class RELAY extends services.ServiceBase {
      * @param {string} p_evt 
      * @param {function} p_fn 
      */
-    static ipcSend(p_evt, ...args) { this.instance._ipcSend(p_evt, ...args); }
+    ipcSend(p_evt, ...args) { this._ipcSend(p_evt, ...args); }
 
     /**
      * @access protected
@@ -146,7 +131,7 @@ class RELAY extends services.ServiceBase {
     _ipcSend(p_evt, ...args) {
         if (env.isExtension) {
             // sendMessage to background extension, if any
-            env.runtime.sendMessage(null, JSON.stringify({ signal:p_evt, args:args }));
+            env.runtime.sendMessage(null, JSON.stringify({ signal: p_evt, args: args }));
         }
     }
 
@@ -155,9 +140,9 @@ class RELAY extends services.ServiceBase {
      * @param {*} p_options 
      * @returns {Promise}
      */
-    static ShowOpenDialog(p_options, p_callback) { 
-        this.instance.__openDialogCallback = p_callback;
-        this.instance._ShowOpenDialog(p_options, p_callback); 
+    ShowOpenDialog(p_options, p_callback) {
+        this.__openDialogCallback = p_callback;
+        this._ShowOpenDialog(p_options, p_callback);
     }
 
     /**
@@ -172,4 +157,4 @@ class RELAY extends services.ServiceBase {
 
 }
 
-module.exports = RELAY;
+module.exports = new RELAY();

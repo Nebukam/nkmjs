@@ -1,8 +1,8 @@
-const __DIALOG = require(`./lib/dialog`);
+const DIALOG = require(`./lib/dialog`);
 
 module.exports = {
 
-    DIALOG: __DIALOG,
+    DIALOG: DIALOG,
 
     REQUEST: require(`./lib/request`),
 
@@ -11,7 +11,7 @@ module.exports = {
     DialogOverlay: require(`./lib/dialog-overlay`),
 
     // to DIALOG.Push
-    Push:__DIALOG.Push.bind(__DIALOG),
+    Push: DIALOG.Push.bind(DIALOG),
 }
 
 require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

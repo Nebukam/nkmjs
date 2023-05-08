@@ -28,7 +28,7 @@ class FSIORename extends nkmCore.io.IOProcess {
 
         if (!super.Validate()) { return false; }
 
-        let existing = this._resources.Get(nkmCore.u.SHORT(this._targetPath));
+        let existing = RESOURCES.Get(nkmCore.u.SHORT(this._targetPath));
         if (existing && existing != this.rsc) {
             this._OnError(new Error(`Cannot rename resource from '${this.rsc.path}' to '${this._targetPath}' : destination already exists`));
             return false;

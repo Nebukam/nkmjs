@@ -10,10 +10,10 @@ const FILTER_SIGNAL = require(`./catalog-filter-signal`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class FilterList extends com.pool.DisposableObjectEx {
+class FilterList extends com.Observable {
 
     constructor() {
         super();

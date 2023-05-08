@@ -42,9 +42,9 @@ class Tab extends base {
         this._isStaticTab = false;
 
         this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
-        this._closeBtn.Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE, this._CloseRequest);
+        this._closeBtn.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE, this._CloseRequest);
 
-        this._pointer.Hook(ui.POINTER.MOUSE_MIDDLE, ui.POINTER.RELEASE, this._CloseRequest);
+        this._pointer.Hook(ui.POINTER.KEYS.MOUSE_MIDDLE, ui.POINTER.KEYS.RELEASE, this._CloseRequest);
 
     }
 

@@ -6,65 +6,62 @@
  * @hideconstructor
  * @memberof data.core
  */
-class SIGNAL {
-    constructor() { }
+module.exports = {
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static WATCH_STARTED = Symbol(`watchStarted`);
+    WATCH_STARTED: Symbol(`watchStarted`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static WATCH_ENDED = Symbol(`watchEnded`);
+    WATCH_ENDED: Symbol(`watchEnded`),
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     */
-    static WATCH_ERROR = Symbol(`watchError`);
+    WATCH_ERROR: Symbol(`watchError`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static FILE_CHANGED = Symbol(`fileChange`);
+    FILE_CHANGED: Symbol(`fileChange`),
 
     /**
     * @description TODO
     * @type {symbol}
     * @customtag read-only
     */
-    static FILE_ADDED = Symbol(`fileAdd`);
+    FILE_ADDED: Symbol(`fileAdd`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static FILE_DELETE = Symbol(`fileDelete`);
+    FILE_DELETE: Symbol(`fileDelete`),
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-     static DIR_ADDED = Symbol(`dirAdd`);
+    DIR_ADDED: Symbol(`dirAdd`),
 
-     /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     */
-     static DIR_DELETE = Symbol(`dirDelete`);
- 
+    /**
+    * @description TODO
+    * @type {symbol}
+    * @customtag read-only
+    */
+    DIR_DELETE: Symbol(`dirDelete`),
+
 }
-
-module.exports = SIGNAL;

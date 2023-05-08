@@ -5,7 +5,7 @@ const com = require("@nkmjs/common");
 const SIGNAL = require(`../signal`);
 const UnresolvedReference = require(`./unresolved-reference`);
 
-class UnresolvedReferenceManager extends com.pool.DisposableObjectEx {
+class UnresolvedReferenceManager extends com.Observable {
     constructor() { super(); }
 
     _Init() {

@@ -6,36 +6,35 @@
  * @hideconstructor
  * @memberof environment
  */
-class DOM_STATE {
-    constructor() { }
+const DOM_STATE = {
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static NONE = `none`;
+    NONE: Object.freeze(`none`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static LOADING = `loading`;
+    LOADING: Object.freeze(`loading`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static INTERACTIVE = `interactive`;
+    INTERACTIVE: Object.freeze(`interactive`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static COMPLETE = `complete`;
+    COMPLETE: Object.freeze(`complete`),
 
 }
 

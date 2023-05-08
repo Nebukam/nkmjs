@@ -6,14 +6,13 @@
  * @hideconstructor
  * @memberof ui.core
  */
-class IDS {
-    constructor() { }
+const IDS = {
 
-    static AUTOSAVE = Object.freeze('doAutoSave');
-    static AUTOSAVE_TIMER = Object.freeze('autosaveTimer');
+    AUTOSAVE: Object.freeze('doAutoSave'),
+    AUTOSAVE_TIMER: Object.freeze('autosaveTimer'),
 
-    static GROUP_SAVE = Object.freeze('group:save');
+    GROUP_SAVE: Object.freeze('group:save'),
 
-}
+};
 
 module.exports = IDS;

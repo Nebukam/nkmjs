@@ -5,17 +5,17 @@
  * They encapsulate boilerplate code that allow the `{@link common.pool.POOL}` to function correctly and streamline
  * pooled object behavior. If you are coming from any other programming language that supports interfaces, 
  * see this as an IDisposable, with all the boilerplate code already implemented.  
- * If you need to broadcast signals, consider using `{@link common.pool.DisposableObjectEx}` instead.
+ * If you need to broadcast signals, consider using `{@link common.Observable}` instead.
  * @class
  * @customtag abstract
  * @hideconstructor
  * @memberof common.pool
  */
-class DisposableObject {
+class Disposable {
 
-    constructor() {
+    constructor(p_initOptions = null) {
         this._isReleasing = false;
-        this._Init();
+        this._Init(p_initOptions);
         this._PostInit();
     }
 
@@ -23,7 +23,7 @@ class DisposableObject {
      * @access protected
      * @description Called only once in the `constructor` of the object, _Init, well, _initialize_ the object.  
      * Use it for initlizing variables, members, bind functions etc, so they can be used safely in _PostInit.  
-     * Note : There is no need to call super() on this member when immediately extending DisposableObject, the function is a stub.
+     * Note : There is no need to call super() on this member when immediately extending Disposable, the function is a stub.
      * @customtag override-me
      * @group Initialization
      */
@@ -34,7 +34,7 @@ class DisposableObject {
      * @description Called only once in the `constructor` of the object, right after `_Init`. This allows
      * your constructor to perform operations on members etc, **knowing they have been properly initilized** with their default
      * or intended values.  
-     * Note : There is no need to call super() on this member when immediately extending DisposableObject, the function is a stub.
+     * Note : There is no need to call super() on this member when immediately extending Disposable, the function is a stub.
      * @customtag override-me
      * @group Initialization
      */
@@ -58,7 +58,7 @@ class DisposableObject {
      * @type {boolean}
      * @group Pooling
      */
-    get isReleasing(){ return this._isReleasing; }
+    get isReleasing() { return this._isReleasing; }
 
     /**
      * @description Releases the object and returns it back to the pool.  
@@ -84,7 +84,7 @@ class DisposableObject {
      * Override this method in your own implementations to 'reset' the object to the state you want it to be
      * when it gets rented again through `{@link common.POOL.Rent}`
      * @customtag override-me
-     * @example MyClass extends DisposableObject{
+     * @example MyClass extends Disposable{
      * 
      *     _Init(){
      *         this._arr = []; // Create member during _Init
@@ -105,4 +105,4 @@ class DisposableObject {
 
 }
 
-module.exports = DisposableObject;
+module.exports = Disposable;

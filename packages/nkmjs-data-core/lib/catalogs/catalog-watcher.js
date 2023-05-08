@@ -11,10 +11,10 @@ const filters = require(`./filters`);
 * It's an abstract class, look for actual implementations in `CatalogHandler` & `CatalogBuilder`
 * @class
 * @hideconstructor
-* @augments common.pool.DisposableObjectEx
+* @augments common.Observable
 * @memberof data.core.catalog
 */
-class CatalogWatcher extends com.pool.DisposableObjectEx {
+class CatalogWatcher extends com.Observable {
     constructor() { super(); }
 
     _Init() {

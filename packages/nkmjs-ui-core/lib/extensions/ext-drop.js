@@ -421,13 +421,13 @@ class DropExtension extends Extension {
             //Becomes the main drop target        
             DropExtension.ACTIVE_TARGET = this;
             this.activator.addEventListener(`drop`, this._mDrop);
-            POINTER.instance.Unwatch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
+            POINTER.Unwatch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
             this._ShowHint();
         } else {
             //Stops being the main drop target
             if (DropExtension.ACTIVE_TARGET === this) { DropExtension.ACTIVE_TARGET = null; }
             this.activator.removeEventListener(`drop`, this._mDrop);
-            POINTER.instance.Watch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
+            POINTER.Watch(SIGNAL.DRAG_ENDED, this._dragEnd, this);
         }
 
     }

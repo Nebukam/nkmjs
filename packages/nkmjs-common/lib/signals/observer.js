@@ -1,6 +1,6 @@
 'use strict';
 
-const DisposableObjectEx = require(`../pool/disposable-object-ex`);
+const Observable = require(`../observable`);
 
 function isObservable(p_item) {
     if (p_item === null || p_item === undefined) { return false; }
@@ -12,10 +12,10 @@ function isObservable(p_item) {
  * subscribe/unsubscribe each time the object changes. 
  * Especially useful to observe data in UI/MVCs.
  * @class
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof common.signals
  */
-class Observer extends DisposableObjectEx {
+class Observer extends Observable {
     constructor() { super(); }
 
     _Init() {

@@ -3,7 +3,7 @@
 const nkm = require(`@nkmjs/core/nkmserver`);
 const LOCATION = require('./locations');
 
-class AWS extends nkm.com.helpers.SingletonEx {
+class AWS extends nkm.com.Observable {
     constructor() { super(); }
 
     _Init() {
@@ -16,11 +16,10 @@ class AWS extends nkm.com.helpers.SingletonEx {
 
     }
 
-    static get ready() { return this.instance._ready; }
-    static get region() { return this.instance._region; }
+    get ready() { return this._ready; }
+    get region() { return this._region; }
 
-    static Configure(p_config) { this.instance._Configure(p_config); }
-    _Configure(p_config) {
+    Configure(p_config) {
 
         if (this._configured) { return; }
         this._configured = true;
@@ -42,4 +41,4 @@ class AWS extends nkm.com.helpers.SingletonEx {
 
 }
 
-module.exports = AWS;
+module.exports = new AWS();

@@ -58,12 +58,12 @@ class InputNumber extends base {
     }
 
     _onFocusIn(p_evt) {
-        ui.INPUT.ONKeyToggle(actions.KEYBOARD._shift, this._ToggleBoost);
+        ui.INPUT.ONKeyToggle(actions.KEYBOARD.shiftKey, this._ToggleBoost);
         super._onFocusIn(p_evt);
     }
 
     _onFocusOut(p_evt) {
-        ui.INPUT.OFFKeyToggle(actions.KEYBOARD._shift, this._ToggleBoost);
+        ui.INPUT.OFFKeyToggle(actions.KEYBOARD.shiftKey, this._ToggleBoost);
         this._ToggleBoost(false);
         super._onFocusOut(p_evt);
     }

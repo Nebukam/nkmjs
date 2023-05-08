@@ -5,22 +5,27 @@ class SERVER_IO_FS extends nkm.io.BaseIOService {
 
     static __transceiverClass = require(`./transceiver-fs`);
 
-    _Init() {
-        super._Init();
+    _InternalStart() {
+
         this._defaultConfig = {
             transceivers: [
                 {
                     root: nkm.main.dirServer,
-                    uid: `dirServer`
+                    uid: `dirServer`,
+                    prependRoot:true
                 },
                 {
                     root: nkm.main.dirPublic,
-                    uid: `dirPublic`
+                    uid: `dirPublic`,
+                    prependRoot:true
                 }
             ]
         }
+
+        super._InternalStart();
+
     }
 
 }
 
-module.exports = SERVER_IO_FS;
+module.exports = new SERVER_IO_FS();

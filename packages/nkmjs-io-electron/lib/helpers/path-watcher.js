@@ -12,7 +12,7 @@ const SIGNAL = require(`../signal`);
  * Input path is assumed to be a directory, not a file.
  * path/to/something
  */
-class PathWatcher extends com.pool.DisposableObjectEx {
+class PathWatcher extends com.Observable {
     constructor() { super(); }
 
     static __distribute = com.helpers.OptionsDistribute.Ext()

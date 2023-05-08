@@ -61,7 +61,7 @@ class UnsavedDocHandler {
         } catch (e) {
 
             //Try to save using default command
-            let cmd = documents.DOCUMENTS.instance._TryGetDefaultCommand(
+            let cmd = documents.DOCUMENTS._TryGetDefaultCommand(
                 documents.commands.CMD_TYPE.SAVE, dirtyDoc);
 
             if (!cmd) {
@@ -95,7 +95,7 @@ class UnsavedDocHandler {
 
     _ClearLastAndAdvance(p_advance = true) {
         let dirtyDoc = documents.DOCUMENTS.lastDirtyDoc;
-        console.log(`_ClearLastAndAdvance`, documents.DOCUMENTS.instance._dirtyDocuments);
+        console.log(`_ClearLastAndAdvance`, documents.DOCUMENTS._dirtyDocuments);
         if (dirtyDoc) { dirtyDoc.Release(); }
         if (p_advance) { this.Advance(); }
     }

@@ -10,12 +10,12 @@ class IOElectron {
 
     Deploy() {
 
-        let RESOURCES = nkmCore.io.RESOURCES.instance;
+        let RESOURCES = nkmCore.io.RESOURCES;
         let iop = require(`./io-processes`);
 
         // Overwrite default or RESOURCES (IOWriter, IOReader, IORename + Directory support)
-        RESOURCES._GetStats = this._GetStats.bind(io.RESOURCES.instance);
-        RESOURCES._IOID = this._IOID.bind(io.RESOURCES.instance);
+        RESOURCES._GetStats = this._GetStats.bind(io.RESOURCES);
+        RESOURCES._IOID = this._IOID.bind(io.RESOURCES);
         RESOURCES._io[nkmCore.io.IO_TYPE.FILE_SYSTEM] = {
             read: iop.FSIOReader,
             write: iop.FSIOWriter,
@@ -33,8 +33,8 @@ class IOElectron {
             ...RESOURCES._io[nkmCore.io.IO_TYPE.FILE_SYSTEM]
         };
 
-        nkmCore.env.features.GetMemory = this._GetMemory.bind(nkmCore.env.FEATURES);
-        nkmCore.env.features._IOFlushFn = this._IOFlush.bind(nkmCore.env.FEATURES);
+        nkmCore.env.features.GetMemory = this._GetMemory.bind(nkmCore.env.features);
+        nkmCore.env.features._IOFlushFn = this._IOFlush.bind(nkmCore.env.features);
 
     }
 

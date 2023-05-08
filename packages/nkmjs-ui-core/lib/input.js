@@ -1,178 +1,100 @@
 'use strict';
 
+const u = require(`@nkmjs/utils`);
 const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const env = require(`@nkmjs/environment`);
 const actions = require(`@nkmjs/actions`);
+const services = require(`@nkmjs/services`);
 
 const SIGNAL = require(`./signal`);
 const POINTER = require("./pointer");
 const UI = require("./ui");
-const KB = actions.KEYBOARD;
 const dom = require(`./utils-dom`);
 
+const KB = actions.KEYBOARD;
+
+const MODIFIERS = require(`./input-modifiers`);
 
 /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.helpers.SingletonEx
+ * @augments common.Observable
  * @memberof ui.core
  */
-class INPUT extends com.helpers.SingletonEx {
+class INPUT extends services.ServiceBase {
     constructor() { super(); }
 
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     * @group Generic
-     */
-    static SELECT_MODIFIER_NONE = Symbol('none');
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     * @group Generic
-     */
-    static SELECT_MODIFIER_TOGGLE = Symbol('toggle');
-
-    /**
-    * @description TODO
-    * @type {string}
-    * @customtag read-only
-    * @group Generic
-    */
-    static SELECT_MODIFIER_RANGE = Symbol('range');
-
-    /**
-    * @description TODO
-    * @type {string}
-    * @customtag read-only
-    * @group Generic
-    */
-    static SELECT_MODIFIER_ADD = Symbol('add');
-
-
-    /**
-     * @description TODO
-     * @type {symbole}
-     * @customtag read-only
-     * @group Key Signal
-     */
-    static KEY_UP = Symbol('keyUp');
-
-    /**
-     * @description TODO
-     * @type {symbole}
-     * @customtag read-only
-     * @group Key Signal
-     */
-    static KEY_DOWN = Symbol('keyDown');
-
-    /**
-     * @description TODO
-     * @type {symbole}
-     * @customtag read-only
-     * @group Key Signal
-     */
-    static KEY_REPEAT = Symbol('keyRepeat');
-
-
-    /**
-     * @description TODO
-     * @type {boolean}
-     * @customtag read-only
-     */
-    static get shift() { return this.instance.shiftKey; }
-
-    /**
-     * @description TODO
-     * @type {boolean}
-     * @customtag read-only
-     */
-    static get ctrl() { return this.instance.ctrlKey; }
-
-    /**
-     * @description TODO
-     * @type {boolean}
-     * @customtag read-only
-     */
-    static get alt() { return this.instance.altKey; }
-
-    static get selectionModifier() { return this.instance._activeSelModifier; }
-    /**
-     * @description TODO
-     * @param {*} p_key 
-     * @param {*} p_fn 
-     */
-    static ONKeyUp(p_key, p_fn) { this.Watch(`U_${p_key}`, p_fn); }
+    get MODIFIERS() { return MODIFIERS; }
+    get selectionModifier() { return this._activeSelModifier; }
 
     /**
      * @description TODO
      * @param {*} p_key 
      * @param {*} p_fn 
      */
-    static OFFKeyUp(p_key, p_fn) { this.Unwatch(`U_${p_key}`, p_fn); }
+    ONKeyUp(p_key, p_fn) { this.Watch(`U_${p_key}`, p_fn); }
 
     /**
      * @description TODO
      * @param {*} p_key 
      * @param {*} p_fn 
      */
-    static ONKeyDown(p_key, p_fn) { this.Watch(`D_${p_key}`, p_fn); }
+    OFFKeyUp(p_key, p_fn) { this.Unwatch(`U_${p_key}`, p_fn); }
 
     /**
      * @description TODO
      * @param {*} p_key 
      * @param {*} p_fn 
      */
-    static OFFKeyDown(p_key, p_fn) { this.Unwatch(`D_${p_key}`, p_fn); }
+    ONKeyDown(p_key, p_fn) { this.Watch(`D_${p_key}`, p_fn); }
 
     /**
      * @description TODO
      * @param {*} p_key 
      * @param {*} p_fn 
      */
-    static ONKeyToggle(p_key, p_fn) { this.Watch(`T_${p_key}`, p_fn); }
+    OFFKeyDown(p_key, p_fn) { this.Unwatch(`D_${p_key}`, p_fn); }
+
+    /**
+     * @description TODO
+     * @param {*} p_key 
+     * @param {*} p_fn 
+     */
+    ONKeyToggle(p_key, p_fn) { this.Watch(`T_${p_key}`, p_fn); }
 
     /**
     * @description TODO
     * @param {*} p_key 
     * @param {*} p_fn 
     */
-    static OFFKeyToggle(p_key, p_fn) { this.Unwatch(`T_${p_key}`, p_fn); }
+    OFFKeyToggle(p_key, p_fn) { this.Unwatch(`T_${p_key}`, p_fn); }
 
     /**
          * @description TODO
          * @param {*} p_key 
          * @param {*} p_fn 
          */
-    static ONKeyRepeat(p_key, p_fn) { this.Watch(`R_${p_key}`, p_fn); }
+    ONKeyRepeat(p_key, p_fn) { this.Watch(`R_${p_key}`, p_fn); }
 
     /**
      * @description TODO
      * @param {*} p_key 
      * @param {*} p_fn 
      */
-    static OFFKeyRepeat(p_key, p_fn) { this.Unwatch(`R_${p_key}`, p_fn); }
+    OFFKeyRepeat(p_key, p_fn) { this.Unwatch(`R_${p_key}`, p_fn); }
 
-    static get focusedField() { return this.__focusedField; }
-    static set focusedField(p_value) { this.__focusedField = p_value; }
+    get focusedField() { return this.__focusedField; }
+    set focusedField(p_value) { this.__focusedField = p_value; }
 
-    /**
-     * @description TODO
-     * @type {ui.core.POINTER}
-     * @customtag read-only
-     */
-    static get POINTER() { return this.instance._mouse; }
+    get mouseDownPosition() { return this._mouseDownPosition; }
 
     _Init() {
 
         super._Init();
 
-        this._running = false;
+        this._enabled = false;
 
         this._down = new collections.Dictionary();
         this._kcodes = {};
@@ -188,29 +110,27 @@ class INPUT extends com.helpers.SingletonEx {
         this._altKey = false;
         this._currentKeyEvent = null;
 
-        this._activeSelModifier = INPUT.SELECT_MODIFIER_NONE;
+        this._activeSelModifier = MODIFIERS.NONE;
 
         if (this._isBrowser) {
-            this._Start();
-            this._pointer = POINTER.instance;
+            this._pointer = POINTER;
         }
 
     }
 
-    _Prepare() {
-        if (env.features.doMState === env.DOM_STATE.INTERACTIVE) { this._OnDomInteractive(); }
-        else { env.features.WatchOnce(env.SIGNAL.DOMSTATE_CHANGED, this._OnDomInteractive, this); }
+    _InternalStart() {
+        if (env.features.domState === env.DOM_STATE.COMPLETE) { this._OnStarted(); }
+        else { env.features.WatchOnce(env.SIGNAL.DOMSTATE_CHANGED, this._OnStarted, this); }
     }
 
-    _OnDomInteractive() {
-        this._Start();
+    _OnStarted() {
+        this.Enable();
+        super._OnStarted();
     }
 
-    _Start() {
+    Enable() {
 
-        if (this._running) { return; }
-
-        console.log(`INPUT START`);
+        if (this._enabled) { return; }
 
         window.addEventListener('keydown', this._KHandle);
         window.addEventListener('keyup', this._KHandle);
@@ -220,15 +140,16 @@ class INPUT extends com.helpers.SingletonEx {
 
         window.addEventListener('mousedown', this._MDown);
 
-        POINTER.instance._Start();
+        POINTER.Enable();
 
-        this._running = true;
+        u.LOG._(`🗸 INPUT enabled`, `#e5e5e5`, `#000000`);
+        this._enabled = true;
 
     }
 
-    _Stop() {
+    Disable() {
 
-        if (!this._running) { return; }
+        if (!this._enabled) { return; }
 
         window.removeEventListener('keydown', this._KHandle);
         window.removeEventListener('keyup', this._KHandle);
@@ -238,9 +159,10 @@ class INPUT extends com.helpers.SingletonEx {
 
         window.removeEventListener('mousedown', this._MDown);
 
-        POINTER.instance._Stop();
+        POINTER.Disable();
 
-        this._running = false;
+        u.LOG._(`🞫 INPUT disabled`, `#e5e5e5`, `#e50000`);
+        this._enabled = false;
 
     }
 
@@ -249,7 +171,7 @@ class INPUT extends com.helpers.SingletonEx {
      * @type {boolean}
      * @customtag read-only
      */
-    get running() { return this._running; }
+    get enabled() { return this._enabled; }
 
     /**
      * @description TODO
@@ -298,9 +220,9 @@ class INPUT extends com.helpers.SingletonEx {
 
         let was = this._activeSelModifier;
 
-        if (this._shiftKey) { this._activeSelModifier = INPUT.SELECT_MODIFIER_RANGE; }
-        else if (this._ctrlKey) { this._activeSelModifier = INPUT.SELECT_MODIFIER_TOGGLE; }
-        else { this._activeSelModifier = INPUT.SELECT_MODIFIER_NONE; }
+        if (this._shiftKey) { this._activeSelModifier = MODIFIERS.RANGE; }
+        else if (this._ctrlKey) { this._activeSelModifier = MODIFIERS.TOGGLE; }
+        else { this._activeSelModifier = MODIFIERS.NONE; }
 
         if (was == this._activeSelModifier) { return; }
 
@@ -322,7 +244,7 @@ class INPUT extends com.helpers.SingletonEx {
         this._mouseDownPosition.relX = p_evt.clientX / window.innerWidth;
         this._mouseDownPosition.relY = p_evt.clientY / window.innerHeight;
 
-        if (INPUT.selectionModifier != INPUT.SELECT_MODIFIER_NONE) {
+        if (INPUT.selectionModifier != MODIFIERS.NONE) {
             //p_evt.preventDefault();
             dom.ClearHighlightedText();
         }
@@ -365,11 +287,11 @@ class INPUT extends com.helpers.SingletonEx {
 
         this._down.Set(p_name, true);
 
-        this.Broadcast(INPUT.KEY_DOWN);
+        this.Broadcast(SIGNAL.KEY_DOWN);
         this.Broadcast(`D_${p_name}`);
         this.Broadcast(`T_${p_name}`, true);
 
-        let consumed = KB.instance._Push(p_keyCode);
+        let consumed = KB._Push(p_keyCode);
         if (consumed) { p_evt.preventDefault(); }
 
     }
@@ -380,7 +302,7 @@ class INPUT extends com.helpers.SingletonEx {
             this._processKeyDown(p_name, p_keyCode);
         }
 
-        this.Broadcast(INPUT.KEY_REPEAT);
+        this.Broadcast(SIGNAL.KEY_REPEAT);
         this.Broadcast(`R_${p_name}`);
 
     }
@@ -390,10 +312,10 @@ class INPUT extends com.helpers.SingletonEx {
         if (!this._down.Get(p_name)) { return; }
 
         this._down.Remove(p_name);
-        this.Broadcast(INPUT.KEY_UP, p_name);
+        this.Broadcast(SIGNAL.KEY_UP, p_name);
         this.Broadcast(`U_${p_name}`);
         this.Broadcast(`T_${p_name}`, false);
-        KB.instance._Pull(p_keyCode);
+        KB._Pull(p_keyCode);
 
     }
 
@@ -420,4 +342,4 @@ class INPUT extends com.helpers.SingletonEx {
 
 }
 
-module.exports = INPUT;
+module.exports = new INPUT();

@@ -4,96 +4,96 @@
 const toString = Object.prototype.toString;
 
 /**
- * CHECKS is a wrapper class that contains a bunch of utilitary static methods
+ * CHECKS is a wrapper class that contains a bunch of utilitary methods
  * focusing on type-checking.
  * @class
  * @hideconstructor
  * @memberof utils
  */
-class CHECKS {
+module.exports = {
 
     /**
      * @description Determine if a value is an Array
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is an Array, otherwise false
      */
-    static isArray(p_value) { return Array.isArray(p_value); }
+    isArray: function (p_value) { return Array.isArray(p_value); },
 
     /**
      * @description Determine if a value is an ArrayBuffer
      * @param {object} val The value to test
      * @returns {boolean} True if value is an ArrayBuffer, otherwise false
      */
-    static isArrayBuffer(p_value) {
+    isArrayBuffer: function (p_value) {
         return toString.call(p_value) === '[object ArrayBuffer]';
-    }
+    },
 
     /**
      * @description Determine if a value is an Object
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is an Object, otherwise false
      */
-    static isSymbol(p_value) { return typeof p_value === 'symbol'; }
+    isSymbol: function (p_value) { return typeof p_value === 'symbol'; },
 
     /**
      * @description Determine if a value is an Object
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is an Object, otherwise false
      */
-    static isObject(p_value) { return p_value !== null && typeof p_value === 'object'; }
+    isObject: function (p_value) { return p_value !== null && typeof p_value === 'object'; },
 
     /**
      * @description Determine if a value is a Function
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is an Function, otherwise false
      */
-    static isFunc(p_value) { return typeof p_value === 'function'; }
+    isFunc: function (p_value) { return typeof p_value === 'function'; },
 
     /**
      * @description Determine if a value is a string
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is an string, otherwise false
      */
-    static isString(p_value) { return typeof p_value === 'string'; }
+    isString: function (p_value) { return typeof p_value === 'string'; },
 
     /**
      * @description Determine if a value is a Number
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is an Number, otherwise false
      */
-    static isNumber(p_value) { return typeof p_value === 'number'; }
+    isNumber: function (p_value) { return typeof p_value === 'number'; },
 
     /**
      * @description Determine if a string value is a valid hexadecimal number
      * @param {*} p_value The value to test
      * @returns {Number} True if string is a valid hex value, otherwise false
      */
-    static isHex(p_value, p_pad = 0) {
-        if (!this.isString(p_value)) { return false; }
+    isHex: function (p_value, p_pad = 0) {
+        if (!module.exports.isString(p_value)) { return false; }
         let result = parseInt(p_value, 16);
         return (result.toString(16).padStart(p_pad, `0`) === p_value.toLowerCase());
-    }
+    },
 
     /**
      * @description Determine if a value is a Boolean
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is a Boolean, otherwise false
      */
-    static isBool(p_value) { return typeof p_value === 'boolean'; }
+    isBool: function (p_value) { return typeof p_value === 'boolean'; },
 
     /**
      * @description Determine if a value is undefined
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is undefined, otherwise false
      */
-    static isUndefined(p_value) { return typeof p_value === 'undefined'; }
+    isUndefined: function (p_value) { return typeof p_value === 'undefined'; },
 
     /**
      * @description Determine if a value is either undefined or null
      * @param {*} p_value The value to test
      * @returns {boolean} True if value is either undefined or null, otherwise false
      */
-    static isVoid(p_value) { return (typeof p_value === 'undefined' || p_value === null); }
+    isVoid: function (p_value) { return (typeof p_value === 'undefined' || p_value === null); },
 
     /**
      * @description Determine if a (source) Class or Instance of a constructor is an instance of another (target) Class 
@@ -102,10 +102,10 @@ class CHECKS {
      * @param {Object|Function} p_target The value to test against 
      * @returns {boolean} True if p_source is or extends target type, otherwise false
      */
-    static isInstanceOf(p_source, p_target) {
+    isInstanceOf: function (p_source, p_target) {
 
-        if (this.isVoid(p_source)
-            || this.isVoid(p_target)) {
+        if (module.exports.isVoid(p_source)
+            || module.exports.isVoid(p_target)) {
             return false;
         }
 
@@ -121,7 +121,7 @@ class CHECKS {
 
         return A instanceof B;
 
-    }
+    },
 
 
     /**
@@ -129,19 +129,19 @@ class CHECKS {
      * @param {*} p_value The value to test
      * @returns {boolean} True if p_value is empty, otherwise false
      */
-    static isEmpty(p_value) {
-        if (this.isVoid(p_value) || p_value === ``) {
+    isEmpty: function (p_value) {
+        if (module.exports.isVoid(p_value) || p_value === ``) {
             return true;
         }
-        if (this.isArray(p_value)) { return p_value.length === 0; }
-        if (this.isObject(p_value)) {
+        if (module.exports.isArray(p_value)) { return p_value.length === 0; }
+        if (module.exports.isObject(p_value)) {
             for (let key in p_value) { return false; }
             return true;
         }
         return false;
-    }
+    },
 
-    static isContentEqual(p_a, p_b) {
+    isContentEqual: function (p_a, p_b) {
         // compare array lengths, if not equal then skip.
         if (p_a.length !== p_b.length) return false;
 
@@ -156,8 +156,6 @@ class CHECKS {
             // passes tests and checks out
         };
         return true;
-    }
+    },
 
 }
-
-module.exports = CHECKS;

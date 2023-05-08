@@ -26,7 +26,7 @@ class BaseIOService extends services.ServiceBase {
             .Hook(services.SIGNAL.STARTED, (p_transceiver) => {
                 this._startedTransceivers++;
                 this.constructor[p_transceiver.uid] = p_transceiver;
-                console.log(` ┗ ${this.constructor.name} ━ New Transceiver (${p_transceiver.uid} >> '${p_transceiver.prefix}${p_transceiver.root}')`);
+                console.log(` ⇆ ${p_transceiver.constructor.name} | (${p_transceiver.uid} >> '${p_transceiver.prefix}${p_transceiver.root}')`);
                 if (this._starting) {
                     if (this._startedTransceivers == this._registeredTransceivers) {
                         this._MountingComplete();
@@ -94,7 +94,7 @@ class BaseIOService extends services.ServiceBase {
 
         let uid = p_config.uid;
         if (uid in this._map) {
-            console.log(`⚠️     Transceiver '${uid}' already exists will be overwritten.   ⚠️`);
+            console.log(`⚠️     Transceiver '${uid}' already exists and will be overwritten.   ⚠️`);
         }
 
         if (!this._starting) { this._registeredTransceivers++; }
@@ -107,6 +107,7 @@ class BaseIOService extends services.ServiceBase {
         newTransceiver.uid = uid;
 
         this._map[uid] = newTransceiver;
+        this[uid] = newTransceiver;
 
         this._transceiverObserver.Observe(newTransceiver);
         newTransceiver.Start(p_config);

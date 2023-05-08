@@ -66,8 +66,8 @@ class CommandModal extends actions.Command {
             modalOptions = { ...o };
         modalOptions.cmdContext = this._context;
 
-        modalOptions.mouseSnapshot = { ...INPUT.instance._mouseDownPosition };
-        
+        modalOptions.mouseSnapshot = { ...INPUT.mouseDownPosition };
+
         if (o.anchorToEmitter) {
             modalOptions.anchor = this._emitter;
             delete modalOptions.anchorToEmitter;

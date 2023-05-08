@@ -25,10 +25,10 @@ const __REF = `@`;
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObject
+ * @augments common.Disposable
  * @memberof style
  */
-class Palette extends com.pool.DisposableObject {
+class Palette extends com.Disposable {
     constructor() { super(); }
 
     _Init() {

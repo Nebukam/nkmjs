@@ -3,7 +3,7 @@ const fs = require(`fs`);
 const path = require(`path`);
 
 const base = nkm.io.Transceiver;
-class Transceiver extends base {
+class Transceiver_FS extends base {
     constructor() { super(); }
 
     static __distribute = nkm.com.helpers.OptionsDistribute.Ext(base)
@@ -19,8 +19,13 @@ class Transceiver extends base {
 
     Start(p_options = null) {
         if (!super.Start(p_options)) { return false; }
-        setTimeout(() => { this._OnStarted(); }, 1000);
+        this._OnStarted();
         return true;
+    }
+
+    _SanitizePath(p_path) {
+        let sanitized = super._SanitizePath(p_path);
+        return path.join(sanitized);
     }
 
     CreateReadStream(p_path, p_options = null) { throw new Error(__noImplemented); }
@@ -227,7 +232,13 @@ class Transceiver extends base {
                 p_callback(null, p_path, true);
             } catch (e) { p_callback(e, p_path, false); }
         } else {
-            fs.writeFile(p_path, p_data, p_options, () => { p_callback(null, p_path, true); });
+            //TODO Chain:
+            // - make sure parent directory exists
+            // - if not, check if option to recursively check exists
+            // - if not, throw.
+            // - if true, create directory
+            // - once directory is created, finally write file.
+            fs.writeFile(p_path, p_data, p_options, (err) => { p_callback(err, p_path, true); });
         }
 
     }
@@ -239,4 +250,4 @@ class Transceiver extends base {
 
 }
 
-module.exports = Transceiver;
+module.exports = Transceiver_FS;

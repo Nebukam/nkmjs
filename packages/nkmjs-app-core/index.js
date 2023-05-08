@@ -20,8 +20,8 @@ module.exports = {
 
     OpenSettings: () => { __ops.commands.OpenAppSettings.Execute(); },
 
-    get settings(){ return env.APP.appSettings; },
-    get main(){ return env.APP; },
+    get settings(){ return env.app.appSettings; },
+    get main(){ return env.app; },
 
 }
 

@@ -68,7 +68,7 @@ class DropExtension extends ExtDrop {
             this._watchingMouse = true;
             this._UpdateMouseInfos();
             this._OnMouseMove();
-            POINTER.Watch(POINTER.MOUSE_MOVE, this._OnMouseMove);
+            POINTER.Watch(SIGNAL.MOUSE_MOVE, this._OnMouseMove);
         }
 
     }
@@ -79,7 +79,7 @@ class DropExtension extends ExtDrop {
 
         if (this._watchingMouse) {
             this._watchingMouse = false;
-            POINTER.Unwatch(POINTER.MOUSE_MOVE, this._OnMouseMove);
+            POINTER.Unwatch(SIGNAL.MOUSE_MOVE, this._OnMouseMove);
         }
     }
 
@@ -91,8 +91,8 @@ class DropExtension extends ExtDrop {
                 'max-width': `${m.rect.width}px`,
                 'max-height': `${m.rect.height}px`,
                 transform: `translateX(${m.rect.x}px) translateY(${m.rect.y}px)`,
-                '--mx':m.rx,
-                '--my':m.ry
+                '--mx': m.rx,
+                '--my': m.ry
             });
         }
         return m;

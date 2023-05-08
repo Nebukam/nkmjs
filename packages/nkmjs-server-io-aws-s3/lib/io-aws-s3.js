@@ -18,8 +18,8 @@ class SERVER_IO_AWS_S3 extends nkmAWS.IO {
                 if (err) { throw err; }
                 else {
                     p_callback(data.Location);
-                    if (p_identifier in this.instance._map) {
-                        //this.instance._map[p_identifier];
+                    if (p_identifier in this._map) {
+                        //this._map[p_identifier];
                     }
                 }
             });
@@ -32,8 +32,8 @@ class SERVER_IO_AWS_S3 extends nkmAWS.IO {
                 if (err) { throw err; }
                 else {
                     p_callback(data.Location);
-                    if (p_identifier in this.instance._map) {
-                        this.instance._map[p_identifier].Stop();
+                    if (p_identifier in this._map) {
+                        this._map[p_identifier].Stop();
                     }
                 }
             });
@@ -41,4 +41,4 @@ class SERVER_IO_AWS_S3 extends nkmAWS.IO {
 
 }
 
-module.exports = SERVER_IO_AWS_S3;
+module.exports = new SERVER_IO_AWS_S3();

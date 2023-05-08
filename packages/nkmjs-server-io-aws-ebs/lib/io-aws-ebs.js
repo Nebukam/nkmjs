@@ -13,4 +13,4 @@ class SERVER_IO_AWS_EBS extends nkmAWS.IO {
 
 }
 
-module.exports = SERVER_IO_AWS_EBS;
+module.exports = new SERVER_IO_AWS_EBS();

@@ -143,7 +143,7 @@ class Ecosystem extends data.DataBlock {
     //#endregion
 
     _CleanUp() {
-        ENV.instance.UnregisterEcosystem(this);
+        ENV.UnregisterEcosystem(this);
         this._models.Clear();
         this._entries.Clear();
         super._CleanUp();

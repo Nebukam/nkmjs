@@ -7,7 +7,7 @@ const handlers = require(`./handlers`);
 const STATUSES = require("./status-codes");
 const FLAGS = require("./flags");
 
-class APIDefinition extends com.pool.DisposableObjectEx {
+class APIDefinition extends com.Observable {
 
     constructor(p_express, p_app) {
         super();

@@ -6,12 +6,9 @@
  * @hideconstructor
  * @memberof ui.core
  */
-class FLAGS {
-    constructor() { }
+module.exports = {
 
-    static POST = Object.freeze(`POST`);
-    static GET = Object.freeze(`GET`);
+    POST: Object.freeze(`POST`),
+    GET: Object.freeze(`GET`),
 
 }
-
-module.exports = FLAGS;

@@ -7,10 +7,10 @@ const { BrowserWindow } = require("electron");
  * Helper class that hold windows data and help sort out ipcMessaging between windows
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof electron.core
  */
-class WindowWrapper extends com.pool.DisposableObjectEx {
+class WindowWrapper extends com.Observable {
     constructor() { super(); }
 
     _Init() {

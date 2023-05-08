@@ -20,7 +20,7 @@ class CmdOpenAppSettings extends actions.Command {
 
     _InternalExecute() {
 
-        let editorClass = com.BINDINGS.Get(datacontrols.CONTEXT.DEFAULT_EDITOR, env.APP.appSettings);
+        let editorClass = com.BINDINGS.Get(datacontrols.CONTEXT.DEFAULT_EDITOR, env.app.appSettings);
 
         if (!editorClass) { return this._Cancel(); }
 
@@ -28,7 +28,7 @@ class CmdOpenAppSettings extends actions.Command {
             orientation: ui.FLAGS.HORIZONTAL,
             placement: ui.FLAGS.LEFT,
             title: `App settings`,
-            data: env.APP._appSettings,
+            data: env.app._appSettings,
             contentClass: editorClass
         };
 

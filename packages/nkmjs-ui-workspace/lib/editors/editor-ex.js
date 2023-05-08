@@ -47,10 +47,10 @@ class EditorEx extends base {
         this._bottomStatus = null;
 
         this._pointer
-            .Hook(ui.POINTER.MOUSE_NEXT, ui.POINTER.RELEASE, this._Bind(this.NextState))
-            .Hook(ui.POINTER.MOUSE_PREV, ui.POINTER.RELEASE, this._Bind(this.PreviousState))
-            .SetTriggerMask(ui.POINTER.MOUSE_NEXT, true)
-            .SetTriggerMask(ui.POINTER.MOUSE_PREV, true);
+            .Hook(ui.POINTER.KEYS.MOUSE_NEXT, ui.POINTER.KEYS.RELEASE, this._Bind(this.NextState))
+            .Hook(ui.POINTER.KEYS.MOUSE_PREV, ui.POINTER.KEYS.RELEASE, this._Bind(this.PreviousState))
+            .SetTriggerMask(ui.POINTER.KEYS.MOUSE_NEXT, true)
+            .SetTriggerMask(ui.POINTER.KEYS.MOUSE_PREV, true);
 
         this.focusArea = this;
 

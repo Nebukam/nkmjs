@@ -9,10 +9,10 @@ const DataEntry = require("../data-entry");
 
 /**
  * @class
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof ecosystem.parts
  */
-class EntryLibrary extends com.pool.DisposableObjectEx {
+class EntryLibrary extends com.Observable {
     constructor() { super(); }
 
     _Init(){

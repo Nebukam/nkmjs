@@ -22,12 +22,12 @@ const ui = require("@nkmjs/ui-core");
  * It is designed to work with streamed widgets (i.e widgets that gets released and thus unselected)
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof ui.core.helpers
  * @signal SignalDataSelected Broadcasted right after a data item has been added to the selection
  * @signal SignalDataUnselected Broadcasted right after a data item has been removed from the selection
  */
-class InspectionDataList extends com.pool.DisposableObjectEx {
+class InspectionDataList extends com.Observable {
     constructor(p_editor) {
         super();
         this._editor = p_editor;

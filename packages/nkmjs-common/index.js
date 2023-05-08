@@ -1,7 +1,7 @@
 'use strict';
 
-const __POOL = require(`./lib/pool/pool`);
-const __time = require(`./lib/time`);
+const POOL = require(`./lib/pool`);
+const time = require(`./lib/time`);
 
 module.exports = {
 
@@ -12,16 +12,19 @@ module.exports = {
     IDS: require(`./lib/ids`),    
     SORTING: require(`./lib/sorting`),
 
+    Disposable: require(`./lib/disposable`),
+    Observable: require(`./lib/observable`),
+
     filters: require(`./lib/filters`),
     helpers: require(`./lib/helpers`),
-    pool: require(`./lib/pool`),
     signals: require(`./lib/signals`),
-    time: __time,  
+    time: time,  
+
+    pool:POOL,
     
-    // Shortcut to pool.POOL.Rent
-    Rent:__POOL.Rent.bind(__POOL),
-    Preload:__POOL.Preload.bind(__POOL),
-    NextTick:__time.NextTick,
-    DelayedCall:(p_fn = null, p_delay = -1) => { return new __time.DelayedCall(p_fn, p_delay); }
+    Rent:POOL.Rent.bind(POOL),
+    Preload:POOL.Preload.bind(POOL),
+    WatchNextTick:time.WatchNextTick,
+    DelayedCall:(p_fn = null, p_delay = -1) => { return new time.DelayedCall(p_fn, p_delay); }
 
 }

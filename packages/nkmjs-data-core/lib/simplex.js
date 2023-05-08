@@ -12,10 +12,10 @@ const TYPES = require(`./types`);
  * @description TODO
  * @hideconstructor
  * @class
- * @augments common.helpers.SingletonEx
+ * @augments common.Observable
  * @memberof ui.core
  */
-class SIMPLEX extends com.helpers.SingletonEx {
+class SIMPLEX extends com.Observable {// PORT_TO_MODULE
     constructor() { super(); }
 
     _Init() {
@@ -25,7 +25,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
             [IDS.DATALISTS]: { id: IDS.DATALISTS } /* SYSTEM RESERVE */
         };
 
-        this.constructor.RegisterDescriptors({
+        this.RegisterDescriptors({
 
             // Misc
 
@@ -79,7 +79,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
      * as their unique ID.
      * @param {*} p_map 
      */
-    static RegisterDescriptors(p_map) {
+    RegisterDescriptors(p_map) {
         for (let n in p_map) {
             let descriptor = p_map[n];
             this.RegisterDescriptor(n, descriptor);
@@ -101,16 +101,16 @@ class SIMPLEX extends com.helpers.SingletonEx {
      * @param {*} p_descriptor.inputOptions.catalog Catalog to be used as enum
      * @param {*} p_descriptor.inputOptions.itemKey Catalog to be used as enum
      */
-    static RegisterDescriptor(p_id, p_descriptor) {
-        if (p_id in this.instance._descriptors) {
-            throw new Error(`Attempting to register a descriptor that already exists (${p_id})`, p_descriptor, this.instance._descriptors[p_id]);
+    RegisterDescriptor(p_id, p_descriptor) {
+        if (p_id in this._descriptors) {
+            throw new Error(`Attempting to register a descriptor that already exists (${p_id})`, p_descriptor, this._descriptors[p_id]);
         }
         p_descriptor.id = p_id;
-        this.instance._descriptors[p_id] = p_descriptor;
+        this._descriptors[p_id] = p_descriptor;
     }
 
-    static GetDescriptor(p_id) {
-        return this.instance._descriptors[p_id];
+    GetDescriptor(p_id) {
+        return this._descriptors[p_id];
     }
 
     //#endregion
@@ -118,7 +118,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
 
     //#region Utils
 
-    static InitSimpleDataBlock(p_dataBlock) {
+    InitSimpleDataBlock(p_dataBlock) {
 
         let BLOCS = p_dataBlock.BLOCS;
 
@@ -184,8 +184,8 @@ class SIMPLEX extends com.helpers.SingletonEx {
                     });
                 }
 
-                if (definition.autoSort) { 
-                    newDataList.AutoSort(definition.autoSort); 
+                if (definition.autoSort) {
+                    newDataList.AutoSort(definition.autoSort);
                 }
 
                 p_dataBlock._InitDatalist(newDataList, definition);
@@ -204,7 +204,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
      * @param  {...any} p_fallbacks Fallback data to look into 
      * @returns 
      */
-    static Resolve(p_id, p_data, ...p_fallbacks) {
+    Resolve(p_id, p_data, ...p_fallbacks) {
 
         if (!p_data) { return null; }
 
@@ -230,7 +230,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
      * @param {*} [backupList] 
      * @returns 
      */
-    static FindCommonValues(p_reference, p_dataList, p_dataMember = null, backupList = null) {
+    FindCommonValues(p_reference, p_dataList, p_dataMember = null, backupList = null) {
 
         let
             refValues = p_reference._values,
@@ -301,7 +301,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
      * @param {*} p_source 
      * @returns An array of groups, with the last one being ungrouped values.
      */
-    static GetGroups(p_source) {
+    GetGroups(p_source) {
 
         if (u.isObject(p_source)) { if (p_source.constructor != Object) { p_source = p_source.constructor; } }
         let definitions = p_source.__VALUES;
@@ -343,7 +343,7 @@ class SIMPLEX extends com.helpers.SingletonEx {
 
     }
 
-    static GetValueType(p_id) {
+    GetValueType(p_id) {
         return this.GetDescriptor(p_id).valueType;
     }
 
@@ -352,4 +352,4 @@ class SIMPLEX extends com.helpers.SingletonEx {
 
 }
 
-module.exports = SIMPLEX;
+module.exports = new SIMPLEX();

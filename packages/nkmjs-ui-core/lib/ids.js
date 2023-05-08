@@ -8,8 +8,7 @@ const com = require("@nkmjs/common");
  * @hideconstructor
  * @memberof ui.core
  */
-class IDS {
-    constructor() { }
+const IDS = {
 
     /**
      * @description TODO
@@ -19,7 +18,7 @@ class IDS {
      * @groupdescription These IDs collection are directly referencing the one found in {@link common.IDS}.
      * They are present in IDS for convenience.
      */
-    static UID = com.IDS.UID;
+    UID: com.IDS.UID,
 
     /**
      * @description TODO
@@ -27,7 +26,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static STATIC = com.IDS.STATIC;
+    STATIC: com.IDS.STATIC,
 
     /**
      * @description TODO
@@ -35,7 +34,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static NAME = com.IDS.NAME;
+    NAME: com.IDS.NAME,
 
     /**
      * @description TODO
@@ -43,7 +42,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static TITLE = com.IDS.TITLE;
+    TITLE: com.IDS.TITLE,
 
     /**
      * @description TODO
@@ -51,7 +50,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static MESSAGE = com.IDS.MESSAGE;
+    MESSAGE: com.IDS.MESSAGE,
 
     /**
      * @description TODO
@@ -59,7 +58,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static ICON = com.IDS.ICON;
+    ICON: com.IDS.ICON,
 
     /**
      * @description TODO
@@ -67,7 +66,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static IMG = Object.freeze(`img`);
+    IMG: Object.freeze(`img`),
 
     /**
     * @description TODO
@@ -75,31 +74,7 @@ class IDS {
     * @customtag read-only
     * @group Common
     */
-    static FLAVOR = Object.freeze(`flavor`);
-
-    /**
-   * @description TODO
-   * @type {string}
-   * @customtag read-only
-   * @group Common
-   */
-    static VARIANT = Object.freeze(`variant`);
-
-    /**
-   * @description TODO
-   * @type {string}
-   * @customtag read-only
-   * @group Common
-   */
-     static SIZE = Object.freeze(`size`);
-
-     /**
-   * @description TODO
-   * @type {string}
-   * @customtag read-only
-   * @group Common
-   */
-     static ORDER = Object.freeze(`order`);
+    FLAVOR: Object.freeze(`flavor`),
 
     /**
      * @description TODO
@@ -107,7 +82,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static PATH = com.IDS.PATH;
+    VARIANT: Object.freeze(`variant`),
 
     /**
      * @description TODO
@@ -115,7 +90,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static DATA = com.IDS.DATA;
+    SIZE: Object.freeze(`size`),
 
     /**
      * @description TODO
@@ -123,7 +98,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static CMD_PRIMARY = com.IDS.CMD_PRIMARY;
+    ORDER: Object.freeze(`order`),
 
     /**
      * @description TODO
@@ -131,7 +106,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static CMD_SECONDARY = com.IDS.CMD_SECONDARY;
+    PATH: com.IDS.PATH,
 
     /**
      * @description TODO
@@ -139,7 +114,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static CMD_LIST = com.IDS.CMD_LIST;
+    DATA: com.IDS.DATA,
 
     /**
      * @description TODO
@@ -147,7 +122,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static OWNER = com.IDS.OWNER;
+    CMD_PRIMARY: com.IDS.CMD_PRIMARY,
 
     /**
      * @description TODO
@@ -155,7 +130,7 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static ITEM = Object.freeze(`item`);
+    CMD_SECONDARY: com.IDS.CMD_SECONDARY,
 
     /**
      * @description TODO
@@ -163,7 +138,31 @@ class IDS {
      * @customtag read-only
      * @group Common
      */
-    static GROUP = Object.freeze(`group`);
+    CMD_LIST: com.IDS.CMD_LIST,
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Common
+     */
+    OWNER: com.IDS.OWNER,
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Common
+     */
+    ITEM: Object.freeze(`item`),
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Common
+     */
+    GROUP: Object.freeze(`group`),
 
     /**
      * @description TODO
@@ -171,7 +170,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static LABEL = Object.freeze(`label`);
+    LABEL: Object.freeze(`label`),
 
     /**
      * @description TODO
@@ -179,7 +178,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static SUBTITLE = Object.freeze(`subtitle`);
+    SUBTITLE: Object.freeze(`subtitle`),
 
     /**
      * @description TODO
@@ -187,7 +186,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static HEADER = Object.freeze(`header`);
+    HEADER: Object.freeze(`header`),
 
     /**
      * @description TODO
@@ -195,7 +194,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static BODY = Object.freeze(`body`);
+    BODY: Object.freeze(`body`),
 
     /**
      * @description TODO
@@ -203,7 +202,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static FOOTER = Object.freeze(`footer`);
+    FOOTER: Object.freeze(`footer`),
 
     /**
      * @description TODO
@@ -211,7 +210,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static VIEW = Object.freeze(`view`);
+    VIEW: Object.freeze(`view`),
 
     /**
      * @description TODO
@@ -219,7 +218,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static VIEW_CLASS = Object.freeze(`viewClass`);
+    VIEW_CLASS: Object.freeze(`viewClass`),
 
     /**
      * @description TODO
@@ -227,7 +226,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static CONTROLS = Object.freeze(`controls`);
+    CONTROLS: Object.freeze(`controls`),
 
     /**
      * @description TODO
@@ -235,7 +234,7 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static CSS_CL = Object.freeze(`csscl`);
+    CSS_CL: Object.freeze(`csscl`),
 
     /**
      * @description TODO
@@ -243,15 +242,15 @@ class IDS {
      * @customtag read-only
      * @group elements
      */
-    static TRIGGER = Object.freeze(`trigger`);
+    TRIGGER: Object.freeze(`trigger`),
 
     /**
-   * @description TODO
-   * @type {string}
-   * @customtag read-only
-   * @group Common
-   */
-     static CMD = Object.freeze(`command`);
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     * @group Common
+     */
+    CMD: Object.freeze(`command`),
 
 }
 

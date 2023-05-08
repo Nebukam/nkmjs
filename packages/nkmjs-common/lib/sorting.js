@@ -1,7 +1,7 @@
 'use strict';
 
-let _optionID = ``;
-let _compareMethod = null;
+var _optionID = ``;
+var _compareMethod = null;
 
 /*
 
@@ -22,16 +22,15 @@ Then the order of a and b remains unchanged.
  * @hideconstructor
  * @memberof data.core.catalog
  */
-class SORTING {
-    constructor() { }
+module.exports = {
 
     /**
      * @description TODO
      * @param {*} p_a 
      * @param {*} p_b 
      */
-    static NAME_ASC(p_a, p_b) {
-        if(typeof p_a === 'string' && typeof p_b === 'string'){
+    NAME_ASC: function (p_a, p_b) {
+        if (typeof p_a === 'string' && typeof p_b === 'string') {
             return p_a.localeCompare(p_b);
         }
 
@@ -43,15 +42,15 @@ class SORTING {
         } else {
             return -1;
         }
-    }
+    },
 
     /**
      * @description TODO
      * @param {*} p_a 
      * @param {*} p_b 
      */
-    static NAME_DSC(p_a, p_b) {
-        if(typeof p_a === 'string' && typeof p_b === 'string'){
+    NAME_DSC: function (p_a, p_b) {
+        if (typeof p_a === 'string' && typeof p_b === 'string') {
             return p_a.localeCompare(p_b) * -1;
         }
 
@@ -63,50 +62,50 @@ class SORTING {
         } else {
             return -1;
         }
-    }
+    },
 
     /**
      * @description 0, 1, 2
      * @param {*} p_a 
      * @param {*} p_b 
      */
-    static NUMERIC_ASC(p_a, p_b) {
+    NUMERIC_ASC: function (p_a, p_b) {
         return p_a - p_b;
-    }
+    },
 
     /**
      * @description 2, 1, 0
      * @param {*} p_a 
      * @param {*} p_b 
      */
-    static NUMERIC_DSC(p_a, p_b) {
+    NUMERIC_DSC: function (p_a, p_b) {
         return p_b - p_a;
-    }
+    },
 
     /**
      * @description a, b, c
      * @param {*} p_a 
      * @param {*} p_b 
      */
-    static STRING_ASC(p_a, p_b) {
+    STRING_ASC: function (p_a, p_b) {
         return p_a.localeCompare(p_b);
-    }
+    },
 
     /**
      * @description c, b, a
      * @param {*} p_a 
      * @param {*} p_b 
      */
-    static STRING_DSC(p_a, p_b) {
+    STRING_DSC: function (p_a, p_b) {
         return p_a.localeCompare(p_b) * -1;
-    }
+    },
 
     /**
      * @description TODO
      * @param {*} p_a 
      * @param {*} p_b 
      */
-    static OPTION(p_a, p_b) {
+    OPTION: function (p_a, p_b) {
         let a = p_a.isDir, b = p_b.isDir;
         if ((a && b) || (!a && !b)) {
             return _compareMethod(p_a.GetOption(_optionID), p_b.GetOption(_optionID));
@@ -115,7 +114,7 @@ class SORTING {
         } else {
             return -1;
         }
-    }
+    },
 
     /**
      * @description c, b, a
@@ -123,12 +122,10 @@ class SORTING {
      * @param {string} p_member 
      * @param {function} p_method 
      */
-    static SortByMember(p_array, p_member, p_method) {
+    SortByMember: function (p_array, p_member, p_method) {
         _optionID = p_member;
         _compareMethod = p_method;
         p_array._items.sort(SORTING.OPTION);
     }
 
 }
-
-module.exports = SORTING;

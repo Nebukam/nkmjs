@@ -9,10 +9,10 @@ const Metadata = require(`./metadata`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class DataBlock extends com.pool.DisposableObjectEx {
+class DataBlock extends com.Observable {
 
     static __NFO__ = {
         [com.IDS.UID]: `@nkmjs/data-core:data-block`,

@@ -6,64 +6,63 @@
  * @hideconstructor
  * @memberof style
  */
-class FONT_FLAG {
-    constructor() { }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag read-only
-     */ 
-    static TITLE = `title`;
+const FONT_FLAG = {
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static LABEL = `label`;
+    TITLE: Object.freeze(`title`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static TEXT = `text`;
+    LABEL: Object.freeze(`label`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static TAG = `font-tag`;
+    TEXT: Object.freeze(`text`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static SMALL = `font-small`;
+    TAG: Object.freeze(`font-tag`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static MEDIUM = `font-medium`;
+    SMALL: Object.freeze(`font-small`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static LARGE = `font-large`;
+    MEDIUM: Object.freeze(`font-medium`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static XLARGE = `font-xlarge`;
+    LARGE: Object.freeze(`font-large`),
+
+    /**
+     * @description TODO
+     * @type {string}
+     * @customtag read-only
+     */
+    XLARGE: Object.freeze(`font-xlarge`),
 
 }
 

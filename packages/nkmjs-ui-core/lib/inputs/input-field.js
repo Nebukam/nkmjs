@@ -105,7 +105,7 @@ class InputField extends base {
     _FIn() { this._inputField.focus(); }
 
     _FOut(p_evt) {
-        if (INPUT.shift) { return; }
+        if (INPUT.shiftKey) { return; }
         if (p_evt) { p_evt.preventDefault(); }
         this._inputField.blur();
     }
@@ -113,7 +113,7 @@ class InputField extends base {
     _onFocusIn(p_evt) {
         this._inFocus = true;
         INPUT.focusedField = this;
-        INPUT.ONKeyDown(KB._enter, this._FOut);
+        INPUT.ONKeyDown(KB.KEYS._enter, this._FOut);
         this._restoreUpdatePreviewOnFocus = this._handler._updatePreviewOnInput;
         this._handler._updatePreviewOnInput = this._updatePreviewWhenFocused;
         // TODO : Prevent keystrokes from being triggered while an input is in focus
@@ -122,7 +122,7 @@ class InputField extends base {
     _onFocusOut(p_evt) {
         this._inFocus = false;
         if (INPUT.focusedField == this) { INPUT.focusedField = null; }
-        INPUT.OFFKeyDown(KB._enter, this._FOut);
+        INPUT.OFFKeyDown(KB.KEYS._enter, this._FOut);
         this._handler._updatePreviewOnInput = this._restoreUpdatePreviewOnFocus;
         this._handler.SubmitValue();
         // TODO : Release keystroke lock if current input locker is self

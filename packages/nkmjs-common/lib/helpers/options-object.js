@@ -1,19 +1,19 @@
 'use strict';
 
-const DisposableObjectEx = require(`../pool/disposable-object-ex`);
+const Observable = require(`../observable`);
 const OptionsDistribute = require(`./options-distribute`);
 const SIGNAL = require(`../signal`);
 
 /**
- * An OptionObject is an extension over the DisposableObjectEx with a builtin
+ * An OptionObject is an extension over the Observable with a builtin
  * {@link common.helpers.OptionHandler}.  
  * It is a glorified Object
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof common.helpers
  */
-class OptionsObject extends DisposableObjectEx {
+class OptionsObject extends Observable {
     constructor() { super(); }
 
     static __broadcastUpdate = false;

@@ -45,7 +45,7 @@ class Overlay extends base {
         this._transitions = new extensions.AnimController();
 
         this._closeBg = this._pointer.Add(extensions.PointerStatic);
-        this._closeBg.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this._CloseRequest));
+        this._closeBg.Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE, this._Bind(this._CloseRequest));
 
         this._options = null;
 

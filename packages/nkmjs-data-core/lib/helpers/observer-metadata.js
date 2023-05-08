@@ -13,10 +13,10 @@ const _mpd_ = `IPD`;
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core.helpers
  */
-class MetadataObserver extends com.pool.DisposableObjectEx {
+class MetadataObserver extends com.Observable {
     constructor() { super(); }
 
     // ----> Init

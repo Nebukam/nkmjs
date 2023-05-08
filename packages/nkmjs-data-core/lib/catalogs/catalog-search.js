@@ -7,10 +7,10 @@ const com = require("@nkmjs/common");
  * as such it does not own items internally, nor releases them
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core.catalog
  */
-class CatalogSearch extends com.pool.DisposableObjectEx {
+class CatalogSearch extends com.Observable {
     constructor() { super(); }
 
     _Init() {

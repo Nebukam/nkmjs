@@ -1,44 +1,44 @@
 'use strict';
 
-const __UTILS = require(`./lib/utils`);
-const __CHECKS = require(`./lib/checks`);
-const __PATH = require(`./lib/path`);
+const UTILS = require(`./lib/utils`);
+const CHECKS = require(`./lib/checks`);
+const PATH = require(`./lib/path`);
 
 module.exports = {
     // Generic
-    tils: __UTILS,
+    tils: UTILS,
 
     helpers: require(`./lib/helpers`),
 
-    check: __CHECKS,
+    check: CHECKS,
 
     //TODO: Move DOM utils to ui-core
 
     // CHECKS Shortcuts
-    isArray: __CHECKS.isArray.bind(__CHECKS),
-    isArrayBuffer: __CHECKS.isArrayBuffer.bind(__CHECKS),
-    isSymbol: __CHECKS.isSymbol.bind(__CHECKS),
-    isObject: __CHECKS.isObject.bind(__CHECKS),
-    isFunc: __CHECKS.isFunc.bind(__CHECKS),
-    isString: __CHECKS.isString.bind(__CHECKS),
-    isNumber: __CHECKS.isNumber.bind(__CHECKS),
-    isHex: __CHECKS.isHex.bind(__CHECKS),
-    isBool: __CHECKS.isBool.bind(__CHECKS),
-    isUndefined: __CHECKS.isUndefined.bind(__CHECKS),
-    isVoid: __CHECKS.isVoid.bind(__CHECKS),
-    isInstanceOf: __CHECKS.isInstanceOf.bind(__CHECKS),
-    isEmpty: __CHECKS.isEmpty.bind(__CHECKS),
-    isContentEqual: __CHECKS.isContentEqual.bind(__CHECKS),
+    isArray: CHECKS.isArray,
+    isArrayBuffer: CHECKS.isArrayBuffer,
+    isSymbol: CHECKS.isSymbol,
+    isObject: CHECKS.isObject,
+    isFunc: CHECKS.isFunc,
+    isString: CHECKS.isString,
+    isNumber: CHECKS.isNumber,
+    isHex: CHECKS.isHex,
+    isBool: CHECKS.isBool,
+    isUndefined: CHECKS.isUndefined,
+    isVoid: CHECKS.isVoid,
+    isInstanceOf: CHECKS.isInstanceOf,
+    isEmpty: CHECKS.isEmpty,
+    isContentEqual: CHECKS.isContentEqual,
 
-    Call: __UTILS.Call.bind(__UTILS),
-    CallPrepend: __UTILS.CallPrepend.bind(__UTILS),
-    Assign: __UTILS.Assign.bind(__UTILS),
+    Call: UTILS.Call,
+    CallPrepend: UTILS.CallPrepend,
+    Assign: UTILS.Assign,
 
     //
-    PATH: __PATH,
+    PATH: PATH,
 
-    FULL: __PATH.FULL.bind(__PATH),
-    SHORT: __PATH.SHORT.bind(__PATH),
+    FULL: PATH.FULL.bind(PATH),
+    SHORT: PATH.SHORT.bind(PATH),
 
     MIME: require(`./lib/mime`),
     LOG: require(`./lib/logger`),
@@ -51,7 +51,7 @@ module.exports = {
         let element = document.createElement("a"),
             blob;
 
-        if (__CHECKS.isInstanceOf(p_content, Blob)) { blob = p_content; }
+        if (CHECKS.isInstanceOf(p_content, Blob)) { blob = p_content; }
         else {
             if (!p_mime) { blob = new Blob([p_content]); }
             else { blob = new Blob([p_content], { type: p_mime.type }); }

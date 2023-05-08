@@ -1,15 +1,15 @@
 'use strict';
 
-const DisposableObjectEx = require(`../pool/disposable-object-ex`);
+const Observable = require(`../observable`);
 
 /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof common.filters
  */
-class Filter extends DisposableObjectEx {
+class Filter extends Observable {
 
     constructor() {
         super();

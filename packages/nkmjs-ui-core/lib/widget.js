@@ -68,7 +68,7 @@ class Widget extends base {
 
         this._pointer = this._extensions.Add(extensions.Pointer);
         this._pointer.focusFn = this._Bind(this.Focus);
-        this._pointer.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this._Bind(this.Activate));
+        this._pointer.Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE, this._Bind(this.Activate));
 
         this._focusArea = null;
 
@@ -429,7 +429,7 @@ class Widget extends base {
 
         if (this._selectOnActivation) {
             if (this._isSelectable) {
-                if (INPUT.selectionModifier == INPUT.SELECT_MODIFIER_TOGGLE) {
+                if (INPUT.selectionModifier == INPUT.MODIFIERS.TOGGLE) {
                     this.Select(!this._isSelected, false, INPUT.selectionModifier);
                 } else {
                     this.Select(true, true, INPUT.selectionModifier);

@@ -20,9 +20,9 @@ class InputNumberDrag extends base {
         super._Init();
 
         this._pointer
-            .Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.DOWN, () => { return this._Pin(true); })
-            .Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.UP, () => { return this._Pin(false); })
-            .Hook(ui.POINTER.MOUSE_LEFT, ui.POINTER.RELEASE_OUTSIDE, () => { return this._Pin(false); });
+            .Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.DOWN, () => { return this._Pin(true); })
+            .Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.UP, () => { return this._Pin(false); })
+            .Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE_OUTSIDE, () => { return this._Pin(false); });
 
         this._Bind(this._OnMove);
         this._applyMove = com.DelayedCall(this._Bind(this._ApplyMove), 50);
@@ -77,7 +77,7 @@ class InputNumberDrag extends base {
         if (pos.tdx == 0) { return false; }
 
         let increase = this._step;
-        if (ui.INPUT.shift) { increase *= 10; }
+        if (ui.INPUT.shiftKey) { increase *= 10; }
         let value = this._pinnedValue + increase * pos.tdx;
 
         if (this._useMin && value < this._min) { value = this._min; }

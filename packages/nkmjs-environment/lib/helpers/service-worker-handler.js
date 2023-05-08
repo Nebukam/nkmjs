@@ -1,7 +1,7 @@
 const com = require("@nkmjs/common");
 const SW_SIGNAL = require("../sw-signal");
 
-class ServiceWorkerHandler extends com.pool.DisposableObjectEx {
+class ServiceWorkerHandler extends com.Observable {
     constructor() { super(); }
 
     _Init() {

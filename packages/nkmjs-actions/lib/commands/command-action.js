@@ -81,7 +81,7 @@ class CommandAction extends Command {
                 //Look in parenting stack in case no editor is found
                 //stop at first editor or last ?
                 //assume first for now.
-                let editorClass = com.pool.POOL.GetClass(`Editor`),
+                let editorClass = com.pool.GetClass(`Editor`),
                     p = this._emitter;
                 while (!editor && p) {
                     p = p.editor || p.parent;

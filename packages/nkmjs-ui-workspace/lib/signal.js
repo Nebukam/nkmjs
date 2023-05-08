@@ -1,15 +1,12 @@
 'use strict';
 
-class SIGNAL{
-    constructor() {}
+module.exports = {
 
     /**
      * @description TODO
      * @type {symbol}
      * @customtag read-only
      */
-    static VALUE_COMMITTED = Symbol(`valueCommitted`);
-    
-}
+    VALUE_COMMITTED: Symbol(`valueCommitted`),
 
-module.exports = SIGNAL;
+}

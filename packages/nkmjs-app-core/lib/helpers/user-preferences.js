@@ -10,7 +10,7 @@ class PrefDocument extends documents.unbound.MetaDocument {
     static __registerableType = false;
 }
 
-class UserPreferences extends com.pool.DisposableObjectEx {
+class UserPreferences extends com.Observable {
 
     constructor() { super(); }
 

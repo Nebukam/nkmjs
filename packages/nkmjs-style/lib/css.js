@@ -13,11 +13,9 @@ const __styleCache = new Map();
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.helpers.Singleton
  * @memberof style
  */
-class CSS_UTILS extends com.helpers.Singleton {
-    constructor() { super(); }
+module.exports = {
 
     /**
      * @description Return an HTMLElement formatted as
@@ -25,11 +23,11 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @param {string} p_import_path 
      * @returns {Element}
      */
-    static CSSImport(p_import_path) {
+    CSSImport: function (p_import_path) {
         let element = dom.El(`style`, { type: `text/css` });
         element.innerText = `@import url("${p_import_path}")`;
         return element;
-    }
+    },
 
     /**
      * @description Return a CSS style element formatted as
@@ -37,7 +35,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @param {Object|string} p_properties 
      * @returns {Element}
      */
-    static Style(p_properties) {
+    Style: function (p_properties) {
         let element = dom.El(`style`);
 
         let css = null;
@@ -54,7 +52,7 @@ class CSS_UTILS extends com.helpers.Singleton {
 
         element.innerText = css;
         return element;
-    }
+    },
 
     /**
      * @description Return a CSS string formatted as
@@ -63,16 +61,16 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @param {object} p_properties 
      * @returns {string}
      */
-    static CSS(p_id, p_properties) {
+    CSS: function (p_id, p_properties) {
         if (!u.isObject(p_properties)) { return ``; }
         if (p_id.indexOf(__media) === 0) {
             let css = ``;
-            for (let p in p_properties) { css += CSS_UTILS.CSS(p, p_properties[p]); }
+            for (let p in p_properties) { css += module.exports.CSS(p, p_properties[p]); }
             return `${p_id}{${css}}`;
         } else {
-            return `${p_id}{${CSS_UTILS.InlineCSS(p_properties)}}`;
+            return `${p_id}{${module.exports.InlineCSS(p_properties)}}`;
         }
-    }
+    },
 
     /**
      * @description Return an inline CSS string formatted as
@@ -81,21 +79,21 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @param {object} p_properties 
      * @returns {string}
      */
-    static InlineCSS(p_properties) {
+    InlineCSS: function (p_properties) {
         if (!u.isObject(p_properties)) { return ``; }
         let css = ``;
         if (p_properties != null && p_properties != undefined) {
             for (let att in p_properties) { css += `${att}:${p_properties[att]};`; }
         }
         return css;
-    }
+    },
 
     /**
      * @description Overwrites properties in base with copies of value in source
      * @param {*} p_base 
      * @param {*} p_source 
      */
-    static Merge(p_base, p_source) {
+    Merge: function (p_base, p_source) {
 
         if (!p_base) { return JSON.parse(JSON.stringify(p_source)); }
 
@@ -125,7 +123,7 @@ class CSS_UTILS extends com.helpers.Singleton {
                         }
                     }
 
-                } else if (u.isObject(sourceValue)) { this.Merge(baseValue, sourceValue); }
+                } else if (u.isObject(sourceValue)) { module.exports.Merge(baseValue, sourceValue); }
                 else { p_base[name] = sourceValue; }
             } else {
                 if (u.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
@@ -136,7 +134,7 @@ class CSS_UTILS extends com.helpers.Singleton {
 
         return p_base;
 
-    }
+    },
 
     /**
      * @description Add p_source properties & values from p_source missing into p_base.
@@ -144,7 +142,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @param {*} p_base 
      * @param {*} p_source 
      */
-    static Compose(p_base, p_source) {
+    Compose: function (p_base, p_source) {
 
         if (!p_base) { return JSON.parse(JSON.stringify(p_source)); }
 
@@ -164,7 +162,7 @@ class CSS_UTILS extends com.helpers.Singleton {
                             if (!baseValue.includes(itemValue)) { baseValue.unshift(itemValue); }
                         }
                     }
-                } else if (u.isObject(sourceValue)) { this.Compose(baseValue, sourceValue); }
+                } else if (u.isObject(sourceValue)) { module.exports.Compose(baseValue, sourceValue); }
                 else { p_base[name] = sourceValue; }
             } else {
                 if (u.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
@@ -175,7 +173,7 @@ class CSS_UTILS extends com.helpers.Singleton {
 
         return p_base;
 
-    }
+    },
 
     /**
      * @description Add p_source properties & values from p_source missing into p_base.
@@ -183,7 +181,7 @@ class CSS_UTILS extends com.helpers.Singleton {
      * @param {*} p_base 
      * @param {*} p_source 
      */
-    static Extends(p_base, p_source) {
+    Extends: function (p_base, p_source) {
 
         if (!p_base) { return JSON.parse(JSON.stringify(p_source)); }
 
@@ -203,7 +201,7 @@ class CSS_UTILS extends com.helpers.Singleton {
                             if (!baseValue.includes(itemValue)) { baseValue.unshift(itemValue); }
                         }
                     }
-                } else if (u.isObject(sourceValue)) { this.Extends(baseValue, sourceValue); }
+                } else if (u.isObject(sourceValue)) { module.exports.Extends(baseValue, sourceValue); }
             } else {
                 if (u.isArray(sourceValue)) { p_base[name] = [...sourceValue]; }
                 else if (u.isObject(sourceValue)) { p_base[name] = JSON.parse(JSON.stringify(sourceValue)); }
@@ -211,18 +209,18 @@ class CSS_UTILS extends com.helpers.Singleton {
             }
         }
 
-        
+
 
         return p_base;
 
-    }
+    },
 
     /**
      * Extract CSS Classes rules from a string
      * @param {*} p_styleString 
      * @returns 
      */
-     static ClassCSS(p_styleString) {
+    ClassCSS: function (p_styleString) {
         let result = {};
         try {
             //.st0 |{| fill:#FF00FF;}.st1 |{| fill:#FF00FF;}
@@ -232,22 +230,22 @@ class CSS_UTILS extends com.helpers.Singleton {
                 let className = baseSplit[0];
                 for (let b = 1; b < baseSplit.length; b++) {
                     let spl = baseSplit[b].split(`}`);
-                    result[className] = this.Rules(spl[0]);
+                    result[className] = module.exports.Rules(spl[0]);
                     className = spl[1];
                 }
             } else {
-                result = this.Rules(p_styleString);
+                result = module.exports.Rules(p_styleString);
             }
         } catch (e) { }
         return result;
-    }
+    },
 
     /**
      * Extract rules from a CSS string
      * @param {*} p_string 
      * @returns 
      */
-    static Rules(p_string) {
+    Rules: function (p_string) {
         let
             obj = {};
 
@@ -272,5 +270,3 @@ class CSS_UTILS extends com.helpers.Singleton {
     }
 
 }
-
-module.exports = CSS_UTILS;

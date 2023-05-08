@@ -46,7 +46,7 @@ class WidgetItem extends base {
         this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
-        this._pointer.Hook(POINTER.MOUSE_LEFT, POINTER.RELEASE_TWICE, this._Bind(this.AltActivate));
+        this._pointer.Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE_TWICE, this._Bind(this.AltActivate));
 
         if (this.constructor.__draggable) {
             this._extDrag = this._extensions.Add(extensions.Drag);

@@ -6,7 +6,7 @@ const u = require(`@nkmjs/utils`);
 const FLAGS = require(`../flags`);
 const STATUSES = require("../status-codes");
 
-class HandlerBase extends com.pool.DisposableObjectEx {
+class HandlerBase extends com.Observable {
     constructor() { super(); }
 
     static __MODE = FLAGS.GET;

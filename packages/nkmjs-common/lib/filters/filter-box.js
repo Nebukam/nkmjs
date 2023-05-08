@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const POOL = require("../pool/pool");
+const POOL = require("../pool");
 const Filter = require(`./filter`);
 
 /**

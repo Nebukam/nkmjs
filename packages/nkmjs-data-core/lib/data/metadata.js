@@ -9,10 +9,10 @@ const SIGNAL = require(`../signal`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class Metadata extends com.pool.DisposableObjectEx {
+class Metadata extends com.Observable {
 
     static __NFO__ = {
         [com.IDS.UID]: `@nkmjs/data-core:metadata`,

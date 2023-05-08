@@ -28,10 +28,10 @@ const DefaultStylesheet = require(`./default-stylesheet`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.helpers.Singleton
+ * @augments common.Observable
  * @memberof style
  */
-class STYLE extends com.helpers.SingletonEx {
+class STYLE extends com.Observable {
     constructor() { super(); }
 
     _Init() {
@@ -59,7 +59,7 @@ class STYLE extends com.helpers.SingletonEx {
     }
 
     get computedStyles() {
-        if (!this._computeStyles) { this._computeStyles = window.getComputedStyle(env.APP.body); }
+        if (!this._computeStyles) { this._computeStyles = window.getComputedStyle(env.app.body); }
         return this._computeStyles;
     }
 
@@ -85,11 +85,11 @@ class STYLE extends com.helpers.SingletonEx {
      * @param {boolean} p_initWithDefaults 
      * @returns {style.Palette} new Palette
      */
-    static CreatePalette(p_initWithDefaults = true, p_makeCurrent = true) {
+    CreatePalette(p_initWithDefaults = true, p_makeCurrent = true) {
         let newPalette = com.Rent(Palette);
         newPalette._STYLE = this;
-        if (p_initWithDefaults) { newPalette.InitFrom(this.instance.defaultPalette); }
-        if (p_makeCurrent) { this.instance.current = newPalette; }
+        if (p_initWithDefaults) { newPalette.InitFrom(this.defaultPalette); }
+        if (p_makeCurrent) { this.current = newPalette; }
         return newPalette;
     }
 
@@ -97,11 +97,11 @@ class STYLE extends com.helpers.SingletonEx {
      * @description Deploy current document rulesets into the header.
      * If it was deployed already, overwrites the previous statements.
      */
-    static DeployCurrent() {
+    DeployCurrent() {
 
         if (!this._isBrowser) { return; }
 
-        let pal = this.instance.current;
+        let pal = this.current;
 
         let css = ``;
         for (let f in pal._fonts) {
@@ -115,9 +115,9 @@ class STYLE extends com.helpers.SingletonEx {
         for (let el in styleObject) { css += CSS.CSS(el, pal._ProcessSingleRuleset(el, styleObject[el])); }
 
         // Preload all available css rules
-        let externalCSSRules = this.instance.current._externalCSSMap;
+        let externalCSSRules = this.current._externalCSSMap;
         for (let cssKey in externalCSSRules) {
-            this.instance.current.PrintCSSLink(cssKey, document.head);
+            this.current.PrintCSSLink(cssKey, document.head);
         }
 
         if (u.isVoid(this._headerStyle)) {
@@ -139,8 +139,8 @@ class STYLE extends com.helpers.SingletonEx {
      * @param {function} p_invalidateCache 
      * @returns {string} 
      */
-    static Get(p_class, p_generator, p_invalidateCache = false, p_classGenerator = false) {
-        return this.instance.current.Get(p_class, p_generator, p_invalidateCache, p_classGenerator);
+    Get(p_class, p_generator, p_invalidateCache = false, p_classGenerator = false) {
+        return this.current.Get(p_class, p_generator, p_invalidateCache, p_classGenerator);
     }
 
     /**
@@ -153,16 +153,16 @@ class STYLE extends com.helpers.SingletonEx {
      * @param {object} p_format.style inline CSS
      * @param {string} p_type tag type
      */
-    static TF(p_text, p_format, p_type = 'span') {
+    TF(p_text, p_format, p_type = 'span') {
 
         p_text = p_format.strong ? `<strong>${p_text}</strong>` : p_text;
 
         let css = ``;
         if (p_format.style) {
-            css = ` style='${CSS.InlineCSS(this.instance.current._ProcessSingleRuleset(``, p_format.style))}' `;
+            css = ` style='${CSS.InlineCSS(this.current._ProcessSingleRuleset(``, p_format.style))}' `;
         } else if (p_format.color) {
             let color = p_format.color;
-            if (u.isString(color)) { if (color in this.instance.current._colors) { color = this.instance.current._colors[color]; } }
+            if (u.isString(color)) { if (color in this.current._colors) { color = this.current._colors[color]; } }
             css = ` style='color:${color};' `;
         }
 
@@ -172,8 +172,8 @@ class STYLE extends com.helpers.SingletonEx {
 
     }
 
-    
+
 
 }
 
-module.exports = STYLE;
+module.exports = new STYLE();

@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@nkmjs/services": "^1.0.6",
     "@nkmjs/actions": "^1.0.6",
     "@nkmjs/collections": "^1.0.2",
     "@nkmjs/common": "^1.0.5",

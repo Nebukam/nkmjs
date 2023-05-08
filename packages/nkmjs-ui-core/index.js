@@ -1,9 +1,7 @@
 'use strict';
 
-const __UTILS_DOM = require(`./lib/utils-dom`);
-const __UI = require(`./lib/ui`);
-const __INPUT = require(`./lib/input`);
-__INPUT.instance._Prepare();
+const UTILS_DOM = require(`./lib/utils-dom`);
+const UI = require(`./lib/ui`);
 
 const __DOMtemplate = require(`./lib/dom-template`);
 
@@ -16,9 +14,9 @@ module.exports = {
     CONTEXT: require(`./lib/context`),
     ANCHORING: require(`./lib/anchoring`),
 
-    UI: __UI,
+    UI: UI,
 
-    INPUT: __INPUT,
+    INPUT: require(`./lib/input`),
     POINTER: require(`./lib/pointer`),
 
     DisposableHTMLElement: require(`./lib/disposable-htmlelement`),
@@ -41,9 +39,9 @@ module.exports = {
     views: require(`./lib/views`),
     overlays: require(`./lib/overlays`),
 
-    dom: __UTILS_DOM,
+    dom: UTILS_DOM,
     // UTILS_DOM Shortcuts
-    El: __UTILS_DOM.El.bind(__UTILS_DOM),
+    El: UTILS_DOM.El.bind(UTILS_DOM),
 
     // Templates
 
@@ -52,15 +50,15 @@ module.exports = {
     // Shortcuts
 
     // to UI.Preload
-    Preload: __UI.Preload.bind(__UI),
+    Preload: UI.Preload.bind(UI),
     // to UI.Register
-    Register: __UI.Register.bind(__UI),
+    Register: UI.Register.bind(UI),
     // to UI.RegisterGroup
-    RegisterGroup: __UI.RegisterGroup.bind(__UI),
+    RegisterGroup: UI.RegisterGroup.bind(UI),
     // to UI.FindFirstParentOfType
-    FindFirstParent : __UI.FindFirstParentOfType.bind(__UI),
+    FindFirstParent: UI.FindFirstParentOfType.bind(UI),
     // to UI.GetClass
-    GetClass: __UI.GetClass.bind(__UI),
+    GetClass: UI.GetClass.bind(UI),
     // to DOMTemplate.Render
     Render: __DOMtemplate.Render.bind(__DOMtemplate),
 

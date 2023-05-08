@@ -7,43 +7,42 @@
  * @hideconstructor
  * @memberof common
  */
-class FLAGS {
-    constructor() { }
+module.exports = {
 
     /**
      * @description Semantic for anything related to general information.
      * @type {string}
      * @customtag read-only
      */
-    static INFOS = Object.freeze(`infos`);
+    INFOS: Object.freeze(`infos`),
 
     /**
      * @description Semantic for anything related to anything that should be important & emphasized to the used.
      * @type {string}
      * @customtag read-only
      */
-    static WARNING = Object.freeze(`warning`);
+    WARNING: Object.freeze(`warning`),
 
     /**
      * @description Semantic for anything related to an error, or dangerous behavior that often requires user action.
      * @type {string}
      * @customtag read-only
      */
-    static ERROR = Object.freeze(`error`);
+    ERROR: Object.freeze(`error`),
 
     /**
      * @description Semantic for anything related to something being ready.
      * @type {string}
      * @customtag read-only
      */
-    static READY = Object.freeze(`ready`);
+    READY: Object.freeze(`ready`),
 
     /**
      * @description Semantic for anything related to something that has been changed, and is not yet saved.
      * @type {string}
      * @customtag read-only
      */
-    static DIRTY = Object.freeze(`dirty`);
+    DIRTY: Object.freeze(`dirty`),
 
     /**
      * @description Semantic for something that is loading and will lead to a noticeable outcome.  
@@ -51,7 +50,7 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static LOADING = Object.freeze(`loading`);
+    LOADING: Object.freeze(`loading`),
 
     /**
      * @description Semantic for anything related to processing.  
@@ -59,7 +58,7 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static PROCESSING = Object.freeze(`processing`);
+    PROCESSING: Object.freeze(`processing`),
 
     /**
      * @description Semantic for anything that requires the user to wait.  
@@ -67,7 +66,7 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static WAITING = Object.freeze(`waiting`);
+    WAITING: Object.freeze(`waiting`),
 
     /**
      * @description Semantic for anything related to something currently active.  
@@ -75,15 +74,13 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static ACTIVE = Object.freeze(`active`);
+    ACTIVE: Object.freeze(`active`),
 
     /**
      * @description Semantic for anything related to general information.
      * @type {string}
      * @customtag read-only
      */
-    static SELF = Object.freeze(`self`);
+    SELF: Object.freeze(`self`),
 
 }
-
-module.exports = FLAGS;

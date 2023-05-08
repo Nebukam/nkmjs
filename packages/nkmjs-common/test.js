@@ -4,12 +4,12 @@ const u = require("@nkmjs/utils");
 
 const { TIME } = require(`./lib/time`);
 const signals = require(`./lib/signals`);
-const { POOL } = require('./lib/pool');
+const POOL = require('./lib/pool');
 
 function testFn(){ console.log(`nextTick fn called.`); }
 
-assert.ok(!TIME.instance.isBrowser);
-TIME.NextTick(testFn);
+assert.ok(!TIME.isBrowser);
+TIME.WatchNextTick(testFn);
 
 // Rudimentary SignalBroadcaster test
 

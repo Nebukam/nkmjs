@@ -15,10 +15,10 @@ const DataBlock = require(`./data-block`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class Repertoire extends com.pool.DisposableObjectEx {
+class Repertoire extends com.Observable {
     constructor() { super(); }
 
     _Init() {

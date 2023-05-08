@@ -13,7 +13,7 @@ const SIGNAL = require(`../signal`);
  * @hideconstructor
  * @memberof environment.helpers
  */
-class Features extends com.pool.DisposableObjectEx {
+class Features extends com.Observable {
     constructor() { super(); }
 
     _Init() {
@@ -113,6 +113,7 @@ class Features extends com.pool.DisposableObjectEx {
                 (navigator.maxTouchPoints > 0) ||
                 (navigator.msMaxTouchPoints > 0));
 
+                
             // see if DOM is already available
             let domReadyState = document.readyState, listenToDomState = true;
             if (domReadyState === DOM_STATE.COMPLETE || domReadyState === DOM_STATE.INTERACTIVE) {
@@ -267,7 +268,7 @@ class Features extends com.pool.DisposableObjectEx {
     }
 
     _OnDOMStateChange() {
-
+        
         if (document.readyState === DOM_STATE.COMPLETE) {
             document.removeEventListener("DOMContentLoaded", this._OnDOMStateChange);
         }

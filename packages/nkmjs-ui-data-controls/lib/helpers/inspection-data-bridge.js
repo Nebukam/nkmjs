@@ -11,7 +11,7 @@ const ui = require("@nkmjs/ui-core");
  * @hideconstructor
  * @memberof ui.datacontrols.helpers
  */
-class InspectionDataBridge extends com.pool.DisposableObjectEx {
+class InspectionDataBridge extends com.Observable {
 
     constructor(p_owner) {
         super();
@@ -106,7 +106,7 @@ class InspectionDataBridge extends com.pool.DisposableObjectEx {
         this._mirroring = true;
         let index = this._dataSelection.RequestIndex(p_item);
         if (index != -1) { this._dataSelection.RequestAdd(index); }
-        else { this._dataSelection.Add(p_item, -1, ui.INPUT.SELECT_MODIFIER_ADD); } // Need to add the data, somehow the widget gets found but triggers an infinite loop
+        else { this._dataSelection.Add(p_item, -1, ui.INPUT.MODIFIERS.ADD); } // Need to add the data, somehow the widget gets found but triggers an infinite loop
         this._mirroring = false;
     }
 

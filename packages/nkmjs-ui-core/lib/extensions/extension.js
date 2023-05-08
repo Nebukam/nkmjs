@@ -7,10 +7,10 @@ const com = require("@nkmjs/common");
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof ui.core.extensions
  */
-class Extension extends com.pool.DisposableObjectEx {
+class Extension extends com.Observable {
 
     constructor(p_owner) {
         super();

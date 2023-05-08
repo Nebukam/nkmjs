@@ -4,7 +4,7 @@ const collections = require(`@nkmjs/collections`);
 const u = require("@nkmjs/utils");
 
 const NFOS = require(`../nfos`);
-const DisposableObjectEx = require(`../pool/disposable-object-ex`);
+const Observable = require(`../observable`);
 const BINDINGS = require(`../bindings`);
 
 /**
@@ -49,11 +49,11 @@ const BINDINGS = require(`../bindings`);
  * </code></pre>
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof common.helpers
  * 
  */
-class BindingKit extends DisposableObjectEx {
+class BindingKit extends Observable {
     constructor() { super(); }
 
     _Init() {
@@ -156,7 +156,7 @@ class BindingKit extends DisposableObjectEx {
             let cName = u.isFunc(p_context) ? p_context.name : p_context,
                 kName = u.isFunc(p_kvp.key) ? p_kvp.key.name : p_kvp.key,
                 vName = u.isFunc(p_kvp.binding) ? p_kvp.binding.name : p_kvp.binding;
-            u.LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
+            //u.LOG._(`┅ ${cName} ⟼ ${kName} ⤞ ${vName}`, `#7f7f7f`);
         }
 
     }
@@ -169,7 +169,7 @@ class BindingKit extends DisposableObjectEx {
         if (p_wrapper) { p_wrapper._classDict.Set(p_class, uid); }
 
         BINDINGS.SetClass(uid, p_class);
-        u.LOG._(`⧉ ${uid} ⤞ ${p_class.name}`, `#7f7f7f`);
+        //u.LOG._(`⧉ ${uid} ⤞ ${p_class.name}`, `#7f7f7f`);
 
     }
 

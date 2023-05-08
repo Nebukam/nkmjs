@@ -10,10 +10,10 @@ const SIGNAL = require(`./signal`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.helpers.SingletonEx
+ * @augments common.Observable
  * @memberof services
  */
-class ServiceBase extends com.helpers.SingletonEx {
+class ServiceBase extends com.Observable {
     constructor() { super(); }
 
     _Init() {
@@ -23,6 +23,8 @@ class ServiceBase extends com.helpers.SingletonEx {
         this._started = false;
         this._running = false;
         this._tick = com.DelayedCall(this._Bind(this._Tick));
+        
+        this._Bind(this._OnStarted);
     }
 
     /**
@@ -31,7 +33,7 @@ class ServiceBase extends com.helpers.SingletonEx {
     Initialize() {
         if (this._initialized) { return; }
 
-        ServicesManager.instance.Register(this);
+        ServicesManager.Register(this);
         this._initialized = true;
     }
 

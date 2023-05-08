@@ -10,10 +10,10 @@ const DataBlocExtendable = require(`./data-block-extendable`);
  * A FieldDescriptor is a unique implementation of a serializable and customizable type.
  * It defines a property inside a DataModel, which is then used as a reference to create entries from that model.
  * @class
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof ecosystem
  */
-class FieldDescriptor extends com.pool.DisposableObjectEx {
+class FieldDescriptor extends com.Observable {
     constructor() { super(); }
 
     static __NFO__ = {

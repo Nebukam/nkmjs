@@ -10,10 +10,10 @@ const ResourceOperation = require(`./resource-operation`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof io.core
  */
-class IOQueue extends com.pool.DisposableObjectEx {
+class IOQueue extends com.Observable {
 
 
     constructor() { super(); }

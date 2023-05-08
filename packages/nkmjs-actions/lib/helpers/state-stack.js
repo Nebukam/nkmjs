@@ -10,7 +10,7 @@ const com = require("@nkmjs/common");
  * @augments actions.helpers.StateStack
  * @memberof actions
  */
-class StateStack extends com.pool.DisposableObjectEx {
+class StateStack extends com.Observable {
     constructor() { super(); }
 
     _Init() {

@@ -1,6 +1,6 @@
 const nkm = require(`@nkmjs/core/nkmserver`);
 
-class Transceiver extends nkm.io.Transceiver {
+class Transceiver_EBS extends nkm.io.Transceiver {
     constructor() { super(); }
 
     Start(p_options = null) {
@@ -107,4 +107,4 @@ class Transceiver extends nkm.io.Transceiver {
 
 }
 
-module.exports = Transceiver;
+module.exports = Transceiver_EBS;

@@ -1,149 +1,39 @@
 'use strict';
 
+const u = require(`@nkmjs/utils`);
 const com = require("@nkmjs/common");
 const SIGNAL = require("./signal");
+const KEYS = require(`./pointer-keys`);
 
+var _dragLength = -1;
+var _dragData = null;
+var _dragDataExternal = null;
+var _dragTarget = null;
+
+const _position = { x: 0, y: 0 };
 
 /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.helpers.SingletonEx
+ * @augments common.Observable
  * @memberof ui.core
  */
-class POINTER extends com.helpers.SingletonEx {
+class POINTER extends com.Observable {
     constructor() { super(); }
 
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Buttons
-     */
-    static MOUSE_LEFT = 0;
+    get KEYS() { return KEYS; }
 
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Buttons
-     */
-    static MOUSE_MIDDLE = 1;
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Buttons
-     */
-    static MOUSE_RIGHT = 2;
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Buttons
-     */
-    static MOUSE_PREV = 3;
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Buttons
-     */
-    static MOUSE_NEXT = 4;
-
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Button Event
-     */
-    static DOWN = 0;
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Button Event
-     */
-    static UP = 1;
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Button Event
-     */
-    static RELEASE = 2;
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Button Event
-     */
-    static RELEASE_TWICE = 3;
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Button Event
-     */
-    static RELEASE_OUTSIDE = 4;
-
-    /**
-     * @description TODO
-     * @type {number}
-     * @customtag read-only
-     * @group Button Event
-     */
-    static MOUSE_WHEEL = 5;
-
-    /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     * @group Button State
-     */
-    static MOUSE_UP = Symbol('mouseUp');
-
-    /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     * @group Button State
-     */
-    static MOUSE_DOWN = Symbol('mouseDown');
-
-    /**
-     * @description TODO
-     * @type {symbol}
-     * @customtag read-only
-     * @group Button State
-     */
-    static MOUSE_MOVE = Symbol('mouseMove');
-
-    /**
-     * @description TODO
-     * @type {object}
-     * @customtag read-only
-     */
-    static get POINTER() { return this.instance.mouse; }
-
-    static get position() { return this.instance._position; }
+    get position() { return _position; }
 
     /**
      * @description TODO
      * @param {Element} p_el 
      */
-    static LocalMouse(p_el) {
+    LocalMouse(p_el) {
 
         let rect = p_el.getBoundingClientRect(),
-            m = this.instance._position,
+            m = _position,
             x = m.x - rect.left,
             y = m.y - rect.top;
 
@@ -161,10 +51,9 @@ class POINTER extends com.helpers.SingletonEx {
 
         super._Init();
 
-        this._running = false;
+        this._enabled = false;
         this._using = [];
         this._usingDeprecated = [];
-        this._position = { x: 0, y: 0 };
         this._clearUsing = com.DelayedCall(this._Bind(this._ClearUsing));
 
         this._Bind(this._mExternalDragEnter);
@@ -186,13 +75,13 @@ class POINTER extends com.helpers.SingletonEx {
         this._Bind(this._gEnd);
 
 
-        if (this._isBrowser) { this._Start(); }
+        if (this._isBrowser) { this.Enable(); }
 
     }
 
-    _Start() {
+    Enable() {
 
-        if (this._running) { return; }
+        if (this._enabled) { return; }
 
         document.addEventListener('mousedown', this._mDown);
         document.addEventListener('mouseup', this._mUp);
@@ -202,13 +91,14 @@ class POINTER extends com.helpers.SingletonEx {
 
         document.addEventListener('dragenter', this._mExternalDragEnter);
 
-        this._running = true;
+        u.LOG._(`🗸 POINTER enabled`, `#e5e5e5`, `#000000`);
+        this._enabled = true;
 
     }
 
-    _Stop() {
+    Disable() {
 
-        if (!this._running) { return; }
+        if (!this._enabled) { return; }
 
         document.removeEventListener('mousedown', this._mDown);
         document.removeEventListener('mouseup', this._mUp);
@@ -218,7 +108,8 @@ class POINTER extends com.helpers.SingletonEx {
 
         document.removeEventListener('dragenter', this._mExternalDragEnter);
 
-        this._running = false;
+        u.LOG._(`🞫 POINTER disabled`, `#e5e5e5`, `#e50000`);
+        this._enabled = false;
 
     }
 
@@ -227,14 +118,14 @@ class POINTER extends com.helpers.SingletonEx {
      * @type {boolean}
      * @customtag read-only
      */
-    get running() { return this._running; }
+    get enabled() { return this._enabled; }
 
     /**
      * @description TODO
      * @type {object}
      * @customtag read-only
      */
-    get position() { return this._position; }
+    get position() { return _position; }
 
     StartUsing(p_btns) {
 
@@ -256,7 +147,7 @@ class POINTER extends com.helpers.SingletonEx {
 
     _IsUsing(p_btn) {
 
-        if (p_btn === POINTER.MOUSE_LEFT) { return false; }
+        if (p_btn === KEYS.MOUSE_LEFT) { return false; }
 
         for (let i = 0, n = this._using.length; i < n; i++) {
             if (p_btn in this._using[i]) { return true; }
@@ -279,7 +170,7 @@ class POINTER extends com.helpers.SingletonEx {
      * @param {Event} p_evt 
      */
     _mDown(p_evt) {
-        this.Broadcast(POINTER.MOUSE_DOWN, p_evt);
+        this.Broadcast(SIGNAL.MOUSE_DOWN, p_evt);
         if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
     }
 
@@ -288,7 +179,7 @@ class POINTER extends com.helpers.SingletonEx {
      * @param {Event} p_evt 
      */
     _mUp(p_evt) {
-        this.Broadcast(POINTER.MOUSE_UP, p_evt);
+        this.Broadcast(SIGNAL.MOUSE_UP, p_evt);
         if (this._IsUsing(p_evt.button)) { p_evt.preventDefault(); }
     }
 
@@ -297,9 +188,9 @@ class POINTER extends com.helpers.SingletonEx {
      * @param {Event} p_evt 
      */
     _mMove(p_evt) {
-        this._position.x = p_evt.clientX;
-        this._position.y = p_evt.clientY;
-        this.Broadcast(POINTER.MOUSE_MOVE, p_evt);
+        _position.x = p_evt.clientX;
+        _position.y = p_evt.clientY;
+        this.Broadcast(SIGNAL.MOUSE_MOVE, p_evt);
     }
 
     _tStart(p_evt) {
@@ -350,48 +241,43 @@ class POINTER extends com.helpers.SingletonEx {
 
     // ----> Data drag handling    
 
-
-    static _dragLength = -1;
-    static _dragData = null;
-    static _dragDataExternal = null;
-    static _dragTarget = null;
+    /**
+     * @description TODO
+     * @type {*}
+     * @group Drag and drop
+     */
+    get DRAG_DATA() { return _dragData; }
+    set DRAG_DATA(p_data) { _dragData = p_data; }
 
     /**
      * @description TODO
      * @type {*}
      * @group Drag and drop
      */
-    static get DRAG_DATA() { return this._dragData; }
-    static set DRAG_DATA(p_data) { this._dragData = p_data; }
+    get EXTERNAL_DRAG() { return _dragDataExternal; }
+    set EXTERNAL_DRAG(p_value) { _dragDataExternal = p_value; }
 
-    /**
-     * @description TODO
-     * @type {*}
-     * @group Drag and drop
-     */
-    static get EXTERNAL_DRAG() { return this._dragDataExternal; }
-    static set EXTERNAL_DRAG(p_value) { this._dragDataExternal = p_value; }
     /**
      * @description TODO
      * @type {boolean}
      * @group Drag and drop
      */
-    static get DRAG_MULTIPLE() { return (this._dragLength > -1); }
+    get DRAG_MULTIPLE() { return (_dragLength > -1); }
 
     /**
      * @description TODO
      * @type {*}
      * @group Drag and drop
      */
-    static get DRAG_TARGET() { return this._dragTarget; }
-    static set DRAG_TARGET(p_target) { this._dragTarget = p_target; }
+    get DRAG_TARGET() { return _dragTarget; }
+    set DRAG_TARGET(p_target) { _dragTarget = p_target; }
 
     /**
      * @description TODO
      * @type {number}
      * @group Drag and drop
      */
-    static get dragLength() { return this._dragLength; }
+    get dragLength() { return _dragLength; }
 
     /**
      * @description TODO
@@ -400,7 +286,7 @@ class POINTER extends com.helpers.SingletonEx {
      * @param {*} [p_multiple] Whether to flag this drag as multiple or not
      * @group Drag and drop
      */
-    static DragStarted(p_data, p_target, p_multiple = false, p_external = false) {
+    DragStarted(p_data, p_target, p_multiple = false, p_external = false) {
 
         this.DRAG_DATA = null;
         this.EXTERNAL_DRAG = p_external;
@@ -421,10 +307,10 @@ class POINTER extends com.helpers.SingletonEx {
 
         }
 
-        this._dragLength = dLength;
+        _dragLength = dLength;
 
         this.DRAG_TARGET = p_target;
-        this.instance.Broadcast(SIGNAL.DRAG_STARTED, p_data);
+        this.Broadcast(SIGNAL.DRAG_STARTED, p_data);
 
     }
 
@@ -432,20 +318,20 @@ class POINTER extends com.helpers.SingletonEx {
      * @description TODO
      * @group Drag and drop
      */
-    static DragEnded() {
-        this.instance.Broadcast(SIGNAL.DRAG_ENDED);
+    DragEnded() {
+        this.Broadcast(SIGNAL.DRAG_ENDED);
         this.DRAG_DATA = null;
         this.DRAG_TARGET = null;
-        this._dragLength = -1;
+        _dragLength = -1;
     }
 
 
     //
 
     _mExternalDragEnter(p_evt) {
-        if (POINTER.DRAG_DATA) { return; } // Internal drag
+        if (this.DRAG_DATA) { return; } // Internal drag
 
-        POINTER.DragStarted(p_evt.dataTransfer, null, false, true);
+        this.DragStarted(p_evt.dataTransfer, null, false, true);
 
         document.addEventListener('dragleave', this._mExternalDragLeave);
         document.addEventListener('dragover', this._mExternalDragOver);
@@ -470,9 +356,9 @@ class POINTER extends com.helpers.SingletonEx {
     }
 
     _ClearExternalDragDrop() {
-        POINTER.DragEnded();
-        POINTER.EXTERNAL_DRAG = false;
-        POINTER.DRAG_DATA = null;
+        this.DragEnded();
+        this.EXTERNAL_DRAG = false;
+        this.DRAG_DATA = null;
         document.removeEventListener('dragleave', this._mExternalDragLeave);
         document.removeEventListener('dragover', this._mExternalDragOver);
         document.removeEventListener('drop', this._mExternalDrop);
@@ -480,4 +366,4 @@ class POINTER extends com.helpers.SingletonEx {
 
 }
 
-module.exports = POINTER;
+module.exports = new POINTER();

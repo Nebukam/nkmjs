@@ -7,7 +7,7 @@ const ACTION_STATE = require(`./action-state`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObject
+ * @augments common.Disposable
  * @memberof actions
  */
 class ActionRoot extends Action {

@@ -6,12 +6,8 @@ const collections = require(`@nkmjs/collections`);
 const NFOS = require(`./nfos`);
 const IDS = require(`./ids`);
 
-////
-// Had to make these const instead of embedded static for reason unknown :(
 const _classLookup = new collections.Dictionary();
 const _classReverseLookup = new collections.Dictionary();
-
-const _squashedAssocs = new collections.KDictionary();//Array of squashed associations (as kits get loaded and all)
 
 const _contextMap = new collections.KDictionary();
 const _contextKeyLists = new collections.DictionaryList();
@@ -19,12 +15,9 @@ const _contextKeyLists = new collections.DictionaryList();
 const _contextTemplateMap = new collections.KDictionary();
 const _contextTemplateKeysLists = new collections.DictionaryList();
 
-const _distanceMap = new collections.KDictionary();
-const _tempSet = new Set();
-////
 
 /**
- * <div class="tip infos" data-title="Important note">The BINDINGS Singleton is a critical
+ * <div class="tip infos" data-title="Important note">The BINDINGS module is a critical
  * part of the @nkmjs framework. It is used to register & create associations between 
  * pretty much anything.</div>  
  * 
@@ -42,8 +35,7 @@ const _tempSet = new Set();
  * @hideconstructor
  * @memberof common
  */
-class BINDINGS {
-    constructor() { }
+module.exports = {
 
     /**
      * @description TODO
@@ -51,10 +43,10 @@ class BINDINGS {
      * @example //This is what you'll do most of the time in your module's index.js
      * BINDINGS.Expand(require(`./my-module-bindings`));
      */
-    static Expand(p_bindings) {
+    Expand: function (p_bindings) {
         if (u.isFunc(p_bindings)) { p_bindings = new p_bindings(); }
         p_bindings.Deploy();
-    }
+    },
 
     /**
      * @description Map a string identifier to a class constructor.
@@ -67,10 +59,10 @@ class BINDINGS {
      * <div class="tip warning" data-title="About serialization">This is critical during the process of serialization/de-serialization, 
      * as serialized data store its string identifier to be deserialized afterward.</div>
      */
-    static SetClass(p_key, p_class) {
+    SetClass: function (p_key, p_class) {
         _classLookup.Set(p_key, p_class);
         _classReverseLookup.Set(p_class, p_key);
-    }
+    },
 
     /**
      * Retrieve the class constructor associated with a given string identifier
@@ -78,7 +70,7 @@ class BINDINGS {
      * @returns {function}
      * @group Class repertoire
      */
-    static GetClass(p_key) { return _classLookup.Get(p_key); }
+    GetClass: function (p_key) { return _classLookup.Get(p_key); },
 
     /**
      * Retrieve the string identifier associated with a given class constructor, if any.
@@ -88,7 +80,7 @@ class BINDINGS {
      * @returns {string} identifier if found, otherwise null
      * @group Class repertoire
      */
-    static GetConstructorKey(p_constructor) {
+    GetConstructorKey: function (p_constructor) {
 
         if (u.isObject(p_constructor)) { p_constructor = p_constructor.constructor; }
         if (!p_constructor) { throw new Error(`Could not find valid constructor ref in ${p_constructor}`); }
@@ -98,21 +90,21 @@ class BINDINGS {
         if (!uid) {
             uid = u.tils.Get(NFOS.Get(p_constructor), IDS.UID, null);
             if (!uid) { throw new Error(`No valid NFO found for ${p_constructor.name}`); }
-            this.SetClass(uid, p_constructor);
+            module.exports.SetClass(uid, p_constructor);
         }
 
         return uid;
 
-    }
+    },
 
-    static GetSerializerVersion(p_serializer) {
+    GetSerializerVersion: function (p_serializer) {
         let nfos = NFOS.Get(p_serializer),
             ver = u.tils.Get(nfos, IDS.VER, -1);
 
         if (Number.isNaN(ver)) { ver = -1; }
 
         return ver;
-    }
+    },
 
     /**
      * @description Removes the class mapped to a given key
@@ -120,7 +112,7 @@ class BINDINGS {
      * @returns {function}
      * @group Class repertoire
      */
-    static RemoveClass(p_key) { _classLookup.Remove(p_key); }
+    RemoveClass: function (p_key) { _classLookup.Remove(p_key); },
 
     /**
      * @description Registers an key-control pair within a given context.
@@ -136,16 +128,16 @@ class BINDINGS {
      * // The binding can then be retrieved using `Get` 
      * BINDINGS.Get(Kitchen, Ustensil) == Fork
      */
-    static Set(p_context, p_key, p_binding) {
+    Set: function (p_context, p_key, p_binding) {
         //TODO : Check if a value is being squashed, and store it to restore it on kit concealing
         _contextMap.Set(p_context, p_key, p_binding);
         _contextKeyLists.Set(p_context, p_key);
-    }
+    },
 
-    static SetTemplate(p_context, p_keys, p_binding) {
+    SetTemplate: function (p_context, p_keys, p_binding) {
         _contextTemplateMap.Set(p_context, p_keys, p_binding);
         _contextTemplateKeysLists.Set(p_context, p_keys);
-    }
+    },
 
     /**
      * Retrieve the value associated to a given key, within a given context.
@@ -157,12 +149,12 @@ class BINDINGS {
      * @example // What's the Ustensil in the Kitchen ?
      * BINDINGS.Get(Kitchen, Ustensil) == Fork
      */
-    static Get(p_context, p_key, p_fallback = null, p_broad = true) {
+    Get: function (p_context, p_key, p_fallback = null, p_broad = true) {
 
         if (!p_context) { throw new Error(`p_context cannot be null.`); }
 
         if (u.isObject(p_key)) {
-            if (p_key.constructor == Object) { return this.GetTemplate(p_context, p_key, p_fallback); }
+            if (p_key.constructor == Object) { return module.exports.GetTemplate(p_context, p_key, p_fallback); }
             p_key = p_key.constructor;
         }
 
@@ -203,7 +195,7 @@ class BINDINGS {
 
         return binding ? binding : p_fallback;
 
-    }
+    },
 
     /**
      * 
@@ -211,7 +203,7 @@ class BINDINGS {
      * @param {object} p_keys 
      * @param {*} p_fallback 
      */
-    static GetTemplate(p_context, p_keys, p_fallback = null) {
+    GetTemplate: function (p_context, p_keys, p_fallback = null) {
 
         if (!p_context) { throw new Error(`p_context cannot be null.`); }
 
@@ -233,7 +225,7 @@ class BINDINGS {
 
         return p_fallback;
 
-    }
+    },
 
     /**
      * 
@@ -242,12 +234,10 @@ class BINDINGS {
      * @param {*} p_context 
      * @group Global binding
      */
-    static Remove(p_context, p_key, p_binding) {
+    Remove: function (p_context, p_key, p_binding) {
         _contextMap.Remove(p_context, p_key, p_binding);
         _contextKeyLists.Remove(p_context, p_key);
         //TODO : Restore any squashed associations
     }
 
 }
-
-module.exports = BINDINGS;

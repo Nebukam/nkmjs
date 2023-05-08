@@ -13,7 +13,7 @@ const SIGNAL = require(`../signal`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
 class DataList extends collections.List {
@@ -36,7 +36,7 @@ class DataList extends collections.List {
      * @access protected
      * @description Called only once in the `constructor` of the object, _Init, well, _initialize_ the object.  
      * Use it for initlizing variables, members, bind functions etc, so they can be used safely in _PostInit.  
-     * Note : There is no need to call super() on this member when immediately extending DisposableObject, the function is a stub.
+     * Note : There is no need to call super() on this member when immediately extending Disposable, the function is a stub.
      * @customtag override-me
      * @group Initialization
      */
@@ -109,7 +109,7 @@ class DataList extends collections.List {
      * @description Called only once in the `constructor` of the object, right after `_Init`. This allows
      * your constructor to perform operations on members etc, **knowing they have been properly initilized** with their default
      * or intended values.  
-     * Note : There is no need to call super() on this member when immediately extending DisposableObject, the function is a stub.
+     * Note : There is no need to call super() on this member when immediately extending Disposable, the function is a stub.
      * @customtag override-me
      * @group Initialization
      */
@@ -154,7 +154,7 @@ class DataList extends collections.List {
      * @param {*} p_signal The signal to watch for
      * @param {function} p_fn The callback to trigger when the signal fires
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {common.pool.DisposableObjectEx}
+     * @returns {common.Observable}
      * @group Broadcasting
      * @example let foo = someFunction;
      * object.Watch(SIGNAL.RELEASED, foo);
@@ -169,7 +169,7 @@ class DataList extends collections.List {
      * @param {*} p_signalId The signal to watch for
      * @param {function} p_fn The callback to trigger when the signal fires
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {common.pool.DisposableObjectEx}
+     * @returns {common.Observable}
      * @group Broadcasting
      */
     WatchOnce(p_signalId, p_fn, p_listener = null) { /* owned by local SignalBox */ }
@@ -179,7 +179,7 @@ class DataList extends collections.List {
      * @param {*} p_signal The signal that was being watched
      * @param {function} p_fn The callback to be removed
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {common.pool.DisposableObjectEx}
+     * @returns {common.Observable}
      * @group Broadcasting
      */
     Unwatch(p_signal, p_fn, p_listener = null) { /* owned by local SignalBox */ }
@@ -528,7 +528,7 @@ class DataList extends collections.List {
      * Override this method in your own implementations to 'reset' the object to the state you want it to be
      * when it gets rented again through `{@link common.POOL.Rent}`
      * @customtag override-me
-     * @example MyClass extends DisposableObject{
+     * @example MyClass extends Disposable{
      * 
      *     _Init(){
      *         this._arr = []; // Create member during _Init

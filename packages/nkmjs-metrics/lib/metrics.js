@@ -26,4 +26,4 @@ class METRICS extends services.ServiceBase {
 
 }
 
-module.exports = METRICS;
+module.exports = new METRICS();

@@ -159,7 +159,7 @@ class Modal extends base {
 
     _Wake() {
         super._Wake();
-        POINTER.Watch(POINTER.MOUSE_DOWN, this._mDown);
+        POINTER.Watch(SIGNAL.MOUSE_DOWN, this._mDown);
         this._pointer.Enable();
         this.constructor.modalStack.Add(this);
     }
@@ -302,7 +302,7 @@ class Modal extends base {
      */
     get context() { return this._context; }
     set context(p_value) {
-        if (p_value == __defaultBody) { p_value = env.APP.body || document.body; }
+        if (p_value == __defaultBody) { p_value = env.app.body || document.body; }
         if (this._context === p_value) { return; }
         if (this._context) {
             dom.Detach(this);
@@ -519,11 +519,11 @@ class Modal extends base {
 
     _mDown(p_evt) {
         if (this._killOnMDown) { this._TryClose(); }
-        else { POINTER.Watch(POINTER.MOUSE_UP, this._mUp); }
+        else { POINTER.Watch(SIGNAL.MOUSE_UP, this._mUp); }
     }
 
     _mUp(p_evt) {
-        POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
+        POINTER.Unwatch(SIGNAL.MOUSE_UP, this._mUp);
         this._TryClose();
     }
 
@@ -566,8 +566,8 @@ class Modal extends base {
 
         this.constructor.modalStack.Remove(this);
 
-        POINTER.Unwatch(POINTER.MOUSE_DOWN, this._mDown);
-        POINTER.Unwatch(POINTER.MOUSE_UP, this._mUp);
+        POINTER.Unwatch(SIGNAL.MOUSE_DOWN, this._mDown);
+        POINTER.Unwatch(SIGNAL.MOUSE_UP, this._mUp);
 
         this._pointer.Disable();
 

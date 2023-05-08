@@ -3,7 +3,7 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`../signal`);
 
-class UnresolvedReference extends com.pool.DisposableObjectEx {
+class UnresolvedReference extends com.Observable {
     constructor() { super(); }
 
     _Init() {

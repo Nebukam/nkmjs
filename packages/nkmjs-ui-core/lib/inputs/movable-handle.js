@@ -27,8 +27,8 @@ class MovableHandle extends base {
         this._Bind(this._OnPointerUp);
 
         this._pointer
-            .Unhook(POINTER.MOUSE_LEFT, POINTER.RELEASE, this.Activate)
-            .Hook(POINTER.MOUSE_LEFT, POINTER.DOWN, this._PointerDown);
+            .Unhook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE, this.Activate)
+            .Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.DOWN, this._PointerDown);
 
         this._unitsFlagEnum = new FlagEnum(__units);
         this._unitsFlagEnum.Add(this);
@@ -40,8 +40,8 @@ class MovableHandle extends base {
     _PointerDown(p_evt) {
         this._movement.Pin(POINTER.position.y, POINTER.position.y);
         POINTER
-            .Watch(POINTER.MOUSE_MOVE, this._OnPointerMove, this)
-            .Watch(POINTER.MOUSE_UP, this._OnPointerUp, this);
+            .Watch(SIGNAL.MOUSE_MOVE, this._OnPointerMove, this)
+            .Watch(SIGNAL.MOUSE_UP, this._OnPointerUp, this);
     }
 
     _OnPointerMove(p_evt) {
@@ -70,8 +70,8 @@ class MovableHandle extends base {
 
     _OnPointerUp(p_evt) {
         POINTER
-            .Unwatch(POINTER.MOUSE_MOVE, this._OnPointerMove, this)
-            .Unwatch(POINTER.MOUSE_UP, this._OnPointerUp, this);
+            .Unwatch(SIGNAL.MOUSE_MOVE, this._OnPointerMove, this)
+            .Unwatch(SIGNAL.MOUSE_UP, this._OnPointerUp, this);
     }
 
     static _Style() {

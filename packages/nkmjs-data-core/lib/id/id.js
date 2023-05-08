@@ -6,10 +6,10 @@ const com = require("@nkmjs/common");
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class ID extends com.pool.DisposableObjectEx {
+class ID extends com.Observable {
     constructor() { super(); }
 
     // ----> Static methods

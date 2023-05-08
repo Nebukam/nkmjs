@@ -16,6 +16,8 @@ const IO_TYPE = require(`./io-type`);
 const ResourceOperation = require(`./resource-operation`);
 const IOProcess = require(`./io-process`);
 
+const _resourcesMap = new collections.Dictionary();
+
 /**
  * @description TODO
  * @class
@@ -24,13 +26,11 @@ const IOProcess = require(`./io-process`);
  * @memberof io.core
  */
 class RESOURCES extends services.ServiceBase {
-
     constructor() { super(); }
 
     _Init() {
         super._Init();
 
-        this._resources = new collections.Dictionary();
         this._IOStatCheck = this._GetStats;
 
         let ioprocesses = require(`./io-processes`);
@@ -96,17 +96,6 @@ class RESOURCES extends services.ServiceBase {
     /**
      * @description TODO
      * @param {string} p_path 
-     * @param {object} p_options
-     * @param {function} p_options.cl
-     * @param {io.core.ENCODING} p_options.encoding
-     * @param {io.core.RESPONSE_TYPE} p_options.type
-     * @returns {io.core.Resource}
-     */
-    static Get(p_path, p_options = null) { return this.instance._Get(p_path, p_options); }
-
-    /**
-     * @description TODO
-     * @param {string} p_path 
      * @param {object} [p_options]
      * @param {function} [p_options.cl]
      * @param {io.core.ENCODING} [p_options.encoding]
@@ -119,8 +108,8 @@ class RESOURCES extends services.ServiceBase {
      * @param {boolean} [p_IOOptions.parallel]
      * @returns {io.core.Resource}
      */
-    static GetAndRead(p_path, p_options = null, p_IOOptions = null) {
-        let rsc = this.instance._Get(p_path, p_options);
+    GetAndRead(p_path, p_options = null, p_IOOptions = null) {
+        let rsc = this.Get(p_path, p_options);
 
         if (rsc.loaded) {
             if (p_options && !p_options.forceRead && p_IOOptions) {
@@ -138,16 +127,9 @@ class RESOURCES extends services.ServiceBase {
     /**
      * @description TODO
      * @param {string} p_path 
-     * @returns {io.core.Resource|*}
-     */
-    static TryGet(p_path) { return this.instance._TryGet(p_path); }
-
-    /**
-     * @description TODO
-     * @param {string} p_path 
      * @returns {io.core.Directory}
      */
-    static GetDir(p_path) { return this.instance._Get(p_path, { cl: Directory }); }
+    GetDir(p_path) { return this.Get(p_path, { cl: Directory }); }
 
     /**
      * @access private
@@ -158,27 +140,27 @@ class RESOURCES extends services.ServiceBase {
     _GetStats(p_path, p_options) { return null; }
 
     /**
-     * @access private
+     * @description TODO
      * @param {string} p_path 
      * @returns {io.core.Resource|*}
      */
-    _TryGet(p_path) { return this._resources.Get(u.SHORT(p_path)); }
+    TryGet(p_path) { return _resourcesMap.Get(u.SHORT(p_path)); }
 
     /**
-     * @access private
+     * @description TODO
      * @param {string} p_path 
      * @param {object} p_options
-     * @param {function} p_options.cl Resource constructor
-     * @param {io.core.ENCODING} p_options.encoding ENCODING
-     * @param {io.core.RESPONSE_TYPE} p_options.type RESPONSE_TYPE
+     * @param {function} p_options.cl
+     * @param {io.core.ENCODING} p_options.encoding
+     * @param {io.core.RESPONSE_TYPE} p_options.type
      * @returns {io.core.Resource}
      */
-    _Get(p_path, p_options = null) {
+    Get(p_path, p_options = null) {
 
         //Rule of thumb : resources are mapped using SHRINKED path.
 
         let shortPath = u.SHORT(p_path),
-            rsc = this._resources.Get(shortPath),
+            rsc = _resourcesMap.Get(shortPath),
             rscClass = u.tils.Get(p_options, `cl`, null),
             stats = null,
             fullPath = u.FULL(p_path);
@@ -242,10 +224,10 @@ class RESOURCES extends services.ServiceBase {
         }
 
         p_rsc.Watch(com.SIGNAL.RELEASED, this._OnRscReleased, this);
-        this._resources.Set(p_rsc.path, p_rsc);
+        _resourcesMap.Set(p_rsc.path, p_rsc);
 
         let dirPath = u.PATH.dir(p_rsc.path),
-            dirRsc = this._resources.Get(dirPath);
+            dirRsc = _resourcesMap.Get(dirPath);
 
         if (dirRsc && dirRsc != p_rsc) { dirRsc.Add(p_rsc); }
 
@@ -320,7 +302,7 @@ class RESOURCES extends services.ServiceBase {
      * @param {io.core.IOProcess} p_iop 
      */
     _PushIOProcess(p_iop) {
-        p_iop._globalResourceMap = this._resources;
+        p_iop._globalResourceMap = _resourcesMap;
         if (p_iop.operation.isParallel) {
             p_iop.Process();
         } else {
@@ -343,15 +325,15 @@ class RESOURCES extends services.ServiceBase {
      * @param {string} p_oldKey 
      */
     _CommitRename(p_rsc, p_oldKey) {
-        this._resources.Remove(p_oldKey);
+        _resourcesMap.Remove(p_oldKey);
         let newPath = p_rsc.path;
-        this._resources.Set(newPath, p_rsc);
+        _resourcesMap.Set(newPath, p_rsc);
 
         //Check if target directory is loaded
         //and add the item if necessary
 
         let dirPath = u.PATH.dir(newPath),
-            dir = this._resources.Get(dirPath);
+            dir = _resourcesMap.Get(dirPath);
 
         if (dir) {
             //If found, update directory
@@ -380,18 +362,17 @@ class RESOURCES extends services.ServiceBase {
      * @param {io.core.Resource} p_rsc 
      */
     _OnRscReleased(p_rsc) {
-        this._resources.Remove(p_rsc.path);
+        _resourcesMap.Remove(p_rsc.path);
         this.Broadcast(IO_SIGNAL.RSC_UNREGISTERED, p_rsc);
     }
 
-
     _Tick(p_delta) {
         super._Tick(p_delta);
-        if (!this._IOQueue.isEmpty) { this._tick.Schedule(); } 
+        if (!this._IOQueue.isEmpty) { this._tick.Schedule(); }
         if (!this._IOQueue.running && !this._IOQueue.isEmpty) { this._IOQueue.ProcessNext(); }
     }
 
 
 }
 
-module.exports = RESOURCES;
+module.exports = new RESOURCES();

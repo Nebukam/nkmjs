@@ -2,15 +2,15 @@
 
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
-const DisposableObject = require(`../pool/disposable-object`);
+const Disposable = require(`../disposable`);
 
 /**
  * An single signal broadcast manager.  
  * @class
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof common.signals
  */
-class SignalBroadcaster extends DisposableObject {
+class SignalBroadcaster extends Disposable {
     constructor() { super(); }
 
     static BLANK = Symbol(`none`);

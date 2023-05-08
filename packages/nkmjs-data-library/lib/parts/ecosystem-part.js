@@ -5,10 +5,10 @@ const data = require("@nkmjs/data-core");
 
 /**
  * @class
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof ecosystem.parts
  */
-class EcosystemPart extends com.pool.DisposableObjectEx {
+class EcosystemPart extends com.Observable {
     constructor() { super(); }
 
     _Init() {

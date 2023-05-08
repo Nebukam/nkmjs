@@ -9,8 +9,7 @@ const style = require("@nkmjs/style");
  * @hideconstructor
  * @memberof ui.core
  */
-class FLAGS {
-    constructor() { }
+module.exports = {
 
     // Generics
 
@@ -20,7 +19,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static NONE = Object.freeze(`none`);
+    NONE: Object.freeze(`none`),
 
     /**
      * @description TODO
@@ -28,7 +27,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static SELF = Object.freeze(`self`);
+    SELF: Object.freeze(`self`),
 
     /**
      * @description TODO
@@ -36,7 +35,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static CONTEXT = Object.freeze(`context`);
+    CONTEXT: Object.freeze(`context`),
 
     /**
      * @description TODO
@@ -44,7 +43,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static INSIDE = Object.freeze(`inside`);
+    INSIDE: Object.freeze(`inside`),
 
     /**
      * @description TODO
@@ -52,7 +51,7 @@ class FLAGS {
      * @customtag read-only
      * @group Generic
      */
-    static OUTSIDE = Object.freeze(`outside`);
+    OUTSIDE: Object.freeze(`outside`),
 
     /**
      * @description TODO
@@ -60,7 +59,7 @@ class FLAGS {
      * @customtag read-only
      * @group Orientation
      */
-    static VERTICAL = Object.freeze(`vertical`);
+    VERTICAL: Object.freeze(`vertical`),
 
     /**
      * @description TODO
@@ -68,7 +67,7 @@ class FLAGS {
      * @customtag read-only
      * @group Orientation
      */
-    static HORIZONTAL = Object.freeze(`horizontal`);
+    HORIZONTAL: Object.freeze(`horizontal`),
 
     /**
      * @description TODO
@@ -76,9 +75,9 @@ class FLAGS {
      * @customtag read-only
      * @group Orientation
      */
-    static VERTICAL_AND_HORIZONTAL = Object.freeze(`${this.VERTICAL} ${this.HORIZONTAL}`);
+    VERTICAL_AND_HORIZONTAL: Object.freeze(`vertical horizontal`),
 
-    static BOTH = Object.freeze(`both`);
+    BOTH: Object.freeze(`both`),
 
     /**
      * @description TODO
@@ -86,25 +85,25 @@ class FLAGS {
      * @customtag read-only
      * @group Orientation
      */
-    static orientations = [
-        this.VERTICAL,
-        this.HORIZONTAL,
-        this.VERTICAL_AND_HORIZONTAL
-    ]
+    orientations: [
+        Object.freeze(`vertical`),
+        Object.freeze(`horizontal`),
+        Object.freeze(`vertical horizontal`)
+    ],
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static EXPANDED = Object.freeze(`expanded`);
+    EXPANDED: Object.freeze(`expanded`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static COLLAPSED = Object.freeze(`collapsed`);
+    COLLAPSED: Object.freeze(`collapsed`),
 
     // Interactive states
 
@@ -114,7 +113,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static DISABLED = Object.freeze(`disabled`);
+    DISABLED: Object.freeze(`disabled`),
 
     /**
      * @description TODO
@@ -122,7 +121,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static IDLE = Object.freeze(`idle`);
+    IDLE: Object.freeze(`idle`),
 
     /**
      * @description TODO
@@ -130,7 +129,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static FOCUSED = Object.freeze(`focused`);
+    FOCUSED: Object.freeze(`focused`),
 
     /**
      * @description TODO
@@ -138,11 +137,11 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static istates = [
-        this.DISABLED,
-        this.IDLE,
-        this.FOCUSED
-    ];
+    istates: [
+        Object.freeze(`disabled`),
+        Object.freeze(`idle`),
+        Object.freeze(`focused`)
+    ],
 
 
     // Interactive additive
@@ -153,7 +152,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static ACTIVATED = Object.freeze(`activated`);
+    ACTIVATED: Object.freeze(`activated`),
 
     /**
      * @description TODO
@@ -161,7 +160,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static SELECTED = Object.freeze(`selected`);
+    SELECTED: Object.freeze(`selected`),
 
     /**
      * @description TODO
@@ -169,7 +168,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static TOGGLED = Object.freeze(`toggled`);
+    TOGGLED: Object.freeze(`toggled`),
 
     /**
      * @description TODO
@@ -177,7 +176,7 @@ class FLAGS {
      * @customtag read-only
      * @group Interactivity
      */
-    static TOGGLABLE = Object.freeze(`togglable`);
+    TOGGLABLE: Object.freeze(`togglable`),
 
     // Placements
 
@@ -187,7 +186,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static LEFT = Object.freeze(`left`);
+    LEFT: Object.freeze(`left`),
 
     /**
      * @description TODO
@@ -195,7 +194,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static RIGHT = Object.freeze(`right`);
+    RIGHT: Object.freeze(`right`),
 
     /**
      * @description TODO
@@ -203,7 +202,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static TOP = Object.freeze(`top`);
+    TOP: Object.freeze(`top`),
 
     /**
      * @description TODO
@@ -211,7 +210,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static BOTTOM = Object.freeze(`bottom`);
+    BOTTOM: Object.freeze(`bottom`),
 
     /**
      * @description TODO
@@ -219,7 +218,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static TOP_LEFT = Object.freeze(`${this.TOP} ${this.LEFT}`);
+    TOP_LEFT: Object.freeze(`top left`),
 
     /**
      * @description TODO
@@ -227,7 +226,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static TOP_RIGHT = Object.freeze(`${this.TOP} ${this.RIGHT}`);
+    TOP_RIGHT: Object.freeze(`top right`),
 
     /**
      * @description TODO
@@ -235,7 +234,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static BOTTOM_LEFT = Object.freeze(`${this.BOTTOM} ${this.LEFT}`);
+    BOTTOM_LEFT: Object.freeze(`bottom left`),
 
     /**
      * @description TODO
@@ -243,7 +242,7 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static BOTTOM_RIGHT = Object.freeze(`${this.BOTTOM} ${this.RIGHT}`);
+    BOTTOM_RIGHT: Object.freeze(`bottom right`),
 
     /**
      * @description Contains the following values :  
@@ -255,16 +254,16 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static placement = [ // Order do matter!
-        this.TOP_LEFT,
-        this.LEFT,
-        this.RIGHT,
-        this.TOP,
-        this.BOTTOM,
-        this.TOP_RIGHT,
-        this.BOTTOM_LEFT,
-        this.BOTTOM_RIGHT
-    ];
+    placement: [ // Order do matter!
+        Object.freeze(`top left`),
+        Object.freeze(`left`),
+        Object.freeze(`right`),
+        Object.freeze(`top`),
+        Object.freeze(`bottom`),
+        Object.freeze(`top right`),
+        Object.freeze(`bottom left`),
+        Object.freeze(`bottom right`)
+    ],
 
     /**
      * @description Contains the following values :  
@@ -276,12 +275,12 @@ class FLAGS {
      * @customtag read-only
      * @group Position
      */
-    static placementSimplified = [
-        this.LEFT,
-        this.RIGHT,
-        this.TOP,
-        this.BOTTOM
-    ];
+    placementSimplified: [
+        Object.freeze(`left`),
+        Object.freeze(`right`),
+        Object.freeze(`top`),
+        Object.freeze(`bottom`)
+    ],
 
     /**
      * @description Returns the placement directly opposite to the one provided
@@ -291,20 +290,20 @@ class FLAGS {
      * @returns {string} Opposite placement
      * @group Position
      */
-    static Opposite(p_placement, p_simplify = true, p_verticalFirst = true) {
-        if (p_simplify) { p_placement = this.SimplifyPlacement(p_placement, p_verticalFirst); }
+    Opposite: function (p_placement, p_simplify = true, p_verticalFirst = true) {
+        if (p_simplify) { p_placement = module.exports.SimplifyPlacement(p_placement, p_verticalFirst); }
         switch (p_placement) {
-            case this.LEFT: return this.RIGHT; break;
-            case this.RIGHT: return this.LEFT; break;
-            case this.TOP: return this.BOTTOM; break;
-            case this.BOTTOM: return this.TOP; break;
-            case this.TOP_LEFT: return this.BOTTOM_RIGHT; break;
-            case this.TOP_RIGHT: return this.BOTTOM_LEFT; break;
-            case this.BOTTOM_LEFT: return this.TOP_RIGHT; break;
-            case this.BOTTOM_RIGHT: return this.TOP_LEFT; break;
+            case module.exports.LEFT: return module.exports.RIGHT; break;
+            case module.exports.RIGHT: return module.exports.LEFT; break;
+            case module.exports.TOP: return module.exports.BOTTOM; break;
+            case module.exports.BOTTOM: return module.exports.TOP; break;
+            case module.exports.TOP_LEFT: return module.exports.BOTTOM_RIGHT; break;
+            case module.exports.TOP_RIGHT: return module.exports.BOTTOM_LEFT; break;
+            case module.exports.BOTTOM_LEFT: return module.exports.TOP_RIGHT; break;
+            case module.exports.BOTTOM_RIGHT: return module.exports.TOP_LEFT; break;
             default: return null; break;
         }
-    }
+    },
 
     /**
      * @description TODO
@@ -312,15 +311,15 @@ class FLAGS {
      * @param {boolean} [p_verticalFirst] If true, uses top/down value for corner placement, otherwise left/right.
      * @group Position 
      */
-    static SimplifyPlacement(p_placement, p_verticalFirst = true) {
+    SimplifyPlacement: function (p_placement, p_verticalFirst = true) {
         switch (p_placement) {
-            case this.TOP_LEFT: return p_verticalFirst ? this.TOP : this.LEFT; break;
-            case this.TOP_RIGHT: return p_verticalFirst ? this.TOP : this.RIGHT; break;
-            case this.BOTTOM_LEFT: return p_verticalFirst ? this.BOTTOM : this.LEFT; break;
-            case this.BOTTOM_RIGHT: return p_verticalFirst ? this.BOTTOM : this.RIGHT; break;
+            case module.exports.TOP_LEFT: return p_verticalFirst ? module.exports.TOP : module.exports.LEFT; break;
+            case module.exports.TOP_RIGHT: return p_verticalFirst ? module.exports.TOP : module.exports.RIGHT; break;
+            case module.exports.BOTTOM_LEFT: return p_verticalFirst ? module.exports.BOTTOM : module.exports.LEFT; break;
+            case module.exports.BOTTOM_RIGHT: return p_verticalFirst ? module.exports.BOTTOM : module.exports.RIGHT; break;
         }
         return p_placement;
-    }
+    },
 
     /**
      * @description Returns the orientation matching the placement
@@ -330,19 +329,19 @@ class FLAGS {
      * @returns {string} Opposite placement
      * @group Position
      */
-    static Orientation(p_placement, p_verticalFirst = true) {
+    Orientation: function (p_placement, p_verticalFirst = true) {
         switch (p_placement) {
-            case this.LEFT: return this.HORIZONTAL; break;
-            case this.RIGHT: return this.HORIZONTAL; break;
-            case this.TOP: return this.VERTICAL; break;
-            case this.BOTTOM: return this.VERTICAL; break;
-            case this.TOP_LEFT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
-            case this.TOP_RIGHT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
-            case this.BOTTOM_LEFT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
-            case this.BOTTOM_RIGHT: return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL; break;
+            case module.exports.LEFT: return module.exports.HORIZONTAL; break;
+            case module.exports.RIGHT: return module.exports.HORIZONTAL; break;
+            case module.exports.TOP: return module.exports.VERTICAL; break;
+            case module.exports.BOTTOM: return module.exports.VERTICAL; break;
+            case module.exports.TOP_LEFT: return p_verticalFirst ? module.exports.VERTICAL : p_verticalFirst === null ? module.exports.HORIZONTAL : module.exports.VERTICAL_AND_HORIZONTAL; break;
+            case module.exports.TOP_RIGHT: return p_verticalFirst ? module.exports.VERTICAL : p_verticalFirst === null ? module.exports.HORIZONTAL : module.exports.VERTICAL_AND_HORIZONTAL; break;
+            case module.exports.BOTTOM_LEFT: return p_verticalFirst ? module.exports.VERTICAL : p_verticalFirst === null ? module.exports.HORIZONTAL : module.exports.VERTICAL_AND_HORIZONTAL; break;
+            case module.exports.BOTTOM_RIGHT: return p_verticalFirst ? module.exports.VERTICAL : p_verticalFirst === null ? module.exports.HORIZONTAL : module.exports.VERTICAL_AND_HORIZONTAL; break;
         }
-        return p_verticalFirst ? this.VERTICAL : p_verticalFirst === null ? this.HORIZONTAL : this.VERTICAL_AND_HORIZONTAL;
-    }
+        return p_verticalFirst ? module.exports.VERTICAL : p_verticalFirst === null ? module.exports.HORIZONTAL : module.exports.VERTICAL_AND_HORIZONTAL;
+    },
 
     // Misc
 
@@ -351,35 +350,35 @@ class FLAGS {
      * @type {string}
      * @customtag read-only
      */
-    static SHOWN = Object.freeze(`shown`);
+    SHOWN: Object.freeze(`shown`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static NO_ICON = Object.freeze(`no-icon`);
+    NO_ICON: Object.freeze(`no-icon`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static NO_LABEL = Object.freeze(`no-label`);
+    NO_LABEL: Object.freeze(`no-label`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static NO_SCALE = Object.freeze(`no-scale`);
+    NO_SCALE: Object.freeze(`no-scale`),
 
     /**
      * @description TODO
      * @type {string}
      * @customtag read-only
      */
-    static FIXED_SIZE = Object.freeze(`fixed-size`);
+    FIXED_SIZE: Object.freeze(`fixed-size`),
 
     // Sizes
 
@@ -389,7 +388,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_XXS = Object.freeze(`size-xxs`);
+    SIZE_XXS: Object.freeze(`size-xxs`),
 
     /**
      * @description TODO
@@ -397,7 +396,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_XS = Object.freeze(`size-xs`);
+    SIZE_XS: Object.freeze(`size-xs`),
 
     /**
      * @description TODO
@@ -405,7 +404,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_S = Object.freeze(`size-s`);
+    SIZE_S: Object.freeze(`size-s`),
 
     /**
      * @description TODO
@@ -413,7 +412,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_M = Object.freeze(`size-m`);
+    SIZE_M: Object.freeze(`size-m`),
 
     /**
      * @description TODO
@@ -421,7 +420,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_L = Object.freeze(`size-l`);
+    SIZE_L: Object.freeze(`size-l`),
 
     /**
      * @description TODO
@@ -429,7 +428,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_XL = Object.freeze(`size-xl`);
+    SIZE_XL: Object.freeze(`size-xl`),
 
     /**
      * @description TODO
@@ -437,7 +436,7 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static SIZE_FILL = Object.freeze(`size-fill`);
+    SIZE_FILL: Object.freeze(`size-fill`),
 
     /**
     * @description TODO
@@ -445,7 +444,7 @@ class FLAGS {
     * @customtag read-only
     * @group Sizes
     */
-    static SIZE_CUSTOM = Object.freeze(`size-custom`);
+    SIZE_CUSTOM: Object.freeze(`size-custom`),
 
     /**
      * @description TODO
@@ -453,25 +452,25 @@ class FLAGS {
      * @customtag read-only
      * @group Sizes
      */
-    static sizes = [
-        this.SIZE_XXS,
-        this.SIZE_XS,
-        this.SIZE_S,
-        this.SIZE_M,
-        this.SIZE_L,
-        this.SIZE_XL,
-        this.SIZE_FILL,
-        this.SIZE_CUSTOM
-    ];
+    sizes: [
+        Object.freeze(`size-xxs`),
+        Object.freeze(`size-xs`),
+        Object.freeze(`size-s`),
+        Object.freeze(`size-m`),
+        Object.freeze(`size-l`),
+        Object.freeze(`size-xl`),
+        Object.freeze(`size-fill`),
+        Object.freeze(`size-custom`)
+    ],
 
-    
-     /**
-   * @description TODO
-   * @type {string}
-   * @customtag read-only
-   * @group Sizing
-   */
-     static INLINE = Object.freeze(`inline`);
+
+    /**
+  * @description TODO
+  * @type {string}
+  * @customtag read-only
+  * @group Sizing
+  */
+    INLINE: Object.freeze(`inline`),
 
     /**
     * @description TODO
@@ -479,7 +478,7 @@ class FLAGS {
     * @customtag read-only
     * @group Sizing
     */
-    static STRETCH = Object.freeze(`stretch`);
+    STRETCH: Object.freeze(`stretch`),
 
     /**
     * @description TODO
@@ -487,7 +486,7 @@ class FLAGS {
     * @customtag read-only
     * @group Sizing
     */
-    static STRETCH_SAME = Object.freeze(`stretch-same`);
+    STRETCH_SAME: Object.freeze(`stretch-same`),
 
     /**
     * @description TODO
@@ -495,7 +494,7 @@ class FLAGS {
     * @customtag read-only
     * @group Sizing
     */
-    static STRETCH_SQUEEZE = Object.freeze(`stretch-squeeze`);
+    STRETCH_SQUEEZE: Object.freeze(`stretch-squeeze`),
 
     /**
     * @description TODO
@@ -503,11 +502,11 @@ class FLAGS {
     * @customtag read-only
     * @group Sizing
     */
-    static stretches = [
-        this.STRETCH,
-        this.STRETCH_SAME,
-        this.STRETCH_SQUEEZE
-    ]
+    stretches: [
+        Object.freeze(`stretch`),
+        Object.freeze(`stretch-same`),
+        Object.freeze(`stretch-squeeze`)
+    ],
 
     // Flavors
 
@@ -518,7 +517,7 @@ class FLAGS {
      * @group Flavors
      * @groupdescription Flavors are mostly taken from {@link common.FLAGS}.
      */
-    static CTA = Object.freeze(`cta`);
+    CTA: Object.freeze(`cta`),
 
     /**
      * @description TODO
@@ -526,12 +525,12 @@ class FLAGS {
      * @customtag read-only
      * @group Flavors
      */
-    static flavors = [
+    flavors: [
         com.FLAGS.INFOS,
         com.FLAGS.WARNING,
         com.FLAGS.ERROR,
-        this.CTA
-    ];
+        Object.freeze(`cta`)
+    ],
 
     /**
      * @description TODO
@@ -539,7 +538,7 @@ class FLAGS {
      * @customtag read-only
      * @group Flavors
      */
-    static flavorsExtended = [
+    flavorsExtended: [
         com.FLAGS.INFOS,
         com.FLAGS.WARNING,
         com.FLAGS.ERROR,
@@ -549,8 +548,8 @@ class FLAGS {
         com.FLAGS.PROCESSING,
         com.FLAGS.WAITING,
         com.FLAGS.ACTIVE,
-        this.CTA
-    ];
+        Object.freeze(`cta`)
+    ],
 
     // Variants
 
@@ -560,7 +559,7 @@ class FLAGS {
      * @customtag read-only
      * @group Variants
      */
-    static MINIMAL = Object.freeze(`minimal`);
+    MINIMAL: Object.freeze(`minimal`),
 
     /**
      * @description TODO
@@ -568,7 +567,7 @@ class FLAGS {
      * @customtag read-only
      * @group Variants
      */
-    static FRAME = Object.freeze(`frame`);
+    FRAME: Object.freeze(`frame`),
 
     /**
      * @description TODO
@@ -576,10 +575,10 @@ class FLAGS {
      * @customtag read-only
      * @group Variants
      */
-    static variants = [
-        this.MINIMAL,
-        this.FRAME
-    ];
+    variants: [
+        Object.freeze(`minimal`),
+        Object.freeze(`frame`)
+    ],
 
     // Animation
 
@@ -589,7 +588,7 @@ class FLAGS {
      * @customtag read-only
      * @group Animation
      */
-    static A_START = Object.freeze(`start`);
+    A_START: Object.freeze(`start`),
 
     /**
      * @description TODO
@@ -597,7 +596,7 @@ class FLAGS {
      * @customtag read-only
      * @group Animation
      */
-    static A_END = Object.freeze(`end`);
+    A_END: Object.freeze(`end`),
 
     /**
      * @description TODO
@@ -605,7 +604,7 @@ class FLAGS {
      * @customtag read-only
      * @group Animation
      */
-    static A_ITERATION = Object.freeze(`iteration`);
+    A_ITERATION: Object.freeze(`iteration`),
 
     /**
      * @description TODO
@@ -613,7 +612,7 @@ class FLAGS {
      * @customtag read-only
      * @group Animation
      */
-    static A_CANCEL = Object.freeze(`cancel`);
+    A_CANCEL: Object.freeze(`cancel`),
 
     /**
     * @description TODO
@@ -621,7 +620,7 @@ class FLAGS {
     * @customtag read-only
     * @group Animation
     */
-    static A_ANY_END = Object.freeze(`any-end`);
+    A_ANY_END: Object.freeze(`any-end`),
 
     // Drag & Drop
 
@@ -631,7 +630,7 @@ class FLAGS {
      * @customtag read-only
      * @group Drag'n Drop
      */
-    static DRAGGED = Object.freeze(`dragged`);
+    DRAGGED: Object.freeze(`dragged`),
 
     /**
      * @description TODO
@@ -639,7 +638,7 @@ class FLAGS {
      * @customtag read-only
      * @group Drag'n Drop
      */
-    static ALLOW_DROP = Object.freeze(`allow-drop`);
+    ALLOW_DROP: Object.freeze(`allow-drop`),
 
     /**
      * @description TODO
@@ -647,7 +646,7 @@ class FLAGS {
      * @customtag read-only
      * @group Drag'n Drop
      */
-    static ALLOW_DROP_TOP = Object.freeze(`allow-drop-top`);
+    ALLOW_DROP_TOP: Object.freeze(`allow-drop-top`),
 
     /**
     * @description TODO
@@ -655,7 +654,7 @@ class FLAGS {
     * @customtag read-only
     * @group Drag'n Drop
     */
-    static ALLOW_DROP_BOTTOM = Object.freeze(`allow-drop-bottom`);
+    ALLOW_DROP_BOTTOM: Object.freeze(`allow-drop-bottom`),
 
     /**
    * @description TODO
@@ -663,7 +662,7 @@ class FLAGS {
    * @customtag read-only
    * @group Drag'n Drop
    */
-    static ALLOW_DROP_LEFT = Object.freeze(`allow-drop-left`);
+    ALLOW_DROP_LEFT: Object.freeze(`allow-drop-left`),
 
     /**
     * @description TODO
@@ -671,7 +670,7 @@ class FLAGS {
     * @customtag read-only
     * @group Drag'n Drop
     */
-    static ALLOW_DROP_RIGHT = Object.freeze(`allow-drop-right`);
+    ALLOW_DROP_RIGHT: Object.freeze(`allow-drop-right`),
 
     //
 
@@ -681,10 +680,8 @@ class FLAGS {
     * @customtag read-only
     * @group Views
     */
-    static EMPTY = Object.freeze(`empty`);
+    EMPTY: Object.freeze(`empty`),
 
 
 
 }
-
-module.exports = FLAGS;

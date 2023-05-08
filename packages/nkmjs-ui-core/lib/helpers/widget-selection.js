@@ -29,12 +29,12 @@ const DataSelection = require(`./data-selection`);
  * A WidgetSelection is an object that wraps most common control for user-driven widget selection.
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof c
  * @signal SignalItemSelected Broadcasted right after an item has been added to the selection
  * @signal SignalItemUnselected Broadcasted right after an item has been removed from the selection
  */
-class WidgetSelection extends com.pool.DisposableObjectEx {
+class WidgetSelection extends com.Observable {
     constructor() { super(); }
 
     // ----> Init
@@ -128,12 +128,12 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
         //if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
         if (this._stack.Contains(p_item)) {
-            //if (p_mode == INPUT.SELECT_MODIFIER_TOGGLE) { this.Remove(p_item); } 
+            //if (p_mode == INPUT.MODIFIERS.TOGGLE) { this.Remove(p_item); } 
             return false;
         }
 
         // Clear selection multiple selection isn't allowed.
-        if (!this._allowMultiple || p_mode == INPUT.SELECT_MODIFIER_NONE) { this.Clear(); }
+        if (!this._allowMultiple || p_mode == INPUT.MODIFIERS.NONE) { this.Clear(); }
 
         let firstTimeSelect = this._data.AddFromItem(p_item, p_mode);
         this._stack.Add(p_item);
@@ -185,7 +185,7 @@ class WidgetSelection extends com.pool.DisposableObjectEx {
 
     Check(p_item) {
         if (!this._persistentData) { return; }
-        if (this._data.ContainsItemData(p_item)) { this.Add(p_item, INPUT.SELECT_MODIFIER_ADD); }
+        if (this._data.ContainsItemData(p_item)) { this.Add(p_item, INPUT.MODIFIERS.ADD); }
     }
 
     _OnItemSelectionGain(p_item, p_initialSelection = false) { if (!p_initialSelection) { this.Bump(p_item); } }

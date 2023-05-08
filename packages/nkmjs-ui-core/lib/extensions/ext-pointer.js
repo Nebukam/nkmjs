@@ -125,8 +125,8 @@ class PointerExtension extends Extension {
      */
     Disable() {
         if (!super.Disable()) { return false; }
-        if (this._element) { 
-            this._element.removeEventListener(`mouseenter`, this._mOver); 
+        if (this._element) {
+            this._element.removeEventListener(`mouseenter`, this._mOver);
             this._mOut(null);
         }
         return true;
@@ -152,10 +152,10 @@ class PointerExtension extends Extension {
      */
     isMouseDown(p_btn = null) {
         if (p_btn === null) {
-            for (var btn in this._buttons) { if (this._buttons[btn] === POINTER.DOWN) { return true; } }
+            for (var btn in this._buttons) { if (this._buttons[btn] === POINTER.KEYS.DOWN) { return true; } }
             return false;
         }
-        return p_btn in this._buttons && this._buttons[p_btn] === POINTER.DOWN;
+        return p_btn in this._buttons && this._buttons[p_btn] === POINTER.KEYS.DOWN;
     }
 
     _mOver(p_evt) {
@@ -168,7 +168,7 @@ class PointerExtension extends Extension {
         this._element.addEventListener(`mouseup`, this._mUp);
         this._element.addEventListener(`mouseleave`, this._mOut);
 
-        if (this._isAnyBtnDown) { POINTER.Unwatch(POINTER.MOUSE_UP, this._mUpOutside); }
+        if (this._isAnyBtnDown) { POINTER.Unwatch(SIGNAL.MOUSE_UP, this._mUpOutside); }
         if (this._focusFn) { this._focusFn(true); }
 
         if (this._wheelFn) { this._element.addEventListener('wheel', this._mWheel); }
@@ -186,7 +186,7 @@ class PointerExtension extends Extension {
         this._element.removeEventListener(`mouseup`, this._mUp);
         this._element.removeEventListener(`mouseleave`, this._mOut);
 
-        if (this._isAnyBtnDown) { POINTER.Watch(POINTER.MOUSE_UP, this._mUpOutside); }
+        if (this._isAnyBtnDown) { POINTER.Watch(SIGNAL.MOUSE_UP, this._mUpOutside); }
         else if (this._focusFn) { this._focusFn(false); }
 
         if (this._wheelFn) { this._element.removeEventListener('wheel', this._mWheel); }
@@ -196,7 +196,7 @@ class PointerExtension extends Extension {
 
     _mDown(p_evt) {
 
-        POINTER.instance.StartUsing(this._using);
+        POINTER.StartUsing(this._using);
 
         this._position.x = p_evt.clientX;
         this._position.y = p_evt.clientY;
@@ -207,10 +207,10 @@ class PointerExtension extends Extension {
 
         let eNum = p_evt.button;
 
-        this._buttons[eNum] = POINTER.DOWN;
-        this._Trigger(`${eNum}_${POINTER.DOWN}`);
+        this._buttons[eNum] = POINTER.KEYS.DOWN;
+        this._Trigger(`${eNum}_${POINTER.KEYS.DOWN}`);
 
-        UI.Watch(SIGNAL.DRAG_ENDED, this._mUpOutside);
+        POINTER.Watch(SIGNAL.DRAG_ENDED, this._mUpOutside);
 
     }
 
@@ -218,15 +218,15 @@ class PointerExtension extends Extension {
 
         let eNum = p_evt.button;
 
-        if (this._buttons[eNum] === POINTER.DOWN) {
-            this._buttons[eNum] = POINTER.UP;
-            this._Trigger(`${eNum}_${POINTER.UP}`);
+        if (this._buttons[eNum] === POINTER.KEYS.DOWN) {
+            this._buttons[eNum] = POINTER.KEYS.UP;
+            this._Trigger(`${eNum}_${POINTER.KEYS.UP}`);
             let mdl = p_evt.detail % 2;
-            if (mdl || this._triggerMask[eNum]) { this._Trigger(`${eNum}_${POINTER.RELEASE}`); }
-            if (!mdl) { this._Trigger(`${eNum}_${POINTER.RELEASE_TWICE}`); }
+            if (mdl || this._triggerMask[eNum]) { this._Trigger(`${eNum}_${POINTER.KEYS.RELEASE}`); }
+            if (!mdl) { this._Trigger(`${eNum}_${POINTER.KEYS.RELEASE_TWICE}`); }
         } else {
-            this._buttons[eNum] = POINTER.UP;
-            this._Trigger(`${eNum}_${POINTER.UP}`);
+            this._buttons[eNum] = POINTER.KEYS.UP;
+            this._Trigger(`${eNum}_${POINTER.KEYS.UP}`);
         }
 
         delete this._buttons[eNum];
@@ -234,7 +234,7 @@ class PointerExtension extends Extension {
         this._isAnyBtnDown = this.isMouseDown();
         if (!this._isAnyBtnDown) {
             UI.Unwatch(SIGNAL.DRAG_ENDED, this._mUpOutside);
-            POINTER.instance.StopUsing(this._using);
+            POINTER.StopUsing(this._using);
         }
 
     }
@@ -243,14 +243,14 @@ class PointerExtension extends Extension {
 
         if (p_evt) {
             let eNum = p_evt.button;
-            if (this._buttons[eNum] === POINTER.DOWN) {
-                this._Trigger(`${eNum}_${POINTER.RELEASE_OUTSIDE}`);
+            if (this._buttons[eNum] === POINTER.KEYS.DOWN) {
+                this._Trigger(`${eNum}_${POINTER.KEYS.RELEASE_OUTSIDE}`);
             }
             delete this._buttons[eNum];
         } else {
             // INPUT.DRAG_END does not have a button
             for (var key in this._buttons) {
-                this._Trigger(`${this._buttons[key]}_${POINTER.RELEASE_OUTSIDE}`);
+                this._Trigger(`${this._buttons[key]}_${POINTER.KEYS.RELEASE_OUTSIDE}`);
             }
             this._buttons = {};
         }
@@ -258,9 +258,9 @@ class PointerExtension extends Extension {
         this._isAnyBtnDown = this.isMouseDown();
         if (!this._isAnyBtnDown) {
             if (this._focusFn) { this._focusFn(false); }
-            POINTER.Unwatch(POINTER.MOUSE_UP, this._mUpOutside);
-            UI.Unwatch(SIGNAL.DRAG_ENDED, this._mUpOutside);
-            POINTER.instance.StopUsing(this._using);
+            POINTER.Unwatch(SIGNAL.MOUSE_UP, this._mUpOutside);
+            POINTER.Unwatch(SIGNAL.DRAG_ENDED, this._mUpOutside);
+            POINTER.StopUsing(this._using);
         }
 
     }

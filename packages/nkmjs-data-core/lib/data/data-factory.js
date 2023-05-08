@@ -14,10 +14,10 @@ const Repertoire = require(`./repertoire`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments common.pool.DisposableObjectEx
+ * @augments common.Observable
  * @memberof data.core
  */
-class DataFactory extends com.pool.DisposableObjectEx {
+class DataFactory extends com.Observable {
     constructor() { super(); }
 
     _Init() {

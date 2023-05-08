@@ -53,8 +53,7 @@ const IDS = require(`./ids`);
 
 const ID_APP_SETTINGS = `appSettings`;
 
-class AppBase extends com.helpers.SingletonEx {
-
+class AppBase extends com.Observable {
     constructor() { super(); }
 
     static __loading_cssAnimationOut = `__loading__fadeOut`;
@@ -126,7 +125,8 @@ class AppBase extends com.helpers.SingletonEx {
     _PostInit() {
         super._PostInit();
 
-        env.ENV.instance.RegisterServices(
+        env.ENV.RegisterServices(
+            ui.INPUT,
             actions.RELAY,
             io.RESOURCES,
             dialog.DIALOG
@@ -182,7 +182,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         // TODO : Move what's below AFTER App Start.
 
-        style.STYLE.instance.defaultPalette._themeId = (env.ENV.instance.config.theme || `default`);
+        style.STYLE.defaultPalette._themeId = (env.ENV.config.theme || `default`);
 
         this._appBody = ui.UI.Rent(this._appBodyClass);
         this._appBody.setAttribute(`id`, `app`);
@@ -192,7 +192,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         /*
         ui.dom.AttachFirst(
-            ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
+            ui.dom.El(`link`, { href: style.STYLE.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
             this._appBody._host);
         */
 
@@ -259,7 +259,7 @@ class AppBase extends com.helpers.SingletonEx {
 
         // Insert global.css (again) outside of the shadow dom this time
         // NOTE : Should be added in regular css imports
-        //ui.dom.El(`link`, { href: style.STYLE.instance.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
+        //ui.dom.El(`link`, { href: style.STYLE.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
 
         this._userPreferences.Load(
             `${this._APPID}Preferences`,
@@ -308,7 +308,7 @@ class AppBase extends com.helpers.SingletonEx {
         this._appSettings.Watch(com.SIGNAL.UPDATED, this._OnAppSettingsUpdated, this);
 
         p_prefsData.Watch(com.SIGNAL.UPDATED, this._OnPrefsUpdated, this);
-        actions.RELAY.instance.Watch(actions.REQUEST.EDIT, this._OnEditRequest, this);
+        actions.RELAY.Watch(actions.REQUEST.EDIT, this._OnEditRequest, this);
 
         // Load base kits... ?
         //this._LoadBaseKits();
@@ -346,7 +346,7 @@ class AppBase extends com.helpers.SingletonEx {
      */
     _InternalDisplayReadyCheck() {
         if (!this._IsReadyForDisplay()) {
-            com.NextTick(this._InternalDisplayReadyCheck);
+            com.WatchNextTick(this._InternalDisplayReadyCheck);
         } else {
 
             if (this._loadingOverlay) {

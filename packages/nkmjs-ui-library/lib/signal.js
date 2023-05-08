@@ -6,8 +6,7 @@
  * @hideconstructor
  * @memberof ui.core
  */
-class SIGNAL {
-    constructor() { }
+module.exports = {
 
     /**
      * @description TODO
@@ -15,7 +14,7 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
-    static CURRENT_VIEW_CHANGED = Symbol(`currentViewChanged`);
+    CURRENT_VIEW_CHANGED: Symbol(`currentViewChanged`),
 
     /**
      * @description TODO
@@ -23,8 +22,6 @@ class SIGNAL {
      * @customtag read-only
      * @group Rendering
      */
-     static CURRENT_HANDLE_CHANGED = Symbol(`currentHandleChanged`);
+    CURRENT_HANDLE_CHANGED: Symbol(`currentHandleChanged`),
 
 }
-
-module.exports = SIGNAL;
