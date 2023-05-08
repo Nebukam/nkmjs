@@ -37,6 +37,10 @@ class ServerBase extends com.Observable {
         this._dirViews = this._config.dirViews;
         this._dirPublic = path.join(this._config.dirname, 'public');
 
+        //TODO: Make this an array which items are either
+        //a string or [string,string] (route/path)
+        this._staticPaths = [this._dirPublic];
+
         let ioservices = [];
         this._RegisterIOServices(ioservices);
 
@@ -156,7 +160,13 @@ class ServerBase extends com.Observable {
             tempFileDir: '/tmp/',
             createParentPath: true
         }))
-        p_express.use(express.static(this._dirPublic));
+
+        this._staticPaths.forEach(i => {
+            if (u.isString(i)) { app.use(express.static(i)); }
+            else if (u.isArray(i) && i.length == 2) { app.use(i[0], express.static(i[1])); }
+            else { console.warn(`Invalid static route config: ${i}`) }
+        });
+
         p_express.use(express.json());
         p_express.use(express.urlencoded({ extended: true }))
 
