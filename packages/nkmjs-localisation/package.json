@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/localisation",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "NKMjs Framework Localisation",
   "main": "index.js",
   "repository": {
@@ -16,11 +16,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "^1.0.2",
-    "@nkmjs/common": "^1.1.0",
-    "@nkmjs/environment": "^1.1.0",
-    "@nkmjs/services": "^1.1.0",
-    "@nkmjs/utils": "^1.1.0"
+    "@nkmjs/collections": "^1.0.3",
+    "@nkmjs/common": "^1.1.1",
+    "@nkmjs/environment": "^1.1.1",
+    "@nkmjs/services": "^1.1.1",
+    "@nkmjs/utils": "^1.1.1"
   },
   "gitHead": "0d8288538220b63e0bddac446f6acb47e3d39fb7"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/collections",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "NKMjs Framework Collections",
   "main": "index.js",
   "repository": {

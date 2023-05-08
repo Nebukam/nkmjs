@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ui-data-controls",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "NKMjs Framework Data Library Controls",
   "main": "index.js",
   "repository": {
@@ -16,17 +16,17 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^1.1.0",
-    "@nkmjs/collections": "^1.0.2",
-    "@nkmjs/common": "^1.1.0",
-    "@nkmjs/data-core": "^1.1.0",
-    "@nkmjs/data-library": "^1.1.0",
-    "@nkmjs/documents": "^1.1.0",
-    "@nkmjs/environment": "^1.1.0",
-    "@nkmjs/io-core": "^1.1.0",
-    "@nkmjs/style": "^1.1.0",
-    "@nkmjs/ui-core": "^1.1.0",
-    "@nkmjs/utils": "^1.1.0"
+    "@nkmjs/actions": "^1.1.1",
+    "@nkmjs/collections": "^1.0.3",
+    "@nkmjs/common": "^1.1.1",
+    "@nkmjs/data-core": "^1.1.1",
+    "@nkmjs/data-library": "^1.1.1",
+    "@nkmjs/documents": "^1.1.1",
+    "@nkmjs/environment": "^1.1.1",
+    "@nkmjs/io-core": "^1.1.1",
+    "@nkmjs/style": "^1.1.1",
+    "@nkmjs/ui-core": "^1.1.1",
+    "@nkmjs/utils": "^1.1.1"
   },
   "gitHead": "0d8288538220b63e0bddac446f6acb47e3d39fb7"
 }
