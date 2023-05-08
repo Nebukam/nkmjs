@@ -15,12 +15,12 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@nkmjs/core": "../nkmjs-core",
+        "@nkmjs/core": "^1.1.1",
         "@nkmjs/server-io-fs": "^0.1.1",
         "nodemon": "^2.0.22"
     },
     "devDependencies": {
-        "@nkmjs/core-dev": "../nkmjs-core-dev",
+        "@nkmjs/core-dev": "^1.1.1",
         "electron": "^24.1.2"
     },
     "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"

@@ -116,6 +116,8 @@ class BaseIOService extends services.ServiceBase {
 
     }
 
+    Get(p_uid) { return this._map[uid]; }
+
 }
 
 module.exports = BaseIOService;
