@@ -168,7 +168,9 @@ class ServerBase extends com.Observable {
         });
 
         p_express.use(express.json());
-        p_express.use(express.urlencoded({ extended: true }))
+        p_express.use(express.urlencoded({ extended: true }));
+
+
 
         // Add CORS Middleware
         p_express.use(cors({
