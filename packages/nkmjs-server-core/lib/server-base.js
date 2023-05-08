@@ -162,8 +162,8 @@ class ServerBase extends com.Observable {
         }))
 
         this._staticPaths.forEach(i => {
-            if (u.isString(i)) { app.use(express.static(i)); }
-            else if (u.isArray(i) && i.length == 2) { app.use(i[0], express.static(i[1])); }
+            if (u.isString(i)) { p_express.use(express.static(i)); }
+            else if (u.isArray(i) && i.length == 2) { p_express.use(i[0], express.static(i[1])); }
             else { console.warn(`Invalid static route config: ${i}`) }
         });
 
