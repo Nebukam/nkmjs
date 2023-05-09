@@ -35,7 +35,7 @@ globalThis.nkm = module.exports = {
 
     actions : core.actions,
     app : require(`@nkmjs/app-core`),
-    localisation : require(`@nkmjs/localisation`),
+    i18n : require(`@nkmjs/i18n`),
     dialog : require(`@nkmjs/dialog`),
     style : require(`@nkmjs/style`),
     ui : require(`@nkmjs/ui-core`),

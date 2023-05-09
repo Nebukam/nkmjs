@@ -46,7 +46,7 @@
 			"path": "nkmjs-io-core"
 		},
 		{
-			"path": "nkmjs-localisation"
+			"path": "nkmjs-i18n"
 		},
 		{
 			"path": "nkmjs-io-electron"

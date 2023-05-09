@@ -21,8 +21,8 @@ _While not written in typescript, NKMjs is strongly object-oriented (if this sou
 * ### **Actions & History with Undo/Redo**  
     [@nkmjs/actions]() helps managing actions, commands, history (undo/redo), seperated from their UI implementation.
 
-* ### **Localisation**
-    [@nkmjs/localisation]() handles localisation at a very low level in the library, making it a breeze to internationalize your app.
+* ### **i18n**
+    [@nkmjs/i18n]() handles localisation at a very low level in the library, making it a breeze to internationalize your app.
 
 * ### **Unified & extensible storage interactions**  
     [@nkmjs/io-core]() Store data easily no matter the platform you're building on. _Web & PWA uses localStorage, extensions uses storageArea, electron uses the client's file system._
