@@ -124,6 +124,18 @@ module.exports = {
         console.log(`UnobserveRect :: ${p_element} / ${p_callback} (${index} // ${count})`);
     },
 
+    UpdateObservedRect: function (p_element) {
+
+
+        let index = __observedElements.indexOf(p_element);
+        if (index == -1) { return; }
+
+        __rectObserver.unobserve(p_element);
+        __rectObserver.observe(p_element);
+
+    },
+
+
     //#endregion
 
     /**

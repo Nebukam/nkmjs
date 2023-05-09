@@ -371,6 +371,14 @@ class DisposableHTMLElement extends HTMLElement {
 
     }
 
+    ForcePaintUpdate() {
+        if (this.constructor.__observableIntersection
+            || this.constructor.__usePaintCallback) {
+            __paintingObserver.unobserve(this);
+            __paintingObserver.observe(this);
+        }
+    }
+
     /**
      * @description Wake is called when using UI' `{@link ui.core.UI.Rent}` when an item is rented. Since objects are pooled, 
      * this acts as a surrogate constructor. 

@@ -2,5 +2,5 @@
 
 module.exports = {
     // Generic
-    LOC: require(`./lib/localisation`),
+    LOC: require(`./lib/i18n`),
 }

@@ -143,6 +143,7 @@ class View extends base {
         if (this._shortcuts) { if (!this._shortcutsRequireHover || this._isFocused) { this._shortcuts.Enable(); } }
         this._OnDisplayGain();
         this.Broadcast(SIGNAL.DISPLAY_GAIN, this);
+        this.ForcePaintUpdate();
         return true;
     }
 
