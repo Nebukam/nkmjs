@@ -98,7 +98,6 @@ class ServerBase extends com.Observable {
     }
 
     _OnIOReady() {
-        console.log(`IO REady`);
         if (!this._starting) { return; }
         this._InternalInit();
     }
