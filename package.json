@@ -8,6 +8,8 @@
         "lerna": "^6.6.2"
     },
     "scripts": {
-        "nkmjs": "nkmjs"
+        "nkmjs": "nkmjs",
+        "link-all": "yarn unlink-all && lerna exec --parallel yarn link",
+        "unlink-all": "lerna exec --parallel --bail=false yarn unlink"
     }
 }
