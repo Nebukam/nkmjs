@@ -116,7 +116,7 @@ class BaseIOService extends services.ServiceBase {
 
     }
 
-    Get(p_uid) { return this._map[uid]; }
+    Get(p_uid) { return this._map[p_uid]; }
 
 }
 

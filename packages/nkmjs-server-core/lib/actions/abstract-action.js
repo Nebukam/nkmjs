@@ -26,6 +26,8 @@ class AbstractAction extends base {
     get done() { return this._done; }
     get response() { return this._response; }
 
+    CanExecute(p_operation) { return true; }
+
     Execute(p_operation, p_onSuccess, p_onError) {
 
         this._done = false;
@@ -33,6 +35,11 @@ class AbstractAction extends base {
 
         this._cbs.onSuccess = p_onSuccess;
         this._cbs.onError = p_onError;
+
+        if (!this.CanExecute(p_operation)) {
+            this._OnError();
+            return this;
+        }
 
         let result = this._InternalExecute(this._operation);
 

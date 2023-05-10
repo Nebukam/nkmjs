@@ -33,6 +33,7 @@ class ServerBase extends com.Observable {
         this._config = p_constants;
         dotenv.config({ path: this._config.envPath });
 
+        this._dirName = this._config.dirname;
         this._dirServer = this._config.dirServer;
         this._dirViews = this._config.dirViews;
         this._dirPublic = path.join(this._config.dirname, 'public');
@@ -85,6 +86,7 @@ class ServerBase extends com.Observable {
 
     }
 
+    get dirName() { return this._dirName; }
     get dirServer() { return this._dirServer; }
     get dirViews() { return this._dirViews; }
     get dirPublic() { return this._dirPublic; }
@@ -99,18 +101,46 @@ class ServerBase extends com.Observable {
 
     _OnIOReady() {
         if (!this._starting) { return; }
-        this._InternalInit();
+        this._PrepareInternalInit();
     }
 
+    /**
+     * Called by ENV when services are ready.
+     */
     _InternalStart() {
         if (this._starting) { return; }
         this._starting = true;
 
-        if (io.IO_SERVICES.ready) { this._InternalInit(); }
+        com.time.TIME._ScheduleNextTick();
+        if (io.IO_SERVICES.ready) { this._PrepareInternalInit(); }
+    }
+
+    _PrepareInternalInit() {
+
+        if (this._IsReadyForInit()) { this._InternalInit(); }
+        else { this._delayedCheck = setInterval(this._Bind(this._CheckPreparation), 1000); }
+    }
+
+    _CheckPreparation() {
+        if (this._IsReadyForInit()) {
+            this._InternalInit();
+            clearInterval(this._delayedCheck);
+        }
+    }
+
+    /**
+     * Return true by default. This is where you can test for server readyness and things like that.
+     * @returns true if the app is ready for display, false otherwise
+     */
+    _IsReadyForInit() {
+        return true;
     }
 
     _InternalInit() {
 
+        if (this._delayedCheck) { this._delayedCheck.Cancel(); }
+
+        this._internalInit = true;
         this._requireAuth = false;
         this._port = process.env.PORT || 8080;
         this._baseURL = process.env.BASE_URL || `http://localhost:${this._port}`;
@@ -296,7 +326,8 @@ class ServerBase extends com.Observable {
 
     _InternalBoot() {
         let a = this._server.address();
-        console.log(`Listening ${a.address}:${a.port}`);
+        console.log(a);
+        console.log(`Listening @ ${this._baseURL}`);
         this._Boot();
     }
 

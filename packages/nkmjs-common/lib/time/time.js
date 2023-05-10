@@ -30,6 +30,8 @@ class TIME extends Observable {
 
         this._Bind(this._Tick);
 
+        this._ScheduleNextTick();
+
     }
 
     _PostInit() {
@@ -79,7 +81,7 @@ class TIME extends Observable {
      * @access private
      */
     _ScheduleNextTick() {
-        if (typeof window !== 'undefined'
+        if (typeof window === 'undefined'
             && !this._nextTickScheduled) {
             // In node only schedule WatchNextTick once, otherwise the process stays open.
             this._nextTickScheduled = true;

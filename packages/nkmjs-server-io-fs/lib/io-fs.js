@@ -10,6 +10,11 @@ class SERVER_IO_FS extends nkm.io.BaseIOService {
         this._defaultConfig = {
             transceivers: [
                 {
+                    root: nkm.main.dirName,
+                    uid: `dirName`,
+                    prependRoot:true
+                },
+                {
                     root: nkm.main.dirServer,
                     uid: `dirServer`,
                     prependRoot:true

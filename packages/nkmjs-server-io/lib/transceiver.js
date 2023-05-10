@@ -17,12 +17,12 @@ class Transceiver extends com.Observable {
     constructor() { super(); }
 
     static __distribute = com.helpers.OptionsDistribute.Ext()
-        .To(`prefix`, ``)
-        .To(`delimiter`, `/`)
+        .To(`prefix`, null, ``)
+        .To(`delimiter`, null, `/`)
         .To(`prependRoot`)
         .To(`readOnly`)
         .To(`tokens`)
-        .To(`recursive`, true);
+        .To(`recursive`, null, true);
 
     _Init() {
         super._Init();
