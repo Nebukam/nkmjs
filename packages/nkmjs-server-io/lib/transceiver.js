@@ -19,7 +19,6 @@ class Transceiver extends com.Observable {
     static __distribute = com.helpers.OptionsDistribute.Ext()
         .To(`prefix`, null, ``)
         .To(`delimiter`, null, `/`)
-        .To(`prependRoot`)
         .To(`readOnly`)
         .To(`tokens`)
         .To(`recursive`, null, true);
@@ -35,6 +34,7 @@ class Transceiver extends com.Observable {
         this._service = null;
         this._tokens = null;
         this._uid = null;
+
         this._prependRoot = false;
 
         this._backedWrites = {};
@@ -44,9 +44,6 @@ class Transceiver extends com.Observable {
 
     get service() { return this._service; }
     set service(p_value) { this._service = p_value; }
-
-    get prependRoot() { return this._prependRoot; }
-    set prependRoot(p_value) { this._prependRoot = p_value; }
 
     get prefix() { return this._prefix; }
     set prefix(p_value) { this._prefix = p_value; }
@@ -93,7 +90,7 @@ class Transceiver extends com.Observable {
 
     Join(...args) {
         let joined = args.join(this._delimiter);
-        if (!joined.startsWith(this._root)) {
+        if (this._prependRoot && !joined.startsWith(this._root)) {
             joined = this._root.endsWith(this._delimiter) ?
                 `${this._root}${joined}` :
                 `${this._root}${this._delimiter}${joined}`;

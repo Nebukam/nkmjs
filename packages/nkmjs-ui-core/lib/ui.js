@@ -15,7 +15,7 @@ const DisposableHTMLElement = require(`./disposable-htmlelement`);
  * @augments common.Observable
  * @memberof ui.core
  */
-class UI extends com.Observable{ // PORT_TO_MODULE
+class UI extends com.Observable { // PORT_TO_MODULE
     constructor() { super(); }
 
     _Init() {
@@ -24,6 +24,7 @@ class UI extends com.Observable{ // PORT_TO_MODULE
 
         this._uiPool = new collections.DictionaryList();
         this._uiTypes = new collections.Dictionary();
+        this._definedSet = new Set();
         this._typeMap = {};
 
         this._dirtyElements = new collections.List(0);
@@ -45,15 +46,22 @@ class UI extends com.Observable{ // PORT_TO_MODULE
         if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
         //console.log(p_id);
         this._uiTypes.Set(p_class, p_id);
+        this.Define(p_id, p_class);
+        this._typeMap[p_id] = p_class;
+
+        //#LOG console.log(`%c+ ${p_class.name} %c<${p_id}>`, 'color: #9000ff', 'color: #b4b4b4');
+
+    }
+
+    Define(p_id, p_class) {
+
         if (p_class.__extendsNode) {
             customElements.define(p_id, p_class, { extends: p_class.__extendsNode });
         } else {
             customElements.define(p_id, p_class);//, { extends: p_extends });    
         }
 
-        this._typeMap[p_id] = p_class;
-
-        //#LOG console.log(`%c+ ${p_class.name} %c<${p_id}>`, 'color: #9000ff', 'color: #b4b4b4');
+        this._definedSet.add(p_class);
 
     }
 
@@ -105,13 +113,18 @@ class UI extends com.Observable{ // PORT_TO_MODULE
 
         if (u.isString(p_class)) { p_class = this._typeMap[p_class]; }
 
+        if (!this._definedSet.has(p_class)) {
+            this.Define(u.tils.ToCustomElementID(p_class.name, true), p_class);
+        }
+        /*
         if (!this._uiTypes.Contains(p_class)) {
-            if (u.isInstanceOf(p_class, DisposableHTMLElement)) {
+            if (u.isInstanceOf(p_class, HTMLElement)) {
                 this.Register(u.tils.ToCustomElementID(p_class.name, true), p_class, 0);
             } else {
                 throw new Error(`${p_class} could not be found.`);
             }
         }
+        */
 
         let obj = this._uiPool.Pop(p_class);
 

@@ -12,6 +12,7 @@ class Transceiver_FS extends base {
 
     _Init() {
         super._Init();
+        this._prependRoot = true;
     }
 
     Start(p_options = null) {
@@ -115,7 +116,22 @@ class Transceiver_FS extends base {
         let opts = p_options || {};
 
         fsPromises.readdir(p_path).then(
-            (content) => { p_callback(null, p_path, content); },
+            (content) => {
+
+                Promise.all(content.map(fname => { return fsPromises.stat(this.Join(fname)); })).then(
+                    (stats) => {
+                        let results = { files: [], directories: [] };
+                        for (let i = 0, n = stats.length; i < n; i++) {
+                            let targetArray = stats[i].isDirectory() ? results.directories : results.files;
+                            targetArray.push(content[i]);
+                        }
+                        p_callback(null, p_path, results);
+                    },
+                    err => {
+                        p_callback(err, p_path, null);
+                    }
+                );
+            },
             (err) => { p_callback(err, p_path, null); }
         );
 

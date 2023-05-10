@@ -138,8 +138,6 @@ class ServerBase extends com.Observable {
 
     _InternalInit() {
 
-        if (this._delayedCheck) { this._delayedCheck.Cancel(); }
-
         this._internalInit = true;
         this._requireAuth = false;
         this._port = process.env.PORT || 8080;

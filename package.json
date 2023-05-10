@@ -9,6 +9,8 @@
     },
     "scripts": {
         "nkmjs": "nkmjs",
+        "bootstrap":"lerna bootstrap && yarn add-nkmjs-link",
+        "add-nkmjs-link":"lerna exec --parallel yarn link-nkmjs",
         "link-all": "yarn unlink-all && lerna exec --parallel yarn link",
         "unlink-all": "lerna exec --parallel --bail=false yarn unlink"
     }

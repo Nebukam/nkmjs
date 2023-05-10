@@ -16,6 +16,7 @@
         "bundle-core": "node ./lib/task-build-core-bundle.js",
         "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README-jsdoc.md",
         "postinstall": "node ./lib/script-post-install.js",
+        "link-nkmjs":"yarn link @nkmjs/core && yarn link @nkmjs/utils",
         "nkmjs": "nkmjs"
     },
     "bin": {
