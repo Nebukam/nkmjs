@@ -23,6 +23,8 @@ class CallList {
      */
     get count() { return this._list.count; }
 
+    Has(p_fn) { return this._list.Contains(p_fn); }
+
     /**
      * @description Add a function to the list.  
      * Note that the CallList use a {@link collections.List} internally,

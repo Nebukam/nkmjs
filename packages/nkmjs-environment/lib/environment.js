@@ -187,7 +187,7 @@ class ENV extends com.Observable {
         // Use service worker to handle HTTP requests if extension manifest v3
         //if(this._manifestVersion == 3){ this._useFetchRequestAsDefault = true; }
 
-        u.LOG._(`ENV : START`, `#33979b`, `#212121`);
+        u.LOG._(`⏵ENV`, `#33979b`, `#212121`);
 
         this._features.List();
 
@@ -297,7 +297,6 @@ class ENV extends com.Observable {
         if (!u.isInstanceOf(p_serviceClass, services.ServiceBase)) {
             throw new Error(`${p_serviceClass} is not a service.`);
         }
-        u.LOG._(`Booting : ${p_serviceClass.constructor.name}...`, `#33979b`, `#212121`);
         p_serviceClass.InitializeAndStart(this);
     }
 

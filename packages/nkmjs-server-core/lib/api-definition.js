@@ -50,6 +50,11 @@ class APIDefinition extends com.Observable {
 
     get callback() { return this._options.callback; }
 
+    Get(p_id) {
+        if (!this._options || !(p_id in this._options)) { return null; }
+        return this._options[p_id];
+    }
+
     /**
      * 
      * @returns 

@@ -5,6 +5,7 @@ module.exports = {
     GET: require(`./handler-get`),
     POST: require(`./handler-post`),
 
+    View: require(`./handler-view`),
     Action: require(`./handler-action`),
     Upload: require(`./handler-upload`),
     Fn: require(`./handler-fn`),

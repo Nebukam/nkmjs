@@ -12,12 +12,9 @@ class IO_SERVICES extends com.Observable { // PORT_TO_MODULE
         this._defaultIO = null;
 
         this._ioServices = new collections.List();
+        this._queue = new collections.List();
 
-        this._servicesCount = 0;
-        this._startCount = 0;
-        this._ready = true;
-
-        this._Bind(this._OnServiceStarted);
+        this._ready = false;
 
     }
 
@@ -58,12 +55,17 @@ class IO_SERVICES extends com.Observable { // PORT_TO_MODULE
      */
     Use(p_serviceClass, p_config, p_setAsDefault = false) {
 
+        if (this._ready) { throw new Error(`Cannot register new IO Services after boot`); }
+
         if (!this._ioServices.Add(p_serviceClass)) { return p_serviceClass; }
 
         this._ready = false;
-        
-        this._servicesCount++;
-        p_serviceClass.Watch(services.SIGNAL.STARTED, this._OnServiceStarted);
+
+        this._queue.Add(p_serviceClass);
+        p_serviceClass.Watch(services.SIGNAL.STARTED, (p_service) => {
+            this._queue.Remove(p_service);
+            if (this._queue.isEmpty) { this._OnServiceQueueEmpty(); }
+        });
 
         p_serviceClass._config = p_config;
         env.ENV.RegisterServices(p_serviceClass);
@@ -76,14 +78,11 @@ class IO_SERVICES extends com.Observable { // PORT_TO_MODULE
 
     }
 
-    _OnServiceStarted(p_service) {
+    _OnServiceQueueEmpty() {
         if (this._ready) { return; }
-        this._startCount++;
-        if (this._startCount == this._servicesCount) {
-            // All registered services ready
-            this._ready = true;
-            this.Broadcast(com.SIGNAL.READY, this);
-        }
+        this._ready = true;
+        this.Broadcast(com.SIGNAL.READY, this);
+
     }
 
 }

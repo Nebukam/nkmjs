@@ -255,7 +255,7 @@ class AppBase extends com.Observable {
 
     Start() {
 
-        u.LOG._(`${this._APPID} : START`, `#339a6e`, `#212121`);
+        u.LOG._(`⏵${this._APPID}`, `#339a6e`, `#212121`);
 
         // Insert global.css (again) outside of the shadow dom this time
         // NOTE : Should be added in regular css imports

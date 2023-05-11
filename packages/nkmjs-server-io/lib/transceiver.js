@@ -246,6 +246,12 @@ class Transceiver extends com.Observable {
         super._CleanUp();
     }
 
+    toString() {
+        let base = this.constructor.name.split(`_`); base.shift();
+        base = base.join(` `);
+        return `· ⇋  ${base} | ${this._uid} @ ${this._root}`;
+    }
+
 }
 
 module.exports = Transceiver;

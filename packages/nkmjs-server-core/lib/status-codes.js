@@ -374,6 +374,12 @@ class STATUSES {
         return null;
     }
 
+    static toError(p_status){
+        let error = new Error(p_status.msg);
+        error.status = p_status.code;
+        return error;
+    }
+
 }
 
 module.exports = STATUSES;

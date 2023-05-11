@@ -70,7 +70,7 @@ class ServiceBase extends com.Observable {
             return false;
         }
         if (this._starting || this._started) { return false; }
-        u.LOG._(`STARTING :· ${this.constructor.name}`, `#add800`, `#2e3a00`);
+        u.LOG._(`<${this.constructor.name}>`, `#586e00`, `#1b2100`);
         this._started = false;
         this._starting = true;
         this.Broadcast(SIGNAL.STARTING, this);
@@ -85,7 +85,7 @@ class ServiceBase extends com.Observable {
     _OnStarted() {
         this._starting = false;
         this._started = true;
-        u.LOG._(`STARTED :· ${this.constructor.name}`, `#add800`, `#2e3a00`);
+        u.LOG._(`</${this.constructor.name}>`, `#add800`, `#2e3a00`);
         this.Broadcast(SIGNAL.STARTED, this);
     }
 
@@ -96,7 +96,7 @@ class ServiceBase extends com.Observable {
         if (!this._started) { return; }
         //TODO: Handle situation is this._starting == true
         this._started = false;
-        u.LOG._(`STOPPED :: ${this.constructor.name}`, `#ef8700`, `#492900`);
+        u.LOG._(`<//${this.constructor.name}>`, `#ef8700`, `#492900`);
     }
 
     /**
