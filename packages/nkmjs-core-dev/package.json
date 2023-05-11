@@ -1,6 +1,6 @@
 {
     "name": "@nkmjs/core-dev",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "description": "NKMjs Framework Core Dev Tools",
     "main": "lib.js",
     "repository": {
@@ -16,7 +16,7 @@
         "bundle-core": "node ./lib/task-build-core-bundle.js",
         "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README-jsdoc.md",
         "postinstall": "node ./lib/script-post-install.js",
-        "link-nkmjs":"yarn link @nkmjs/core && yarn link @nkmjs/utils",
+        "link-nkmjs": "yarn link @nkmjs/core && yarn link @nkmjs/utils",
         "nkmjs": "nkmjs"
     },
     "bin": {
@@ -27,7 +27,7 @@
         "@babel/core": "^7.15.5",
         "@babel/plugin-proposal-class-properties": "^7.12.1",
         "@babel/preset-env": "^7.12.11",
-        "@nkmjs/core": "^1.1.5",
+        "@nkmjs/core": "^1.1.6",
         "@nkmjs/utils": "^1.1.1",
         "adm-zip": "^0.5.3",
         "axios": "^1.4.0",
