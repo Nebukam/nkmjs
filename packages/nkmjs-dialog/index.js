@@ -1,3 +1,5 @@
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));
+
 const DIALOG = require(`./lib/dialog`);
 
 module.exports = {
@@ -13,5 +15,3 @@ module.exports = {
     // to DIALOG.Push
     Push: DIALOG.Push.bind(DIALOG),
 }
-
-require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

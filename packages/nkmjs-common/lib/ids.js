@@ -82,6 +82,12 @@ const IDS = {
      * @type {string}
      * @customtag read-only
      */
+    TYPE: Object.freeze(`type`),
+
+    /**
+     * @type {string}
+     * @customtag read-only
+     */
     CMD_PRIMARY: Object.freeze(`primaryCommand`),
 
     /**

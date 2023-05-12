@@ -1,5 +1,7 @@
 'use strict';
 
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));
+
 const __ops = require(`./lib/operations`);
 const env = require(`@nkmjs/environment`);
 
@@ -24,5 +26,3 @@ module.exports = {
     get main(){ return env.app; },
 
 }
-
-require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

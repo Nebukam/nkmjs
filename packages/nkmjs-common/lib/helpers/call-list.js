@@ -3,6 +3,8 @@
 const collections = require(`@nkmjs/collections`);
 const u = require("@nkmjs/utils");
 
+const Disposable = require(`../disposable`);
+
 /**
  * A CallList is a very simple helper class that stores a list of functions
  * that can be called in registration order, with the ability to empty the
@@ -11,9 +13,10 @@ const u = require("@nkmjs/utils");
  * @hideconstructor
  * @memberof common.helpers
  */
-class CallList {
+class CallList extends Disposable{
 
     constructor() {
+        super();
         this._list = new collections.List(0);
     }
 
@@ -70,6 +73,11 @@ class CallList {
     Clear() {
         this._list.Clear();
         return this;
+    }
+
+    _CleanUp(){
+        this.Clear();
+        super._CleanUp();
     }
 
 }

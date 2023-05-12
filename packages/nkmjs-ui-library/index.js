@@ -1,5 +1,7 @@
 'use strict';
 
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));
+
 module.exports = {
 
     REQUEST: require(`./lib/request`),
@@ -19,5 +21,3 @@ module.exports = {
     widgets: require(`./lib/widgets`),
     
 }
-
-require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

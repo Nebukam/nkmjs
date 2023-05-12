@@ -1,6 +1,8 @@
 
 'use strict';
 
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));
+
 const __SIMPLEX = require(`./lib/simplex`);
 
 module.exports = {
@@ -37,5 +39,3 @@ module.exports = {
     GetDescriptor: __SIMPLEX.GetDescriptor.bind(__SIMPLEX),
     GetValueType: __SIMPLEX.GetValueType.bind(__SIMPLEX),
 }
-
-require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));

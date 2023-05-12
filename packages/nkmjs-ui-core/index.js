@@ -1,5 +1,7 @@
 'use strict';
 
+require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));
+
 const UTILS_DOM = require(`./lib/utils-dom`);
 const UI = require(`./lib/ui`);
 
@@ -63,5 +65,3 @@ module.exports = {
     Render: __DOMtemplate.Render.bind(__DOMtemplate),
 
 }
-
-require("@nkmjs/common").BINDINGS.Expand(require(`./bindings`));
