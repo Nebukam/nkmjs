@@ -6,6 +6,7 @@ const CONTEXT = require(`../context`);
 const IDS = require(`./../../ids`);
 
 const DataBlockJSONSerializer = require(`./json-data-block`);
+const SIMPLEX = require(`../../simplex`);
 
 
 /**
@@ -48,7 +49,8 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
         for (var id in definitions) {
             let def = definitions[id];
             if (def[IDS.SKIP_SERIALIZATION]) { continue; }
-            p_serial[id] = p_data._values[id];
+            let desc = SIMPLEX.GetDescriptor(id);
+            p_serial[id] = desc.serialize ? desc.serialize(p_data._values[id], def, p_data) : p_data._values[id];
         }
 
         // BLOCS
@@ -164,7 +166,20 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
             };
         }
 
-        if (p_serial) { p_data.BatchSet(p_serial); }
+        if (p_serial) {
+
+            let
+                definitions = p_data.DEFINITIONS,
+                batch = {};
+
+            for (var id in definitions) {
+                if (!(id in p_serial)) { continue; }
+                let desc = SIMPLEX.GetDescriptor(id);
+                batch[id] = desc.deserialize ? desc.deserialize(p_serial[id], definitions[id], p_data) : batch[id];
+            }
+
+            p_data.BatchSet(batch);
+        }
 
         return p_data;
 

@@ -168,10 +168,11 @@ class ServerBase extends com.Observable {
 
         // Add middleware to make the `user` object available for all views
         this._express.use(function (req, res, next) {
-            res.locals.user = env.app.GetUser(req);
+            let user = env.app.GetUser(req);
+            req.user = user;
+            res.locals.user = user;
             next();
         });
-
 
     }
 

@@ -109,8 +109,10 @@ class APIDefinition extends com.Observable {
      */
     _Handle(p_req, p_res) {
 
+        console.log(`>>> ${this._route} @ ${this._handlerClass.name}`);
+
         if (this.requireAuth &&
-            !this._app.IsAuthenticated(p_req)) {
+            !nkm.main.IsAuthenticated(p_req)) {
             return this.SendError(STATUSES.UNAUTHORIZED);
         }
 

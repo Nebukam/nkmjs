@@ -88,8 +88,8 @@ class HandlerBase extends com.Observable {
         if (u.isNumber(p_status)) { p_status = STATUSES.getStatus(p_status); }
 
         if (this._res) {
-            p_req.status(p_status.code);
-            p_req.send({ error: p_status.msg });
+            this._res.status(p_status.code);
+            this._res.send({ error: p_status.msg });
         }
 
         this._OnHandled();

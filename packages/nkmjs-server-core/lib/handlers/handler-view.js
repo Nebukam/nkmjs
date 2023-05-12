@@ -18,18 +18,42 @@ class HandlerView extends base {
         this._title = null;
     }
 
+    /**
+     * 
+     * @param {*} p_req 
+     * @param {*} p_res 
+     * @returns 
+     */
+    _InternalHandle(p_req, p_res) {
+
+        if (this._def.requireAuth && !nkm.main.IsAuthenticated(p_req)) {
+            this.Abort(STATUSES.UNAUTHORIZED);
+            return;
+        }
+
+        super._InternalHandle(p_req, p_res);
+
+    }
+
+    Handle() { this.Complete({}); }
+
     Complete(p_response) {
 
-        p_response.title = p_response.title || this._def.Get(`title`);
+        p_response.title = p_response.title || this._def.Get(`title`) || nkm.main.constructor.name;
         p_response.isAuthenticated = nkm.main.IsAuthenticated(this._req);
-        p_response.user = nkm.main.GetUser(this._req);
+        p_response.user = nkm.main.GetUser(this._req)?.Serialize() || 'no user profile';
 
-        this._res.render(Views.Get(this._view || this._def.Get(`view`), p_response));
+        //TODO: REMOVE THIS
+        p_response.strLocals = JSON.stringify(p_response, null, 2);
+
+
+
+        this._res.render(Views.Get(this._view || this._def.Get(`view`)), p_response);
         this._OnHandled();
     }
 
     /**
-     * 0
+     * 
      * @param {*} p_status 
      */
     Abort(p_status = null, p_message = null) {
@@ -59,7 +83,7 @@ class HandlerView extends base {
     _CleanUp() {
         this._view = null;
         this._title = null;
-        this._CleanUp();
+        super._CleanUp();
     }
 
 }

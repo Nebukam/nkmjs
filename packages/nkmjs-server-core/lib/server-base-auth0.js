@@ -28,8 +28,8 @@ class ServerBaseAuth0 extends base {
         return true;
     }
 
-    GetUser(p_req) { return p_req.oidc.user; }
-    IsAuthenticated(p_req) { return p_req.oidc.isAuthenticated(); }
+    GetUser(p_req) { return p_req.oidc ? p_req.oidc.user : null; }
+    IsAuthenticated(p_req) { return p_req.oidc ? p_req.oidc.isAuthenticated() : false; }
 
 
 }

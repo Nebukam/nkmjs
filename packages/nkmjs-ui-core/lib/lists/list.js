@@ -5,6 +5,7 @@ const com = require("@nkmjs/common");
 const IDS = require(`../ids`);
 const SIGNAL = require(`../signal`);
 const extensions = require(`../extensions`);
+const dom = require(`../utils-dom`);
 const CatalogBuilder = require(`../helpers/catalog-builder`);
 
 const ListItem = require(`./list-item`);
