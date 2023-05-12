@@ -2,6 +2,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
+const IDS = require("./ids");
 
 const __NFO__ = `__NFO__`;
 const __legacyCountCache = new Map();
@@ -185,5 +186,15 @@ module.exports = {
 
 
     //#endregion
+
+    Register: function(p_class) {
+
+        let uid = u.tils.Get(NFOS.Get(p_class), IDS.UID, null);
+        if (!uid) { throw new Error(`No valid NFO found for ${p_class}`); }
+        BINDINGS.SetClass(uid, p_class);
+        //u.LOG._(`⧉ ${uid} ⤞ ${p_class.name}`, `#7f7f7f`);
+        return uid;
+
+    }
 
 }

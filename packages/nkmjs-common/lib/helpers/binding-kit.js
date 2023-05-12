@@ -162,15 +162,8 @@ class BindingKit extends Observable {
     }
 
     static _InternalSetClass(p_class, p_wrapper = null) {
-
-        let uid = u.tils.Get(NFOS.Get(p_class), `uid`, null);
-        if (!uid) { throw new Error(`No valid NFO found for ${p_class}`); }
-
+        let uid = NFOS.Register(p_class);
         if (p_wrapper) { p_wrapper._classDict.Set(p_class, uid); }
-
-        BINDINGS.SetClass(uid, p_class);
-        //u.LOG._(`⧉ ${uid} ⤞ ${p_class.name}`, `#7f7f7f`);
-
     }
 
     /**
