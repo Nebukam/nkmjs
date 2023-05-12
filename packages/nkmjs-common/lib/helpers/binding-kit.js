@@ -162,7 +162,7 @@ class BindingKit extends Observable {
     }
 
     static _InternalSetClass(p_class, p_wrapper = null) {
-        let uid = NFOS.Register(p_class);
+        let uid = BINDINGS.RegisterFromNFO(p_class);
         if (p_wrapper) { p_wrapper._classDict.Set(p_class, uid); }
     }
 

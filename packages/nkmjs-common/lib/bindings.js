@@ -238,6 +238,16 @@ module.exports = {
         _contextMap.Remove(p_context, p_key, p_binding);
         _contextKeyLists.Remove(p_context, p_key);
         //TODO : Restore any squashed associations
+    },
+    
+    RegisterFromNFO: function(p_class) {
+
+        let uid = u.tils.Get(NFOS.Get(p_class), IDS.UID, null);
+        if (!uid) { throw new Error(`No valid NFO found for ${p_class}`); }
+        module.exports.SetClass(uid, p_class);
+        //u.LOG._(`⧉ ${uid} ⤞ ${p_class.name}`, `#7f7f7f`);
+        return uid;
+
     }
 
 }
