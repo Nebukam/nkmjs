@@ -213,7 +213,6 @@ class Transceiver_FS extends base {
     WriteFile(p_path, p_data, p_callback, p_options = null) {
 
         p_path = this._SanitizePath(p_path);
-        console.log(p_path);
 
         fsPromises.writeFile(p_path, p_data, p_options).then(
             () => { p_callback(null, p_path, true); },

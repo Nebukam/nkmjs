@@ -93,7 +93,7 @@ class POOL {
             keyName = p_class;
         } else if (typeof p_class === `function`) {
             keyName = p_class.name;
-        } else { throw new Error("Rent requires either a string or a constructor."); }
+        } else { throw new Error(`Rent requires either a string or a constructor, got: ${p_class}`); }
 
         if (!_globalTypes.Contains(keyName)) {
             if (typeof p_class === `function`

@@ -877,4 +877,17 @@ module.exports = {
         return Math.min(rW, rH);
     },
 
+    TruncateEnd: function (p_str, n) {
+        return (p_str.length > n) ? p_str.slice(0, n - 1) + '…' : p_str;
+    },
+
+    TruncateStart: function (p_str, n) {
+        return (p_str.length > n) ? '…' + p_str.substr(p_str.length - n) : p_str;
+    },
+
+    RandomPick: function (p_array) {
+        if (p_array.length == 1) { return p_array[0]; }
+        return p_array[Math.round(Math.random() * (p_array.length - 1))];
+    }
+
 }

@@ -47,10 +47,15 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
         let definitions = p_data.DEFINITIONS;
         for (var id in definitions) {
+
             let def = definitions[id];
+
             if (def[IDS.SKIP_SERIALIZATION]) { continue; }
+
             let desc = SIMPLEX.GetDescriptor(id);
-            p_serial[id] = desc.serialize ? desc.serialize(p_data._values[id], def, p_data) : p_data._values[id];
+            if (desc && desc.serialize) { p_serial[id] = desc.serialize(p_data._values[id], def, p_data); }
+            else { p_serial[id] = p_data._values[id]; }
+
         }
 
         // BLOCS
@@ -168,17 +173,21 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
         if (p_serial) {
 
-            let
-                definitions = p_data.DEFINITIONS,
-                batch = {};
+            let definitions = p_data.DEFINITIONS;
 
             for (var id in definitions) {
+
                 if (!(id in p_serial)) { continue; }
+
                 let desc = SIMPLEX.GetDescriptor(id);
-                batch[id] = desc.deserialize ? desc.deserialize(p_serial[id], definitions[id], p_data) : batch[id];
+
+                if (desc && desc.deserialize) {
+                    p_serial[id] = desc.deserialize(p_serial[id], definitions[id], p_data);
+                }
+
             }
 
-            p_data.BatchSet(batch);
+            p_data.BatchSet(p_serial);
         }
 
         return p_data;

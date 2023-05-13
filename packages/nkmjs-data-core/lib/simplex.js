@@ -347,7 +347,6 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
         return this.GetDescriptor(p_id).valueType;
     }
 
-
     //#endregion
 
 }
