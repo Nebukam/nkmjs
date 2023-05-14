@@ -28,6 +28,6 @@ globalThis.nkm = module.exports = {
 
     server : require(`@nkmjs/server-core`),
 
-    get main(){ return nkm.env.app; },
+    get main(){ return core.env.app; },
 
 }

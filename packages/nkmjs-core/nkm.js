@@ -44,7 +44,7 @@ globalThis.nkm = module.exports = {
     
     //#endregion
     
-    get settings(){ return nkm.app.settings; },
-    get main(){ return nkm.app.main; },
+    get settings(){ return core.env.app.settings; },
+    get main(){ return core.env.app; },
 
 }
