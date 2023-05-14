@@ -13,7 +13,7 @@ new MAIN_SERVER({
 	dirname:__dirname,
 	dirServer:dirServer,
 	dirViews:dirViews,
-	envPath:path.join(dirServer, `/.env`),
+	envPath:path.join(__dirname, `/.env`),
 	version:'1.0.3',
 	lang:'en',
 	locales:[],

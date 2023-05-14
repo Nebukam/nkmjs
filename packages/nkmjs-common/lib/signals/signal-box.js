@@ -76,7 +76,9 @@ class SignalBox {
         }
         let signal = this._signals.Get(p_signalId);
         if (!signal) { return; }
+        signal.__dispatchId = p_signalId;
         signal.Dispatch(...args);
+        signal.__dispatchId = null;
 
         return this._owner || this;
     }

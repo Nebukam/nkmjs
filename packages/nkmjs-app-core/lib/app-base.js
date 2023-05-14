@@ -23,12 +23,14 @@ const dialog = require(`@nkmjs/dialog`);
 const documents = require(`@nkmjs/documents`);
 
 const APP_MESSAGES = require(`./app-messages`);
+const WindowStateHandler = require(`./window-state-handler`);
 const UserPreferences = require(`./helpers/user-preferences`);
 const GlobalOverlayHandler = require(`./global-overlay-handler`);
 const AppBody = require(`./app-body`);
 const UnsavedDocHandler = require(`./helpers/unsaved-doc-handler`);
 const FileExtBinder = require(`./helpers/file-ext-binder`);
 const AppSettings = require(`./app-settings`);
+const SingleViewLayer = require(`./single-view-layer`);
 
 const IDS = require(`./ids`);
 
@@ -57,6 +59,7 @@ class AppBase extends com.Observable {
     constructor() { super(); }
 
     static __loading_cssAnimationOut = `__loading__fadeOut`;
+    static __singleViewLayer = SingleViewLayer;
 
     _Init() {
 
@@ -112,6 +115,8 @@ class AppBase extends com.Observable {
         }
 
     }
+
+    get state() { return WindowStateHandler; }
 
     _OnWindowError(p_err) {
         nkm.u.LOG._(`An error occured.`, `#ffffff`, `#ff0000`);
@@ -196,7 +201,7 @@ class AppBase extends com.Observable {
             this._appBody._host);
         */
 
-        if (!this._layers) { this._layers = []; }
+        if (!this._layers || !this._layers.length) { this._layers = [{ id: `_mainLayer`, cl: this.constructor.__singleViewLayer }]; }
         this._layers.push({ id: `_overlayHandler`, cl: this._overlayHandlerClass });
 
         this._appBody.BuildLayers(this, this._layers);

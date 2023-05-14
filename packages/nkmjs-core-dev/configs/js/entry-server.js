@@ -12,7 +12,7 @@ new MAIN_SERVER({
     dirname:__dirname,
     dirServer:dirServer,
     dirViews:`%dirs.src-views%`,
-    envPath:path.join(dirServer, `/.env`),
+    envPath:path.join(__dirname, `/.env`),
     version:'%version%',
 %config%
 });

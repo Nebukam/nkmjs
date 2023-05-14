@@ -70,7 +70,7 @@ class ElectronBase {
         this._windowsIDMap = new collections.Dictionary();
 
         ipcMain.on(APP_MESSAGES.AU_CHECK_REQUEST, this._Bind(this._OnRequestCheckForUpdates));
-
+        ipcMain.on('start-nkm-env', this._Bind(this._OnNKMEnvRequest));
 
         //app.commandLine.appendSwitch('js-flags', '--max-old-space-size=4096'); //Increase available memory
 
@@ -90,8 +90,6 @@ class ElectronBase {
 
         ipcMain.on(APP_MESSAGES.DO_RELOAD_APP, this._OnRequestReload);
         ipcMain.on(APP_MESSAGES.OPEN_DIALOG, this._OnRequestDialog);
-
-
 
     }
 
@@ -188,47 +186,53 @@ class ElectronBase {
 
         console.log(`Boot app`);
 
+        //this._StartNKMjsInWebContents(this._mainWindow.webContents);
+
+    }
+
+    _OnNKMEnvRequest(p_evt) {
+
         // Compute style path
         let stylePath = this._constants.style ? this._constants.style : `style`;
 
-        this._mainWindow.webContents.executeJavaScript(`
-            require('@nkmjs/core');
-            let nkmElectron = require('@nkmjs/core/electron');
-            let LOG = nkm.u.LOG;
-            LOG.toggle(true);
+        p_evt.sender.executeJavaScript(`
 
-            let ENV = nkm.env.ENV;
-            ENV.features._isNodeEnabled = true;
-            ENV.DEV_MODE = ${DEV_MODE};
+        require('@nkmjs/core');
+        let nkmElectron = require('@nkmjs/core/electron');
+        let LOG = nkm.u.LOG;
+        LOG.toggle(true);
 
-            (new nkmElectron.io.IOElectron()).Deploy();
-            (new nkmElectron.core.IPCElectron()).Deploy();
+        let ENV = nkm.env.ENV;
+        ENV.features._isNodeEnabled = true;
+        ENV.DEV_MODE = ${DEV_MODE};
 
-            ENV.Start({
-                appName:'${(this._constants.appName || 'nkmjs-app')}',
-                paths:{
-                    exe:'${u.tils.FixSlash(app.getPath('exe'))}',
-                    '${u.PATH.APP}':'${u.tils.FixSlash(app.getAppPath())}',
-                    '${u.PATH.HOME}':'${u.tils.FixSlash(app.getPath('home'))}',
-                    '${u.PATH.APP_DATA}':'${u.tils.FixSlash(app.getPath('appData'))}',
-                    '${u.PATH.USER_DATA}':'${u.tils.FixSlash(app.getPath('userData'))}',
-                    '${u.PATH.TEMP}':'${u.tils.FixSlash(app.getPath('temp'))}',
-                    '${u.PATH.DESKTOP}':'${u.tils.FixSlash(app.getPath('desktop'))}',
-                    '${u.PATH.DOCUMENTS}':'${u.tils.FixSlash(app.getPath('documents'))}',
-                    '${u.PATH.DOWNLOADS}':'${u.tils.FixSlash(app.getPath('downloads'))}',
-                    '${u.PATH.MUSIC}':'${u.tils.FixSlash(app.getPath('music'))}',
-                    '${u.PATH.PICTURES}':'${u.tils.FixSlash(app.getPath('pictures'))}',
-                    '${u.PATH.VIDEOS}':'${u.tils.FixSlash(app.getPath('videos'))}',
-                    '${u.PATH.LOGS}':'${u.tils.FixSlash(app.getPath('logs'))}',
-                    '${u.PATH.STYLE}':'${stylePath}'
-                },
-                argv:${JSON.stringify(process.argv)},
-                theme:'${(this._constants.theme || 'default')}'
-                ${this._rendererDeclaration}
-            });   
+        (new nkmElectron.io.IOElectron()).Deploy();
+        (new nkmElectron.core.IPCElectron()).Deploy();
+
+        ENV.Start({
+            appName:'${(this._constants.appName || 'nkmjs-app')}',
+            paths:{
+                exe:'${u.tils.FixSlash(app.getPath('exe'))}',
+                '${u.PATH.APP}':'${u.tils.FixSlash(app.getAppPath())}',
+                '${u.PATH.HOME}':'${u.tils.FixSlash(app.getPath('home'))}',
+                '${u.PATH.APP_DATA}':'${u.tils.FixSlash(app.getPath('appData'))}',
+                '${u.PATH.USER_DATA}':'${u.tils.FixSlash(app.getPath('userData'))}',
+                '${u.PATH.TEMP}':'${u.tils.FixSlash(app.getPath('temp'))}',
+                '${u.PATH.DESKTOP}':'${u.tils.FixSlash(app.getPath('desktop'))}',
+                '${u.PATH.DOCUMENTS}':'${u.tils.FixSlash(app.getPath('documents'))}',
+                '${u.PATH.DOWNLOADS}':'${u.tils.FixSlash(app.getPath('downloads'))}',
+                '${u.PATH.MUSIC}':'${u.tils.FixSlash(app.getPath('music'))}',
+                '${u.PATH.PICTURES}':'${u.tils.FixSlash(app.getPath('pictures'))}',
+                '${u.PATH.VIDEOS}':'${u.tils.FixSlash(app.getPath('videos'))}',
+                '${u.PATH.LOGS}':'${u.tils.FixSlash(app.getPath('logs'))}',
+                '${u.PATH.STYLE}':'${stylePath}'
+            },
+            argv:${JSON.stringify(process.argv)},
+            theme:'${(this._constants.theme || 'default')}'
+            ${this._rendererDeclaration}
+        });   
 
         `);
-
 
     }
 
@@ -236,7 +240,7 @@ class ElectronBase {
     _OnRequestReload() {
         console.log(`RELOAD_REQUEST`);
         this._booted = false;
-        this._mainWindow.webContents.once(`did-finish-load`, this._Boot); 
+        this._mainWindow.webContents.once(`did-finish-load`, this._Boot);
         this._mainWindow.webContents.session.clearCache();
         this._mainWindow.reload();
     }

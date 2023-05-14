@@ -113,7 +113,7 @@ class SignalBroadcaster extends Disposable {
         if (this._broadcasting) {
             //May cause chaos.
             this._queuedBroadcasts.push(args);
-            console.warn(`Dispatching signal while already dispatching. Queueing.`);
+            console.warn(`Dispatching signal while already dispatching (${this.__dispatchId.toString()}). Queueing.`);
             return;
         }
 

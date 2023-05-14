@@ -151,6 +151,20 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
                 slashes: u.tils.Get(p_options, `slashes`, true)
             }
 
+            if (p_options.ipcOn) {
+                for (let o in p_options.ipcOn) {
+                    console.log(`on:${o}`);
+                    wrapper.window.webContents.on(o, p_options.ipcOn[o]);
+                }
+            }
+
+            if (p_options.ipcOnce) {
+                for (let o in p_options.ipcOnce) {
+                    console.log(`once:${o}`);
+                    wrapper.window.webContents.once(o, p_options.ipcOnce[o]);
+                }
+            }
+
             if (p_options.onDomReady) {
                 wrapper.window.webContents.once(`did-finish-load`, p_options.onDomReady);  //did-frame-finish-load
             }

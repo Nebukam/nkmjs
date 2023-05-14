@@ -14,8 +14,11 @@ module.exports = {
     AppBase: require(`./lib/app-base`),
     AppBody: require(`./lib/app-body`),
 
+    WindowStateHandler: require(`./lib/window-state-handler`),
+
     AutoUpdateDialogBox: require(`./lib/dialogs/dialog-box-auto-update`),
     GlobalOverlayHandler: require(`./lib/global-overlay-handler`),
+    SingleViewLayer: require(`./lib/single-view-layer`),
 
     ops: __ops,
     explorers: require(`./lib/explorers`),

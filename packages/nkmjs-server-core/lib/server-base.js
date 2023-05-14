@@ -31,6 +31,7 @@ class ServerBase extends com.Observable {
 
         this._starting = false;
         this._config = p_constants;
+        console.log(this._config.envPath);
         dotenv.config({ path: this._config.envPath });
 
         this._dirName = this._config.dirname;
@@ -316,6 +317,8 @@ class ServerBase extends com.Observable {
         api.options = p_config;
 
         this._apiMap.Set(p_identifier, api);
+
+        console.log(`route: ${this._baseURL}${api.route}`);
 
         if (p_config.owner) { p_config.owner[p_identifier] = api; }
 

@@ -35,6 +35,10 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
         return this._reverseMap.has(p_view);
     }
 
+    ReverseGet(p_view){
+        return this._reverseMap.get(p_view);
+    }
+
     /**
      * @access protected
      * @description TODO

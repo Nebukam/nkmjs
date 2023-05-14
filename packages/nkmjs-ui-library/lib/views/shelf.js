@@ -425,7 +425,7 @@ class Shelf extends base {
         this.currentView = null;
         this._flags.Set(ui.FLAGS.COLLAPSED, true);
     }
-    
+
     Expand() {
         this._flags.Set(ui.FLAGS.COLLAPSED, false);
     }
@@ -456,18 +456,26 @@ class Shelf extends base {
     //#region Views Management
 
     RequestView(p_identifier) {
+
+        let view = null;
+
         if (u.isNumber(p_identifier)) {
             // by index
-            let list = this._nav._handles;
-            if (p_identifier < 0 || p_identifier > list.length - 1) { return; }
-            this.currentHandle = list[p_identifier];
+            view = this._catalogViewBuilder.Get(this.catalog.At(p_identifier));
         } else if (u.isString(p_identifier)) {
             // by data id name
-            // TODO
+            let catalogItem = this.catalog.FindFirstByOptionValue(ui.IDS.NAME, p_identifier);
+            if (catalogItem) { view = this._catalogViewBuilder.Get(catalogItem); }
         } else if (u.isInstanceOf(data.catalogs.CatalogItem)) {
             // by catalog item reference
-            // TODO
+            view = this._catalogViewBuilder.Get(catalogItem);
+        } else if (u.isInstanceOf(ui.views.View)) {
+            // by direct set
+            if (this._catalogViewBuilder.Owns(p_identifier)) { view = p_identifier; }
         }
+
+        if (view) { view.RequestDisplay(); }
+
     }
 
     /**
@@ -480,7 +488,7 @@ class Shelf extends base {
     }
 
     _OnViewRequestClose(p_view) {
-        let catalogItem = this._catalogViewBuilder._reverseMap.get(p_view);
+        let catalogItem = this._catalogViewBuilder.ReverseGet(p_view);
         if (catalogItem) { catalogItem.Release(); }
     }
 
@@ -622,7 +630,7 @@ class Shelf extends base {
         }
 
         // Retrieve the corresponding handle
-        let item = this._catalogViewBuilder._reverseMap.get(this._currentView);
+        let item = this._catalogViewBuilder.ReverseGet(this._currentView);
         if (item) { this.currentHandle = this._nav.GetNavItem(item); }
         else { this.currentHandle = null; }
 

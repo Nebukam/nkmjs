@@ -9,6 +9,8 @@ class ServerBaseAuth0 extends base {
 
     _InitAuthenticationMiddleware(p_express) {
 
+        if (this._bypassAuth) { return true; }
+
         this._authFn = oidc.requiresAuth;
 
         let authConfig = {
@@ -31,6 +33,28 @@ class ServerBaseAuth0 extends base {
     GetUser(p_req) { return p_req.oidc ? p_req.oidc.user : null; }
     IsAuthenticated(p_req) { return p_req.oidc ? p_req.oidc.isAuthenticated() : false; }
 
+    _BypassAuth() {
+
+        this._bypassAuth = true;
+        this._authFn = null;
+
+        this.GetUser = (p_req) => {
+            console.log(`huoh`);
+            return {
+                given_name: "Timothe",
+                family_name: "Lapetite",
+                nickname: "nebukam",
+                name: "Timothe Lapetite",
+                locale: "en-US",
+                updated_at: "2023-05-09T16:43:20.988Z",
+                email_verified: false,
+                sub: "google-oauth2|000000000000000000000"
+            };
+        }
+
+        this.IsAuthenticated = (p_req) => { return true; }
+
+    }
 
 }
 

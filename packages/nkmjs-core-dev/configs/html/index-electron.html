@@ -45,13 +45,15 @@
 <!-- DEFAULT SCRIPT -->
 <script>
 
-const electron = window.require('electron');
-const ipcRenderer  = electron.ipcRenderer;
+    const electron = window.require('electron');
+    const ipcRenderer  = electron.ipcRenderer;
 
-window.addEventListener('contextmenu', (e) => {
+    window.addEventListener('contextmenu', (e) => {
         e.preventDefault();
         ipcRenderer.send('show-context-menu', {x: e.x, y: e.y});
     }, false);
+
+    ipcRenderer.send('start-nkm-env');
 
 </script>
 </html>
