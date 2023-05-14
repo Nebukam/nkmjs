@@ -41,7 +41,7 @@ class HandlerView extends base {
 
         p_response.title = p_response.title || this._def.Get(`title`) || nkm.main.constructor.name;
         p_response.isAuthenticated = nkm.main.IsAuthenticated(this._req);
-        p_response.user = nkm.main.GetUser(this._req)?.Serialize() || 'no user profile';
+        p_response.user = nkm.main.GetUser(this._req);
 
         //TODO: REMOVE THIS
         p_response.strLocals = JSON.stringify(p_response, null, 2);
