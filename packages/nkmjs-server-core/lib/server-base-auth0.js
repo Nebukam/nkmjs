@@ -39,7 +39,6 @@ class ServerBaseAuth0 extends base {
         this._authFn = null;
 
         this.GetUser = (p_req) => {
-            console.log(`huoh`);
             return {
                 given_name: "Timothe",
                 family_name: "Lapetite",
