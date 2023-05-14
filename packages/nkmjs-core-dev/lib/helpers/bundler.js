@@ -42,13 +42,10 @@ class Bundler {
         this.script._logFwd(chalk.italic(`browserify ${this.moduleID}`), `|`, 1);
 
         this.externals = NKMjs.Get(`externals`, []);
+        this.externalsRemap = NKMjs.Get(`externalsRemap`, {});
 
         var b = browserify();
         b.add(this.entryPoint);
-
-        this._externalsRemap = {
-            '@nkmjs/core/nkmin': '@nkmjs/core'
-        };
 
         for (let i = 0, n = this.externals.length; i < n; i++) {
             let id = this.externals[i];
@@ -110,9 +107,9 @@ class Bundler {
                 parse: { bare_returns: true },
                 mangle: {
                     reserved: [`require`],
-                    keep_classnames: true,
+                    keep_classnames: false,
                     keep_fnames: true,
-                    //module : true,
+                    module : true,
                     toplevel: true,
                 },
                 compress: {
@@ -147,22 +144,20 @@ class Bundler {
 
         console.log(this.externals);
         for (let i = 0, n = this.externals.length; i < n; i++) {
-            let id = this.externals[i];
+            let
+                id = this.externals[i],
+                index = i;
             if (id === this.moduleID) { continue; }
             //p_content = p_content.split(`require("${id}")`).join(`globalThis.nkmdefs[${i}]`);
             //p_content = p_content.split(`"${id}":void 0`).join(``);
 
-            if (id in this._externalsRemap) {
-                let
-                    rid = this._externalsRemap[id],
-                    ri = this.externals.indexOf(rid);
-
-                p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs[${ri}]`);
-                p_content = p_content.replaceAll(`"${id}":void 0`, ``);
-            } else {
-                p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs[${i}]`);
-                p_content = p_content.replaceAll(`"${id}":void 0`, ``);
+            if (id in this.externalsRemap) {
+                index = this.externals.indexOf(this.externalsRemap[id]);
             }
+
+            p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs[${index}]`);
+            p_content = p_content.replaceAll(`"${id}":void 0`, ``);
+
         }
 
         return p_content;
