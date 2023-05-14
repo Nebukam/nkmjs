@@ -2,6 +2,7 @@
 
 const collections = require(`@nkmjs/collections`);
 const com = require(`@nkmjs/common`);
+const u = require(`@nkmjs/utils`);
 const handlers = require(`./handlers`);
 
 const STATUSES = require("./status-codes");
@@ -73,6 +74,8 @@ class APIDefinition extends com.Observable {
             if (this._requireAuth) { this._express.get(this._route, this._requireAuth(), this._Handle); }
             else { this._express.get(this._route, this._Handle); }
         }
+
+        console.log(`${this._app.baseURL}${this._route} | (${this.id} @ ${this._handlerClass.name}`);
 
     }
 

@@ -62,8 +62,9 @@ class HandlerBase extends com.Observable {
 
     Complete(p_response = null) {
 
+        
         if (!p_response) { p_response = STATUSES.OK; }
-        else if (u.isNumber(p_status)) { p_status = STATUSES.getStatus(p_status); }
+        else if (u.isNumber(p_response)) { p_response = STATUSES.getStatus(p_status); }
 
         if (STATUSES.isStatus(p_response)) {
             this._res.status(p_response.code);

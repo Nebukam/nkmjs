@@ -19,15 +19,22 @@ const path = require(`path`);
 const APIDefinition = require("./api-definition");
 const STATUSES = require('./status-codes');
 const handlers = require('./handlers');
+const getters = require(`./getters`);
+const actions = require('./actions');
 
 class ServerBase extends com.Observable {
 
     constructor(p_constants) {
         super();
 
+        this._appendPortToBase = true;
+
         env.ENV._app = this;
 
         u.LOG.toggle(true);
+
+        getters.Manager.defaultHander = handlers.Getter;
+        actions.Manager.defaultHander = handlers.Action;
 
         this._starting = false;
         this._config = p_constants;
@@ -91,6 +98,8 @@ class ServerBase extends com.Observable {
     get dirServer() { return this._dirServer; }
     get dirViews() { return this._dirViews; }
     get dirPublic() { return this._dirPublic; }
+
+    get baseURL() { return this._appendPortToBase ? `${this._baseURL}:${this._port}` : this._baseURL; }
 
     /**
      * Register services in the form { cl:IO_CLASS, options:{} }
@@ -241,6 +250,23 @@ class ServerBase extends com.Observable {
 
         let apis = [];
 
+        //Create getter APIs
+
+        getters.Manager.List().forEach(getter => {
+            this._RegisterAPI(getter.id, {
+                route: com.NFOS.GetRoute(`/get`, getter.nfos),
+                handler: getter.handler || getters.Manager.defaultHander,
+                requireAuth: getter.nfos.requireAuth
+            })
+        });
+
+        //Register generic action api
+        this._RegisterAPI(`action`, {
+            route: `/action`,
+            handler: actions.Manager.defaultHander,
+            requireAuth: true
+        });
+
         this._apiMap.keys.forEach(key => { apis.push(this._apiMap.Get(key)); });
 
         apis.sort((a, b) => { return a.route.localeCompare(b.route) * -1; });
@@ -268,6 +294,7 @@ class ServerBase extends com.Observable {
 
         // Error handlers
         p_express.use(function (err, req, res, next) {
+            console.log(err);
             let status = err.status || STATUSES.INTERNAL_SERVER_ERROR.code;
             res.status(status);
             res.render('error', {
@@ -289,7 +316,7 @@ class ServerBase extends com.Observable {
         } else {
             for (var identifier in p_apis) {
                 let api = p_apis[identifier];
-                this._RegisterAPI(`@${api.route}`, api);
+                this._RegisterAPI(identifier, api);
             }
         }
     }
@@ -317,8 +344,6 @@ class ServerBase extends com.Observable {
         api.options = p_config;
 
         this._apiMap.Set(p_identifier, api);
-
-        console.log(`route: ${this._baseURL}${api.route}`);
 
         if (p_config.owner) { p_config.owner[p_identifier] = api; }
 

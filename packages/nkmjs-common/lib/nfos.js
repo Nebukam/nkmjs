@@ -187,5 +187,11 @@ module.exports = {
 
     //#endregion
 
+    GetRoute: function (p_prefix, p_nfos, p_params = null) {
+        if (p_nfos.prefix) { p_prefix += p_nfos.prefix; }
+        if (p_params) { for (let i = 0, n = p_params.length; i < n; i++) { p_prefix += `/${p_params[i]}`; }; }
+        else if (p_nfos.params) { p_nfos.params.forEach(param => { p_prefix += `/:${param}`; }); }
+        return p_prefix;
+    },
 
 }

@@ -888,6 +888,6 @@ module.exports = {
     RandomPick: function (p_array) {
         if (p_array.length == 1) { return p_array[0]; }
         return p_array[Math.round(Math.random() * (p_array.length - 1))];
-    }
+    },
 
 }

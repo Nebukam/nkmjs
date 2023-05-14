@@ -1,34 +1,59 @@
 'use strict';
 
 const com = require(`@nkmjs/common`);
-const _actions = {};
+const u = require(`@nkmjs/utils`);
 
-module.exports = {// PORT_TO_MODULE
+const AbstractAction = require(`./abstract-action`);
 
-    GetModel: function (p_actionId) {
-        let cl = _actions[p_id];
+const _map = {};
+var _defaultHandler = null;
+
+module.exports = {
+
+    set defaultHander(p_value) { _defaultHandler = p_value; },
+
+    GetModel: function (p_id) {
+        let cl = _map[p_id];
         if (!cl) { return null; }
-        return cl.__model;
+        return com.NFOS.Get(cl);
     },
 
-    Get: function (p_actionId) {
-        let cl = _actions[p_id];
+    Get: function (p_id) {
+        let cl = _map[p_id];
         if (!cl) { return null; }
         return com.Rent(cl);
     },
 
-    /**
-     * 
-     * @param {Object} p_actions { action:actionClass }
-     */
-    AddMultiple: function (p_actions) {
-        for (let id in p_actions) {
-            _actions[id] = p_actions[id];
+    Add: function (p_input) {
+
+        if (u.isArray(p_input)) {
+            p_input.forEach(action => { module.exports._Add(action); });
+        } else if (u.isObject(p_input)) {
+            for (let id in p_input) { module.exports._Add(p_input[id]); }
+        } else {
+            module.exports._Add(p_input);
         }
     },
 
-    Add: function (p_id, p_actionClass) {
-        _actions[p_id] = p_actionClass;
+    _Add(p_class) {
+
+        if (!u.isInstanceOf(p_class, AbstractAction)) { return; }
+
+        let nfos = com.NFOS.Get(p_class);
+        if (!nfos || !nfos.identifier) { return; }
+
+        if (nfos.identifier in _map) {
+            console.warn(`Action '${nfos.identifier}' already exists and will be overwritten.`);
+        }
+
+        _map[nfos.identifier] = { id: nfos.identifier, cl: p_class, nfos: com.NFOS.Get(p_class) };
+
+    },
+
+    List: function () {
+        let list = [];
+        for (let id in _map) { list.push(_map[id]); }
+        return list;
     }
 
 }

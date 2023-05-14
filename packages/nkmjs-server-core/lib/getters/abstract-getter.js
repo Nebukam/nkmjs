@@ -7,14 +7,16 @@ const com = require(`@nkmjs/common`);
  * Get EDIT manages the creation & serving of pages for editing.
  */
 const base = com.Observable;
-class AbstractAction extends base {
+class AbstractGetter extends base {
     constructor() { super(); }
 
     static __NFO__ = {
-        identifier: null,
+        identifier:null,
+        prefix:null,
+        params:[],
         model: {}
     };
-
+    
     static Execute(p_operation, p_onSuccess, p_onError) {
         return com.Rent(this).Execute(p_operation, p_onSuccess, p_onError);
     }
@@ -29,32 +31,30 @@ class AbstractAction extends base {
     get done() { return this._done; }
     get response() { return this._response; }
 
-    CanExecute(p_operation) { return true; }
+    CanExecute(p_params) { return true; }
 
-    Execute(p_operation, p_onSuccess, p_onError) {
+    Execute(p_params, p_onSuccess, p_onError) {
 
         this._done = false;
-        this._operation = p_operation;
+        this._params = p_params;
 
         this._cbs.onSuccess = p_onSuccess;
         this._cbs.onError = p_onError;
 
-        if (!this.CanExecute(p_operation)) {
+        if (!this.CanExecute(p_params)) {
             this._OnError();
             return this;
         }
 
-        let result = this._InternalExecute(this._operation);
+        let result = this._InternalExecute(this._params);
 
-        if (u.isBoolean(result)) {
-            if (result) { this._OnSuccess(); }
-            else { this._OnError(); }
-        }
+        if (result === true) { this._OnSuccess(); }
+        else if (result === false) { this._OnError(); }
 
         return this;
     }
 
-    _InternalExecute(p_ops) {
+    _InternalExecute(p_params) {
         return false;
     }
 
@@ -77,10 +77,10 @@ class AbstractAction extends base {
         this._done = false;
         this._response = null;
         this._cbs.Clear();
-        this._operation = null;
+        this._params = null;
         super._CleanUp();
     }
 
 }
 
-module.exports = AbstractAction;
+module.exports = AbstractGetter;
