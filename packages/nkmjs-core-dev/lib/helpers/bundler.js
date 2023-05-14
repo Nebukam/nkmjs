@@ -130,6 +130,8 @@ class Bundler {
         transformed = this._ShrinkRequires(transformed);
         //transformed = transformed.replaceAll(`require`, `_r_`);
 
+        transformed = this._CleanArtifacts(transformed);
+
         NKMjs.WriteTempSync(this.output, transformed);
         this.script._logFwd(`${NKMjs.Shorten(this.output)}`, `+`, 1);
 
@@ -176,6 +178,12 @@ class Bundler {
             p_content = p_content.replaceAll(`"${id}"`, `"_${reqMap[id]}"`);
         }
 
+        return p_content;
+    }
+
+    _CleanArtifacts(p_content) {
+        p_content = p_content.replaceAll(`{,`, `{`);
+        p_content = p_content.replaceAll(`,,`, `,`);
         return p_content;
     }
 
