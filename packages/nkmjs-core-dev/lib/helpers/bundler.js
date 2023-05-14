@@ -46,6 +46,10 @@ class Bundler {
         var b = browserify();
         b.add(this.entryPoint);
 
+        this._externalsRemap = {
+            '@nkmjs/core/nkmin': '@nkmjs/core'
+        };
+
         for (let i = 0, n = this.externals.length; i < n; i++) {
             let id = this.externals[i];
             if (id == this.moduleID) { continue; }
@@ -147,8 +151,18 @@ class Bundler {
             if (id === this.moduleID) { continue; }
             //p_content = p_content.split(`require("${id}")`).join(`globalThis.nkmdefs[${i}]`);
             //p_content = p_content.split(`"${id}":void 0`).join(``);
-            p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs[${i}]`);
-            p_content = p_content.replaceAll(`"${id}":void 0`, ``);
+
+            if (id in this._externalsRemap) {
+                let
+                    rid = this._externalsRemap[id],
+                    ri = this.externals.indexOf(rid);
+
+                p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs[${ri}]`);
+                p_content = p_content.replaceAll(`"${id}":void 0`, ``);
+            } else {
+                p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs[${i}]`);
+                p_content = p_content.replaceAll(`"${id}":void 0`, ``);
+            }
         }
 
         return p_content;

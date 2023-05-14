@@ -27,6 +27,7 @@ class TaskBundleExternals extends ScriptBase {
 
     _OnPreparationComplete() {
         this.modules = [...NKMjs.Get(`externals`, [])];
+        this.externalsRemap = NKMjs.Get(`externalsRemap`, {});
         this._log(`will split the following modules as externals : ${this.modules.join(`, `)}`)
         this.BundleNext();
     }
@@ -34,6 +35,11 @@ class TaskBundleExternals extends ScriptBase {
     BundleNext() {
 
         let module = this.modules.shift();
+
+        if (module in this.externalsRemap) {
+            this.BundleNext();
+            return;
+        }
 
         // Cache previous bundle, if any
         if (this.prevBundleOutput) {

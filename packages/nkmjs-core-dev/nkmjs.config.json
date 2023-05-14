@@ -97,8 +97,12 @@
         ]
     },
     "externals": [
-        "@nkmjs/core"
+        "@nkmjs/core",
+        "@nkmjs/core/nkmin"
     ],
+    "externalsRemap":{
+        "@nkmjs/core/nkmin":"@nkmjs/core"
+    },
     "name": "@nkmjs/core-dev",
     "longName": "@nkmjs/core-dev Verbose App Name",
     "shortName": "@nkmjs/core-dev App",

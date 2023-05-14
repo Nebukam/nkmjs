@@ -44,7 +44,12 @@ class TaskPrepareHTMLMeta extends ScriptBase {
         // Preload externals
 
         let externals = NKMjs.Get(`externals`, []);
+        let externalsRemap = NKMjs.Get(`externalsRemap`, {});
+
+        // TODO: Include custom import here
+
         for (let i = 0, n = externals.length; i < n; i++) {
+            if (externals[i] in externalsRemap) { continue; }
             map.push(`${NKMjs.ExternalName(externals[i])}.js`);
         }
 

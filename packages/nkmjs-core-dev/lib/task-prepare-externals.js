@@ -19,9 +19,13 @@ class TaskPrepareExternals extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         this.externals = [];
+        this.externalsRemap = {};
         this.exclusions = [];
         this._Push(NKMjs.coreConfig.externals);
         this._Push(NKMjs.projectConfig.externals);
+
+        this._PushRemap(NKMjs.coreConfig.externalsRemap);
+        this._PushRemap(NKMjs.projectConfig.externalsRemap);
 
         for (let i = 0, n = this.exclusions.length; i < n; i++) {
             let rem = this.exclusions[i],
@@ -30,6 +34,7 @@ class TaskPrepareExternals extends ScriptBase {
         }
 
         NKMjs.Set(`externals`, this.externals);
+        NKMjs.Set(`externalsRemap`, this.externalsRemap);
 
         this.End();
 
@@ -42,6 +47,11 @@ class TaskPrepareExternals extends ScriptBase {
             if (item[0] === `!`) { this.exclusions.push(item.substr(1)); }
             else if (!this.externals.includes(item)) { this.externals.push(item) };
         }
+    }
+
+    _PushRemap(p_object) {
+        if (!p_object) { return; }
+        for (let src in p_object) { this.externalsRemap[src] = p_object[src]; }
     }
 
 }
