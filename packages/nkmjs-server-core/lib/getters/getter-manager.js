@@ -59,7 +59,7 @@ module.exports = {
             handler: p_handler || _defaultHandler
         };
 
-        console.log(`+ get '${id}' ${p_class.name} | ${(p_handler || _defaultHandler).name}`);
+        //console.log(`+ get '${id}' ${p_class.name} | ${(p_handler || _defaultHandler).name}`);
 
     },
 

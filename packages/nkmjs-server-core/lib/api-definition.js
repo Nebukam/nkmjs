@@ -75,7 +75,7 @@ class APIDefinition extends com.Observable {
             else { this._express.get(this._route, this._Handle); }
         }
 
-        console.log(`${this._app.baseURL}${this._route} | (${this.id} @ ${this._handlerClass.name}`);
+        console.log(`${this._app.baseURL}${this._route} · · · (${this.id} @ ${this._handlerClass.name}`);
 
     }
 

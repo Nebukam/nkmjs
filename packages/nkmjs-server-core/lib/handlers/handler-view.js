@@ -47,7 +47,6 @@ class HandlerView extends base {
         p_response.strLocals = JSON.stringify(p_response, null, 2);
 
 
-
         this._res.render(Views.Get(this._view || this._def.Get(`view`)), p_response);
         this._OnHandled();
     }

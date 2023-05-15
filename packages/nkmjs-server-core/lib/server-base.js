@@ -254,7 +254,7 @@ class ServerBase extends com.Observable {
 
         getters.Manager.List().forEach(getter => {
             this._RegisterAPI(getter.id, {
-                route: com.NFOS.GetRoute(`/get`, getter.nfos),
+                route: env.routing.Model(env.routing.getPrefix, getter.nfos),
                 handler: getter.handler || getters.Manager.defaultHander,
                 requireAuth: getter.nfos.requireAuth
             })
@@ -262,7 +262,7 @@ class ServerBase extends com.Observable {
 
         //Register generic action api
         this._RegisterAPI(`action`, {
-            route: `/action`,
+            route: env.routing.actionPrefix,
             handler: actions.Manager.defaultHander,
             requireAuth: true
         });

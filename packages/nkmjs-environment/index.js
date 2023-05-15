@@ -9,6 +9,8 @@ module.exports = {
     SIGNAL: require(`./lib/signal`),
     ENV: ENV,
 
+    routing:require(`./lib/routing`),
+
     get features() { return ENV._features; },
     get app() { return ENV._app; },
     get ARGV() { return ENV._config.argv; },
