@@ -16,7 +16,7 @@ class StreamingDataListSearchableView extends base {
         this._searchHeader = null;
 
         this._searchDataList = new data.search.DataListSearch();
-        this.forwardData.To(this._searchDataList, { mapping: `sourceList` });
+        this.forwardData.To(this._searchDataList, { set: `sourceList` });
 
         this._searchActive = false;
 

@@ -62,7 +62,7 @@ class Folder extends base {
         this._builder
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnBuilderItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnBuilderItemRemoved, this);
-        this.forwardData.To(this._builder, { mapping: `catalog` });
+        this.forwardData.To(this._builder, { set: `catalog` });
 
     }
 

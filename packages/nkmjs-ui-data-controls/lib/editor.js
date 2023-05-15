@@ -71,8 +71,13 @@ class Editor extends base {
 
     _Init() {
 
+        /** @type {com.helpers.Setter} */
         this._forwardData = this.forwardData; //Ensure it exists
+
+        /** @type {com.helpers.Setter} */
         this._forwardContext = new com.helpers.Setter(this, IDS.CONTEXT);
+
+        /** @type {com.helpers.Setter} */
         this._forwardEditor = new com.helpers.Setter(this, IDS.EDITOR);
 
         let getSelf = () => { return this._releasing ? null : this; };
@@ -90,6 +95,9 @@ class Editor extends base {
         super._Init();
 
         //TODO : Find a way to invalidate action stacks // <--- WTF ?
+        /**
+         * @type {actions.ActionStack}
+         */
         this._actionStack = new actions.ActionStack();
 
         this._flags.Add(this, com.FLAGS.WARNING);
@@ -127,7 +135,14 @@ class Editor extends base {
 
     }
 
+    /**
+     * @type {com.helpers.Setter}
+     */
     get forwardContext() { return this._forwardContext; }
+
+    /**
+     * @type {com.helpers.Setter}
+     */
     get forwardEditor() { return this._forwardEditor; }
 
     _RegisterEditorBits() {

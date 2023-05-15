@@ -41,6 +41,9 @@ class WidgetOrientable extends base {
         super._Init();
         this._isHorizontalScrollEnabled = false;
 
+        /**
+         * @type {FlagEnum}
+         */
         this._orientation = new FlagEnum(FLAGS.orientations, true);
         this._orientation.Add(this);
         this._orientation.onFlagChanged.Add(this._Bind(this._OnOrientationChanged));

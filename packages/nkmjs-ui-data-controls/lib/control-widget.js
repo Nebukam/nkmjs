@@ -65,10 +65,17 @@ class ControlWidget extends base {
         this._ResetMetaPresentation();
     }
 
+    /**
+     * @type {com.helpers.Setter}
+     */
     get forwardContext() {
         if (!this._forwardContext) { this._forwardContext = new com.helpers.Setter(this, IDS.CONTEXT); }
         return this._forwardContext;
     }
+
+    /**
+     * @type {com.helpers.Setter}
+     */
     get forwardEditor() {
         if (!this._forwardEditor) { this._forwardEditor = new com.helpers.Setter(this, IDS.EDITOR); }
         return this._forwardEditor;

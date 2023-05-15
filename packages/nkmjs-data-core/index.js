@@ -38,4 +38,5 @@ module.exports = {
     RegisterDescriptor: __SIMPLEX.RegisterDescriptor.bind(__SIMPLEX),
     GetDescriptor: __SIMPLEX.GetDescriptor.bind(__SIMPLEX),
     GetValueType: __SIMPLEX.GetValueType.bind(__SIMPLEX),
+    
 }

@@ -42,7 +42,7 @@ class InputCatalogBase extends base {
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this);
 
-        this.forwardData.To(this._catalogHandler, { mapping: `catalog` });
+        this.forwardData.To(this._catalogHandler, { set: `catalog` });
 
         this._useCatalogsAsGroup = false;
         this._groupOptionId = null;

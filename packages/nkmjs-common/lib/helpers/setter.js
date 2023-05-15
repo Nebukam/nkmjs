@@ -27,8 +27,8 @@ class Setter {
      * 
      * @param {ui.core.Widget|string} p_target 
      * @param {object} p_config
-     * @param {object} [p_config.mapping]
-     * @param {string} [p_config.dataMember] child data id to forward
+     * @param {object} [p_config.set]
+     * @param {string} [p_config.get] child data id to forward
      * @param {object} [p_config.preprocess] preprocess Call object { fn [,thisArg, arg|args] }
      * @param {boolean} p_static 
      */
@@ -58,9 +58,9 @@ class Setter {
             return this;
         }
 
-        existingConfig.mapping = p_config.mapping;
+        existingConfig.set = p_config.set;
         existingConfig.member = p_config.member;
-        existingConfig.dataMember = p_config.dataMember;
+        existingConfig.get = p_config.get;
 
         return this;
     }
@@ -94,10 +94,10 @@ class Setter {
                 let target = nfo.target || this._owner[nfo.member];
                 if (!target) { return; }
 
-                let mapping = nfo.mapping;
-                if (mapping) {
-                    if (u.isObject(mapping) || u.isFunc(mapping)) { u.Call(mapping, null); }
-                    else { target[mapping] = null; }
+                let setter = nfo.set;
+                if (setter) {
+                    if (u.isObject(setter) || u.isFunc(setter)) { u.Call(setter, null); }
+                    else { target[setter] = null; }
                 } else {
                     target[this._defaultId] = null;
                 }
@@ -111,13 +111,13 @@ class Setter {
                 let target = nfo.target || this._owner[nfo.member];
                 if (!target) { return; }
 
-                let value = nfo.dataMember ? p_data[nfo.dataMember] : p_data;
+                let value = nfo.get ? p_data[nfo.get] : p_data;
                 if (nfo.preprocess) { value = u.Call(nfo.preprocess, value, p_data); }
 
-                let mapping = nfo.mapping;
-                if (mapping) {
-                    if (u.isObject(mapping) || u.isFunc(mapping)) { u.Call(mapping, value); }
-                    else { target[mapping] = value; }
+                let setter = nfo.set;
+                if (setter) {
+                    if (u.isObject(setter) || u.isFunc(setter)) { u.Call(setter, value); }
+                    else { target[setter] = value; }
                 } else {
                     target[this._defaultId] = value;
                 }

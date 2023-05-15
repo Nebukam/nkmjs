@@ -86,7 +86,14 @@ class ControlView extends base {
         this._ResetMetaPresentation();
     }
 
+    /**
+     * @type {com.helpers.Setter}
+     */
     get forwardContext() { return this._forwardContext; }
+
+    /**
+     * @type {com.helpers.Setter}
+     */
     get forwardEditor() { return this._forwardEditor; }
 
     /**

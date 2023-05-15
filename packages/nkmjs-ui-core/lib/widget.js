@@ -445,6 +445,9 @@ class Widget extends base {
 
     //#region DATA
 
+    /**
+     * @type {com.helpers.Setter}
+     */
     get forwardData() {
         if (!this._forwardData) { this._forwardData = new com.helpers.Setter(this, com.IDS.DATA); }
         return this._forwardData;

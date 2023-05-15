@@ -46,7 +46,7 @@ class UI extends com.Observable { // PORT_TO_MODULE
         if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
         //console.log(p_id);
         this._uiTypes.Set(p_class, p_id);
-        this.Define(p_id, p_class);
+        //this.Define(p_id, p_class);
         this._typeMap[p_id] = p_class;
 
         //#LOG console.log(`%c+ ${p_class.name} %c<${p_id}>`, 'color: #9000ff', 'color: #b4b4b4');
@@ -114,17 +114,10 @@ class UI extends com.Observable { // PORT_TO_MODULE
         if (u.isString(p_class)) { p_class = this._typeMap[p_class]; }
 
         if (!this._definedSet.has(p_class)) {
-            this.Define(u.tils.ToCustomElementID(p_class.name, true), p_class);
+            let id = u.tils.ToCustomElementID(p_class.name, true);
+            this.Define(id, p_class);
+            this.Register(id, p_class);
         }
-        /*
-        if (!this._uiTypes.Contains(p_class)) {
-            if (u.isInstanceOf(p_class, HTMLElement)) {
-                this.Register(u.tils.ToCustomElementID(p_class.name, true), p_class, 0);
-            } else {
-                throw new Error(`${p_class} could not be found.`);
-            }
-        }
-        */
 
         let obj = this._uiPool.Pop(p_class);
 

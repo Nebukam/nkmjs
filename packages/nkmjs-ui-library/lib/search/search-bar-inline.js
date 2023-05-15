@@ -33,7 +33,7 @@ class SearchBarInline extends base {
         this._builder.defaultControlClass = datacontrols.widgets.ValueControl;
         this._builder.defaultCSS = `control`;
 
-        this._forwardData.Update(this._builder, { dataMember: `searchHeader` });
+        this._forwardData.Update(this._builder, { get: `searchHeader` });
 
     }
 

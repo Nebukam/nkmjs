@@ -53,7 +53,7 @@ class View extends base {
         this._isDisplayed = false;
         this._flags.Add(this, FLAGS.SHOWN);
 
-        this.forwardData.To(this._commands, { mapping: `context` });
+        this.forwardData.To(this._commands, { set: `context` });
 
         this._defaultModalContentOptions = null;
         this._resizable = false;
