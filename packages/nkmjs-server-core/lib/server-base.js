@@ -250,6 +250,8 @@ class ServerBase extends com.Observable {
 
         let apis = [];
 
+        console.log(`· · · Routes · · ·`);
+
         //Create getter APIs
 
         getters.Manager.List().forEach(getter => {
@@ -272,6 +274,8 @@ class ServerBase extends com.Observable {
         apis.sort((a, b) => { return a.route.localeCompare(b.route) * -1; });
         apis.forEach(api => { api.Start(); });
         apis.length = 0;
+
+        console.log(`· · · · · · · · ·`);
 
         this._InitErrorHandlers(this._express);
 
