@@ -6,7 +6,7 @@ const com = require(`@nkmjs/common`);
 /**
  * Get EDIT manages the creation & serving of pages for editing.
  */
-const base = com.Observable;
+const base = com.Disposable;
 class AbstractAction extends base {
     constructor() { super(); }
 

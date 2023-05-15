@@ -142,7 +142,6 @@ class Bundler {
 
     _ReplaceExternal(p_content) {
 
-        console.log(this.externals);
         for (let i = 0, n = this.externals.length; i < n; i++) {
             let
                 id = this.externals[i],

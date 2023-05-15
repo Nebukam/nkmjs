@@ -16,13 +16,14 @@ class HandlerGetter extends base {
 
     Handle() {
 
-        GetterManager.Get(this._def.id)
-            .Execute(this._req.params,
-                (p_getter) => { this.Complete(p_getter.response); },
-                (p_getter) => {
-                    this.Abort(STATUSES.isStatus(p_getter.response) ?
-                        p_getter.response : STATUSES.BAD_REQUEST);
-                });
+        let getter = GetterManager.Get(this._def.id);
+        getter.handler = this;
+        getter.Execute(this._req.params,
+            (p_getter) => { this.Complete(p_getter.response); },
+            (p_getter) => {
+                this.Abort(STATUSES.isStatus(p_getter.response) ?
+                    p_getter.response : STATUSES.BAD_REQUEST);
+            });
 
     }
 

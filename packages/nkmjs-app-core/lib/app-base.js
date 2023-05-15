@@ -372,6 +372,11 @@ class AppBase extends com.Observable {
 
                 this._loadingOverlay.style.animation = `${name} ${delay} ${duration} ${transition}`;
 
+                if (this._mainLayer) {
+                    if (this._mainCatalog) { this._mainLayer.catalog = this._mainCatalog; }
+                    this._mainLayer._OnWindowViewChanged();
+                }
+
             }
 
         }

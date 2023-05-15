@@ -2,36 +2,61 @@
 
 const u = require(`@nkmjs/utils`);
 const com = require(`@nkmjs/common`);
+const env = require(`@nkmjs/environment`)
 
 /**
  * Get EDIT manages the creation & serving of pages for editing.
  */
-const base = com.Observable;
+const base = com.Disposable;
 class AbstractGetter extends base {
     constructor() { super(); }
 
     static __NFO__ = {
-        identifier:null,
-        prefix:null,
-        params:[],
+        identifier: null,
+        prefix: null,
+        params: [],
         model: {}
     };
-    
+
     static Execute(p_operation, p_onSuccess, p_onError) {
         return com.Rent(this).Execute(p_operation, p_onSuccess, p_onError);
     }
 
     _Init() {
         super._Init();
+        this._handler = null;
         this._done = false;
         this._response = null;
         this._cbs = new com.helpers.Callbacks();
+        this._nfoParams = {};
+
+        if (this.constructor.__NFO__.params) {
+            for (let id in this.constructor.__NFO__.params) {
+                let def = this.constructor.__NFO__.params[id];
+                this._nfoParams[def.id] = def;
+            }
+        }
     }
 
     get done() { return this._done; }
     get response() { return this._response; }
 
-    CanExecute(p_params) { return true; }
+    get handler() { return this._handler; }
+    set handler(p_value) { this._handler = p_value; }
+
+    CanExecute(p_params) {
+        for (let id in this._nfoParams) {
+            let def = this._nfoParams[id];
+            if (!(id in p_params)) {
+                if (def.default) {
+                    p_params[id] = def.default;
+                    continue;
+                }
+                return false;
+            }
+        }
+        return true;
+    }
 
     Execute(p_params, p_onSuccess, p_onError) {
 
@@ -74,6 +99,7 @@ class AbstractGetter extends base {
     }
 
     _CleanUp() {
+        this._handler = null;
         this._done = false;
         this._response = null;
         this._cbs.Clear();
