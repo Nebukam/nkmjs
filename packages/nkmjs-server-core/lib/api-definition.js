@@ -27,6 +27,7 @@ class APIDefinition extends com.Observable {
         this._route = `/`;
         this._handlerClass = null;
         this._running = false;
+        this._mode = null;
 
         this._Bind(this._Handle);
 
@@ -34,6 +35,9 @@ class APIDefinition extends com.Observable {
 
     get id() { return this._id; }
     set id(p_value) { this._id = p_value; }
+
+    get mode() { return this._mode; }
+    set mode(p_value) { this._mode = p_value; }
 
     get route() { return this._route; }
     set route(p_value) { this._route = p_value; }
@@ -67,12 +71,25 @@ class APIDefinition extends com.Observable {
         this._running = true;
         if (!this._handlerClass) { this._handlerClass = handlers.Fn; }
 
-        if (this._handlerClass.__MODE == FLAGS.POST) {
-            if (this._requireAuth) { this._express.post(this._route, this._requireAuth(), this._Handle); }
-            else { this._express.post(this._route, this._Handle); }
+        let
+            mode = this._mode || this._handlerClass.__MODE,
+            r = this._route,
+            h = this._Handle;
+
+        this._mode = mode;
+
+        if (this._requireAuth) {
+            switch (mode) {
+                case FLAGS.POST: this._express.post(r, this._requireAuth(), h); break;
+                case FLAGS.GET: this._express.get(r, this._requireAuth(), h); break;
+                case FLAGS.POST_AND_GET: this._express.post(r, this._requireAuth(), h).get(r, this._requireAuth(), h); break;
+            }
         } else {
-            if (this._requireAuth) { this._express.get(this._route, this._requireAuth(), this._Handle); }
-            else { this._express.get(this._route, this._Handle); }
+            switch (mode) {
+                case FLAGS.POST: this._express.post(r, h); break;
+                case FLAGS.GET: this._express.get(r, h); break;
+                case FLAGS.POST_AND_GET: this._express.post(r, h).get(r, h); break;
+            }
         }
 
         console.log(`${this._app.baseURL}${this._route} · · · (${this.id} @ ${this._handlerClass.name}`);
@@ -148,6 +165,7 @@ class APIDefinition extends com.Observable {
     }
 
     _CleanUp() {
+        this._mode = null;
         super._CleanUp();
         this.Stop();
     }

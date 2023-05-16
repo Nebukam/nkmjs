@@ -27,8 +27,8 @@ class SingleViewLayer extends base {
 
         super._Init();
 
-        this._catalogViewBuilder = new ui.helpers.CatalogViewBuilder();
-        this._catalogViewBuilder
+        this._catalogHandler = new ui.helpers.CatalogViewBuilder();
+        this._catalogHandler
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
@@ -65,9 +65,9 @@ class SingleViewLayer extends base {
      * @description TODO
      * @type {data.core.Catalog}
      */
-    get catalog() { return this._catalogViewBuilder.catalog; }
+    get catalog() { return this._catalogHandler.catalog; }
     set catalog(p_value) {
-        this._catalogViewBuilder.catalog = p_value;
+        this._catalogHandler.catalog = p_value;
         if (p_value) { this._OnWindowViewChanged(); }
     }
 
@@ -117,20 +117,9 @@ class SingleViewLayer extends base {
 
         let view = null;
 
-        if (u.isNumber(p_identifier)) {
-            // by index
-            view = this._catalogViewBuilder.Get(this.catalog.At(p_identifier));
-        } else if (u.isString(p_identifier)) {
-            // by data id name
-            let catalogItem = this.catalog.FindFirstByOptionValue(com.IDS.NAME, p_identifier);
-            if (catalogItem) { view = this._catalogViewBuilder.Get(catalogItem); }
-        } else if (u.isInstanceOf(data.catalogs.CatalogItem)) {
-            // by catalog item reference
-            view = this._catalogViewBuilder.Get(catalogItem);
-        } else if (u.isInstanceOf(ui.views.View)) {
-            // by direct set
-            if (this._catalogViewBuilder.Owns(p_identifier)) { view = p_identifier; }
-        }
+        if (u.isInstanceOf(p_identifier, ui.views.View)
+            && this._catalogHandler.Owns(p_identifier)) { view = p_identifier; }
+        else { view = this._catalogHandler.TryGet(p_identifier); }
 
         if (view && this._currentView != view) { view.RequestDisplay(); }
 
@@ -144,7 +133,7 @@ class SingleViewLayer extends base {
     _OnViewRequestDisplay(p_view) { this.currentView = p_view; }
 
     _OnViewRequestClose(p_view) {
-        let catalogItem = this._catalogViewBuilder.ReverseGet(p_view);
+        let catalogItem = this._catalogHandler.ReverseGet(p_view);
         if (catalogItem) { catalogItem.Release(); }
     }
 
@@ -166,7 +155,7 @@ class SingleViewLayer extends base {
 
         if (oldValue) {
 
-            if (this._catalogViewBuilder.Owns(oldValue)) {
+            if (this._catalogHandler.Owns(oldValue)) {
                 oldValue.visible = false;
             } else {
                 ui.dom.CSSClass(oldValue, ui.IDS.VIEW, false);
@@ -177,7 +166,7 @@ class SingleViewLayer extends base {
 
         if (this._currentView) {
 
-            if (this._catalogViewBuilder.Owns(this._currentView)) {
+            if (this._catalogHandler.Owns(this._currentView)) {
                 this._currentView.visible = true;
             } else {
                 ui.dom.CSSClass(this._currentView, ui.IDS.VIEW);
@@ -202,7 +191,7 @@ class SingleViewLayer extends base {
             this._currentView.DisplayGranted();
 
             WindowStateHandler.Push({
-                [this._viewId]: this._catalogViewBuilder.ReverseGet(this._currentView).name
+                [this._viewId]: this._catalogHandler.ReverseGet(this._currentView).name
             });
 
         }

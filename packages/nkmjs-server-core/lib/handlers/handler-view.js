@@ -8,7 +8,7 @@ const STATUSES = require("../status-codes");
 
 const Views = require(`../views`);
 
-const base = require(`./handler-get`);
+const base = require(`./abstract-get`);
 class HandlerView extends base {
     constructor() { super(); }
 

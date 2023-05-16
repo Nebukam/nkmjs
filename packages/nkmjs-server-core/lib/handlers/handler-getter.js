@@ -5,9 +5,11 @@ const u = require(`@nkmjs/utils`);
 const STATUSES = require("../status-codes");
 const GetterManager = require(`../getters/getter-manager`);
 
-const base = require(`./handler-get`);
+const base = require(`./abstract-base`);
 class HandlerGetter extends base {
     constructor() { super(); }
+
+    static __MODE = FLAGS.GET;
 
     _SanitizeRequest(p_req) {
         if (!GetterManager.Has(this._def.id)) { return STATUSES.BAD_REQUEST; }

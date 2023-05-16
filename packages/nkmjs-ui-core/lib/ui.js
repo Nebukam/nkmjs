@@ -6,7 +6,7 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./signal`);
 const FLAGS = require(`./flags`);
-const DisposableHTMLElement = require(`./disposable-htmlelement`);
+const Disposable = require(`./disposable-htmlelement`);
 
 /**
  * @description TODO
@@ -82,14 +82,14 @@ class UI extends com.Observable { // PORT_TO_MODULE
 
     /**
      * @access protected
-     * @description Return a deprecated DisposableHTMLElement to be re-used later.
-     * @param {DisposableHTMLElement} p_displayObject 
+     * @description Return a deprecated Disposable to be re-used later.
+     * @param {Disposable} p_displayObject 
      * @group Pooling
      */
     _Return(p_displayObject) {
 
         if (!u.isObject(p_displayObject)
-            || !u.isInstanceOf(p_displayObject, DisposableHTMLElement)) {
+            || !u.isInstanceOf(p_displayObject, Disposable)) {
             throw new Error(`Return used with invalid object : ${p_displayObject}`);
         }
 

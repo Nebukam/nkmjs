@@ -44,20 +44,12 @@ class KEYBOARD extends com.Observable {
 
         let an = this._activeKeystrokes.count;
 
-        for (let i = 0; i < an; i++) {
-            this._activeKeystrokes.At(i).Deactivate();
-        }
-
+        this._activeKeystrokes.ForEach(k => { k.Deactivate() });
         this._activeKeystrokes.Clear();
-        let n = this._keystrokes.count;
-        for (let i = 0; i < n; i++) {
 
-            let k = this._keystrokes.At(i),
-                match = k.GetMatch(this._activeChain);
-
-            if (match >= 0) { this._activeKeystrokes.Unshift(k); } // FILO
-
-        }
+        this._keystrokes.ForEach(k => {
+            if (k.GetMatch(this._activeChain) >= 0) { this._activeKeystrokes.Unshift(k); } // FILO
+        });
 
     }
 

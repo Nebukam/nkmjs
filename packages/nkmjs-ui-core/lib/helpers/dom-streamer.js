@@ -10,12 +10,12 @@ const SIGNAL = require(`../signal`);
 const dom = require(`../utils-dom`);
 
 const RectTracker = require(`./rect-tracker`);
-const DisposableHTMLElement = require("../disposable-htmlelement");
+const Disposable = require("../disposable-htmlelement");
 
-const base = DisposableHTMLElement;
+const base = Disposable;
 const __empty = `empty`;
 
-class DOMStreamerPlaceholder extends DisposableHTMLElement {
+class DOMStreamerPlaceholder extends Disposable {
     constructor() { super(); dom.CSSClass(this, `dom-streamer-dummy`); }
 }
 

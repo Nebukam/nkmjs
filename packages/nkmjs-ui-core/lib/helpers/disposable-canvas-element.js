@@ -75,7 +75,7 @@ const base = HTMLCanvasElement;
  * @memberof ui.core
  * @category Some Category
  * @signal SignalReleasing Broadcasted right before the object is about to be released. 
- * Offers the opportunity to cancel release using `{@link ui.core.DisposableHTMLElement.PreventRelease|PreventRelease}`.
+ * Offers the opportunity to cancel release using `{@link ui.core.Disposable.PreventRelease|PreventRelease}`.
  * @signal SignalReleased Broadcasted when the object has been released.
  * @signal SignalFirstPaint Broadcasted once in the lifetime of the object, the first time it is painted.
  * @signal SignalPainted Broadcasted when the object has at least one painted pixel.
@@ -290,7 +290,7 @@ class DisposableCanvasElement extends base {
      * @param {*} p_signal The signal to watch for
      * @param {function} p_fn The callback to trigger when the signal fires
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {ui.core.DisposableHTMLElement}
+     * @returns {ui.core.Disposable}
      * @group Broadcasting
      * @example var foo = someFunction;
      * object.Watch(com.SIGNAL.RELEASED, foo);
@@ -305,7 +305,7 @@ class DisposableCanvasElement extends base {
      * @param {*} p_signalId The signal to watch for
      * @param {function} p_fn The callback to trigger when the signal fires
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {ui.core.DisposableHTMLElement}
+     * @returns {ui.core.Disposable}
      * @group Broadcasting
      */
     WatchOnce(p_signal, p_fn, p_listener = null) { /* owned by local SignalBox */ }
@@ -315,7 +315,7 @@ class DisposableCanvasElement extends base {
      * @param {*} p_signal The signal that was being watched
      * @param {function} p_fn The callback to be removed
      * @param {*} p_listener The callback's 'thisArg', if any
-     * @returns {ui.core.DisposableHTMLElement}
+     * @returns {ui.core.Disposable}
      * @group Broadcasting
      */
     Unwatch(p_signal, p_fn, p_listener = null) {

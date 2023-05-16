@@ -47,8 +47,8 @@ class Shelf extends base {
         this._placholderViewClass = null;
         this._placeholderView = null;
 
-        this._catalogViewBuilder = new ui.helpers.CatalogViewBuilder();
-        this._catalogViewBuilder
+        this._catalogHandler = new ui.helpers.CatalogViewBuilder();
+        this._catalogHandler
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnCatalogItemAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCatalogItemRemoved, this);
 
@@ -340,8 +340,8 @@ class Shelf extends base {
      * @description TODO
      * @type {data.core.Catalog}
      */
-    get catalog() { return this._catalogViewBuilder.catalog; }
-    set catalog(p_value) { this._catalogViewBuilder.catalog = p_value; }
+    get catalog() { return this._catalogHandler.catalog; }
+    set catalog(p_value) { this._catalogHandler.catalog = p_value; }
 
     /**
      * @description Create a view & a nav item from a catalogItem
@@ -405,7 +405,7 @@ class Shelf extends base {
      * @param {ui.core.Widget} p_handle 
      */
     _OnNavItemActivated(p_nav, p_handle) {
-        let view = this._catalogViewBuilder.Get(p_handle.data);
+        let view = this._catalogHandler.Get(p_handle.data);
         if (!u.isInstanceOf(view, ui.views.View)) { return; }
 
         if (this._isCollapsable) {
@@ -440,7 +440,7 @@ class Shelf extends base {
         // this way we ensure the view is notified the user wants to close it, and can react to it.
         // we only close a view from the signal broadcasted by the view itself, not the handle.
         let catalogItem = p_handle.data,
-            p_view = this._catalogViewBuilder.Get(catalogItem);
+            p_view = this._catalogHandler.Get(catalogItem);
         if (p_view) {
             // If a view exists, give it control over its release.
             p_view.RequestClose();
@@ -459,22 +459,11 @@ class Shelf extends base {
 
         let view = null;
 
-        if (u.isNumber(p_identifier)) {
-            // by index
-            view = this._catalogViewBuilder.Get(this.catalog.At(p_identifier));
-        } else if (u.isString(p_identifier)) {
-            // by data id name
-            let catalogItem = this.catalog.FindFirstByOptionValue(ui.IDS.NAME, p_identifier);
-            if (catalogItem) { view = this._catalogViewBuilder.Get(catalogItem); }
-        } else if (u.isInstanceOf(data.catalogs.CatalogItem)) {
-            // by catalog item reference
-            view = this._catalogViewBuilder.Get(catalogItem);
-        } else if (u.isInstanceOf(ui.views.View)) {
-            // by direct set
-            if (this._catalogViewBuilder.Owns(p_identifier)) { view = p_identifier; }
-        }
+        if (u.isInstanceOf(p_identifier, ui.views.View)
+            && this._catalogHandler.Owns(p_identifier)) { view = p_identifier; }
+        else { view = this._catalogHandler.TryGet(p_identifier); }
 
-        if (view) { view.RequestDisplay(); }
+        if (view && this._currentView != view) { view.RequestDisplay(); }
 
     }
 
@@ -483,12 +472,10 @@ class Shelf extends base {
      * @description TODO
      * @param {ui.core.View} p_view 
      */
-    _OnViewRequestDisplay(p_view) {
-        this.currentView = p_view;
-    }
+    _OnViewRequestDisplay(p_view) { this.currentView = p_view; }
 
     _OnViewRequestClose(p_view) {
-        let catalogItem = this._catalogViewBuilder.ReverseGet(p_view);
+        let catalogItem = this._catalogHandler.ReverseGet(p_view);
         if (catalogItem) { catalogItem.Release(); }
     }
 
@@ -551,7 +538,7 @@ class Shelf extends base {
     _OnCurrentHandleChanged(p_oldHandle) {
 
         let catalogItem = this._currentHandle ? this._currentHandle.data : null,
-            view = this._catalogViewBuilder.Get(catalogItem);
+            view = this._catalogHandler.Get(catalogItem);
 
         if (!view) {
             this.Broadcast(SIGNAL.CURRENT_HANDLE_CHANGED, this, catalogItem, p_oldHandle ? p_oldHandle.data : null);
@@ -577,7 +564,7 @@ class Shelf extends base {
 
         if (oldValue) {
 
-            if (this._catalogViewBuilder.Owns(oldValue)) {
+            if (this._catalogHandler.Owns(oldValue)) {
                 oldValue.visible = false;
             } else {
                 ui.dom.CSSClass(oldValue, ui.IDS.VIEW, false);
@@ -588,7 +575,7 @@ class Shelf extends base {
 
         if (this._currentView) {
 
-            if (this._catalogViewBuilder.Owns(this._currentView)) {
+            if (this._catalogHandler.Owns(this._currentView)) {
                 this._currentView.visible = true;
             } else {
                 ui.dom.CSSClass(this._currentView, ui.IDS.VIEW);
@@ -630,7 +617,7 @@ class Shelf extends base {
         }
 
         // Retrieve the corresponding handle
-        let item = this._catalogViewBuilder.ReverseGet(this._currentView);
+        let item = this._catalogHandler.ReverseGet(this._currentView);
         if (item) { this.currentHandle = this._nav.GetNavItem(item); }
         else { this.currentHandle = null; }
 
@@ -646,7 +633,7 @@ class Shelf extends base {
     _CleanUp() {
         // Move the nav back in if it has been taken out
         if (this._nav.parentElement != this._host) { ui.dom.AttachFirst(this._nav, this._host, false); }
-        this._catalogViewBuilder.catalog = null;
+        this._catalogHandler.catalog = null;
         ui.dom.CSSClass(this, {
             [NAV_END]: false,
             [NAV_START]: false

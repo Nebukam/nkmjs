@@ -121,7 +121,7 @@ class ActionStack extends com.Observable {
         if (this._group) {
             lastAction = this._group.last;
         } else {
-            lastAction = this._stack.length > 0 ? this._stack[this._stack.length - 1] : null;
+            lastAction = this._stack.length ? this._stack[this._stack.length - 1] : null;
         }
 
         if (p_actionClass.mergeable) {

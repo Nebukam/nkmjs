@@ -21,7 +21,7 @@ module.exports = {
     INPUT: require(`./lib/input`),
     POINTER: require(`./lib/pointer`),
 
-    DisposableHTMLElement: require(`./lib/disposable-htmlelement`),
+    Disposable: require(`./lib/disposable-htmlelement`),
     DisplayObject: require(`./lib/display-object`),
     DisplayObjectContainer: require(`./lib/display-object-container`),
 

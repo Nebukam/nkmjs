@@ -1,6 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const u = require(`@nkmjs/utils`);
 
 const SIGNAL = require(`./catalog-signal`);
 
@@ -23,6 +24,7 @@ class CatalogWatcher extends com.Observable {
         this._owner = null;
         this._catalog = null;
         this._map = new Map();
+        this._reverseMap = new Map();
 
         this._filtersHandler = new filters.CatalogFilterListHandler();
         this._filtersHandler
@@ -236,7 +238,10 @@ class CatalogWatcher extends com.Observable {
         }
 
         let mappedObject = this._map.get(p_item);
-        if (mappedObject) { this._map.delete(p_item); }
+        if (mappedObject) {
+            this._map.delete(p_item);
+            this._reverseMap.delete(mappedObject);
+        }
         return mappedObject;
 
     }
@@ -272,6 +277,7 @@ class CatalogWatcher extends com.Observable {
      */
     Set(p_item, p_mappedValue) {
         this._map.set(p_item, p_mappedValue);
+        this._reverseMap.set(p_mappedValue, p_item);
         return p_mappedValue;
     }
 
@@ -281,6 +287,7 @@ class CatalogWatcher extends com.Observable {
      * @returns {*} value mapped to provided item, if any
      */
     Get(p_item) { return this._map.get(p_item); }
+    ReverseGet(p_mappedValue) { this._reverseMap.get(p_mappedValue); }
 
     /**
      * @description TODO
@@ -306,6 +313,27 @@ class CatalogWatcher extends com.Observable {
             }
         }
         return results;
+    }
+
+
+    TryGet(p_identifier) {
+
+        let mappedValue = null;
+
+        if (u.isNumber(p_identifier)) {
+            // by index
+            mappedValue = this.Get(this._catalog.At(p_identifier));
+        } else if (u.isString(p_identifier)) {
+            // by data id name
+            let catalogItem = this._catalog.FindFirstByOptionValue(com.IDS.NAME, p_identifier);
+            if (catalogItem) { mappedValue = this.Get(catalogItem); }
+        } else if (u.isInstanceOf(data.catalogs.CatalogItem)) {
+            // by catalog item reference
+            mappedValue = this.Get(catalogItem);
+        }
+
+        return mappedValue;
+
     }
 
     // ---->

@@ -220,21 +220,12 @@ class InputHandler extends com.Observable {
             : this._externalValidationStack;
 
         //Check external validation callbacks
-        /*
-        for (let i = 0, n = stack.count; i < n; i++) {
-
-            let obj = stack.At(i),
-                result = u.CallPrepend(stack.At(i), cValue);
-            if (result) { this._PushError(result); }
-
-        }
-        */
         stack.ForEach((fn) => {
             let result = u.CallPrepend(fn, cValue);
             if (result) { this._PushError(result); }
         }, this);
 
-        this._invalidInput = (this._inputErrors.length > 0);
+        this._invalidInput = (this._inputErrors.length);
         if (this._invalidInput) { this._internalOnInputError(); }
 
         return !this._invalidInput;

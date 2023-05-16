@@ -213,7 +213,7 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
 
         if (result != null) { return result; }
 
-        if (p_fallbacks.length > 0) {
+        if (p_fallbacks.length) {
             p_data = p_fallbacks.shift();
             return this.Resolve(p_id, p_data, ...p_fallbacks);
         }

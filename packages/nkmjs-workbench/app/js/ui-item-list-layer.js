@@ -72,11 +72,11 @@ class UIItemListLayer extends base {
         }
 
         if (variants) {
-            for (let i = 0, n = variants.length; i < n; i++) {
+            variants.forEach(v => {
                 let item = this.Attach(UIItem, `item`, this._itemContainer);
-                item.Display(p_id, p_class, variants[i]);
-                if (callback) { callback(item._sample, variants[i]); }
-            }
+                item.Display(p_id, p_class, v);
+                if (callback) { callback(item._sample, v); }
+            });
         } else {
             let item = this.Attach(UIItem, `item`, this._itemContainer);
             item.Display(p_id, p_class);

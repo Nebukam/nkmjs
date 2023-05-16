@@ -96,7 +96,7 @@ class ScriptBase {
         try { this.localConfig = NKMjs.projectConfig[this.__localId]; }
         catch (e) { }
 
-        if (requiredLocals && requiredLocals.length > 0) {
+        if (requiredLocals && requiredLocals.length) {
             if (!this.localConfig) {
                 this._logError(`${this.__localId} is missing local config.`);
                 this.__hasErrors = true;
@@ -112,7 +112,7 @@ class ScriptBase {
             }
         }
 
-        if (requiredArgs && requiredArgs.length > 0) {
+        if (requiredArgs && requiredArgs.length) {
             for (let i = 0, n = requiredArgs.length; i < n; i++) {
                 let key = requiredArgs[i];
                 if (!NKMjs.shortargs.Has(key)) {

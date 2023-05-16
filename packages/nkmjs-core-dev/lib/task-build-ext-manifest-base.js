@@ -55,7 +55,7 @@ class TaskBuildWebmanifestBase extends ScriptBase {
         // "default_locale" must be present if the "_locales" directory is present, and must be absent otherwise
 
         let locales = NKMjs.Get(`locales`, []);
-        if (locales.length > 0) {
+        if (locales.length) {
 
             // We have locales !
             manifest.default_locale = (NKMjs.projectConfig.lang || locales[0].name);

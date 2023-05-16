@@ -8,7 +8,7 @@ const style = require(`@nkmjs/style`);
 const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
 const FLAGS = require("./flags");
-const DisposableHTMLElement = require(`./disposable-htmlelement`);
+const Disposable = require(`./disposable-htmlelement`);
 const FlagBox = require("./helpers/flag-box");
 
 /**
@@ -26,13 +26,13 @@ const FlagBox = require("./helpers/flag-box");
  * @property {number} [scaleZ]
  */
 
-const base = DisposableHTMLElement;
+const base = Disposable;
 
 /**
  * @description TODO
  * @class
  * @hideconstructor
- * @augments ui.core.DisposableHTMLElement
+ * @augments ui.core.Disposable
  * @memberof ui.core
  */
 class DisplayObject extends base {

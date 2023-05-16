@@ -22,7 +22,6 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
 
     _Init() {
         super._Init();
-        this._reverseMap = new Map();
     }
 
     /**
@@ -33,10 +32,6 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
     Owns(p_view) {
         if (!p_view) { return false; }
         return this._reverseMap.has(p_view);
-    }
-
-    ReverseGet(p_view){
-        return this._reverseMap.get(p_view);
     }
 
     /**
@@ -66,8 +61,7 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
             if (!u.isInstanceOf(view, View)) { throw new Error(`view is not of type View.`); }
         }
 
-        this._map.set(p_item, view);
-        this._reverseMap.set(view, p_item);
+        this.Set(p_item, view);
 
         if (p_item.data) { view.data = p_item.data; }
         else { view.data = p_item; }
@@ -88,9 +82,8 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
         let mappedView = super._OnItemRemoved(p_catalog, p_item, p_index);
         if (mappedView === false) { return false; }
 
-        this._reverseMap.delete(mappedView);
         this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedView, p_index);
-        mappedView.Release();
+        mappedView.Release();s
 
         return mappedView;
 

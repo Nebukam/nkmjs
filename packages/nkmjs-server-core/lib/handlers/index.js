@@ -2,8 +2,8 @@
 
 module.exports = {
 
-    GET: require(`./handler-get`),
-    POST: require(`./handler-post`),
+    GET: require(`./abstract-get`),
+    POST: require(`./abstract-post`),
 
     View: require(`./handler-view`),
     Action: require(`./handler-action`),
@@ -11,5 +11,5 @@ module.exports = {
     Upload: require(`./handler-upload`),
     Fn: require(`./handler-fn`),
     Fetch: require(`./handler-fetch`),
-    
+
 }

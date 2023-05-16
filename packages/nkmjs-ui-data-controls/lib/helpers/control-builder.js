@@ -56,25 +56,16 @@ class ControlBuilder {
 
     get editor() { return this._editor; }
     set editor(p_value) {
-
         this._editor = p_value;
-        for (let i = 0, n = this._controls.length; i < n; i++) {
-            let ctrl = this._controls[i];
-            if (`editor` in ctrl) { this._controls[i].editor = p_value; }
-        }
-
+        this._controls.forEach(ctrl => { ctrl.editor = p_value; });
         this.RefreshConditionals();
-
     }
 
     get context() { return this._context; }
     set context(p_value) {
 
         this._context = p_value;
-        for (let i = 0, n = this._controls.length; i < n; i++) {
-            this._controls[i].context = p_value;
-        }
-
+        this._controls.forEach(ctrl => { ctrl.context = p_value; });
         this.RefreshConditionals();
 
     }
@@ -103,16 +94,12 @@ class ControlBuilder {
         this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_data) : p_data;
         this._dataObserver.ObserveOnly(this._data);
 
-        for (let i = 0, n = this._controls.length; i < n; i++) {
-            let
-                ctrl = this._controls[i],
-                opts = this._configMap.get(ctrl);
 
+        this._controls.forEach(ctrl => {
             ctrl.editor = this._editor;
             ctrl.context = p_context;
-
-            this._AssignData(ctrl, opts, this._data);
-        }
+            this._AssignData(ctrl, this._configMap.get(ctrl), this._data);
+        });
 
         this.RefreshConditionals();
 
@@ -128,21 +115,16 @@ class ControlBuilder {
 
         let fragment = document.createDocumentFragment();
 
-        for (let i = 0, n = p_controls.length; i < n; i++) {
+        p_controls.forEach(conf => {
+            let ctrl = null,
+                cl = conf.cl || this._defaultControlClass;
 
-            let config = p_controls[i],
-                control = null,
-                cl = null;
+            if (conf.context) { cl = com.BINDINGS.Get(conf.context, (conf.key || conf.cl), cl); }
 
-            if (config.context) { cl = com.BINDINGS.Get(config.context, (config.key || config.cl), config.cl); }
-            else { cl = config.cl; }
+            ctrl = this.Add(cl, conf.css, conf, false, fragment);
+            if (conf.member) { (conf.owner || this._owner)[conf.member] = ctrl; }
 
-            if (!cl) { cl = this._defaultControlClass; }
-
-            control = this.Add(cl, config.css, config, false, fragment);
-            if (config.member) { (config.owner || this._owner)[config.member] = control; }
-
-        }
+        });
 
         ui.dom.Attach(fragment, p_host || this._host);
 
@@ -217,10 +199,9 @@ class ControlBuilder {
 
     RefreshConditionals() {
         if (!this._conditionalControls) { return; }
-        for (let i = 0; i < this._conditionalControls.length; i++) {
-            let control = this._conditionalControls[i];
-            this._RefreshConditions(control, this._configMap.get(control));
-        }
+        this._conditionalControls.forEach(ctrl => {
+            this._RefreshConditions(ctrl, this._configMap.get(ctrl));
+        });
     }
 
     _RefreshConditions(p_control, p_config) {
@@ -251,16 +232,19 @@ class ControlBuilder {
     }
 
     Clear() {
-        for (let i = 0, n = this._controls.length; i < n; i++) {
-            let
-                ctrl = this._controls[i],
-                conf = this._configMap.get(ctrl);
+
+        this._controls.forEach(ctrl => {
+
+            let conf = this._configMap.get(ctrl);
             if (conf) {
                 if (conf.css) { ui.dom.CSSClass(ctrl, conf.css, false); }
                 //TODO : Clear owner member, if any
             }
+
             ctrl.Release();
-        }
+
+        })
+
         this._configMap.clear();
         this._controls.length = 0;
         if (this._conditionalControls) {
@@ -272,22 +256,13 @@ class ControlBuilder {
     DisplayGranted() {
         if (this._isDisplayed) { return; }
         this._isDisplayed = true;
-
-        for (let i = 0, n = this._controls.length; i < n; i++) {
-            let control = this._controls[i];
-            if (`DisplayGranted` in control) { control.DisplayGranted(); }
-        }
-
+        this._controls.forEach(ctrl => { if (`DisplayGranted` in ctrl) { ctrl.DisplayGranted(); } });
     }
 
     DisplayLost() {
         if (!this._isDisplayed) { return; }
         this._isDisplayed = false;
-
-        for (let i = 0, n = this._controls.length; i < n; i++) {
-            let control = this._controls[i];
-            if (`DisplayLost` in control) { control.DisplayLost(); }
-        }
+        this._controls.forEach(ctrl => { if (`DisplayLost` in ctrl) { ctrl.DisplayLost(); } });
     }
 
 }

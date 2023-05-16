@@ -1,14 +1,15 @@
 'use strict';
 
 const com = require(`@nkmjs/common`);
+const FLAGS = require(`../flags`);
 
-const base = require(`./handler-get`);
+const base = require(`./abstract-base`);
 class HandlerPing extends base {
     constructor() { super(); }
 
-    Handle(){
-        this._res.send(`pong`);
-    }
+    static __MODE = FLAGS.POST_AND_GET;
+
+    Handle() { this.Complete(`pong`); }
 
 }
 

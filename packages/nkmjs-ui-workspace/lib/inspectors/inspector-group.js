@@ -161,42 +161,22 @@ class InspectorGroup extends base {
 
     Collapse() { this._extExpand.Collapse(); }
     _Collapse() {
-
-        if (this._data && !this._staticContent) {
-            this._ClearContent();
-        }
-
+        if (this._data && !this._staticContent) { this._ClearContent(); }
         ui.dom.CSSClass(this._expandIcon.element, ui.FLAGS.EXPANDED);
         this._toolbar.hidden = true;
     }
 
     ExpandAll() {
         this.Expand();
-        let list = this._displayObjects;
-        let child = null;
-        for (let i = 0, n = list.length; i < n; i++) {
-            child = list[i];
-            if (`Expand` in child) { child.Expand(); }
-        }
+        this._displayObjects.forEach(d => { if (`Expand` in d) { d.Expand(); } });
     }
 
     CollapseAll() {
-        let list = this._displayObjects;
-        let child = null;
-        for (let i = 0, n = list.length; i < n; i++) {
-            child = list[i];
-            if (`Collapse` in child) { child.Collapse(); }
-        }
+        this._displayObjects.forEach(d => { if (`Collapse` in d) { d.Collapse(); } });
     }
 
     _OnContextChanged() {
-        let context = this._context;
-        let list = this._displayObjects;
-        let child = null;
-        for (let i = 0, n = list.length; i < n; i++) {
-            child = list[i];
-            if (`context` in child) { child.context = context; }
-        }
+        this._displayObjects.forEach(d => { if (`context` in d) { d.context = this._context; } });
     }
 
     _OnDataChanged(p_oldValue) {

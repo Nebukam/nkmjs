@@ -258,6 +258,7 @@ class ServerBase extends com.Observable {
             this._RegisterAPI(getter.id, {
                 route: env.routing.Model(env.routing.getPrefix, getter.nfos),
                 handler: getter.handler || getters.Manager.defaultHander,
+                mode: getter.nfos.mode || null,
                 requireAuth: getter.nfos.requireAuth
             })
         });
@@ -342,6 +343,7 @@ class ServerBase extends com.Observable {
 
         api = new APIDefinition(this._express, this);
         api.id = p_identifier;
+        api.mode = p_config.mode || null;
         api.route = p_config.route;
         api.handlerClass = p_config.handler;
         api.requireAuth = p_config.requireAuth ? this._authFn : false;

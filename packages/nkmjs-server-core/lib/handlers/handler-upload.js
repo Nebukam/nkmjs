@@ -5,7 +5,7 @@ const u = require(`@nkmjs/utils`);
 const STATUSES = require("../status-codes");
 const ActionManager = require(`../actions/action-manager`);
 
-const base = require(`./handler-post`);
+const base = require(`./abstract-post`);
 class HandlerUpload extends base {
     constructor() { super(); }
 

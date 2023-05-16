@@ -104,7 +104,7 @@ class Features extends com.Observable {
             window.addEventListener('offline', this._Bind(this._OnEnvironmentOffline));
 
             let navData = window.performance.getEntriesByType("navigation");
-            if (navData.length > 0 && navData[0].loadEventEnd > 0) { this._OnWindowLoaded(); }
+            if (navData.length && navData[0].loadEventEnd > 0) { this._OnWindowLoaded(); }
             else { window.addEventListener('load', this._Bind(this._OnWindowLoaded)); }
 
             this._isMobile = /Mobi|Android/i.test(navigator.userAgent);

@@ -630,11 +630,8 @@ module.exports = {
             current = p_obj;
 
         for (let i = 0, n = paths.length; i < n; i++) {
-            if (current[paths[i]] === undefined) {
-                return undefined;
-            } else {
-                current = current[paths[i]];
-            }
+            if (current[paths[i]] === undefined) { return undefined; }
+            else { current = current[paths[i]]; }
         }
         return current;
     },
@@ -804,9 +801,7 @@ module.exports = {
     BytesToBase64: function (bytes) {
         let binary = '';
         let len = bytes.byteLength;
-        for (var i = 0; i < len; i++) {
-            binary += String.fromCharCode(bytes[i]);
-        }
+        for (var i = 0; i < len; i++) { binary += String.fromCharCode(bytes[i]); }
         return window.btoa(binary);
     },
 

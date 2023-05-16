@@ -7,7 +7,7 @@ class TaskAuditVisibleURLs extends ScriptBase {
 
     constructor(p_onComplete = null) {
 
-        super(`audit-visible-urls`, p_onComplete, { skipKey: `no-url-audit`, requiredGlobals:[`web-ext-configs`] });
+        super(`audit-visible-urls`, p_onComplete, { skipKey: `no-url-audit`, requiredGlobals: [`web-ext-configs`] });
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         // Check bundle for easy-to-find urls that would likely require to be put under 'permissions'
@@ -66,7 +66,7 @@ class TaskAuditVisibleURLs extends ScriptBase {
             }
         }
 
-        if (unknownPermissions.length > 0) {
+        if (unknownPermissions.length) {
 
             NKMjs.Set(`unknownPermissions`, unknownPermissions);
 

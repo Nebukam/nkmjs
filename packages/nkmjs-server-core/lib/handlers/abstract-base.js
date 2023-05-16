@@ -9,7 +9,7 @@ const STATUSES = require("../status-codes");
 class HandlerBase extends com.Observable {
     constructor() { super(); }
 
-    static __MODE = FLAGS.GET;
+    static __MODE = null;
 
     _Init() {
         super._Init();
@@ -62,7 +62,7 @@ class HandlerBase extends com.Observable {
 
     Complete(p_response = null) {
 
-        
+
         if (!p_response) { p_response = STATUSES.OK; }
         else if (u.isNumber(p_response)) { p_response = STATUSES.getStatus(p_status); }
 

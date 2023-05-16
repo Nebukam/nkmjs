@@ -4,7 +4,7 @@ const com = require(`@nkmjs/common`);
 const axios = require(`axios`);
 const STATUSES = require("../status-codes");
 
-const base = require(`./handler-get`);
+const base = require(`./abstract-get`);
 class HandlerFetch extends base {
 
     constructor() { super(); }

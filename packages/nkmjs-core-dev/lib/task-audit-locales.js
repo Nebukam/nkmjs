@@ -88,9 +88,7 @@ class TaskAuditLocales extends ScriptBase {
                         }
                     }
 
-                    if (errList.length > 0) {
-                        errors.files.push(fileData);
-                    }
+                    if (errList.length) { errors.files.push(fileData); }
                 }
             });
 

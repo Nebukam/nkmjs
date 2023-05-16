@@ -221,7 +221,7 @@ class DropExtension extends Extension {
 
     _ToggleDropCandidate(p_toggle) {
 
-        if (this._candidatesHooks.length > 0) {
+        if (this._candidatesHooks.length) {
 
             POINTER.Watch(SIGNAL.DRAG_ENDED, this._OnPointerDragEnded);
 
