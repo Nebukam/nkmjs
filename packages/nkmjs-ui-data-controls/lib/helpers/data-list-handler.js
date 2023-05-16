@@ -24,7 +24,8 @@ class DataListHandler extends ControlManager {
     constructor(p_owner, p_defaultCSS = `ctrl`) {
         super(p_owner, p_defaultCSS);
 
-        this._Bind(this.Handle);
+        this.Handle = this.Handle.bind(this);
+        this._RefreshIndices = this._RefreshIndices.bind(this);
 
         this._dataListObserver = new com.signals.Observer();
         this._dataListObserver
@@ -32,7 +33,7 @@ class DataListHandler extends ControlManager {
             .Hook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
             .Hook(com.SIGNAL.SORTED, this._OnListSorted, this);
 
-        this._scheduledIndicesRefresh = com.DelayedCall(this._Bind(this._RefreshIndices));
+        this._scheduledIndicesRefresh = com.DelayedCall(this._RefreshIndices);
 
     }
 
