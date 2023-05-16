@@ -27,7 +27,7 @@ class APIDefinition extends com.Observable {
         this._route = `/`;
         this._handlerClass = null;
         this._running = false;
-        this._mode = null;
+        this._method = null;
 
         this._Bind(this._Handle);
 
@@ -36,8 +36,8 @@ class APIDefinition extends com.Observable {
     get id() { return this._id; }
     set id(p_value) { this._id = p_value; }
 
-    get mode() { return this._mode; }
-    set mode(p_value) { this._mode = p_value; }
+    get method() { return this._method; }
+    set method(p_value) { this._method = p_value; }
 
     get route() { return this._route; }
     set route(p_value) { this._route = p_value; }
@@ -72,20 +72,20 @@ class APIDefinition extends com.Observable {
         if (!this._handlerClass) { this._handlerClass = handlers.Fn; }
 
         let
-            mode = this._mode || this._handlerClass.__MODE,
+            method = this._method || this._handlerClass.__METHOD,
             r = this._route,
             h = this._Handle;
 
-        this._mode = mode;
+        this._method = method;
 
         if (this._requireAuth) {
-            switch (mode) {
+            switch (method) {
                 case FLAGS.POST: this._express.post(r, this._requireAuth(), h); break;
                 case FLAGS.GET: this._express.get(r, this._requireAuth(), h); break;
                 case FLAGS.POST_AND_GET: this._express.post(r, this._requireAuth(), h).get(r, this._requireAuth(), h); break;
             }
         } else {
-            switch (mode) {
+            switch (method) {
                 case FLAGS.POST: this._express.post(r, h); break;
                 case FLAGS.GET: this._express.get(r, h); break;
                 case FLAGS.POST_AND_GET: this._express.post(r, h).get(r, h); break;
@@ -165,7 +165,7 @@ class APIDefinition extends com.Observable {
     }
 
     _CleanUp() {
-        this._mode = null;
+        this._method = null;
         super._CleanUp();
         this.Stop();
     }

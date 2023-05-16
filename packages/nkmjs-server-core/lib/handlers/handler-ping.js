@@ -7,7 +7,7 @@ const base = require(`./abstract-base`);
 class HandlerPing extends base {
     constructor() { super(); }
 
-    static __MODE = FLAGS.POST_AND_GET;
+    static __METHOD = FLAGS.POST_AND_GET;
 
     Handle() { this.Complete(`pong`); }
 

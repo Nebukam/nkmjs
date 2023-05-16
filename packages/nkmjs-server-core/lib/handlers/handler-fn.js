@@ -1,10 +1,11 @@
 'use strict';
 
 const u = require(`@nkmjs/utils`);
-const HandlerBase = require(`./handler-base`);
+
 const STATUSES = require("../status-codes");
 
-class HandlerFn extends HandlerBase {
+const base = require(`./abstract-base`);
+class HandlerFn extends base {
     constructor() { super(); }
 
     Handle() {

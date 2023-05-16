@@ -11,12 +11,11 @@ class HandlerAction extends base {
 
     _SanitizeRequest(p_req) {
 
-        // Validate body
-        let actionData = this._req.body;
-        if (!actionData) { return STATUSES.BAD_REQUEST; }
+        let sup = super._SanitizeRequest(p_req);
+        if (!sup) { return; }
 
-        this._actionId = actionData.action;
-        this._actionParams = actionData.params;
+        this._actionId = p_req.params.id;
+        this._actionParams = p_req.body;
 
         // Validate model against params
         let model = ActionManager.GetModel(this._actionId);

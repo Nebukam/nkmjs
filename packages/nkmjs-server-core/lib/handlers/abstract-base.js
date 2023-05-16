@@ -9,7 +9,7 @@ const STATUSES = require("../status-codes");
 class HandlerBase extends com.Observable {
     constructor() { super(); }
 
-    static __MODE = null;
+    static __METHOD = null;
 
     _Init() {
         super._Init();

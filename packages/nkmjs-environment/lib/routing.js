@@ -34,7 +34,9 @@ module.exports = {
     },
 
     Get: function (p_api, p_params, p_callback) {
-        fetch(`${env.app.baseURL}${module.exports.Build(_getPrefix, p_api, p_params)}`, {})
+        fetch(`${env.app.baseURL}${module.exports.Build(_getPrefix, p_api, p_params)}`, {
+            method: p_api.method || 'GET'
+        })
             .then((p_res) => {
                 if (!p_res.ok) { p_callback(p_res, null); }
                 else {
@@ -48,12 +50,28 @@ module.exports = {
             });
     },
 
-    Do: function (p_options, p_callback) {
-        fetch(`${env.app.baseURL}${_actionPrefix}`, p_options)
+    Do: function (p_actionId, p_body, p_callback, p_options = {}) {
+
+        let conf = {
+            method: 'POST',
+            ...p_options
+        };
+
+        conf.body = p_body;
+
+        fetch(`${env.app.baseURL}${_actionPrefix}/${p_actionId}`, conf)
             .then((p_res) => {
                 if (!p_res.ok) { p_callback(p_res, null); }
-                else { p_callback(null, p_res.json()); }
+                else {
+                    let contentType = p_res.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        p_res.json().then(data => { p_callback(null, data); });
+                    } else {
+                        p_callback(null, p_res);
+                    }
+                }
             });
+
     },
 
 

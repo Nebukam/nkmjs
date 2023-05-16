@@ -265,7 +265,7 @@ class ServerBase extends com.Observable {
 
         //Register generic action api
         this._RegisterAPI(`action`, {
-            route: env.routing.actionPrefix,
+            route: `${env.routing.actionPrefix}/:id`,
             handler: actions.Manager.defaultHander,
             requireAuth: true
         });
