@@ -129,11 +129,9 @@ class Workspace extends base {
     }
 
     _OnItemDataReleased(p_data) {
-        let localCatalog = this.catalog;
+        if (!this.catalog) { return; }
 
-        if (!localCatalog) { return; }
-
-        let dataHolders = localCatalog.FindDataHolders(p_item.data);
+        let dataHolders = this.catalog.FindDataHolders(p_item.data);
         dataHolders.forEach(d => { d.Release(); });
 
         if (dataHolders && dataHolders.length) {

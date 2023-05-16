@@ -83,7 +83,7 @@ class CatalogViewBuilder extends data.catalogs.CatalogWatcher {
         if (mappedView === false) { return false; }
 
         this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, mappedView, p_index);
-        mappedView.Release();s
+        mappedView.Release();
 
         return mappedView;
 

@@ -4,6 +4,7 @@ const com = require("@nkmjs/common");
 const u = require(`@nkmjs/utils`);
 
 const SIGNAL = require(`./catalog-signal`);
+const CatalogItem = require(`./catalog-item`);
 
 const filters = require(`./filters`);
 
@@ -287,7 +288,7 @@ class CatalogWatcher extends com.Observable {
      * @returns {*} value mapped to provided item, if any
      */
     Get(p_item) { return this._map.get(p_item); }
-    ReverseGet(p_mappedValue) { this._reverseMap.get(p_mappedValue); }
+    ReverseGet(p_mappedValue) { return this._reverseMap.get(p_mappedValue); }
 
     /**
      * @description TODO
@@ -306,7 +307,7 @@ class CatalogWatcher extends com.Observable {
             results = null;
         for (let i = 0, n = keys.length; i < n; i++) {
             let key = keys[i],
-                value = this._map.Get(key);
+                value = this._map.get(key);
             if (value === p_value) {
                 if (!results) { results = []; }
                 results.push(key);
@@ -325,11 +326,11 @@ class CatalogWatcher extends com.Observable {
             mappedValue = this.Get(this._catalog.At(p_identifier));
         } else if (u.isString(p_identifier)) {
             // by data id name
-            let catalogItem = this._catalog.FindFirstByOptionValue(com.IDS.NAME, p_identifier);
-            if (catalogItem) { mappedValue = this.Get(catalogItem); }
-        } else if (u.isInstanceOf(data.catalogs.CatalogItem)) {
+            let item = this._catalog.FindFirstByOptionValue(com.IDS.NAME, p_identifier);
+            if (item) { mappedValue = this.Get(item); }
+        } else if (u.isInstanceOf(p_identifier, CatalogItem)) {
             // by catalog item reference
-            mappedValue = this.Get(catalogItem);
+            mappedValue = this.Get(p_identifier);
         }
 
         return mappedValue;

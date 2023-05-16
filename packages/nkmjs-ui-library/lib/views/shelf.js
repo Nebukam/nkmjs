@@ -436,17 +436,19 @@ class Shelf extends base {
      * @param {ui.core.Widget} p_handle 
      */
     _OnHandleCloseRequest(p_handle) {
+
         // Find related view and call CloseRequest on that view.
         // this way we ensure the view is notified the user wants to close it, and can react to it.
         // we only close a view from the signal broadcasted by the view itself, not the handle.
-        let catalogItem = p_handle.data,
-            p_view = this._catalogHandler.Get(catalogItem);
-        if (p_view) {
+        let view = this._catalogHandler.Get(p_handle.data);
+
+        console.log(`_OnHandleCloseRequest`,view);
+        if (view) {
             // If a view exists, give it control over its release.
-            p_view.RequestClose();
+            view.RequestClose();
         } else {
             // Otherwise force release the item.
-            catalogItem.Release();
+            p_handle.data.Release();
         }
 
     }
@@ -475,8 +477,7 @@ class Shelf extends base {
     _OnViewRequestDisplay(p_view) { this.currentView = p_view; }
 
     _OnViewRequestClose(p_view) {
-        let catalogItem = this._catalogHandler.ReverseGet(p_view);
-        if (catalogItem) { catalogItem.Release(); }
+        this._catalogHandler.ReverseGet(p_view)?.Release();
     }
 
     /**
