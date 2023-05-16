@@ -10,7 +10,9 @@ var _defaultHandler = null;
 
 module.exports = {
 
+    get defaultHander() { return _defaultHandler; },
     set defaultHander(p_value) { _defaultHandler = p_value; },
+    
 
     GetNFOS: function (p_id) {
         let cl = _map[p_id];

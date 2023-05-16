@@ -275,6 +275,12 @@ class SimpleDataBlock extends DataBlock {
 
     //#endregion
 
+    Dirty() {
+        if (this._isDirty) { return; }
+        if (this._parent) { this._parent.Dirty(); }
+        super.Dirty();
+    }
+
     _CleanUp() {
         super._CleanUp();
         this.parent = null;

@@ -10,6 +10,7 @@ var _defaultHandler = null;
 
 module.exports = {
 
+    get defaultHander() { return _defaultHandler; },
     set defaultHander(p_value) { _defaultHandler = p_value; },
 
     GetModel: function (p_id) {
@@ -44,6 +45,8 @@ module.exports = {
 
         if (nfos.identifier in _map) {
             console.warn(`Action '${nfos.identifier}' already exists and will be overwritten.`);
+        }else{
+            console.log(`+ Action '${nfos.identifier}'`);
         }
 
         _map[nfos.identifier] = { id: nfos.identifier, cl: p_class, nfos: com.NFOS.Get(p_class) };

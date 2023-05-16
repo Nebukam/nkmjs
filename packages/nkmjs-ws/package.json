@@ -1,0 +1,25 @@
+{
+  "name": "@nkmjs/ws",
+  "version": "0.0.1",
+  "description": "NKMjs WS Module",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-ws"
+  },
+  "scripts": {
+    "test": "node ./test/test-server.js"
+  },
+  "author": {
+    "name": "Timothé Lapetite",
+    "email": "nebukam@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nkmjs/collections": "^1.0.3",
+    "@nkmjs/common": "^1.1.5",
+    "@nkmjs/environment": "^1.1.5",
+    "@nkmjs/services": "^1.1.5",
+    "@nkmjs/utils": "^1.1.4"
+  }
+}

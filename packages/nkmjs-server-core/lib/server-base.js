@@ -27,6 +27,9 @@ class ServerBase extends com.Observable {
     constructor(p_constants) {
         super();
 
+        this._useWebsockets = false;
+        this._wss = null;
+
         this._appendPortToBase = true;
 
         env.ENV._app = this;
@@ -159,12 +162,19 @@ class ServerBase extends com.Observable {
         this._InitServer();
         this._PostInitServer();
 
+        if (this._useWebsockets) {
+            this._InitWebsockets();
+            this._PostInitWebsockets();
+        }
+
         this._InternalBoot = this._InternalBoot.bind(this);
 
         this._server = http.createServer(this._express)
             .listen(this._port, this._InternalBoot);
 
     }
+
+    //#region Server
 
     _InitServer() {
 
@@ -356,6 +366,38 @@ class ServerBase extends com.Observable {
         return api;
 
     }
+
+    //#endregion
+
+    //#region Websockets
+
+    _InitWebsockets() {
+        let WebSocket = require('ws');
+        this._wss = new WebSocket.Server(this._server);
+
+        this._InitWSRoutes();
+
+        this._wss.on('connection', (ws) => {
+            // Handle incoming WebSocket connections
+            ws.on('message', (message) => {
+                console.log('Received message:', message);
+
+                // Handle the incoming message
+                ws.send('Server received your message');
+            });
+        });
+
+    }
+
+    _InitWSRoutes(){
+
+    }
+
+    _PostInitWebsockets() {
+
+    }
+
+    //#endregion
 
     _InternalBoot() {
         let a = this._server.address();
