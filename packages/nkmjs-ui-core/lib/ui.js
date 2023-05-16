@@ -6,7 +6,7 @@ const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./signal`);
 const FLAGS = require(`./flags`);
-const Disposable = require(`./disposable-htmlelement`);
+const Disposable = require(`./disposable`);
 
 /**
  * @description TODO

@@ -8,7 +8,7 @@ const style = require(`@nkmjs/style`);
 const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
 const FLAGS = require("./flags");
-const Disposable = require(`./disposable-htmlelement`);
+const Disposable = require(`./disposable`);
 const FlagBox = require("./helpers/flag-box");
 
 /**

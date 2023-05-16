@@ -10,7 +10,7 @@ const SIGNAL = require(`../signal`);
 const dom = require(`../utils-dom`);
 
 const RectTracker = require(`./rect-tracker`);
-const Disposable = require("../disposable-htmlelement");
+const Disposable = require("../disposable");
 
 const base = Disposable;
 const __empty = `empty`;
