@@ -71,8 +71,6 @@ class Bundler {
             return;
         }
 
-
-
         this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
 
         let babelPlugins = [];
@@ -107,10 +105,10 @@ class Bundler {
                 parse: { bare_returns: true },
                 mangle: {
                     reserved: [`require`],
-                    keep_classnames: false,
+                    //keep_classnames: false,
                     keep_fnames: true,
-                    module : true,
-                    toplevel: true,
+                    //module : true,
+                    //toplevel: true,
                 },
                 compress: {
                     defaults: true,
