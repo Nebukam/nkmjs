@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/server-io-fs",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "NKMjs Server-side FS IO Module",
   "main": "index.js",
   "repository": {
@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/core": "^1.2.2"
+    "@nkmjs/core": "^1.2.3"
   },
   "gitHead": "0d8288538220b63e0bddac446f6acb47e3d39fb7"
 }
