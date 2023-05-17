@@ -1,6 +1,6 @@
 {
     "name": "nkmjs-workbench",
-    "version": "1.1.10",
+    "version": "1.1.11",
     "description": "NKMjs Framework Workbench",
     "main": "./src/index-electron.js",
     "repository": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-workbench",
@@ -16,12 +16,12 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@nkmjs/core": "^1.2.3",
-        "@nkmjs/server-io-fs": "^0.1.10",
+        "@nkmjs/core": "^1.2.4",
+        "@nkmjs/server-io-fs": "^0.1.11",
         "nodemon": "^2.0.22"
     },
     "devDependencies": {
-        "@nkmjs/core-dev": "^1.2.3",
+        "@nkmjs/core-dev": "^1.2.4",
         "electron": "^24.3.0"
     },
     "gitHead": "fac90557ba83ce2e6765b2db9a03c9b284834c39"
