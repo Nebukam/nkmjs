@@ -201,13 +201,19 @@ class ElectronBase {
         
         if (!p_protocol) { return; }
 
-        this._deeplink = new Deeplink({
+        let protocol = u.isString(p_protocol) ? p_protocol : DEV_MODE ? p_protocol.prod : p_protocol.dev;
+        protocol = protocol.replace(/[^A-Za-z]+/g, '').toLowerCase() + `://`;
+
+        let conf = {
             app: app,
             mainWindow: this._mainWindow,
-            protocol: u.isString(p_protocol) ? p_protocol : DEV_MODE ? p_protocol.prod : p_protocol.dev,
+            protocol: protocol,
             isDev: DEV_MODE
-        });
+        };
 
+        console.log(`DEEP LINK : '${conf.protocol}'`);
+
+        this._deeplink = new Deeplink(conf);
         this._deeplink.on('received', (link) => {
             this._mainWindow.webContents.send(APP_MESSAGES.DEEP_LINK, link);
         });

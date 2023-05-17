@@ -36,4 +36,6 @@ module.exports = {
     OPEN_DIALOG: Object.freeze(`open-dialog`),
     DIALOG_RESPONSE: Object.freeze(`dialog-response`),
 
+    DEEP_LINK: Object.freeze(`deep-link`),
+
 }

@@ -504,8 +504,8 @@ class AppBase extends com.Observable {
 
     }
 
-    _onDeepLink(p_link) {
-
+    _onDeepLink(p_evt, p_content) {
+        console.log(`DEEP LINK : '${p_content}'`, p_content);
     }
 
     "#endif";
