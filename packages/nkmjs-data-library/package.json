@@ -16,14 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/actions": "^1.1.5",
-    "@nkmjs/collections": "^1.0.3",
-    "@nkmjs/common": "^1.1.5",
-    "@nkmjs/data-core": "^1.1.5",
-    "@nkmjs/documents": "^1.1.5",
-    "@nkmjs/environment": "^1.1.5",
-    "@nkmjs/io-core": "^1.1.5",
-    "@nkmjs/utils": "^1.1.4"
+    "@nkmjs/core": "^1.2.2"
   },
   "gitHead": "0d8288538220b63e0bddac446f6acb47e3d39fb7"
 }

@@ -20,7 +20,7 @@ const CatalogItem = require(`./catalog-item`);
  * @param {boolean} autoSort  
  */
 
- const base = CatalogItem;
+const base = CatalogItem;
 
 /**
  * @description TODO
@@ -32,131 +32,7 @@ const CatalogItem = require(`./catalog-item`);
 class Catalog extends base {
     constructor(p_autoSort = true) { super(); this.autoSort = p_autoSort; }
 
-    static __default_catalogClass = Catalog;
-    static __default_itemClass = CatalogItem;
-
-    //#region Static methods
-
-    /**
-     * @description Parse a string to a catalog-friendly format
-     * @param {string} p_path 
-     */
-    static PathInfos(p_path) {
-
-        let result = {
-            path: null,
-            isDir: false,
-            name: null,
-            valid: false
-        };
-
-        if (!p_path) {
-            return result;
-        } else {
-            result.valid = true;
-        }
-
-        let pathSplit = p_path.split(`/`),
-            isDir = false,
-            name = '';
-
-        if (pathSplit.length === 1) {
-            //Assumed to be a single item
-            name = pathSplit[0];
-        } else {
-
-            let pathArray = [];
-
-            for (let i = 0, n = pathSplit.length; i < n; i++) {
-                let current = pathSplit.shift();
-                if (!u.isEmpty(current)) {
-                    pathArray.push(current);
-                } else if (i === n - 1) {
-                    isDir = true;
-                }
-            }
-
-            if (isDir) {
-                name = pathArray[pathArray.length - 1];
-            } else {
-                name = pathArray.pop();
-            }
-
-            result.path = pathArray;
-
-        }
-
-        result.isDir = isDir;
-        result.name = name;
-        return result;
-
-    }
-
-    /**
-     * @description Creates a Catalog from a mockup object.
-     * @param {CatalogItemOptions} p_rootOptions
-     * @param {array} [p_content] 
-     * @param {*} [p_parent] 
-     * @returns {data.core.Catalog}
-     */
-    static CreateFrom(p_rootOptions, p_content = null, p_parent = null) {
-        if (!p_content && !p_rootOptions) { throw new Error(`Cannot create Catalog from null options nor struct.`); }
-
-        let catalog = com.Rent(this.GetItemClass(p_rootOptions, true));
-        catalog.options = p_rootOptions;
-
-        if (p_parent) { catalog.parent = p_parent; }
-
-        if (p_content) {
-
-            for (let i = 0, n = p_content.length; i < n; i++) {
-                let item_options = p_content[i];
-                if (item_options.hasOwnProperty(`content`)) {
-                    Catalog.CreateFrom(item_options, item_options.content, catalog);
-                } else {
-                    catalog.Register(item_options);
-                }
-            }
-
-        }
-
-        return catalog;
-
-    }
-
-    /**
-     * @description Find a suitable item class based on provided options
-     * @param {object} p_itemOptions 
-     * @param {boolean} [p_forceCatalog] 
-     * @param {data.core.Catalog} [p_catalog] Parent catalog
-     * @returns {constructor}
-     */
-    static GetItemClass(p_itemOptions, p_forceCatalog = false, p_catalog = null) {
-
-        let itemClass = null;
-
-        if (u.isObject(p_itemOptions)) {
-
-            let data = u.tils.Get(p_itemOptions, `data`, null);
-
-            if (data) {
-                let context = p_catalog ? p_catalog : Catalog;
-                if (u.isObject(context)) { context = context.constructor; }
-                itemClass = com.BINDINGS.Get(context, data, null);
-            }
-
-            if (!itemClass) {
-                if (p_forceCatalog || u.isArray(u.tils.Get(p_itemOptions, `content`, null))) { itemClass = (p_catalog ? p_catalog._localCatalogClass : p_itemOptions.itemClass) || this.__default_catalogClass; }
-                else { itemClass = p_itemOptions.itemClass || (p_catalog ? p_catalog._localItemClass : null) || this.__default_itemClass; }
-            }
-        } else {
-            itemClass = p_forceCatalog ? this.__default_catalogClass : (p_catalog ? p_catalog._localItemClass : null) || this.__default_itemClass;
-        }
-
-        return itemClass;
-    }
-
-    //#endregion
+    static __getItemClass = null;
 
     static __distribute = base.__distribute.Ext({ beginFn: `_OnOptionsWillUpdate` })
         .To(`autoSort`)
@@ -251,6 +127,7 @@ class Catalog extends base {
      */
     ForEach(p_fn, p_thisArg = null, p_reverse = false) {
 
+
         let n = this._items.length;
 
         if (p_thisArg) {
@@ -298,7 +175,7 @@ class Catalog extends base {
             if (u.isInstanceOf(catalog, Catalog) && catalog.name === catalogName) { return catalog; }
         }
 
-        catalog = com.Rent(Catalog.GetItemClass(p_options, true, this));
+        catalog = com.Rent(Catalog.__getItemClass(p_options, true, this));
         catalog.options = u.tils.Ensure(u.isObject(p_options) ? p_options : {}, {
             [com.IDS.NAME]: catalogName,
             [com.IDS.ICON]: `directory`
@@ -317,11 +194,11 @@ class Catalog extends base {
 
         if (!p_itemInfos) { throw new Error(`Cannot register item with null infos`); }
 
-        let pathInfos = Catalog.PathInfos(p_itemInfos.path);
+        let pathInfos = Catalog.__getItemClass(p_itemInfos.path);
 
         //If no valid path is provided, simply create and return a new CatalogItem
         if (!pathInfos.valid || !pathInfos.path) {
-            let item = com.Rent(Catalog.GetItemClass(p_itemInfos, false, this));
+            let item = com.Rent(Catalog.__getItemClass(p_itemInfos, false, this));
             item.options = u.tils.EnsureMultiple(p_itemInfos, {
                 [com.IDS.NAME]: pathInfos.name,
                 [com.IDS.ICON]: `document`
@@ -347,7 +224,7 @@ class Catalog extends base {
             });
             return catalog;
         } else {
-            let item = com.Rent(Catalog.GetItemClass(p_itemInfos, false, catalog));
+            let item = com.Rent(Catalog.__getItemClass(p_itemInfos, false, catalog));
             item.options = u.tils.EnsureMultiple(p_itemInfos, {
                 [com.IDS.NAME]: pathInfos.name,
                 [com.IDS.ICON]: `document`
@@ -369,20 +246,7 @@ class Catalog extends base {
         if (this._items.includes(p_item)) { return null; }
 
         this._items.push(p_item);
-        this._OnItemAdded(p_item);
-
-        return p_item;
-
-    }
-
-    /**
-     * @access protected
-     * @description Callback when an item has been added to the catalog
-     * @param {data.core.CatalogItem|data.core.Catalog} p_item 
-     */
-    _OnItemAdded(p_item) {
-
-
+        
         p_item.parent = this;
         p_item.rootCatalog = this._rootCatalog;
         p_item.rootDistance = this._rootDistance + 1;
@@ -394,8 +258,9 @@ class Catalog extends base {
         }
 
         this.Broadcast(com.SIGNAL.ITEM_ADDED, this, p_item);
-
         if (this._autoSort) { this._delayedSort.Schedule(); }
+
+        return p_item;
 
     }
 
@@ -404,9 +269,7 @@ class Catalog extends base {
      * @description Callback when an item has been released
      * @param {data.core.CatalogItem|data.core.Catalog} p_item 
      */
-    _OnItemReleased(p_item) {
-        this.Remove(p_item);
-    }
+    _OnItemReleased(p_item) { this.Remove(p_item); }
 
     /**
      * @description Removes the specified item from this catalog
@@ -451,104 +314,6 @@ class Catalog extends base {
      */
     Resolve(p_path, p_from = 0) {
         //TODO:Resolve path or id, based on whether it`s an array or a string
-    }
-
-    //#endregion
-
-    //#region Search
-
-    /**
-     * @description TODO // Replace with Filter
-     * @param {*} p_data 
-     * @param {array} [p_results]
-     * @group Searching
-     */
-    FindDataHolders(p_data, p_results = null) {
-
-        if (!p_results) { p_results = []; }
-
-        for (let i = 0, n = this._items.length; i < n; i++) {
-            let item = this._items[i];
-            if (item.data === p_data) {
-                if (!p_results.includes(item)) {
-                    p_results.push(item);
-                }
-            }
-            if (u.isInstanceOf(item, Catalog)) {
-                item.FindDataHolders(p_data, p_results);
-            }
-        }
-
-        return p_results;
-
-    }
-
-    /**
-     * @description TODO // Replace with Filter
-     * @param {*} p_data 
-     * @group Searching
-     */
-    FindFirstDataHolder(p_data, p_recursive = false) {
-
-        for (let i = 0, n = this._items.length; i < n; i++) {
-            let item = this._items[i];
-            if (item.data === p_data) { return item; }
-            if (p_recursive) {
-                if (u.isInstanceOf(item, Catalog)) {
-                    item = item.FindDataHolders(p_data);
-                    if (item) { return item; }
-                }
-            }
-        }
-
-        return null;
-
-    }
-
-    /**
-     * @description TODO // Replace with Filter
-     * @param {string} p_stringID 
-     * @group Searching
-     */
-    FindFirstDataByStringID(p_stringID, p_recursive = false) {
-
-        for (let i = 0, n = this._items.length; i < n; i++) {
-            let item = this._items[i],
-                idata = item.data;
-            if (idata && idata.id && idata.id.name === p_stringID) {
-                return item;
-            }
-        }
-
-        return null;
-
-    }
-
-    /**
-     * @description TODO // Replace with Filter
-     * @param {string} p_key 
-     * @param {*} p_value 
-     * @param {number} p_recursive
-     * @group Searching
-     */
-    FindFirstByOptionValue(p_key, p_value, p_recursive = false) {
-
-        for (let i = 0, n = this._items.length; i < n; i++) {
-
-            let item = this._items[i],
-                opt = item._options[p_key];
-
-            if (opt === p_value) { return item; }
-            if (p_recursive) {
-                if (u.isInstanceOf(item, Catalog)) {
-                    let result = item.FindFirstByOptionValue(p_key, p_value, true);
-                    if (result) { return result; }
-                }
-            }
-
-        }
-
-        return null;
     }
 
     //#endregion
@@ -624,37 +389,6 @@ class Catalog extends base {
         this._rootDistance = -1;
         this._localItemClass = null;
         this._localCatalogClass = null;
-    }
-
-    /**
-     * @description TODO
-     * @param {string} [p_string]
-     * @param {number} [p_depth]
-     * @customtag debug
-     */
-    StructToString(p_string = null, p_depth = null) {
-
-        if (!p_string) { p_string = ''; }
-        if (u.isVoid(p_depth)) { p_depth = -1; }
-        p_depth++;
-
-        let s = `\t`,
-            spaces = ``;
-
-        for (let i = 0; i < p_depth; i++) { spaces += s; }
-
-        p_string += `${spaces}/${this._name} \n`;
-
-        for (let i = 0, n = this._items.length; i < n; i++) {
-            let item = this._items[i];
-            if (u.isInstanceOf(item, Catalog)) {
-                p_string = item.StructToString(p_string, p_depth);
-            } else {
-                p_string += `${spaces}${s}· ${item.name}\n`;
-            }
-        }
-
-        return p_string;
     }
 
     toString() {

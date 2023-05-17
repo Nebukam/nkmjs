@@ -1,6 +1,8 @@
 'use strict';
 
-const com = require("@nkmjs/common");
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const com = nkm.com;
 
 const numbers = require(`../numbers`);
 const FieldTransform2D = require("./field-transform-2d");

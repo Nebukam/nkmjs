@@ -1,7 +1,7 @@
 'use strict';
-
-const u = require("@nkmjs/utils");
-const com = require("@nkmjs/common");
+const nkm = require(`@nkmjs/core/nkmin`);
+const u = nkm.u;
+const com = nkm.com;
 
 const FieldSlot = require(`./field-slot`);
 

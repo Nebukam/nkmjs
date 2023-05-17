@@ -44,6 +44,16 @@ class ServerBase extends com.Observable {
         console.log(this._config.envPath);
         dotenv.config({ path: this._config.envPath });
 
+        if(process.env.NODE_MAX_MEMORY){//268435456
+            
+            console.log(`------------`);
+            console.log(`NODE MEMORY LIMIT SET TO ${process.env.NODE_MAX_MEMORY} bytes (${process.env.NODE_MAX_MEMORY / 1048576}mb)`);
+            console.log(`------------`);
+
+            require('v8').setFlagsFromString(`--max_old_space_size=${process.env.NODE_MAX_MEMORY}`);
+
+        }        
+
         this._dirName = this._config.dirname;
         this._dirServer = this._config.dirServer;
         this._dirViews = this._config.dirViews;

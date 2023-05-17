@@ -1,4 +1,8 @@
-const data = require("@nkmjs/data-core");
+'use strict';
+
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const data = nkm.data;
 
 class FieldGroup extends data.SimpleDataBlock {
     constructor() { super(); }

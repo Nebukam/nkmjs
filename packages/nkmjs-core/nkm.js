@@ -26,7 +26,6 @@ globalThis.nkm = module.exports = {
 
     documents: core.documents,
     data: core.data,
-    datalib: core.datalib,
     datacontrols: require(`@nkmjs/ui-data-controls`),
 
     //#endregion

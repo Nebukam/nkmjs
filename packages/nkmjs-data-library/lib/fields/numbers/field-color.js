@@ -1,8 +1,10 @@
 'use strict';
 
-const u = require("@nkmjs/utils");
-const com = require("@nkmjs/common");
-const data = require("@nkmjs/data-core");
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const u = nkm.u;
+const com = nkm.com;
+const data = nkm.data;
 
 const IDS = require(`../../ids`);
 const FieldFloat4 = require("./field-float3");

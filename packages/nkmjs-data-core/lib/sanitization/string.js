@@ -2,11 +2,6 @@
 
 // Static validation functions
 
-class STRING{
-    constructor(){}
+module.exports = {
 
-    
-
-}
-
-module.exports = STRING;
+};

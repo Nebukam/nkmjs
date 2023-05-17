@@ -1,6 +1,8 @@
 'use strict';
 
-const data = require("@nkmjs/data-core");
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const data = nkm.data;
 
 const SIGNAL = require(`./signal`);
 

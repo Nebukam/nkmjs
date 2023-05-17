@@ -22,7 +22,6 @@ class CatalogWatcherEx extends CatalogWatcher {
 
         this._isDeepWatchEnabled = false;
 
-        // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
         //both filtered AND flagged as 'flatten catalog'
 
     }

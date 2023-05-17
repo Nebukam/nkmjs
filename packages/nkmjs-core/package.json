@@ -21,7 +21,6 @@
     "@nkmjs/collections": "^1.0.3",
     "@nkmjs/common": "^1.1.5",
     "@nkmjs/data-core": "^1.1.5",
-    "@nkmjs/data-library": "^1.1.5",
     "@nkmjs/dialog": "^1.1.5",
     "@nkmjs/documents": "^1.1.5",
     "@nkmjs/electron-core": "^1.1.5",

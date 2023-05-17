@@ -71,9 +71,7 @@ class AppBase extends com.Observable {
 
         this._APPID = `${this.constructor.name}`;
         this._IOFlushFn = null;
-
-        this._darkPaletteBuilder = null;
-        this._lightPaletteBuilder = null;
+        this._commands = new actions.CommandBox();
 
         this._userPreferences = com.Rent(UserPreferences);
         this._appSettingsType = AppSettings;
@@ -89,8 +87,8 @@ class AppBase extends com.Observable {
         this._overlayHandler = null;
 
         this._unsavedDocHandler = new UnsavedDocHandler(this);
-
-        this._commands = new actions.CommandBox();
+        
+        "#if DEFINE_NODE";
 
         this._fileBindings = new FileExtBinder(this);
 
@@ -99,10 +97,18 @@ class AppBase extends com.Observable {
             { evt: APP_MESSAGES.NODE_ERROR, fn: this._Bind(this._onNodeError) },
             { evt: APP_MESSAGES.NODE_WARNING, fn: this._Bind(this._onNodeWarning) },
             { evt: APP_MESSAGES.CONTEXT_MENU_COMMAND, fn: this._Bind(this._onContextMenuCommand) },
+            { evt: APP_MESSAGES.DEEP_LINK, fn: this._Bind(this._onDeepLink) },
         ];
 
+        "#endif";
+
         env.features.Watch(env.SIGNAL.COLORSCHEME_CHANGED, this._OnColorschemeChange, this);
+
+        "#if PWA";
+
         env.ENV.Watch(env.SIGNAL.PWA_UPDATE_AVAILABLE, this._OnPWAUpdateAvailable, this);
+
+        "#endif";
 
         this._loadingOverlay = document.getElementById(`__loading__`);
         if (this._loadingOverlay && env.ENV.ARGV.Has(`no-loading`)) {
@@ -137,9 +143,9 @@ class AppBase extends com.Observable {
             dialog.DIALOG
         );
 
-        if (!this._appBodyClass) {
-            throw new Error(`No app body constructor defined.`);
-        }
+        //TODO: Register WebSocket here
+
+        if (!this._appBodyClass) { throw new Error(`No app body constructor defined.`); }
 
         if (!u.isInstanceOf(this._appBodyClass, AppBody)) {
             throw new Error(`App body constructor (${this._appBodyClass.name}) must extend AppBody.`);
@@ -180,7 +186,9 @@ class AppBase extends com.Observable {
 
         u.LOG._(`${this._APPID} : SETUP`, `#339a6e`, `#212121`);
 
-        if (env.isNodeEnabled) { this._RegisterIPCBindings(); }
+
+
+        this._RegisterIPCBindings();
 
         // At that point, the Service Manager has started.
         // Initialize and start critical services.
@@ -208,16 +216,15 @@ class AppBase extends com.Observable {
 
     }
 
-    _RegisterIPCBindings() {
-
-        let binding;
-
-        for (let i = 0, n = this._ipcBindings.length; i < n; i++) {
-            binding = this._ipcBindings[i];
-            actions.RELAY.ipcOn(binding.evt, binding.fn);
-        }
-
+    _RegisterDocDefinition(p_fileInfos, p_documentInfos, p_defaultEditor = null) {
+        return this._fileBindings.AddDefinition(
+            p_fileInfos,
+            p_documentInfos,
+            p_defaultEditor
+        );
     }
+
+    "#if PWA";
 
     _OnPWAUpdateAvailable() {
 
@@ -236,13 +243,7 @@ class AppBase extends com.Observable {
 
     }
 
-    _RegisterDocDefinition(p_fileInfos, p_documentInfos, p_defaultEditor = null) {
-        return this._fileBindings.AddDefinition(
-            p_fileInfos,
-            p_documentInfos,
-            p_defaultEditor
-        );
-    }
+    "#endif";
 
     //#endregion
 
@@ -406,6 +407,19 @@ class AppBase extends com.Observable {
 
     //#region Electron & Node
 
+    "#if DEFINE_NODE";
+
+    _RegisterIPCBindings() {
+
+        let binding;
+
+        for (let i = 0, n = this._ipcBindings.length; i < n; i++) {
+            binding = this._ipcBindings[i];
+            actions.RELAY.ipcOn(binding.evt, binding.fn);
+        }
+
+    }
+
     _OnExternalCloseRequest() {
         if (this._IsReadyToQuit()) {
 
@@ -489,6 +503,12 @@ class AppBase extends com.Observable {
     _onContextMenuCommand(p_evt, p_command) {
 
     }
+
+    _onDeepLink(p_link) {
+
+    }
+
+    "#endif";
 
     //#endregion
 

@@ -1,10 +1,12 @@
 'use strict';
 
-const com = require("@nkmjs/common");
-const env = require(`@nkmjs/environment`);
-const data = require(`@nkmjs/data-core`);
-const io = require(`@nkmjs/io-core`);
-const documents = require(`@nkmjs/documents`);
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const com = nkm.com;
+const env = nkm.env;
+const data = nkm.data;
+const io = nkm.io;
+const documents = nkm.documents;
 
 const base = documents.DocumentEx;
 

@@ -1,7 +1,9 @@
 'use strict';
 
-const com = require("@nkmjs/common");
-const data = require("@nkmjs/data-core");
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const com = nkm.com;
+const data = nkm.data;
 
 const IDS = require(`./ids`);
 const DataBlocExtendable = require(`./data-block-extendable`);

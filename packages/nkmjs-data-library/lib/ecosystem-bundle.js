@@ -8,10 +8,11 @@
  * - entries etc
  * These parts are usually singletons but it lack flexbility down the line.
  */
-'use strict';
 
-const com = require("@nkmjs/common");
-const data = require(`@nkmjs/data-core`);
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const com = nkm.com;
+const data = nkm.data;
 
 const Ecosystem = require(`./ecosystem`);
 

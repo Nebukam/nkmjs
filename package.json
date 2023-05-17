@@ -10,8 +10,8 @@
     "scripts": {
         "nkmjs": "nkmjs",
         "bootstrap": "lerna bootstrap && yarn add-nkmjs-link",
-        "add-nkmjs-link": "lerna exec --parallel yarn link-nkmjs",
+        "add-nkmjs-link": "lerna run --parallel yarn --if-present link-nkmjs",
         "link-all": "yarn unlink-all && lerna exec --parallel yarn link",
-        "unlink-all": "lerna exec --parallel --bail=false yarn unlink"
+        "unlink-all": "lerna run --parallel --bail=false yarn unlink"
     }
 }

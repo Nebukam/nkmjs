@@ -5,8 +5,6 @@ const com = require("@nkmjs/common");
 const IDS = require(`../ids`);
 const SIGNAL = require(`./catalog-signal`);
 
-const tags = require(`../tags`);
-
 const base = com.helpers.OptionsObject;
 
 /**
@@ -39,54 +37,6 @@ class CatalogItem extends base {
         this._delayedUpdate = com.DelayedCall(this._Bind(this._OnUpdate));
         
     }
-
-    //#region Tag management
-
-    HasTag(p_tag) {
-        if (!this._tagBox) { return false; }
-        return this._tagBox.Has(p_tag);
-    }
-
-    HasTagAny(...p_tags) {
-        if (!this._tagBox) { return false; }
-        return this._tagBox.HasAny(...p_tags);
-    }
-
-    HasTagAll(...p_tags) {
-        if (!this._tagBox) { return false; }
-        return this._tagBox.HasAll(...p_tags);
-    }
-
-    AddTag(p_tag) {
-        if (!this._tagBox) {
-            this._tagBox = com.Rent(tags.TagBox);
-            this._tagBox.owner = this;
-        }
-        return this._tagBox.Add(p_tag);
-    }
-
-    RemoveTag(p_tag) {
-        if (!this._tagBox) { return false; }
-        if (this._tagBox.Remove(p_tag)) {
-            if (this._tagBox.isEmpty) { this._ClearTagBox(); }
-            return true;
-        }
-        return false;
-    }
-
-    set tagsetter(p_tags) {
-        for (let i = 0; i < p_tags.length; i++) {
-            this.AddTag(p_tags[i]);
-        }
-    }
-
-    _ClearTagBox() {
-        if (!this._tagBox) { return; }
-        this._tagBox.Release();
-        this._tagBox = null;
-    }
-
-    //#endregion
 
     /**
      * @description TODO

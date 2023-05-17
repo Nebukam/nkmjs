@@ -1,4 +1,5 @@
 const { app, autoUpdater, ipcMain, BrowserWindow, Menu, MenuItem, globalShortcut, dialog, protocol } = require(`electron`);
+const { Deeplink } = require('electron-deeplink');
 
 const path = require(`path`);
 const url = require(`url`);
@@ -43,6 +44,7 @@ class ElectronBase {
         this._openPathRequest = null;
 
         DEV_MODE = process.argv.includes('--dev') || process.argv.includes('-dev') || process.argv.includes('dev');
+        this._appProtocol = { dev:`${p_constants.appName}-dev://`, prod:`${p_constants.appName}://` };
 
         this._dirname = (p_constants.dirname || __dirname);
         this._appindex = (p_constants.html || "");
@@ -154,6 +156,9 @@ class ElectronBase {
 
         this._mainWindow = WINDOWS.CreateWindow(winOptions).window;
 
+        // Deep linking
+        this._InitDeeplink(this._appProtocol);
+
         // Open devtools
         if (DEV_MODE) { this._mainWindow.webContents.openDevTools(); }
         else { this._mainWindow.setMenu(null); }
@@ -171,7 +176,7 @@ class ElectronBase {
         if (this._openPathRequest) {
             this._OnSystemRequestOpenFile(null, this._openPathRequest);
         }
-        // this._Boot();        
+        // this._Boot();
 
     }
 
@@ -184,9 +189,28 @@ class ElectronBase {
         if (this._booted) { return; }
         this._booted = true;
 
-        console.log(`Boot app`);
+    }
 
-        //this._StartNKMjsInWebContents(this._mainWindow.webContents);
+    /**
+     * Override and provide your own p_config to super call
+     * @param {string|object} p_protocol 
+     * @param {string} p_config.prod 
+     * @param {string} p_config.dev
+     */
+    _InitDeeplink(p_protocol = null) {
+        
+        if (!p_protocol) { return; }
+
+        this._deeplink = new Deeplink({
+            app: app,
+            mainWindow: this._mainWindow,
+            protocol: u.isString(p_protocol) ? p_protocol : DEV_MODE ? p_protocol.prod : p_protocol.dev,
+            isDev: DEV_MODE
+        });
+
+        this._deeplink.on('received', (link) => {
+            this._mainWindow.webContents.send(APP_MESSAGES.DEEP_LINK, link);
+        });
 
     }
 

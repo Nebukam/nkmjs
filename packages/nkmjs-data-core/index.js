@@ -29,7 +29,6 @@ module.exports = {
     helpers: require(`./lib/helpers`),
     search: require(`./lib/search`),
     serialization: require(`./lib/serialization`),
-    tags: require(`./lib/tags`),
 
     validate: require(`./lib/validation`),
     sanitize: require(`./lib/sanitization`),

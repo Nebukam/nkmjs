@@ -1,7 +1,9 @@
 'use strict';
 
-const com = require("@nkmjs/common");
-const data = require("@nkmjs/data-core");
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const com = nkm.com;
+const data = nkm.data;
 
 const DataFactoryEx = require(`../data-factory-ex`);
 const DataEntry = require("../data-entry");

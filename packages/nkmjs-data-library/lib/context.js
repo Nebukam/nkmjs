@@ -1,6 +1,8 @@
 'use strict';
 
-const com = require("@nkmjs/common");
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const com = nkm.com;
 /**
  * Using Class as key in order to support @nkmjs-common BINDINGS
  */

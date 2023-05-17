@@ -15,7 +15,6 @@ module.exports = {
     Disposable: require(`./lib/disposable`),
     Observable: require(`./lib/observable`),
 
-    filters: require(`./lib/filters`),
     helpers: require(`./lib/helpers`),
     signals: require(`./lib/signals`),
     time: time,  

@@ -6,8 +6,6 @@ const u = require(`@nkmjs/utils`);
 const SIGNAL = require(`./catalog-signal`);
 const CatalogItem = require(`./catalog-item`);
 
-const filters = require(`./filters`);
-
 /**
 * @description A CatalogWatcher observe a catalog's additions and removals.
 * It's an abstract class, look for actual implementations in `CatalogHandler` & `CatalogBuilder`
@@ -27,24 +25,15 @@ class CatalogWatcher extends com.Observable {
         this._map = new Map();
         this._reverseMap = new Map();
 
-        this._filtersHandler = new filters.CatalogFilterListHandler();
-        this._filtersHandler
-            .Watch(filters.SIGNAL.PASSED, this._OnFilterPassedItem, this)
-            .Watch(filters.SIGNAL.REJECTED, this._OnFiltersRejectedItem, this);
-
         this._itemCount = 0;
 
         this._isEnabled = true;
-        this._ignoreFilters = false;
 
         this._catalogObserver = new com.signals.Observer();
         this._catalogObserver
             .Hook(com.SIGNAL.ITEM_ADDED, this._OnItemAdded, this)
             .Hook(com.SIGNAL.ITEM_REMOVED, this._OnItemRemoved, this)
             .Hook(com.SIGNAL.SORTED, this._OnSorted, this);
-
-        // TODO : Filter integration + 'in-depth' recursive calls on ItemAdded if the watcher is 
-        //both filtered AND flagged as 'flatten catalog'
 
     }
 
@@ -123,40 +112,6 @@ class CatalogWatcher extends com.Observable {
 
     // ----> Flattening
 
-    // ---->
-
-    set filters(p_value) {
-        if (this._filtersHandler._filters == p_value) { return; }
-
-        this._filtersHandler.filters = p_value;
-
-        if (!this._catalog) { return; }
-
-        // This is the most expensive way to handle the situation
-        let c = this._catalog;
-        this.catalog = null;
-        this.catalog = c;
-
-    }
-    get filters() { return this._filtersHandler._filters; }
-
-
-    _OnFilterPassedItem(p_handler, p_item) {
-        // Callback when a previously invalidated item is now valid
-        this._ignoreFilters = true;
-        this._OnItemAdded(p_item.parent, p_item);
-        this._ignoreFilters = false;
-    }
-
-    _OnFiltersRejectedItem(p_handler, p_item) {
-        // Callback when a previously valid item is now invalid
-        this._ignoreFilters = true;
-        this._OnItemRemoved(p_item.parent, p_item);
-        this._ignoreFilters = false;
-    }
-
-    // ---->
-
     /**
      * @access protected
      * @description Goes over the content of a given catalog and calls _OnItemAdded
@@ -202,18 +157,9 @@ class CatalogWatcher extends com.Observable {
      * @customtag override-me
      */
     _OnItemAdded(p_catalog, p_item) {
-
-        if (!this._ignoreFilters) {
-            if (this._filtersHandler._filters
-                && !this._filtersHandler.Pass(p_item)) {
-                return false;
-            }
-        }
-
         this._itemCount++;
         p_item.Watch(SIGNAL.ITEM_DATA_RELEASED, this._OnItemDataReleased, this);
         return true;
-
     }
 
     /**
@@ -224,13 +170,6 @@ class CatalogWatcher extends com.Observable {
      * @customtag override-me
      */
     _OnItemRemoved(p_catalog, p_item, p_index) {
-
-        if (!this._ignoreFilters) {
-            if (this._filtersHandler._filters
-                && !this._filtersHandler.Clear(p_item)) {
-                return false;
-            }
-        }
 
         this._itemCount--;
 
@@ -326,7 +265,7 @@ class CatalogWatcher extends com.Observable {
             mappedValue = this.Get(this._catalog.At(p_identifier));
         } else if (u.isString(p_identifier)) {
             // by data id name
-            let item = this._catalog.FindFirstByOptionValue(com.IDS.NAME, p_identifier);
+            let item = data.catalogs.Find(this._catalog, (i) => { return i.name == p_identifier; });
             if (item) { mappedValue = this.Get(item); }
         } else if (u.isInstanceOf(p_identifier, CatalogItem)) {
             // by catalog item reference
@@ -342,7 +281,6 @@ class CatalogWatcher extends com.Observable {
     _CleanUp() {
 
         this.catalog = null;
-        this.filters = null;
 
         this._owner = null;
         this._isEnabled = true;

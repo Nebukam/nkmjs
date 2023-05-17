@@ -1,13 +1,15 @@
-const u = require("@nkmjs/utils");
-const com = require("@nkmjs/common");
-const data = require("@nkmjs/data-core");
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const u = nkm.u;
+const com = nkm.com;
+const data = nkm.data;
 
 const utils = require(`../../utils`);
 const IDS = require(`../../ids`);
 const DataBlockExtendableJSONSerializer = require(`./json-data-block-extendable`);
 const FieldSlotJSONSerializer = require("./json-field-slot");
 const FieldDescriptorJSONSerializer = require("./json-field-descriptor");
-const { CONTEXT } = require("@nkmjs/data-core/lib/serialization");
+const CONTEXT = nkm.data.serialization.CONTEXT;
 
 const __id_groups = `groups`;
 const __id_slots = `slots`;

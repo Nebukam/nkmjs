@@ -1,6 +1,10 @@
-const collections = require("@nkmjs/collections");
-const u = require("@nkmjs/utils");
-const com = require("@nkmjs/common");
+'use strict';
+
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const collections = nkm.collections;
+const u = nkm.u;
+const com = nkm.com;
 
 const SIGNAL = require(`../signal`);
 const UnresolvedReference = require(`./unresolved-reference`);

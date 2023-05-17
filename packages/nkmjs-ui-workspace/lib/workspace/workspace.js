@@ -131,12 +131,10 @@ class Workspace extends base {
     _OnItemDataReleased(p_data) {
         if (!this.catalog) { return; }
 
-        let dataHolders = this.catalog.FindDataHolders(p_item.data);
-        dataHolders.forEach(d => { d.Release(); });
+        let holders = data.catalogs.Filter(this.catalog, (i) => { return i.data == p_item.data; });
+        holders.forEach(d => { d.Release(); });
 
-        if (dataHolders && dataHolders.length) {
-            this._UpdateWorkspaceEmptyState();
-        }
+        if (holders && holders.length) { this._UpdateWorkspaceEmptyState(); }
 
     }
 
@@ -180,23 +178,16 @@ class Workspace extends base {
         }
 
         // Need to create a new item from `p_item` as options
-        let view = null,
-            viewClass = u.tils.Get(p_item, [ui.IDS.VIEW_CLASS], null),
-            dataHolders = localCatalog.FindDataHolders(p_item.data);
+        let viewClass = u.tils.Get(p_item, ui.IDS.VIEW_CLASS, null),
+            item = data.catalogs.Find(localCatalog, (i) => {
+                return i.data == p_item.data && u.isInstanceOf(i.GetOption(ui.IDS.VIEW), viewClass);
+            });
 
-        for (let i = 0, n = dataHolders.length; i < n; i++) {
-
-            let item = dataHolders[i],
-                view = item.GetOption([ui.IDS.VIEW], null);
-
-            if (view && u.isInstanceOf(view, viewClass)) {
-                view.RequestDisplay();
-                return item;
-            }
-
+        if (item) {
+            item.GetOption(ui.IDS.VIEW).RequestDisplay();
+        } else {
+            item = localCatalog.Register(p_item);
         }
-
-        let item = localCatalog.Register(p_item);
 
         // TODO : Find cell associated to catalog and request focus on newly created view
         //        let view = this._catalogHandler.Get(item);

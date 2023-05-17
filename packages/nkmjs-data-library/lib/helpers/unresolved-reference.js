@@ -1,5 +1,8 @@
-const collections = require("@nkmjs/collections");
-const com = require("@nkmjs/common");
+'use strict';
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const collections = nkm.collections;
+const com = nkm.com;
 
 const SIGNAL = require(`../signal`);
 
@@ -13,7 +16,7 @@ class UnresolvedReference extends com.Observable {
     }
 
     set uri(p_value) { this._uri = p_value; }
-    get uri(){ return this._uri; }
+    get uri() { return this._uri; }
 
     Add(p_data, p_infos) {
         this._dataList.Set(p_data, p_infos);
@@ -25,22 +28,22 @@ class UnresolvedReference extends com.Observable {
         for (let i = 0, n = keys.length; i < n; i++) {
             let key = keys[i],
                 infos = this._dataList.Get(key);
-            this._ResolveInfos(key, infos, p_reference);                
+            this._ResolveInfos(key, infos, p_reference);
         }
         this.Broadcast(SIGNAL.REFERENCE_SOLVED, this, keys);
         this.Release();
     }
 
-    _ResolveInfos(p_data, p_infos, p_reference){
+    _ResolveInfos(p_data, p_infos, p_reference) {
 
-        if(p_infos.set){
+        if (p_infos.set) {
             p_data[p_infos.set] = p_reference;
-        }else if(p_infos.fn){
-            if(p_infos.thisArg){
+        } else if (p_infos.fn) {
+            if (p_infos.thisArg) {
                 p_infos.fn.call(p_infos.thisArg, p_reference);
                 p_infos.fn = null;
                 p_infos.thisArg = null;
-            }else{
+            } else {
                 p_infos.fn(p_reference);
                 p_infos.fn = null;
             }

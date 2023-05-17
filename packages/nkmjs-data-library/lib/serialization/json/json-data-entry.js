@@ -1,5 +1,9 @@
-const u = require("@nkmjs/utils");
-const com = require("@nkmjs/common");
+'use strict';
+
+const nkm = require(`@nkmjs/core/nkmin`);
+
+const u = nkm.u;
+const com = nkm.com;
 
 const IDS = require(`../../ids`);
 const DataBlockExtendableJSONSerializer = require(`./json-data-block-extendable`);
