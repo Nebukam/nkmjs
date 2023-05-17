@@ -6,7 +6,7 @@
  * @hideconstructor
  * @memberof environment
  */
-const DOM_STATE = {
+module.exports = {
 
     /**
      * @description TODO
@@ -37,5 +37,3 @@ const DOM_STATE = {
     COMPLETE: Object.freeze(`complete`),
 
 }
-
-module.exports = DOM_STATE;

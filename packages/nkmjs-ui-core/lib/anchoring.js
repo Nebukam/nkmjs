@@ -81,15 +81,15 @@ ANCHORING.BOTTOM_RIGHT = { x: 0.5, y: 0.5 };
 ANCHORING.CENTER = { x: 0, y: 0 };
 
 ANCHORING.anchoring = [
-    this.LEFT,
-    this.RIGHT,
-    this.TOP,
-    this.BOTTOM,
-    this.TOP_LEFT,
-    this.TOP_RIGHT,
-    this.BOTTOM_LEFT,
-    this.BOTTOM_RIGHT,
-    this.CENTER
+    ANCHORING.LEFT,
+    ANCHORING.RIGHT,
+    ANCHORING.TOP,
+    ANCHORING.BOTTOM,
+    ANCHORING.TOP_LEFT,
+    ANCHORING.TOP_RIGHT,
+    ANCHORING.BOTTOM_LEFT,
+    ANCHORING.BOTTOM_RIGHT,
+    ANCHORING.CENTER
 ];
 
 module.exports = ANCHORING;
