@@ -20,7 +20,6 @@
     "@nkmjs/collections": "^1.0.3",
     "@nkmjs/common": "^1.1.6",
     "@nkmjs/data-core": "^1.1.6",
-    "@nkmjs/data-library": "^1.1.6",
     "@nkmjs/documents": "^1.1.6",
     "@nkmjs/environment": "^1.1.6",
     "@nkmjs/io-core": "^1.1.6",
