@@ -84,20 +84,20 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
      */
     CreateWindow(p_options, p_parent = null) {
 
-        let winID = u.tils.Get(p_options, `id`, `unidentified_window`),
+        let winID = p_options.id || `unidentified_window`,
             wrapper = this._mapIDToWrapper.Get(winID);
 
         console.log(`WINDOWS >> CreateWindow ${winID}`);
 
         if (!wrapper) {
 
-            let webPreferences = u.tils.Get(p_options, `webPreferences`, {
+            let webPreferences = p_options.webPreferences || {
                 nodeIntegration: true,
                 contextIsolation: false,
                 enableRemoteModule: true,
                 experimentalFeatures: true,
                 webSecurity: false
-            }),
+            },
                 winOptions = {
                     webPreferences: webPreferences,
                     //width: 1920,
@@ -147,8 +147,8 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
 
             let loadOptions = {
                 pathname: ppath,
-                protocol: u.tils.Get(p_options, `protocol`, `file:`),
-                slashes: u.tils.Get(p_options, `slashes`, true)
+                protocol: p_options.protocol || `file:`,
+                slashes: 'slashes' in p_options ? p_options.slashes : true
             }
 
             if (p_options.ipcOn) {
@@ -173,7 +173,7 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
             wrapper.window.loadURL(url.format(loadOptions));
         }
 
-        if (u.tils.Get(p_options, `show`, true)) { wrapper.window.show(); }
+        if (('show' in p_options ? p_options.show : true)) { wrapper.window.show(); }
 
         return wrapper;
 
@@ -304,14 +304,14 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
 
         if (!wrapper) { return; }
 
-        const pdfPath = u.tils.Get(p_data, `outputPath`, path.join(__dirname, '/print.pdf'));
+        const pdfPath = p_data.outputPath || path.join(__dirname, '/print.pdf');
         wrapper.window.webContents.printToPDF(
             {
-                marginsType: u.tils.Get(p_data, `marginsType`, 1),
-                pageSize: u.tils.Get(p_data, `pageSize`, `Letter`),
-                printBackground: u.tils.Get(p_data, `printBackground`, true),
-                printSelectionOnly: u.tils.Get(p_data, `printSelectionOnly`, false),
-                landscape: u.tils.Get(p_data, `landscape`, false)
+                marginsType: 'marginsType' in p_data ? p_data.marginsType : 1,
+                pageSize: p_data.pageSize || Letter,
+                printBackground: `printBackground` in p_data ? p_data.printBackground : true,
+                printSelectionOnly: `printSelectionOnly` in p_data ? p_data.printSelectionOnly : false,
+                landscape: `landscape` in p_data ? p_data.landscape : false
             },
             function (error, data) {
                 if (error) { this._SendError(error); return; }

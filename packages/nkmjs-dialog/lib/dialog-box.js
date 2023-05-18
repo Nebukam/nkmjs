@@ -128,7 +128,7 @@ class DialogBox extends base {
             // Create handles as specified
             for (let i = 0, n = p_actions.length; i < n; i++) {
                 let opts = p_actions[i];
-                this.CreateHandle(opts, u.tils.Get(opts, `cl`, null));
+                this.CreateHandle(opts, opts.cl || null);
             }
         } else {
             // Create a default handle
@@ -239,7 +239,7 @@ class DialogBox extends base {
         let handle = this._toolbar.CreateHandle(p_options, p_class);
         this._handles.push(handle);
 
-        if (u.tils.Get(p_options, `close`, true)) {
+        if (((p_options && 'close' in p_options) ? p_options.close : true)) {
             //TODO : Need to add a generic 'triggered' activation signal
             //to close the dialog box. Otherwise, close by default.
             handle.Watch(ui.SIGNAL.TRIGGERED, this._Close);

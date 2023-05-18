@@ -3,24 +3,20 @@
 const com = require(`@nkmjs/common`);
 const u = require(`@nkmjs/utils`);
 
-const AbstractAction = require(`./abstract-action`);
+const AbstractOperation = require("./abstract-operation");
 
 const _map = {};
 var _defaultHandler = null;
 
 module.exports = {
 
-    get defaultHander() { return _defaultHandler; },
-    set defaultHander(p_value) { _defaultHandler = p_value; },
+    get defaultHandler() { return _defaultHandler; },
+    set defaultHandler(p_value) { _defaultHandler = p_value; },
 
-    GetModel: function (p_id) {
-        let cl = _map[p_id];
-        if (!cl) { return null; }
-        return com.NFOS.Get(cl);
-    },
+    GetNFOS: function (p_id) { return _map[p_id]?.nfos; },
 
     Get: function (p_id) {
-        let cl = _map[p_id];
+        let cl = _map[p_id].cl;
         if (!cl) { return null; }
         return com.Rent(cl);
     },
@@ -38,18 +34,18 @@ module.exports = {
 
     _Add(p_class) {
 
-        if (!u.isInstanceOf(p_class, AbstractAction)) { return; }
+        if (!u.isInstanceOf(p_class, AbstractOperation)) { return; }
 
         let nfos = com.NFOS.Get(p_class);
-        if (!nfos || !nfos.identifier) { return; }
+        if (!nfos || !nfos.name) { return; }
 
-        if (nfos.identifier in _map) {
-            console.warn(`Action '${nfos.identifier}' already exists and will be overwritten.`);
-        }else{
-            console.log(`+ Action '${nfos.identifier}'`);
+        if (nfos.name in _map) {
+            console.warn(`Action '${nfos.name}' already exists and will be overwritten.`);
+        } else {
+            console.log(`+ Action '${nfos.name}'`);
         }
 
-        _map[nfos.identifier] = { id: nfos.identifier, cl: p_class, nfos: com.NFOS.Get(p_class) };
+        _map[nfos.name] = { id: nfos.name, cl: p_class, nfos: com.NFOS.Get(p_class) };
 
     },
 

@@ -49,7 +49,7 @@ class DialogForm extends base {
     }
 
 
-    _OnContentItemAdded(p_item, p_infos){
+    _OnContentItemAdded(p_item, p_infos) {
 
         if (u.isInstanceOf(p_item, ui.inputs.InputBase)) {
 
@@ -72,7 +72,7 @@ class DialogForm extends base {
 
         let handle = super.CreateHandle(p_options, p_class = null);
 
-        if (u.tils.Get(p_options, `submit`, false)) {
+        if (('submit' in p_options ? p_options.submit : false)) {
             //TODO : Need to add a generic 'triggered' activation  signal
             //to close the dialog box. Otherwise, close by default.
             this._submitMap.Set(handle, p_options.submit);

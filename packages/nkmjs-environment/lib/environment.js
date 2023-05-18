@@ -212,7 +212,7 @@ class ENV extends com.Observable {
         }
 
         // Register the service worker if available.
-        let swPath = u.tils.Get(this._config, `service_worker`, false);
+        let swPath = p_config.service_worker || false;
         if (swPath !== false) {
             if (!this._pwaSWHandler.Register(swPath)) { this._InternalStart(); }
         } else {
@@ -258,7 +258,7 @@ class ENV extends com.Observable {
 
         if (!this._app) {
             // Initialize app, if any.
-            let appClass = u.tils.Get(this._config, `renderer`, null);
+            let appClass = this._config.renderer || null;
             if (appClass) {
                 u.LOG._(`ENV : App found (${appClass.name})`, `#33979b`, `#212121`);
                 this._app = new appClass();

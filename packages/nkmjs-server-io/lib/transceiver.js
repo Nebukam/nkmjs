@@ -2,6 +2,7 @@
 
 const com = require(`@nkmjs/common`);
 const services = require(`@nkmjs/services`);
+const { RateLimiter } = require(`limiter`);
 
 const __noImplemented = `Not implemented.`;
 
@@ -19,6 +20,7 @@ class Transceiver extends com.Observable {
     static __distribute = com.helpers.OptionsDistribute.Ext()
         .To(`prefix`, null, ``)
         .To(`delimiter`, null, `/`)
+        .To(`rateLimit`, null, null)
         .To(`readOnly`)
         .To(`tokens`)
         .To(`recursive`, null, true);
@@ -34,6 +36,7 @@ class Transceiver extends com.Observable {
         this._service = null;
         this._tokens = null;
         this._uid = null;
+        this._rateLimit = null;
 
         this._prependRoot = false;
 
@@ -47,6 +50,12 @@ class Transceiver extends com.Observable {
 
     get prefix() { return this._prefix; }
     set prefix(p_value) { this._prefix = p_value; }
+
+    get rateLimit() { return this._rateLimit; }
+    set rateLimit(p_value) {
+        this._rateLimit = null;
+        if (p_value) { this._rateLimit = new RateLimiter(p_value); }
+    }
 
     get uid() { return this._uid; }
     set uid(p_value) {
@@ -134,9 +143,9 @@ class Transceiver extends com.Observable {
         return p_name in p_options ? p_options[p_name] : p_name in this ? this[p_name] : p_fallback;
     }
 
-    CreateReadStream(p_path, p_options = null) { throw new Error(__noImplemented); }
+    async CreateReadStream(p_path, p_options = null) { throw new Error(__noImplemented); }
 
-    CreateWriteStream(p_path, p_options = null) { throw new Error(__noImplemented); }
+    async CreateWriteStream(p_path, p_options = null) { throw new Error(__noImplemented); }
 
     /**
      * @callback boolCallback
@@ -150,7 +159,7 @@ class Transceiver extends com.Observable {
      * @param {string} p_path 
      * @param {boolCallback} p_callback 
      */
-    Exists(p_path, p_callback) { throw new Error(__noImplemented); }
+    async Exists(p_path, p_callback) { throw new Error(__noImplemented); }
 
     /**
      * @callback statCallback
@@ -164,7 +173,7 @@ class Transceiver extends com.Observable {
      * @param {string} p_path 
      * @param {statCallback} p_callback 
      */
-    Stat(p_path, p_callback) { throw new Error(__noImplemented); }
+    async Stat(p_path, p_callback) { throw new Error(__noImplemented); }
 
     /**
      * 
@@ -172,7 +181,7 @@ class Transceiver extends com.Observable {
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
-    MkDir(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
+    async MkDir(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
 
     /**
      * @callback readdirCallback
@@ -187,7 +196,7 @@ class Transceiver extends com.Observable {
      * @param {readdirCallback} p_callback 
      * @param {*} p_options 
      */
-    ReadDir(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
+    async ReadDir(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
 
     /**
      * @callback readfileCallback
@@ -202,7 +211,7 @@ class Transceiver extends com.Observable {
      * @param {readfileCallback} p_callback 
      * @param {*} p_options 
      */
-    ReadFile(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
+    async ReadFile(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
 
     /**
      * 
@@ -210,7 +219,7 @@ class Transceiver extends com.Observable {
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
-    RmDir(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
+    async RmDir(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
 
     /**
      * 
@@ -218,7 +227,7 @@ class Transceiver extends com.Observable {
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
-    Unlink(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
+    async Unlink(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
 
     /**
      * 
@@ -227,7 +236,7 @@ class Transceiver extends com.Observable {
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
-    WriteFile(p_path, p_data, p_callback, p_options = null) { throw new Error(__noImplemented); }
+    async WriteFile(p_path, p_data, p_callback, p_options = null) { throw new Error(__noImplemented); }
 
     _CleanUp() {
 

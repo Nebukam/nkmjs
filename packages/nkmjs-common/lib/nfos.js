@@ -46,8 +46,23 @@ module.exports = {
 
     },
 
-    GetOption: function (p_obj, p_id, p_fallback = null) {
-        return u.tils.Get(module.exports.Get(p_obj), p_id, p_fallback);
+    GetValue: function (p_obj, p_id, p_fallback = null) {
+        let nfos = module.exports.Get(p_obj);
+        return nfos ? nfos[p_id] || p_fallback : p_fallback;
+    },
+
+    GetNum: function (p_obj, p_id, p_fallback = 0) {
+        let
+            nfos = module.exports.Get(p_obj),
+            val = nfos ? nfos[p_id] || p_fallback : p_fallback;
+        return Number.isNaN(val) ? p_fallback : val;
+    },
+
+    GetStr: function (p_obj, p_id, p_fallback = ``) {
+        let
+            nfos = module.exports.Get(p_obj),
+            val = nfos ? nfos[p_id] || p_fallback : p_fallback;
+        return u.isString(val) ? val : p_fallback;
     },
 
     /**

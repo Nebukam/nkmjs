@@ -76,8 +76,8 @@ class OverlayHandler extends base {
         this.BringToFront();
         this.visible = true;
 
-        let overlayClass = u.tils.Get(overlayOptions, `overlayClass`,
-            com.BINDINGS.Get(CONTEXT.OVERLAY, p_request.requestType, this.constructor.__default_overlayClass)),
+        let overlayClass = overlayOptions.overlayClass ||
+            com.BINDINGS.Get(CONTEXT.OVERLAY, p_request.requestType, this.constructor.__default_overlayClass),
             newOverlay = this.Attach(overlayClass, `overlay`);
 
         this._overlayMap.Set(overlayOptions, newOverlay);

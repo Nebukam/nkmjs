@@ -178,7 +178,7 @@ class Workspace extends base {
         }
 
         // Need to create a new item from `p_item` as options
-        let viewClass = u.tils.Get(p_item, ui.IDS.VIEW_CLASS, null),
+        let viewClass = p_item[ui.IDS.VIEW_CLASS] || null,
             item = data.catalogs.Find(localCatalog, (i) => {
                 return i.data == p_item.data && u.isInstanceOf(i.GetOption(ui.IDS.VIEW), viewClass);
             });

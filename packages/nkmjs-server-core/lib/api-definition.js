@@ -92,7 +92,7 @@ class APIDefinition extends com.Observable {
             }
         }
 
-        console.log(`${this._app.baseURL}${this._route} · · · (${this.id} @ ${this._handlerClass.name}`);
+        console.log(`${this._app.baseURL}${this._route} · · · ( ${this.id} @ ${this._handlerClass.name} )`);
 
     }
 
@@ -129,11 +129,15 @@ class APIDefinition extends com.Observable {
      */
     _Handle(p_req, p_res) {
 
-        console.log(`>>> ${this._route} @ ${this._handlerClass.name}`);
+        console.log(`>>> ${this._route} @ ${this._handlerClass.name} | ${this.id}`);
 
         if (this.requireAuth &&
             !nkm.main.IsAuthenticated(p_req)) {
             return this.SendError(STATUSES.UNAUTHORIZED);
+        }
+
+        if (this._method == FLAGS.POST && !p_req.body) {
+            return this.SendError(STATUSES.BAD_REQUEST);
         }
 
         let newHandler = com.Rent(this._handlerClass);

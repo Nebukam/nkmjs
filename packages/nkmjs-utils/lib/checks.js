@@ -133,7 +133,7 @@ module.exports = {
         if (module.exports.isVoid(p_value) || p_value === ``) {
             return true;
         }
-        if (module.exports.isArray(p_value)) { return p_value.length === 0; }
+        if (Array.isArray(p_value)) { return p_value.length === 0; }
         if (module.exports.isObject(p_value)) {
             for (let key in p_value) { return false; }
             return true;
@@ -156,6 +156,14 @@ module.exports = {
             // passes tests and checks out
         };
         return true;
+    },
+
+    isSameType: function (p_a, p_b) {
+        if (typeof p_a === typeof p_b) {
+            let aArr = Array.isArray(p_a), bArr = Array.isArray(p_b);
+            return aArr || bArr ? aArr === bArr : true;
+        }
+        return false;
     },
 
 }

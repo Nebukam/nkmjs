@@ -20,7 +20,8 @@
     "@nkmjs/common": "^1.1.6",
     "@nkmjs/environment": "^1.1.6",
     "@nkmjs/services": "^1.1.6",
-    "@nkmjs/utils": "^1.1.4"
+    "@nkmjs/utils": "^1.1.4",
+    "limiter": "^2.1.0"
   },
   "gitHead": "0d8288538220b63e0bddac446f6acb47e3d39fb7"
 }

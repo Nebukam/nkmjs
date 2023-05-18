@@ -9,7 +9,7 @@ class HandlerPing extends base {
 
     static __METHOD = FLAGS.POST_AND_GET;
 
-    Handle() { this.Complete(`pong`); }
+    async Handle() { this.Complete(`pong`); }
 
 }
 

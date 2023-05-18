@@ -17,10 +17,10 @@ const cors = require("cors");
 const path = require(`path`);
 
 const APIDefinition = require("./api-definition");
+const FLAGS = require(`./flags`);
 const STATUSES = require('./status-codes');
 const handlers = require('./handlers');
-const getters = require(`./getters`);
-const actions = require('./actions');
+const operations = require(`./operations`);
 
 class ServerBase extends com.Observable {
 
@@ -36,23 +36,23 @@ class ServerBase extends com.Observable {
 
         u.LOG.toggle(true);
 
-        getters.Manager.defaultHander = handlers.Getter;
-        actions.Manager.defaultHander = handlers.Action;
+        operations.Manager.defaultHandler = handlers.Operation;
+        operations.Actions.defaultHandler = handlers.Action;
 
         this._starting = false;
         this._config = p_constants;
         console.log(this._config.envPath);
         dotenv.config({ path: this._config.envPath });
 
-        if(process.env.NODE_MAX_MEMORY){//268435456
-            
+        if (process.env.NODE_MAX_MEMORY) {//268435456
+
             console.log(`------------`);
             console.log(`NODE MEMORY LIMIT SET TO ${process.env.NODE_MAX_MEMORY} bytes (${process.env.NODE_MAX_MEMORY / 1048576}mb)`);
             console.log(`------------`);
 
             require('v8').setFlagsFromString(`--max_old_space_size=${process.env.NODE_MAX_MEMORY}`);
 
-        }        
+        }
 
         this._dirName = this._config.dirname;
         this._dirServer = this._config.dirServer;
@@ -274,21 +274,24 @@ class ServerBase extends com.Observable {
 
         //Create getter APIs
 
-        getters.Manager.List().forEach(getter => {
-            this._RegisterAPI(getter.id, {
-                route: env.routing.Model(env.routing.getPrefix, getter.nfos),
-                handler: getter.handler || getters.Manager.defaultHander,
-                mode: getter.nfos.mode || null,
-                requireAuth: getter.nfos.requireAuth
+        operations.Manager.List().forEach(op => {
+            this._RegisterAPI(op.id, {
+                route: env.routing.Model(op.nfos),
+                handler: op.handler || operations.Manager.defaultHandler,
+                method: op.nfos.method || op.nfos.body ? FLAGS.POST : null,
+                requireAuth: op.nfos.requireAuth
             })
         });
 
-        //Register generic action api
-        this._RegisterAPI(`action`, {
-            route: `${env.routing.actionPrefix}/:id`,
-            handler: actions.Manager.defaultHander,
-            requireAuth: true
-        });
+        let actions = operations.Actions.List();
+        if (actions.length) {
+            //Register generic action api
+            this._RegisterAPI(`action`, {
+                route: `${env.routing.actionPrefix}/:id`,
+                handler: operations.Actions.defaultHandler,
+                requireAuth: true
+            });
+        }
 
         this._apiMap.keys.forEach(key => { apis.push(this._apiMap.Get(key)); });
 
@@ -399,7 +402,7 @@ class ServerBase extends com.Observable {
 
     }
 
-    _InitWSRoutes(){
+    _InitWSRoutes() {
 
     }
 

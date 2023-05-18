@@ -10,12 +10,12 @@ class InspectorItem extends base{
     constructor(){super();}
 
     static __defaultSelectOnActivation = true;
+    static __ignoreMetaStyle = false;
 
     _Init(){
-        this._ignoreMetaStyle = u.tils.Default(this._ignoreMetaStyle, false);
         super._Init();
 
-        if(!this._ignoreMetaStyle){
+        if(!this.constructor.__ignoreMetaStyle){
             this._metadataObserver.Hook(
                 data.SIGNAL.META_MID_UPDATE, 
                 `presentation`,
@@ -27,7 +27,7 @@ class InspectorItem extends base{
     _OnDataChanged(p_oldValue){
         super._OnDataChanged(p_oldValue);
         if(this._data){
-            if(this._data.metadata && !this._ignoreMetaStyle){ this._UpdateMetaPresentation(); }
+            if(this._data.metadata && !this.constructor.__ignoreMetaStyle){ this._UpdateMetaPresentation(); }
         }
     }
 

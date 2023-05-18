@@ -196,7 +196,6 @@ class CatalogItem extends base {
     _CleanUp() {
 
         if (this._parent) { this._parent.Remove(this); }
-        this._ClearTagBox();
 
         this._autoRelease = true;
         this._parent = null;

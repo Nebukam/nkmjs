@@ -2,12 +2,14 @@
 
 const u = require(`@nkmjs/utils`);
 
+const FLAGS = require(`../flags`);
 const STATUSES = require("../status-codes");
-const ActionManager = require(`../actions/action-manager`);
 
-const base = require(`./abstract-post`);
-class HandlerUpload extends base {
+const base = require(`./abstract-base`);
+class UploadHandler extends base {
     constructor() { super(); }
+
+    static __METHOD = FLAGS.POST;
 
     _SanitizeRequest(p_req) {
 
@@ -30,7 +32,7 @@ class HandlerUpload extends base {
 
     }
 
-    Handle() {
+    async Handle() {
 
         this._file = path.join(this._dir, `${file.name}`)
 
@@ -49,4 +51,4 @@ class HandlerUpload extends base {
 
 }
 
-module.exports = HandlerUpload;
+module.exports = UploadHandler;

@@ -9,7 +9,7 @@ const STATUSES = require("../status-codes");
 class HandlerBase extends com.Observable {
     constructor() { super(); }
 
-    static __METHOD = null;
+    static __METHOD = FLAGS.GET;
 
     _Init() {
         super._Init();
@@ -30,7 +30,7 @@ class HandlerBase extends com.Observable {
      * @param {*} p_res 
      * @returns 
      */
-    _InternalHandle(p_req, p_res) {
+    async _InternalHandle(p_req, p_res) {
 
         let status = this._SanitizeRequest(p_req);
 
@@ -43,7 +43,7 @@ class HandlerBase extends com.Observable {
         this._req = p_req;
         this._res = p_res;
 
-        this.Handle();
+        await this.Handle();
 
     }
 
@@ -58,20 +58,19 @@ class HandlerBase extends com.Observable {
      * 
      * @returns 
      */
-    Handle() { return this.Abort(STATUSES.NOT_IMPLEMENTED); }
+    async Handle() { return this.Abort(STATUSES.NOT_IMPLEMENTED); }
 
-    Complete(p_response = null) {
+    Complete(p_data = null) {
 
+        if (!p_data) { p_data = STATUSES.OK; }
+        else if (u.isNumber(p_data)) { p_data = STATUSES.getStatus(p_status); }
 
-        if (!p_response) { p_response = STATUSES.OK; }
-        else if (u.isNumber(p_response)) { p_response = STATUSES.getStatus(p_status); }
-
-        if (STATUSES.isStatus(p_response)) {
-            this._res.status(p_response.code);
-            this._res.send(p_response.msg);
+        if (STATUSES.isStatus(p_data)) {
+            this._res.status(p_data.code);
+            this._res.send(p_data.msg);
         } else {
             this._res.status(STATUSES.OK.code);
-            this._res.send(p_response);
+            this._res.send(p_data);
         }
 
         this._OnHandled();

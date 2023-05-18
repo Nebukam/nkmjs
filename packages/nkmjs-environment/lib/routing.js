@@ -3,40 +3,48 @@
 const u = require(`@nkmjs/utils`);
 const com = require(`@nkmjs/common`);
 const env = require(`./environment`);
-
-const _getPrefix = `/api/get`;
-const _actionPrefix = `/api/action`;
-
+const _globalHeaders = {};
+const _actionPrefix = `/do`
 module.exports = {
-
-    get getPrefix() { return _getPrefix; },
-    get actionPrefix() { return _actionPrefix; },
 
     NONE: Object.freeze('none'),
 
-    Model: function (p_prefix, p_nfos) {
+    get actionPrefix() { return _actionPrefix; },
+    set actionPrefix(p_value) { _actionPrefix = p_value; },
+
+    get globalHeaders() { return _globalHeaders; },
+    set globalHeaders(p_value) { for (let h in p_value) { _globalHeaders[h] = p_value[h]; } },
+
+    Model: function (p_nfos) {
+        let route = ``;
         if (p_nfos.constructor !== Object) { p_nfos = com.NFOS.Get(p_nfos); }
-        if (p_nfos.prefix) { p_prefix += p_nfos.prefix; }
-        if (p_nfos.params) { p_nfos.params.forEach(param => { p_prefix += `/:${param.id}`; }); }
-        return p_prefix;
+        if (p_nfos.prefix) { route += p_nfos.prefix; }
+        if (p_nfos.params) { p_nfos.params.forEach(param => { route += `/:${param.id}`; }); }
+        return route;
     },
 
-    Build: function (p_prefix, p_nfos, p_params) {
+    Build: function (p_nfos, p_params) {
+        let route = ``;
         if (p_nfos.constructor !== Object) { p_nfos = com.NFOS.Get(p_nfos); }
-        if (p_nfos.prefix) { p_prefix += p_nfos.prefix; }
+        if (p_nfos.prefix) { route += p_nfos.prefix; }
         if (p_nfos.params) {
             p_nfos.params.forEach(param => {
                 let value = (p_params ? p_params[param.id] : null) || param.default || module.exports.NONE;
-                p_prefix += `/${value}`;
+                route += `/${value}`;
             });
         }
-        return p_prefix;
+        return route;
     },
 
-    Get: function (p_api, p_params, p_callback) {
-        fetch(`${env.app.baseURL}${module.exports.Build(_getPrefix, p_api, p_params)}`, {
-            method: p_api.method || 'GET'
-        })
+    Send: function (p_api, p_params, p_callback) {
+
+        let conf = {
+            method: p_api.method || 'GET',
+            body: p_params?.body || null,
+            headers: u.merge.Defaults(p_params?.headers, _globalHeaders)
+        }
+
+        fetch(`${env.app.baseURL}${module.exports.Build(p_api, p_params)}`, conf)
             .then((p_res) => {
                 if (!p_res.ok) { p_callback(p_res, null); }
                 else {
@@ -47,33 +55,9 @@ module.exports = {
                         p_res.text().then(text => { p_callback(null, text); });
                     }
                 }
-            });
-    },
-
-    Do: function (p_actionId, p_body, p_callback, p_options = {}) {
-
-        let conf = {
-            method: 'POST',
-            ...p_options
-        };
-
-        conf.body = p_body;
-
-        fetch(`${env.app.baseURL}${_actionPrefix}/${p_actionId}`, conf)
-            .then((p_res) => {
-                if (!p_res.ok) { p_callback(p_res, null); }
-                else {
-                    let contentType = p_res.headers.get("content-type");
-                    if (contentType && contentType.indexOf("application/json") !== -1) {
-                        p_res.json().then(data => { p_callback(null, data); });
-                    } else {
-                        p_callback(null, p_res);
-                    }
-                }
-            });
-
-    },
-
+            })
+            .catch((e) => { p_callback(e, null); });
+    }
 
 
 }

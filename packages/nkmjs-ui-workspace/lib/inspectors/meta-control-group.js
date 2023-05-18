@@ -14,6 +14,7 @@ class MetaControlGroup extends base {
     constructor() { super(); }
 
     static __defaultSelectOnActivation = false;
+    static __ignoreMetaStyle = true;
 
     static TogglePathExpansion(p_path, p_toggle) {
         if (p_toggle) {
@@ -28,7 +29,6 @@ class MetaControlGroup extends base {
     }
 
     _Init() {
-        this._ignoreMetaStyle = true;
         super._Init();
         this._staticContent = false;
         this._metaPath = '';

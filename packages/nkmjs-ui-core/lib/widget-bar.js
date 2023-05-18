@@ -197,8 +197,8 @@ class WidgetBar extends base {
 
         let cl = (p_class || (p_options ? p_options.cl : null) || this._defaultWidgetClass),
             handle,
-            group = u.tils.Get(p_options, IDS.GROUP, null),
-            radio = group ? u.tils.Get(p_options, `radio`, null) : null;
+            group = p_options ? p_options[IDS.GROUP] : null,
+            radio = group && `radio` in p_options ? p_options.radio : null;
 
         if (group) {
 
@@ -374,7 +374,7 @@ class WidgetBar extends base {
     _OnHandleReleased(p_handle) {
 
         let options = this._optionsMap.get(p_handle),
-            groupId = u.tils.Get(options, IDS.GROUP, null);
+            groupId = options ? options[IDS.GROUP] : null;
 
         if (groupId) {
 

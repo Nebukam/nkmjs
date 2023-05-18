@@ -11,10 +11,9 @@ class MetaControlItem extends Inspec__BASE__torItem {
     constructor() { super(); }
 
     static __defaultSelectOnActivation = false;
+    static __ignoreMetaStyle = true;
 
     _Init() {
-
-        this._ignoreMetaStyle = true;
 
         super._Init();
 

@@ -128,13 +128,13 @@ class ResourceOperation extends com.Observable {
         this._cancelled = false;
         this._rsc = p_rsc;
         this._fullPath = u.FULL(p_rsc.path);
-        this._ioType = u.tils.Get(p_options, `io`, null);
+        this._ioType = p_options?.io;
         this._callbacks.Add(p_options);
         this._states = p_states;
         this._originalState = this._rsc._state.currentState;
         this._rsc._state.currentState = this._states.prepare.state;
-        this._important = this.GetOption(`important`, false);
-        this._parallel = this.GetOption(`parallel`, false);
+        this._important = p_options?.important;
+        this._parallel = p_options?.parallel;
 
         args.unshift(this);
         u.Call(p_fn, ...args);

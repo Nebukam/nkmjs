@@ -1,6 +1,7 @@
 'use strict';
 
 const UTILS = require(`./lib/utils`);
+const MERGE = require(`./lib/merge`);
 const CHECKS = require(`./lib/checks`);
 const PATH = require(`./lib/path`);
 
@@ -11,6 +12,7 @@ module.exports = {
     helpers: require(`./lib/helpers`),
 
     check: CHECKS,
+    merge: MERGE,
 
     //TODO: Move DOM utils to ui-core
 

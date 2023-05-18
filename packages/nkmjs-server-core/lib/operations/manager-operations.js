@@ -3,31 +3,26 @@
 const com = require(`@nkmjs/common`);
 const u = require(`@nkmjs/utils`);
 
-const AbstractGetter = require(`./abstract-getter`);
+const AbstractOperation = require(`./abstract-operation`);
 
 const _map = {};
 var _defaultHandler = null;
 
 module.exports = {
 
-    get defaultHander() { return _defaultHandler; },
-    set defaultHander(p_value) { _defaultHandler = p_value; },
-    
+    get defaultHandler() { return _defaultHandler; },
+    set defaultHandler(p_value) { _defaultHandler = p_value; },
 
-    GetNFOS: function (p_id) {
-        let cl = _map[p_id];
-        if (!cl) { return null; }
-        return com.NFOS.Get(cl);
-    },
+    GetNFOS: function (p_id) { return _map[p_id]?.nfos; },
 
     Has: function (p_id) {
         return p_id in _map;
     },
 
     Get: function (p_id) {
-        let cl = _map[p_id];
+        let cl = _map[p_id]?.cl;
         if (!cl) { return null; }
-        return com.Rent(cl.cl);
+        return com.Rent(cl);
     },
 
     Add: function (p_input, p_handler = null) {
@@ -43,12 +38,12 @@ module.exports = {
 
     _Add(p_class, p_handler = null) {
 
-        if (!u.isInstanceOf(p_class, AbstractGetter)) { return; }
+        if (!u.isInstanceOf(p_class, AbstractOperation)) { return; }
 
         let nfos = com.NFOS.Get(p_class);
         if (!nfos) { return; }
 
-        let id = nfos.identifier || nfos.name;
+        let id = nfos.name;
 
         if (id in _map) {
             console.warn(`Getter '${id}' already exists and will be overwritten.`);

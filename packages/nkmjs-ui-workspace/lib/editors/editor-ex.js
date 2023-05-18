@@ -103,7 +103,7 @@ class EditorEx extends base {
                 conf = confs[i],
                 item = this._shelfCatalog.Register(conf),
                 view = item.GetOption('view', null),
-                assign = u.tils.Get(conf, `assign`, null);
+                assign = conf?.assign || null;
 
             //console.log(`${assign} >> ${view}`);
 

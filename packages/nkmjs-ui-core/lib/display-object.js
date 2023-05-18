@@ -351,7 +351,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set x(p_value) { if (this._transforms.x != p_value) { this._transforms.x = p_value; this._DirtyTransform(); } }
-    get x() { return u.tils.Get(this._transforms, 'x', 0); }
+    get x() { return this._transforms.x || 0; }
 
     /**
      * @description Will set transform.translateY
@@ -360,7 +360,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set y(p_value) { if (this._transforms.y != p_value) { this._transforms.y = p_value; this._DirtyTransform(); } }
-    get y() { return u.tils.Get(this._transforms, 'y', 0); }
+    get y() { return this._transforms.y || 0; }
 
     /**
      * @description Will set transform.translateZ
@@ -369,7 +369,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set z(p_value) { if (this._transforms.z != p_value) { this._transforms.z = p_value; this._DirtyTransform(); } }
-    get z() { return u.tils.Get(this._transforms, 'z', 0); }
+    get z() { return this._transforms.y || 0; }
 
     /**
      * @description Will set transform.rotation
@@ -378,7 +378,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set rotation(p_value) { if (this._transforms.rotation != p_value) { this._transforms.rotation = p_value; this._DirtyTransform(); } }
-    get rotation() { return u.tils.Get(this._transforms, 'rotation', 0); }
+    get rotation() { return this._transforms.rotation || 0; }
 
     /**
      * @description Will set transform.rotationX
@@ -387,7 +387,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set rotationX(p_value) { if (this._transforms.rotationX != p_value) { this._transforms.rotationX = p_value; this._DirtyTransform(); } }
-    get rotationX() { return u.tils.Get(this._transforms, 'rotationX', 0); }
+    get rotationX() { return this._transforms.rotationX || 0; }
 
     /**
      * @description Will set transform.rotationX
@@ -396,7 +396,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set rotationY(p_value) { if (this._transforms.rotationY != p_value) { this._transforms.rotationY = p_value; this._DirtyTransform(); } }
-    get rotationY() { return u.tils.Get(this._transforms, 'rotationY', 0); }
+    get rotationY() { return this._transforms.rotationY || 0; }
 
     /**
      * @description Will set transform.rotationX
@@ -405,7 +405,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set rotationZ(p_value) { if (this._transforms.rotationZ != p_value) { this._transforms.rotationZ = p_value; this._DirtyTransform(); } }
-    get rotationZ() { return u.tils.Get(this._transforms, 'rotationZ', 0); }
+    get rotationZ() { return this._transforms.rotationZ || 0; }
 
     /**
      * @description Will set transform.scale
@@ -414,7 +414,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set scale(p_value) { if (this._transforms.scale != p_value) { this._transforms.scale = p_value; this._DirtyTransform(); } }
-    get scale() { return u.tils.Get(this._transforms, 'scale', 0); }
+    get scale() { return this._transforms.scale || 0; }
 
     /**
      * @description Will set transform.scaleX
@@ -423,7 +423,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set scaleX(p_value) { if (this._transforms.scaleX != p_value) { this._transforms.scaleX = p_value; this._DirtyTransform(); } }
-    get scaleX() { return u.tils.Get(this._transforms, 'scaleX', 0); }
+    get scaleX() { return this._transforms.scaleX || 0; }
 
     /**
      * @description Will set transform.scaleY
@@ -432,7 +432,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set scaleY(p_value) { if (this._transforms.scaleY != p_value) { this._transforms.scaleY = p_value; this._DirtyTransform(); } }
-    get scaleY() { return u.tils.Get(this._transforms, 'scaleY', 0); }
+    get scaleY() { return this._transforms.scaleY || 0; }
 
     /**
      * @description Will set transform.scaleZ
@@ -441,7 +441,7 @@ class DisplayObject extends base {
      * @discreet
      */
     set scaleZ(p_value) { if (this._transforms.scaleZ != p_value) { this._transforms.scaleZ = p_value; this._DirtyTransform(); } }
-    get scaleZ() { return u.tils.Get(this._transforms, 'scaleZ', 0); }
+    get scaleZ() { return this._transforms.scaleZ || 0; }
 
     /**
      * @description Apply all transformations immediately. Note that this function is otherwise called at the end of the frame.
@@ -460,21 +460,21 @@ class DisplayObject extends base {
 
         //TODO : Optimize this
 
-        let rr = u.tils.Get(t, 'rotation', 0),
-            rx = u.tils.Get(t, 'rotationX', 0),
-            ry = u.tils.Get(t, 'rotationY', 0),
-            rz = u.tils.Get(t, 'rotationZ', 0),
+        let rr = t.rotation  || 0,
+            rx = t.rotationX || 0,
+            ry = t.rotationY || 0,
+            rz = t.rotationZ || 0,
             r = `${rr === 0 ? `` : `rotate(${rr}deg)`}${rx === 0 ? `` : `rotateX(${rx}deg)`}${ry === 0 ? `` : `rotateX(${ry}deg)`}${rz === 0 ? `` : `rotateZ(${rz}deg)`}`,
 
-            tx = u.tils.Get(t, 'x', 0),
-            ty = u.tils.Get(t, 'y', 0),
-            tz = u.tils.Get(t, 'z', 0),
+            tx = t.x || 0,
+            ty = t.y || 0,
+            tz = t.z || 0,
             tt = `${tx === 0 ? `` : `translateX(${tx}px)`}${ty === 0 ? `` : `translateY(${ty}px)`}${tz === 0 ? `` : `translateZ(${tz}px)`}`,
 
-            ss = u.tils.Get(t, 'scale', 1),
-            sx = u.tils.Get(t, 'scaleX', 1),
-            sy = u.tils.Get(t, 'scaleY', 1),
-            sz = u.tils.Get(t, 'scaleZ', 1),
+            ss = t.scale  || 1,
+            sx = t.scaleX || 1,
+            sy = t.scaleY || 1,
+            sz = t.scaleZ || 1,
             s = `${ss === 1 ? `` : `scale(${ss},${ss})`}${sx === 1 ? `` : `scaleX(${sx})`}${sy === 1 ? `` : `scaleX(${sy})`}${sz === 1 ? `` : `scaleZ(${sz})`}`;
 
         this.style.transform = `${tt}${r}${s}`;

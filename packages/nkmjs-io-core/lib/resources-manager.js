@@ -161,7 +161,7 @@ class RESOURCES extends services.ServiceBase {
 
         let shortPath = u.SHORT(p_path),
             rsc = _resourcesMap.Get(shortPath),
-            rscClass = u.tils.Get(p_options, `cl`, null),
+            rscClass = p_options?.cl || null,
             stats = null,
             fullPath = u.FULL(p_path);
 
@@ -196,8 +196,8 @@ class RESOURCES extends services.ServiceBase {
         */
 
         rsc.path = shortPath;
-        rsc.encoding = u.tils.Get(p_options, `encoding`, ENCODING.UTF8);
-        rsc.type = u.tils.Get(p_options, `type`, rsc.type); //RESPONSE_TYPE.TEXT);
+        rsc.encoding = p_options?.encoding || ENCODING.UTF8;
+        rsc.type = p_options?.type || rsc.type;
         rsc.stats = stats;
         rsc.exists = stats != null;
 

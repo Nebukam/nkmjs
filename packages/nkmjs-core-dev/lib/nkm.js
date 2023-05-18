@@ -98,12 +98,12 @@ class NKMjs {
                     //TODO : Try parse format such as "name <email@email.com> (url)"
                     author.name = projectPackageJson.author;
                 } else {
-                    author.name = u.tils.Get(projectPackageJson.author, `name`, `author_name`);
-                    author.email = u.tils.Get(projectPackageJson.author, `email`, `mail@mail.com`);
+                    author.name = projectPackageJson?.author?.name || `author_name`;
+                    author.email = projectPackageJson?.author?.email || `mail@mail.com`;
                 }
             }
 
-            author.email = u.tils.Get(projectPackageJson, `email`, author.email);
+            author.email = projectPackageJson.email || author.email;
         }
 
         console.log(`author ${chalk.white(`» `)} ${chalk.green(author.name)} / ${chalk.green(author.email)}`);

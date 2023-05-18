@@ -138,7 +138,7 @@ class CommandDocumentBase extends actions.Command {
 
         let rsc = this._doc.currentRsc,
             data = this._doc.currentData,
-            dataBound = com.NFOS.GetOption(this._doc, IDS.DATA_BOUND, false);
+            dataBound = com.NFOS.GetValue(this._doc, IDS.DATA_BOUND, false);
 
         if (p_clearResource && rsc) { rsc.Release(); }
         if (data) { data.Release(); }

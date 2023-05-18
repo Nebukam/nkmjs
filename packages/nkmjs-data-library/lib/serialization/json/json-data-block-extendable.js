@@ -33,11 +33,11 @@ class DataBlockExtendableJSONSerializer extends DataBlockJSONSerializer {
 
     static Deserialize(p_serial, p_data = null, p_options = null, p_meta = null) {
 
-        let ecosystem = u.tils.Get(p_options, `ecosystem`, null);
+        let ecosystem = p_options?.ecosystem ||  null;
         if (!ecosystem) { throw new Error(`Cannot resolve reference without an ecosystem set`); }
 
         let existingData = this.TryGetExisting(ecosystem, p_serial, p_meta);
-        if (existingData && u.tils.Get(p_options, `useRegisteredData`)) {
+        if (existingData && p_options?.useRegisteredData) {
 
             // Destroy initial object
             if (p_data && existingData != p_data) { p_data.Release(); }
@@ -67,7 +67,7 @@ class DataBlockExtendableJSONSerializer extends DataBlockJSONSerializer {
         if (IDS.BASE in p_serial) {
             // Retrieve base & assign it
             let baseURI = p_serial[IDS.BASE],
-                ecosystem = u.tils.Get(p_options, `ecosystem`, null);
+                ecosystem = p_options?.ecosystem || null;
 
             if (!ecosystem) { throw new Error(`Cannot resolve reference without an ecosystem set`); }
 

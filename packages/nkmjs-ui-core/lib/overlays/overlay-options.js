@@ -88,9 +88,7 @@ class OverlayOptions extends com.Observable {
      * @param {string} p_id 
      * @param {*} [p_fallback] 
      */
-    GetOption(p_id, p_fallback) {
-        return u.tils.Get(this._options, p_id, p_fallback);
-    }
+    GetOption(p_id, p_fallback) { return p_id in this._options ? this._options[p_id] : p_fallback; }
 
     /**
      * @description Consume the current options -- signifying listeners that

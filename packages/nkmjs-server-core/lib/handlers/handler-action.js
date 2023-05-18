@@ -2,42 +2,44 @@
 
 const u = require(`@nkmjs/utils`);
 
+const FLAGS = require(`../flags`);
 const STATUSES = require("../status-codes");
-const ActionManager = require(`../actions/action-manager`);
+const ActionsManager = require(`../operations/manager-actions`);
 
-const base = require(`./abstract-post`);
-class HandlerAction extends base {
+const base = require(`./handler-operation`);
+class ActionHandler extends base {
     constructor() { super(); }
 
+    static __METHOD = FLAGS.POST;
+
     _SanitizeRequest(p_req) {
+        
+        this._actionId = p_req.params.actionId;
+        
+        if (!this._actionId) { return false; }
 
-        let sup = super._SanitizeRequest(p_req);
-        if (!sup) { return; }
+        return this._SanitizeAgainstNFOS(
+            p_req, ActionsManager.GetNFOS(this._actionId));
+            
+    }
 
-        this._actionId = p_req.params.id;
-        this._actionParams = p_req.body;
+    async Handle() {
 
-        // Validate model against params
-        let model = ActionManager.GetModel(this._actionId);
-        if (!model) { return STATUSES.BAD_REQUEST; }
-        if (!this._actionParams) { return STATUSES.BAD_REQUEST; }
+        let action = ActionsManager.Get(this._actionId);
+        action.handler = this;
 
-        //TODO: Validate model
-
-        return true;
+        return await action.Execute(this._req.params,
+            (p_output) => { this.Complete(p_output); },
+            (p_output) => { this.Abort(STATUSES.isStatus(p_output) ? p_output : STATUSES.BAD_REQUEST); }
+        );
 
     }
 
-    Handle() {
-        ActionManager.Get(this._actionId)
-            .Execute(this._actionParams,
-                (p_action) => { this.Complete(p_action.response); },
-                (p_action) => {
-                    this.Abort(STATUSES.isStatus(p_action.response) ? p_action.response : STATUSES.BAD_REQUEST);
-                });
-
+    _CleanUp() {
+        this._actionId = null;
+        super._CleanUp();
     }
 
 }
 
-module.exports = HandlerAction;
+module.exports = ActionHandler;

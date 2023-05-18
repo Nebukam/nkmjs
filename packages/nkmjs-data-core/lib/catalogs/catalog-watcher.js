@@ -5,6 +5,7 @@ const u = require(`@nkmjs/utils`);
 
 const SIGNAL = require(`./catalog-signal`);
 const CatalogItem = require(`./catalog-item`);
+const helpers = require(`./helpers`);
 
 /**
 * @description A CatalogWatcher observe a catalog's additions and removals.
@@ -265,7 +266,7 @@ class CatalogWatcher extends com.Observable {
             mappedValue = this.Get(this._catalog.At(p_identifier));
         } else if (u.isString(p_identifier)) {
             // by data id name
-            let item = data.catalogs.Find(this._catalog, (i) => { return i.name == p_identifier; });
+            let item = helpers.Find(this._catalog, (i) => { return i.name == p_identifier; });
             if (item) { mappedValue = this.Get(item); }
         } else if (u.isInstanceOf(p_identifier, CatalogItem)) {
             // by catalog item reference

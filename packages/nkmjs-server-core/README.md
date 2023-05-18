@@ -16,7 +16,7 @@ SECRET='open-id-connect-secret'
 PORT=8080
 ```
 
-
+General gist: handle requests using operations, and use handler to manipulate operations' output.
 
 
 

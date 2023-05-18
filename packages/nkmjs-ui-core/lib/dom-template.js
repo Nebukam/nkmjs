@@ -7,7 +7,7 @@ const manipulators = require(`./manipulators`);
 
 const IDS = require(`./ids`);
 
-const __hide  = Object.freeze(`autoHide`);
+const __h = Object.freeze(`autoHide`);
 
 /**
  * // Important note : when setting a custom owner, property are prefixed with an underscore. 
@@ -23,49 +23,49 @@ class DOMTemplate {
     // ----> Static processors
 
     static AsIcon(node, opts, customOpts) {
-        node = new manipulators.Icon(node, u.tils.Get(opts, __hide, true));
+        node = new manipulators.Icon(node, __h in opts ? opts[__h] : true);
         node.Set(customOpts);
         return node;
     }
 
     static AsIconStatic(node, opts, customOpts) {
-        node = new manipulators.Icon(node, u.tils.Get(opts, __hide, false));
+        node = new manipulators.Icon(node, __h in opts ? opts[__h] : false);
         node.Set(customOpts);
         return node;
     }
 
     static AsText(node, opts, customOpts) {
-        node = new manipulators.Text(node, u.tils.Get(opts, __hide, true));
+        node = new manipulators.Text(node, __h in opts ? opts[__h] : true);
         node.Set(customOpts);
         return node;
     }
 
     static AsTextStatic(node, opts, customOpts) {
-        node = new manipulators.Text(node, u.tils.Get(opts, __hide, false));
+        node = new manipulators.Text(node, __h in opts ? opts[__h] : false);
         node.Set(customOpts);
         return node;
     }
 
     static AsBackground(node, opts, customOpts) {
-        node = new manipulators.Background(node, u.tils.Get(opts, __hide, true));
+        node = new manipulators.Background(node, __h in opts ? opts[__h] : true);
         node.Set(customOpts);
         return node;
     }
 
     static AsBackgroundStatic(node, opts, customOpts) {
-        node = new manipulators.Background(node, u.tils.Get(opts, __hide, false));
+        node = new manipulators.Background(node, __h in opts ? opts[__h] : false);
         node.Set(customOpts);
         return node;
     }
 
     static AsImage(node, opts, customOpts) {
-        node = new manipulators.Image(node, u.tils.Get(opts, __hide, true));
+        node = new manipulators.Image(node, __h in opts ? opts[__h] : true);
         node.Set(customOpts);
         return node;
     }
 
     static AsImageStatic(node, opts, customOpts) {
-        node = new manipulators.Image(node, u.tils.Get(opts, __hide, false));
+        node = new manipulators.Image(node, __h in opts ? opts[__h] : false);
         node.Set(customOpts);
         return node;
     }
@@ -122,7 +122,7 @@ class DOMTemplate {
 
         if (`_wrapper` in p_host) { p_host = p_host._wrapper; }
 
-        let owner = u.tils.Get(p_options, com.IDS.OWNER, this),
+        let owner = p_options ? p_options[com.IDS.OWNER] || this : this,
             shelf = this.constructor.__shelf,
             ids = this.constructor.__shelfIDs;
 
@@ -143,7 +143,7 @@ class DOMTemplate {
                 nodeID = nodeInfos[IDS.UID],
                 node = nodeInfos.node.cloneNode(true),
                 customInfos = p_options ? p_options[nodeID] : null,
-                writeNode = u.tils.Get(customInfos, `write`, u.tils.Get(nodeInfos, `write`, true));
+                writeNode = customInfos && `write` in customInfos ? customInfos.write : `write` in nodeInfos ? nodeInfos.write : true;
 
             shelf[nodeID] = node;
 

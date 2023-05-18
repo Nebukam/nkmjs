@@ -31,10 +31,8 @@ class CommandFn extends Command {
      */
     static RentFn(p_options) {
 
-        let fn = u.tils.Get(p_options, `fn`, null);
-        if (!fn) {
-            throw new Error(`Cannot create CommandFn with empty function`);
-        }
+        let fn = p_options.fn || null;
+        if (!fn) { throw new Error(`Cannot create CommandFn with empty function`); }
 
         let cmd = com.Rent(CommandFn);
         cmd.options = p_options;
@@ -79,15 +77,13 @@ class CommandFn extends Command {
 
         this._options = p_value;
 
-        this.fn = u.tils.Get(p_value, `fn`, null);
-        if (!this._fn) {
-            throw new Error(`CommandFn options have no function defined.`);
-        }
+        this.fn = p_value.fn || null;
+        if (!this._fn) { throw new Error(`CommandFn options have no function defined.`); }
 
-        this.thisArg = u.tils.Get(p_value, `thisArg`, null);
-        this.name = u.tils.Get(p_value, `name`, u.tils.CamelSplit(this._fn.name));
-        this.icon = u.tils.Get(p_value, `icon`, `%ICON%/icon_cmd.svg`);
-        this.order = u.tils.Get(p_value, `order`, 0);
+        this.thisArg = p_value.thisArg || null;
+        this.name = p_value.name || u.tils.CamelSplit(this._fn.name);
+        this.icon = p_value.icon || `%ICON%/icon_cmd.svg`;
+        this.order = p_value.order || 0;
 
     }
 

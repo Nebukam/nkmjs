@@ -31,7 +31,7 @@ class UnresolvedReferenceManager extends com.Observable {
      * @param {string} p_uri 
      */
     Resolve(p_data, p_uri) {
-        let unresolvedRef = u.tils.Get(this._unresolvedURI, p_uri, null);
+        let unresolvedRef = this._unresolvedURI[p_uri] || null;
         if (!unresolvedRef) { return; } // No unresolved dependency registered
         unresolvedRef.Resolve(p_data);
     }

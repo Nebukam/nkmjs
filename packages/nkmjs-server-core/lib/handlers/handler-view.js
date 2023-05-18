@@ -8,47 +8,22 @@ const STATUSES = require("../status-codes");
 
 const Views = require(`../views`);
 
-const base = require(`./abstract-get`);
-class HandlerView extends base {
+const base = require(`./handler-operation`);
+class ViewHandler extends base {
     constructor() { super(); }
 
-    _Init() {
-        super._Init();
-        this._view = null;
-        this._title = null;
-    }
+    Complete(p_output) {
 
-    /**
-     * 
-     * @param {*} p_req 
-     * @param {*} p_res 
-     * @returns 
-     */
-    _InternalHandle(p_req, p_res) {
-
-        if (this._def.requireAuth && !nkm.main.IsAuthenticated(p_req)) {
-            this.Abort(STATUSES.UNAUTHORIZED);
-            return;
-        }
-
-        super._InternalHandle(p_req, p_res);
-
-    }
-
-    Handle() { this.Complete({}); }
-
-    Complete(p_response) {
-
-        p_response.title = p_response.title || this._def.Get(`title`) || nkm.main.constructor.name;
-        p_response.isAuthenticated = nkm.main.IsAuthenticated(this._req);
-        p_response.user = nkm.main.GetUser(this._req);
+        p_output.title = p_output.title || this._def.Get(`title`) || nkm.main.constructor.name;
+        p_output.isAuthenticated = nkm.main.IsAuthenticated(this._req);
+        p_output.user = nkm.main.GetUser(this._req);
 
         //TODO: REMOVE THIS
-        p_response.strLocals = JSON.stringify(p_response, null, 2);
+        p_output.strLocals = JSON.stringify(p_output, null, 2);
 
-
-        this._res.render(Views.Get(this._view || this._def.Get(`view`)), p_response);
+        this._res.render(Views.Get(this._view || this._def.Get(`view`)), p_output);
         this._OnHandled();
+
     }
 
     /**
@@ -79,12 +54,6 @@ class HandlerView extends base {
 
     }
 
-    _CleanUp() {
-        this._view = null;
-        this._title = null;
-        super._CleanUp();
-    }
-
 }
 
-module.exports = HandlerView;
+module.exports = ViewHandler;

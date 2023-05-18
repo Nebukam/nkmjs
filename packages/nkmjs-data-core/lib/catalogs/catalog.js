@@ -105,7 +105,7 @@ class Catalog extends base {
      * @param {object} p_options 
      */
     _OnOptionsWillUpdate(p_options) {
-        this.autoSort = u.tils.Get(p_options, `autoSort`, this._parent ? this._parent.autoSort : this._autoSort);
+        this.autoSort = p_options.autoSort || this._parent?.autoSort || this._autoSort;
     }
 
     /**

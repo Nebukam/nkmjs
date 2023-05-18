@@ -129,7 +129,7 @@ class BaseInput extends base {
      */
     _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
         if (!p_options) { return; }
-        p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
+        p_options.htitle = p_options.htitle || p_options.label || ``;
     }
 
 
@@ -165,9 +165,9 @@ class BaseInput extends base {
      */
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
 
-        this._handler.changeOnInput = u.tils.Get(p_options, `changeOnInput`, this._handler.changeOnInput);
-        this._handler.submitOnChange = u.tils.Get(p_options, `submitOnChange`, this._handler.submitOnChange);
-        this._handler.preventTabIndexing = u.tils.Get(p_options, `preventTabIndexing`, this._handler.preventTabIndexing);
+        this._handler.changeOnInput = `changeOnInput` in p_options ? p_options.changeOnInput : this._handler.changeOnInput;
+        this._handler.submitOnChange = `submitOnChange` in p_options ? p_options.submitOnChange : this._handler.submitOnChange;
+        this._handler.preventTabIndexing = `preventTabIndexing` in p_options ? p_options.preventTabIndexing : this._handler.preventTabIndexing;
 
     }
 

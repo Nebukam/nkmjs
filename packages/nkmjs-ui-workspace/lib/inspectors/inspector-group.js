@@ -10,6 +10,8 @@ const base = InspectorItem;
 class InspectorGroup extends base {
     constructor() { super(); this._staticContentDefault = this._staticContent; }
 
+    static __expandOnAlt = true;
+
     _Init() {
         super._Init();
 
@@ -20,7 +22,6 @@ class InspectorGroup extends base {
             .Watch(ui.SIGNAL.COLLAPSED, this._Collapse, this);
 
         this._header = null;
-        this._expandOnHeaderAltActivation = u.tils.Default(this._expandOnHeaderAltActivation, true);
 
         this._useGroupExpand = false;
 
@@ -145,7 +146,7 @@ class InspectorGroup extends base {
 
     AltActivate(p_evt) {
         if (this._toolbar.isFocused) { return; }
-        if (this._expandOnHeaderAltActivation) { this._extExpand.Toggle(); }
+        if (this.constructor.__expandOnAlt) { this._extExpand.Toggle(); }
     }
 
     Expand() { this._extExpand.Expand(); }

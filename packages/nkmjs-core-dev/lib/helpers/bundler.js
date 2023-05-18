@@ -74,7 +74,7 @@ class Bundler {
         this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
 
         let babelPlugins = [];
-        babelPlugins.push(NKMjs.InCoreModules('@babel/plugin-proposal-class-properties'));
+        babelPlugins.push([NKMjs.InCoreModules('@babel/plugin-proposal-class-properties'), { "loose": true }]);
 
         if (this.define) {
             babelPlugins.push([
@@ -87,7 +87,11 @@ class Bundler {
             babelConfig = {
                 compact: true,
                 comments: false,
-                presets: [NKMjs.InCoreModules('@babel/preset-env')],
+                presets: [[NKMjs.InCoreModules('@babel/preset-env'), {
+                    targets: {
+                        node: "6.10"
+                    }
+                }]],
                 plugins: babelPlugins
             };
 

@@ -6333,6 +6333,11 @@ just-diff@^6.0.0:
   resolved "https://registry.npmjs.org/just-diff/-/just-diff-6.0.2.tgz"
   integrity sha512-S59eriX5u3/QhMNq3v/gm8Kd0w8OS6Tz2FS1NG4blv+z0MuQcBRJyFWjdovM0Rad4/P4aUPFtnkNjMjyMlMSYA==
 
+just-performance@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/just-performance/-/just-performance-4.3.0.tgz#cc2bc8c9227f09e97b6b1df4cd0de2df7ae16db1"
+  integrity sha512-L7RjvtJsL0QO8xFs5wEoDDzzJwoiowRw6Rn/GnvldlchS2JQr9wFYPiwZcDfrbbujEKqKN0tvENdbjXdYhDp5Q==
+
 keyv@^4.0.0:
   version "4.5.2"
   resolved "https://registry.npmjs.org/keyv/-/keyv-4.5.2.tgz"
@@ -6470,6 +6475,13 @@ libnpmpublish@7.1.4:
     semver "^7.3.7"
     sigstore "^1.4.0"
     ssri "^10.0.1"
+
+limiter@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/limiter/-/limiter-2.1.0.tgz#d38d7c5b63729bb84fb0c4d8594b7e955a5182a2"
+  integrity sha512-361TYz6iay6n+9KvUUImqdLuFigK+K79qrUtBsXhJTLdH4rIt/r1y8r1iozwh8KbZNpujbFTSh74mJ7bwbAMOw==
+  dependencies:
+    just-performance "4.3.0"
 
 lines-and-columns@^1.1.6:
   version "1.2.4"

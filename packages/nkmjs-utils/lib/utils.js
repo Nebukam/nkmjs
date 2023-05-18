@@ -38,8 +38,6 @@ module.exports = {
     DELIM_COMMA: _delimiters.DELIM_COMMA,
     DELIM_PIPE: _delimiters.DELIM_PIPE,
 
-
-
     JSONStripEmpty: function (p_key, p_value) {
         if (CHECKS.isEmpty(p_value)) { return undefined; }
         if (CHECKS.isObject(p_value)) {
@@ -51,19 +49,6 @@ module.exports = {
             return undefined;
         }
         return p_value;
-    },
-
-    /**
-     * @description Returns the first non-void value
-     * @param {*} args A list of values to test
-     * @returns {*} The first non-void value, otherwise null.
-     */
-    Default: function (...args) {
-        for (let i = 0, n = args.length; i < n; i++) {
-            let val = args[i];
-            if (!CHECKS.isVoid(val)) { return val; }
-        }
-        return null;
     },
 
     /**

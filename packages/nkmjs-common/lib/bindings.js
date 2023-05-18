@@ -88,7 +88,7 @@ module.exports = {
         let uid = _classReverseLookup.Get(p_constructor);
 
         if (!uid) {
-            uid = u.tils.Get(NFOS.Get(p_constructor), IDS.UID, null);
+            uid = NFOS.GetStr(p_constructor, IDS.UID, null);
             if (!uid) { throw new Error(`No valid NFO found for ${p_constructor.name}`); }
             module.exports.SetClass(uid, p_constructor);
         }
@@ -98,11 +98,7 @@ module.exports = {
     },
 
     GetSerializerVersion: function (p_serializer) {
-        let nfos = NFOS.Get(p_serializer),
-            ver = u.tils.Get(nfos, IDS.VER, -1);
-
-        if (Number.isNaN(ver)) { ver = -1; }
-
+        let ver = NFOS.GetNum(p_serializer, IDS.VER, -1);
         return ver;
     },
 
@@ -239,10 +235,10 @@ module.exports = {
         _contextKeyLists.Remove(p_context, p_key);
         //TODO : Restore any squashed associations
     },
-    
-    RegisterFromNFO: function(p_class) {
 
-        let uid = u.tils.Get(NFOS.Get(p_class), IDS.UID, null);
+    RegisterFromNFO: function (p_class) {
+
+        let uid = NFOS.GetStr(p_class, IDS.UID, null);
         if (!uid) { throw new Error(`No valid NFO found for ${p_class}`); }
         module.exports.SetClass(uid, p_class);
         //u.LOG._(`⧉ ${uid} ⤞ ${p_class.name}`, `#7f7f7f`);

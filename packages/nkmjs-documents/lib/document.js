@@ -221,7 +221,7 @@ class Document extends com.Observable {
 
     _OnDataReleased(p_data) {
         this.currentData = null;
-        if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
+        if (com.NFOS.GetValue(this, IDS.DATA_BOUND, false)) {
             this.Release();
         }
     }
@@ -231,13 +231,13 @@ class Document extends com.Observable {
     _OnDataCleaned(p_data) { this.ClearDirty(); }
 
     _OnDataActiveEditorGain(p_data) {
-        if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
+        if (com.NFOS.GetValue(this, IDS.DATA_BOUND, false)) {
 
         }
     }
 
     _OnDataNoActiveEditor(p_data) {
-        if (com.NFOS.GetOption(this, IDS.DATA_BOUND, false)) {
+        if (com.NFOS.GetValue(this, IDS.DATA_BOUND, false)) {
             DOCUMENTS.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, this);
         }
     }
@@ -250,25 +250,24 @@ class Document extends com.Observable {
      */
     Load(p_options = null) {
 
-        if (p_options && p_options.bumpOnly) {
-            if (this._readOnce && this._currentRsc) { 
+        if (p_options?.bumpOnly) {
+            if (this._readOnce && this._currentRsc) {
                 this._OnReadComplete(this._currentRsc);
-                if(p_options.success){u.Call(p_options.success, this);}
-                return true; 
+                if (p_options.success) { u.Call(p_options.success, this); }
+                return true;
             }
         }
 
         this._readOnce = false;
 
         let nfo = com.NFOS.Get(this),
-            rsc = this._GetRsc(
-                u.tils.Get(p_options, `path`, null),
+            rsc = this._GetRsc(p_options?.path,
                 { cl: nfo.resource, encoding: nfo[IDS.ENCODING] });
 
         if (!rsc) { throw new Error(`No resource set.`); }
 
         if (rsc.Read({
-            io: u.tils.Get(p_options, `io`, nfo[IDS.TYPE_IO]),
+            io: p_options?.io || nfo[IDS.TYPE_IO],
             error: this._OnLoadError
         })) {
             this._options = p_options; // Store options to forward them to the serializer
@@ -319,7 +318,7 @@ class Document extends com.Observable {
         // SomeSerializer.Read( p_rsc.content )
         let serializer = com.BINDINGS.Get(
             data.serialization.CONTEXT.SERIALIZER,
-            com.NFOS.GetOption(this, IDS.SERIAL_CTX)), // TODO : Fetch serialization context based on resource type instead ?
+            com.NFOS.GetValue(this, IDS.SERIAL_CTX)), // TODO : Fetch serialization context based on resource type instead ?
             unpacked = serializer.Deserialize(p_content, p_data, this._options);
 
         this.Dirty();
@@ -342,8 +341,7 @@ class Document extends com.Observable {
 
         let nfo = com.NFOS.Get(this);
 
-        let rsc = this._GetRsc(
-            u.tils.Get(p_options, `path`, null),
+        let rsc = this._GetRsc(p_options?.path,
             { cl: nfo[IDS.TYPE_RSC], encoding: nfo[IDS.ENCODING] });
 
         if (!rsc) {
@@ -351,7 +349,7 @@ class Document extends com.Observable {
         }
 
         if (rsc.Write({
-            io: u.tils.Get(p_options, `io`, nfo[IDS.TYPE_IO]),
+            io: p_options?.io || nfo[IDS.TYPE_IO],
             error: this._OnSaveError,
             success: this._OnSaveSuccess
         })) {
@@ -392,7 +390,7 @@ class Document extends com.Observable {
         //Pack document data into serializable data
         let serializer = com.BINDINGS.Get(
             data.serialization.CONTEXT.SERIALIZER,
-            com.NFOS.GetOption(this, IDS.SERIAL_CTX)); // TODO : Fetch serialization context based on resource type instead ?
+            com.NFOS.GetValue(this, IDS.SERIAL_CTX)); // TODO : Fetch serialization context based on resource type instead ?
 
         return serializer.Serialize(p_data, this._options);
     }

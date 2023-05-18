@@ -127,7 +127,7 @@ class ControlWidget extends base {
      */
     _OnOptionsWillUpdate(p_options, p_altOptions, p_defaults) {
         if (!p_options) { return; }
-        p_options.htitle = u.tils.Get(p_options, `htitle`, (p_options.label || ``));
+        p_options.htitle = p_options.htitle || p_options.label || ``;
     }
 
     //#endregion
@@ -265,10 +265,10 @@ class ControlWidget extends base {
 
     _CleanUp() {
         if (this.constructor.__clearBuilderOnRelease) { this._builder.Clear(); }
-        
+
         this.context = null;
         this.editor = null;
-        
+
         super._CleanUp();
 
         if (this._forwardContext) { this._forwardContext.Clear(); }

@@ -26,9 +26,9 @@ class Transceiver_FS extends base {
         return path.join(sanitized);
     }
 
-    CreateReadStream(p_path, p_options = null) { throw new Error(__noImplemented); }
+    async CreateReadStream(p_path, p_options = null) { throw new Error(__noImplemented); }
 
-    CreateWriteStream(p_path, p_options = null) { throw new Error(__noImplemented); }
+    async CreateWriteStream(p_path, p_options = null) { throw new Error(__noImplemented); }
 
     /**
      * @callback boolCallback
@@ -42,7 +42,9 @@ class Transceiver_FS extends base {
      * @param {string} p_path 
      * @param {boolCallback} p_callback 
      */
-    Exists(p_path, p_callback) {
+    async Exists(p_path, p_callback) {
+
+        if (this._rateLimit) { await this._rateLimit.removeTokens(1); }
 
         p_path = this._SanitizePath(p_path);
 
@@ -65,7 +67,9 @@ class Transceiver_FS extends base {
      * @param {string} p_path 
      * @param {statCallback} p_callback 
      */
-    Stat(p_path, p_callback) {
+    async Stat(p_path, p_callback) {
+
+        if (this._rateLimit) { await this._rateLimit.removeTokens(1); }
 
         p_path = this._SanitizePath(p_path);
 
@@ -82,7 +86,9 @@ class Transceiver_FS extends base {
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
-    MkDir(p_path, p_callback, p_options = null) {
+    async MkDir(p_path, p_callback, p_options = null) {
+
+        if (this._rateLimit) { await this._rateLimit.removeTokens(1); }
 
         p_path = this._SanitizePath(p_path);
 
@@ -109,7 +115,9 @@ class Transceiver_FS extends base {
      * @param {readdirCallback} p_callback 
      * @param {*} p_options 
      */
-    ReadDir(p_path, p_callback, p_options = null) {
+    async ReadDir(p_path, p_callback, p_options = null) {
+
+        if (this._rateLimit) { await this._rateLimit.removeTokens(1); }
 
         p_path = this._SanitizePath(p_path);
 
@@ -150,7 +158,11 @@ class Transceiver_FS extends base {
      * @param {readfileCallback} p_callback 
      * @param {*} p_options 
      */
-    ReadFile(p_path, p_callback, p_options = null) {
+    async ReadFile(p_path, p_callback, p_options = null) {
+
+        if (this._rateLimit) { let tokensLeft = await this._rateLimit.removeTokens(1); }
+
+
 
         p_path = this._SanitizePath(p_path);
 
@@ -171,7 +183,9 @@ class Transceiver_FS extends base {
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
-    RmDir(p_path, p_callback, p_options = null) {
+    async RmDir(p_path, p_callback, p_options = null) {
+
+        if (this._rateLimit) { await this._rateLimit.removeTokens(1); }
 
         p_path = this._SanitizePath(p_path);
 
@@ -192,7 +206,9 @@ class Transceiver_FS extends base {
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
-    Unlink(p_path, p_callback, p_options = null) {
+    async Unlink(p_path, p_callback, p_options = null) {
+
+        if (this._rateLimit) { await this._rateLimit.removeTokens(1); }
 
         p_path = this._SanitizePath(p_path);
 
@@ -210,7 +226,9 @@ class Transceiver_FS extends base {
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
-    WriteFile(p_path, p_data, p_callback, p_options = null) {
+    async WriteFile(p_path, p_data, p_callback, p_options = null) {
+
+        if (this._rateLimit) { await this._rateLimit.removeTokens(1); }
 
         p_path = this._SanitizePath(p_path);
 

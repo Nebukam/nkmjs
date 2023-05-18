@@ -107,7 +107,7 @@ class WidgetButton extends base {
             ':host': {
                 'position': 'relative',
                 'box-sizing': `border-box`,
-                '--size':`32px`,
+                '--size': `32px`,
             }
         }, {});//base._Style());
     }
@@ -364,20 +364,17 @@ class WidgetButton extends base {
         if (this._request) {
             if (!this._request.type) { throw new Error(`Cannot generate request of type 'null'`); }
 
-            let requestEmitter = u.tils.Get(this._request, `emitter`, this),
-                options = u.tils.Get(this._request, `options`);
-
             // Override options value if a proxy has been set
-            let proxy = u.tils.Get(this._request, `proxy`, null);
+            let proxy = this._request.proxy || null;
             if (proxy) { u.Call(proxy); }
 
-            requestEmitter._EmitLocalRequest(
+            (this._request.emitter || this)._EmitLocalRequest(
                 opts.type,
-                options,
-                u.tils.Get(this._request, `onSuccess`, null),
-                u.tils.Get(this._request, `onFail`, null),
-                u.tils.Get(this._request, `timeout`, 0),
-                u.tils.Get(this._request, `cl`, actions.Request)
+                this._request.options || null,
+                this._request.onSuccess || null,
+                this._request.onFail || null,
+                this._request.timeout || 0,
+                this._request.cl || actions.Request
             );
         }
 
