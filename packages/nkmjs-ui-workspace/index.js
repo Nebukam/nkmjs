@@ -7,7 +7,7 @@ module.exports = {
     Explorer: require(`./lib/explorer`),
     ExplorerTile: require(`./lib/explorer`),
 
-    CONTEXT: require(`./lib/context`),
+    CTX: require(`./lib/context`),
 
     editors: require(`./lib/editors`),
     inspectors: require(`./lib/inspectors`),

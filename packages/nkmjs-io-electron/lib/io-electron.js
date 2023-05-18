@@ -40,7 +40,7 @@ class IOElectron {
 
     _IOFlush() {
         let TempResourceWatcher = require(`./helpers/temp-resource-watcher`);
-        TempResourceWatcher.__repository.forEach(tempRsc => { tempRsc.Flush(); });
+        for (const tempRsc of TempResourceWatcher.__repository) { tempRsc.Flush(); };
     }
 
     _GetMemory() {

@@ -1,6 +1,6 @@
 module.exports = {
 
-    CONTEXT: require(`./overlay-context`),
+    CTX: require(`./overlay-context`),
 
     Drawer: require(`./drawer`),
     ControlDrawer: require(`./control-drawer`),

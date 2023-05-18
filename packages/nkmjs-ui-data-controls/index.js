@@ -6,7 +6,7 @@ const Editor = require(`./lib/editor`);
 
 module.exports = {
 
-    CONTEXT: require(`./lib/context`),
+    CTX: require(`./lib/context`),
     SIGNAL: require(`./lib/signal`),
     IDS: require(`./lib/ids`),
     META_IDS: require(`./lib/meta-ids`),

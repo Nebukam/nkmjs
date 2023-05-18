@@ -33,8 +33,8 @@ class ControlView extends base {
 
     static __distribute = com.helpers.OptionsDistribute.Ext(null,
         { beginFn: `_OnOptionsWillUpdate` })
-        .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
-        .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
+        .To(`flagOn`, ui.helpers.flagOn)
+        .To(`flagOff`, ui.helpers.flagOff)
         .To(`editor`)
         .To(`data`);
 
@@ -164,7 +164,7 @@ class ControlView extends base {
      */
     get context() { return this._context; }
     set context(p_value) {
-        
+
         if (this._context === p_value) { return; }
 
         let oldValue = this._context;

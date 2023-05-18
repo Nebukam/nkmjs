@@ -10,6 +10,7 @@ module.exports = {
     SIGNAL: require(`./lib/signal`),
     IDS: require(`./lib/ids`),
     TYPES: require(`./lib/types`),
+    CTX: require(`./lib/context`),
 
     // hoist ./lib/data/
     SIMPLEX:__SIMPLEX,

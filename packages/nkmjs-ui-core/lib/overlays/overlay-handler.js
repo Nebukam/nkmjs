@@ -7,7 +7,7 @@ const UI = require(`../ui`);
 const REQUEST = require(`../request`);
 const LayerContainer = require(`../views/layer-container`);
 
-const CONTEXT = require("./overlay-context");
+const CTX = require("./overlay-context");
 const OverlayOptions = require("./overlay-options");
 const Overlay = require("./overlay");
 
@@ -77,7 +77,7 @@ class OverlayHandler extends base {
         this.visible = true;
 
         let overlayClass = overlayOptions.overlayClass ||
-            com.BINDINGS.Get(CONTEXT.OVERLAY, p_request.requestType, this.constructor.__default_overlayClass),
+            com.GetBinding(CTX.OVERLAY, p_request.requestType, this.constructor.__default_overlayClass),
             newOverlay = this.Attach(overlayClass, `overlay`);
 
         this._overlayMap.Set(overlayOptions, newOverlay);

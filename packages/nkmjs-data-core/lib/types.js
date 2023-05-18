@@ -5,7 +5,7 @@ const com = require("@nkmjs/common");
 /**
  * Using Class as key in order to support @nkmjs-common BINDINGS
  */
-class TYPE_KEY extends com.helpers.CKEY { constructor() { super(); } }
+class TYPE_KEY extends com.CKEY { constructor() { super(); } }
 
 class STRING extends TYPE_KEY { constructor() { super(); } }
 class IDENTIFIER extends STRING { constructor() { super(); } }

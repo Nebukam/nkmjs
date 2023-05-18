@@ -3,7 +3,7 @@
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 
-const CONTEXT = require(`./lib/context`);
+const CTX = require(`./lib/context`);
 const REQUEST = require(`./lib/request`);
 const overlays = require(`./lib/overlays`);
 const INPUT_KEYS = require(`./lib/inputs/keys`);
@@ -21,7 +21,7 @@ class Bindings extends com.helpers.BindingKit {
 
         this.Add(
             {
-                context: CONTEXT.I_TYPE,
+                ctx: CTX.I_TYPE,
                 kvps: [
 
                     { key: data.TYPES.STRING, binding: INPUT_KEYS.STRING },
@@ -52,14 +52,14 @@ class Bindings extends com.helpers.BindingKit {
                 ]
             },
             {
-                context: overlays.CONTEXT.OVERLAY,
+                ctx: overlays.CTX.OVERLAY,
                 kvps: [
                     { key: REQUEST.OVERLAY, binding: overlays.Overlay },
                     //{ key: REQUEST.DRAWER, binding: overlays.DrawerOverlay }
                 ]
             },
             {
-                context: overlays.CONTEXT.CONTENT,
+                ctx: overlays.CTX.CONTENT,
                 kvps: [
                     //{ key: REQUEST.DRAWER, binding: overlays.Drawer }
                 ]

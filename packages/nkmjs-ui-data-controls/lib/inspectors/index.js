@@ -2,7 +2,7 @@
 
 module.exports = {
     
-    CONTEXT: require(`./context`),
+    CTX: require(`./context`),
 
     DataBlock: require(`./inspector-data-block`),
     DataBlockExtendable: require(`./inspector-data-block-extendable`),

@@ -5,7 +5,7 @@ const ui = require("@nkmjs/ui-core");
 const data = require(`@nkmjs/data-core`);
 
 const items = require(`./items`);
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 const InspectorView = require(`../inspector-view`);
 
 const base = InspectorView;

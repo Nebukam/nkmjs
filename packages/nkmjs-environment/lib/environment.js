@@ -124,14 +124,14 @@ class ENV extends com.Observable {
      */
     RegisterServices(...args) {
 
-        args.forEach(serviceClass => {
+        for (const serviceClass of args) {
             if (this._services.Add(serviceClass)) {
                 if (this._running) {
                     console.warn(`RegisterServices called post-Start. Make sure this is intended.`);
                     this._BootService(serviceClass);
                 }
             }
-        });
+        };
 
     }
 

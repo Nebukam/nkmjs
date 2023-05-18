@@ -354,7 +354,7 @@ class DataList extends collections.List {
             case this.constructor.FLUSH_RELEASE_POST:
                 let rStack = [];
                 while (!this.isEmpty) { rStack.push(this.Pop(true)); }
-                rStack.forEach(item => { item.Release(); });
+                for (item of rStack) { item.Release(); };
                 rStack.length = 0;
                 break;
             case this.constructor.FLUSH_DEFAULT:

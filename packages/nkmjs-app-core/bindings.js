@@ -13,7 +13,7 @@ class Bindings extends com.helpers.BindingKit {
 
         this.Add(
             {
-                context: datacontrols.CONTEXT.DEFAULT_EDITOR,
+                ctx: datacontrols.CTX.DEFAULT_EDITOR,
                 kvps: [
                     { key: AppSettings, binding: explorers.AppSettings },
                 ]

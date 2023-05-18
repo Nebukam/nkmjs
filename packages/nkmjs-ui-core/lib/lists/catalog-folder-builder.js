@@ -118,7 +118,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
 
             let
                 mappedObject = this._owner.Attach(
-                    com.BINDINGS.Get(this._owner, p_item, this._defaultDirClass),
+                    com.GetBinding(this._owner, p_item, this._defaultDirClass),
                     `item group`, this._host);
 
             this._map.set(p_item, mappedObject);
@@ -213,7 +213,7 @@ class CatalogFolderBuilder extends data.catalogs.CatalogWatcher {
         let
             item = this._itemList[p_index],
             mappedObject = this._owner.Attach(
-                com.BINDINGS.Get(this._owner, item, this._defaultItemClass),
+                com.GetBinding(this._owner, item, this._defaultItemClass),
                 `item`, p_fragment);
 
         mappedObject.Watch(com.SIGNAL.RELEASED, this._OnStreamedItemRelelased, this);

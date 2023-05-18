@@ -53,7 +53,7 @@ class SizeTracker {
 
         }
         this._toggles.set(p_breakpoint, false);
-        p_elements.forEach(el => { this._elements.Set(p_breakpoint, el); });
+        for (const el of p_elements) { this._elements.Set(p_breakpoint, el); };
     }
 
     RemoveBreakpoint(p_breakpoint) {
@@ -65,7 +65,7 @@ class SizeTracker {
 
     AddElements(p_breakpoint, ...p_elements) {
         if (!this._breakpoints.Contains(p_breakpoint)) { return; }
-        p_elements.forEach(el => { this._elements.Set(p_breakpoint, el); });
+        for (const el of p_elements) { this._elements.Set(p_breakpoint, el); };
     }
 
     _OnRectUpdate(p_tracker) {
@@ -77,17 +77,17 @@ class SizeTracker {
 
         this._Process(this._widthOnly);
         this._Process(this._heightOnly);
-        this._both.forEach(bp => { this._ToggleBP(bp, this._elements.Get(bp), false); });
+        for (const bp of this._both) { this._ToggleBP(bp, this._elements.Get(bp), false); };
 
     }
 
     _Process(p_list) {
         let broke = false;
-        p_list.forEach(bp => {
+        for (const bp of p_list) {
             let toggle = this._toggles.get(bp);
             if (!toggle || broke) { this._ToggleBP(bp, this._elements.Get(bp), false); }
             else { broke = true; this._ToggleBP(bp, this._elements.Get(bp), true); }
-        });
+        };
     }
 
     _Check(p_bp, p_rect) {

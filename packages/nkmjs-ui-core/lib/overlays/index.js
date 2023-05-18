@@ -6,6 +6,6 @@ module.exports = {
     Overlay: require(`./overlay`),
     OverlayHandler: require(`./overlay-handler`),
 
-    CONTEXT: require(`./overlay-context`),
+    CTX: require(`./overlay-context`),
 
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 const items = require(`./items`);
-const CONTEXT = require(`./context`);
+const CTX = require(`./context`);
 const InspectorView = require(`../inspector-view`);
 
 const base = InspectorView;
@@ -10,7 +10,7 @@ class DataBlockInspector extends InspectorView {
     constructor() { super(); }
 
     static __controls = [
-        { context:CONTEXT.INSPECTOR_ITEM, cl:items.Identifier }
+        { ctx:CTX.INSPECTOR_ITEM, cl:items.Identifier }
     ];
 
 }

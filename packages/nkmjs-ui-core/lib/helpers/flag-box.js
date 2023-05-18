@@ -103,7 +103,7 @@ class FlagBox {
      */
     ApplyAll(p_toggle) {
         if (!this._elements) { return; }
-        this._elements.keys.forEach(flag => { dom.CSSClass(this._elements.Get(flag), flag, p_toggle); });
+        for (const flag of this._elements.keys) { dom.CSSClass(this._elements.Get(flag), flag, p_toggle); };
     }
 
     /**

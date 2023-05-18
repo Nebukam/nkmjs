@@ -19,7 +19,7 @@ module.exports = {
         let route = ``;
         if (p_nfos.constructor !== Object) { p_nfos = com.NFOS.Get(p_nfos); }
         if (p_nfos.prefix) { route += p_nfos.prefix; }
-        if (p_nfos.params) { p_nfos.params.forEach(param => { route += `/:${param.id}`; }); }
+        if (p_nfos.params) { for (const param of p_nfos.params) { route += `/:${param.id}`; }; }
         return route;
     },
 
@@ -28,10 +28,10 @@ module.exports = {
         if (p_nfos.constructor !== Object) { p_nfos = com.NFOS.Get(p_nfos); }
         if (p_nfos.prefix) { route += p_nfos.prefix; }
         if (p_nfos.params) {
-            p_nfos.params.forEach(param => {
+            for (const param of p_nfos.params) {
                 let value = (p_params ? p_params[param.id] : null) || param.default || module.exports.NONE;
                 route += `/${value}`;
-            });
+            };
         }
         return route;
     },

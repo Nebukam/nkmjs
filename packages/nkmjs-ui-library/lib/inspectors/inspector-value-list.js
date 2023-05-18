@@ -26,7 +26,7 @@ class ValueListInspector extends base {
                 '@': ['fade-in'],
                 'flex-flow': 'row wrap',
                 'align-content': 'flex-start',
-                'width':`${this.__width}`,
+                'width': `${this.__width}`,
             },
             '.body': {
                 'display': 'flex',
@@ -34,7 +34,7 @@ class ValueListInspector extends base {
                 'flex': '1 1 auto',
                 'min-height': '0',
                 'overflow': 'auto',
-                'gap':'8px 5px',
+                'gap': '8px 5px',
                 'padding': `10px`,
             },
             '.control': {
@@ -69,9 +69,9 @@ class ValueListInspector extends base {
 
         super._Render();
 
-        this.constructor.__foldouts.forEach(foldout => {
+        for (const foldout of this.constructor.__foldouts) {
             this._Foldout(foldout.foldout, foldout.controls);
-        });
+        };
     }
 
     _Foldout(p_foldout, p_controls, p_css = ``, p_host = null) {

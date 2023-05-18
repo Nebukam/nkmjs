@@ -8,7 +8,7 @@ module.exports = {
 
     IDS: require(`./lib/ids`),
     DOCUMENTS: DOC_MANAGER,
-    CONTEXT: require(`./lib/context`),
+    CTX: require(`./lib/context`),
 
     commands: require(`./lib/commands`),
     

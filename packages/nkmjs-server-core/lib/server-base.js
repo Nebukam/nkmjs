@@ -75,7 +75,7 @@ class ServerBase extends com.Observable {
                 dict = new collections.Dictionary(),
                 ios = [];
 
-            ioservices.forEach(conf => {
+            for (const conf of ioservices) {
 
                 let mainConf = dict.Get(conf.cl);
                 if (!mainConf) {
@@ -93,9 +93,9 @@ class ServerBase extends com.Observable {
                     } else { mainConf[p] = value; }
                 }
 
-            });
+            };
 
-            ios.forEach(ioss => { io.IO_SERVICES.Use(ioss, dict.Get(ioss)); });
+            for (const ioss of ios) { io.IO_SERVICES.Use(ioss, dict.Get(ioss)); };
             dict.Clear();
             io.IO_SERVICES.WatchOnce(com.SIGNAL.READY, this._OnIOReady.bind(this));
         } else {
@@ -219,11 +219,11 @@ class ServerBase extends com.Observable {
             createParentPath: true
         }))
 
-        this._staticPaths.forEach(i => {
+        for (const i of this._staticPaths) {
             if (u.isString(i)) { p_express.use(express.static(i)); }
             else if (u.isArray(i) && i.length == 2) { p_express.use(i[0], express.static(i[1])); }
             else { console.warn(`Invalid static route config: ${i}`) }
-        });
+        };
 
         p_express.use(express.json());
         p_express.use(express.urlencoded({ extended: true }));
@@ -274,14 +274,14 @@ class ServerBase extends com.Observable {
 
         //Create getter APIs
 
-        operations.Manager.List().forEach(op => {
+        for (const op of operations.Manager.List()) {
             this._RegisterAPI(op.id, {
                 route: env.routing.Model(op.nfos),
                 handler: op.handler || operations.Manager.defaultHandler,
                 method: op.nfos.method || op.nfos.body ? FLAGS.POST : null,
                 requireAuth: op.nfos.requireAuth
             })
-        });
+        };
 
         let actions = operations.Actions.List();
         if (actions.length) {
@@ -293,10 +293,10 @@ class ServerBase extends com.Observable {
             });
         }
 
-        this._apiMap.keys.forEach(key => { apis.push(this._apiMap.Get(key)); });
+        for (const key of this._apiMap.keys) { apis.push(this._apiMap.Get(key)); };
 
         apis.sort((a, b) => { return a.route.localeCompare(b.route) * -1; });
-        apis.forEach(api => { api.Start(); });
+        for (const api of apis) { api.Start(); };
         apis.length = 0;
 
         console.log(`· · · · · · · · ·`);
@@ -340,7 +340,7 @@ class ServerBase extends com.Observable {
      */
     _RegisterAPIs(p_apis) {
         if (u.isArray(p_apis)) {
-            p_apis.forEach(api => { this._RegisterAPI(`@${api.route}`, api); });
+            for (const api of p_apis) { this._RegisterAPI(`@${api.route}`, api); };
         } else {
             for (var identifier in p_apis) {
                 let api = p_apis[identifier];

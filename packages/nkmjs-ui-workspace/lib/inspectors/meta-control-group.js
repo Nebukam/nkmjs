@@ -98,7 +98,7 @@ class MetaControlGroup extends base {
 
                     let mPath = u.tils.Empty(this._metaPath) ? `${member}` : `${this._metaPath}.${member}`,
                         value = obj[member],
-                        ctrlClass = com.BINDINGS.Get(
+                        ctrlClass = com.GetBinding(
                             `${com.IDS.METAPREFIX}${mPath}`,
                             this._data.constructor,
                             u.isObject(value) ? MetaControlGroup : MetaControlItem),

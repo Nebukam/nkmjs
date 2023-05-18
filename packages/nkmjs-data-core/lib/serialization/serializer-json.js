@@ -1,7 +1,7 @@
 const com = require("@nkmjs/common");
 
 const BaseSerializer = require(`./serializer-base`);
-const CONTEXT = require(`./context`);
+const CTX = require(`./context`);
 
 const S11N_BEGIN = `_OnSerializationBegins`;
 const S11N_COMPLETE = `_OnSerializationComplete`;
@@ -33,7 +33,7 @@ const D13N_COMPLETE = `_OnDeserializationComplete`;
 class JSONSerializer extends BaseSerializer {
     constructor() { super(); }
 
-    static __context = CONTEXT.JSON;
+    static __context = CTX.JSON;
     static __master = JSONSerializer;
 
     /**
@@ -55,23 +55,23 @@ class JSONSerializer extends BaseSerializer {
 
         // Ensure there is a data object
 
-        if (!(CONTEXT.JSON.DATA_KEY in serial)) {
+        if (!(CTX.JSON.DATA_KEY in serial)) {
             let wrapper = {};
-            wrapper[CONTEXT.JSON.DATA_KEY] = serial;
+            wrapper[CTX.JSON.DATA_KEY] = serial;
             serial = wrapper;
         }
 
         // Ensure there is a meta object
 
         let metas = null;
-        if (!(CONTEXT.JSON.META_KEY in serial)) {
+        if (!(CTX.JSON.META_KEY in serial)) {
             metas = {};
-            serial[CONTEXT.JSON.META_KEY] = metas;
+            serial[CTX.JSON.META_KEY] = metas;
         } else {
-            metas = serial[CONTEXT.JSON.META_KEY];
+            metas = serial[CTX.JSON.META_KEY];
         }
 
-        metas[CONTEXT.JSON.CONSTRUCTOR] = com.BINDINGS.GetConstructorKey(p_data.constructor);
+        metas[CTX.JSON.CONSTRUCTOR] = com.BINDINGS.GetConstructorKey(p_data.constructor);
         metas[com.IDS.VER] = com.BINDINGS.GetSerializerVersion(serializer);
 
         let uid = p_data.id;
@@ -96,7 +96,7 @@ class JSONSerializer extends BaseSerializer {
 
         let targetClass = null,
             version = -1,
-            metas = p_serial[CONTEXT.JSON.META_KEY];
+            metas = p_serial[CTX.JSON.META_KEY];
 
         // Retrieve reference constructor
         if (p_data != null) {
@@ -106,18 +106,18 @@ class JSONSerializer extends BaseSerializer {
         } else {
             if (!metas) { throw new Error(`Cannot unserialize without nfos`); }
 
-            targetClass = com.BINDINGS.GetClass(metas[CONTEXT.JSON.CONSTRUCTOR]);
+            targetClass = com.BINDINGS.GetClass(metas[CTX.JSON.CONSTRUCTOR]);
             version = metas[com.IDS.VER] || -1;
 
-            if (!targetClass) { throw new Error(`Could not find constructor ${metas[CONTEXT.JSON.CONSTRUCTOR]}`); }
+            if (!targetClass) { throw new Error(`Could not find constructor ${metas[CTX.JSON.CONSTRUCTOR]}`); }
 
             p_data = com.Rent(targetClass);
             if (p_data && D13N_BEGINS in p_data) { p_data[D13N_BEGINS](); }
         }
 
         let dataWrapper = null;
-        if (!(CONTEXT.JSON.DATA_KEY in p_serial)) { return p_data; }
-        else { dataWrapper = p_serial[CONTEXT.JSON.DATA_KEY]; }
+        if (!(CTX.JSON.DATA_KEY in p_serial)) { return p_data; }
+        else { dataWrapper = p_serial[CTX.JSON.DATA_KEY]; }
 
         // Retrieve serializer
         let serializer = this.GetSerializer(targetClass, version, null);

@@ -7,28 +7,28 @@ const com = require("@nkmjs/common");
  * @class
  * @memberof data.core.serialization
  */
-class SERIALIZER extends com.helpers.CSYMBOL{ constructor() { super(); } }
+class SERIALIZER extends com.CSYMBOL{ constructor() { super(); } }
 
 /**
  * SERIALIZER Context
  * @class
  * @memberof data.core.serialization
  */
-class NONE extends com.helpers.CSYMBOL{ constructor() { super(); } }
+class NONE extends com.CSYMBOL{ constructor() { super(); } }
 
 /**
  * SERIALIZER Context
  * @class
  * @memberof data.core.serialization
  */
-class TEXT extends com.helpers.CSYMBOL{ constructor() { super(); } }
+class TEXT extends com.CSYMBOL{ constructor() { super(); } }
 
 /**
  * JSON Context
  * @class
  * @memberof data.core.serialization
  */
-class JSON extends com.helpers.CSYMBOL{ constructor() { super(); }
+class JSON extends com.CSYMBOL{ constructor() { super(); }
     /**
      * @description Expected JSON Keyword in serialized JSON data
      * @type {string}

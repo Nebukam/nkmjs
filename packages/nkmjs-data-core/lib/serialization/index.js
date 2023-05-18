@@ -6,7 +6,7 @@ module.exports = {
     JSONSerializer: require(`./serializer-json`),
     TEXTSerializer: require(`./serializer-text`),
 
-    CONTEXT: require(`./context`),
+    CTX: require(`./context`),
     json: require(`./json`),
 
 }

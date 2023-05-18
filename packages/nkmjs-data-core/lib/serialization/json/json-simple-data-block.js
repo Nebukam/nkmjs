@@ -2,7 +2,7 @@
 
 const u = require(`@nkmjs/utils`);
 
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 const IDS = require(`./../../ids`);
 
 const DataBlockJSONSerializer = require(`./json-data-block`);
@@ -50,7 +50,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
             let def = definitions[id];
 
-            if (def[IDS.SKIP_SERIALIZATION]) { continue; }
+            if (def[IDS.SKIP_S11N]) { continue; }
 
             let desc = SIMPLEX.GetDescriptor(id);
             if (desc && desc.serialize) { p_serial[id] = desc.serialize(p_data._values[id], def, p_data); }
@@ -69,7 +69,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
                 let blocInfos = blocHeaders[id];
 
-                if (blocInfos[IDS.SKIP_SERIALIZATION]) { continue; }
+                if (blocInfos[IDS.SKIP_S11N]) { continue; }
                 blocsSerial[id] = this.__master.Serialize(p_data[blocInfos.member || `_${id}`], p_options);
 
             }
@@ -89,7 +89,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
                 let dataListHeader = dataLists[id];
 
-                if (dataListHeader[IDS.SKIP_SERIALIZATION]) { continue; }
+                if (dataListHeader[IDS.SKIP_S11N]) { continue; }
 
                 let
                     dataList = p_data[dataListHeader.member || `_${id}`],
@@ -128,7 +128,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                 for (var id in blocsSerial) {
 
                     let blocInfos = blocHeaders[id];
-                    if (!blocInfos || blocInfos[IDS.SKIP_SERIALIZATION]) { continue; }
+                    if (!blocInfos || blocInfos[IDS.SKIP_S11N]) { continue; }
 
                     let
                         blocData = p_data[blocInfos.member || `_${id}`],
@@ -152,7 +152,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
                 let dataListHeader = dataLists[id];
 
-                if (dataListHeader[IDS.SKIP_SERIALIZATION]) { continue; }
+                if (dataListHeader[IDS.SKIP_S11N]) { continue; }
 
                 let
                     dataList = p_data[dataListHeader.member || `_${id}`],
@@ -162,11 +162,11 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
                 let callPushFn = dataListHeader.pushFn ? p_data[dataListHeader.pushFn] : null;
 
-                contents.forEach(itemSerial => {
+                for (const itemSerial of contents){
                     let item = this.__master.Deserialize(itemSerial, null, p_options);
                     if (callPushFn) { u.Call(callPushFn, dataListHeader, item); }
                     else { dataList.Add(item); }
-                });
+                };
 
             };
         }

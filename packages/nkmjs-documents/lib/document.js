@@ -28,7 +28,7 @@ class Document extends com.Observable {
         [com.IDS.ICON]: `document`,
         [IDS.TYPE_RSC]: io.Resource,
         [IDS.ENCODING]: io.ENCODING.UTF8,
-        [IDS.SERIAL_CTX]: data.serialization.CONTEXT.NONE,
+        [IDS.SERIAL_CTX]: data.serialization.CTX.NONE,
         [IDS.TYPE_IO]: io.IO_TYPE.DOCUMENT,
         [IDS.DATA_BOUND]: true
     };
@@ -316,8 +316,8 @@ class Document extends com.Observable {
         // If data already exists, attempt to unserialize into existing data.
         // Otherwise, create a new data !
         // SomeSerializer.Read( p_rsc.content )
-        let serializer = com.BINDINGS.Get(
-            data.serialization.CONTEXT.SERIALIZER,
+        let serializer = com.GetBinding(
+            data.serialization.CTX.SERIALIZER,
             com.NFOS.GetValue(this, IDS.SERIAL_CTX)), // TODO : Fetch serialization context based on resource type instead ?
             unpacked = serializer.Deserialize(p_content, p_data, this._options);
 
@@ -388,8 +388,8 @@ class Document extends com.Observable {
      */
     _Pack(p_data) {
         //Pack document data into serializable data
-        let serializer = com.BINDINGS.Get(
-            data.serialization.CONTEXT.SERIALIZER,
+        let serializer = com.GetBinding(
+            data.serialization.CTX.SERIALIZER,
             com.NFOS.GetValue(this, IDS.SERIAL_CTX)); // TODO : Fetch serialization context based on resource type instead ?
 
         return serializer.Serialize(p_data, this._options);

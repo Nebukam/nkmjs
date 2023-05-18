@@ -7,14 +7,14 @@ const com = require("@nkmjs/common");
  * @class
  * @memberof data.core.serialization
  */
-class OVERLAY extends com.helpers.CSYMBOL{ constructor() { super(); } }
+class OVERLAY extends com.CSYMBOL{ constructor() { super(); } }
 
 /**
  * DEFAULT_CONTENT Context
  * @class
  * @memberof data.core.serialization
  */
-class CONTENT extends com.helpers.CSYMBOL{ constructor() { super(); } }
+class CONTENT extends com.CSYMBOL{ constructor() { super(); } }
 
 module.exports = {
     OVERLAY:OVERLAY,

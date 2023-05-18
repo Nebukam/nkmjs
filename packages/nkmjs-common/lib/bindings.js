@@ -122,7 +122,7 @@ module.exports = {
      * BINDINGS.Set(Kitchen, Ustensil, Fork)
      * 
      * // The binding can then be retrieved using `Get` 
-     * BINDINGS.Get(Kitchen, Ustensil) == Fork
+     * GetBinding(Kitchen, Ustensil) == Fork
      */
     Set: function (p_context, p_key, p_binding) {
         //TODO : Check if a value is being squashed, and store it to restore it on kit concealing
@@ -143,7 +143,7 @@ module.exports = {
      * @param {boolean} p_broad Whether or not to look for alternative matches
      * @group Global binding
      * @example // What's the Ustensil in the Kitchen ?
-     * BINDINGS.Get(Kitchen, Ustensil) == Fork
+     * GetBinding(Kitchen, Ustensil) == Fork
      */
     Get: function (p_context, p_key, p_fallback = null, p_broad = true) {
 
@@ -166,7 +166,7 @@ module.exports = {
             let keyList = _contextKeyLists.Get(p_context);
 
             if (!keyList) {
-                //console.warn(`No association found for key:${p_key.name}, context:${p_context.name ? p_context.name : p_context}`);
+                //console.warn(`No association found for key:${p_key.name}, ctx:${p_context.name ? p_context.name : p_context}`);
                 return p_fallback;
             }
 

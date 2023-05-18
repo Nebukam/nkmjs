@@ -4,7 +4,7 @@ const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
 const ui = require("@nkmjs/ui-core");
 
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 const ControlManager = require("./control-manager");
 
 /**

@@ -4,11 +4,10 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 
-const UI = require(`./ui`);
+const helpers = require(`./helpers`);
 const POINTER = require("./pointer");
 const FLAGS = require(`./flags`);
 const extensions = require(`./extensions`);
-const FlagEnum = require(`./helpers/flag-enum`);
 const Widget = require(`./widget`);
 const IDS = require(`./ids`);
 
@@ -26,8 +25,8 @@ class WidgetItem extends base {
 
     static __draggable = false;
     static __distribute = com.helpers.OptionsDistribute.Ext()
-        .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
-        .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
+        .To(`flagOn`, helpers.flagOn)
+        .To(`flagOff`, helpers.flagOff)
         .To(IDS.ORDER)
         .To(IDS.FLAVOR)
         .To(IDS.DATA, `itemData`);
@@ -43,7 +42,7 @@ class WidgetItem extends base {
         this._dataObserver.Hook(data.catalogs.SIGNAL.ITEM_DATA_CHANGED, this._OnCatalogItemDataChanged, this);
         this._itemData = null;
 
-        this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
+        this._flavorEnum = new helpers.FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
         this._pointer.Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE_TWICE, this._Bind(this.AltActivate));

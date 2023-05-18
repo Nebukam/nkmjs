@@ -13,7 +13,7 @@ module.exports = {
     FLAGS: require(`./lib/flags`),
     IDS: require(`./lib/ids`),
     REQUEST: require(`./lib/request`),
-    CONTEXT: require(`./lib/context`),
+    CTX: require(`./lib/context`),
     ANCHORING: require(`./lib/anchoring`),
 
     UI: UI,

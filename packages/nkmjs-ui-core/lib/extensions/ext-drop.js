@@ -405,15 +405,15 @@ class DropExtension extends Extension {
 
             this._feedbackHost.flags.Set(FLAGS.ALLOW_DROP, p_toggle);
 
-            this._allowedHooks.forEach(hook => {
+            for (const hook of this._allowedHooks) {
                 let flag = hook.flag;
-                if (!flag) { return; }
+                if (!flag) { continue; }
                 if (Array.isArray(flag)) {
-                    flag.forEach(f => { this._feedbackHost.flags.Set(f, p_toggle) });
+                    for (const f of flag) { this._feedbackHost.flags.Set(f, p_toggle) };
                 } else {
                     this._feedbackHost.flags.Set(flag, p_toggle);
                 }
-            });
+            };
 
         }
 

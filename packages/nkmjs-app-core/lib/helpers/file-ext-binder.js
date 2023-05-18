@@ -15,7 +15,7 @@ class FileExtBinder extends com.Observable {
     }
 
     _Init() {
-        
+
         super._Init();
         this._bindings = new collections.DictionaryList();
         this._queue = [];
@@ -53,18 +53,18 @@ class FileExtBinder extends com.Observable {
 
         let definition = documents.RegisterDefinition(p_documentInfos);
 
-        p_fileInfos.extensions.forEach(ext => {
+        for (const ext of p_fileInfos.extensions) {
             this.Register(ext, (p_path) => { return definition.LoadCmd.Execute(p_path); });
-        });
+        };
 
         com.helpers.BindingKit._InternalSetClass(dataType);
         com.helpers.BindingKit._InternalSetBinding(
-            documents.CONTEXT.DOCUMENT,
+            documents.CTX.DOCUMENT,
             { key: dataType, binding: docType });
 
         if (p_defaultEditor) {
             com.helpers.BindingKit._InternalSetBinding(
-                datacontrols.CONTEXT.DEFAULT_EDITOR,
+                datacontrols.CTX.DEFAULT_EDITOR,
                 { key: dataType, binding: p_defaultEditor });
         }
 
@@ -85,7 +85,7 @@ class FileExtBinder extends com.Observable {
     Register(p_ext, ...p_callbacks) {
         if (!p_ext || p_ext.trim() == ``) { throw new Error(`p_ext must be a string, got:${p_ext}`); }
         if (p_ext[0] != `.`) { p_ext = `.${p_ext}`; }
-        p_callbacks.forEach(cb => { this._bindings.Set(p_ext, cb); });
+        for (const cb of p_callbacks) { this._bindings.Set(p_ext, cb); };
     }
 
     /**
@@ -98,18 +98,18 @@ class FileExtBinder extends com.Observable {
         let
             keys = this._bindings.keys,
             queued = false;
-            
-        entries.forEach(entry => {
+
+        for (const entry of entries) {
             let valid = false;
-            keys.forEach(key => {
-                if (!entry.includes(key)) { return; }
+            for (const key of keys) {
+                if (!entry.includes(key)) { continue; }
                 //Make sure the path finishes with the extension to avoid situation where
                 //an additional extension might be appended at the end
                 if (entry.substr(entry.length - key.length) == key) {
                     if (this._Queue(entry, key, false)) { queued = true; }
                 }
-            });
-        });
+            };
+        };
 
         if (this._processing) { return queued; }
         return queued ? this._AdvanceQueue() : false;

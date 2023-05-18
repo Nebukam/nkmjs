@@ -5,13 +5,12 @@ const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 const style = require("@nkmjs/style");
 
+const helpers = require(`./helpers`);
 const dom = require(`./utils-dom`);
-const UI = require(`./ui`);
 const SIGNAL = require(`./signal`);
 const FLAGS = require(`./flags`);
 const IDS = require(`./ids`);
 const Widget = require(`./widget`);
-const FlagEnum = require("./helpers/flag-enum");
 
 const base = Widget;
 
@@ -59,8 +58,8 @@ class WidgetButton extends base {
         .To(`isCmdTrigger`)
         .To(`isCmdEmitter`)
         .To(`isCmdContext`)
-        .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
-        .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
+        .To(`flagOn`, helpers.flagOn)
+        .To(`flagOff`, helpers.flagOff)
         .To(IDS.SIZE)
         .To(`noscale`, (p_target, p_value) => { p_target._flags.Set(FLAGS.NO_SCALE, p_value); }, false)
         .To(IDS.FLAVOR)
@@ -84,13 +83,13 @@ class WidgetButton extends base {
 
         this._flags.Add(this, FLAGS.TOGGLABLE, FLAGS.TOGGLED);
 
-        this._sizeEnum = new FlagEnum(FLAGS.sizes, true);
+        this._sizeEnum = new helpers.FlagEnum(FLAGS.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
+        this._flavorEnum = new helpers.FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
-        this._variantEnum = new FlagEnum(FLAGS.variants, true);
+        this._variantEnum = new helpers.FlagEnum(FLAGS.variants, true);
         this._variantEnum.Add(this);
 
     }

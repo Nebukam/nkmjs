@@ -36,8 +36,6 @@ class TaskShrinkKeys extends ScriptBase {
             if (!paths.includes(splitB) && splitB.length > 1) { paths.push(splitB); } // isolate unique paths
         }
 
-        //paths.forEach((e) =>{ console.log(e)});
-
         for (let i = 0, n = paths.length; i < n; i++) {
             let A = `"${paths[i]}"`,
                 B = `${i}`;

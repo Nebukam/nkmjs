@@ -28,7 +28,7 @@ module.exports = {
     Add: function (p_input, p_handler = null) {
 
         if (u.isArray(p_input)) {
-            p_input.forEach(getter => { module.exports._Add(getter, p_handler); });
+            for (const getter of p_input) { module.exports._Add(getter, p_handler); };
         } else if (u.isObject(p_input)) {
             for (let id in p_input) { module.exports._Add(p_input[id], p_handler); }
         } else {

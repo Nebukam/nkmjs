@@ -8,7 +8,7 @@ const actions = require("@nkmjs/actions");
 const env = require("@nkmjs/environment");
 
 const CMD_TYPE = require(`./commands/cmd-type`);
-const CONTEXT = require(`./context`);
+const CTX = require(`./context`);
 const AutosaveHandler = require(`./helpers/autosave-handler`);
 
 /**
@@ -74,7 +74,7 @@ class DOCUMENTS extends com.Observable {// PORT_TO_MODULE
         docClass = p_options.document || null;
         path = u.SHORT(p_options.path) || null;
 
-        if (data && !docClass) { docClass = com.BINDINGS.Get(CONTEXT.DOCUMENT, data, null); }
+        if (data && !docClass) { docClass = com.GetBinding(CTX.DOCUMENT, data, null); }
         if (!docClass) { throw new Error(`Not enough options set to create a new document.`); }
 
         if (!p_forceNew) {
@@ -85,7 +85,7 @@ class DOCUMENTS extends com.Observable {// PORT_TO_MODULE
         let doc = com.Rent(docClass);
         if (path) { doc.currentPath = path; }
 
-        data = data || com.BINDINGS.Get(CONTEXT.DOCUMENT_DATA, docClass, null);
+        data = data || com.GetBinding(CTX.DOCUMENT_DATA, docClass, null);
 
         if (data) {
             if (u.isFunc(data)) { data = com.Rent(data); }

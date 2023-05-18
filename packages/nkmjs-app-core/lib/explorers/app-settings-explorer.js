@@ -61,7 +61,7 @@ class AppSettingsExplorer extends base {
         super._Render();
 
         let groups = data.SIMPLEX.GetGroups(env.app._appSettingsType);
-        groups.forEach(group => {
+        for(const group of groups){
 
             let
                 groupDescriptor = data.GetDescriptor(group.id),
@@ -72,7 +72,7 @@ class AppSettingsExplorer extends base {
                 },
                 ctrls = [];
 
-            group.definitions.forEach(valueDef => {
+            for( const valueDef of group.definitions){
                 let
                     descriptor = data.GetDescriptor(valueDef.id),
                     options = { options: { propertyId: valueDef.id } };
@@ -82,11 +82,11 @@ class AppSettingsExplorer extends base {
                 }
 
                 ctrls.push(options);
-            });
+            };
 
             this._Foldout(header, ctrls);
 
-        });
+        };
 
     }
 

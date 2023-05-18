@@ -105,7 +105,7 @@ class Observer extends Observable {
         return this;
     }
 
-    ClearHooks(){
+    ClearHooks() {
         this.Flush();
         this._hooks.length = 0;
     }
@@ -168,7 +168,7 @@ class Observer extends Observable {
      * @param {*} p_target 
      */
     _WatchAll(p_target) {
-        this._hooks.forEach(hook => { p_target.Watch(hook.evt, hook.fn, hook.thisArg); });
+        for (const hook of this._hooks) { p_target.Watch(hook.evt, hook.fn, hook.thisArg); };
     }
 
     /**
@@ -177,14 +177,14 @@ class Observer extends Observable {
      */
     _UnwatchAll(p_target) {
         if (p_target.isReleasing) { return; }
-        this._hooks.forEach(hook => { p_target.Unwatch(hook.evt, hook.fn, hook.thisArg); });
+        for (const hook of this._hooks) { p_target.Unwatch(hook.evt, hook.fn, hook.thisArg); };
     }
 
     /**
      * Stop watching targets and flushes them
      */
     Flush() {
-        if (this._isEnabled) { this._targets.forEach(target => { this._UnwatchAll(target) }); }
+        if (this._isEnabled) { for (const target of this._targets) { this._UnwatchAll(target) }; }
         this._targets.length = 0;
     }
 

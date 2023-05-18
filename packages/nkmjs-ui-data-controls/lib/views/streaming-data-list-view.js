@@ -195,7 +195,7 @@ class StreamingDataListView extends base {
 
 
         //TODO: 
-        let widgetClass = com.BINDINGS.Get(this, data, this.constructor.__default_widgetClass);
+        let widgetClass = com.GetBinding(this, data, this.constructor.__default_widgetClass);
 
         if (!widgetClass) { return; }
 

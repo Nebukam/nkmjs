@@ -1,6 +1,6 @@
 'use strict';
 
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 const BaseSerializer = require(`../serializer-base`);
 const JSONSerializer = require(`../serializer-json`);
 
@@ -14,7 +14,7 @@ const JSONSerializer = require(`../serializer-json`);
 class AbstractJSONSerializer extends BaseSerializer {
     constructor() { super(); }
 
-    static __context = CONTEXT.JSON;
+    static __context = CTX.JSON;
     static __master = JSONSerializer;
     
 }

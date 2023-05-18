@@ -143,7 +143,7 @@ class InspectionDataHandler extends com.Observable {
     _UpdateCtxs(p_array, p_map, p_key = null) {
         for (let i = 0; i < p_array.length; i++) {
             let ctx = p_array[i],
-                binding = p_key ? com.BINDINGS.Get(ctx, p_key, null) : null;
+                binding = p_key ? com.GetBinding(ctx, p_key, null) : null;
             p_map.set(ctx, binding);
         }
     }

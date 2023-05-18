@@ -111,7 +111,7 @@ class Bundler {
                     reserved: [`require`],
                     keep_classnames: true,
                     keep_fnames: true,
-                    module : false,
+                    module: false,
                     toplevel: true,
                 },
                 compress: {
@@ -174,11 +174,11 @@ class Bundler {
 
         reqs.shift();
 
-        reqs.forEach(r => {
+        for (const r of reqs) {
             let p = r.split(`")`)[0];
-            if (p in reqMap) { return; }
+            if (p in reqMap) { continue; }
             reqMap[p] = index++;
-        });
+        };
 
         for (var id in reqMap) {
             if (this.externals.includes(id) ||

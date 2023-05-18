@@ -7,9 +7,6 @@ module.exports = {
     CallList: require(`./call-list`),
     Callbacks: require(`./callbacks`),
 
-    CSYMBOL: require(`./class-symbol`),
-    CKEY: require(`./class-key`),
-
     OptionsDistribute: require(`./options-distribute`),
     OptionsObject: require(`./options-object`),
     Setter: require(`./setter`),

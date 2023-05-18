@@ -156,10 +156,10 @@ class FlagEnum {
         } else if (oldFlag && !p_flag) {
             dom.CSSClass(this._elements, prefixed_oldFlag, false);
         } else {
-            this._elements.forEach(el => {
+            for (const el of this._elements) {
                 dom.CSSClass(el, prefixed_flag);
                 dom.CSSClass(el, prefixed_oldFlag, false);
-            });
+            };
         }
 
         this._onFlagChanged.Dispatch(p_flag, oldFlag);

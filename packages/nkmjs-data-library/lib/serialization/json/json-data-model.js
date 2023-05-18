@@ -9,7 +9,7 @@ const IDS = require(`../../ids`);
 const DataBlockExtendableJSONSerializer = require(`./json-data-block-extendable`);
 const FieldSlotJSONSerializer = require("./json-field-slot");
 const FieldDescriptorJSONSerializer = require("./json-field-descriptor");
-const CONTEXT = nkm.data.serialization.CONTEXT;
+const CTX = nkm.data.serialization.CTX;
 
 const __id_groups = `groups`;
 const __id_slots = `slots`;
@@ -56,7 +56,7 @@ class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
         if (groups && groups.length) {
             for (let i = 0, n = groups.length; i < n; i++) {
                 let groupSerial = groups[i],
-                    groupUID = slotSerial[CONTEXT.JSON.META_KEY] ? slotSerial[CONTEXT.JSON.META_KEY][com.IDS.UID] : null,
+                    groupUID = slotSerial[CTX.JSON.META_KEY] ? slotSerial[CTX.JSON.META_KEY][com.IDS.UID] : null,
                     group = serializer.Deserialize(groupSerial, group, p_options);
 
                 p_data._groupRep.Register(group, groupUID);
@@ -67,8 +67,8 @@ class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
             for (let i = 0, n = slots.length; i < n; i++) {
 
                 let slotSerial = slots[i],
-                    slotGroupID = slotSerial[CONTEXT.JSON.DATA_KEY] ? slotSerial[CONTEXT.JSON.DATA_KEY][IDS.GROUP] : null,
-                    slotUID =  slotSerial[CONTEXT.JSON.META_KEY] ? slotSerial[CONTEXT.JSON.META_KEY][com.IDS.UID] : null,
+                    slotGroupID = slotSerial[CTX.JSON.DATA_KEY] ? slotSerial[CTX.JSON.DATA_KEY][IDS.GROUP] : null,
+                    slotUID =  slotSerial[CTX.JSON.META_KEY] ? slotSerial[CTX.JSON.META_KEY][com.IDS.UID] : null,
                     existingSlot = slotUID ? p_data.GetSlotByName(slotUID) : null,
                     slot = this.__master.Deserialize(slotSerial, existingSlot, p_options);
 

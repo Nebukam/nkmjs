@@ -4,7 +4,7 @@ const com = require("@nkmjs/common");
 const u = require("@nkmjs/utils");
 const ui = require("@nkmjs/ui-core");
 
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 
 /**
  * @description A ControlBuilder is a simple helper that streamlines
@@ -30,7 +30,7 @@ class ControlManager {
         this._editor = null;
         this._host = p_owner;
         this._defaultCSS = p_defaultCSS;
-        this._bindingContext = CONTEXT.CONTROLLER;
+        this._bindingContext = CTX.CONTROLLER;
 
         this._preProcessDataFn = null;
 
@@ -49,9 +49,9 @@ class ControlManager {
 
     set defaultCSS(p_value) { this._defaultCSS = p_value; }
 
-    set editor(p_value) { this._controls.forEach(ctrl => { ctrl.editor = p_value; }); }
+    set editor(p_value) { for (const ctrl of this._controls) { ctrl.editor = p_value; }; }
 
-    set context(p_value) { this._controls.forEach(ctrl => { ctrl.context = p_value; }); }
+    set context(p_value) { for (const ctrl of this._controls) { ctrl.context = p_value; }; }
 
     Handle(p_data, p_css = null, p_host = null) {
 
@@ -59,7 +59,7 @@ class ControlManager {
 
         if (ctrl) { return ctrl; }
 
-        let cl = com.BINDINGS.Get(this._bindingContext, p_data, null);
+        let cl = com.GetBinding(this._bindingContext, p_data, null);
 
         if (!cl) { return null; }
         ctrl = this._owner.Attach(cl, p_css ? `${p_css} ${this._defaultCSS}` : this._defaultCSS, p_host || this._host);
@@ -97,7 +97,7 @@ class ControlManager {
     Get(p_data) { return this._dataMap.set(p_data, ctrl); }
 
     Clear() {
-        this._controls.forEach(ctrl => { ctrl.Release(); });
+        for (const ctrl of this._controls) { ctrl.Release(); };
         this._dataMap.clear();
         this._controls.length = 0;
     }
@@ -105,13 +105,13 @@ class ControlManager {
     DisplayGranted() {
         if (this._isDisplayed) { return; }
         this._isDisplayed = true;
-        this._controls.forEach(ctrl => { if (`DisplayGranted` in ctrl) { ctrl.DisplayGranted(); } });
+        for (const ctrl of this._controls) { if (`DisplayGranted` in ctrl) { ctrl.DisplayGranted(); } };
     }
 
     DisplayLost() {
         if (!this._isDisplayed) { return; }
         this._isDisplayed = false;
-        this._controls.forEach(ctrl => { if (`DisplayLost` in ctrl) { ctrl.DisplayLost(); } });
+        for (const ctrl of this._controls) { if (`DisplayLost` in ctrl) { ctrl.DisplayLost(); } };
     }
 
     _OnCtrlReleased(p_ctrl) { this.Release(p_ctrl); }

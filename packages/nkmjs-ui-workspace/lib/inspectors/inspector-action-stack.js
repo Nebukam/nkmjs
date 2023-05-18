@@ -137,7 +137,7 @@ class ActionStackInspector extends base {
         let
             action = this._data._stack[p_index],
             item = this.Attach(
-                com.BINDINGS.Get(this, action, this.constructor.__default_actionItem),
+                com.GetBinding(this, action, this.constructor.__default_actionItem),
                 `item`, p_fragment);
 
         item.Watch(com.SIGNAL.RELEASED, this._OnActionItemRelelased, this);

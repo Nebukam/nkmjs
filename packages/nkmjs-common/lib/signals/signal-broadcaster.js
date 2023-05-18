@@ -125,7 +125,6 @@ class SignalBroadcaster extends Disposable {
         if (args === null || args === undefined) {
 
             // Dispatch without args
-            // this._slots.internalMap.forEach(this.__BroadcastWithoutArgs, this);
 
             for (let si = 0, sn = slots.size; si < sn; si++) {
 
@@ -164,7 +163,6 @@ class SignalBroadcaster extends Disposable {
         } else {
 
             // Dispatch with args
-            // this._slots.internalMap.forEach(this.__BroadcastWithArgs, this);
 
             for (let si = 0, sn = slots.size; si < sn; si++) {
 

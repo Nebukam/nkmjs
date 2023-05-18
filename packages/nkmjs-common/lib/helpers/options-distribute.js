@@ -112,7 +112,9 @@ class OptionsDistribute {
             let hook = this._hooks[this._indices[p_optionID]];
             this._hooks.splice(this._indices[p_optionID], 1);
             this._hooks.push(hook);
-            this._hooks.forEach((h, index) => { this._indices[h[0]] = index; });
+
+            let index = 0;
+            for (const h of this._hooks) { this._indices[h[0]] = index++; }
         }
         return this;
     }
@@ -151,7 +153,7 @@ class OptionsDistribute {
                 staticMember = hook[2];
 
             if (key in p_options) { val = p_options[key]; }
-            else if(staticMember){ val = p_target.constructor[staticMember]; }
+            else if (staticMember) { val = p_target.constructor[staticMember]; }
             else if (this._defaults && key in this._defaults) { val = this._defaults[key]; }
 
             if (val == __null) { continue; }

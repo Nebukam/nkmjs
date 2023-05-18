@@ -6,16 +6,16 @@
 
 // Use a cacheUID for cache versioning
 const cacheUID = '%build-uid%';
-const cacheURLs = %cacheURLs%;
+const cacheURLs = % cacheURLs %;
 
 function Broadcast(p_data) {
     const msg = p_data;
     self.clients.matchAll()
         .then(function (clients) {
-            clients.forEach(function (client) {
+            for (const client of clients) {
                 client.postMessage(msg);
                 console.log(`[SW -> CLIENT]`, msg);
-            });
+            };
         });
 }
 

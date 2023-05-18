@@ -65,10 +65,12 @@ module.exports = {
 
         if (p_parent) { catalog.parent = p_parent; }
 
-        p_content?.forEach(i => {
-            if (u.isArray(i.content)) { module.exports.CreateFrom(i, i.content, catalog); }
-            else { catalog.Register(i); }
-        });
+        if (p_content) {
+            for (const i of p_content) {
+                if (u.isArray(i.content)) { module.exports.CreateFrom(i, i.content, catalog); }
+                else { catalog.Register(i); }
+            }
+        }
 
         return catalog;
 
@@ -92,7 +94,7 @@ module.exports = {
             if (data) {
                 let ctx = p_catalog ? p_catalog : __Catalog;
                 if (u.isObject(ctx)) { ctx = ctx.constructor; }
-                iClass = com.BINDINGS.Get(ctx, data, null);
+                iClass = com.GetBinding(ctx, data, null);
             }
 
             if (!iClass) {

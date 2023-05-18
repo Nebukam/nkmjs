@@ -3,10 +3,17 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
+
+const CTX = require(`./context`);
 const DataList = require("./helpers/data-list");
 
 const IDS = require(`./ids`);
 const TYPES = require(`./types`);
+
+const _descriptors = {
+    [IDS.BLOCS]: { id: IDS.BLOCS }, /* SYSTEM RESERVE */
+    [IDS.DATALISTS]: { id: IDS.DATALISTS } /* SYSTEM RESERVE */
+};
 
 /**
  * @description TODO
@@ -15,62 +22,7 @@ const TYPES = require(`./types`);
  * @augments common.Observable
  * @memberof ui.core
  */
-class SIMPLEX extends com.Observable {// PORT_TO_MODULE
-    constructor() { super(); }
-
-    _Init() {
-        super._Init();
-        this._descriptors = {
-            [IDS.BLOCS]: { id: IDS.BLOCS }, /* SYSTEM RESERVE */
-            [IDS.DATALISTS]: { id: IDS.DATALISTS } /* SYSTEM RESERVE */
-        };
-
-        this.RegisterDescriptors({
-
-            // Misc
-
-            [IDS.GROUP_OTHERS]: {
-                title: `Others`,
-                icon: `icon`,
-                desc: `Uncategorized.`
-            },
-
-            // Search
-
-            [IDS.SEARCH_ENABLED]: {
-                valueType: TYPES.BOOLEAN,
-                label: `Search`,
-                inputOptions: { placeholder: `...` }, //, size: nkm.ui.FLAGS.SIZE_XS
-                desc: `Enable filter within current glyph selection.\nSeparate terms with an empty space.\nNote : search can impact responsiveness.`
-            },
-
-            [IDS.SEARCH_TERMS]: {
-                recompute: true,
-                valueType: TYPES.TEXT_SEARCH,
-                label: `Search`,
-                inputOptions: { placeholder: `Search...`, changeOnInput: true, submitOnChange: true, },
-                desc: `Search for something!`
-            },
-
-            [IDS.SEARCH_CASE_SENSITIVE]: {
-                recompute: true,
-                valueType: TYPES.BOOLEAN_CHECK,
-                label: `Insensitive`,
-                inputOptions: { placeholder: `...` },
-                desc: `Broad search doesn't care whether the case is uppercase or lowercase.`
-            },
-
-            [IDS.SEARCH_EXACT_MATCH]: {
-                recompute: true,
-                valueType: TYPES.BOOLEAN_CHECK,
-                label: `Exact Match`,
-                inputOptions: { placeholder: `...` },
-                desc: `Show only the results that have an exact match.`
-            }
-
-        });
-
-    }
+module.exports = {
 
     //#region Descriptors
 
@@ -79,12 +31,12 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
      * as their unique ID.
      * @param {*} p_map 
      */
-    RegisterDescriptors(p_map) {
+    RegisterDescriptors: function (p_map) {
         for (let n in p_map) {
             let descriptor = p_map[n];
-            this.RegisterDescriptor(n, descriptor);
+            module.exports.RegisterDescriptor(n, descriptor);
         }
-    }
+    },
 
     /**
      * Register a simple descriptor
@@ -101,24 +53,24 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
      * @param {*} p_descriptor.inputOptions.catalog Catalog to be used as enum
      * @param {*} p_descriptor.inputOptions.itemKey Catalog to be used as enum
      */
-    RegisterDescriptor(p_id, p_descriptor) {
-        if (p_id in this._descriptors) {
-            throw new Error(`Attempting to register a descriptor that already exists (${p_id})`, p_descriptor, this._descriptors[p_id]);
+    RegisterDescriptor: function (p_id, p_descriptor) {
+        if (p_id in _descriptors) {
+            throw new Error(`Attempting to register a descriptor that already exists (${p_id})`, p_descriptor, _descriptors[p_id]);
         }
         p_descriptor.id = p_id;
-        this._descriptors[p_id] = p_descriptor;
-    }
+        _descriptors[p_id] = p_descriptor;
+    },
 
-    GetDescriptor(p_id) {
-        return this._descriptors[p_id];
-    }
+    GetDescriptor: function (p_id) {
+        return _descriptors[p_id];
+    },
 
     //#endregion
 
 
     //#region Utils
 
-    InitSimpleDataBlock(p_dataBlock) {
+    InitSimpleDataBlock: function (p_dataBlock) {
 
         let BLOCS = p_dataBlock.BLOCS;
 
@@ -126,26 +78,27 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
             for (var id in BLOCS) {
 
                 let
-                    definition = BLOCS[id],
-                    memberId = definition.member || `_${id}`;
+                    def = BLOCS[id],
+                    memberId = def.member || `_${id}`,
+                    type = u.isInstanceOf(def.type, com.CKEY) ? com.GetBinding(CTX.BLOC, def.type) || com.GetBinding(p_dataBlock.constructor, def.type) : def.type;
 
-                let newBloc = com.Rent(definition.type);
+                let newBloc = com.Rent(type);
                 newBloc._iid = id;
                 newBloc._parent = p_dataBlock;
 
                 p_dataBlock[memberId] = newBloc;
 
-                if (definition.watch) {
-                    definition.watch.forEach(watch => {
+                if (def.watch) {
+                    for (const watch of def.watch) {
                         newBloc.Watch(
                             watch.signal,
                             u.isString(watch.fn) ? p_dataBlock[watch.fn] : watch.fn,
-                            watch.thisArg ? watch.thisArg : p_dataBlock
+                            watch?.thisArg || p_dataBlock
                         )
-                    });
+                    };
                 }
 
-                p_dataBlock._InitBloc(newBloc, definition);
+                p_dataBlock._InitBloc(newBloc, def);
 
             };
         }
@@ -155,45 +108,45 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
         if (DATALISTS) {
             for (var id in DATALISTS) {
                 let
-                    definition = DATALISTS[id],
-                    memberId = definition.member || `_${id}`;
+                    def = DATALISTS[id],
+                    memberId = def.member || `_${id}`;
 
-                let newDataList = new (definition.type ? definition.type : DataList)();
+                let newDataList = new (def.type ? def.type : DataList)();
                 newDataList.parent = p_dataBlock;
 
                 if (p_dataBlock[memberId]) { throw new Error(`Datalist member ID "${memberId}" overlaps with existing Bloc ID.`); }
                 p_dataBlock[memberId] = newDataList;
 
-                if (definition.watch) {
-                    definition.watch.forEach(watch => {
+                if (def.watch) {
+                    for (const watch of def.watch) {
                         newDataList.Watch(
                             watch.signal,
                             u.isString(watch.fn) ? p_dataBlock[watch.fn] : watch.fn,
-                            watch.thisArg ? watch.thisArg : p_dataBlock
+                            watch?.thisArg || p_dataBlock
                         )
-                    });
+                    };
                 }
 
-                if (definition.hooks) {
-                    definition.hooks.forEach(hook => {
+                if (def.hooks) {
+                    for (const hook of def.hooks) {
                         newDataList.Hook(
                             hook.signal,
                             u.isString(hook.fn) ? p_dataBlock[hook.fn] : hook.fn,
-                            hook.thisArg ? hook.thisArg : p_dataBlock
+                            hook?.thisArg || p_dataBlock
                         )
-                    });
+                    };
                 }
 
-                if (definition.autoSort) {
-                    newDataList.AutoSort(definition.autoSort);
+                if (def.autoSort) {
+                    newDataList.AutoSort(def.autoSort);
                 }
 
-                p_dataBlock._InitDatalist(newDataList, definition);
+                p_dataBlock._InitDatalist(newDataList, def);
 
             }
         }
 
-    }
+    },
 
     /**
      * Attempts to find the value of a given ID in a given object
@@ -204,7 +157,7 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
      * @param  {...any} p_fallbacks Fallback data to look into 
      * @returns 
      */
-    Resolve(p_id, p_data, ...p_fallbacks) {
+    Resolve: function (p_id, p_data, ...p_fallbacks) {
 
         if (!p_data) { return null; }
 
@@ -215,12 +168,12 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
 
         if (p_fallbacks.length) {
             p_data = p_fallbacks.shift();
-            return this.Resolve(p_id, p_data, ...p_fallbacks);
+            return module.exports.Resolve(p_id, p_data, ...p_fallbacks);
         }
 
         return null;
 
-    }
+    },
 
     /**
      * 
@@ -230,7 +183,7 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
      * @param {*} [backupList] 
      * @returns 
      */
-    FindCommonValues(p_reference, p_dataList, p_dataMember = null, backupList = null) {
+    FindCommonValues: function (p_reference, p_dataList, p_dataMember = null, backupList = null) {
 
         let
             refValues = p_reference._values,
@@ -241,7 +194,7 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
             searchState = 0,
             backup = {};
 
-        if (backupList) { backupList.forEach(id => { backup[id] = refValues[id]; }) }
+        if (backupList) { for (const id of backupList) { backup[id] = refValues[id]; } }
 
         for (var v in refValues) { refValues[v] = null; }
 
@@ -280,10 +233,10 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
         }
 
         if (backupList) {
-            backupList.forEach(id => {
+            for (const id of backupList) {
                 refValues[id] = backup[id];
                 delete commonValues[id];
-            })
+            }
         }
 
         if (searchState == 2) {
@@ -294,28 +247,28 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
 
         return false;
 
-    }
+    },
 
     /**
      * Attempt to group values definition of SimpleDataBlock __VALUES.
      * @param {*} p_source 
      * @returns An array of groups, with the last one being ungrouped values.
      */
-    GetGroups(p_source) {
+    GetGroups: function (p_source) {
 
         if (u.isObject(p_source)) { if (p_source.constructor != Object) { p_source = p_source.constructor; } }
-        let definitions = p_source.__VALUES;
-        if (!definitions) { return []; }
+        let defs = p_source.__VALUES;
+        if (!defs) { return []; }
 
         let
             groupMap = {},
             groupList = [],
             noGroup = { id: IDS.GROUP_OTHERS, definitions: [], order: Number.MAX_SAFE_INTEGER };
 
-        for (let id in definitions) {
+        for (let id in defs) {
 
             let
-                def = definitions[id],
+                def = defs[id],
                 group;
 
             def.id = id; //Hah.
@@ -337,18 +290,121 @@ class SIMPLEX extends com.Observable {// PORT_TO_MODULE
         groupList.push(noGroup);
 
         groupList.sort((a, b) => { return a.order - b.order; })
-        groupList.forEach(group => { group.definitions.sort((a, b) => { return a.order || 0 - b.order || 0; }); })
+        for (const group of groupList) { group.definitions.sort((a, b) => { return a.order || 0 - b.order || 0; }); }
 
         return groupList;
 
-    }
+    },
 
-    GetValueType(p_id) {
-        return this.GetDescriptor(p_id).valueType;
-    }
+    GetValueType: function (p_id) {
+        return module.exports.GetDescriptor(p_id).valueType;
+    },
 
     //#endregion
 
+    /**
+     * Calls ClearDirty on all blocs, datalist contents, and finally the data object itself.
+     * @param {*} p_dataBlock 
+     * @param {*} p_includeBlocs 
+     * @param {*} p_includeDatalist 
+     * @returns 
+     */
+    ClearDirtyDeep: function (p_dataBlock, p_includeBlocs = true, p_includeDatalist = false) {
+
+        let BLOCS = p_dataBlock.BLOCS;
+        if (BLOCS) {
+            for (var id in BLOCS) { p_dataBlock[BLOCS[id].member || `_${id}`].ClearDirty(); };
+        }
+
+        let DATALISTS = p_dataBlock.DATALISTS;
+        if (DATALISTS) {
+            for (var id in DATALISTS) {
+                for (const i of p_dataBlock[DATALISTS[id].member || `_${id}`]._array) { i.ClearDirty(); };
+            }
+        }
+
+        p_dataBlock.ClearDirty();
+
+    },
+
+    TryClearDirtyDeep: function (p_dataBlock) {
+        if (!module.exports.isDirtyDeep(p_dataBlock)) { p_dataBlock.ClearDirty(); }
+    },
+
+    /**
+     * Check if no item is dirty, and if so calls ClearDirty on the data object.
+     * @param {*} p_dataBlock 
+     * @param {*} p_includeBlocs 
+     * @param {*} p_includeDatalist 
+     * @returns 
+     */
+    isDirtyDeep: function (p_dataBlock) {
+
+        let BLOCS = p_dataBlock.BLOCS;
+        if (BLOCS) {
+            for (var id in BLOCS) {
+                let bloc = p_dataBlock[BLOCS[id].member || `_${id}`];
+                if (bloc.isDirty) { return true; }
+            };
+        }
+
+        let DATALISTS = p_dataBlock.DATALISTS;
+        if (DATALISTS) {
+            for (var id in DATALISTS) {
+                let dataList = p_dataBlock[DATALISTS[id].member || `_${id}`]._array;
+                for (let i = 0, n = dataList.length; i < n; i++) {
+                    if (dataList[i].isDirty) { return true; }
+                }
+            }
+        }
+
+        return false;
+
+    },
+
 }
 
-module.exports = new SIMPLEX();
+module.exports.RegisterDescriptors({
+
+    // Misc
+
+    [IDS.GROUP_OTHERS]: {
+        title: `Others`,
+        icon: `icon`,
+        desc: `Uncategorized.`
+    },
+
+    // Search
+
+    [IDS.SEARCH_ENABLED]: {
+        valueType: TYPES.BOOLEAN,
+        label: `Search`,
+        inputOptions: { placeholder: `...` }, //, size: nkm.ui.FLAGS.SIZE_XS
+        desc: `Enable filter within current glyph selection.\nSeparate terms with an empty space.\nNote : search can impact responsiveness.`
+    },
+
+    [IDS.SEARCH_TERMS]: {
+        recompute: true,
+        valueType: TYPES.TEXT_SEARCH,
+        label: `Search`,
+        inputOptions: { placeholder: `Search...`, changeOnInput: true, submitOnChange: true, },
+        desc: `Search for something!`
+    },
+
+    [IDS.SEARCH_CASE_SENSITIVE]: {
+        recompute: true,
+        valueType: TYPES.BOOLEAN_CHECK,
+        label: `Insensitive`,
+        inputOptions: { placeholder: `...` },
+        desc: `Broad search doesn't care whether the case is uppercase or lowercase.`
+    },
+
+    [IDS.SEARCH_EXACT_MATCH]: {
+        recompute: true,
+        valueType: TYPES.BOOLEAN_CHECK,
+        label: `Exact Match`,
+        inputOptions: { placeholder: `...` },
+        desc: `Show only the results that have an exact match.`
+    }
+
+});

@@ -8,7 +8,7 @@ const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
 const SIGNAL = require(`./signal`);
-const CONTEXT = require(`./context`);
+const CTX = require(`./context`);
 const ControlView = require(`./control-view`);
 const InspectionDataHandler = require(`./helpers/inspection-data-handler`);
 
@@ -53,8 +53,8 @@ class InspectorShell extends base {
             .Watch(ui.SIGNAL.SEL_CLEARED, this._OnSelectionCleared, this);
 
         this._inspectionHandler
-            .AddSingleContexts(CONTEXT.DEFAULT_INSPECTOR)
-            .AddListContexts(CONTEXT.DEFAULT_LIST_INSPECTOR);
+            .AddSingleContexts(CTX.DEFAULT_INSPECTOR)
+            .AddListContexts(CTX.DEFAULT_LIST_INSPECTOR);
 
         this.forwardEditor.To(this._inspectionHandler);
 
@@ -82,7 +82,7 @@ class InspectorShell extends base {
 
     _OnLastTypeChanged(p_sel, p_newType, p_oldType) {
 
-        let inspectorClass = this._inspectionHandler.GetSingleCl(CONTEXT.DEFAULT_INSPECTOR, p_newType);
+        let inspectorClass = this._inspectionHandler.GetSingleCl(CTX.DEFAULT_INSPECTOR, p_newType);
 
         if (this._singleInspectorClass != inspectorClass) {
             this._singleInspectorClass = inspectorClass;
@@ -93,7 +93,7 @@ class InspectorShell extends base {
 
     _OnSharedTypeChanged(p_sel, p_newType, p_oldType) {
 
-        let inspectorClass = this._inspectionHandler.GetListCl(CONTEXT.DEFAULT_LIST_INSPECTOR, p_newType);
+        let inspectorClass = this._inspectionHandler.GetListCl(CTX.DEFAULT_LIST_INSPECTOR, p_newType);
 
         if (this._listInspectorClass != inspectorClass) {
             this._listInspectorClass = inspectorClass;

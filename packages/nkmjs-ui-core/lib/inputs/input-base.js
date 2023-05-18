@@ -7,10 +7,10 @@ const u = require("@nkmjs/utils");
 const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
+const helpers = require(`../helpers`);
 const IDS = require(`../ids`);
 const FLAGS = require(`../flags`);
 const Widget = require(`../widget`);
-const FlagEnum = require(`../helpers/flag-enum`);
 
 const SIGNAL = require(`./input-signal`);
 const InputHandler = require(`./input-handler`);
@@ -28,8 +28,8 @@ class BaseInput extends base {
 
     static __distribute = com.helpers.OptionsDistribute.Ext(null,
         { beginFn: `_OnOptionsWillUpdate`, wrapUpFn: `_OnOptionsUpdated` })
-        .To(`flagOn`, (p_target, p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { p_target._flags.Set(p_value[i], true) } })
-        .To(`flagOff`, (p_target, p_value) => { for (let i = 0, n = p_value.length; i < n; i++) { p_target._flags.Set(p_value[i], false) } })
+        .To(`flagOn`, helpers.flagOn)
+        .To(`flagOff`, helpers.flagOff)
         .To(`htitle`)
         .To(IDS.SIZE)
         .To(`currentValue`)
@@ -56,10 +56,10 @@ class BaseInput extends base {
         this._handler._updatePreviewFn = this._Bind(this._UpdatePreview);
         this._handler._onInputErrorFn = this._Bind(this._OnInputErrors);
 
-        this._sizeEnum = new FlagEnum(FLAGS.sizes, true);
+        this._sizeEnum = new helpers.FlagEnum(FLAGS.sizes, true);
         this._sizeEnum.Add(this);
 
-        this._flavorEnum = new FlagEnum(FLAGS.flavorsExtended, true);
+        this._flavorEnum = new helpers.FlagEnum(FLAGS.flavorsExtended, true);
         this._flavorEnum.Add(this);
 
         this._onSubmitFn = null;

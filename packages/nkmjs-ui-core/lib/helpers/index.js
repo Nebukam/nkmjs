@@ -39,7 +39,7 @@ module.exports = {
         sel.persistentData = p_persistentData;
 
         if (p_requestHandlers) {
-            
+
             p_host.__selReqHandlers = p_requestHandlers;
             sel.data
                 .Watch(SIGNAL.SEL_REQ_ADD,
@@ -68,6 +68,9 @@ module.exports = {
         p_host._selStack = sel;
         return sel;
 
-    }
+    },
+
+    flagOn: function (p_target, p_value) { for (const flag of p_value) { p_target._flags.Set(flag, true) }; },
+    flagOff: function (p_target, p_value) { for (const flag of p_value) { p_target._flags.Set(flag, false) }; },
 
 }

@@ -7,7 +7,7 @@ const com = require("@nkmjs/common");
  * @class
  * @memberof data.core.serialization
  */
-class DRAWER extends com.helpers.CSYMBOL { constructor() { super(); } }
+class DRAWER extends com.CSYMBOL { constructor() { super(); } }
 
 module.exports = {
     DRAWER: DRAWER,

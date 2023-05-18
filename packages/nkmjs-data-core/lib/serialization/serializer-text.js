@@ -1,5 +1,5 @@
 const JSONSerializer = require(`./serializer-json`);
-const CONTEXT = require(`./context`);
+const CTX = require(`./context`);
 
 /*
 *   At the moment, the text serializer does a JSON.stringify of the JSONSerializer result, which is bad.
@@ -20,7 +20,7 @@ const D13N_COMPLETE = `_OnDeserializationComplete`;
 class TEXTSerializer extends JSONSerializer {
     constructor() { super(); }
 
-    static __context = CONTEXT.TEXT;
+    static __context = CTX.TEXT;
     static __master = TEXTSerializer;
 
     /**

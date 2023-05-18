@@ -29,12 +29,12 @@ class Extension extends com.Observable {
         let oldOwner = this._owner;
         this._owner = p_value;
         if (this._childExtensions) {
-            this._childExtensions.forEach(ext => { ext.owner = this._owner; })
+            for (const ext of this._childExtensions) { ext.owner = this._owner; }
         }
         this._OnOwnerChanged(oldOwner);
     }
 
-    _OnOwnerChanged(p_oldOwner){ }
+    _OnOwnerChanged(p_oldOwner) { }
 
     /**
      * @description TODO
@@ -59,7 +59,7 @@ class Extension extends com.Observable {
         let index = this._childExtensions.indexOf(p_ext);
         if (index == -1) { return null; }
         this._childExtensions.splice(index, 1);
-        if(p_ext.owner === this._owner){p_ext.owner = null;}
+        if (p_ext.owner === this._owner) { p_ext.owner = null; }
         p_ext.Disable();
         return p_ext;
     }
@@ -71,7 +71,7 @@ class Extension extends com.Observable {
      */
     CleanUp() {
         if (!this._childExtensions) { return; }
-        this._childExtensions.forEach(ext => { ext.CleanUp(); })
+        for (const ext of this._childExtensions) { ext.CleanUp(); }
     }
 
     // ----> Availability

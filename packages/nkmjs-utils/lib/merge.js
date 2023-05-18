@@ -58,7 +58,7 @@ module.exports = {
      * @param {string} [p_id] name of the property containing the array, if available
      */
     ArrayAddPush: function (a, b, p_id = null) {
-        b.forEach(e => { a.push(e) });
+        for (const e of b) { a.push(e) };
         return a;
     },
 
@@ -70,7 +70,7 @@ module.exports = {
      * @param {string} [p_id] name of the property containing the array, if available
      */
     ArrayAddUnshift: function (a, b, p_id = null) {
-        b.forEach(e => { a.unshift(e) });
+        for (const e of b) { a.unshift(e) };
         return a;
     },
 
@@ -82,7 +82,7 @@ module.exports = {
      * @param {string} [p_id] name of the property containing the array, if available
      */
     ArrayCombinePush: function (a, b, p_id = null) {
-        b.forEach(e => { if (b.indexOf(e) == -1) { a.push(e) } });
+        for (const e of b) { if (b.indexOf(e) == -1) { a.push(e) } };
         return a;
     },
 
@@ -94,7 +94,7 @@ module.exports = {
      * @param {string} [p_id] name of the property containing the array, if available
      */
     ArrayCombineUnshift: function (a, b, p_id = null) {
-        b.forEach(e => { if (b.indexOf(e) == -1) { a.unshift(e) } });
+        for (const e of b) { if (b.indexOf(e) == -1) { a.unshift(e) } };
         return a;
     },
 

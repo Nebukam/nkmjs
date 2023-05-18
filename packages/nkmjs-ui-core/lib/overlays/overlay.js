@@ -9,7 +9,7 @@ const POINTER = require("../pointer");
 const Layer = require(`../views/layer`);
 const extensions = require(`../extensions`);
 
-const CONTEXT = require(`./overlay-context`);
+const CTX = require(`./overlay-context`);
 const OverlayOptions = require(`./overlay-options`);
 
 const base = Layer;
@@ -26,7 +26,7 @@ class Overlay extends base {
 
     static __default_overlayContentClass = null;
     static __default_contentPlacement = null;
-    static __content_context = CONTEXT.CONTENT;
+    static __content_context = CTX.CONTENT;
     static __distribute = com.helpers.OptionsDistribute.Ext(null,
         { beginFn: `_OnOptionsWillUpdate`, wrapUpFn: `_OnOptionsUpdated` })
         .To(`orientation`)
@@ -190,15 +190,15 @@ class Overlay extends base {
         if (!contentClass) {
 
             // First, check if any content is bound to the requestType
-            contentClass = com.BINDINGS.Get(
-                CONTEXT.CONTENT,
+            contentClass = com.GetBinding(
+                CTX.CONTENT,
                 p_overlayData.request.requestType,
                 null);
 
             // Fall back to contentData association if any
             if (p_contentData && !contentClass) {
-                contentClass = com.BINDINGS.Get(
-                    CONTEXT.CONTENT,
+                contentClass = com.GetBinding(
+                    CTX.CONTENT,
                     p_contentData,
                     null);
             }

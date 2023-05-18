@@ -132,7 +132,7 @@ class Workspace extends base {
         if (!this.catalog) { return; }
 
         let holders = data.catalogs.Filter(this.catalog, (i) => { return i.data == p_item.data; });
-        holders.forEach(d => { d.Release(); });
+        for (const d of holders) { d.Release(); };
 
         if (holders && holders.length) { this._UpdateWorkspaceEmptyState(); }
 

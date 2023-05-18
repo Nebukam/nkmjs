@@ -416,17 +416,17 @@ module.exports = {
     CSS: function (p_el, p_id, p_value = null) {
         if (u.isObject(p_id)) {
             if (u.isArray(p_el)) {
-                p_el.forEach(el => {
+                for (const el of p_el) {
                     for (let p in p_id) { module.exports._TStyle(el, p, p_id[p]); }
-                });
+                };
             } else {
                 for (let p in p_id) { module.exports._TStyle(p_el, p, p_id[p]); }
             }
         } else {
             if (u.isArray(p_el)) {
-                p_el.forEach(el => {
+                for (const el of p_el) {
                     module.exports._TStyle(el, p_id, p_value);
-                });
+                };
             } else {
                 module.exports._TStyle(p_el, p_id, p_value);
             }
@@ -441,15 +441,15 @@ module.exports = {
     CSSClass: function (p_el, p_cl, p_toggle = true) {
         if (u.isObject(p_cl)) {
             if (u.isArray(p_el)) {
-                p_el.forEach(el => {
+                for (const el of p_el) {
                     for (let p in p_cl) { module.exports._TClass(el, p, p_cl[p] ? true : false); }
-                });
+                };
             } else {
                 for (let p in p_cl) { module.exports._TClass(p_el, p, p_cl[p] ? true : false); }
             }
         } else {
             if (u.isArray(p_el)) {
-                p_el.forEach(el => { module.exports._TClass(el, p_cl, p_toggle); });
+                for (const el of p_el) { module.exports._TClass(el, p_cl, p_toggle); };
             } else {
                 module.exports._TClass(p_el, p_cl, p_toggle);
             }

@@ -4,7 +4,7 @@ const com = require("@nkmjs/common");
 const data = require("@nkmjs/data-core");
 const nkmdocs = require("@nkmjs/documents");
 
-const CONTEXT = require(`./lib/context`);
+const CTX = require(`./lib/context`);
 const fields = require(`./lib/fields`);
 const serialization = require(`./lib/serialization`);
 const documents = require(`./lib/documents`);
@@ -25,7 +25,7 @@ class Bindings extends com.helpers.BindingKit {
         //#region Data
 
         this.Add({
-            context: data.serialization.CONTEXT.JSON,
+            ctx: data.serialization.CTX.JSON,
             kvps: [
                 { key: DataBlockExtendable, binding: serialization.json.DataBlockExtendable },
                 { key: Ecosystem, binding: serialization.json.Ecosystem },
@@ -37,7 +37,7 @@ class Bindings extends com.helpers.BindingKit {
             ]            
         },
         {
-            context: nkmdocs.CONTEXT.DOCUMENT_DATA,
+            ctx: nkmdocs.CTX.DOCUMENT_DATA,
             kvps:[
                 { key: documents.Ecosystem, binding: Ecosystem },
                 { key: documents.EcosystemBundle, binding: EcosystemBundle }
@@ -78,7 +78,7 @@ class Bindings extends com.helpers.BindingKit {
 
         this.Add(
             {
-                context: CONTEXT.FIELD_DETAILS,
+                ctx: CTX.FIELD_DETAILS,
                 kvps: [
                     { key: fields.lists.Array, binding: fields.DetailsArray },
                 ]

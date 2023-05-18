@@ -2,7 +2,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 const MetaPropertyInspectorItem = require(`./item-meta-property`);
 
 const base = MetaPropertyInspectorItem;
@@ -39,7 +39,7 @@ class MetaObjectInspectorItem extends base {
 
             let value = object[key],
                 path = `${basePath}.${key}`,
-                ctrlClass = com.BINDINGS.Get(CONTEXT.META_INSPECTOR, path, null),
+                ctrlClass = com.GetBinding(CTX.META_INSPECTOR, path, null),
                 ctrl = ctrlClass ? this._builder.Add(ctrlClass) : null;
 
             if (!ctrl) { continue; }

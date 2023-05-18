@@ -27,7 +27,7 @@ class Bindings extends com.helpers.BindingKit {
 
             // Dialogs
             {
-                context: ui.overlays.CONTEXT.CONTENT,
+                ctx: ui.overlays.CTX.CONTENT,
                 kvps: [
                     { key: dialog.REQUEST.DIALOG, binding: dialogs.DialogBox }
                 ]
@@ -35,7 +35,7 @@ class Bindings extends com.helpers.BindingKit {
 
             // Inputs
             {
-                context: ui.CONTEXT.INPUT, // REPLACED 'STANDALONE_INPUT'
+                ctx: ui.CTX.INPUT, // REPLACED 'STANDALONE_INPUT'
                 kvps: [
 
                     { key: ui.inputs.KEYS.STRING, binding: inputs.Text },
@@ -75,13 +75,13 @@ class Bindings extends com.helpers.BindingKit {
 
             // ---
             {
-                context: ui.overlays.CONTEXT.OVERLAY,
+                ctx: ui.overlays.CTX.OVERLAY,
                 kvps: [
                     { key: REQUEST.DRAWER, binding: overlays.DrawerOverlay }
                 ]
             },
             {
-                context: ui.overlays.CONTEXT.CONTENT,
+                ctx: ui.overlays.CTX.CONTENT,
                 kvps: [
                     { key: REQUEST.DRAWER, binding: overlays.Drawer }
                 ]

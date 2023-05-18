@@ -89,10 +89,10 @@ class Setter {
 
         if (!p_data) {
 
-            this._targets.forEach(nfo => {
+            for (const nfo of this._targets) {
 
                 let target = nfo.target || this._owner[nfo.member];
-                if (!target) { return; }
+                if (!target) { continue; }
 
                 let setter = nfo.set;
                 if (setter) {
@@ -102,14 +102,14 @@ class Setter {
                     target[this._defaultId] = null;
                 }
 
-            });
+            };
 
         } else {
 
-            this._targets.forEach(nfo => {
+            for (const nfo of this._targets) {
 
                 let target = nfo.target || this._owner[nfo.member];
-                if (!target) { return; }
+                if (!target) { continue; }
 
                 let value = nfo.get ? p_data[nfo.get] : p_data;
                 if (nfo.preprocess) { value = u.Call(nfo.preprocess, value, p_data); }
@@ -122,7 +122,7 @@ class Setter {
                     target[this._defaultId] = value;
                 }
 
-            });
+            };
         }
 
         if (!p_relativesFirst) { this._TriggerRelatives(); }
@@ -132,11 +132,11 @@ class Setter {
     _TriggerRelatives() {
 
         if (this._relatives) {
-            this._relatives.forEach(rel => {
+            for (const rel of this._relatives) {
                 let value = u.Call(rel.fn);
                 if (rel.setter) { rel.setter.Set(value) }
                 else if (rel.member) { this._BatchSet(rel.member, value) }
-            })
+            }
         }
 
     }
@@ -148,12 +148,10 @@ class Setter {
      * @param {*} p_value 
      */
     _BatchSet(p_member, p_value) {
-
-        this._targets.forEach(nfo => {
+        for (const nfo of this._targets) {
             let target = nfo.target || this._owner[nfo.member];
-            if (!target) { return; }
-            target[p_member] = p_value;
-        });
+            if (target) { target[p_member] = p_value; }
+        };
     }
 
     Clear(p_all = false) {

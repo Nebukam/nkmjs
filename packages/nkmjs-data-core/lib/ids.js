@@ -44,7 +44,7 @@ class IDS {
      * @type {string}
      * @customtag read-only
      */
-    static SKIP_SERIALIZATION = Object.freeze(`skipSerialization`);
+    static SKIP_S11N = Object.freeze(`skipSerialization`);
 
     /**
      * @description TODO

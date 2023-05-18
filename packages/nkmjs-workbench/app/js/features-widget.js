@@ -74,7 +74,7 @@ class FeaturesWidget extends base {
                 'overflow': 'hidden',
             },
             '.item::marker': {
-                'width':'25px',
+                'width': '25px',
                 'content': 'attr(data-marker)'
             }
         }, base._Style());
@@ -82,7 +82,7 @@ class FeaturesWidget extends base {
 
     _Render() {
         var opts = { [ui.IDS.LABEL]: { [ui.IDS.UID]: `text` } };
-        this._items.forEach((item) => { item.line = ui.Render(FeatureLine, this, opts); });
+        for (const item of this._items) { item.line = ui.Render(FeatureLine, this, opts); };
     }
 
     // ----> Update
@@ -91,7 +91,7 @@ class FeaturesWidget extends base {
 
         var F = env.features;
 
-        this._items.forEach((item) => {
+        for (const item of this._items) {
             let marker = ``;
             switch (item.type) {
                 case `enum`:
@@ -104,7 +104,7 @@ class FeaturesWidget extends base {
 
             item.line.wrapper.setAttribute(`data-marker`, marker);
 
-        });
+        };
 
     }
 

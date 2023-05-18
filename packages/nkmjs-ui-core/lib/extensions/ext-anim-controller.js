@@ -147,7 +147,7 @@ class AnimControllerExtension extends Extension {
     _RefreshAnimationSerial() {
         var serial = ``;
 
-        this._animations.forEach(anim => {
+        for (const anim of this._animations) {
             if (i != 0) { serial += `, ` }
             serial += `${anim.dur}`;
             serial += ` ${anim.ease}`;
@@ -156,7 +156,7 @@ class AnimControllerExtension extends Extension {
             else if (anim.iterations == -1) { serial += ` infinite`; }
             if (anim.extras > 0) { serial += ` ${anim.extras}`; }
             serial += `${anim.name}`;
-        });
+        };
         this._element.style.animation = serial;
     }
 

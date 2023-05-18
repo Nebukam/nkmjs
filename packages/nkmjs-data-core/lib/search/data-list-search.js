@@ -87,29 +87,29 @@ class DataListSearch extends SimpleData {
     }
 
     AddIdentifiers(...identifiers) {
-        identifiers.forEach((i) => {
+        for (const i of identifiers) {
             if (!this._identifiers.includes(i)) { this._identifiers.push(i); }
-        })
+        }
     }
 
     RemoveIdentifiers(...identifiers) {
-        identifiers.forEach((i) => {
+        for (const i of identifiers) {
             let index = this._identifiers.indexOf(i);
             if (index >= 0) { this._identifiers.splice(index, 1); }
-        })
+        }
     }
 
     AddFetchFn(...fetchers) {
-        fetchers.forEach((i) => {
+        for (const i of fetchers) {
             if (!this._fetchFns.includes(i)) { this._fetchFns.push(i); }
-        })
+        }
     }
 
     RemoveFetchFn(...fetchers) {
-        fetchers.forEach((i) => {
+        for (const i of fetchers) {
             let index = this._fetchFns.indexOf(i);
             if (index >= 0) { this._fetchFns.splice(index, 1); }
-        })
+        }
     }
 
     get ready() { return this._ready; }

@@ -30,7 +30,7 @@ class DictionaryList {
      * @type {boolean}
      * @customtag read-only
      */
-    get isEmpty(){ return this._map.size <= 0; }
+    get isEmpty() { return this._map.size <= 0; }
 
     /**
      * @description TODO
@@ -152,7 +152,7 @@ class DictionaryList {
      * @param {*} p_value 
      * @returns {boolean} True if the KVP has been found and removed, otherwise false.
      */
-    RemoveKey(p_key){
+    RemoveKey(p_key) {
 
         if (!p_value || !p_key) { return false; }
 
@@ -164,7 +164,7 @@ class DictionaryList {
         this._map.delete(p_key);
 
         return false;
-        
+
     }
 
     /**
@@ -200,7 +200,7 @@ class DictionaryList {
      * @description Clears all keys and values.
      */
     Clear() {
-        this._map.forEach(this._Clear, this);
+        for (const item of this._map) { this._Clear(item); };
         this._map.clear();
     }
 

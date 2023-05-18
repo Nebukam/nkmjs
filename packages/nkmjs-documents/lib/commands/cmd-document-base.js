@@ -3,7 +3,7 @@ const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const actions = require("@nkmjs/actions");
 
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 const IDS = require(`../ids`);
 const DOCUMENTS = require(`../documents-manager`);
 const Document = require(`../document`);
@@ -23,14 +23,14 @@ class CommandDocumentBase extends actions.Command {
 
     static Rent(p_options, p_registerAsDefault = false) {
         let newCmd = actions.Command.Rent(this, p_options);
-        let docType = p_options.docType || com.BINDINGS.Get(CONTEXT.DOCUMENT, p_options.dataType, null);
+        let docType = p_options.docType || com.GetBinding(CTX.DOCUMENT, p_options.dataType, null);
 
         if (p_registerAsDefault && !docType) {
             throw new Error(`Cannot register as default a document command with null docType`);
         }
 
         newCmd.docType = docType;
-        newCmd.dataType = p_options.dataType || com.BINDINGS.Get(CONTEXT.DOCUMENT_DATA, newCmd.docType, null);
+        newCmd.dataType = p_options.dataType || com.GetBinding(CTX.DOCUMENT_DATA, newCmd.docType, null);
         newCmd.fileInfos = p_options.fileInfos || null;
         newCmd.shortcutSequence = p_options.shortcutSequence || null;
         newCmd.updateDataOnEveryRead = p_options.updateDataOnEveryRead || false;

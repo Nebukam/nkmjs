@@ -30,8 +30,8 @@ class ControlWidget extends base {
     static __distribute = com.helpers.OptionsDistribute.Ext(null,
         { beginFn: `_OnOptionsWillUpdate` })
         .To(`htitle`)
-        .To(`flagOn`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, true) }); })
-        .To(`flagOff`, (p_target, p_value) => { p_value.forEach((flag) => { p_target._flags.Set(flag, false) }); })
+        .To(`flagOn`, ui.helpers.flagOn)
+        .To(`flagOff`, ui.helpers.flagOff)
         .To(`editor`)
         .To(`data`);
 

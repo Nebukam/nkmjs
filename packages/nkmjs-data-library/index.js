@@ -7,7 +7,7 @@ __UTILS.__default_modelClass = __DATA_MODEL;
 
 module.exports = {
 
-    CONTEXT: require(`./lib/context`),
+    CTX: require(`./lib/context`),
     SIGNAL: require(`./lib/signal`),
     IDS: require(`./lib/ids`),
 

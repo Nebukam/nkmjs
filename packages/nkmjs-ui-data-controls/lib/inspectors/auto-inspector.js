@@ -8,7 +8,7 @@ const ui = require(`@nkmjs/ui-core`);
 const actions = require("@nkmjs/actions");
 
 const SIGNAL = require(`../signal`);
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 const ControlView = require(`../control-view`);
 const InspectionDataHandler = require(`../helpers/inspection-data-handler`);
 

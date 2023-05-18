@@ -41,7 +41,7 @@ class Transceiver extends com.Observable {
         this._prependRoot = false;
 
         this._backedWrites = {};
-        __writeMethods.forEach(mtd => { this._backedWrites[mtd] = this._Bind(this[mtd]); });
+        for (const mtd of __writeMethods) { this._backedWrites[mtd] = this._Bind(this[mtd]); };
 
     }
 
@@ -86,11 +86,11 @@ class Transceiver extends com.Observable {
     set readOnly(p_value) {
         this._readOnly = p_value;
         if (p_value) {
-            __writeMethods.forEach(mtd => {
+            for (const mtd of __writeMethods) {
                 this[mtd] = () => { throw new Error(`Transceiver '${mtd}' is read-only.`); }
-            })
+            }
         } else {
-            __writeMethods.forEach(mtd => { this[mtd] = this._backedWrites[mtd] })
+            for (const mtd of __writeMethods) { this[mtd] = this._backedWrites[mtd]; }
         }
     }
 

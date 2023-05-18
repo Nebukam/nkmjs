@@ -8,7 +8,7 @@ const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const uidatacontrols = require(`@nkmjs/ui-data-controls`);
 
-const CONTEXT = uidatacontrols.CONTEXT;
+const CTX = uidatacontrols.CTX;
 const Workspace = require(`./workspace`);
 
 const base = Workspace;
@@ -74,8 +74,8 @@ class RootWorkspace extends base {
         //TODO : Check if the edit target is already being edited
         //TODO : Check if an editor class or reference is specified in the request
 
-        if (editorClass) { editorClass = com.BINDINGS.Get(editorClass, editTarget, editorClass); }
-        else { editorClass = com.BINDINGS.Get(CONTEXT.DEFAULT_EDITOR, editTarget); }
+        if (editorClass) { editorClass = com.GetBinding(editorClass, editTarget, editorClass); }
+        else { editorClass = com.GetBinding(CTX.DEFAULT_EDITOR, editTarget); }
 
         if (!editorClass) {
             p_request.HandleFail(`Could not find editor association for ${editTarget}.`);

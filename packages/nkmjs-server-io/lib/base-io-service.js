@@ -50,9 +50,9 @@ class BaseIOService extends services.ServiceBase {
                 for (var id in this._defaultConfig) {
                     if (id in this._config) {
                         if (id == `transceivers`) {
-                            this._defaultConfig.transceivers.forEach(tr => {
+                            for (const tr of this._defaultConfig.transceivers) {
                                 this._config.transceivers.push(tr);
-                            });
+                            };
                         }
                         continue;
                     }
@@ -78,7 +78,7 @@ class BaseIOService extends services.ServiceBase {
         let transceivers = this._config.transceivers;
         if (transceivers) {
             this._registeredTransceivers += transceivers.length;
-            transceivers.forEach(t => { this.Mount(t); });
+            for (const t of transceivers) { this.Mount(t); };
         } else {
             this._MountingComplete();
         }

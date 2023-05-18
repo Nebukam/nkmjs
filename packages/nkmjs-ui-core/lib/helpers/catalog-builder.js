@@ -66,11 +66,11 @@ class CatalogBuilder extends data.catalogs.CatalogWatcher {
 
         if (p_item.isDir) {
             mappedObject = this._owner.Attach(
-                com.BINDINGS.Get(this._owner, p_item, this._defaultDirClass),
+                com.GetBinding(this._owner, p_item, this._defaultDirClass),
                 `item group`, this._host);
         } else {
             mappedObject = this._owner.Attach(
-                com.BINDINGS.Get(this._owner, p_item, this._defaultItemClass),
+                com.GetBinding(this._owner, p_item, this._defaultItemClass),
                 `item`, this._host);
         }
 

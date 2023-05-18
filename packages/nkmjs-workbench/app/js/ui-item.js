@@ -80,7 +80,7 @@ class UIItem extends base {
             if (p_variant) {
                 for (let key in p_variant) {
                     if (key === `flags`) {
-                        p_variant.flags.forEach(f => { this._flags.Set(f, true); });
+                        for (const f of p_variant.flags) { this._flags.Set(f, true); };
                     } else {
                         this._sample[key] = p_variant[key]; variants += `${p_variant[key]} / `;
                     }

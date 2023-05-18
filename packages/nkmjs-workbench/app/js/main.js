@@ -457,7 +457,7 @@ class StyleguideApp extends nkm.app.AppBase {
         let popin = ui.helpers.Modal.Pop({
             content: TestWidget,
             anchor: p_btn,
-            //context: p_btn,
+            //ctx: p_btn,
             //static: true,
             placement: opts.placement,
             origin: opts.origin

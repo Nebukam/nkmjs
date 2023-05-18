@@ -1,6 +1,6 @@
 const com = require("@nkmjs/common");
 
-class INPUT_KEY extends com.helpers.CKEY { constructor() { super(); } }
+class INPUT_KEY extends com.CKEY { constructor() { super(); } }
 
 class STRING extends INPUT_KEY { constructor() { super(); } }
 class STRING_TEXT extends STRING { constructor() { super(); } }

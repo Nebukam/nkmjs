@@ -169,15 +169,15 @@ class InspectorGroup extends base {
 
     ExpandAll() {
         this.Expand();
-        this._displayObjects.forEach(d => { if (`Expand` in d) { d.Expand(); } });
+        for (const d of this._displayObjects) { if (`Expand` in d) { d.Expand(); } };
     }
 
     CollapseAll() {
-        this._displayObjects.forEach(d => { if (`Collapse` in d) { d.Collapse(); } });
+        for (const d of this._displayObjects) { if (`Collapse` in d) { d.Collapse(); } };
     }
 
     _OnContextChanged() {
-        this._displayObjects.forEach(d => { if (`context` in d) { d.context = this._context; } });
+        for (const d of this._displayObjects) { if (`context` in d) { d.context = this._context; } };
     }
 
     _OnDataChanged(p_oldValue) {

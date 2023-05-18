@@ -16,13 +16,13 @@ class Bindings extends com.helpers.BindingKit {
 
         this.Add(
             {
-                context: ui.overlays.CONTEXT.OVERLAY,
+                ctx: ui.overlays.CTX.OVERLAY,
                 kvps: [
                     { key: REQUEST.DIALOG, binding: DialogOverlay }
                 ]
             },
             {
-                context: ui.overlays.CONTEXT.CONTENT,
+                ctx: ui.overlays.CTX.CONTENT,
                 kvps: [
                     { key: REQUEST.DIALOG, binding: DialogBox }
                 ]

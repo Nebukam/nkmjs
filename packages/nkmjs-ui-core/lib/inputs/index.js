@@ -2,19 +2,19 @@
 
 const com = require(`@nkmjs/common`);
 const data = require(`@nkmjs/data-core`);
-const CONTEXT = require(`../context`);
+const CTX = require(`../context`);
 
 function __GetInput(p_type, p_context = null) {
 
-    p_context = p_context || CONTEXT.INPUT;
+    p_context = p_context || CTX.INPUT;
 
     //Get the input key associated to a given data type
     // TYPE:INPUT = DTX
-    let inputKey = com.BINDINGS.Get(CONTEXT.I_TYPE, p_type);
+    let inputKey = com.GetBinding(CTX.I_TYPE, p_type);
     //Get the class associated to the input key within the given context
     //Fallback to default INPUT context
-    let inputClass = com.BINDINGS.Get(p_context, inputKey,
-        com.BINDINGS.Get(CONTEXT.INPUT, inputKey));
+    let inputClass = com.GetBinding(p_context, inputKey,
+        com.GetBinding(CTX.INPUT, inputKey));
 
     return inputClass;
 

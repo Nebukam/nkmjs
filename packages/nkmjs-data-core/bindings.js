@@ -18,14 +18,14 @@ class Bindings extends com.helpers.BindingKit {
 
         this.Add(
             {
-                context: serialization.CONTEXT.SERIALIZER,
+                ctx: serialization.CTX.SERIALIZER,
                 kvps: [
-                    { key: serialization.CONTEXT.JSON, binding: serialization.JSONSerializer },
-                    { key: serialization.CONTEXT.TEXT, binding: serialization.TEXTSerializer }
+                    { key: serialization.CTX.JSON, binding: serialization.JSONSerializer },
+                    { key: serialization.CTX.TEXT, binding: serialization.TEXTSerializer }
                 ]
             },
             {
-                context: serialization.CONTEXT.JSON,
+                ctx: serialization.CTX.JSON,
                 kvps: [
                     { key: Metadata, binding: serialization.json.Metadata },
                     { key: DataBlock, binding: serialization.json.DataBlock },

@@ -31,14 +31,14 @@ const BINDINGS = require(`../bindings`);
  *
  *     this.Add(
  *     {
- *         context:serialization.CONTEXT.SERIALIZER,
+ *         ctx:serialization.CTX.SERIALIZER,
  *         kvps:[
- *              { key:serialization.CONTEXT.JSON, binding:JSONSerializer },
- *              { key:serialization.CONTEXT.TEXT, binding:TEXTSerializer }
+ *              { key:serialization.CTX.JSON, binding:JSONSerializer },
+ *              { key:serialization.CTX.TEXT, binding:TEXTSerializer }
  *          ]
  *     },
  *     {
- *         context:serialization.CONTEXT.JSON,
+ *         ctx:serialization.CTX.JSON,
  *         kvps:[
  *             { key:Metadata, binding:MetadataJSONSerializer },
  *             { key:DataBlock, binding:DataBlockJSONSerializer }
@@ -70,25 +70,25 @@ class BindingKit extends Observable {
         );
 
         this.Add({
-            context:EDITOR,
+            ctx:EDITOR,
             kvps:[
                 { key:DATA_CLASS, binding:UI_EDITOR_CLASS }
             ]
         },
         {
-            context:serialization.CONTEXT.SERIALIZER,
+            ctx:serialization.CTX.SERIALIZER,
             kvps:[
                 { key:SKEY.JSON, binding:JSONSerializer }
             ]
         },
         {
-            context:SKEY.JSON,
+            ctx:SKEY.JSON,
             kvps:[
                 { key:DATA_CLASS, binding:ThatDataClassSerializer }
             ]
         },
         {
-            context:DataBlock,
+            ctx:DataBlock,
             kvps:[
                 { key:'a.meta.property.path', binding:UIControlClass }
             ]
@@ -102,9 +102,9 @@ class BindingKit extends Observable {
      * @description Add any number of bindings to this kit.
      * @param  {...BindingDefinition} args 
      * @example this.Add(
-     *     { context:Kitchen, kvps:[ { key:Ustensil, binding:Fork } ] },
-     *     { context:DefaultEditor, kvps:[ { key:FooData, binding:FooDataEditor } ] },
-     *     { context:DefaultInspector, kvps:[ { key:Bar, binding:BarInspector } ] }
+     *     { ctx:Kitchen, kvps:[ { key:Ustensil, binding:Fork } ] },
+     *     { ctx:DefaultEditor, kvps:[ { key:FooData, binding:FooDataEditor } ] },
+     *     { ctx:DefaultInspector, kvps:[ { key:Bar, binding:BarInspector } ] }
      * );
      */
     Add(...args) {
@@ -134,14 +134,14 @@ class BindingKit extends Observable {
         for (let i = 0, n = this._KVPS.length; i < n; i++) {
 
             let assoc = this._KVPS[i],
-                context = assoc.context,
+                context = assoc.ctx,
                 kvps = assoc.kvps;
 
-            kvps.forEach(kvp => { this.constructor._InternalSetBinding(context, kvp); });
+            for (const kvp of kvps) { this.constructor._InternalSetBinding(context, kvp); };
 
         }
 
-        this._CLASSES.forEach(cl => { this.constructor._InternalSetClass(cl, this); });
+        for (const cl of this._CLASSES) { this.constructor._InternalSetClass(cl, this); };
 
         this._deployed = true;
     }
@@ -176,7 +176,7 @@ class BindingKit extends Observable {
         for (let i = 0, n = this._KVPS.length; i < n; i++) {
 
             let assoc = this._KVPS[i],
-                context = assoc.context,
+                context = assoc.ctx,
                 kvps = assoc.kvps;
 
             for (let k = 0, n = kvps.length; k < n; k++) {

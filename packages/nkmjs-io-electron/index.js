@@ -76,7 +76,7 @@ module.exports = {
             let contents = fs.readdirSync(basedir);
             if (p_options.sort) { contents.sort(p_options.sort); }
 
-            contents.forEach(entry => {
+            for(const entry of contents){
                 try {
 
                     let
@@ -104,7 +104,7 @@ module.exports = {
                 } catch (e) {
                     console.error(e);
                 }
-            });
+            };
 
         } catch (e) {
             console.error(e);

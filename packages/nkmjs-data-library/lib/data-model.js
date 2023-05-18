@@ -9,7 +9,7 @@ const data = nkm.data;
 
 const SIGNAL = require(`./signal`);
 const IDS = require(`./ids`);
-const CONTEXT = require(`./context`);
+const CTX = require(`./context`);
 const DataBlockExtendable = require(`./data-block-extendable`);
 
 /**

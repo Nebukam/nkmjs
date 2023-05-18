@@ -94,11 +94,11 @@ class InputAnchor extends base {
             aList = this.constructor.ANCHORS,
             ctnr = ui.El(`div`, { class: `grid` }, this._host);
 
-        aList.forEach(element => {
+        for (const el of aList) {
             let slot = ui.El(`div`, { class: `anch` }, ctnr);
-            slot.addEventListener(`click`, (p_evt) => { this._handler.changedValue = element; });
+            slot.addEventListener(`click`, (p_evt) => { this._handler.changedValue = el; });
             this._slots.push(slot);
-        });
+        };
 
     }
 

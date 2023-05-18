@@ -48,7 +48,7 @@ class DataListProxy extends com.Observable {
 
     _OnSourceListChanged(p_oldList) {
         this._proxyList.Flush();
-        if (this._sourceList) { this._sourceList._array.forEach(element => { this._proxyList.Add(element); }); }
+        if (this._sourceList) { for (const element of this._sourceList._array) { this._proxyList.Add(element); }; }
     }
 
     _CleanUp() {

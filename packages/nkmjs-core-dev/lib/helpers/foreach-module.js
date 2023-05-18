@@ -34,7 +34,7 @@ class ForEachModule {
             });
         }
 
-        this._list.forEach(item => { p_callback(item.package, item.name); })
+        for (const item of this._list) { p_callback(item.package, item.name); }
 
     }
 
