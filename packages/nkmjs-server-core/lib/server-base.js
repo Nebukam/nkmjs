@@ -69,6 +69,8 @@ class ServerBase extends com.Observable {
         this._waitForIO = ioservices.length ? true : false;
         this._ioReady = !this._waitForIO;
 
+        console.log(this._waitForIO);
+
         if (this._waitForIO) {
 
             let
@@ -78,12 +80,13 @@ class ServerBase extends com.Observable {
             for (const conf of ioservices) {
 
                 let mainConf = dict.Get(conf.cl);
+
                 if (!mainConf) {
                     ios.push(conf.cl);
                     mainConf = { ...conf.config };
                     if (!mainConf.transceivers) { mainConf.transceivers = []; }
                     dict.Set(conf.cl, mainConf);
-                    return;
+                    continue;
                 }
 
                 for (var p in conf.config) {

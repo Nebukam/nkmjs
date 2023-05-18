@@ -289,8 +289,8 @@ module.exports = {
         groupMap = null;
         groupList.push(noGroup);
 
-        groupList.sort((a, b) => { return a.order - b.order; })
-        for (const group of groupList) { group.definitions.sort((a, b) => { return a.order || 0 - b.order || 0; }); }
+        groupList.sort(com.SORTING.ORDER_ASC)
+        for (const group of groupList) { group.definitions.sort(com.SORTING.ORDER_ASC); }
 
         return groupList;
 

@@ -24,6 +24,9 @@ Then the order of a and b remains unchanged.
  */
 module.exports = {
 
+    ORDER_ASC: function (p_a, p_b) { return p_a?.order || 0 - p_b?.order || 0; },
+    ORDER_DSC: function (p_a, p_b) { return p_b?.order || 0 - p_a?.order || 0; },
+
     /**
      * @description TODO
      * @param {*} p_a 
