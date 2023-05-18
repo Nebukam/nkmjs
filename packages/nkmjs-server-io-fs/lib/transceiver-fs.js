@@ -82,6 +82,26 @@ class Transceiver_FS extends base {
 
     /**
      * 
+     * @param {*} p_path 
+     * @param {*} p_newPath 
+     * @param {*} p_callback 
+     * @param {*} p_options 
+     */
+    async Rename(p_path, p_newPath, p_callback, p_options = null) {
+
+        if (this._rateLimit) { await this._rateLimit.removeTokens(1); }
+
+        p_path = this._SanitizePath(p_path);
+
+        fsPromises.rename(p_path, p_newPath).then(
+            stats => { p_callback(null, p_path, true); },
+            err => { p_callback(err, p_path, false); }
+        );
+
+    }
+
+    /**
+     * 
      * @param {string} p_path 
      * @param {boolCallback} p_callback 
      * @param {*} p_options 

@@ -177,11 +177,21 @@ class Transceiver extends com.Observable {
 
     /**
      * 
+     * @param {*} p_path 
+     * @param {*} p_newPath 
+     * @param {*} p_callback 
+     * @param {*} p_options 
+     */
+    async Rename(p_path, p_newPath, p_callback, p_options = null) { throw new Error(__noImplemented); }
+
+    /**
+     * 
      * @param {string} p_path 
      * @param {boolCallback} p_callback 
      * @param {*} p_options 
      */
     async MkDir(p_path, p_callback, p_options = null) { throw new Error(__noImplemented); }
+
 
     /**
      * @callback readdirCallback
