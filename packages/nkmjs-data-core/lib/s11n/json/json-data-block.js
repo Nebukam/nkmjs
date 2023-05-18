@@ -27,8 +27,8 @@ const __dataID = `data`;
  * @description TODO
  * @class
  * @hideconstructor
- * @augments data.core.serialization.AbstractJSONSerializer
- * @memberof data.core.serialization
+ * @augments data.core.s11n.AbstractJSONSerializer
+ * @memberof data.core.s11n
  */
 class DataBlockJSONSerializer extends AbstractJSONSerializer {
     constructor() { super(); }

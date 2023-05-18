@@ -294,22 +294,22 @@ class AppBase extends com.Observable {
         this._InitUserPreferences(p_userPreferences);
 
         let existingSerial = p_userPreferences.Get(ID_APP_SETTINGS);
-        if (existingSerial) { nkm.data.serialization.JSONSerializer.Deserialize(existingSerial, this._appSettings) }
+        if (existingSerial) { nkm.data.s11n.JSONSerializer.Deserialize(existingSerial, this._appSettings) }
 
-        let json = nkm.data.serialization.JSONSerializer.Serialize(this._appSettings);
+        let json = nkm.data.s11n.JSONSerializer.Serialize(this._appSettings);
         p_userPreferences.Set(ID_APP_SETTINGS, json);
     }
 
     _InitUserPreferences(p_userPreferences) { }
 
     _OnAppSettingsUpdated(p_data) {
-        let json = nkm.data.serialization.JSONSerializer.Serialize(this._appSettings);
+        let json = nkm.data.s11n.JSONSerializer.Serialize(this._appSettings);
         this._userPreferences.Set(ID_APP_SETTINGS, json);
     }
 
     _OnAppReadyInternal(p_prefsData) {
         // Update app settings and then watch them
-        nkm.data.serialization.JSONSerializer.Deserialize(p_prefsData.Get(ID_APP_SETTINGS), this._appSettings);
+        nkm.data.s11n.JSONSerializer.Deserialize(p_prefsData.Get(ID_APP_SETTINGS), this._appSettings);
         console.log(p_prefsData);
         this._appSettings.Watch(com.SIGNAL.UPDATED, this._OnAppSettingsUpdated, this);
 

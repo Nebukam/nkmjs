@@ -9,7 +9,7 @@ const IDS = require(`../../ids`);
 const DataBlockExtendableJSONSerializer = require(`./json-data-block-extendable`);
 const FieldSlotJSONSerializer = require("./json-field-slot");
 const FieldDescriptorJSONSerializer = require("./json-field-descriptor");
-const CTX = nkm.data.serialization.CTX;
+const CTX = nkm.data.s11n.CTX;
 
 const __id_groups = `groups`;
 const __id_slots = `slots`;

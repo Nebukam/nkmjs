@@ -24,7 +24,7 @@ class DataBlockExtendableDocument extends base {
 
     static __NFO__ = com.NFOS.Ext({
         resource: io.resources.JSONResource,
-        serializationContext: data.serialization.CTX.JSON
+        [documents.IDS.SERIAL_CTX]: data.s11n.CTX.JSON
     }, base);
 
     _Init() {

@@ -264,14 +264,14 @@ class DialogBox extends base {
                 itemNFos = this._contentOptions.get(item),
                 norelease = itemNFos ? itemNFos.donotrelease : false;
 
-            if (norelease || !(`Release` in item)) {
+            if (norelease || !item.Release) {
                 this.Detach(item);
                 ui.dom.Detach(item);
-            } else if (`Release` in item) {
-                item.Release();
+            } else {
+                item.Release?.();
             }
 
-            if (`data` in item) { item.data = null; }
+            item.data = null;
         }
 
         this._messageElement = null;

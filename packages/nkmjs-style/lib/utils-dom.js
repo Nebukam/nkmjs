@@ -47,7 +47,7 @@ class UTILS_DOM {
      * @param {Node} p_parent Parent node to append the element into
      */
     static Attach(p_element, p_parent) {
-        if (`_wrapper` in p_parent) { p_parent._wrapper.appendChild(p_element); }
+        if (p_parent._wrapper) { p_parent._wrapper.appendChild(p_element); }
         else { p_parent.appendChild(p_element); }
     }
 
@@ -87,7 +87,7 @@ class UTILS_DOM {
      */
     static ToFront(p_node, p_frontOfNode = false) {
         if (!u.isVoid(p_node.parentNode)) {
-            if(p_node.parentNode.lastChild != p_node){
+            if (p_node.parentNode.lastChild != p_node) {
                 p_node.parentNode.appendChild(p_node);
             }
             return;

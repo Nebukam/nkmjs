@@ -179,7 +179,7 @@ class WidgetBar extends base {
         // Update items placement based on this nav placement
         for (let i = 0, n = this._handles.length; i < n; i++) {
             let handle = this._handles[i];
-            if (`placement` in handle) { handle.placement = p_newValue; }
+            handle.placement = p_newValue;
         }
     }
 
@@ -241,11 +241,7 @@ class WidgetBar extends base {
             }
 
         } else {
-            if (p_options) {
-                if (`options` in handle) {
-                    handle.options = p_options;
-                }
-            }
+            if (p_options) { handle.options = p_options; }
         }
 
         if (u.isInstanceOf(handle, InputBase)) {

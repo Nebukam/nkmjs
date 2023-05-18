@@ -13,7 +13,7 @@ const data = nkm.data;
  * Since a descriptor doesn't actually hold data, these serializer serialize
  * & deserialize the slot settings.
  */
-class FieldDescriptorCompositeJSONSerializer extends data.serialization.json.Base {
+class FieldDescriptorCompositeJSONSerializer extends data.s11n.json.Base {
     constructor() { super(); }
 
     //#region Serialization

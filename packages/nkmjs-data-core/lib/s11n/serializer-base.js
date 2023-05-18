@@ -6,7 +6,7 @@ const com = require("@nkmjs/common");
  * @description TODO
  * @class
  * @hideconstructor
- * @memberof data.core.serialization
+ * @memberof data.core.s11n
  */
 class BaseSerializer {
     constructor() { }

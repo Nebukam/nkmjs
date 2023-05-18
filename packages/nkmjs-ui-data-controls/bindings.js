@@ -6,7 +6,7 @@ const nkmdocs = require("@nkmjs/documents");
 
 const CTX = require(`./lib/context`);
 const fields = require(`./lib/fields`);
-const serialization = require(`./lib/serialization`);
+const s11n = require(`./lib/s11n`);
 const documents = require(`./lib/documents`);
 
 const Ecosystem = require(`./lib/ecosystem`);
@@ -25,15 +25,15 @@ class Bindings extends com.helpers.BindingKit {
         //#region Data
 
         this.Add({
-            ctx: data.serialization.CTX.JSON,
+            ctx: data.s11n.CTX.JSON,
             kvps: [
-                { key: DataBlockExtendable, binding: serialization.json.DataBlockExtendable },
-                { key: Ecosystem, binding: serialization.json.Ecosystem },
-                { key: EcosystemBundle, binding: serialization.json.EcosystemBundle },
-                { key: FieldSlot, binding: serialization.json.FieldSlot },
-                { key: FieldDescriptor, binding: serialization.json.FieldDescriptor },
-                { key: DataModel, binding: serialization.json.DataModel },
-                { key: DataEntry, binding: serialization.json.DataEntry }
+                { key: DataBlockExtendable, binding: s11n.json.DataBlockExtendable },
+                { key: Ecosystem, binding: s11n.json.Ecosystem },
+                { key: EcosystemBundle, binding: s11n.json.EcosystemBundle },
+                { key: FieldSlot, binding: s11n.json.FieldSlot },
+                { key: FieldDescriptor, binding: s11n.json.FieldDescriptor },
+                { key: DataModel, binding: s11n.json.DataModel },
+                { key: DataEntry, binding: s11n.json.DataEntry }
             ]            
         },
         {

@@ -21,7 +21,7 @@ class JSONDocument extends base {
 
     static __NFO__ = com.NFOS.Ext({
         [IDS.TYPE_RSC]: io.resources.JSONResource,
-        [IDS.SERIAL_CTX]: data.serialization.CTX.JSON,
+        [IDS.SERIAL_CTX]: data.s11n.CTX.JSON,
     }, base);
 
 }

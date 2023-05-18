@@ -30,8 +30,8 @@ const SIMPLEX = require(`../../simplex`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments data.core.serialization.json.DataBlock
- * @memberof data.core.serialization
+ * @augments data.core.s11n.json.DataBlock
+ * @memberof data.core.s11n
  */
 class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
     constructor() { super(); }

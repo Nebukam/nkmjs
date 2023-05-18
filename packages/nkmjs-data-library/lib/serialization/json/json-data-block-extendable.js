@@ -7,7 +7,7 @@ const com = nkm.com;
 const data = nkm.data;
 
 const IDS = require(`../../ids`);
-const DataBlockJSONSerializer = data.serialization.json.DataBlock;
+const DataBlockJSONSerializer = data.s11n.json.DataBlock;
 
 class DataBlockExtendableJSONSerializer extends DataBlockJSONSerializer {
     constructor() { super(); }

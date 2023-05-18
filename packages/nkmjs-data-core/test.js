@@ -41,10 +41,10 @@ assert.ok(catalog.count === 0);
 
 // ----> SERIALIZER
 
-const { JSONSerializer } = require('./lib/serialization');
+const { JSONSerializer } = require('./lib/s11n');
 const Bindings = require(`./bindings`);
 
-new Bindings().Deploy(); // <- this make serialization work.
+new Bindings().Deploy(); // <- this make s11n work.
 
 // Set a bunch of metadata properties
 let metas = {

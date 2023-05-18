@@ -76,7 +76,7 @@ module.exports = {
             let contents = fs.readdirSync(basedir);
             if (p_options.sort) { contents.sort(p_options.sort); }
 
-            for(const entry of contents){
+            for (const entry of contents) {
                 try {
 
                     let
@@ -85,14 +85,14 @@ module.exports = {
                         isFile = cStat.isFile(),
                         isDirectory = cStat.isDirectory();
 
-                    if (p_options.filesOnly && !isFile) { return; }
-                    if (p_options.dirOnly && !isDirectory) { return; }
+                    if (p_options.filesOnly && !isFile) { continue; }
+                    if (p_options.dirOnly && !isDirectory) { continue; }
                     if (isFile && (p_options.include || p_options.exclude)) {
                         let ext = path.extname(entry).toLowerCase();
-                        if (p_options.include && !p_options.include.includes(ext)) { return; }
-                        if (p_options.exclude && p_options.exclude.includes(ext)) { return; }
+                        if (p_options.include && !p_options.include.includes(ext)) { continue; }
+                        if (p_options.exclude && p_options.exclude.includes(ext)) { continue; }
                     }
-                    if (p_options.ignore && p_options.ignore.includes(entry)) { return; }
+                    if (p_options.ignore && p_options.ignore.includes(entry)) { continue; }
 
                     p_fn({
                         name: entry,

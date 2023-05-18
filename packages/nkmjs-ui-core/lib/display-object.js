@@ -275,12 +275,11 @@ class DisplayObject extends base {
             if (p_request.isHandled) { return; }
         }
 
-        if (this._parent) {
-            if (`_HandleLocalRequest` in this._parent) {
-                this._parent._HandleLocalRequest(p_request);
-                return;
-            }
+        if (this._parent?._HandleLocalRequest) {
+            this._parent._HandleLocalRequest(p_request);
+            return;
         }
+
         actions.RELAY.HandleRequest(p_request);
 
     }
@@ -460,7 +459,7 @@ class DisplayObject extends base {
 
         //TODO : Optimize this
 
-        let rr = t.rotation  || 0,
+        let rr = t.rotation || 0,
             rx = t.rotationX || 0,
             ry = t.rotationY || 0,
             rz = t.rotationZ || 0,
@@ -471,7 +470,7 @@ class DisplayObject extends base {
             tz = t.z || 0,
             tt = `${tx === 0 ? `` : `translateX(${tx}px)`}${ty === 0 ? `` : `translateY(${ty}px)`}${tz === 0 ? `` : `translateZ(${tz}px)`}`,
 
-            ss = t.scale  || 1,
+            ss = t.scale || 1,
             sx = t.scaleX || 1,
             sy = t.scaleY || 1,
             sz = t.scaleZ || 1,

@@ -8,40 +8,37 @@
  * @hideconstructor
  * @memberof documents
  */
-class IDS {
-    constructor() { }
+const IDS = {};
 
 
-    /**
-     * @type {string}
-     * @customtag read-only
-     */
-    static TYPE_RSC = Object.freeze(`resource`);
+/**
+ * @type {string}
+ * @customtag read-only
+ */
+IDS.TYPE_RSC = Object.freeze(`resource`);
 
-    /**
-     * @type {string}
-     * @customtag read-only
-     */
-    static ENCODING = Object.freeze(`encoding`);
+/**
+ * @type {string}
+ * @customtag read-only
+ */
+IDS.ENCODING = Object.freeze(`encoding`);
 
-    /**
-    * @type {string}
-    * @customtag read-only
-    */
-    static SERIAL_CTX = Object.freeze(`serializationContext`);
+/**
+* @type {string}
+* @customtag read-only
+*/
+IDS.SERIAL_CTX = Object.freeze(`serializationContext`);
 
-    /**
-    * @type {string}
-    * @customtag read-only
-    */
-    static TYPE_IO = Object.freeze(`defaultIOType`);
+/**
+* @type {string}
+* @customtag read-only
+*/
+IDS.TYPE_IO = Object.freeze(`defaultIOType`);
 
-    /**
-    * @type {string}
-    * @customtag read-only
-    */
-    static DATA_BOUND = Object.freeze(`dataBound`);
-
-}
+/**
+* @type {string}
+* @customtag read-only
+*/
+IDS.DATA_BOUND = Object.freeze(`dataBound`);
 
 module.exports = IDS;

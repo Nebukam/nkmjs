@@ -17,15 +17,15 @@ const __activeData = new Set();
 function __CheckEditorMap() {
 
     let stack = [];
-    for (const data of __activeData) {
+    __activeData.forEach(p_activeData => {
         // Check if still edited.
-        if (__editorMap.Count(data) == 0) { stack.push(data); }
+        if (__editorMap.Count(p_activeData) == 0) { stack.push(p_activeData); }
         for (let i = 0; i < stack.length; i++) {
             let d = stack[i];
             __activeData.delete(d);
             d.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, d);
         }
-    };
+    });
 
 }
 

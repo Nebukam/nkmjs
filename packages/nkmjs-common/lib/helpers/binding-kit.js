@@ -31,14 +31,14 @@ const BINDINGS = require(`../bindings`);
  *
  *     this.Add(
  *     {
- *         ctx:serialization.CTX.SERIALIZER,
+ *         ctx:s11n.CTX.SERIALIZER,
  *         kvps:[
- *              { key:serialization.CTX.JSON, binding:JSONSerializer },
- *              { key:serialization.CTX.TEXT, binding:TEXTSerializer }
+ *              { key:s11n.CTX.JSON, binding:JSONSerializer },
+ *              { key:s11n.CTX.TEXT, binding:TEXTSerializer }
  *          ]
  *     },
  *     {
- *         ctx:serialization.CTX.JSON,
+ *         ctx:s11n.CTX.JSON,
  *         kvps:[
  *             { key:Metadata, binding:MetadataJSONSerializer },
  *             { key:DataBlock, binding:DataBlockJSONSerializer }
@@ -76,7 +76,7 @@ class BindingKit extends Observable {
             ]
         },
         {
-            ctx:serialization.CTX.SERIALIZER,
+            ctx:s11n.CTX.SERIALIZER,
             kvps:[
                 { key:SKEY.JSON, binding:JSONSerializer }
             ]

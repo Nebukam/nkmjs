@@ -56,7 +56,7 @@ module.exports = {
      * @group Class repertoire
      * @groupdescription The Class repertoire is merely a small collection of methods to register classes
      * on a global level and have them accessible through a string identifier.  
-     * <div class="tip warning" data-title="About serialization">This is critical during the process of serialization/de-serialization, 
+     * <div class="tip warning" data-title="About s11n">This is critical during the process of s11n/de-s11n, 
      * as serialized data store its string identifier to be deserialized afterward.</div>
      */
     SetClass: function (p_key, p_class) {

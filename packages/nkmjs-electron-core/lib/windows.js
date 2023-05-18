@@ -141,7 +141,7 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
 
         }
 
-        if (`pathname` in p_options) {
+        if (p_options.pathname) {
             let ppath = p_options.pathname;
             console.log(`will load path : ${ppath}`);
 

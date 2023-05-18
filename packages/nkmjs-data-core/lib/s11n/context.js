@@ -5,28 +5,28 @@ const com = require("@nkmjs/common");
 /**
  * SERIALIZER Context
  * @class
- * @memberof data.core.serialization
+ * @memberof data.core.s11n
  */
 class SERIALIZER extends com.CSYMBOL{ constructor() { super(); } }
 
 /**
  * SERIALIZER Context
  * @class
- * @memberof data.core.serialization
+ * @memberof data.core.s11n
  */
 class NONE extends com.CSYMBOL{ constructor() { super(); } }
 
 /**
  * SERIALIZER Context
  * @class
- * @memberof data.core.serialization
+ * @memberof data.core.s11n
  */
 class TEXT extends com.CSYMBOL{ constructor() { super(); } }
 
 /**
  * JSON Context
  * @class
- * @memberof data.core.serialization
+ * @memberof data.core.s11n
  */
 class JSON extends com.CSYMBOL{ constructor() { super(); }
     /**

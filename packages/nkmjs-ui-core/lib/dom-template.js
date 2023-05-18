@@ -120,7 +120,7 @@ class DOMTemplate {
      */
     Render(p_host, p_options = null) {
 
-        if (`_wrapper` in p_host) { p_host = p_host._wrapper; }
+        if (p_host._wrapper) { p_host = p_host._wrapper; }
 
         let owner = p_options ? p_options[com.IDS.OWNER] || this : this,
             shelf = this.constructor.__shelf,

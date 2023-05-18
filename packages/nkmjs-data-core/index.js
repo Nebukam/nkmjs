@@ -29,7 +29,7 @@ module.exports = {
     catalogs: require(`./lib/catalogs`),
     helpers: require(`./lib/helpers`),
     search: require(`./lib/search`),
-    serialization: require(`./lib/serialization`),
+    s11n: require(`./lib/s11n`),
 
     validate: require(`./lib/validation`),
     sanitize: require(`./lib/sanitization`),

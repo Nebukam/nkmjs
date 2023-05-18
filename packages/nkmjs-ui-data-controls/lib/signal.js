@@ -1,11 +1,9 @@
 'use strict';
 
-module.exports = {
+const SIGNAL = {};
 
-    META_PROPERTY_TYPE_CHANGED: Symbol(`metaPropetyTypeChanged`),
+SIGNAL.META_PROPERTY_TYPE_CHANGED = Symbol(`metaPropetyTypeChanged`);
+SIGNAL.SEL_SHAREDTYPE_CHANGED = Symbol(`inspectionSharedTypeChanged`);
+SIGNAL.SEL_LASTTYPE_CHANGED = Symbol(`inspectionLastTypeChanged`);
 
-    SEL_SHAREDTYPE_CHANGED: Symbol(`inspectionSharedTypeChanged`),
-
-    SEL_LASTTYPE_CHANGED: Symbol(`inspectionLastTypeChanged`),
-
-}
+module.exports = SIGNAL;

@@ -14,8 +14,8 @@ const D13N_COMPLETE = `_OnDeserializationComplete`;
  * @description TODO
  * @class
  * @hideconstructor
- * @augments data.core.serialization.BaseSerializer
- * @memberof data.core.serialization
+ * @augments data.core.s11n.BaseSerializer
+ * @memberof data.core.s11n
  */
 class TEXTSerializer extends JSONSerializer {
     constructor() { super(); }

@@ -88,7 +88,7 @@ class CatalogItem extends base {
      * @param {object} p_options 
      */
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
-        if (p_options && `tags` in p_options) {
+        if (p_options?.tags) {
             p_options.tags.length = 0;
             delete p_options.tags;
         }
@@ -163,8 +163,8 @@ class CatalogItem extends base {
      */
     _OnDataChanged(p_newData, p_oldData) {
 
-        if (p_oldData && `Unwatch` in p_oldData) { p_oldData.Unwatch(com.SIGNAL.RELEASED, this._OnDataReleased, this); }
-        if (p_newData && `Watch` in p_newData) { p_newData.Watch(com.SIGNAL.RELEASED, this._OnDataReleased, this); }
+        if (p_oldData?.Unwatch) { p_oldData.Unwatch(com.SIGNAL.RELEASED, this._OnDataReleased, this); }
+        if (p_newData?.Watch) { p_newData.Watch(com.SIGNAL.RELEASED, this._OnDataReleased, this); }
 
         this.Broadcast(SIGNAL.ITEM_DATA_CHANGED, this, p_newData, p_oldData);
         this._delayedUpdate.Schedule();

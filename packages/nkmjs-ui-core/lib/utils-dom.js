@@ -177,7 +177,7 @@ module.exports = {
      * @param {Node} p_parent Parent node to append the element into
      */
     Attach: function (p_element, p_parent) {
-        if (`_wrapper` in p_parent) { p_parent._wrapper.appendChild(p_element); }
+        if (p_parent._wrapper) { p_parent._wrapper.appendChild(p_element); }
         else { p_parent.appendChild(p_element); }
     },
 

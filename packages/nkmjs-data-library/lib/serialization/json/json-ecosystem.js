@@ -6,7 +6,7 @@ const u = nkm.u;
 const data = nkm.data;
 
 const IDS = require(`../../ids`);
-const DataBlockJSONSerializer = data.serialization.json.DataBlock;
+const DataBlockJSONSerializer = data.s11n.json.DataBlock;
 
 class EcosystemJSONSerializer extends DataBlockJSONSerializer {
     constructor() { super(); }

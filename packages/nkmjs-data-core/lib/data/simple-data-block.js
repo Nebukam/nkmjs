@@ -13,7 +13,7 @@ const __noResolution = Object.freeze([]);
  * @typedef BlocDefinition
  * @property {String} member Name of the member inside the parent data
  * @property {Class} type Bloc' instance class
- * @property {Boolean} [IDS.SKIP_S11N] Whether serialization should be skipped
+ * @property {Boolean} [IDS.SKIP_S11N] Whether s11n should be skipped
  * @property {Array} [watch] Hooks to be added to the the bloc. Format is { signal:, fn:String|Func, ?thisArg: }
  */
 
@@ -21,7 +21,7 @@ const __noResolution = Object.freeze([]);
  * @typedef DataListDefinition
  * @property {String} member Layer class constructor
  * @property {Class} type DataList' instance class
- * @property {Boolean} [IDS.SKIP_S11N] Whether serialization should be skipped
+ * @property {Boolean} [IDS.SKIP_S11N] Whether s11n should be skipped
  * @property {Array} [watch] Hooks to be added to the the datalist. Format is { signal:, fn:String|Func, ?thisArg: }
  * @property {Array} [hooks] Hooks to be added to the item observer of the datalist. Format is { signal:, fn:String|Func, ?thisArg: }
  * @property {Function} [autoSort] Function used to autoSort the values inserted into the list.
@@ -35,7 +35,7 @@ const __noResolution = Object.freeze([]);
  * @property {*} [signal] Signal dispatched when this value is changed
  * @property {String} [group] Group ID (primarily used by UI)
  * @property {Number} [order] Order of value (primarily used by UI)
- * @property {Boolean} [IDS.SKIP_S11N] Whether serialization should be skipped
+ * @property {Boolean} [IDS.SKIP_S11N] Whether s11n should be skipped
  * @property {Function} [sanitizeFn] Function used to sanitize the value before it is set.
  */
 

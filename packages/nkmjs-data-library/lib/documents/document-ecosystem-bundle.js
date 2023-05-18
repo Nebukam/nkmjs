@@ -23,7 +23,7 @@ class EcosystemBundleDocument extends base {
 
     static __NFO__ = com.NFOS.Ext({
         resource: io.resources.JSONResource,
-        serializationContext: data.serialization.CTX.JSON
+        serializationContext: data.s11n.CTX.JSON
     }, base);
 
 }

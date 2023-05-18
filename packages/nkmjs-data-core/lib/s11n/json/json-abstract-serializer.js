@@ -8,8 +8,8 @@ const JSONSerializer = require(`../serializer-json`);
  * @description TODO
  * @class
  * @hideconstructor
- * @augments data.core.serialization.BaseSerializer
- * @memberof data.core.serialization
+ * @augments data.core.s11n.BaseSerializer
+ * @memberof data.core.s11n
  */
 class AbstractJSONSerializer extends BaseSerializer {
     constructor() { super(); }

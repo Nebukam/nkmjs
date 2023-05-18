@@ -61,7 +61,7 @@ assert.ok((newEcosystem.models._factory._itemRep._itemList.IndexOf(anotherModel)
 
 console.log(thirdModel.GetSlotByName(fName_map).descriptor);
 
-let SJSON = data.serialization.JSONSerializer;
+let SJSON = data.s11n.JSONSerializer;
 
 let entry = newEcosystem.entries.Create(`My sexy entry`, anotherModel),
     serializedModel = SJSON.Serialize(anotherModel),

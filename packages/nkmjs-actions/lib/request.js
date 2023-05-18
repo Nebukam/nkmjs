@@ -188,7 +188,7 @@ class Request extends com.helpers.OptionsObject {
     }
 
     toString() {
-        let type = (this._requestType && `toString` in this._requestType) ? this._requestType.toString() : this._requestType,
+        let type = this._requestType?.toString?.() || this._requestType,
             from = this._emitter ? this._emitter.constructor.name : `---`;
 
         return `${type} (from '${from}')`;

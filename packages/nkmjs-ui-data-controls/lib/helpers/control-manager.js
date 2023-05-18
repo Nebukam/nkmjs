@@ -105,13 +105,13 @@ class ControlManager {
     DisplayGranted() {
         if (this._isDisplayed) { return; }
         this._isDisplayed = true;
-        for (const ctrl of this._controls) { if (`DisplayGranted` in ctrl) { ctrl.DisplayGranted(); } };
+        for (const ctrl of this._controls) { ctrl.DisplayGranted?.(); };
     }
 
     DisplayLost() {
         if (!this._isDisplayed) { return; }
         this._isDisplayed = false;
-        for (const ctrl of this._controls) { if (`DisplayLost` in ctrl) { ctrl.DisplayLost(); } };
+        for (const ctrl of this._controls) { ctrl.DisplayLost?.(); };
     }
 
     _OnCtrlReleased(p_ctrl) { this.Release(p_ctrl); }
