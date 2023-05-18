@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/style",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "description": "NKMjs Framework Style -- include generic css sheets part of the default styling under /css.",
   "browser": "index.js",
   "repository": {
@@ -16,10 +16,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "^1.0.3",
-    "@nkmjs/common": "^1.1.6",
-    "@nkmjs/environment": "^1.1.6",
-    "@nkmjs/utils": "^1.1.4"
+    "@nkmjs/collections": "^1.1.0",
+    "@nkmjs/common": "^1.2.0",
+    "@nkmjs/environment": "^1.2.0",
+    "@nkmjs/utils": "^1.2.0"
   },
   "gitHead": "0d8288538220b63e0bddac446f6acb47e3d39fb7"
 }
