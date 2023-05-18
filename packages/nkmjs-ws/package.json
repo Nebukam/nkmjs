@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/ws",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NKMjs WS Module",
   "main": "index.js",
   "repository": {
@@ -16,11 +16,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "^1.1.0",
-    "@nkmjs/common": "^1.2.0",
-    "@nkmjs/environment": "^1.2.0",
-    "@nkmjs/services": "^1.2.0",
-    "@nkmjs/utils": "^1.2.0"
+    "@nkmjs/collections": "^1.1.1",
+    "@nkmjs/common": "^1.2.1",
+    "@nkmjs/environment": "^1.2.1",
+    "@nkmjs/services": "^1.2.1",
+    "@nkmjs/utils": "^1.2.1"
   },
   "gitHead": "504287232e435c0c93ef4144368ac92bcec2760a"
 }
