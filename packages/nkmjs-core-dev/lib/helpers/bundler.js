@@ -74,7 +74,7 @@ class Bundler {
         this.script._logFwd(chalk.italic(`babel » ${this.moduleID}`), `|`, 1);
 
         let babelPlugins = [];
-        babelPlugins.push([NKMjs.InCoreModules('@babel/plugin-proposal-class-properties'), { "loose": true }]);
+        babelPlugins.push(NKMjs.InCoreModules('@babel/plugin-proposal-class-properties'));
 
         if (this.define) {
             babelPlugins.push([
@@ -89,7 +89,7 @@ class Bundler {
                 comments: false,
                 presets: [[NKMjs.InCoreModules('@babel/preset-env'), {
                     targets: {
-                        node: "6.10"
+                        esmodules: true
                     }
                 }]],
                 plugins: babelPlugins
@@ -109,10 +109,10 @@ class Bundler {
                 parse: { bare_returns: true },
                 mangle: {
                     reserved: [`require`],
-                    //keep_classnames: false,
+                    keep_classnames: true,
                     keep_fnames: true,
-                    //module : true,
-                    //toplevel: true,
+                    module : false,
+                    toplevel: true,
                 },
                 compress: {
                     defaults: true,
@@ -131,7 +131,7 @@ class Bundler {
 
         let transformed = this._ReplaceExternal(p_response.code);//this._ReplaceKeys(this._ReplaceExternal(p_response.code));
         transformed = this._ShrinkRequires(transformed);
-        //transformed = transformed.replaceAll(`require`, `_r_`);
+        transformed = transformed.replaceAll(`require`, `$r`);
 
         transformed = this._CleanArtifacts(transformed);
 

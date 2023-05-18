@@ -12,6 +12,9 @@ class TaskPrepareHTMLMeta extends ScriptBase {
         super(`prepare-html-preloads`, p_onComplete);
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
+        let externals = NKMjs.Get(`externals`, []);
+        let externalsRemap = NKMjs.Get(`externalsRemap`, {});
+
         let preloads = ``,
             electron_preloads = ``,
             map = [],
@@ -43,10 +46,10 @@ class TaskPrepareHTMLMeta extends ScriptBase {
 
         // Preload externals
 
-        let externals = NKMjs.Get(`externals`, []);
-        let externalsRemap = NKMjs.Get(`externalsRemap`, {});
 
         // TODO: Include custom import here
+
+        console.log(externalsRemap);
 
         for (let i = 0, n = externals.length; i < n; i++) {
             if (externals[i] in externalsRemap) { continue; }

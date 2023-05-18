@@ -12,12 +12,13 @@ class TaskPrepareHTMLScripts extends ScriptBase {
         if (this.__hasErrors || this.__shouldSkip) { return this.End(); }
 
         let mime = u.MIME.Get(`.js`),
-            scripts = ``, externals = NKMjs.Get(`externals`, []),
+            scripts = ``, externals = NKMjs.Get(`externals`, []), externalsRemap = NKMjs.Get(`externalsRemap`, {}),
             scriptData = `defer="defer" type="${mime.type}"`; // crossorigin="anonymous" prevent local testing
 
         scripts += `<!-- SCRIPTS -->\n`;
         scripts += `<!-- externals -->\n`;
         for (let i = 0, n = externals.length; i < n; i++) {
+            if (externals[i] in externalsRemap) { continue; }
             let extModule = externals[i];
             scripts += `<script ${scriptData} src="${NKMjs.ExternalName(extModule)}.js"></script>\n`;
         }

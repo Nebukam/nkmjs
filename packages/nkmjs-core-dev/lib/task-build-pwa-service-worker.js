@@ -23,12 +23,14 @@ class TaskBuildPWAServiceWorker extends ScriptBase {
 
         let map = [`./`, `./index.html`],
             externals = NKMjs.Get(`externals`, []),
+            externalsRemap = NKMjs.Get(`externalsRemap`, {}),
             caches = [...NKMjs.projectConfig.dirs.offline],
             dirStyle = NKMjs.projectConfig.dirs.style;;
 
         if (!caches.includes(dirStyle)) { caches.push(dirStyle); }
 
         for (let i = 0, n = externals.length; i < n; i++) {
+            if (externals[i] in externalsRemap) { continue; }
             map.push(`./${NKMjs.ExternalName(externals[i])}.js`);
         }
 

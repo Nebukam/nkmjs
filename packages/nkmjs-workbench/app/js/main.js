@@ -80,10 +80,11 @@ class StyleguideApp extends nkm.app.AppBase {
         ];
 
         let newData = (p_id, p_dirty = false) => {
-            let newData = nkm.com.Rent(nkm.data.DataBlock);
-            newData.id = nkm.data.ID.New(p_id);
-            if (p_dirty) { newData.Dirty(); }
-            return newData;
+            let blck = nkm.com.Rent(nkm.data.DataBlock);
+            blck.id = nkm.data.ID.New(p_id);
+            console.log(blck);
+            if (p_dirty) { blck.Dirty(); }
+            return blck;
         };
 
         this._fakeData = [
