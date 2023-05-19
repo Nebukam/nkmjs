@@ -11,12 +11,7 @@ const base = com.Disposable;
 class AbstractOperation extends base {
     constructor() { super(); }
 
-    static __NFO__ = {
-        name: null,
-        prefix: null,
-        params: [],
-        model: {}
-    };
+    static __NFO__ = null;
 
     _Init() {
         super._Init();

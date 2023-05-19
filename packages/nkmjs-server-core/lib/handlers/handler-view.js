@@ -21,7 +21,7 @@ class ViewHandler extends base {
         //TODO: REMOVE THIS
         p_output.strLocals = JSON.stringify(p_output, null, 2);
 
-        this._res.render(Views.Get(this._view || this._def.Get(`view`)), p_output);
+        this._res.render(Views.Get(p_output.view || this._def.Get(`view`)), p_output);
         this._OnHandled();
 
     }
