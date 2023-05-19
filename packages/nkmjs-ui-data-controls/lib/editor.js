@@ -201,7 +201,7 @@ class Editor extends base {
     }
 
     Wake() {
-        super.Wake();
+        super.Wake?.();
         this._forwardEditor.Set(this);
         this._forwardContext._BatchSet(`editor`, this);
         this._forwardData._BatchSet(`editor`, this);

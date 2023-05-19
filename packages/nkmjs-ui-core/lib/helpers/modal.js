@@ -190,12 +190,12 @@ class Modal extends base {
         this.content = p_options.content;
         if (this._content) {
             this.constructor.__distribute.Update(this, this._options);
-            if (`options` in this._content) {
+            if (this._content.options) {
                 let o = null;
 
-                if (`contentOptions` in p_options) {
+                if (p_options.contentOptions) {
                     o = p_options.contentOptions;
-                } else if (`contentOptionsGetter` in p_options) {
+                } else if (p_options.contentOptionsGetter) {
                     o = u.Call(p_options.contentOptionsGetter);
                 } else if (this._contentOptionsGetter) {
                     o = u.Call(this._contentOptionsGetter);
@@ -274,10 +274,8 @@ class Modal extends base {
                 this._content.Release();
             } else {
                 // TODO : Clear inline style properties
-                if (`DisplayLost` in this._content) { this._content.DisplayLost(); }
-                if (this._content.parent == this) {
-                    this._content.parent = null;
-                }
+                this._content.DisplayLost?.();
+                if (this._content.parent == this) { this._content.parent = null; }
             }
             this._content = null;
         }
@@ -292,7 +290,7 @@ class Modal extends base {
         this._content = this.Attach(p_value, `content`);
         this._content.modal = this;
         this._content.Watch(SIGNAL.CLOSE_REQUESTED, this.Close);
-        if (`DisplayGranted` in this._content) { this._content.DisplayGranted(); }
+        this._content.DisplayGranted?.();
 
     }
 

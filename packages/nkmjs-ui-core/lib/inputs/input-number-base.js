@@ -131,10 +131,10 @@ class InputNumberBase extends base {
 
         super._OnOptionsUpdated(p_options, p_altOptions, p_defaults);
 
-        this.useMin = `min` in p_options ? true : false;
+        this.useMin = u.isNumber(p_options.min) ? true : false;
         if (this._useMin) { this.min = p_options.min; }
 
-        this.useMax = `max` in p_options ? true : false;
+        this.useMax = u.isNumber(p_options.max) ? true : false;
         if (this._useMax) { this.max = p_options.max; }
 
         this.useStep = p_options.step ? true : false;

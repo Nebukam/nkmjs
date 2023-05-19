@@ -125,7 +125,7 @@ class ControlView extends base {
         this._forwardContext._BatchSet(`editor`, p_value);
         this._forwardData._BatchSet(`editor`, p_value);
 
-        if (`_OnEditorChanged` in this) { this._OnEditorChanged(oldEditor); }
+        this._OnEditorChanged?.(oldEditor);
 
     }
 

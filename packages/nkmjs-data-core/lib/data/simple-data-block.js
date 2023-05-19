@@ -281,6 +281,8 @@ class SimpleDataBlock extends DataBlock {
         super.Dirty();
     }
 
+    _internalDismantle() { SIMPLEX.Dismantle(this); }
+
     _CleanUp() {
         super._CleanUp();
         this.parent = null;

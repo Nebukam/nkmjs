@@ -165,7 +165,7 @@ class ControlBuilder {
             this._RefreshConditions(ctrl, p_config);
         }
 
-        if (this._isDisplayed && `DisplayGranted` in ctrl) { ctrl.DisplayGranted(); }
+        if (this._isDisplayed) { ctrl.DisplayGranted?.(); }
 
         return ctrl;
 
@@ -256,7 +256,7 @@ class ControlBuilder {
     DisplayGranted() {
         if (this._isDisplayed) { return; }
         this._isDisplayed = true;
-        for (const ctrl of this._controls) { ctrl.DisplayGranted?.();};
+        for (const ctrl of this._controls) { ctrl.DisplayGranted?.(); };
     }
 
     DisplayLost() {

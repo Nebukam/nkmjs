@@ -114,8 +114,8 @@ class InputCatalogBase extends base {
     _OnItemRemoved(p_catalog, p_item, p_control) {
         this._CleanItem(p_item, p_control);
         if (p_control) {
-            if (`Release` in p_control) { p_control.Release(); }
-            else { dom.Detach(p_control); }
+            p_control.Release?.();
+            dom.Detach(p_control);
         }
     }
 

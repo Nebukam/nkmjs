@@ -138,7 +138,7 @@ class ControlDrawer extends base {
     _CloseRequest() {
         if (!this._isActivable) { return; }
         if (this._overlayOptions) {
-            if (`Consume` in this._overlayOptions) { this._overlayOptions.Consume(); }
+            this._overlayOptions.Consume?.();
             this._overlayOptions = null;
         }
         //this.Broadcast(SIGNAL.CLOSE_REQUESTED, this);

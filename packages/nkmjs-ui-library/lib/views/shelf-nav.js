@@ -173,7 +173,7 @@ class ShelfNav extends base {
      * @param {number} p_index index at which the handle should be created. Not that if the handle already exists, it will not be moved.
      * @returns {*} The handle associated to the item
      */
-    CreateNavItem(p_item, p_index = -1){
+    CreateNavItem(p_item, p_index = -1) {
 
         let navItem = this._navItemsMap.get(p_item);
 
@@ -192,17 +192,17 @@ class ShelfNav extends base {
 
         navItem.Watch(ui.SIGNAL.ACTIVATED, this._OnNavItemActivated, this);
 
-        if (`orientation` in navItem) { navItem.orientation = this._orientation.currentFlag; }
+        if (navItem.orientation) { navItem.orientation = this._orientation.currentFlag; }
 
         return navItem;
-    }  
+    }
 
     /**
      * @description Removes the handle associated to the item
      * @param {*} p_item 
      * @returns {*} the handle associated to the item after it has been released (so references to it can be cleared)
      */
-    RemoveNavItem(p_item){
+    RemoveNavItem(p_item) {
 
         let navItem = this._navItemsMap.get(p_item);
         if (!navItem) { return null; }

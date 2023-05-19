@@ -102,7 +102,7 @@ class ControlWidget extends base {
         this._editor = p_value;
         this._builder.editor = p_value;
         if (this._forwardEditor) { this._forwardEditor.Set(p_value); }
-        if (`_OnEditorChanged` in this) { this._OnEditorChanged(oldEditor); }
+        this._OnEditorChanged?.(oldEditor);
     }
 
     //#region Options handling

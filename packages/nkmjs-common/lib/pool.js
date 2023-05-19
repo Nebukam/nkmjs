@@ -110,10 +110,26 @@ class POOL {
             obj._returnFn = this.Return;
         }
 
-        if ('_InternalWake' in obj) { obj._InternalWake(); }
-        if ('Wake' in obj) { obj.Wake(); }
+        obj._InternalWake?.();
+        obj.Wake?.();
+
         return obj;
 
+    }
+
+    FlushPool(p_class) {
+
+        let keyName = null;
+
+        if (u.isString(p_class)) { keyName = p_class; }
+        else if (typeof p_class === `function`) { keyName = p_class.name; }
+        else { return; }
+
+        let list = _globalPool.Get(keyName, -1);
+        if (list && !list.isEmpty) {
+            list.ForEach(item => { item.Dismantle?.(); });
+            list.Clear();
+        }
     }
 
     /**
@@ -125,6 +141,14 @@ class POOL {
         for (var i = 0; i < p_num; i++) {
             this.Rent(p_class).Release();
         }
+    }
+
+    Stats() {
+        let stats = {};
+        for (const key in _globalPool.keys()) {
+            stats[key] = _globalPool.Count(key);
+        }
+        console.log(stats);
     }
 
 

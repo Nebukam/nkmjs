@@ -143,7 +143,7 @@ class DOMTemplate {
                 nodeID = nodeInfos[IDS.UID],
                 node = nodeInfos.node.cloneNode(true),
                 customInfos = p_options ? p_options[nodeID] : null,
-                writeNode = customInfos && `write` in customInfos ? customInfos.write : `write` in nodeInfos ? nodeInfos.write : true;
+                writeNode = u.isBool(customInfos?.write) ? customInfos.write : u.isBool(nodeInfos.write) ? nodeInfos.write : true;
 
             shelf[nodeID] = node;
 

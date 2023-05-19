@@ -114,6 +114,7 @@ class Observable extends Disposable {
         this.Broadcast(SIGNAL.RELEASING, this);
 
         if (this._releasePrevented) {
+            if(this._dismantling){this._dismantleAllowed = false;}
             this._isReleasing = false;
             delete this._releasePrevented;
             return;
@@ -125,6 +126,26 @@ class Observable extends Disposable {
         if (this._returnFn != undefined) { this._returnFn(this); }
         this._isReleasing = false;
 
+    }
+
+    Dismantle(){
+        this._dismantling = true;
+        this.Release();
+
+        if(this._dismantleAllowed === false){
+            delete this._dismantleAllowed;
+            delete this._dismantling;
+            return;
+        }
+
+        this._returnFn = null;
+        this._internalDismantle?.();
+        for(let p in this){
+            let member =this[p]; 
+            this[p] = null;
+        }
+        
+        delete this._dismantling;
     }
 
     _CleanUp() {

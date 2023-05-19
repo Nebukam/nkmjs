@@ -35,13 +35,7 @@ class ContentURLManipulator extends ContentManipulator {
             return false;
         } else {
 
-            let path = ``;
-
-            if (u.isString(p_value)) { path = p_value; }
-            else if (IDS.ICON in p_value) { path = p_value[IDS.ICON]; }
-            else if (IDS.PATH in p_value) { path = p_value[IDS.PATH]; }
-            else if (`img` in p_value) { path = p_value.img; }
-            else if (`objectURL` in p_value) { path = p_value.objectURL; }
+            let path = u.isString(p_value) ? p_value : p_value[IDS.PATH] || p_value[IDS.ICON] || p_value[IDS.IMG] || p_value.objectURL || ``;
 
             if (path === `` || !u.isString(path)) { return false; }
 

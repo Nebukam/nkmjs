@@ -307,11 +307,11 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
         const pdfPath = p_data.outputPath || path.join(__dirname, '/print.pdf');
         wrapper.window.webContents.printToPDF(
             {
-                marginsType: 'marginsType' in p_data ? p_data.marginsType : 1,
+                marginsType: u.isNumber(p_data.marginsType) ? p_data.marginsType : 1,
                 pageSize: p_data.pageSize || Letter,
-                printBackground: `printBackground` in p_data ? p_data.printBackground : true,
-                printSelectionOnly: `printSelectionOnly` in p_data ? p_data.printSelectionOnly : false,
-                landscape: `landscape` in p_data ? p_data.landscape : false
+                printBackground: u.isBool(p_data.printBackground) ? p_data.printBackground : true,
+                printSelectionOnly: u.isBool(p_data.printSelectionOnly) ? p_data.printSelectionOnly : false,
+                landscape: u.isBool(p_data.landscape) ? p_data.landscape : false
             },
             function (error, data) {
                 if (error) { this._SendError(error); return; }

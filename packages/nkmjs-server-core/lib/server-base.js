@@ -41,7 +41,7 @@ class ServerBase extends com.Observable {
 
         this._starting = false;
         this._config = p_constants;
-        console.log(this._config.envPath);
+
         dotenv.config({ path: this._config.envPath });
 
         if (process.env.NODE_MAX_MEMORY) {//268435456
@@ -68,8 +68,6 @@ class ServerBase extends com.Observable {
 
         this._waitForIO = ioservices.length ? true : false;
         this._ioReady = !this._waitForIO;
-
-        console.log(this._waitForIO);
 
         if (this._waitForIO) {
 
@@ -365,9 +363,9 @@ class ServerBase extends com.Observable {
     _RegisterAPI(p_identifier, p_config) {
 
         let api = this._apiMap.Get(p_identifier);
-        if (api) { throw new Error(`identifier '${p_identifier}' already in use`); }
+        if (api) { console.warn(`identifier '${p_identifier}' already in use, and will be overrwritten.`); }
+        else { api = new APIDefinition(this._express, this); }
 
-        api = new APIDefinition(this._express, this);
         api.id = p_identifier;
         api.mode = p_config.mode || null;
         api.route = p_config.route;

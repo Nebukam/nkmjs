@@ -164,11 +164,9 @@ class BaseInput extends base {
      * @customtag override-me
      */
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
-
-        this._handler.changeOnInput = `changeOnInput` in p_options ? p_options.changeOnInput : this._handler.changeOnInput;
-        this._handler.submitOnChange = `submitOnChange` in p_options ? p_options.submitOnChange : this._handler.submitOnChange;
-        this._handler.preventTabIndexing = `preventTabIndexing` in p_options ? p_options.preventTabIndexing : this._handler.preventTabIndexing;
-
+        this._handler.changeOnInput = u.isBool(p_options.changeOnInput) ? p_options.changeOnInput : this._handler.changeOnInput;
+        this._handler.submitOnChange = u.isBool(p_options.submitOnChange) ? p_options.submitOnChange : this._handler.submitOnChange;
+        this._handler.preventTabIndexing = u.isBool(p_options.preventTabIndexing) ? p_options.preventTabIndexing : this._handler.preventTabIndexing;
     }
 
     //#endregion

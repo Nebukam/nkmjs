@@ -115,9 +115,7 @@ class Overlay extends base {
 
 
 
-        if (`placement` in this._content) {
-            this._content.placement = simplified;
-        }
+        if (this._content.placement) { this._content.placement = simplified; }
     }
 
     /**
@@ -125,7 +123,7 @@ class Overlay extends base {
      * @type {string}
      */
     set contentFlavor(p_value) {
-        if (`flavor` in this._content) { this._content.flavor = p_value; }
+        if (this._content.flavor) { this._content.flavor = p_value; }
     }
 
     /**
@@ -224,9 +222,7 @@ class Overlay extends base {
         return p_overlayOptions;
     }
 
-    _CloseRequest() {
-        if (`_CloseRequest` in this._content) { this._content._CloseRequest(); }
-    }
+    _CloseRequest() { this._content._CloseRequest?.(); }
 
     _OnDisplayGain() {
         super._OnDisplayGain();

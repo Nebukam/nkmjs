@@ -126,7 +126,7 @@ class UI extends com.Observable { // PORT_TO_MODULE
             obj._returnFn = this._Return;
         }
 
-        obj.Wake();
+        obj.Wake?.();
         if (p_parent) { p_parent.Add(obj); }
 
         return obj;

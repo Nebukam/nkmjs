@@ -103,17 +103,12 @@ class TextHandler extends ContentManipulator {
             }
         }
 
-        let text = ``;
-
-        if (u.isString(p_value)) { text = p_value; }
-        else if (`label` in p_value) { text = p_value.label; }
-        else if (`name` in p_value) { text = p_value.name; }
-        else if (`title` in p_value) { text = p_value.title }
-
+        let text = u.isString(p_value) ? p_value : p_value.label || p_value.name || p_value.title || ``;
         if (text === ``) { return false; }
 
         if (!p_direct) { p_element.innerHTML = text; }
         else { p_element.textContent = text; }
+        
         return true;
 
     }

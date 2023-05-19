@@ -101,6 +101,15 @@ class Disposable {
 
     //#endregion
 
+    Dismantle(){
+        this.Release();
+        this._returnFn = null;
+        this._internalDismantle?.();
+        for(let p in this){
+            let member =this[p]; 
+            this[p] = null;
+        }
+    }
 
 
 }

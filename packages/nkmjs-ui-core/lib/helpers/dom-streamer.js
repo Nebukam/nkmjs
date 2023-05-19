@@ -178,7 +178,7 @@ class DOMStreamer extends base {
             }
          */
 
-        this._layout.fixedSize = `fixedSize` in this._layout ? this._layout.fixedSize : false;
+        this._layout.fixedSize = u.isBool(this._layout.fixedSize) ? this._layout.fixedSize : false;
 
         if (this._layout.itemSlots) {
             this._layout.itemSize = this._layout.itemSize || this._layout.itemWidth || this._layout.itemHeight || 100;
@@ -197,7 +197,7 @@ class DOMStreamer extends base {
             this._useCustomArea = false;
         }
 
-        if (`itemCount` in p_value) { this.itemCount = p_value.itemCount; }
+        if (u.isNumber(p_value.itemCount)) { this.itemCount = p_value.itemCount; }
         else { this._RefreshLayoutInfos(); }
 
     }
