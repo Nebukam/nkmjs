@@ -38,14 +38,16 @@ class AbstractOperation extends base {
 
     }
 
-    async _InternalExecute(p_params) { return false; }
+    async _InternalExecute(p_params) {  }
 
-    _OnSuccess() {
+    _OnSuccess(p_output = null) {
+        if (p_output) { this._output = p_output; }
         this._cbs.OnSuccess(this._output).Clear();
         this._OnEnd();
     }
 
-    _OnError() {
+    _OnError(p_output = null) {
+        if (p_output) { this._output = p_output; }
         this._cbs.OnError(this._output).Clear();
         this._OnEnd();
     }
