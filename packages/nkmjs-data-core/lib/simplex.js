@@ -404,12 +404,16 @@ module.exports = {
 
     },
 
-    GetBloc: function(p_dataBlock, p_blocId){
-        return p_dataBlock ? p_dataBlock[p_dataBlock.constructor.__BLOCS[p_blocId].member] : null;
+    GetBloc: function (p_dataBlock, p_blocId) {
+        let BLOCS = p_dataBlock?.BLOCS;
+        if (!BLOCS) { return null; }
+        return p_dataBlock[BLOCS[p_blocId].member];
     },
 
-    GetList: function(p_dataBlock, p_listId){
-        return p_dataBlock ? p_dataBlock[p_dataBlock.constructor.__DATALISTS[p_listId].member] : null;
+    GetList: function (p_dataBlock, p_listId) {
+        let DATALISTS = p_dataBlock?.DATALISTS;
+        if (!DATALISTS) { return null; }
+        return p_dataBlock[DATALISTS[p_listId].member];
     }
 
 }
