@@ -80,7 +80,14 @@ module.exports = {
                 let
                     def = BLOCS[id],
                     memberId = def.member || `_${id}`,
-                    type = u.isInstanceOf(def.type, com.CKEY) ? com.GetBinding(CTX.BLOC, def.type) || com.GetBinding(p_dataBlock.constructor, def.type) : def.type;
+                    type = def.type;
+
+                def.member = memberId; //Fix memberId
+
+                if (u.isInstanceOf(def.type, com.CKEY)) {
+                    //Pin type for the session.
+                    def.type = type = com.GetBinding(CTX.BLOC, type) || com.GetBinding(p_dataBlock.constructor, type)
+                }
 
                 let newBloc = com.Rent(type);
                 newBloc._iid = id;
@@ -110,6 +117,8 @@ module.exports = {
                 let
                     def = DATALISTS[id],
                     memberId = def.member || `_${id}`;
+
+                def.member = memberId; //Fix memberId
 
                 let newDataList = new (def.type ? def.type : DataList)();
                 newDataList.parent = p_dataBlock;

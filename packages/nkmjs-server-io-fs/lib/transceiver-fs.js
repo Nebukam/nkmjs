@@ -48,9 +48,9 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        const res = await fsPromises.stat(p_path).then(
-            stats => { p_callback(null, p_path, true); },
-            err => { p_callback(err, p_path, false); }
+        return await fsPromises.stat(p_path).then(
+            stats => { return p_callback(null, p_path, true); },
+            err => { return p_callback(err, p_path, false); }
         );
 
     }
@@ -73,9 +73,12 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        const res = await fsPromises.stat(p_path).then(
-            stats => { p_callback(null, p_path, true); },
-            err => { p_callback(err, p_path, false); }
+        return await fsPromises.stat(p_path).then(
+            stats => {
+                let obj = { isFile: stats.isFile(), isDirectory: stats.isDirectory() };
+                return p_callback(obj, p_path, true);
+            },
+            err => { return p_callback(err, p_path, false); }
         );
 
     }
@@ -93,9 +96,9 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        const res = await fsPromises.rename(p_path, p_newPath).then(
-            stats => { p_callback(null, p_path, true); },
-            err => { p_callback(err, p_path, false); }
+        return await fsPromises.rename(p_path, p_newPath).then(
+            stats => { return p_callback(null, p_path, true); },
+            err => { return p_callback(err, p_path, false); }
         );
 
     }
@@ -115,9 +118,9 @@ class Transceiver_FS extends base {
         let opts = p_options || {};
         opts.recursive = this._opt(opts, `recursive`);
 
-        const res = await fsPromises.mkdir(p_path, opts).then(
-            () => { p_callback(null, p_path, true); },
-            err => { p_callback(err, p_path, false); }
+        return await fsPromises.mkdir(p_path, opts).then(
+            () => { return p_callback(null, p_path, true); },
+            err => { return p_callback(err, p_path, false); }
         );
 
     }
@@ -143,7 +146,7 @@ class Transceiver_FS extends base {
 
         let opts = p_options || {};
 
-        const res = await fsPromises.readdir(p_path).then(
+        return await fsPromises.readdir(p_path).then(
             (content) => {
 
                 Promise.all(content.map(fname => { return fsPromises.stat(this.Join(fname)); })).then(
@@ -153,14 +156,14 @@ class Transceiver_FS extends base {
                             let targetArray = stats[i].isDirectory() ? results.directories : results.files;
                             targetArray.push(content[i]);
                         }
-                        p_callback(null, p_path, results);
+                        return p_callback(null, p_path, results);
                     },
                     err => {
-                        p_callback(err, p_path, null);
+                        return p_callback(err, p_path, null);
                     }
                 );
             },
-            (err) => { p_callback(err, p_path, null); }
+            (err) => { return p_callback(err, p_path, null); }
         );
 
     }
@@ -190,9 +193,9 @@ class Transceiver_FS extends base {
             encoding = p_options?.encoding || 'utf-8',
             err = null;
 
-        const res = await fsPromises.readFile(p_path, encoding).then(
-            (data) => { p_callback(null, p_path, data); },
-            (err) => { p_callback(err, p_path, null); }
+        return await fsPromises.readFile(p_path, encoding).then(
+            (data) => { return p_callback(null, p_path, data); },
+            (err) => { return p_callback(err, p_path, null); }
         );
 
     }
@@ -213,9 +216,9 @@ class Transceiver_FS extends base {
         opts.recursive = this._opt(opts, `recursive`);
         opts.force = this._opt(opts, `force`, true);
 
-        const res = await fsPromises.rm(p_path, opts).then(
-            () => { p_callback(null, p_path, true); },
-            (err) => { p_callback(err, p_path, false); }
+        return await fsPromises.rm(p_path, opts).then(
+            () => { return p_callback(null, p_path, true); },
+            (err) => { return p_callback(err, p_path, false); }
         );
 
     }
@@ -232,9 +235,9 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        const res = await fsPromises.unlink(p_path).then(
-            () => { p_callback(null, p_path, true); },
-            (err) => { p_callback(err, p_path, false); }
+        return await fsPromises.unlink(p_path).then(
+            () => { return p_callback(null, p_path, true); },
+            (err) => { return p_callback(err, p_path, false); }
         );
 
     }
@@ -252,19 +255,19 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        const res = await fsPromises.writeFile(p_path, p_data, p_options).then(
-            () => { p_callback(null, p_path, true); },
+        return await fsPromises.writeFile(p_path, p_data, p_options).then(
+            () => { return p_callback(null, p_path, true); },
             (err) => {
                 let recursive = this._opt(p_options, `recursive`, this._recursive);
                 if (err.code == 'ENOENT' && recursive) {
                     fsPromises.mkdir(path.dirname(p_path), { recursive: true }).then(
                         () => {
                             fsPromises.writeFile(p_path, p_data, p_options).then(
-                                () => { p_callback(null, p_path, true); },
-                                (err) => { p_callback(err, p_path, false); }
+                                () => { return p_callback(null, p_path, true); },
+                                (err) => { return p_callback(err, p_path, false); }
                             );
                         },
-                        (err) => { console.log(err); }
+                        (err) => { console.log(err); return false; }
                     )
                 } else { throw err; }
             }

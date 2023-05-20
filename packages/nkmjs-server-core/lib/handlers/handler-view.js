@@ -17,13 +17,17 @@ class ViewHandler extends base {
         p_output.user = nkm.main.GetUser(this._req);
         p_output.params = this._req.params;
 
+        this.PostprocessLocals?.(p_output);
+
         //TODO: REMOVE THIS
         p_output.strLocals = JSON.stringify(p_output, null, 2);
 
-        this._res.render(com.NFOS.GetValue(this._operation, `view`, this._def.Get(`view`)), p_output);
+        this._res.render(this.GetView(), p_output);
         this._OnHandled();
 
     }
+
+    GetView() { return com.NFOS.GetValue(this._operation, `view`, this._def.Get(`view`)); }
 
     /**
      * 
@@ -45,7 +49,7 @@ class ViewHandler extends base {
 
             if (p_message) { locales.message = p_message; }
 
-            this._res.render(Views.Get(Views.VIEW_ERROR), locales);
+            this._res.render('error', locales);
 
         }
 
