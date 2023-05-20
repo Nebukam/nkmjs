@@ -7,7 +7,7 @@ const base = require(`./server-base`);
 class ServerBaseAuth0 extends base {
     constructor(p_constants) { super(p_constants); }
 
-    _InitAuthenticationMiddleware(p_express) {
+    async _InitAuthenticationMiddleware(p_express) {
 
         if (this._bypassAuth) { return true; }
 

@@ -8,7 +8,8 @@
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-collections"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "link-nkmjs":"exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",

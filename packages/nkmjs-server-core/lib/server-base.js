@@ -9,6 +9,8 @@ env.ENV.features._isNodeEnabled = true;
 
 const dotenv = require('dotenv');
 
+const fs = require(`fs`);
+
 const http = require('http');
 const express = require(`express`);
 const fileUpload = require('express-fileupload');
@@ -57,19 +59,18 @@ class ServerBase extends com.Observable {
         this._dirName = this._config.dirname;
         this._dirServer = this._config.dirServer;
         this._dirViews = this._config.dirViews;
-        this._dirPublic = path.join(this._config.dirname, 'public');
+        this._dirPublic = path.join(this._dirName, 'public');
 
-        //TODO: Make this an array which items are either
-        //a string or [string,string] (route/path)
         this._staticPaths = [this._dirPublic];
+        this._viewPaths = [this._dirViews];
+
+        ///
 
         let ioservices = [];
         this._RegisterIOServices(ioservices);
 
-        this._waitForIO = ioservices.length ? true : false;
-        this._ioReady = !this._waitForIO;
-
-        if (this._waitForIO) {
+        let waitForIO = ioservices.length ? true : false;
+        if (waitForIO) {
 
             let
                 dict = new collections.Dictionary(),
@@ -97,14 +98,21 @@ class ServerBase extends com.Observable {
             };
 
             for (const ioss of ios) { io.IO_SERVICES.Use(ioss, dict.Get(ioss)); };
+
             dict.Clear();
-            io.IO_SERVICES.WatchOnce(com.SIGNAL.READY, this._OnIOReady.bind(this));
+            io.IO_SERVICES.WatchOnce(com.SIGNAL.READY, () => {
+                if (this._starting) { this._PrepareInternalInit(); }
+            });
+
         } else {
             console.warn(`⚠️  No IO Service registered.`);
             console.log(__dirname);
         }
 
         env.ENV.Start(p_constants);
+        if ((!waitForIO || io.IO_SERVICES.ready) && this._starting) {
+            this._PrepareInternalInit();
+        }
 
     }
 
@@ -115,6 +123,8 @@ class ServerBase extends com.Observable {
 
     get baseURL() { return this._appendPortToBase ? `${this._baseURL}:${this._port}` : this._baseURL; }
 
+    //#region IO Services & Internal Preparation
+
     /**
      * Register services in the form { cl:IO_CLASS, options:{} }
      * @param {IOServiceSettings} p_ioConfigs 
@@ -123,44 +133,21 @@ class ServerBase extends com.Observable {
 
     }
 
-    _OnIOReady() {
-        if (!this._starting) { return; }
-        this._PrepareInternalInit();
-    }
-
     /**
      * Called by ENV when services are ready.
      */
     _InternalStart() {
         if (this._starting) { return; }
         this._starting = true;
-
-        com.time.TIME._ScheduleNextTick();
-        if (io.IO_SERVICES.ready) { this._PrepareInternalInit(); }
     }
 
-    _PrepareInternalInit() {
-
-        if (this._IsReadyForInit()) { this._InternalInit(); }
-        else { this._delayedCheck = setInterval(this._Bind(this._CheckPreparation), 1000); }
+    async _PrepareInternalInit() {
+        await this._InternalInit();
     }
 
-    _CheckPreparation() {
-        if (this._IsReadyForInit()) {
-            this._InternalInit();
-            clearInterval(this._delayedCheck);
-        }
-    }
+    //#endregion
 
-    /**
-     * Return true by default. This is where you can test for server readyness and things like that.
-     * @returns true if the app is ready for display, false otherwise
-     */
-    _IsReadyForInit() {
-        return true;
-    }
-
-    _InternalInit() {
+    async _InternalInit() {
 
         this._internalInit = true;
         this._requireAuth = false;
@@ -170,12 +157,12 @@ class ServerBase extends com.Observable {
         this._whitelist = this._config.whitelist;
         this._authFn = null;
 
-        this._InitServer();
-        this._PostInitServer();
+        await this._InitServer();
+        await this._PostInitServer();
 
         if (this._useWebsockets) {
-            this._InitWebsockets();
-            this._PostInitWebsockets();
+            await this._InitWebsockets();
+            await this._PostInitWebsockets();
         }
 
         this._InternalBoot = this._InternalBoot.bind(this);
@@ -187,15 +174,15 @@ class ServerBase extends com.Observable {
 
     //#region Server
 
-    _InitServer() {
+    async _InitServer() {
 
         this._apiMap = new collections.Dictionary();
 
         this._express = express();
-        this._InitRenderEngine(this._express);
-        this._InitExpress(this._express);
+        await this._InitRenderEngine(this._express);
+        await this._InitExpress(this._express);
 
-        this._requireAuth = this._InitAuthenticationMiddleware(this._express);
+        this._requireAuth = await this._InitAuthenticationMiddleware(this._express);
 
         // Add middleware to make the `user` object available for all views
         this._express.use(function (req, res, next) {
@@ -221,15 +208,20 @@ class ServerBase extends com.Observable {
         }))
 
         for (const i of this._staticPaths) {
-            if (u.isString(i)) { p_express.use(express.static(i)); }
-            else if (u.isArray(i) && i.length == 2) { p_express.use(i[0], express.static(i[1])); }
-            else { console.warn(`Invalid static route config: ${i}`) }
+
+            let
+                staticRoute = u.isArray(i) ? i[0] : null,
+                staticPath = path.join(staticRoute ? i[1] : i);
+
+            console.log(`static @${staticRoute} : ${staticPath}`);
+
+            if (staticRoute) { p_express.use(staticRoute, express.static(staticPath)); }
+            else { p_express.use(express.static(staticPath)); }
+
         };
 
         p_express.use(express.json());
         p_express.use(express.urlencoded({ extended: true }));
-
-
 
         // Add CORS Middleware
         p_express.use(cors({
@@ -249,25 +241,27 @@ class ServerBase extends com.Observable {
      * 
      * @param {*} p_express 
      */
-    _InitRenderEngine(p_express) {
+    async _InitRenderEngine(p_express) {
 
-        let viewPath = this._dirViews;
-        console.log(`>>> Render engine view directory: '${viewPath}'`);
-        p_express.set('views', viewPath);
+        for (let i = 0; i < this._viewPaths.length; i++) {
+            try { fs.statSync(this._viewPaths[i]); }
+            catch (e) { this._viewPaths.splice(i, 1); i--; }
+        }
+
+        console.log(`>>> Render engine view directories:`, this._viewPaths);
+        p_express.set('views', this._viewPaths);
         p_express.set('view engine', 'ejs');
 
     }
 
-    _InitAuthenticationMiddleware(p_express) {
-        return false;
-    }
+    async _InitAuthenticationMiddleware(p_express) { return false; }
 
     GetUser(p_req) { return null; }
     IsAuthenticated(p_req) { return true; }
 
-    _PostInitServer() {
+    async _PostInitServer() {
 
-        this._InitAPIs();
+        await this._InitAPIs();
 
         let apis = [];
 
@@ -306,7 +300,7 @@ class ServerBase extends com.Observable {
 
     }
 
-    _InitAPIs() { }
+    async _InitAPIs() { }
 
     /**
      * 
@@ -385,11 +379,11 @@ class ServerBase extends com.Observable {
 
     //#region Websockets
 
-    _InitWebsockets() {
+    async _InitWebsockets() {
         let WebSocket = require('ws');
         this._wss = new WebSocket.Server(this._server);
 
-        this._InitWSRoutes();
+        await this._InitWSRoutes();
 
         this._wss.on('connection', (ws) => {
             // Handle incoming WebSocket connections
@@ -403,11 +397,11 @@ class ServerBase extends com.Observable {
 
     }
 
-    _InitWSRoutes() {
+    async _InitWSRoutes() {
 
     }
 
-    _PostInitWebsockets() {
+    async _PostInitWebsockets() {
 
     }
 

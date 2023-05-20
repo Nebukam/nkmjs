@@ -6,8 +6,6 @@ const u = require(`@nkmjs/utils`);
 const FLAGS = require(`../flags`);
 const STATUSES = require("../status-codes");
 
-const Views = require(`../views`);
-
 const base = require(`./handler-operation`);
 class ViewHandler extends base {
     constructor() { super(); }
@@ -17,11 +15,12 @@ class ViewHandler extends base {
         p_output.title = p_output.title || this._def.Get(`title`) || nkm.main.constructor.name;
         p_output.isAuthenticated = nkm.main.IsAuthenticated(this._req);
         p_output.user = nkm.main.GetUser(this._req);
+        p_output.params = this._req.params;
 
         //TODO: REMOVE THIS
         p_output.strLocals = JSON.stringify(p_output, null, 2);
 
-        this._res.render(Views.Get(p_output.view || this._def.Get(`view`)), p_output);
+        this._res.render(com.NFOS.GetValue(this._operation, `view`, this._def.Get(`view`)), p_output);
         this._OnHandled();
 
     }

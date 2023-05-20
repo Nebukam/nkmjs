@@ -10,7 +10,7 @@
   "scripts": {
     "test": "node test.js",
     "doc": "jsdoc -c ./.jsdoc.conf.json",
-    "link-nkmjs": ""
+    "link-nkmjs":"exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",

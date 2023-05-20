@@ -38,7 +38,7 @@ class AbstractOperation extends base {
 
     }
 
-    async _InternalExecute(p_params) {  }
+    async _InternalExecute(p_params) { }
 
     _OnSuccess(p_output = null) {
         if (p_output) { this._output = p_output; }
@@ -52,7 +52,7 @@ class AbstractOperation extends base {
         this._OnEnd();
     }
 
-    _OnEnd() { this.Release(); }
+    _OnEnd() { }
 
     _CleanUp() {
         this._handler = null;

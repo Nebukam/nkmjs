@@ -13,7 +13,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "bundle-core": "node ./lib/task-build-core-bundle.js"
+    "bundle-core": "node ./lib/task-build-core-bundle.js",
+    "link-nkmjs":"exit 0"
   },
   "dependencies": {
     "@nkmjs/actions": "^1.2.1",

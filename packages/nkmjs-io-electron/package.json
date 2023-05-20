@@ -8,7 +8,8 @@
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-io-electron"
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "link-nkmjs":"exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",

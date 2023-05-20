@@ -41,9 +41,9 @@ class OperationHandler extends base {
         if (p_nfos.params) {
             for (let id in p_nfos.params) {
                 let def = p_nfos.params[id];
-                if (!(id in p_params)) {
+                if (!(id in p_req.params)) {
                     if (def.default) {
-                        p_params[id] = def.default;
+                        p_req.params[id] = def.default;
                         continue;
                     }
                     return STATUSES.BAD_REQUEST;
@@ -57,13 +57,16 @@ class OperationHandler extends base {
 
     async Handle() {
 
-        let operation = OperationsManager.Get(this._def.id);
-        operation.handler = this;
+        this._operation = OperationsManager.Get(this._def.id);
+        this._operation.handler = this;
 
-        return await operation.Execute(this._req.params,
+        await this._operation.Execute(this._req.params,
             (p_output) => { this.Complete(p_output); },
             (p_output) => { this.Abort(STATUSES.isStatus(p_output) ? p_output : STATUSES.BAD_REQUEST); }
         );
+
+        this._operation.Release();
+        this._operation = null;
 
     }
 

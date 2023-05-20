@@ -8,7 +8,8 @@
     "url": "https://github.com/Nebukam/nkmjs/tree/main/packages/nkmjs-electron-core"
   },
   "scripts": {
-    "test": "electron ./example-app/app.js"
+    "test": "electron ./example-app/app.js",
+    "link-nkmjs":"exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",
