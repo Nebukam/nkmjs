@@ -402,6 +402,14 @@ module.exports = {
 
     Dismantle: function (p_dataBlock) {
 
+    },
+
+    GetBloc: function(p_dataBlock, p_blocId){
+        return p_dataBlock ? p_dataBlock[p_dataBlock.constructor.__BLOCS[p_blocId].member] : null;
+    },
+
+    GetList: function(p_dataBlock, p_listId){
+        return p_dataBlock ? p_dataBlock[p_dataBlock.constructor.__DATALISTS[p_listId].member] : null;
     }
 
 }

@@ -48,7 +48,7 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        return await fsPromises.stat(p_path).then(
+        return fsPromises.stat(p_path).then(
             stats => { return p_callback(null, p_path, true); },
             err => { return p_callback(err, p_path, false); }
         );
@@ -73,7 +73,7 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        return await fsPromises.stat(p_path).then(
+        return fsPromises.stat(p_path).then(
             stats => {
                 let obj = { isFile: stats.isFile(), isDirectory: stats.isDirectory() };
                 return p_callback(obj, p_path, true);
@@ -96,7 +96,7 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        return await fsPromises.rename(p_path, p_newPath).then(
+        return fsPromises.rename(p_path, p_newPath).then(
             stats => { return p_callback(null, p_path, true); },
             err => { return p_callback(err, p_path, false); }
         );
@@ -118,7 +118,7 @@ class Transceiver_FS extends base {
         let opts = p_options || {};
         opts.recursive = this._opt(opts, `recursive`);
 
-        return await fsPromises.mkdir(p_path, opts).then(
+        return fsPromises.mkdir(p_path, opts).then(
             () => { return p_callback(null, p_path, true); },
             err => { return p_callback(err, p_path, false); }
         );
@@ -146,7 +146,7 @@ class Transceiver_FS extends base {
 
         let opts = p_options || {};
 
-        return await fsPromises.readdir(p_path).then(
+        return fsPromises.readdir(p_path).then(
             (content) => {
 
                 Promise.all(content.map(fname => { return fsPromises.stat(this.Join(fname)); })).then(
@@ -193,7 +193,7 @@ class Transceiver_FS extends base {
             encoding = p_options?.encoding || 'utf-8',
             err = null;
 
-        return await fsPromises.readFile(p_path, encoding).then(
+        return fsPromises.readFile(p_path, encoding).then(
             (data) => { return p_callback(null, p_path, data); },
             (err) => { return p_callback(err, p_path, null); }
         );
@@ -216,7 +216,7 @@ class Transceiver_FS extends base {
         opts.recursive = this._opt(opts, `recursive`);
         opts.force = this._opt(opts, `force`, true);
 
-        return await fsPromises.rm(p_path, opts).then(
+        return fsPromises.rm(p_path, opts).then(
             () => { return p_callback(null, p_path, true); },
             (err) => { return p_callback(err, p_path, false); }
         );
@@ -235,7 +235,7 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        return await fsPromises.unlink(p_path).then(
+        return fsPromises.unlink(p_path).then(
             () => { return p_callback(null, p_path, true); },
             (err) => { return p_callback(err, p_path, false); }
         );
@@ -255,7 +255,7 @@ class Transceiver_FS extends base {
 
         p_path = this._SanitizePath(p_path);
 
-        return await fsPromises.writeFile(p_path, p_data, p_options).then(
+        return fsPromises.writeFile(p_path, p_data, p_options).then(
             () => { return p_callback(null, p_path, true); },
             (err) => {
                 let recursive = this._opt(p_options, `recursive`, this._recursive);
@@ -264,10 +264,10 @@ class Transceiver_FS extends base {
                         () => {
                             fsPromises.writeFile(p_path, p_data, p_options).then(
                                 () => { return p_callback(null, p_path, true); },
-                                (err) => { return p_callback(err, p_path, false); }
+                                (err2) => { return p_callback(err2, p_path, false); }
                             );
                         },
-                        (err) => { console.log(err); return false; }
+                        (err3) => { console.log(err); return p_callback(err3, p_path, false); }
                     )
                 } else { throw err; }
             }
