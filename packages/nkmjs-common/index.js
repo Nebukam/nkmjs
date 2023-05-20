@@ -10,7 +10,7 @@ module.exports = {
     BINDINGS: BINDINGS,
     SIGNAL: require(`./lib/signal`),
     FLAGS: require(`./lib/flags`),
-    IDS: require(`./lib/ids`),    
+    IDS: require(`./lib/ids`),
     SORTING: require(`./lib/sorting`),
 
     CSYMBOL: require(`./lib/class-symbol`),
@@ -21,18 +21,18 @@ module.exports = {
 
     helpers: require(`./lib/helpers`),
     signals: require(`./lib/signals`),
-    time: time,  
+    time: time,
 
-    pool:POOL,
-    
-    Rent:POOL.Rent.bind(POOL),
-    Preload:POOL.Preload.bind(POOL),
-    
-    GetBinding:BINDINGS.Get,
+    pool: POOL,
 
-    WatchNextTick:time.WatchNextTick,
-    
-    DelayedCall:(p_fn = null, p_delay = -1) => { return new time.DelayedCall(p_fn, p_delay); },
-    
+    Rent: POOL.Rent.bind(POOL),
+    Preload: POOL.Preload.bind(POOL),
+
+    GetBinding: BINDINGS.Get,
+
+    WatchNextTick: time.WatchNextTick,
+
+    DelayedCall: (p_fn = null, p_delay = -1) => { return new time.DelayedCall(p_fn, p_delay); },
+    DeferredCall: (p_init, p_res = null, p_rej = null) => { return new time.DeferredCall(p_init, p_res, p_rej); },
 
 }

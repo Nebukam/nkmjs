@@ -70,9 +70,38 @@ module.exports = {
 
     //#region Utils
 
+    Export: function (p_blockClass) {
+
+        let BLOCS = p_blockClass.__BLOCS;
+        if (BLOCS) {
+            for (var id in BLOCS) {
+
+                let
+                    def = BLOCS[id];
+                def.member = def.member || `_${id}`;
+
+            };
+        }
+
+        let DATALISTS = p_blockClass.__DATALISTS;
+        if (DATALISTS) {
+            for (var id in DATALISTS) {
+                let
+                    def = DATALISTS[id];
+                def.member = def.member || `_${id}`; //Fix memberId
+            }
+        }
+
+        nkm.com.BINDINGS.RegisterFromNFO(p_blockClass);
+        return p_blockClass;
+
+    },
+
     InitSimpleDataBlock: function (p_dataBlock) {
 
         let BLOCS = p_dataBlock.BLOCS;
+
+
 
         if (BLOCS) {
             for (var id in BLOCS) {
