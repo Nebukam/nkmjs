@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/electron-core",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "NKMjs Framework Electron App Core",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "electron ./example-app/app.js",
-    "link-nkmjs":"exit 0"
+    "link-nkmjs": "exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",
@@ -18,13 +18,13 @@
   "license": "MIT",
   "dependencies": {
     "@electron/remote": "^2.0.5",
-    "@nkmjs/actions": "^1.2.1",
-    "@nkmjs/app-core": "^1.2.1",
-    "@nkmjs/collections": "^1.1.1",
-    "@nkmjs/common": "^1.2.1",
-    "@nkmjs/io-electron": "^1.2.1",
-    "@nkmjs/services": "^1.2.1",
-    "@nkmjs/utils": "^1.2.1",
+    "@nkmjs/actions": "^1.2.2",
+    "@nkmjs/app-core": "^1.2.2",
+    "@nkmjs/collections": "^1.1.2",
+    "@nkmjs/common": "^1.2.2",
+    "@nkmjs/io-electron": "^1.2.2",
+    "@nkmjs/services": "^1.2.2",
+    "@nkmjs/utils": "^1.2.2",
     "electron-deeplink": "^1.0.10"
   },
   "devDependencies": {

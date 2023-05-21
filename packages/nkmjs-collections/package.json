@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/collections",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "NKMjs Framework Collections",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "link-nkmjs":"exit 0"
+    "link-nkmjs": "exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",

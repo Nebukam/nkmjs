@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/utils",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "NKMjs Framework Utils",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "node test.js",
-    "link-nkmjs":"exit 0"
+    "link-nkmjs": "exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",

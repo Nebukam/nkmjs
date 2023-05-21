@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/data-library",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "NKMjs Framework Data Ecosystem",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "node test.js",
-    "link-nkmjs":"exit 0"
+    "link-nkmjs": "exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",
@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/core": "^1.3.1"
+    "@nkmjs/core": "^1.3.2"
   },
   "gitHead": "504287232e435c0c93ef4144368ac92bcec2760a"
 }

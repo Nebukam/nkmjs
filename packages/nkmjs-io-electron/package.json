@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/io-electron",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "NKMjs Framework IO Electron",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "node test.js",
-    "link-nkmjs":"exit 0"
+    "link-nkmjs": "exit 0"
   },
   "author": {
     "name": "Timothé Lapetite",
@@ -17,10 +17,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nkmjs/collections": "^1.1.1",
-    "@nkmjs/common": "^1.2.1",
-    "@nkmjs/io-core": "^1.2.1",
-    "@nkmjs/utils": "^1.2.1",
+    "@nkmjs/collections": "^1.1.2",
+    "@nkmjs/common": "^1.2.2",
+    "@nkmjs/io-core": "^1.2.2",
+    "@nkmjs/utils": "^1.2.2",
     "chokidar": "^3.5.3",
     "sanitize-filename": "^1.6.3",
     "tmp": "^0.2.1"
