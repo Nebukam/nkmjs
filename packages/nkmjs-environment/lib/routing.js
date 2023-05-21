@@ -36,7 +36,7 @@ module.exports = {
         return route;
     },
 
-    Send: function (p_api, p_params, p_callback) {
+    Send: async function (p_api, p_params, p_onSuccess = null, p_onError = null) {
 
         let conf = {
             method: p_api.method || 'GET',
@@ -44,19 +44,37 @@ module.exports = {
             headers: u.merge.Defaults(p_params?.headers, _globalHeaders)
         }
 
-        fetch(`${env.app.baseURL}${module.exports.Build(p_api, p_params)}`, conf)
-            .then((p_res) => {
-                if (!p_res.ok) { p_callback(p_res, null); }
-                else {
-                    let contentType = p_res.headers.get("content-type");
-                    if (contentType && contentType.indexOf("application/json") !== -1) {
-                        p_res.json().then(data => { p_callback(null, data); });
-                    } else {
-                        p_res.text().then(text => { p_callback(null, text); });
-                    }
+        return fetch(`${env.app.baseURL}${module.exports.Build(p_api, p_params)}`, conf)
+            .then(async (p_res) => {
+                if (!p_res.ok) {
+                    if (p_onError) { return p_onError(p_res) }
+                    else { return p_res; }
                 }
+
+                if (p_onSuccess) {
+                    let data = await module.exports.ProcessResponse(p_params, p_res);
+                    return p_onSuccess(data);
+                } else {
+                    return module.exports.ProcessResponse(p_params, p_res);
+                }
+
             })
-            .catch((e) => { p_callback(e, null); });
+            .catch((e) => {
+                if (p_onError) { return p_onError(e) }
+                else { return e; }
+            });
+    },
+
+    ProcessResponse: async function (p_params, p_res) {
+
+        if (p_params.get) { return p_params.get(p_res); }
+
+        let contentType = p_res.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            return p_res.json();
+        } else {
+            return p_res.text();
+        }
     }
 
 

@@ -43,6 +43,7 @@ class Bundler {
 
         this.externals = NKMjs.Get(`externals`, []);
         this.externalsRemap = NKMjs.Get(`externalsRemap`, {});
+        this.shrinkMap = NKMjs.Get(`shrinkMap`, {});
 
         var b = browserify();
         b.add(this.entryPoint);
@@ -130,7 +131,7 @@ class Bundler {
         this.script._logFwd(chalk.italic(`swap-externals » ${this.moduleID}`), `|`, 1);
 
         let transformed = this._ReplaceExternal(p_response.code);//this._ReplaceKeys(this._ReplaceExternal(p_response.code));
-        transformed = this._ShrinkRequires(transformed);
+        //transformed = this._ShrinkRequires(transformed);
         transformed = transformed.replaceAll(`require`, `$r`);
 
         transformed = this._CleanArtifacts(transformed);
@@ -147,16 +148,15 @@ class Bundler {
         for (let i = 0, n = this.externals.length; i < n; i++) {
             let
                 id = this.externals[i],
-                index = i;
+                index = id;//i;
+
             if (id === this.moduleID) { continue; }
-            //p_content = p_content.split(`require("${id}")`).join(`globalThis.nkmdefs[${i}]`);
-            //p_content = p_content.split(`"${id}":void 0`).join(``);
 
             if (id in this.externalsRemap) {
-                index = this.externals.indexOf(this.externalsRemap[id]);
+                index = this.externalsRemap[id];//this.externals.indexOf(this.externalsRemap[id]);
             }
 
-            p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs[${index}]`);
+            p_content = p_content.replaceAll(`require("${id}")`, `globalThis.nkmdefs["${index}"]`);
             p_content = p_content.replaceAll(`"${id}":void 0`, ``);
 
         }
@@ -168,24 +168,25 @@ class Bundler {
     _ShrinkRequires(p_content) {
 
         let
-            reqMap = {},
             reqs = p_content.split(`require("`),
-            index = 0;
+            startIndex = Object.keys(this.shrinkMap).length;
 
         reqs.shift();
 
         for (const r of reqs) {
             let p = r.split(`")`)[0];
-            if (p in reqMap) { continue; }
-            reqMap[p] = index++;
+            if (p in this.shrinkMap) { continue; }
+            this.shrinkMap[p] = startIndex++;
         };
 
-        for (var id in reqMap) {
+        NKMjs.Set(`shrinkMap`, this.shrinkMap);
+
+        for (var id in this.shrinkMap) {
             if (this.externals.includes(id) ||
                 id == 'uuid' ||
                 id == '_process' ||
                 id == 'path') { continue; }
-            p_content = p_content.replaceAll(`"${id}"`, `"_${reqMap[id]}"`);
+            p_content = p_content.replaceAll(`"${id}"`, `"_${this.shrinkMap[id]}"`);
         }
 
         return p_content;

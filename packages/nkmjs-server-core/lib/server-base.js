@@ -414,7 +414,7 @@ class ServerBase extends com.Observable {
         this._Boot();
     }
 
-    _Boot() {
+    async _Boot() {
 
     }
 

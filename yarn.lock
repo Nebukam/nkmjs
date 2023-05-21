@@ -4698,7 +4698,7 @@ electron-to-chromium@^1.4.284:
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.386.tgz"
   integrity sha512-w0VD4WR225nuNsz6FokDaqugxzue6iUVBo8QfUrl2Y6nWHxtBUhjWDnUaG/1v5oWeFPLMJAQk3zKHTHW/P8+Og==
 
-electron@*, electron@^24.3.0:
+electron@*:
   version "24.3.0"
   resolved "https://registry.yarnpkg.com/electron/-/electron-24.3.0.tgz#d1ef519b0d6d86cc4992519b49821372cb957fe6"
   integrity sha512-M7PpfpOzGdLeZPr2xhxXuvJeoXPEHMH40Rtv8BCGleRPolwna9BepAGc0H0F+Uz5kGKOv3xcm99fTurvXUH0nw==

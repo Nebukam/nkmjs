@@ -1,3 +1,4 @@
 'use strict';
-if(!globalThis.nkmdefs){globalThis.nkmdefs = [];};
-globalThis.nkmdefs[%module_index%] = require(`%module_require_path%`);
+let lib = (globalThis.nkmdefs = globalThis?.nkmdefs || {});
+lib[%module_index%] = require(`%module_require_path%`);
+console.log(`Added %module_index%.`,lib[%module_index%]);

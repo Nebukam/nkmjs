@@ -55,7 +55,7 @@ class TaskBundleExternals extends ScriptBase {
 
         let moduleName = `${NKMjs.ExternalName(module)}.js`,
             replacer = new ReplaceVars({
-                module_index: `${this.eIndex++}`,
+                module_index: `'${module}'`,//`${this.eIndex++}`,
                 module_require_path: module
             }),
             entryPoint = NKMjs.InApp(moduleName),
