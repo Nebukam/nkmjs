@@ -81,7 +81,6 @@ class SimpleDataBlock extends DataBlock {
 
         this._parent = null;
         this._values = {};
-        this._ResetValues(this._values);
 
         SIMPLEX.InitSimpleDataBlock(this);
 
@@ -107,14 +106,6 @@ class SimpleDataBlock extends DataBlock {
     _OnParentChanged(p_oldParent) { }
 
     //#region Values
-
-    _ResetValues(p_values) {
-        let statics = this.DEFINITIONS;
-        for (var id in statics) {
-            let def = statics[id];
-            p_values[id] = def.getter ? u.Call(def.getter, this) || def.value : def.value;
-        }
-    }
 
     /**
      * 
