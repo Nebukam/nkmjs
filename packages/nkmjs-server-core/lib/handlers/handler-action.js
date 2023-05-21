@@ -14,8 +14,7 @@ class ActionHandler extends base {
 
     _SanitizeRequest(p_req) {
         
-        this._actionId = p_req.params.actionId;
-        
+        this._actionId = p_req.params.id;
         if (!this._actionId) { return false; }
 
         return this._SanitizeAgainstNFOS(

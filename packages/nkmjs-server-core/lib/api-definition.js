@@ -129,7 +129,7 @@ class APIDefinition extends com.Observable {
      */
     _Handle(p_req, p_res) {
 
-        console.log(`>>> ${this._route} @ ${this._handlerClass.name} | ${this.id}`);
+        console.log(`>>> ${p_req.method} ${p_req.url} @ ${this._handlerClass.name} | ${this.id}`);
 
         if (this.requireAuth &&
             !nkm.main.IsAuthenticated(p_req)) {

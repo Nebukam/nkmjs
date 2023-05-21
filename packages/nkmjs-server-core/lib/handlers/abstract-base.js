@@ -32,16 +32,17 @@ class HandlerBase extends com.Observable {
      */
     async _InternalHandle(p_req, p_res) {
 
+        this._req = p_req;
+        this._res = p_res;
+
         let status = this._SanitizeRequest(p_req);
 
         if (status !== true) {
             if (u.isNumber(status)) { status = STATUSES.getStatus(status); }
             if (!status) { status = STATUSES.BAD_REQUEST; }
-            return this.Abort(status);
+            this.Abort(status);
+            return;
         }
-
-        this._req = p_req;
-        this._res = p_res;
 
         await this.Handle();
 
@@ -63,7 +64,7 @@ class HandlerBase extends com.Observable {
     Complete(p_data = null) {
 
         if (!p_data) { p_data = STATUSES.OK; }
-        else if (u.isNumber(p_data)) { p_data = STATUSES.getStatus(p_status); }
+        else if (u.isNumber(p_data)) { p_data = STATUSES.getStatus(p_data); }
 
         if (STATUSES.isStatus(p_data)) {
             this._res.status(p_data.code);

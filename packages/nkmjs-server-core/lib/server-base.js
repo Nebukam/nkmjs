@@ -310,6 +310,7 @@ class ServerBase extends com.Observable {
 
         // Catch 404 and forward to error handler
         p_express.use(function (req, res, next) {
+            console.log(req.url);
             const err = new Error('Not Found');
             err.status = STATUSES.NOT_FOUND.code;
             next(err);

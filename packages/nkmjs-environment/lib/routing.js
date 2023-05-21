@@ -15,6 +15,11 @@ module.exports = {
     get globalHeaders() { return _globalHeaders; },
     set globalHeaders(p_value) { for (let h in p_value) { _globalHeaders[h] = p_value[h]; } },
 
+    /**
+     * 
+     * @param {*} p_nfos 
+     * @returns 
+     */
     Model: function (p_nfos) {
         let route = ``;
         if (p_nfos.constructor !== Object) { p_nfos = com.NFOS.Get(p_nfos); }
@@ -23,11 +28,19 @@ module.exports = {
         return route;
     },
 
+    /**
+     * 
+     * @param {*} p_nfos 
+     * @param {*} p_params 
+     * @returns 
+     */
     Build: function (p_nfos, p_params) {
         let route = ``;
         if (p_nfos.constructor !== Object) { p_nfos = com.NFOS.Get(p_nfos); }
         if (p_nfos.prefix) { route += p_nfos.prefix; }
-        if (p_nfos.params) {
+        if (p_nfos.action) {
+            route += `/do/${p_nfos.name}`;
+        } else if (p_nfos.params) {
             for (const param of p_nfos.params) {
                 let value = (p_params ? p_params[param.id] : null) || param.default || module.exports.NONE;
                 route += `/${value}`;
@@ -36,36 +49,50 @@ module.exports = {
         return route;
     },
 
+    /**
+     * 
+     * @param {*} p_api 
+     * @param {*} p_params 
+     * @param {*} p_onSuccess 
+     * @param {*} p_onError 
+     * @returns 
+     */
     Send: async function (p_api, p_params, p_onSuccess = null, p_onError = null) {
 
-        let conf = {
-            method: p_api.method || 'GET',
-            body: p_params?.body || null,
-            headers: u.merge.Defaults(p_params?.headers, _globalHeaders)
+        let
+            conf = {
+                method: p_api.method || 'GET',
+                body: p_params?.body || null,
+                headers: u.merge.Defaults(p_params?.headers, _globalHeaders)
+            };
+
+        if(conf.body){
+            if(u.isObject(conf.body)){
+                conf.body = JSON.stringify(conf.body);
+                conf.headers['content-type'] = `application/json`;
+            }
         }
 
-        return fetch(`${env.app.baseURL}${module.exports.Build(p_api, p_params)}`, conf)
-            .then(async (p_res) => {
-                if (!p_res.ok) {
-                    if (p_onError) { return p_onError(p_res) }
-                    else { return p_res; }
-                }
+        let res;
 
-                if (p_onSuccess) {
-                    let data = await module.exports.ProcessResponse(p_params, p_res);
-                    return p_onSuccess(data);
-                } else {
-                    return module.exports.ProcessResponse(p_params, p_res);
-                }
+        try { res = await fetch(`${env.app.baseURL}${module.exports.Build(p_api, p_params)}`, conf); }
+        catch (e) { res = e; }
 
-            })
-            .catch((e) => {
-                if (p_onError) { return p_onError(e) }
-                else { return e; }
-            });
+        if (!res.ok) {
+            if (p_onError) { return p_onError(res); }
+            else { return res; }
+        }
+
+        if (p_onSuccess) {
+            let data = await module.exports.ProcessResponse(res, p_params);
+            return p_onSuccess(data);
+        } else {
+            return await module.exports.ProcessResponse(res, p_params);
+        }
+
     },
 
-    ProcessResponse: async function (p_params, p_res) {
+    ProcessResponse: async function (p_res, p_params) {
 
         if (p_params.get) { return p_params.get(p_res); }
 

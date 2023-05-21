@@ -36,6 +36,8 @@ class OperationHandler extends base {
 
             if (!p_req.params) { p_req.params = {}; }
             p_req.params.body = p_req.body;
+        }else if(p_req.body){
+            p_req.params.body = p_req.body;
         }
 
         if (p_nfos.params) {
