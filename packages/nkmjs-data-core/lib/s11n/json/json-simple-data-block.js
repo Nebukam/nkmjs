@@ -45,7 +45,10 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      */
     static SerializeContent(p_serial, p_data, p_options = null) {
 
-        let definitions = p_data.DEFINITIONS;
+        let
+            definitions = p_data.DEFINITIONS,
+            dataValues = p_data._values;
+
         for (var id in definitions) {
 
             let def = definitions[id];
@@ -53,8 +56,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
             if (def[IDS.SKIP_S11N]) { continue; }
 
             let desc = SIMPLEX.GetDescriptor(id);
-            if (desc && desc.serialize) { p_serial[id] = desc.serialize(p_data._values[id], def, p_data); }
-            else { p_serial[id] = p_data._values[id]; }
+            desc?.serialize?.(dataValues[id], def, p_data) || dataValues[id];
 
         }
 
@@ -70,7 +72,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                 let blocInfos = blocHeaders[id];
 
                 if (blocInfos[IDS.SKIP_S11N]) { continue; }
-                blocsSerial[id] = this.__master.Serialize(p_data[blocInfos.member || `_${id}`], p_options);
+                blocsSerial[id] = this.__master.Serialize(p_data[blocInfos.member], p_options);
 
             }
 
@@ -92,7 +94,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                 if (dataListHeader[IDS.SKIP_S11N]) { continue; }
 
                 let
-                    dataList = p_data[dataListHeader.member || `_${id}`],
+                    dataList = p_data[dataListHeader.member],
                     contents = [];
 
                 for (let i = 0, n = dataList.count; i < n; i++) {
@@ -117,6 +119,13 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
      */
     static DeserializeContent(p_serial, p_data, p_options = null, p_meta = null) {
 
+        if (!u.isBool(p_options?.reset) || p_options.reset) {
+            p_data.Reset(
+                u.isBool(p_options?.individualSet) ? p_options.individualSet : false,
+                u.isBool(p_options?.silent) ? p_options.silent : true
+            );
+        }
+
         let
             blocHeaders = p_data.BLOCS,
             blocsSerial = p_serial[IDS.BLOCS];
@@ -131,7 +140,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                     if (!blocInfos || blocInfos[IDS.SKIP_S11N]) { continue; }
 
                     let
-                        blocData = p_data[blocInfos.member || `_${id}`],
+                        blocData = p_data[blocInfos.member],
                         blocSerial = blocSerial[id];
 
                     this.__master.Deserialize(blocSerial, blocData, p_options);
@@ -155,14 +164,14 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                 if (dataListHeader[IDS.SKIP_S11N]) { continue; }
 
                 let
-                    dataList = p_data[dataListHeader.member || `_${id}`],
+                    dataList = p_data[dataListHeader.member],
                     contents = listsSerial[id];
 
                 if (!contents) { continue; }
 
                 let callPushFn = dataListHeader.pushFn ? p_data[dataListHeader.pushFn] : null;
 
-                for (const itemSerial of contents){
+                for (const itemSerial of contents) {
                     let item = this.__master.Deserialize(itemSerial, null, p_options);
                     if (callPushFn) { u.Call(callPushFn, dataListHeader, item); }
                     else { dataList.Add(item); }

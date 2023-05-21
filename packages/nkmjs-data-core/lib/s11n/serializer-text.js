@@ -5,11 +5,6 @@ const CTX = require(`./context`);
 *   At the moment, the text serializer does a JSON.stringify of the JSONSerializer result, which is bad.
 */
 
-const S11N_BEGIN = `_OnSerializationBegins`;
-const S11N_COMPLETE = `_OnSerializationComplete`;
-const D13N_BEGINS = `_OnDeserializationBegins`;
-const D13N_COMPLETE = `_OnDeserializationComplete`;
-
 /**
  * @description TODO
  * @class

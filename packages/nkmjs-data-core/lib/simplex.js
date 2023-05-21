@@ -88,7 +88,7 @@ module.exports = {
             for (var id in DATALISTS) {
                 let
                     def = DATALISTS[id];
-                def.member = def.member || `_${id}`; //Fix memberId
+                def.member = def.member || `_${id}`;
             }
         }
 
@@ -99,19 +99,15 @@ module.exports = {
 
     InitSimpleDataBlock: function (p_dataBlock) {
 
+        module.exports.ResetDataBlockValues(p_dataBlock);
+
         let BLOCS = p_dataBlock.BLOCS;
-
-
-
         if (BLOCS) {
             for (var id in BLOCS) {
 
                 let
                     def = BLOCS[id],
-                    memberId = def.member || `_${id}`,
                     type = def.type;
-
-                def.member = memberId; //Fix memberId
 
                 if (u.isInstanceOf(def.type, com.CKEY)) {
                     //Pin type for the session.
@@ -122,7 +118,7 @@ module.exports = {
                 newBloc._iid = id;
                 newBloc._parent = p_dataBlock;
 
-                p_dataBlock[memberId] = newBloc;
+                p_dataBlock[def.member] = newBloc;
 
                 if (def.watch) {
                     for (const watch of def.watch) {
@@ -140,20 +136,16 @@ module.exports = {
         }
 
         let DATALISTS = p_dataBlock.DATALISTS;
-
         if (DATALISTS) {
             for (var id in DATALISTS) {
                 let
                     def = DATALISTS[id],
-                    memberId = def.member || `_${id}`;
+                    newDataList = new (def.type ? def.type : DataList)();
 
-                def.member = memberId; //Fix memberId
-
-                let newDataList = new (def.type ? def.type : DataList)();
                 newDataList.parent = p_dataBlock;
 
-                if (p_dataBlock[memberId]) { throw new Error(`Datalist member ID "${memberId}" overlaps with existing Bloc ID.`); }
-                p_dataBlock[memberId] = newDataList;
+                if (p_dataBlock[def.member]) { throw new Error(`Datalist member ID "${def.member}" overlaps with existing Bloc ID.`); }
+                p_dataBlock[def.member] = newDataList;
 
                 if (def.watch) {
                     for (const watch of def.watch) {
@@ -186,6 +178,35 @@ module.exports = {
 
     },
 
+    ResetDataBlockValues: function (p_dataBlock, p_individualSet = false, p_silent = true, p_callOnReset = false) {
+
+        let definitions = p_dataBlock.DEFINITIONS;
+
+        if (p_individualSet) {
+
+            for (let id in definitions) {
+                let def = definitions[id];
+                p_dataBlock.Set(id, def.getter ? u.Call(def.getter, p_dataBlock) : def.value, p_silent);
+            }
+
+            if (p_callOnReset) { p_dataBlock._OnReset(p_individualSet, p_silent); }
+
+        } else {
+
+            let values = p_dataBlock._values;
+
+            for (let id in definitions) {
+                let def = definitions[id];
+                values[id] = def.getter ? u.Call(def.getter, this) || def.value : def.value;
+            }
+
+            if (p_callOnReset) { p_dataBlock._OnReset(p_individualSet, p_silent); }
+            if (!p_silent) { p_dataBlock.CommitUpdate(); }
+
+        }
+
+    },
+
     ResetDataBlock: function (p_dataBlock, p_individualSet = true, p_silent = false) {
 
         let BLOCS = p_dataBlock.BLOCS;
@@ -207,18 +228,10 @@ module.exports = {
             }
         }
 
-        if (p_individualSet) {
-            let defs = definitions;
-            for (let id in defs) {
-                let def = defs[id];
-                p_dataBlock.Set(id, def.getter ? u.Call(def.getter, p_dataBlock) : def.value, p_silent);
-            }
-            p_dataBlock._OnReset(p_individualSet, p_silent);
-        } else {
-            p_dataBlock._ResetValues(p_dataBlock._values);
-            p_dataBlock._OnReset(p_individualSet, p_silent);
-            if (!p_silent) { p_dataBlock.CommitUpdate(); }
-        }
+        module.exports.ResetDataBlockValues(p_dataBlock, p_individualSet, true, false);
+
+        p_dataBlock._OnReset(p_individualSet, p_silent);
+        if (!p_silent) { p_dataBlock.CommitUpdate(); }
 
     },
 
@@ -387,13 +400,13 @@ module.exports = {
 
         let BLOCS = p_dataBlock.BLOCS;
         if (BLOCS) {
-            for (var id in BLOCS) { p_dataBlock[BLOCS[id].member || `_${id}`].ClearDirty(); };
+            for (var id in BLOCS) { p_dataBlock[BLOCS[id].member].ClearDirty(); };
         }
 
         let DATALISTS = p_dataBlock.DATALISTS;
         if (DATALISTS) {
             for (var id in DATALISTS) {
-                for (const i of p_dataBlock[DATALISTS[id].member || `_${id}`]._array) { i.ClearDirty(); };
+                for (const i of p_dataBlock[DATALISTS[id].member]._array) { i.ClearDirty(); };
             }
         }
 
@@ -417,7 +430,7 @@ module.exports = {
         let BLOCS = p_dataBlock.BLOCS;
         if (BLOCS) {
             for (var id in BLOCS) {
-                let bloc = p_dataBlock[BLOCS[id].member || `_${id}`];
+                let bloc = p_dataBlock[BLOCS[id].member];
                 if (bloc.isDirty) { return true; }
             };
         }
@@ -425,7 +438,7 @@ module.exports = {
         let DATALISTS = p_dataBlock.DATALISTS;
         if (DATALISTS) {
             for (var id in DATALISTS) {
-                let dataList = p_dataBlock[DATALISTS[id].member || `_${id}`]._array;
+                let dataList = p_dataBlock[DATALISTS[id].member]._array;
                 for (let i = 0, n = dataList.length; i < n; i++) {
                     if (dataList[i].isDirty) { return true; }
                 }
