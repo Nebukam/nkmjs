@@ -232,36 +232,7 @@ class SimpleDataBlock extends DataBlock {
      * @param {*} [p_silent] 
      */
     Reset(p_individualSet = true, p_silent = false) {
-
-        let BLOCS = this.BLOCS;
-        if (BLOCS) {
-            for (var id in BLOCS) { this[BLOCS[id].member || `_${id}`].Reset(p_individualSet, p_silent); };
-        }
-
-        let DATALISTS = this.DATALISTS;
-        if (DATALISTS) {
-            for (var id in DATALISTS) {
-                let def = DATALISTS[id];
-                if (def.flush && def.flush == DataList.FLUSH_DEFAULT) {
-                    console.warn(`Flushing ${this} DataList[${id}] is not releasing its items.`);
-                }
-                this[def.member || `_${id}`].Flush(def.flush || DataList.FLUSH_DIRECT_RELEASE);
-            }
-        }
-
-        if (p_individualSet) {
-            let defs = definitions;
-            for (let id in defs) {
-                let def = defs[id];
-                this.Set(id, def.getter ? u.Call(def.getter, this) : def.value, p_silent);
-            }
-            this._OnReset(p_individualSet, p_silent);
-        } else {
-            this._ResetValues(this._values);
-            this._OnReset(p_individualSet, p_silent);
-            if (!p_silent) { this.CommitUpdate(); }
-        }
-
+        SIMPLEX.ResetDataBlock(this, p_individualSet, p_silent);
     }
 
     get resolutionFallbacks() { return __noResolution; }

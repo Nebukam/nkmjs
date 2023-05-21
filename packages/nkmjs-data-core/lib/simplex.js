@@ -186,6 +186,42 @@ module.exports = {
 
     },
 
+    ResetDataBlock: function (p_dataBlock, p_individualSet = true, p_silent = false) {
+
+        let BLOCS = p_dataBlock.BLOCS;
+        if (BLOCS) {
+            for (var id in BLOCS) {
+                let def = BLOCS[id];
+                p_dataBlock[def.member].Reset(p_individualSet, p_silent);
+            };
+        }
+
+        let DATALISTS = p_dataBlock.DATALISTS;
+        if (DATALISTS) {
+            for (var id in DATALISTS) {
+                let def = DATALISTS[id];
+                if (def.flush && def.flush == DataList.FLUSH_DEFAULT) {
+                    console.warn(`Flushing ${p_dataBlock} DataList[${id}] is not releasing its items.`);
+                }
+                p_dataBlock[def.member].Flush(def.flush || DataList.FLUSH_DIRECT_RELEASE);
+            }
+        }
+
+        if (p_individualSet) {
+            let defs = definitions;
+            for (let id in defs) {
+                let def = defs[id];
+                p_dataBlock.Set(id, def.getter ? u.Call(def.getter, p_dataBlock) : def.value, p_silent);
+            }
+            p_dataBlock._OnReset(p_individualSet, p_silent);
+        } else {
+            p_dataBlock._ResetValues(p_dataBlock._values);
+            p_dataBlock._OnReset(p_individualSet, p_silent);
+            if (!p_silent) { p_dataBlock.CommitUpdate(); }
+        }
+
+    },
+
     /**
      * Attempts to find the value of a given ID in a given object
      * If the id is not found on the given object, goes through a list of fallback
