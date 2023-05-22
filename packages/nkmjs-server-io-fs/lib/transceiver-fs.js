@@ -257,18 +257,18 @@ class Transceiver_FS extends base {
 
         return fsPromises.writeFile(p_path, p_data, p_options).then(
             () => { return p_callback(null, p_path, true); },
-            (err) => {
+            async (err) => {
                 let recursive = this._opt(p_options, `recursive`, this._recursive);
                 if (err.code == 'ENOENT' && recursive) {
-                    fsPromises.mkdir(path.dirname(p_path), { recursive: true }).then(
-                        () => {
-                            fsPromises.writeFile(p_path, p_data, p_options).then(
-                                () => { return p_callback(null, p_path, true); },
-                                (err2) => { return p_callback(err2, p_path, false); }
-                            );
-                        },
-                        (err3) => { console.log(err); return p_callback(err3, p_path, false); }
-                    )
+                    try {
+                        await fsPromises.mkdir(path.dirname(p_path), { recursive: true });
+                        return fsPromises.writeFile(p_path, p_data, p_options).then(
+                            () => { return p_callback(null, p_path, true); },
+                            (err2) => { return p_callback(err2, p_path, false); }
+                        );
+                    } catch (err3) {
+                        console.log(err); return p_callback(err3, p_path, false);
+                    }
                 } else { throw err; }
             }
         );

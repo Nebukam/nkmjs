@@ -56,7 +56,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
             if (def[IDS.SKIP_S11N]) { continue; }
 
             let desc = SIMPLEX.GetDescriptor(id);
-            desc?.serialize?.(dataValues[id], def, p_data) || dataValues[id];
+            p_serial[id] = desc?.serialize?.(dataValues[id], def, p_data) || dataValues[id];
 
         }
 

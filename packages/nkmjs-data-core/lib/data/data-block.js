@@ -26,9 +26,7 @@ class DataBlock extends com.Observable {
         super._Init();
         this._id = null;
         this._isTemp = false;
-        this._metadirty = false;
         this._isDirty = false;
-        this._ecosystem = null;
 
         this._metadata = new Metadata();
         this._metadata.owner = this;
@@ -129,7 +127,6 @@ class DataBlock extends com.Observable {
         }
 
         this._metadata._isDirty = false;
-        this._metadirty = false;
         this._isDirty = false;
 
         this._ready = true;

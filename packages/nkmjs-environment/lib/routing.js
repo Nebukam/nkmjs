@@ -94,7 +94,7 @@ module.exports = {
 
     ProcessResponse: async function (p_res, p_params) {
 
-        if (p_params.get) { return p_params.get(p_res); }
+        if (p_params?.get) { return p_params.get(p_res); }
 
         let contentType = p_res.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
