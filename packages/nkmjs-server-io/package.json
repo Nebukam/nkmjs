@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/server-io",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "NKMjs Server-side IO Module",
   "main": "index.js",
   "repository": {
@@ -18,9 +18,9 @@
   "license": "MIT",
   "dependencies": {
     "@nkmjs/collections": "^1.1.2",
-    "@nkmjs/common": "^1.2.2",
-    "@nkmjs/environment": "^1.2.2",
-    "@nkmjs/services": "^1.2.2",
+    "@nkmjs/common": "^1.2.3",
+    "@nkmjs/environment": "^1.2.3",
+    "@nkmjs/services": "^1.2.3",
     "@nkmjs/utils": "^1.2.2",
     "limiter": "^2.1.0",
     "sanitize-filename": "^1.6.3"
