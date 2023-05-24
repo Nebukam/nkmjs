@@ -17,22 +17,19 @@ class TileExplorer extends base {
 
         return style.Extends({
             '.body': {
-                display: `flex`,
-                'flex-flow': `row wrap`,
-                'align-content': `stretch`,
-                'align-items': `stretch`,
+                ...style.rules.flex.row.wrap,
+                ...style.rules.flex.stretch,
             },
             '.group': {
-                position: `relative`,
-                flex: `1 1 auto`,
+                ...style.rules.pos.rel,
+                ...style.rules.item.fill,
             },
             'tile-ctnr': {
-                position: `relative`,
-                flex: `1 1 auto`,
-                display: `flex`,
-                'flex-flow': `row wrap`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.wrap,
                 'align-content': `flex-start`,
                 'align-items': `flex-start`,
+                ...style.rules.item.fill,
             }
         }, base._Style());
     }

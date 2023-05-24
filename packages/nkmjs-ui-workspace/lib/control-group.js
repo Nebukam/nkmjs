@@ -54,29 +54,26 @@ class ControlGroup extends base {
 
             },
             '.header': {
-                position: `relative`,
-                display: `flex`,
-
-                'flex-direction': `row`,
-                'align-items': `center`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.inlineWrap,
                 'align-content': `stretch`,
                 'padding': `4px`,
                 'box-sizing': `border-box`,
 
-                flex: `0 1 auto`,
+                ...style.rules.item.shrink,
             },
-            '.toggle': { flex: `0 0 auto` },
-            '.facade': { flex: `1 1 auto` },
-            '.toolbar': { flex: `0 0 auto` },
+            '.toggle': { ...style.rules.item.fixed, },
+            '.facade': { ...style.rules.item.fill, },
+            '.toolbar': { ...style.rules.item.fixed, },
 
             '.content': {
 
             },
             '.content.expanded': {
-                display: `flex`
+                ...style.rules.display.flex,
             },
             '.content.collapsed': {
-                display: `none`
+                ...style.rules.display.none,
             }
         }, base._Style());
     }

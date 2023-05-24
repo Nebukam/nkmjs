@@ -34,18 +34,16 @@ class MetaControlItem extends Inspec__BASE__torItem {
             ':host': {
                 margin: `5px`,
                 padding: `6px`,
-                display: `flex`,
-                'flex-flow': `column`,
-                'align-items': `stretch`,
-                'align-content': `stretch`,
+                ...style.rules.flex.column.wrap,
+                ...style.rules.flex.stretch,
             },
             '.facade': {
-                flex: `1 1 auto`,
+                ...style.rules.item.fill,
                 'margin-top': `-5px`,
                 'margin-bottom': `0px`
             },
             '.control': {
-                flex: `1 1 auto`,
+                ...style.rules.item.fill,
             }
         }, base._Style());
     }

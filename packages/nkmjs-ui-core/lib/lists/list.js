@@ -1,6 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
+const style = require(`@nkmjs/style`);
 
 const IDS = require(`../ids`);
 const SIGNAL = require(`../signal`);
@@ -88,14 +89,14 @@ class List extends base {
         return {
             ':host': {
 
-                'position': `relative`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
 
                 'padding': 0,
                 'margin': 0,
                 '--half-indent': `calc(var(--tree-indent) / 2)`,
 
-                'display': `flex`,
-                'flex-flow': `column nowrap`,
+                
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
@@ -114,8 +115,8 @@ class List extends base {
             },
 
             '.header': {
-                'position': `relative`,
-                'flex': '0 0 auto',
+                ...style.rules.pos.rel,
+                ...style.rules.item.fixed,
 
                 'box-sizing': `border-box`,
                 'height': `var(--tree-size)`,
@@ -125,8 +126,8 @@ class List extends base {
             },
 
             '.body': {
-                'position': `relative`,
-                'flex': '1 0 auto',
+                ...style.rules.pos.rel,
+                ...style.rules.item.grow,
 
                 'display': `none`,
                 'flex-flow': `column nowrap`,
@@ -135,10 +136,10 @@ class List extends base {
 
                 'min-width': 0,
             },
-            ':host(.expanded) .body': { 'display': `flex` },
+            ':host(.expanded) .body': { ...style.rules.display.flex, },
 
             '.item': {
-                flex: `1 1 auto`,
+                ...style.rules.item.fill,
             }
         };
     }

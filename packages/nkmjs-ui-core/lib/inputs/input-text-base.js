@@ -114,14 +114,11 @@ class InputTextBase extends base {
 
         return style.Extends({
             ':host': {
-                position: `relative`,
-                display: `flex`,
-                'align-content': `stretch`,
-                'align-items': `stretch`
+                ...style.rules.pos.rel,
+                ...style.rules.flex.stretch,
             },
             '.field': {
-                flex: `1 1 auto`,
-                'min-width': 0
+                ...style.rules.item.fill,
             }
         }, base._Style());
 

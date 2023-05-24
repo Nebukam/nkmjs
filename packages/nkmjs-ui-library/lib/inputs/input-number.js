@@ -40,9 +40,7 @@ class InputNumber extends base {
         return style.Extends({
             ':host': {
                 'height': `var(--size)`,
-                'display': 'flex',
-                'flex-flow': 'row nowrap',
-                'align-items': 'center'
+                ...style.rules.flex.row.centerNowrap,
             },
             ':host(.no-arrows) .field': {
                 'text-align': 'center'

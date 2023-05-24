@@ -3,7 +3,6 @@
 const nkm = require(`@nkmjs/core`);
 const u = nkm.u;
 const ui = nkm.ui;
-const { CSS } = nkm.style;
 
 const UIItem = require("./ui-item");
 
@@ -22,19 +21,18 @@ class UIItemListLayer extends base {
     // ----> DOM
 
     static _Style() {
-        return CSS.Extends({
+        return nkm.style.Extends({
             ':host': {
-                display: `flex`,
+                ...nkm.style.rules.display.flex,
                 //zoom:0.8,
             },
             '.list-ctnr': {
                 width: `100%`,
-                display: `flex`,
-                'flex-flow': `row wrap`,
+                ...nkm.style.rules.flex.row.wrap,
                 'overflow-y': 'scroll'
             },
             '.item': {
-                flex: `1 1 auto`,
+                ...nkm.style.rules.item.fill,
                 'min-width': `250px`,
                 'min-height': `150px`
             }

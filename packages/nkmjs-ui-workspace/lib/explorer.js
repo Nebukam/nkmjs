@@ -2,6 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 const base = ui.views.View;
@@ -31,23 +32,19 @@ class Explorer extends base {
         let shadowColor = `rgba(0,0,0,0.5)`;
         return {
             ':host': {
-                position: `relative`,
-                flex: `1 1 auto`,
-                'min-width': 0,
-
-                display: `flex`,
-                'flex-flow': `column nowrap`,
-                'align-content': `stretch`,
-                'align-items': `stretch`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
+                ...style.rules.flex.stretch,
+                ...style.rules.item.fill,
             },
             '.group': {
-                position: `relative`
+                ...style.rules.pos.rel,
             },
             '.header': {
-                flex: `0 0 auto`,
+                ...style.rules.item.fixed,
             },
             '.footer': {
-                flex: `0 0 auto`,
+                ...style.rules.item.fixed,
             },
 
             '.body': {

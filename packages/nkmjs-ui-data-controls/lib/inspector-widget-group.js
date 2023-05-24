@@ -56,12 +56,9 @@ class InspectorWidgetGroup extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                //'@': ['fade-in'],
-
-                'position': `relative`,
-
-                'display': `flex`,
-                'flex-flow': `column nowrap`,
+                //...style.rules.fadeIn,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
@@ -72,35 +69,30 @@ class InspectorWidgetGroup extends base {
             ':host(.expanded) .icon.expand': { 'transform': `rotate(90deg)` },
 
             '.header': {
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.inlineNowrap,
                 'box-sizing': `border-box`,
-
-                'flex': '1 1 auto',
+                ...style.rules.item.fill,
                 'width': `100%`,
-
-                'position': `relative`,
-                'display': 'flex',
-                'flex-flow': `row nowrap`,
-                'align-items': `center`,
                 'justify-items': `flex-start`,
             },
 
             '.toolbar': {
-                'flex': '0 0 auto',
+                ...style.rules.item.fixed,
             },
 
             '.label': {
-                'flex': '1 1 auto'
+                ...style.rules.item.fill,
             },
 
             '.body': {
-                'position': `relative`,
-                'flex': '1 0 auto',
-                'min-width': 0,
-                'flex-flow': `column nowrap`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
+                ...style.rules.item.grow,
             },
 
-            ':host(.expanded) .body': { 'display': `flex` },
-            ':host(:not(.expanded)) .body': { 'display': `none` },
+            ':host(.expanded) .body': { ...style.rules.display.flex, },
+            ':host(:not(.expanded)) .body': { ...style.rules.display.none },
             ':host(.expanded) .header': { 'margin-bottom': `5px` },
 
         }, base._Style());

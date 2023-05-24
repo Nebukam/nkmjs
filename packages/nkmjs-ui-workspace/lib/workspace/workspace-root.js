@@ -47,10 +47,10 @@ class RootWorkspace extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                position: `relative`,
+                ...style.rules.pos.rel,
+                ...style.rules.display.flex,
                 //height:`100%`,
-                flex: `1 1 auto`,
-                display: `flex`,
+                ...style.rules.item.fill,
             },
         }, base._Style());
     }

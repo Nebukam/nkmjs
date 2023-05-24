@@ -23,18 +23,16 @@ class ValueListInspector extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                '@': ['fade-in'],
+                ...style.rules.fadeIn,
                 'flex-flow': 'row wrap',
                 'align-content': 'flex-start',
                 'width': `${this.__width}`,
             },
             '.body': {
-                'display': 'flex',
-                'flex-flow': 'row wrap',
-                'flex': '1 1 auto',
-                'min-height': '0',
+                ...style.rules.flex.row.wrap,
+                ...style.rules.item.fill,
                 'overflow': 'auto',
-                'gap': '8px 5px',
+                ...style.rules.gap.small,
                 'padding': `10px`,
             },
             '.control': {
@@ -46,7 +44,7 @@ class ValueListInspector extends base {
                 //'border-top':'1px solid gray'
             },
             '.drawer': {
-                'flex': '1 1 auto',
+                ...style.rules.item.fill,
                 'width': `350px`,
                 'padding': `10px`,
                 'background-color': `rgba(19, 19, 19, 0.15)`,

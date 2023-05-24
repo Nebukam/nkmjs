@@ -40,9 +40,7 @@ class InputSliderOnly extends base {
         return style.Extends({
             ':host': {
                 'height': `var(--size)`,
-                'display': 'flex',
-                'flex-flow': 'row nowrap',
-                'align-items': 'center',
+                ...style.rules.flex.row.centerNowrap,
                 '--thumbSize':'calc(var(--size) * 0.5)',
                 'min-width':'calc(var(--size) * 2)'
             },
@@ -54,7 +52,7 @@ class InputSliderOnly extends base {
                 'margin-left': '4px'
             },
             '.slider-ctnr': {
-                'flex': '1 1 auto',
+                ...style.rules.item.fill,
                 'height': 'var(--size)',
                 'margin-left': 'calc(var(--thumbSize) * 0.5)',
                 'margin-right': 'calc(var(--thumbSize) * 0.5)'

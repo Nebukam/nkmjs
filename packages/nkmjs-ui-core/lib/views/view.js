@@ -64,7 +64,7 @@ class View extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                '@': [`fade-in`]
+                ...style.rules.fadeIn,
             },
             ':host(.resizable)':{
                 'flex':'0 0 auto !important'

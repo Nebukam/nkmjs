@@ -48,11 +48,11 @@ class SingleViewLayer extends base {
 
         return style.Extends({
             ':host': {
-                '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box
-                'overflow': 'hidden'
+                ...style.rules.layer,
+                'overflow': 'hidden',
             },
             [`.${ui.IDS.VIEW}`]: {
-                '@': [`layer`]
+                ...style.rules.layer,
             }
         }, base._Style());
     }

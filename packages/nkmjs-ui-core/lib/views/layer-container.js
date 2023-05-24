@@ -46,7 +46,7 @@ class LayerContainer extends base {
         }, base._Style());
 
         s[`.${this.__layerClassName}`] = {
-            '@': [`layer`]
+            ...style.rules.layer,
         }
 
         return s;

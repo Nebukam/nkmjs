@@ -506,7 +506,7 @@ FLAGS.STRETCH_SQUEEZE = Object.freeze(`stretch-squeeze`);
 FLAGS.stretches = [
     FLAGS.STRETCH,
     FLAGS.STRETCH_SAME,
-    FLAGS.STRETCH_SAME
+    FLAGS.STRETCH_SQUEEZE
 ];
 
 // Flavors

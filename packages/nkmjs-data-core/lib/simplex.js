@@ -70,7 +70,7 @@ module.exports = {
 
     //#region Utils
 
-    Export: function (p_blockClass) {
+    Register: function (p_blockClass) {
 
         let BLOCS = p_blockClass.__BLOCS;
         if (BLOCS) {
@@ -99,7 +99,7 @@ module.exports = {
 
     InitSimpleDataBlock: function (p_dataBlock) {
 
-        module.exports.ResetDataBlockValues(p_dataBlock);
+        module.exports.ResetDataBlockValues(p_dataBlock, false, true, false);
 
         let BLOCS = p_dataBlock.BLOCS;
         if (BLOCS) {
@@ -178,7 +178,11 @@ module.exports = {
 
     },
 
-    ResetDataBlockValues: function (p_dataBlock, p_individualSet = false, p_silent = true, p_callOnReset = false) {
+    ResetDataBlockValues: function (
+        p_dataBlock, 
+        p_individualSet = false, 
+        p_silent = true, 
+        p_callOnReset = false) {
 
         let definitions = p_dataBlock.DEFINITIONS;
 
@@ -207,7 +211,10 @@ module.exports = {
 
     },
 
-    ResetDataBlock: function (p_dataBlock, p_individualSet = true, p_silent = false) {
+    ResetDataBlock: function (
+        p_dataBlock, 
+        p_individualSet = true, 
+        p_silent = false) {
 
         let BLOCS = p_dataBlock.BLOCS;
         if (BLOCS) {

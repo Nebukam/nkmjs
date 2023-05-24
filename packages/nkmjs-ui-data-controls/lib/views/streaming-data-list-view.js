@@ -93,25 +93,24 @@ class StreamingDataListView extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                'position': 'relative',
-                'display': 'flex',
-                'flex-flow': 'column nowrap',
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
                 '--streamer-gap': '10px',
                 'overflow': 'clip'
             },
             '.header, .search, .footer': {
-                'flex': '0 0 auto',
-                '@': ['bg-blur-10']
+                ...style.rules.item.fixed,
+                ...style.rules.bgBlur.small,
             },
             '.header': {
-                '@': ['sticky-top']
+                ...style.rules.sticky.top,
             },
             '.footer': {
-                '@': ['sticky-bottom']
+                ...style.rules.sticky.bottom,
             },
             '.dom-stream': {
-                'position': 'relative',
-                'flex': '1 1 auto',
+                ...style.rules.pos.rel,
+                ...style.rules.item.fill,
                 'overflow': 'auto',
             },
             '.dom-stream.empty': {

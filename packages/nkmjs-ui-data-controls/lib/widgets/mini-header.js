@@ -32,8 +32,8 @@ class MiniHeader extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                //'@': ['fade-in'],
-                'position': 'relative',
+                //...style.rules.fadeIn,
+                ...style.rules.pos.rel,
                 'width': '100%',
                 'border-bottom': '1px solid rgba(127, 127, 127, 0.1)',
                 'margin-top': '2px',

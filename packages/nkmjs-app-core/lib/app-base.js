@@ -186,28 +186,10 @@ class AppBase extends com.Observable {
 
         u.LOG._(`${this._APPID} : SETUP`, `#339a6e`, `#212121`);
 
-
-
         this._RegisterIPCBindings();
-
-        // At that point, the Service Manager has started.
-        // Initialize and start critical services.
-
-        // TODO : Move what's below AFTER App Start.
-
-        style.STYLE.defaultPalette._themeId = (env.ENV.config.theme || `default`);
 
         this._appBody = ui.UI.Rent(this._appBodyClass);
         this._appBody.setAttribute(`id`, `app`);
-
-        // Insert global.css inside the app shadow dom once so all subsequent elements inherit from it
-        // Import in the head is not enough for the styles to 'pierce' through
-
-        /*
-        ui.dom.AttachFirst(
-            ui.dom.El(`link`, { href: style.STYLE.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }),
-            this._appBody._host);
-        */
 
         if (!this._layers || !this._layers.length) { this._layers = [{ id: `_mainLayer`, cl: this.constructor.__singleViewLayer }]; }
         this._layers.push({ id: `_overlayHandler`, cl: this._overlayHandlerClass });
@@ -262,10 +244,6 @@ class AppBase extends com.Observable {
     Start() {
 
         u.LOG._(`⏵${this._APPID}`, `#339a6e`, `#212121`);
-
-        // Insert global.css (again) outside of the shadow dom this time
-        // NOTE : Should be added in regular css imports
-        //ui.dom.El(`link`, { href: style.STYLE.current.GetCSSLink(`@/global.css`), rel: `stylesheet` }, document.head);
 
         this._userPreferences.Load(
             `${this._APPID}Preferences`,

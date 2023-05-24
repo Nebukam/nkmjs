@@ -1,5 +1,7 @@
 'use strict';
 
+const style = require(`@nkmjs/style`);
+
 const UI = require(`../ui`);
 const View = require(`./view`);
 const dom = require(`../utils-dom`);
@@ -28,8 +30,8 @@ class Layer extends base {
     set layerSiblingsCount(p_value) { this._layerSiblingsCount = p_value; }
 
     get layerIndex() { return this._layerIndex; }
-    set layerIndex(p_value) { 
-        this._layerIndex = p_value; 
+    set layerIndex(p_value) {
+        this._layerIndex = p_value;
         dom.CSS(this, `--layer-depth`, p_value);
         this._OnLayerIndexUpdated();
     }
@@ -42,13 +44,13 @@ class Layer extends base {
     static _Style() {
         return {
             ':host': {
-                '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box
+                ...style.rules.layer,
                 'overflow': 'hidden'
             }
         }
     }
 
-    _OnLayerIndexUpdated(){
+    _OnLayerIndexUpdated() {
 
     }
 

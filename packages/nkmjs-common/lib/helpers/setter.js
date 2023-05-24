@@ -113,6 +113,7 @@ class Setter {
 
                 let value = nfo.get ? p_data[nfo.get] : p_data;
                 if (nfo.preprocess) { value = u.Call(nfo.preprocess, value, p_data); }
+               
 
                 let setter = nfo.set;
                 if (setter) {

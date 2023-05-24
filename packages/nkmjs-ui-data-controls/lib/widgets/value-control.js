@@ -67,19 +67,17 @@ class ValueControl extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                //'@': ['fade-in'],
-                'position': 'relative',
-                'display': 'flex',
-                'flex-flow': 'row nowrap',
-                'align-items': 'center',
-                'flex': '1 1 auto',
+                //...style.rules.fadeIn,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.centerNowrap,
+                ...style.rules.item.fill,
 
                 'margin': '0 2px 5px 2px',
             },
             ':host(.selected)': {
                 'background-color': 'rgba(127,127,127,0.25)'
             },
-            ':host(.input-first) .input-field': { 'flex': '0 0 auto' },
+            ':host(.input-first) .input-field': { ...style.rules.item.fixed, },
             ':host(.input-first) .label': { 'margin-left': '10px' },
             ':host(.inherited) .input-field, :host(.inherited) .label': {
                 //'pointer-events': 'none !important',

@@ -60,9 +60,6 @@ class ToolButton extends base {
     _Render() {
         super._Render();
         this._icon = new ui.manipulators.Icon(ui.dom.El(`div`, { class: ui.IDS.ICON }, this._host), false);
-    }
-
-    _PostRender() {
         this._icon.Set(null);
     }
 

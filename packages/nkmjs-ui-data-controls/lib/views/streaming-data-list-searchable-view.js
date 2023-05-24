@@ -39,7 +39,7 @@ class StreamingDataListSearchableView extends base {
             ':host': {
             },
             '.search-status': {
-                '@': ['absolute-center']
+                ...style.rules.absolute.center,
             }
         }, base._Style());
     }

@@ -85,10 +85,8 @@ class Tab extends base {
         return style.Extends({
 
             ':host': {
-                'position': `relative`,
-
-                'display': `flex`,
-                'flex-flow': `row nowrap`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.nowrap,
                 'align-items': `center`,
                 'align-content': `stretch`
             }

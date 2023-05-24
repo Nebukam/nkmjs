@@ -45,19 +45,15 @@ class IconCard extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                'display': 'flex',
-                'justify-content': `stretch`,
-                'align-items': `stretch`,
+                ...style.rules.flex.stretch,
             },
 
             '.header': {
-                'flex': '0 1 auto',
-                'display': 'flex',
-                'justify-content': `center`,
-                'align-items': `center`,
+                ...style.rules.flex.center,
+                ...style.rules.item.shrink,
             },
             '.floating-icon': {
-                'flex': '1 1 auto',
+                ...style.rules.item.fill,
             },
 
         }, base._Style());

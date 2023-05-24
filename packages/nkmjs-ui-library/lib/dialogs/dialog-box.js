@@ -42,8 +42,7 @@ class DialogBox extends base {
 
         return style.Extends({
             ':host': {
-                display: `flex`,
-                'flex-flow': `column`,
+                ...style.rules.flex.column.nowrap,
                 'align-content': `stretch`,
                 'align-items': `stretch`,
                 'justify-content': `center`,
@@ -53,22 +52,20 @@ class DialogBox extends base {
 
             },
             '.footer': {
-                display: `flex`,
-                'flex-flow': `column`,
+                ...style.rules.flex.column.nowrap,
                 'align-content': `flex-end`,
                 'align-items': `flex-end`,
 
-                flex: `0 0 auto`,
+                ...style.rules.item.fixed,
             },
             '.toolbar': {
-                flex: `0 0 auto`,
+                ...style.rules.item.fixed,
             },
             '.body': {
                 'display':'flex',
-                'min-height': '0',
                 'overflow-y': `auto`,
                 'overflow-x': `hidden`,
-                flex: `1 1 auto`
+                ...style.rules.item.fill,
             }
 
         }, base._Style());

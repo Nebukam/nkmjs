@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 const SIGNAL = require(`../signal`);
@@ -250,12 +251,11 @@ class Shelf extends base {
                 'display': 'none'
             },
             [`.${NAV}`]: {
-                'flex': `0 0 auto` // was commented out but can't remember why
+                ...style.rules.item.fixed,
             },
             [`.${ui.IDS.VIEW}`]: {
-                'flex': `1 1 auto`, // was commented out but can't remember why
+                ...style.rules.item.fill,
             },
-
 
             // Vertical ( nav on the left or right )
             ':host(.vertical)': {

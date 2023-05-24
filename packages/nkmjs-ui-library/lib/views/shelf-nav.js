@@ -71,22 +71,17 @@ class ShelfNav extends base {
         return style.Extends({
             ':host': {
                 //'align-content': `flex-start`,
-                'display': 'grid',
-                //'display': 'flex',
-                //'justify-content': `flex-start`,
-                'justify-content': `stretch`,
-                'align-items': `stretch`,
+                ...style.rules.grid.stretch,
             },
 
             '.body': {
-                'flex': '1 1 auto',
-
-                'display': 'flex',
+                ...style.rules.display.flex,
                 'justify-content': `flex-start`,
                 'align-items': `stretch`,
+                ...style.rules.item.fill,
             },
             '.header, .footer': {
-                flex: `0 0 auto`,
+                ...style.rules.item.fixed,
             },
 
             //Vertical

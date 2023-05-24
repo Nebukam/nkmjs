@@ -34,6 +34,7 @@ module.exports = {
     validate: require(`./lib/validation`),
     sanitize: require(`./lib/sanitization`),
 
+    Register: __SIMPLEX.Register,
     RegisterDescriptors: __SIMPLEX.RegisterDescriptors.bind(__SIMPLEX),
     RegisterDescriptor: __SIMPLEX.RegisterDescriptor.bind(__SIMPLEX),
     GetDescriptor: __SIMPLEX.GetDescriptor.bind(__SIMPLEX),

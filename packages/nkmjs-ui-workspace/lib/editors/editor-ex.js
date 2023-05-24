@@ -151,11 +151,8 @@ class EditorEx extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                position: `relative`,
-                display: `flex`,
-                'align-items': `stretch`,
-                'align-content': `stretch`,
-                'min-width': 0,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.stretch,
             },
             ':host(.vertical)': {
                 'flex-flow': `row`,
@@ -172,30 +169,23 @@ class EditorEx extends base {
             },
 
             '.fs': {
-                flex: `0 0 auto`
+                ...style.rules.item.fixed,
             },
             '.body': {
-                position: `relative`,
-                display: `flex`,
-                'align-items': `stretch`,
-                'align-content': `stretch`,
-
-                flex: `1 1 auto`,
-                'min-height': `0`,
-                'min-width': `0`
+                ...style.rules.pos.rel,
+                ...style.rules.flex.stretch,
+                ...style.rules.item.fill,
             },
             '.viewport': {
-                position: `relative`,
-                display: `flex`,
-                flex: `1 1 auto`,
+                ...style.rules.pos.rel,
+                ...style.rules.display.flex,
+                ...style.rules.item.fill,
             },
             '.shelf': {
-                //position: `relative`,
-                //display: `flex`,
-                //flex: `0 0 auto`,
+
             },
             '.topstatus': {
-                position: `absolute`,
+                ...style.rules.pos.abs,
                 width: `100%`
             }
         }, base._Style());

@@ -56,9 +56,9 @@ class FolderItem extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                'position': 'relative',
+                ...style.rules.pos.rel,
                 'min-width': 0,
-                //'@': ['fade-in'],
+                //...style.rules.fadeIn,
 
                 'box-sizing': `border-box`,
 
@@ -69,7 +69,7 @@ class FolderItem extends base {
                 'padding-left': `var(--indent, 0px)`,
             },
             '.toolbar': {
-                'flex': `0 0 auto`
+                ...style.rules.item.fixed,
             }
         }, base._Style());
     }

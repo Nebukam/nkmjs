@@ -45,8 +45,12 @@ class DataBlockJSONSerializer extends AbstractJSONSerializer {
 
         let serializer = this.GetSerializer(metadata);
 
-        let serial = {};
-        serial[__metaID] = serializer.Serialize(metadata, p_options);
+        let
+            serial = {},
+            metadataSerial = serializer.Serialize(metadata, p_options);
+
+        if (Object.keys(metadataSerial).length) { serial[__metaID] = metadataSerial; }
+
 
         this.SerializeContent(serial, p_data, p_options);
 
@@ -78,10 +82,15 @@ class DataBlockJSONSerializer extends AbstractJSONSerializer {
         if (!p_serial) { throw new Error(`Cannot unpack null data.`); }
         if (!p_data) { throw new Error(`Cannot unpack to null target.`); }
 
-        let metadata = p_data.metadata,
-            serializer = this.GetSerializer(metadata); //TODO : Get the correct ver
+        if (__metaID in p_serial) {
 
-        if (__metaID in p_serial) { serializer.Deserialize(p_serial[__metaID], metadata, p_options, p_meta); }
+            let metadata = p_data.metadata,
+                serializer = this.GetSerializer(metadata); //TODO : Get the correct ver
+
+            serializer.Deserialize(p_serial[__metaID], metadata, p_options, p_meta);
+
+        }
+
         this.DeserializeContent(p_serial, p_data, p_options, p_meta);
 
         return p_data;

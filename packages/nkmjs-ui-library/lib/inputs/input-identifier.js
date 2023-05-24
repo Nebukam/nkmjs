@@ -34,13 +34,11 @@ class InputIdentifier extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                display: `flex`,
-                'flex-flow': `column nowrap`,
-                'align-items': `stretch`,
-                'align-content': `stretch`,
+                ...style.rules.flex.column.nowrap,
+                ...style.rules.flex.stretch,
             },
             '.field': {
-                flex: `1 1 auto`,
+                ...style.rules.item.fill,
                 width: `auto`
             }
         }, base._Style());

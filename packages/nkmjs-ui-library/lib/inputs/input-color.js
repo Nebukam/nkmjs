@@ -28,7 +28,7 @@ class InputColor extends base {
 
     static _Style() {
         return style.Extends({
-            '.field': { '@': [`invisible-fill`] },
+            '.field': { ...style.rules.invisibleFill, },
             '.body':{ 'pointer-events':'none' }
         }, base._Style());
     }

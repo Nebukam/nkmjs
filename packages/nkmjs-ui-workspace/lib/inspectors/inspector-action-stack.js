@@ -46,25 +46,22 @@ class ActionStackInspector extends base {
 
         return style.Extends({
             ':host': {
-                'display': `flex`,
-                'flex-flow': 'column nowrap',
+                ...style.rules.flex.column.nowrap,
             },
             '.list': {
-                'display': `flex`,
-                'flex-flow': 'column nowrap',
-                'flex': '1 1 auto',
-                'min-height': 0,
+                ...style.rules.flex.column.nowrap,
+                ...style.rules.item.fill,
                 'overflow': 'auto'
             },
             '.item': {
                 'min-height': `${this.__default_actionItem.__itemHeight}px`
             },
             '.streamer':{
-                'flex':`0 0 auto`
+                ...style.rules.item.fixed,
             },
             '.toolbar': {
+                ...style.rules.item.fixed,
                 'padding': '10px',
-                'flex': '0 0 auto',
             }
 
         }, base._Style());

@@ -114,10 +114,8 @@ class Folder extends base {
                 '--half-indent': `calc(var(--folder-indent) / 2)`,
 
 
-                'position': `relative`,
-
-                'display': `flex`,
-                'flex-flow': `column nowrap`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
@@ -135,8 +133,8 @@ class Folder extends base {
             },
 
             '.header': {
-                'position': `relative`,
-                'flex': '0 0 auto',
+                ...style.rules.pos.rel,
+                ...style.rules.item.fixed,
 
                 'box-sizing': `border-box`,
                 'height': `var(--folder-size)`,
@@ -147,24 +145,21 @@ class Folder extends base {
             },
 
             '.body': {
-                'position': `relative`,
-                'flex': '1 0 auto',
-
-                'display': `none`,
-                'flex-flow': `column nowrap`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
-
-                'min-width': 0,
+                ...style.rules.item.grow,
+                ...style.rules.display.none,
             },
-            ':host(.expanded) .body': { 'display': `flex` },
+            ':host(.expanded) .body': { ...style.rules.display.flex, },
             ':host(.expanded) .streamer': {
                 'height': `100%`,
                 'order': `99999999 !important`
             },
 
             '.item': {
-                flex: `1 1 auto`,
+                ...style.rules.item.fill,
             }
         };
     }

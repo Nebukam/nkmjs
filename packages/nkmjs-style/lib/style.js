@@ -2,27 +2,14 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const env = require("@nkmjs/environment");
 
-const dom = require("./utils-dom");
-const ColorBase = require("./colors/color-base");
-const COLOR = require("./colors/color");
-const Palette = require("./palette");
+const helpers = require(`./helpers`);
 
-const CSS = require(`./css`);
+const __REF = `@`;
+var _themeId = 'default';
 
-const DefaultStylesheet = require(`./default-stylesheet`);
-
-/*
-
-    {
-        '.element':{ 'property':'|value|' },
-        '.element':{ 'property':'25px' },
-        '.element':{ 'color':'|warning|' },
-        '.globalElement':``
-    }
-
-*/
+const _cache = new Map();
+const _signalBox = new com.signals.SignalBox(null);
 
 /**
  * @description TODO
@@ -31,149 +18,145 @@ const DefaultStylesheet = require(`./default-stylesheet`);
  * @augments common.Observable
  * @memberof style
  */
-class STYLE extends com.Observable {
-    constructor() { super(); }
+module.exports = {
 
-    _Init() {
+    Watch: _signalBox.Watch.bind(_signalBox),
+    WatchOnce: _signalBox.WatchOnce.bind(_signalBox),
+    Unwatch: _signalBox.Unwatch.bind(_signalBox),
+    Broadcast: _signalBox.Broadcast.bind(_signalBox),
 
-        super._Init();
-
-        this._defaultPalette = com.Rent(Palette);
-        this._defaultPalette._STYLE = this;
-        this._current = this._defaultPalette;
-        this._headerStyle = null;
-
-        this._cssPaths = {};
-
-        this._InitDefaults();
-
-    }
-
-    /**
-     * @access private
-     * @description Initialize a few default values
-     */
-    _InitDefaults() {
-        let cssBuilder = new DefaultStylesheet();
-        cssBuilder.Build(this._defaultPalette);
-    }
-
-    get computedStyles() {
-        if (!this._computeStyles) { this._computeStyles = window.getComputedStyle(env.app.body); }
-        return this._computeStyles;
-    }
+    get themeId() { return _themeId; },
+    set themeId(p_value) { _themeId = p_value || 'default'; },
 
     /**
      * @description TODO
-     * @type {style.Palette}
-     * @customtag read-only
+     * @param {string} p_key 
      */
-    get defaultPalette() { return this._defaultPalette; }
+    GetCSSLink: function (p_key, p_themeId = null) {
+        if (p_key[0] === __REF) { p_key = `${u.FULL(u.PATH.STYLE)}/${p_themeId || _themeId}${p_key.substring(1)}`; }
+        else { p_key = u.FULL(p_key); }
+        return p_key;
+    },
+
+    // ----> Process & Cache
 
     /**
      * @description TODO
-     * @type {style.Palette}
-     */
-    get current() { return this._current; }
-    set current(p_value) {
-        if (p_value === null) { p_value = this._defaultPalette; }
-        this._current = p_value;
-    }
-
-    /**
-     * @description TODO
-     * @param {boolean} p_initWithDefaults 
-     * @returns {style.Palette} new Palette
-     */
-    CreatePalette(p_initWithDefaults = true, p_makeCurrent = true) {
-        let newPalette = com.Rent(Palette);
-        newPalette._STYLE = this;
-        if (p_initWithDefaults) { newPalette.InitFrom(this.defaultPalette); }
-        if (p_makeCurrent) { this.current = newPalette; }
-        return newPalette;
-    }
-
-    /**
-     * @description Deploy current document rulesets into the header.
-     * If it was deployed already, overwrites the previous statements.
-     */
-    DeployCurrent() {
-
-        if (!this._isBrowser) { return; }
-
-        let pal = this.current;
-
-        let css = ``;
-        for (let f in pal._fonts) {
-            css += `@font-face { font-family: '${f}'; src: url('${pal._fonts[f]}');}\n`;
-        }
-        css += `\n`;
-
-        let styleObject = pal._documentRulesets, ruleset;
-
-        for (let el in styleObject) { pal._ProcessSuffixes(el, styleObject[el], styleObject); }
-        for (let el in styleObject) { css += CSS.CSS(el, pal._ProcessSingleRuleset(el, styleObject[el])); }
-
-        // Preload all available css rules
-        let externalCSSRules = this.current._externalCSSMap;
-        for (let cssKey in externalCSSRules) {
-            this.current.PrintCSSLink(cssKey, document.head);
-        }
-
-        if (u.isVoid(this._headerStyle)) {
-            this._headerStyle = document.createElement('style');
-            this._headerStyle.innerText = css;
-            dom.Attach(this._headerStyle, document.head);
-        } else {
-            this._headerStyle.innerText = css;
-        }
-
-
-    }
-
-    /**
-     * @description Get the style associated to a constructor.
-     * Generate and cache the result provided by the generator function, if none is cached.
-     * @param {function} p_class used as unique key to generate or access cache.
+     * @param {class} p_class 
      * @param {function} p_generator 
-     * @param {function} p_invalidateCache 
-     * @returns {string} 
+     * @param {boolean} [p_invalidateCache] 
+     * @returns {array} an array of styling items. Contains
      */
-    Get(p_class, p_generator, p_invalidateCache = false, p_classGenerator = false) {
-        return this.current.Get(p_class, p_generator, p_invalidateCache, p_classGenerator);
-    }
+    Build: function (p_class, p_generator, p_invalidateCache = false) {
 
-    /**
-     * @description Text format
-     * @param {test} p_text 
-     * @param {object} p_format 
-     * @param {string|style.color.ColorBase} p_format.color only sets color (overriden by .style)
-     * @param {boolean} p_format.strong adds a <strong> tag
-     * @param {string} p_format.class css class
-     * @param {object} p_format.style inline CSS
-     * @param {string} p_type tag type
-     */
-    TF(p_text, p_format, p_type = 'span') {
+        let cachedFragment = _cache.get(p_class);
 
-        p_text = p_format.strong ? `<strong>${p_text}</strong>` : p_text;
+        if (cachedFragment && !p_invalidateCache) { return cachedFragment; }
 
-        let css = ``;
-        if (p_format.style) {
-            css = ` style='${CSS.InlineCSS(this.current._ProcessSingleRuleset(``, p_format.style))}' `;
-        } else if (p_format.color) {
-            let color = p_format.color;
-            if (u.isString(color)) { if (color in this.current._colors) { color = this.current._colors[color]; } }
-            css = ` style='color:${color};' `;
+        let
+            fragment = document.createDocumentFragment(),
+            nfos = com.NFOS.Get(p_class),
+            imports = ``;
+
+        if (nfos) {
+
+            if (nfos.css) {
+                for (let i = nfos.css.length - 1; i >= 0; i--) {
+                    helpers.El(`link`, { href: module.exports.GetCSSLink(nfos.css[i]), rel: `stylesheet`, type: `text/css` }, fragment);
+                }
+            }
         }
 
-        let cl = p_format.class ? ` class='${p_format.class}'` : ``;
+        let rulesets = p_generator._Style ? p_generator._Style?.call(p_generator) : p_generator(p_class);
 
-        return `<${p_type}${cl}${css}>${p_text}</${p_type}>`;
+        if (u.isObject(rulesets) && Object.keys(rulesets).length) {
 
-    }
+            let styleString = ``;
+
+            for (let selector in rulesets) {
+                styleString += module.exports.Ruleset(selector, rulesets[selector]);
+            }
+
+            imports += styleString;
+
+        }
+
+        let styleElement = helpers.El(`style`, { type: `text/css` }, fragment);
+        styleElement.innerText = imports;
+
+        _cache.set(p_class, fragment);
+
+        return fragment;
+
+    },
+
+    //#region Stringify
+
+    /**
+     * @description Return a CSS string formatted as
+     * id{ prop:value; }
+     * @param {string} p_selector 
+     * @param {object} p_properties 
+     * @returns {string}
+     */
+    Ruleset: function (p_selector, p_properties) {
+
+        if (!Object.keys(p_properties).length) { return ``; }
+
+        if (p_selector.startsWith('@')) {
+            // Nest inside statement. Support @keyframe, @media, @supports etc
+            let css = ``;
+            for (let p in p_properties) { css += module.exports.Ruleset(p, p_properties[p]); }
+            return `${p_selector}{${css}}`;
+        } else {
+            // Regular Inline
+            return `${p_selector}{${module.exports.Inline(p_properties)}}`;
+        }
+    },
+
+    /**
+     * @description Return an inline CSS string formatted as
+     * prop:value;
+     * @param {string} p_id 
+     * @param {object} p_properties 
+     * @returns {string}
+     */
+    Inline: function (p_properties) {
+        let css = ``;
+        for (let att in p_properties) {
+            let val = p_properties[att];
+            if (u.isNumber(val)) { css += `${att}:${val};`; }
+            else if (u.isString(val)) { css += val.endsWith(`;`) ? `${att}:${val}` : `${att}:${val};`; }
+        }
+        return css;
+    },
+
+    /**
+     * @description Add p_source properties & values from p_source missing into p_base.
+     * @param {*} p_base 
+     * @param {*} p_source 
+     */
+    Extends: function (p_base, p_source) {
+
+        if (!p_base) { return { ...p_source }; }
+
+        for (let selector in p_source) {
+
+            let src = p_source[selector];
+            if (u.isObject(src)) {
+                p_base[selector] = module.exports.Extends(p_base[selector], src);
+            } else {
+                if (!p_base[selector]) { p_base[selector] = src; }
+            }
+
+        }
+
+        return p_base;
+
+    },
+
+    //#endregion
 
 
 
 }
-
-module.exports = new STYLE();

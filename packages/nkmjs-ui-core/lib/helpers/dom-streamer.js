@@ -81,17 +81,8 @@ class DOMStreamer extends base {
         this._host = this.attachShadow({ mode: `open` });
         this._wrapper = this._host;
 
-        // Fetch/refresh cached styles 
-        if (this._styles) {
-            for (let i = 0, n = this._styles.length; i < n; i++) { this._styles[i].remove(); }
-            this._styles.length = 0;
-        }
-
-        this._styles = style.STYLE.Get(this.constructor, this.constructor, false, true);
-        for (let i = 0, n = this._styles.length; i < n; i++) {
-            dom.Attach(this._styles[i].cloneNode(true), this._host);
-        }
-
+        let ctr = this.constructor;
+        dom.Attach(style.Build(ctr, ctr, false).cloneNode(true), this._host);
         this._itemStyle = dom.El(`style`, {}, this._host);
 
         this._Render();
@@ -107,7 +98,7 @@ class DOMStreamer extends base {
     static _Style() {
         return {
             ':host': {
-                'position': 'relative',
+                ...style.rules.pos.rel,
                 'display': 'grid',
                 //'justify-items': `center`,
                 'overflow-x': 'clip !important',
@@ -118,7 +109,7 @@ class DOMStreamer extends base {
             '.fixture': {
                 'min-height': 0,
                 'width': '100%',
-                'flex': `0 0 auto`,
+                ...style.rules.item.fixed,
                 'grid-row-start': 'header',
                 'grid-column': `1/-1`, // take one full width
             },
@@ -126,7 +117,7 @@ class DOMStreamer extends base {
                 'position': 'relative'
                 //'box-sizing': 'border-box',
                 //'flex-grow': `1`,
-                //'flex': `0 0 auto`,
+                //...style.rules.item.fixed,
             },
             '.dom-streamer-dummy': {
                 'position': 'relative'

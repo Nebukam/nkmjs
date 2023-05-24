@@ -3,6 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const collections = require(`@nkmjs/collections`);
+const style = require(`@nkmjs/style`);
 
 const dom = require(`./utils-dom`);
 const UI = require(`./ui.js`);
@@ -114,8 +115,8 @@ class WidgetBar extends base {
     static _Style() {
         return {
             ':host': {
-                'position': `relative`,
-                'display': `flex`,
+                ...style.rules.pos.rel,
+                ...style.rules.display.flex,
                 'justify-content': `flex-start`,
                 'align-items': `center`
             },
@@ -124,32 +125,32 @@ class WidgetBar extends base {
             ':host(.horizontal)': { 'flex-flow': `row nowrap` },
 
             [`.${IDS.GROUP}`]: {
-                'position': `relative`,
-                'flex': `0 0 auto`,
-
-                'display': `flex`,
+                ...style.rules.pos.rel,
+                ...style.rules.display.flex,
                 'justify-content': `flex-start`,
-                'align-items': `center`
+                'align-items': `center`,
+
+                ...style.rules.item.fixed,
             },
 
             [`.${IDS.ITEM}`]: {
-                'position': `relative`,
-                'flex': `0 0 auto`,
+                ...style.rules.pos.rel,
+                ...style.rules.item.fixed,
                 'min-width': '0',
                 'min-height': '0',
             },
             [`:host(.${FLAGS.STRETCH}) .${IDS.GROUP}`]: {
-                'flex': `1 0 auto`,
+                ...style.rules.item.grow,
             },
             [`:host(.${FLAGS.STRETCH}) .${IDS.ITEM}`]: {
-                'flex': `1 0 auto`,
+                ...style.rules.item.grow,
             },
 
             [`:host(.${FLAGS.STRETCH_SQUEEZE}) .${IDS.GROUP}`]: {
-                'flex': `1 1 auto`,
+                ...style.rules.item.fill,
             },
             [`:host(.${FLAGS.STRETCH_SQUEEZE}) .${IDS.ITEM}`]: {
-                'flex': `1 1 auto`,
+                ...style.rules.item.fill,
             },
             [`:host(.vertical.${FLAGS.STRETCH}) .${IDS.ITEM}`]: {
                 'max-height': `100% !important`,

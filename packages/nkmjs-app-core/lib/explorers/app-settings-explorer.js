@@ -25,13 +25,10 @@ class AppSettingsExplorer extends base {
         return style.Extends({
             ':host': {
                 'min-width': '350px',
-                //'flex': '0 0 auto',
+                //...style.rules.item.fixed,
             },
             '.list': {
-                'display': 'flex',
-                'flex-flow': 'column nowrap',
-                'flex': '1 1 auto',
-                'min-height': '0',
+                ...style.rules.flex.column.nowrap,
                 'overflow': 'auto',
                 'padding': '0px',
             },
@@ -39,14 +36,14 @@ class AppSettingsExplorer extends base {
                 'padding': `20px 20px`,
             },
             '.control': {
-                'flex': '0 1 auto',
+                ...style.rules.item.shrink,
                 'margin-bottom': '5px'
             },
             '.separator': {
                 //'border-top':'1px solid gray'
             },
             '.drawer': {
-                'flex': '1 1 auto',
+                ...style.rules.item.fill,
                 'width': `350px`,
                 'padding': `10px`,
                 'background-color': `rgba(19, 19, 19, 0.15)`,

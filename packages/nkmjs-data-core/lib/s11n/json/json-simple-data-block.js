@@ -141,7 +141,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
 
                     let
                         blocData = p_data[blocInfos.member],
-                        blocSerial = blocSerial[id];
+                        blocSerial = blocsSerial[id];
 
                     this.__master.Deserialize(blocSerial, blocData, p_options);
 

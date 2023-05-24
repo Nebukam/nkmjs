@@ -58,53 +58,46 @@ class InspectorGroup extends base {
         return style.Extends({
             ':host': {
                 //TODO : Implement orientation in styling
-                position: `relative`,
-                display: `flex`,
-                'flex-flow': `column nowrap`,
-                'align-content': `stretch`,
-                'align-items': `stretch`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
+                ...style.rules.flex.stretch,
                 'margin': `5px`,
-                'min-width': 0,
             },
             '.header': {
-                position: `relative`,
-                display: `flex`,
-                'flex-flow': `row nowrap`,
-                'align-content': `stretch`,
-                'align-items': `stretch`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.nowrap,
+                ...style.rules.flex.stretch,
                 'justify-content': `space-between`,
 
-                flex: `1 1 auto`,
+                ...style.rules.item.fill,
                 padding: `12px`,
             },
-            '.expandIcon': { flex: `0 0 auto` },
+            '.expandIcon': { ...style.rules.item.fixed, },
             '.facade': {
-                flex: `0 1 auto`,
+                ...style.rules.item.shrink,
             },
             '.toolbar': {
-                flex: `0 0 auto`,
+                ...style.rules.item.fixed,
                 opacity: 0,
             },
             ':host(.focused) .toolbar': {
                 opacity: 1
             },
             '.body': {
-                position: `relative`,
-                display: `flex`,
-                'flex-flow': `column nowrap`,
-                'align-content': `stretch`,
-                'align-items': `stretch`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.column.nowrap,
+                ...style.rules.flex.stretch,
 
-                flex: `1 1 auto`,
+                ...style.rules.item.fill,
             },
             '.group': {
                 'min-width': 0,
             },
             ':host(.collapsed) .body': {
-                display: `none`,
+                ...style.rules.display.none,
             },
             ':host(.expanded) .body': {
-                display: `flex`,
+                ...style.rules.display.flex,
             },
         }, base._Style());
     }

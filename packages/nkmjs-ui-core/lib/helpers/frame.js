@@ -1,5 +1,7 @@
 'use strict';
 
+const style = require(`@nkmjs/style`);
+
 const UI = require(`../ui`);
 const FLAGS = require(`../flags`);
 const manipulators = require("../manipulators");
@@ -31,7 +33,7 @@ class Frame extends base {
             ':host': {
                 position: `relative`,
                 'min-width': 0,
-                '@': ['cover']
+                ...style.rules.cover.default,
             },
 
             ':host(.focused)': {

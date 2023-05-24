@@ -26,12 +26,11 @@ class UIItem extends base {
     static _Style() {
         return nkm.style.Extends({
             ':host': {
+                ...nkm.style.rules.flex.column.wrap,
                 //opacity: 0,
                 margin: `5px`,
                 padding: `5px`,
                 border: `1px solid #ffffff10`,
-                display: `flex`,
-                'flex-flow': `column wrap`,
                 'overflow': 'hidden',
             },
             '.label': {
@@ -42,11 +41,9 @@ class UIItem extends base {
             },
             '.item-wrapper': {
                 position: `relative`,
+                ...nkm.style.rules.flex.center,
                 padding: `5px`,
-                display: `flex`,
-                'align-items': `center`,
-                'justify-content': `center`,
-                flex: `1 1 auto`,
+                ...nkm.style.rules.item.fill,
                 //'background-color': 'rgba(200,200,200,1)',
                 'background-image': `url('img/checker_20a.png')`,
                 'overflow': 'hidden',
@@ -54,7 +51,7 @@ class UIItem extends base {
                 'min-height': 0,
             },
             '.content': {
-                flex: `1 1 auto`
+                ...nkm.style.rules.item.fill,
             },
             'p.error': {
                 color: `#ff0000`

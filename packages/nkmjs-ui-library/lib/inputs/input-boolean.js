@@ -36,7 +36,7 @@ class InputBoolean extends base {
     static _Style() {
         return style.Extends({
             ':host':{ 'min-height': `var(--size)` }, //min height for input field
-            '.field': { '@': [`invisible-fill`] }
+            '.field': { ...style.rules.invisibleFill, }
         }, base._Style());
     }
 

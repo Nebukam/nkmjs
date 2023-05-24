@@ -45,16 +45,15 @@ class InputSelect extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                position: `relative`,
-                display: `flex`,
+                ...style.rules.pos.rel,
+                ...style.rules.display.flex,
                 'align-content': `stretch`,
                 'align-items': `center`,
                 'min-height': `28px !important` //min height for input field
             },
             '.field': {
-                display: 'none',
-                flex: `1 1 auto`,
-                'min-width': 0,
+                ...style.rules.display.none,
+                ...style.rules.item.fill,
                 'height': 'var(--size)',
                 'min-height': `28px !important` //min height for input field
 

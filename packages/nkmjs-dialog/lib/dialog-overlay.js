@@ -27,14 +27,10 @@ class DialogOverlay extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                display: `flex`,
-                'flex-flow': `row`,
-                'align-content': `center`,
-                'align-items': `center`,
-                'justify-content': `center`,
+                ...style.rules.flex.center,
             },
             '.content': {
-                flex: `0 1 auto`,
+                ...style.rules.item.shrink,
                 'max-width': `100%`,
                 'max-height': `100%`,
             }

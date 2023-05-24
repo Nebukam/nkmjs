@@ -61,7 +61,7 @@ class Overlay extends base {
                 'z-index': '10', // Modals are 100.
             },
             '.bg': {
-                '@': [`layer`], // absolute, 0,0 100% 100% box-sizing border-box
+                ...style.rules.layer,
                 'transform': 'translateY(-100%)',
                 'transition': 'transform 0s linear'
             }

@@ -73,9 +73,7 @@ class DisplayObject extends base {
         this._wrapper = this._host;
 
         this._PrintStyle();
-
         this._Render();
-        this._PostRender();
 
     }
 
@@ -123,18 +121,8 @@ class DisplayObject extends base {
      * @group Styling
      */
     _PrintStyle(p_invalidateCache = false) {
-
-        if (this._styles) {
-            for (let i = 0, n = this._styles.length; i < n; i++) {
-                this._styles[i].remove();
-            }
-            this._styles.length = 0;
-        }
-
-        this._styles = style.STYLE.Get(this.constructor, this.constructor, p_invalidateCache, true);
-        for (let i = 0, n = this._styles.length; i < n; i++) {
-            dom.Attach(this._styles[i].cloneNode(true), this._host);
-        }
+        let ctr = this.constructor;
+        dom.Attach(style.Build(ctr, ctr, p_invalidateCache).cloneNode(true), this._host);
     }
 
     /**
@@ -144,14 +132,6 @@ class DisplayObject extends base {
      * @group Rendering
      */
     _Render() { }
-
-    /**
-     * @access protected
-     * @description TODO
-     * @customtag override-me
-     * @group Rendering
-     */
-    _PostRender() { }
 
     /**
      * @description TODO

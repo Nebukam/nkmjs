@@ -65,22 +65,21 @@ class InputAnchor extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                '@': [`fade-in`],
-                position: `relative`,
-                display: `flex`,
-                'justify-content': `center`,
-                'align-content': `center`,
+                ...style.rules.fadeIn,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.center,
             },
             '.grid': {
-                position: 'relative',
-                flex: `0 0 auto`,
+                ...style.rules.pos.rel,
                 display: `grid`,
                 'grid-template-columns': 'repeat(3, calc(var(--size) / 3))',
                 'grid-template-rows': 'repeat(3, calc(var(--size) / 3))',
+
+                ...style.rules.item.fixed,
             },
             '.anch': {
-                position: 'relative',
-                flex: `1 1 auto`,
+                ...style.rules.pos.rel,
+                ...style.rules.item.fill,
             }
         }, base._Style());
 

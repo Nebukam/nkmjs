@@ -22,11 +22,11 @@ class SignalBox {
             p_owner.Watch = this._Bind(this.Watch);
             p_owner.WatchOnce = this._Bind(this.WatchOnce);
             p_owner.Unwatch = this._Bind(this.Unwatch);
-        }else{
+        } else {
             this._owner = null;
         }
 
-        this._signals = new collections.Dictionary();
+        this._signals = new Map();
         this._silent = false;
     }
 
@@ -45,23 +45,16 @@ class SignalBox {
      * @type {boolean}
      */
     get silent() { return this._silent; }
-    set silent(p_value) {
-        this._silent = p_value;
-    }
+    set silent(p_value) { this._silent = p_value; }
 
-    get hasWatchers() { return this._signals.count > 0; }
+    get hasWatchers() { return this._signals.size > 0; }
 
     isEmpty(p_signal) {
-
-        let s = this._signals;
-        if (!s.Contains(p_signal)) {
-            return true;
-        } else {
-            return s.Get(p_signal).isEmpty;
-        }
+        if (!this._signals.has(p_signal)) { return true; }
+        else { return this._signals.get(p_signal).isEmpty; }
     }
 
-    Get(p_signalId) { return this._signals.Get(p_signalId) }
+    Get(p_signalId) { return this._signals.get(p_signalId) }
 
     /**
      * @description Broadcast a signal with arguments
@@ -74,7 +67,7 @@ class SignalBox {
         if (!p_signalId) {
             throw new Error(`Signal may not be undefined or null.`);
         }
-        let signal = this._signals.Get(p_signalId);
+        let signal = this._signals.get(p_signalId);
         if (!signal) { return; }
         signal.__dispatchId = p_signalId;
         signal.Dispatch(...args);
@@ -91,10 +84,10 @@ class SignalBox {
      */
     Watch(p_signalId, p_fn, p_listener = null) {
 
-        let signal = this._signals.Get(p_signalId);
+        let signal = this._signals.get(p_signalId);
         if (u.isVoid(signal)) {
             signal = POOL.Rent(SignalBroadcaster);
-            this._signals.Set(p_signalId, signal);
+            this._signals.set(p_signalId, signal);
         }
 
         signal.Add(p_fn, p_listener);
@@ -109,10 +102,10 @@ class SignalBox {
      */
     WatchOnce(p_signalId, p_fn, p_listener = null) {
 
-        let signal = this._signals.Get(p_signalId);
+        let signal = this._signals.get(p_signalId);
         if (u.isVoid(signal)) {
             signal = POOL.Rent(SignalBroadcaster);
-            this._signals.Set(p_signalId, signal);
+            this._signals.set(p_signalId, signal);
         }
 
         signal.AddOnce(p_fn, p_listener);
@@ -127,13 +120,13 @@ class SignalBox {
      */
     Unwatch(p_signalId, p_fn, p_listener = null) {
 
-        let signal = this._signals.Get(p_signalId);
+        let signal = this._signals.get(p_signalId);
         if (u.isVoid(signal)) { return this; }
 
         signal.Remove(p_fn, p_listener);
 
         if (signal.isEmpty) {
-            this._signals.Remove(p_signalId);
+            this._signals.delete(p_signalId);
             signal.Release();
         }
 
@@ -147,10 +140,10 @@ class SignalBox {
      */
     RemoveAll(p_signalId) {
 
-        let signal = this._signals.Get(p_signalId);
+        let signal = this._signals.get(p_signalId);
         if (u.isVoid(signal)) { return; }
 
-        this._signals.Remove(p_signalId);
+        this._signals.delete(p_signalId);
         signal.Release();
 
     }
@@ -159,14 +152,9 @@ class SignalBox {
      * @description Clears all signals & subscriptions
      */
     Clear() {
-        let signals = this._signals,
-            keys = signals.keys;
-
-        for (let i = 0, n = keys.length; i < n; i++) {
-            signals.Get(keys[i]).Release();
-        }
-
-        signals.Clear();
+        let keys = this._signals.keys();
+        for (const key of keys) { this._signals.get(key).Release(); }
+        this._signals.clear();
     }
 
 }

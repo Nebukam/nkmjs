@@ -76,12 +76,8 @@ class ControlBuilder {
         this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_value) : p_value;
         this._dataObserver.ObserveOnly(this._data);
 
-        for (let i = 0, n = this._controls.length; i < n; i++) {
-            let
-                ctrl = this._controls[i],
-                opts = this._configMap.get(ctrl);
-
-            this._AssignData(ctrl, opts, this._data);
+        for (const ctrl of this._controls) {
+            this._AssignData(ctrl, this._configMap.get(ctrl), this._data);
         }
 
         this.RefreshConditionals();
@@ -93,7 +89,6 @@ class ControlBuilder {
         this._context = p_context;
         this._data = this._preProcessDataFn ? u.Call(this._preProcessDataFn, p_data) : p_data;
         this._dataObserver.ObserveOnly(this._data);
-
 
         for (const ctrl of this._controls) {
             ctrl.editor = this._editor;
@@ -227,7 +222,7 @@ class ControlBuilder {
         if (!p_ctrl) { return; }
         if (!p_opts) { p_ctrl.data = p_data; return; }
         if (p_opts.ignoreData) { return; }
-        if (p_opts.dataMember && p_data) { p_ctrl.data = p_data[p_opts.dataMember]; }
+        if (p_opts.get && p_data) { p_ctrl.data = p_data[p_opts.get]; }
         else { p_ctrl.data = p_data; }
     }
 

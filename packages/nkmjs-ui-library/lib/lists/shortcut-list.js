@@ -49,9 +49,8 @@ class ShortcutList extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                'position': 'relative',
-                'display': 'flex',
-                'flex-flow': 'row nowrap'
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.nowrap,
             },
         }, base._Style());
     }

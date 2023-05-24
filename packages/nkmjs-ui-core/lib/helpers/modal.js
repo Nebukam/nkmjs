@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 const env = require("@nkmjs/environment");
+const style = require(`@nkmjs/style`);
 
 const dom = require(`../utils-dom`);
 const UI = require(`../ui`);
@@ -186,26 +187,27 @@ class Modal extends base {
      */
     get options() { return this._options; }
     set options(p_options) {
+        
         this._options = p_options;
         this.content = p_options.content;
         if (this._content) {
             this.constructor.__distribute.Update(this, this._options);
-            if (this._content.options) {
-                let o = null;
 
-                if (p_options.contentOptions) {
-                    o = p_options.contentOptions;
-                } else if (p_options.contentOptionsGetter) {
-                    o = u.Call(p_options.contentOptionsGetter);
-                } else if (this._contentOptionsGetter) {
-                    o = u.Call(this._contentOptionsGetter);
-                }
+            let o = null;
 
-                if (o) {
-                    if (p_options.cmdContext) { o.data = p_options.cmdContext; }
-                    this._content.options = o;
-                }
+            if (p_options.contentOptions) {
+                o = p_options.contentOptions;
+            } else if (p_options.contentOptionsGetter) {
+                o = u.Call(p_options.contentOptionsGetter);
+            } else if (this._contentOptionsGetter) {
+                o = u.Call(this._contentOptionsGetter);
             }
+
+            if (o) {
+                if (p_options.cmdContext) { o.data = p_options.cmdContext; }
+                this._content.options = o;
+            }
+
 
         } else { throw new Error(`Modal options has no content set.`); }
     }
@@ -406,7 +408,7 @@ class Modal extends base {
     static _Style() {
         return {
             ':host': {
-                '@': ['fade-in'],
+                ...style.rules.fadeIn,
                 'transition': 'opacity 0.01s ease !important',
                 'position': 'absolute',
                 'border': '1px solid red',

@@ -4,6 +4,7 @@ const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
+const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
 const WorkspaceCell = require(`./workspace-cell`);
@@ -69,17 +70,17 @@ class Workspace extends base {
 
         return {
             ':host': {
-                position: `relative`,
-                display: `flex`,
+                ...style.rules.pos.rel,
+                ...style.rules.display.flex,
             },
             '.navigation': {
-                position: `relative`,
-                flex: `1 1 auto`,
+                ...style.rules.pos.rel,
+                ...style.rules.item.fill,
                 outline: `1px rgba(0,255,0,0.5) solid`,
                 'outline-offset': `-1px`,
             },
             '.cell': {
-                position: `relative`
+                ...style.rules.pos.rel,
             }
         };
 

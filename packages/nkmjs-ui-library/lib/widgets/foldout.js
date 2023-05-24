@@ -78,58 +78,53 @@ class Foldout extends base {
     static _Style() {
         return {
             ':host': {
-
-                'padding': 0,
-                'margin': 0,
-
-                'position': `relative`,
-
-                'display': `flex`,
-                'flex-flow': `row wrap`,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.wrap,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
-                'box-sizing': `border-box`
+                'box-sizing': `border-box`,
+
+                'padding': 0,
+                'margin': 0,
 
             },
 
             ':host(.expanded)': { 'height': 'auto', },
             ':host(.expanded) .icon.expand': { 'transform': `rotate(90deg)` },
             '.header': {
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.centerNowrap,
+
                 'box-sizing': `border-box`,
 
-                'flex': '1 1 auto',
+                ...style.rules.item.fill,
                 'width': `100%`,
-
-                'position': `relative`,
-                'display': 'flex',
-                'flex-flow': `row nowrap`,
-                'align-items': `center`,
                 'justify-items': `flex-start`,
             },
             '.toolbar': {
-                'flex': '0 0 auto',
+                ...style.rules.item.fixed,
             },
 
             '.label': {
-                'flex': '1 1 auto'
+                ...style.rules.item.fill,
             },
 
             '.body': {
-                'position': `relative`,
-                'flex': '1 0 auto',
-                'display': `none`,
-                'min-width': 0,
+                ...style.rules.pos.rel,
+                ...style.rules.flex.row.wrap,
+                ...nkm.style.rules.gap.small,
+
+                ...style.rules.item.grow,
                 'max-width': `100%`,
-                'flex-flow': `row wrap`,
+
+                ...style.rules.display.none,
             },
-            ':host(.expanded) .body': { 'display': `flex` },
+            ':host(.expanded) .body': { ...style.rules.display.flex, },
             ':host(.expanded) .header': { 'margin-bottom': `5px` },
             '.foldout-item': {
-                'flex': '1 1 auto',
+                ...style.rules.item.fill,
                 'margin': '0',
-                'margin-bottom': '5px',
-                'min-width':`0`,
             },
             '.foldout-item.full': { 'flex': '1 1 100%', },
             '.foldout-item.large': { 'flex': '1 1 75%', },

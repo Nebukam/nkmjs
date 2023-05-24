@@ -25,7 +25,7 @@ class DrawerOverlay extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                display: `flex`
+                ...style.rules.display.flex,
             },
             // align from the start
             ':host(.content-left), :host(.content-top)':{
@@ -39,14 +39,14 @@ class DrawerOverlay extends base {
             },
             // Vertical ( drawer on the left or right )
             ':host(.vertical)':{
-                'flex-flow': `column nowrap`,
+                ...style.rules.flex.column.nowrap,
             },
             // Horizontal ( drawer on the top or bottom )
             ':host(.horizontal)':{
-                'flex-flow': `row nowrap`,
+                ...style.rules.flex.row.nowrap,
             },
             '.content': {
-                flex: `0 1 auto`
+                ...style.rules.item.shrink,
             }
         }, base._Style());
     }

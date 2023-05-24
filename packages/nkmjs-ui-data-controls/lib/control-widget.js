@@ -168,7 +168,7 @@ class ControlWidget extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                '@': [`fade-in`]
+                ...style.rules.fadeIn,
             }
         }, base._Style());
     }

@@ -1,5 +1,6 @@
 const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
+const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
 
 const base = ui.WidgetOrientable;
@@ -28,33 +29,31 @@ class Group extends base {
     static _Style() {
         return {
             ':host': {
-                position: `relative`,
-                display: `flex`,
-                flex: `1 1 auto`,
+                ...style.rules.pos.rel,
+                ...style.rules.display.flex,
+                ...style.rules.item.fill,
                 'margin-bottom': `20px`
             },
             '.header': {
-                position: `relative`,
-                flex: `0 0 auto`
+                ...style.rules.pos.rel,
+                ...style.rules.item.fixed,
             },
             '.footer': {
-                position: `relative`,
-                flex: `0 0 auto`
+                ...style.rules.pos.rel,
+                ...style.rules.item.fixed,
             },
             '.body': {
-                position: `relative`,
-                display: `flex`,
-                flex: `1 1 auto`,
+                ...style.rules.pos.rel,
+                ...style.rules.item.fill,
             },
             ':host(.horizontal) .body': {
-                'flex-flow': `row wrap`,
+                ...style.rules.flex.row.wrap,
                 'align-content': `flex-start`,
                 'align-items': `flex-start`,
             },
             ':host(.vertical) .body': {
-                'flex-flow': `column nowrap`,
-                'align-content': `stretch`,
-                'align-items': `stretch`,
+                ...style.rules.flex.column.nowrap,
+                ...style.rules.flex.stretch,
             }
 
         }

@@ -40,15 +40,14 @@ class SearchBar extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                'position': 'relative',
-                '@': ['fade-in'],
-                'display': 'flex',
-                'flex': '0 1 auto',
-                'flex-flow': 'row wrap',
+                ...style.rules.pos.rel,
+                ...style.rules.fadeIn,
+                ...style.rules.flex.row.wrap,
                 //'min-height': '0',
                 //'overflow': 'auto',
                 //'padding': '10px',
                 'align-content': 'flex-start',
+                ...style.rules.item.shrink,
                 'background-color': 'rgba(46,46,46,0.5)',
                 'padding': '10px 20px 5px 20px',
                 'min-height': '28px',
@@ -56,12 +55,12 @@ class SearchBar extends base {
                 //'margin':'0 10px'
             },
             '.control': {
-                'flex': '0 0 auto',
+                ...style.rules.item.fixed,
                 'margin-right': '10px',
                 //'margin-bottom': '0'',
             },
             '.main-toggle': { 'flex': '0 0 115px' },
-            '.search': { 'flex': '1 1 auto' },
+            '.search': { ...style.rules.item.fill, },
             '.large': { 'margin-right': '10px' },
 
             ':host(.enabled)': { 'background-color': 'rgba(var(--col-active-dark-rgb),0.5)', },

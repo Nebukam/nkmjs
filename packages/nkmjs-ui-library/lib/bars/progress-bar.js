@@ -39,9 +39,9 @@ class ProgressBar extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                '@': ['fade-in'],
+                ...style.rules.fadeIn,
                 'opacity': 0,
-                'position': 'relative',
+                ...style.rules.pos.rel,
                 'height': 'var(--size)',
                 'min-height': 'var(--size)',
                 'max-height': 'var(--size)',
