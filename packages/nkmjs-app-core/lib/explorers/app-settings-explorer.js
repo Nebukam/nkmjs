@@ -42,13 +42,9 @@ class AppSettingsExplorer extends base {
             '.separator': {
                 //'border-top':'1px solid gray'
             },
-            '.drawer': {
+            '.foldout': {
                 ...style.rules.item.fill,
                 'width': `350px`,
-                'padding': `10px`,
-                'background-color': `rgba(19, 19, 19, 0.15)`,
-                'border-radius': '4px',
-                'margin-bottom': '5px',
             }
         }, base._Style());
     }
@@ -89,7 +85,7 @@ class AppSettingsExplorer extends base {
 
     _Foldout(p_foldout, p_controls, p_css = ``, p_host = null) {
 
-        let foldout = this.Attach(uilib.widgets.Foldout, `item drawer${p_css ? ' ' + p_css : ''}`, p_host || this);
+        let foldout = this.Attach(uilib.widgets.Foldout, `item foldout${p_css ? ' ' + p_css : ''}`, p_host || this);
         foldout.options = p_foldout;
 
         if (p_controls) {

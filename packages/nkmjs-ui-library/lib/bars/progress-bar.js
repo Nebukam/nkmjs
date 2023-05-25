@@ -45,7 +45,7 @@ class ProgressBar extends base {
                 'height': 'var(--size)',
                 'min-height': 'var(--size)',
                 'max-height': 'var(--size)',
-                '--bg-color': 'var(--flavor-color-dark-rgb)',
+                '--bg-color': 'var(--flavor-color-low-rgb)',
                 '--bar-color': 'var(--flavor-color)',
 
                 'background-color': 'rgba(var(--bg-color), 0.1)',
@@ -78,7 +78,7 @@ class ProgressBar extends base {
     SetColors(p_bg = null, p_bar = null) {
         if (!p_bg && !p_bar) {
             ui.dom.CSS(this, {
-                ['--bg-color']: 'var(--flavor-color-dark-rgb)',
+                ['--bg-color']: 'var(--flavor-color-low-rgb)',
                 ['--bar-color']: 'var(--flavor-color)',
             });
         } else {

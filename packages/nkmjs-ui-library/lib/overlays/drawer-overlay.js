@@ -13,6 +13,7 @@ class DrawerOverlay extends base {
         css: [`@/views/drawer-overlay.css`]
     }, base, ['css']);
 
+    static __closeOnBgClick = true;
     static __default_contentPlacement = ui.FLAGS.BOTTOM_LEFT;
 
     _Init() {
@@ -28,25 +29,25 @@ class DrawerOverlay extends base {
                 ...style.rules.display.flex,
             },
             // align from the start
-            ':host(.content-left), :host(.content-top)':{
+            ':host(.content-left), :host(.content-top)': {
                 'justify-content': `flex-start`,
                 'align-content': `flex-start`,
             },
             // aligne from the end
-            ':host(.content-right), :host(.content-bottom)':{
+            ':host(.content-right), :host(.content-bottom)': {
                 'justify-content': `flex-end`,
                 'align-content': `flex-end`,
             },
             // Vertical ( drawer on the left or right )
-            ':host(.vertical)':{
+            ':host(.vertical)': {
                 ...style.rules.flex.column.nowrap,
             },
             // Horizontal ( drawer on the top or bottom )
-            ':host(.horizontal)':{
+            ':host(.horizontal)': {
                 ...style.rules.flex.row.nowrap,
             },
             '.content': {
-                ...style.rules.item.shrink,
+                // See ui.overlays.Overlay
             }
         }, base._Style());
     }

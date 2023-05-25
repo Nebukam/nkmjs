@@ -8,7 +8,8 @@
     "scripts": {
         "nkmjs": "nkmjs",
         "start-server": "nodemon --watch app server.js",
-        "link-nkmjs": "yarn link @nkmjs/core && yarn link @nkmjs/core-dev && yarn add electron"
+        "link-nkmjs": "yarn link-nkmjs-core && yarn link @nkmjs/core-dev && yarn add electron",
+        "link-nkmjs-core": "yarn link @nkmjs/actions && yarn link @nkmjs/app-core && yarn link @nkmjs/collections && yarn link @nkmjs/common && yarn link @nkmjs/data-core && yarn link @nkmjs/dialog && yarn link @nkmjs/documents && yarn link @nkmjs/electron-core && yarn link @nkmjs/environment && yarn link @nkmjs/i18n && yarn link @nkmjs/io-core && yarn link @nkmjs/io-electron && yarn link @nkmjs/metrics && yarn link @nkmjs/server-core && yarn link @nkmjs/server-io && yarn link @nkmjs/services && yarn link @nkmjs/style && yarn link @nkmjs/ui-core && yarn link @nkmjs/ui-data-controls && yarn link @nkmjs/ui-library && yarn link @nkmjs/ui-workspace && yarn link @nkmjs/utils && yarn link @nkmjs/core"
     },
     "author": {
         "name": "Timothé Lapetite",

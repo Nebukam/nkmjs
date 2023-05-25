@@ -82,12 +82,7 @@ class Foldout extends base {
                 ...style.rules.flex.row.wrap,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
-
-                'box-sizing': `border-box`,
-
-                'padding': 0,
-                'margin': 0,
-
+                'box-sizing': `border-box`
             },
 
             ':host(.expanded)': { 'height': 'auto', },

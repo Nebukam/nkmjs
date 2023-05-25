@@ -43,13 +43,9 @@ class ValueListInspector extends base {
             '.separator': {
                 //'border-top':'1px solid gray'
             },
-            '.drawer': {
+            '.foldout': {
                 ...style.rules.item.fill,
                 'width': `350px`,
-                'padding': `10px`,
-                'background-color': `rgba(19, 19, 19, 0.15)`,
-                'border-radius': '4px',
-                //'margin-bottom': '5px',
             },
 
             '.header': { 'margin': '5px 2px 5px 2px' },
@@ -74,7 +70,7 @@ class ValueListInspector extends base {
 
     _Foldout(p_foldout, p_controls, p_css = ``, p_host = null) {
 
-        let foldout = this.Attach(Foldout, `item drawer${p_css ? ' ' + p_css : ''}`, p_host || this._body);
+        let foldout = this.Attach(Foldout, `item foldout${p_css ? ' ' + p_css : ''}`, p_host || this._body);
         foldout.options = p_foldout;
 
         if (p_controls) {

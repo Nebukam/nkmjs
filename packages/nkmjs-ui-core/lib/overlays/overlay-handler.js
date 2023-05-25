@@ -29,6 +29,7 @@ class OverlayHandler extends base {
         this._Bind(this._OnOverlayOptionsConsumed);
 
         this.CaptureLocalRequest(REQUEST.OVERLAY);
+        this._delayedHide = com.DelayedCall(this._Bind(this._Hide), 500);
 
         this.visible = false;
 
@@ -74,6 +75,7 @@ class OverlayHandler extends base {
         }
 
         this.BringToFront();
+        this._delayedHide.Cancel();
         this.visible = true;
 
         let overlayClass = overlayOptions.overlayClass ||
@@ -101,9 +103,13 @@ class OverlayHandler extends base {
 
         if (this._overlayMap.count === 0) {
             // Hide overlay handler if empty stack
-            this.visible = false;
+            this._delayedHide.Schedule();
         }
 
+    }
+
+    _Hide(){
+        this.visible = false;
     }
 
     // TODO : Handle request in a generic manner, to capture locally all requests that inherit OVERLAY
@@ -114,6 +120,7 @@ class OverlayHandler extends base {
     // _UnregisterLocalRequestHandler
 
     _CleanUp() {
+        this._delayedHide.Cancel();
         super._CleanUp();
         this.visible = false;
     }

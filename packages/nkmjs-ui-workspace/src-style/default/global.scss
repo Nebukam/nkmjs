@@ -6,9 +6,9 @@
 @import './_variables';
 
 :host{
-    #{$varname_workspace_bg}: $workspace_bg_dark;
-    #{$varname_workspace_nav_bg}: $workspace_nav_bg_dark;
+    #{$id_workspace_bg}: $workspace_bg_dark;
+    #{$id_workspace_nav_bg}: $workspace_nav_bg_dark;
 
-    #{$varname_tree_indent}: $tree_indent;
-    #{$varname_tree_size}: var(--size-s);
+    #{$id_tree_indent}: $tree_indent;
+    #{$id_tree_size}: var(--size-s);
 }

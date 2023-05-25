@@ -8,8 +8,8 @@
 @import '../_mixins';
 
 :host {
-    background-color: var(#{$varname_drawer_bg});
-    --size:var(#{$varname_size_m});
+    background-color: var(#{$id_drawer_bg});
+    --size:var(#{$id_size_m});
 
     min-width: 350px;
     min-height: 350px;

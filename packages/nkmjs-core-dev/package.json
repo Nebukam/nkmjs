@@ -16,7 +16,8 @@
         "bundle-core": "node ./lib/task-build-core-bundle.js",
         "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README-jsdoc.md",
         "postinstall": "node ./lib/script-post-install.js",
-        "link-nkmjs": "yarn install && yarn link @nkmjs/core && yarn link @nkmjs/utils",
+        "link-nkmjs": "yarn install && yarn link-nkmjs-core",
+        "link-nkmjs-core":"yarn link @nkmjs/actions && yarn link @nkmjs/app-core && yarn link @nkmjs/collections && yarn link @nkmjs/common && yarn link @nkmjs/data-core && yarn link @nkmjs/dialog && yarn link @nkmjs/documents && yarn link @nkmjs/electron-core && yarn link @nkmjs/environment && yarn link @nkmjs/i18n && yarn link @nkmjs/io-core && yarn link @nkmjs/io-electron && yarn link @nkmjs/metrics && yarn link @nkmjs/server-core && yarn link @nkmjs/server-io && yarn link @nkmjs/services && yarn link @nkmjs/style && yarn link @nkmjs/ui-core && yarn link @nkmjs/ui-data-controls && yarn link @nkmjs/ui-library && yarn link @nkmjs/ui-workspace && yarn link @nkmjs/utils && yarn link @nkmjs/core",
         "nkmjs": "nkmjs"
     },
     "bin": {

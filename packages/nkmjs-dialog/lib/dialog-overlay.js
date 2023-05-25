@@ -18,10 +18,6 @@ class DialogOverlay extends base {
 
     static __default_overlayContentClass = DialogBox;
 
-    _Init() {
-        super._Init();
-    }
-
     // ----> DOM
 
     static _Style() {
@@ -30,9 +26,7 @@ class DialogOverlay extends base {
                 ...style.rules.flex.center,
             },
             '.content': {
-                ...style.rules.item.shrink,
-                'max-width': `100%`,
-                'max-height': `100%`,
+               // See ui.overlays.Overlay
             }
         }, base._Style());
     }

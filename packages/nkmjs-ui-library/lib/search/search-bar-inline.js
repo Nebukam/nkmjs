@@ -62,7 +62,7 @@ class SearchBarInline extends base {
             '.search': { ...style.rules.item.fill, },
             '.large': { 'margin-right': '10px' },
 
-            ':host(.enabled)': { 'background-color': 'rgba(var(--col-active-dark-rgb),0.5)', },
+            ':host(.enabled)': { 'background-color': 'rgba(var(--col-active-low-rgb),0.5)', },
             ':host(:not(.enabled)) .control:not(.main-toggle)': { opacity: 0.5, 'pointer-events': 'none' },
             '.small': {
                 'flex': '1 1 45%'

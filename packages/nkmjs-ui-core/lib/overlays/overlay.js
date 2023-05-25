@@ -24,6 +24,7 @@ class Overlay extends base {
         css: [`@/views/overlay.css`]
     }, base, ['css']);
 
+    static __closeOnBgClick = false;
     static __default_overlayContentClass = null;
     static __default_contentPlacement = null;
     static __content_context = CTX.CONTENT;
@@ -44,10 +45,21 @@ class Overlay extends base {
         this._dataObserver.Hook(com.SIGNAL.CONSUMED, this._Bind(this._OnDataConsumed));
         this._transitions = new extensions.AnimController();
 
-        this._closeBg = this._pointer.Add(extensions.PointerStatic);
-        this._closeBg.Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE, this._Bind(this._CloseRequest));
+        if (this.constructor.__closeOnBgClick) {
+            this._closeBg = this._pointer.Add(extensions.PointerStatic);
+            this._closeBg.Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE, this._Bind(this.RequestClose));
+        }
 
         this._options = null;
+        this._lastContent = null;
+
+        this._delayedRelease = com.DelayedCall(() => {
+            if (this._lastContent) {
+                this._lastContent.Release();
+                this._lastContent = null;
+            }
+            super.Release();
+        }, 500);
 
     }
 
@@ -60,10 +72,17 @@ class Overlay extends base {
                 'transition': 'transform 0s linear',
                 'z-index': '10', // Modals are 100.
             },
+            ':host(:not(.shown))': { 'pointer-events': 'none !important', },
             '.bg': {
                 ...style.rules.layer,
                 'transform': 'translateY(-100%)',
                 'transition': 'transform 0s linear'
+            },
+            '.content': {
+                ...style.rules.pos.rel,
+                ...style.rules.item.shrink,
+                'max-width': `100%`,
+                'max-height': `100%`,
             }
         }, base._Style());
     }
@@ -71,7 +90,7 @@ class Overlay extends base {
     _Render() {
         super._Render();
         this._bg = dom.El(`div`, { class: `bg` }, this);
-        this._closeBg.element = this._bg;
+        if (this._closeBg) { this._closeBg.element = this._bg; }
     }
 
     // ----> Options
@@ -144,10 +163,9 @@ class Overlay extends base {
         if (this._content) {
 
             dom.CSSClass(this._content, FLAGS.SHOWN, false);
-            dom.CSS(this._content, `transform`, null);
-
             if (this._content._flags) { this._content._flags.Set(FLAGS.SHOWN, false); }
-            this._content.Release();
+            //this._content.Release();
+            this._lastContent = this._content;
             this._content = null;
         }
 
@@ -169,9 +187,8 @@ class Overlay extends base {
         this._data.currentContent = this._content;
 
         dom.CSSClass(this._content, FLAGS.SHOWN);
-        dom.CSS(this._content, `transform`, `translateX(0%)`);
-
         if (this._content._flags) { this._content._flags.Set(FLAGS.SHOWN, true); }
+
         this._content.data = contentData;
 
         // Feed data as options once the content is ready
@@ -222,7 +239,15 @@ class Overlay extends base {
         return p_overlayOptions;
     }
 
-    _CloseRequest() { this._content._CloseRequest?.(); }
+    RequestClose() {
+        this.DisplayLost();
+        this._content.RequestClose?.();
+    }
+
+    _OnDisplayLost() {
+        super._OnDisplayLost();
+        this._content?.DisplayLost?.();
+    }
 
     _OnDisplayGain() {
         super._OnDisplayGain();
@@ -237,6 +262,12 @@ class Overlay extends base {
      */
     _OnDataConsumed(p_data) {
 
+    }
+
+    Release() {
+        this._lastContent = this._content;
+        this.RequestClose();
+        this._delayedRelease.Schedule();
     }
 
     _CleanUp() {

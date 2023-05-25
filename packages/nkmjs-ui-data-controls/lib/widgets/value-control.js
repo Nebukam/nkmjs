@@ -91,7 +91,7 @@ class ValueControl extends base {
                 'margin-left': `4px`
             },
             ':host(.false) .label': {
-                'text-decoration': 'line-through var(--col-error-dark)',
+                'text-decoration': 'line-through var(--col-error-low)',
             },
             '.label::after': {
                 'content': '"🛈"',

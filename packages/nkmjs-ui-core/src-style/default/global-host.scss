@@ -45,7 +45,7 @@
 
 }
 
-@include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_varnames) using ($index, $val) {
+@include for-each-host-selector('', $FLAVORS_EX, '', '', $col_flavors_ex_ids) using ($index, $val) {
 
     --flavor-color: var(#{$val});
     --flavor-contrast:var(#{$val+'-contrast'});
@@ -87,7 +87,7 @@
     padding: 0;
 
     --h-size: calc(var(--size) / 2);
-    --clamped-size: clamp(var(#{$varname_size_xs}), var(--h-size), var(#{$varname_size_l}));
+    --clamped-size: clamp(var(#{$id_size_xs}), var(--h-size), var(#{$id_size_l}));
 
     width: var(--clamped-size);
     min-width: var(--clamped-size);

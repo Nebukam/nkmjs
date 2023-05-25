@@ -15,7 +15,7 @@
     @for $i from 0 to length($col_flavors_ex) { 
         
         $base_color: nth($col_flavors_ex, $i + 1);
-        $flavor_name: str-replace(nth($col_flavors_ex_varnames, $i + 1), '--col-');
+        $flavor_name: str-replace(nth($col_flavors_ex_ids, $i + 1), '--col-');
         $flavor_id: $i+1;
 
         // Create per-state variants
@@ -33,7 +33,7 @@
 
     }
 
-    #{$varname_drawer_bg}: $drawer_bg_dark;
-    #{$varname_overlay_bg}: $overlay_bg_dark;
+    #{$id_drawer_bg}: $drawer_bg_dark;
+    #{$id_overlay_bg}: $overlay_bg_dark;
     
 }

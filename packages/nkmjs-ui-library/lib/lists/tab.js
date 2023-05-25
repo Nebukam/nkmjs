@@ -37,14 +37,14 @@ class Tab extends base {
 
         super._Init();
 
-        this._Bind(this._CloseRequest);
+        this._Bind(this.RequestClose);
 
         this._isStaticTab = false;
 
         this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
-        this._closeBtn.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE, this._CloseRequest);
+        this._closeBtn.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE, this.RequestClose);
 
-        this._pointer.Hook(ui.POINTER.KEYS.MOUSE_MIDDLE, ui.POINTER.KEYS.RELEASE, this._CloseRequest);
+        this._pointer.Hook(ui.POINTER.KEYS.MOUSE_MIDDLE, ui.POINTER.KEYS.RELEASE, this.RequestClose);
 
     }
 
@@ -130,7 +130,7 @@ class Tab extends base {
         }
     }
 
-    _CloseRequest() {
+    RequestClose() {
         if (!this._isActivable || this._isStaticTab) { return; }
         this.Broadcast(ui.SIGNAL.CLOSE_REQUESTED, this);
     }

@@ -49,10 +49,10 @@ class Drawer extends base {
     _Init() {
         super._Init();
 
-        this._Bind(this._CloseRequest);
+        this._Bind(this.RequestClose);
 
         this._closeBtn = this._pointer.Add(ui.extensions.Pointer);
-        this._closeBtn.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE, this._CloseRequest);
+        this._closeBtn.Hook(ui.POINTER.KEYS.MOUSE_LEFT, ui.POINTER.KEYS.RELEASE, this.RequestClose);
 
         this._dataPreProcessor = this.constructor.__ppdata;
 
@@ -132,13 +132,12 @@ class Drawer extends base {
 
     //
 
-    _CloseRequest() {
+    RequestClose() {
         if (!this._isActivable) { return; }
         if (this._overlayOptions) {
             this._overlayOptions.Consume?.();
             this._overlayOptions = null;
         }
-        //this.Broadcast(SIGNAL.CLOSE_REQUESTED, this);
     }
 
     // ----> Pooling
