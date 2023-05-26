@@ -157,7 +157,8 @@ class DisplayObjectContainer extends base {
             else { p_displayObject.classList.add(p_cssClass); }
         }
 
-        this._OnChildAttached(p_displayObject, p_index);
+        this._OnChildAttached?.(p_displayObject, p_index);
+        this.Broadcast(SIGNAL.CHILD_ATTACHED, this, p_displayObject, p_index);
 
         return p_displayObject;
 
@@ -174,8 +175,10 @@ class DisplayObjectContainer extends base {
             throw new Error(`Provided display object is not a child of this container.`);
         }
         //TODO : Implement Move
+        let p_oldIndex = p_index;
         console.warning("DisplayObject.Move is not implemented.");
-        this._OnChildMoved(p_displayObject, p_index, p_index);
+        this._OnChildMoved?.(p_displayObject, p_index, p_oldIndex);
+        this.Broadcast(SIGNAL.CHILD_MOVED, this, p_displayObject, p_index, p_oldIndex);
     }
 
     /**
@@ -206,7 +209,8 @@ class DisplayObjectContainer extends base {
             dom.Detach(removedDisplayObject);
         }
 
-        this._OnChildDetached(removedDisplayObject, p_index);
+        this._OnChildDetached?.(removedDisplayObject, p_index);
+        this.Broadcast(SIGNAL.CHILD_DETACHED, this, removedDisplayObject, p_index);
 
         return removedDisplayObject;
 
@@ -221,68 +225,6 @@ class DisplayObjectContainer extends base {
     DetachAll() {
         while (!this._displayList.isEmpty) { this._displayList.last.Release(); }
     }
-
-    /**
-     * @access protected
-     * @description Internal method called when a display object has been successfully added to the display list.  
-     * Since it is reponsible for broadcasting the CHILD_ATTACHED signal, overriding this methods gives you control
-     * over the order of any operations that would need to happen _before_ or _after_ the signal is being broadcasted.
-     * @param {ui.core.DisplayObject} p_displayObject 
-     * @param {number} p_index 
-     * @customtag override-me
-     * @broadcasts ui.core.SIGNAL.CHILD_ATTACHED
-     * @group Child Management
-     * @example _OnChildAttached(p_displayObject, p_index){
-     *     // ... Before signal broadcast
-     *     super._OnChildAttached(p_displayObject, p_index); // Will broadcast CHILD_ATTACHED
-     *     // ... After signal broadcast
-     * }
-     */
-    _OnChildAttached(p_displayObject, p_index) {
-        this.Broadcast(SIGNAL.CHILD_ATTACHED, this, p_displayObject, p_index);
-    }
-
-    /**
-     * @access protected
-     * @description Internal method called when a display object has been successfully moved inside the display list.  
-     * Since it is reponsible for broadcasting the CHILD_MOVED signal, **overriding this methods gives you control
-     * over the order of any operations** that would need to happen _before_ or _after_ the signal is being broadcasted.
-     * @param {ui.core.DisplayObject} p_displayObject 
-     * @param {number} p_index 
-     * @param {number} p_oldIndex 
-     * @customtag override-me
-     * @broadcasts ui.core.SIGNAL.CHILD_MOVED
-     * @group Child Management
-     * @example _OnChildMoved(p_displayObject, p_index, p_oldIndex){
-     *     // ... Before signal broadcast
-     *     super._OnChildMoved(p_displayObject, p_index, p_oldIndex); // Will broadcast CHILD_MOVED
-     *     // ... After signal broadcast
-     * }
-     */
-    _OnChildMoved(p_displayObject, p_index, p_oldIndex) {
-        this.Broadcast(SIGNAL.CHILD_MOVED, this, p_displayObject, p_index, p_oldIndex);
-    }
-
-    /**
-     * @access protected
-     * @description Internal method called when a display object has been successfully removed from the display list.  
-     * Since it is reponsible for broadcasting the CHILD_DETACHED signal, overriding this methods gives you control
-     * over the order of any operations that would need to happen _before_ or _after_ the signal is being broadcasted.
-     * @param {ui.core.DisplayObject} p_displayObject 
-     * @param {number} p_index 
-     * @customtag override-me
-     * @broadcasts ui.core.SIGNAL.CHILD_DETACHED
-     * @group Child Management
-     * @example _OnChildDetached(p_displayObject, p_index){
-     *     // ... Before signal broadcast
-     *     super._OnChildDetached(p_displayObject, p_index); // Will broadcast CHILD_DETACHED
-     *     // ... After signal broadcast
-     * }
-     */
-    _OnChildDetached(p_displayObject, p_index) {
-        this.Broadcast(SIGNAL.CHILD_DETACHED, this, p_displayObject, p_index);
-    }
-
 
 }
 

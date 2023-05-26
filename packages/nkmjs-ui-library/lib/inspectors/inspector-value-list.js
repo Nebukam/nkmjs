@@ -4,7 +4,7 @@ const ui = require(`@nkmjs/ui-core`);
 const env = require(`@nkmjs/environment`);
 const datacontrols = require(`@nkmjs/ui-data-controls`);
 
-const Foldout = require(`../widgets/foldout`);
+const ControlsFoldout = require(`../views/controls-foldout`);
 
 const base = datacontrols.InspectorView;
 class ValueListInspector extends base {
@@ -17,41 +17,33 @@ class ValueListInspector extends base {
     _Init() {
         super._Init();
         this._builder.defaultControlClass = datacontrols.widgets.ValueControl;
-        this._builder.defaultCSS = `control`;
+        this._builder.defaultCSS = `item`;
     }
 
     static _Style() {
         return style.Extends({
+
             ':host': {
                 ...style.rules.fadeIn,
-                'flex-flow': 'row wrap',
+                ...style.flex.row.wrap,
                 'align-content': 'flex-start',
                 'width': `${this.__width}`,
             },
+
             '.body': {
-                ...style.rules.flex.row.wrap,
-                ...style.rules.item.fill,
-                'overflow': 'auto',
-                ...style.rules.gap.small,
-                'padding': `10px`,
+                ...style.flex.row.wrap,
+                ...nkm.style.rules.gap.small,
+
+                ...style.flexItem.fill,
+                'overflow': 'auto',                
             },
-            '.control': {
-                'flex': '1 1 100%',
-                'margin': '0',
-                //'margin-bottom': '5px'
-            },
-            '.separator': {
-                //'border-top':'1px solid gray'
-            },
+            
             '.foldout': {
-                ...style.rules.item.fill,
-                'width': `350px`,
+                ...style.flexItem.fillAbs(350),
             },
 
-            '.header': { 'margin': '5px 2px 5px 2px' },
-            '.small': { 'flex': '1 1 25%' },
-            '.vsmall': { 'flex': '1 1 15%' },
-            '.large': { 'flex': '1 1 80%' },
+            ...style.flexItem.items.prefix(`.body`),
+
 
         }, base._Style());
     }
@@ -63,26 +55,15 @@ class ValueListInspector extends base {
 
         super._Render();
 
-        for (const foldout of this.constructor.__foldouts) {
-            this._Foldout(foldout.foldout, foldout.controls);
+        let foldouts = this._GetFoldouts([]);
+        if (!foldouts.length) { foldouts = this.constructor.__foldouts; }
+
+        for (const foldout of foldouts) {
+            ControlsFoldout.Build(this, foldout, this._body);
         };
     }
 
-    _Foldout(p_foldout, p_controls, p_css = ``, p_host = null) {
-
-        let foldout = this.Attach(Foldout, `item foldout${p_css ? ' ' + p_css : ''}`, p_host || this._body);
-        foldout.options = p_foldout;
-
-        if (p_controls) {
-            let builder = new datacontrols.helpers.ControlBuilder(this);
-            builder.options = { host: foldout, cl: datacontrols.widgets.ValueControl, css: `foldout-item full` };
-            this.forwardData.To(builder);
-            builder.Build(p_controls);
-        }
-
-        return foldout;
-
-    }
+    _GetFoldouts(p_foldouts) { return p_foldouts; }
 
 
 }

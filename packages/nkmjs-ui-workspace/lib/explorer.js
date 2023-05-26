@@ -33,18 +33,18 @@ class Explorer extends base {
         return {
             ':host': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
-                ...style.rules.flex.stretch,
-                ...style.rules.item.fill,
+                ...style.flex.column.nowrap,
+                ...style.flex.stretch,
+                ...style.flexItem.fill,
             },
             '.group': {
                 ...style.rules.pos.rel,
             },
             '.header': {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             },
             '.footer': {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             },
 
             '.body': {

@@ -3,6 +3,7 @@
 
 const u = require(`@nkmjs/utils`);
 const collections = require(`@nkmjs/collections`);
+const style = require(`@nkmjs/style`);
 
 const __observedElements = [];
 const __observedCallbacks = new collections.DictionaryList();
@@ -140,24 +141,24 @@ module.exports = {
 
     /**
      * @description Create a DOM Node of a given type with a given set of attributes.
-     * @param {string} p_element 
+     * @param {string} p_tag 
      * @param {object} [p_attributes] inlined attributes & values
      * @param {Node} [p_container] Parent node to append the new node into
      * @example let newNode = this.New(`div`, { class:`foo`, ['data-title']:`bar` });
      * //<div class="foo" data-title:"bar"></div> //dom element
      */
-    El: function (p_element, p_attributes = null, p_container = null) {
+    El: function (p_tag, p_attributes = null, p_container = null) {
 
-        let element = document.createElement(p_element);
+        let el = document.createElement(p_tag);
 
-
-        if (!u.isVoid(p_attributes)) {
-            for (let att in p_attributes) { element.setAttribute(att, p_attributes[att]); }
+        if (u.isObject(p_attributes)) {
+            if(p_attributes.style){ p_attributes.style = style.STYLE.Inline(p_attributes.style); }
+            for (let att in p_attributes) { el.setAttribute(att, p_attributes[att]); }
         }
 
-        if (!u.isVoid(p_container)) { module.exports.Attach(element, p_container); }
+        if (p_container) { module.exports.Attach(el, p_container); }
 
-        return element;
+        return el;
     },
 
     /**

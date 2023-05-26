@@ -30,13 +30,18 @@ class InputBoolean extends base {
 
     // ----> DOM
 
-    get label(){ return this._label; }
-    set label(p_value){ this._label.Set(p_value); }
+    get label() { return this._label; }
+    set label(p_value) { this._label.Set(p_value); }
 
     static _Style() {
         return style.Extends({
-            ':host':{ 'min-height': `var(--size)` }, //min height for input field
-            '.field': { ...style.rules.invisibleFill, }
+            ':host': {
+                'min-height': `28px`,
+                overflow: 'hidden'
+            }, //min height for input field
+            '.field': {
+                ...style.rules.invisibleFill,
+            }
         }, base._Style());
     }
 
@@ -61,7 +66,7 @@ class InputBoolean extends base {
     // ----> Mouse events
 
     Activate(p_evt) {
-        if(!super.Activate(p_evt)){ return false; }
+        if (!super.Activate(p_evt)) { return false; }
         this.changedValue = !this.changedValue;
         return true;
     }

@@ -109,7 +109,7 @@ class DOMStreamer extends base {
             '.fixture': {
                 'min-height': 0,
                 'width': '100%',
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
                 'grid-row-start': 'header',
                 'grid-column': `1/-1`, // take one full width
             },
@@ -117,7 +117,7 @@ class DOMStreamer extends base {
                 'position': 'relative'
                 //'box-sizing': 'border-box',
                 //'flex-grow': `1`,
-                //...style.rules.item.fixed,
+                //...style.flexItem.fixed,
             },
             '.dom-streamer-dummy': {
                 'position': 'relative'

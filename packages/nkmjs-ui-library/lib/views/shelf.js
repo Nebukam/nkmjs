@@ -251,10 +251,10 @@ class Shelf extends base {
                 'display': 'none'
             },
             [`.${NAV}`]: {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             },
             [`.${ui.IDS.VIEW}`]: {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
 
             // Vertical ( nav on the left or right )

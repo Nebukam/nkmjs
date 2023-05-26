@@ -130,27 +130,27 @@ class WidgetBar extends base {
                 'justify-content': `flex-start`,
                 'align-items': `center`,
 
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             },
 
             [`.${IDS.ITEM}`]: {
                 ...style.rules.pos.rel,
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
                 'min-width': '0',
                 'min-height': '0',
             },
             [`:host(.${FLAGS.STRETCH}) .${IDS.GROUP}`]: {
-                ...style.rules.item.grow,
+                ...style.flexItem.grow,
             },
             [`:host(.${FLAGS.STRETCH}) .${IDS.ITEM}`]: {
-                ...style.rules.item.grow,
+                ...style.flexItem.grow,
             },
 
             [`:host(.${FLAGS.STRETCH_SQUEEZE}) .${IDS.GROUP}`]: {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
             [`:host(.${FLAGS.STRETCH_SQUEEZE}) .${IDS.ITEM}`]: {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
             [`:host(.vertical.${FLAGS.STRETCH}) .${IDS.ITEM}`]: {
                 'max-height': `100% !important`,

@@ -49,7 +49,7 @@ class InputFile extends base {
     static _Style() {
         return style.Extends({
             '.input-btn': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
             ':host(.allow-drop)': {
                 'background-color': `#00ff00`

@@ -15,8 +15,35 @@
     border-radius: 4px;
     margin-bottom: 5px;
 
-    background-color: rgba(var(#{$id_col_base_300}-rgb), 0.5);
+    background-color: rgba(var(#{$id_col_base_400}-rgb), 0.3);
 
+    border-width: 0 0 0 0;
+    border-style: solid;
+    border-color: rgba(var(#{$id_col_base_400}-rgb), 0);
+
+}
+
+
+
+:host(:hover) {
+    background-color: rgba(var(#{$id_col_base_400}-rgb), 0.5);
+    border-color: rgba(var(#{$id_col_base_400}-rgb), 1);
+}
+
+:host(.expanded) {
+    & .header {
+        
+        padding-bottom: 10px;
+
+        & .label{
+            opacity: 0.7;
+        }
+
+        & .expand{
+            opacity: 0.4;
+        }
+
+    }
 }
 
 :host .label {}

@@ -86,7 +86,7 @@ class Tab extends base {
 
             ':host': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.row.nowrap,
+                ...style.flex.row.nowrap,
                 'align-items': `center`,
                 'align-content': `stretch`
             }

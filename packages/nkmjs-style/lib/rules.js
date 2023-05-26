@@ -4,6 +4,12 @@ const zeroMinHeight = { 'min-height': '0' };
 const zeroMinWidth = { 'min-width': '0' };
 const zeroMinSize = { ...zeroMinHeight, ...zeroMinWidth };
 
+RULES.zeroMin = {
+    width: { ...zeroMinWidth },
+    height: { ...zeroMinHeight },
+    all: { ...zeroMinSize },
+}
+
 RULES.pos = {
     abs: { position: `absolute` },
     rel: { position: `relative` },
@@ -100,101 +106,8 @@ RULES.dropShadow = {
     },
 }
 
-//#region Flex presets
-const flexFill = { flex: '1 1 auto', 'min-width': '0', 'min-height': '0' };
-const flexShrink = { flex: '0 1 auto', 'min-width': '0', 'min-height': '0' };
-const flexGrow = { flex: '1 0 auto' };
-const flexFixed = { flex: '0 0 auto' };
-
-const flexWrap = { 'flex-wrap': 'wrap' };
-const flexNowrap = { 'flex-wrap': 'nowrap' };
-
-const col = { ...RULES.display.flex, 'flex-direction': 'column', ...zeroMinHeight };
-const row = { ...RULES.display.flex, 'flex-direction': 'row', ...zeroMinWidth };
-const wrapperStretchAll = { 'justify-content': `stretch`, 'align-items': `stretch` };
-const wrapperCenterAll = { 'justify-content': `center`, 'align-items': `center`, 'align-content': `center` };
-
-RULES.flex = {
-    column: {
-        wrap: { ...col, ...flexWrap },
-        nowrap: { ...col, ...flexNowrap },
-
-        inlineWrap: { ...col, ...flexWrap, 'align-items': 'center' },
-        inlineNowrap: { ...col, ...flexNowrap, 'align-items': 'center' },
-
-        centerWrap: { ...col, ...flexWrap, 'align-items': 'center', 'justify-content': 'center' },
-        centerNowrap: { ...col, ...flexNowrap, 'align-items': 'center', 'justify-content': 'center' },
-
-        distributeWrap: { ...col, ...flexWrap, 'align-items': 'center', 'justify-content': 'space-between' },
-        distributeNowrap: { ...col, ...flexNowrap, 'align-items': 'center', 'justify-content': 'space-between' },
-
-        stretchWrap: { ...col, ...flexWrap, ...wrapperStretchAll },
-        stretchNowrap: { ...col, ...flexNowrap, ...wrapperStretchAll },
-    },
-    row: {
-
-        wrap: { ...row, ...flexWrap },
-        nowrap: { ...row, ...flexNowrap },
-
-        inlineWrap: { ...row, ...flexWrap, 'align-items': 'center' },
-        inlineNowrap: { ...row, ...flexNowrap, 'align-items': 'center' },
-
-        centerWrap: { ...row, ...flexWrap, 'align-items': 'center', 'justify-content': 'center' },
-        centerNowrap: { ...row, ...flexNowrap, 'align-items': 'center', 'justify-content': 'center' },
-
-        distributeWrap: { ...row, ...flexWrap, 'align-items': 'center', 'justify-content': 'space-between' },
-        distributeNowrap: { ...row, ...flexNowrap, 'align-items': 'center', 'justify-content': 'space-between' },
-
-        stretchWrap: { ...row, ...flexWrap, ...wrapperStretchAll },
-        stretchNowrap: { ...row, ...flexNowrap, ...wrapperStretchAll },
-
-
-    },
-    stretch: {
-        ...RULES.display.flex,
-        ...zeroMinSize,
-        ...wrapperStretchAll
-    },
-    center: {
-        ...RULES.display.flex,
-        ...zeroMinSize,
-        ...wrapperCenterAll
-    },
-    stretch: {
-        ...RULES.display.flex,
-        'align-content': 'stretch',
-        'align-items': 'stretch',
-        ...zeroMinSize,
-    },
-
-    alignContent: {
-        center: { 'align-items': 'center' }
-    },
-    alignSelf: {
-
-    }
-}
-
-RULES.item = {
-    fixed: { ...flexFixed },
-    fill: { ...flexFill },
-    shrink: { ...flexShrink },
-    grow: { ...flexGrow },
-}
-
 RULES.gap = {
     small: { gap: '8px 8px' }
-}
-
-RULES.grid = {
-    stretch: {
-        ...RULES.display.grid,
-        ...wrapperStretchAll
-    },
-    center: {
-        ...RULES.display.grid,
-        ...wrapperCenterAll
-    }
 }
 
 RULES.presets = {

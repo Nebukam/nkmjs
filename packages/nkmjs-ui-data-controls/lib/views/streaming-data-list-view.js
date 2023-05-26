@@ -94,12 +94,12 @@ class StreamingDataListView extends base {
         return style.Extends({
             ':host': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
                 '--streamer-gap': '10px',
                 'overflow': 'clip'
             },
             '.header, .search, .footer': {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
                 ...style.rules.bgBlur.small,
             },
             '.header': {
@@ -110,7 +110,7 @@ class StreamingDataListView extends base {
             },
             '.dom-stream': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
                 'overflow': 'auto',
             },
             '.dom-stream.empty': {

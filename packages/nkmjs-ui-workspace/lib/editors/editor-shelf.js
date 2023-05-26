@@ -30,13 +30,8 @@ class EditorShelf extends base {
         return style.Extends({
             ':host': {
                 //width: `354px`,
-                ...style.rules.item.fixed,
-                'background-color': `rgba(127,127,127,0.1)`,
-                //'border-left':`1px dashed rgba(127,127,127,0.2)`
+                ...style.flexItem.fixed,
             },
-            '.controls': {
-                'background-color': `rgba(127,127,127,0.0)`,
-            }
         }, base._Style());
     }
 

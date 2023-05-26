@@ -23,7 +23,7 @@ class PlaceholderInspector extends base {
 
         return style.Extends({
             ':host': {
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
             },
 
         }, base._Style());

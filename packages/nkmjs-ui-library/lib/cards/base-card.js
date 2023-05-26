@@ -121,17 +121,17 @@ class BaseCard extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.flex.stretch,
+                ...style.flex.stretch,
             },
 
             '.header': {
-                ...style.rules.item.shrink,
+                ...style.flexItem.shrink,
                 'min-height': '100px',
                 'min-width': '100px',
             },
             '.body': {
-                ...style.rules.flex.column.nowrap,
-                ...style.rules.item.fill,
+                ...style.flex.column.nowrap,
+                ...style.flexItem.fill,
                 //'justify-content': `flex-start`,
                 //'align-items': `stretch`,
             },

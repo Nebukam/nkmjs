@@ -69,7 +69,7 @@ class FolderItem extends base {
                 'padding-left': `var(--indent, 0px)`,
             },
             '.toolbar': {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             }
         }, base._Style());
     }

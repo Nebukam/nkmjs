@@ -69,15 +69,14 @@ class ValueControl extends base {
             ':host': {
                 //...style.rules.fadeIn,
                 ...style.rules.pos.rel,
-                ...style.rules.flex.row.centerNowrap,
-                ...style.rules.item.fill,
-
-                'margin': '0 2px 5px 2px',
+                ...style.flex.row.nowrap,
+                ...style.flex.align.center.all,
+                ...style.flexItem.fill,
             },
             ':host(.selected)': {
                 'background-color': 'rgba(127,127,127,0.25)'
             },
-            ':host(.input-first) .input-field': { ...style.rules.item.fixed, },
+            ':host(.input-first) .input-field': { ...style.flexItem.fixed, },
             ':host(.input-first) .label': { 'margin-left': '10px' },
             ':host(.inherited) .input-field, :host(.inherited) .label': {
                 //'pointer-events': 'none !important',

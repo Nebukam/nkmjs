@@ -17,6 +17,10 @@ module.exports = {
     STYLE: STYLE,
 
     rules: require(`./lib/rules`),
+    flex: require(`./lib/rules-flex`),
+    flexItem: require(`./lib/rules-flex-item`),
+    grid: require(`./lib/rules-grid`),
+
     colors: require(`./lib/colors`),
 
     // Shortcut to CSS.Extends
@@ -45,23 +49,24 @@ module.exports = {
 
     //#region Single properties
 
-    Get: (p_property) => {
-        if (!(p_property in _propCache)) {
+    Get: (p_id) => {
+        if (!(p_id in _propCache)) {
 
             if (!_computeStyles) { _computeStyles = window.getComputedStyle(env.app.body); }
 
-            let val = _computeStyles.getPropertyValue(p_property);
-            if (val) { _propCache[p_property] = val; }
+            let val = _computeStyles.getPropertyValue(p_id);
+            if (val) { _propCache[p_id] = val; }
             return val;
         }
-        return _propCache[p_property];
+        return _propCache[p_id];
     },
 
-    Set: (p_property, p_value) => {
-        if (p_property in _propCache) { if (_propCache[p_property] == p_value) { return; } }
-        env.app.body.style.setProperty(p_property, p_value);
-        _propCache[p_property] = p_value;
-        STYLE.Broadcast(p_property, p_value);
+    Set: (p_id, p_value) => {
+        if (p_id in _propCache) { if (_propCache[p_id] === p_value) { return p_value; } }
+        env.app.body.style.setProperty(p_id, p_value);
+        _propCache[p_id] = p_value;
+        STYLE.Broadcast(p_id, p_value);
+        return p_value;
     },
 
     ClearCache: () => { _propCache = {}; }

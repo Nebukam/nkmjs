@@ -54,22 +54,22 @@ class InspectorShellEx extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.flex.column.nowrap,
-                ...style.rules.flex.stretch,
+                ...style.flex.column.nowrap,
+                ...style.flex.stretch,
                 'justify-content': `flex-start`,
             },
             '.header': {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             },
             '.body': {
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
                 'justify-content': `flex-start`,
                 'align-items': `stretch`,
                 'overflow': 'auto',
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
             '.inspector': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             }
         }, base._Style());
     }

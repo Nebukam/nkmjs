@@ -47,7 +47,7 @@ class MetaControlGroup extends base {
                 'justify-content': `center`,
                 padding: `6px`
             },
-            '.facade': { ...style.rules.item.fill, },
+            '.facade': { ...style.flexItem.fill, },
         }, base._Style());
     }
 

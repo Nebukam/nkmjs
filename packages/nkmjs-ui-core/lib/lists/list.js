@@ -90,7 +90,7 @@ class List extends base {
             ':host': {
 
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
 
                 'padding': 0,
                 'margin': 0,
@@ -116,7 +116,7 @@ class List extends base {
 
             '.header': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
 
                 'box-sizing': `border-box`,
                 'height': `var(--tree-size)`,
@@ -127,7 +127,7 @@ class List extends base {
 
             '.body': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.grow,
+                ...style.flexItem.grow,
 
                 'display': `none`,
                 'flex-flow': `column nowrap`,
@@ -139,7 +139,7 @@ class List extends base {
             ':host(.expanded) .body': { ...style.rules.display.flex, },
 
             '.item': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             }
         };
     }

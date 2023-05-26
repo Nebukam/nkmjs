@@ -50,7 +50,7 @@ class MenuItem extends base {
                 ...style.rules.fadeIn,
             },
             '.toolbar': {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             }
         }, base._Style());
     }

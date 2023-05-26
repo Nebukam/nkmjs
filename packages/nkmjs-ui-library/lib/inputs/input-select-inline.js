@@ -23,7 +23,7 @@ class InputSelectInline extends base {
     static __defaultScrollable = false;
 
     static __NFO__ = com.NFOS.Ext({
-        css: [`@/widgets/widget-bar.css`]
+        css: [`@/widgets/widget-bar.css`, `@/inputs/select-inline.css`]
     }, ui.WidgetBar, ['css']);
 
     static __distribute = base.__distribute.Ext()
@@ -56,14 +56,12 @@ class InputSelectInline extends base {
                 ...style.rules.display.flex,
                 'align-content': `stretch`,
                 'align-items': `center`,
-                'min-height': `28px !important` //min height for input field
             },
             '.field': {
                 ...style.rules.display.none,
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
                 'height': 'var(--size)',
                 'min-height': `28px !important` //min height for input field
-
             }
         }, base._Style());
     }

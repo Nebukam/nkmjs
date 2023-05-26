@@ -115,7 +115,7 @@ class Folder extends base {
 
 
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
@@ -134,7 +134,7 @@ class Folder extends base {
 
             '.header': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
 
                 'box-sizing': `border-box`,
                 'height': `var(--folder-size)`,
@@ -146,10 +146,10 @@ class Folder extends base {
 
             '.body': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
-                ...style.rules.item.grow,
+                ...style.flexItem.grow,
                 ...style.rules.display.none,
             },
             ':host(.expanded) .body': { ...style.rules.display.flex, },
@@ -159,7 +159,7 @@ class Folder extends base {
             },
 
             '.item': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             }
         };
     }

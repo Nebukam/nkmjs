@@ -59,25 +59,25 @@ class InspectorGroup extends base {
             ':host': {
                 //TODO : Implement orientation in styling
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
-                ...style.rules.flex.stretch,
+                ...style.flex.column.nowrap,
+                ...style.flex.stretch,
                 'margin': `5px`,
             },
             '.header': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.row.nowrap,
-                ...style.rules.flex.stretch,
+                ...style.flex.row.nowrap,
+                ...style.flex.stretch,
                 'justify-content': `space-between`,
 
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
                 padding: `12px`,
             },
-            '.expandIcon': { ...style.rules.item.fixed, },
+            '.expandIcon': { ...style.flexItem.fixed, },
             '.facade': {
-                ...style.rules.item.shrink,
+                ...style.flexItem.shrink,
             },
             '.toolbar': {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
                 opacity: 0,
             },
             ':host(.focused) .toolbar': {
@@ -85,10 +85,10 @@ class InspectorGroup extends base {
             },
             '.body': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
-                ...style.rules.flex.stretch,
+                ...style.flex.column.nowrap,
+                ...style.flex.stretch,
 
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
             '.group': {
                 'min-width': 0,

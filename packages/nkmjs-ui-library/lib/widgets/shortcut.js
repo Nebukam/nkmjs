@@ -84,7 +84,7 @@ class Shortcut extends base {
         return style.Extends({
             ':host': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.row.nowrap,
+                ...style.flex.row.nowrap,
             },
         }, base._Style());
     }

@@ -114,11 +114,11 @@ class InputTextBase extends base {
 
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
-                ...style.rules.flex.stretch,
+                
             },
             '.field': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
+                'min-height': `28px !important` //min height for input field
             }
         }, base._Style());
 

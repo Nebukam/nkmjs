@@ -49,11 +49,10 @@ class InputSelect extends base {
                 ...style.rules.display.flex,
                 'align-content': `stretch`,
                 'align-items': `center`,
-                'min-height': `28px !important` //min height for input field
             },
             '.field': {
                 ...style.rules.display.none,
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
                 'height': 'var(--size)',
                 'min-height': `28px !important` //min height for input field
 

@@ -1,5 +1,6 @@
 const style = require(`@nkmjs/style`);
 const data = require(`@nkmjs/data-core`);
+const u = require(`@nkmjs/utils`);
 const ui = require(`@nkmjs/ui-core`);
 const uilib = require(`@nkmjs/ui-library`);
 const datacontrols = require(`@nkmjs/ui-data-controls`);
@@ -18,34 +19,27 @@ class AppSettingsExplorer extends base {
     _Init() {
         super._Init();
         this._builder.defaultControlClass = datacontrols.widgets.ValueControl;
-        this._builder.defaultCSS = `control`;
+        this._builder.defaultCSS = `item`;
     }
 
     static _Style() {
         return style.Extends({
             ':host': {
-                'min-width': '350px',
-                //...style.rules.item.fixed,
+
             },
             '.list': {
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
                 'overflow': 'auto',
-                'padding': '0px',
             },
             '.body': {
                 'padding': `20px 20px`,
             },
-            '.control': {
-                ...style.rules.item.shrink,
-                'margin-bottom': '5px'
-            },
-            '.separator': {
-                //'border-top':'1px solid gray'
-            },
             '.foldout': {
-                ...style.rules.item.fill,
-                'width': `350px`,
-            }
+
+            },
+
+            ...style.flexItem.items.prefix(`.body`),
+
         }, base._Style());
     }
 
@@ -54,51 +48,36 @@ class AppSettingsExplorer extends base {
         super._Render();
 
         let groups = data.SIMPLEX.GetGroups(env.app._appSettingsType);
-        for(const group of groups){
+        for (const group of groups) {
 
             let
                 groupDescriptor = data.GetDescriptor(group.id),
-                header = {
+                foldout = {
                     ...groupDescriptor,
                     prefId: `appSettings:foldout:${groupDescriptor.id}`,
-                    expanded: true
-                },
-                ctrls = [];
+                    expanded: true,
+                    controls: []
+                };
 
-            for( const valueDef of group.definitions){
+            for (const valueDef of group.definitions) {
                 let
                     descriptor = data.GetDescriptor(valueDef.id),
                     options = { options: { propertyId: valueDef.id } };
+
+                if (u.isInstanceOf(descriptor.valueType, data.TYPES.BOOLEAN)) { options.options.invertInputOrder = true; }
 
                 if (descriptor.controlOptions) {
                     for (var o in descriptor.controlOptions) { options[o] = descriptor.controlOptions[o]; }
                 }
 
-                ctrls.push(options);
+                foldout.controls.push(options);
             };
 
-            this._Foldout(header, ctrls);
+            uilib.views.ControlsFoldout.Build(this, foldout);
 
         };
 
     }
-
-    _Foldout(p_foldout, p_controls, p_css = ``, p_host = null) {
-
-        let foldout = this.Attach(uilib.widgets.Foldout, `item foldout${p_css ? ' ' + p_css : ''}`, p_host || this);
-        foldout.options = p_foldout;
-
-        if (p_controls) {
-            let builder = new datacontrols.helpers.ControlBuilder(this);
-            builder.options = { host: foldout, cl: datacontrols.widgets.ValueControl, css: `foldout-item full` };
-            this.forwardData.To(builder);
-            builder.Build(p_controls);
-        }
-
-        return foldout;
-
-    }
-
 
 }
 

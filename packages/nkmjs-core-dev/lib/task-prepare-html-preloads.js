@@ -86,8 +86,11 @@ class TaskPrepareHTMLMeta extends ScriptBase {
 
             if (mime) {
                 if (mime.as === `style`) {
+                    //electron_preloads += `<link rel="preload" href="${item}">\n`;
+                    //preloads += `<link rel="preload" href="${item}">\n`;
+
                     electron_preloads += `<link rel="stylesheet" href="${item}">\n`;
-                    preloads += `<link rel="stylesheet" href="${item}">\n`; // This will force ALL CSS to be loaded before anything is displayed.
+                    preloads += `<link rel="stylesheet" href="${item}">\n`;
                 } else {
                     preloads += `<link rel="preload" href="${item}" as="${mime.as}" type="${mime.type}">\n`;
                 }

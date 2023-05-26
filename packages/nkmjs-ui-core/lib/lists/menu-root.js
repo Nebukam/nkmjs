@@ -79,13 +79,13 @@ class MenuRoot extends base {
             ':host': {
 
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
                 'justify-content': 'flex-start',
 
             },
 
             '.item': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             }
         };
     }

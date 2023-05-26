@@ -164,10 +164,10 @@ class InputNumberBase extends base {
         return style.Extends({
             ':host': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.stretch,
+                ...style.flex.stretch,
             },
             '.field': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             }
         }, base._Style());
 

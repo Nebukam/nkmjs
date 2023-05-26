@@ -31,7 +31,7 @@ class SearchBar extends base {
             .Hook(data.SIGNAL.SEARCH_HEADER_UPDATED, this._OnSearchHeaderUpdated, this);
 
         this._builder.defaultControlClass = datacontrols.widgets.ValueControl;
-        this._builder.defaultCSS = `control`;
+        this._builder.defaultCSS = `item`;
 
         this._forwardData.Update(this._builder, { get: `searchHeader` });
 
@@ -42,29 +42,29 @@ class SearchBar extends base {
             ':host': {
                 ...style.rules.pos.rel,
                 ...style.rules.fadeIn,
-                ...style.rules.flex.row.wrap,
+                ...style.flex.row.wrap,
                 //'min-height': '0',
                 //'overflow': 'auto',
                 //'padding': '10px',
                 'align-content': 'flex-start',
-                ...style.rules.item.shrink,
+                ...style.flexItem.shrink,
                 'background-color': 'rgba(46,46,46,0.5)',
                 'padding': '10px 20px 5px 20px',
                 'min-height': '28px',
                 //'border-radius':'5px',
                 //'margin':'0 10px'
             },
-            '.control': {
-                ...style.rules.item.fixed,
+            '.item': {
+                ...style.flexItem.fixed,
                 'margin-right': '10px',
                 //'margin-bottom': '0'',
             },
             '.main-toggle': { 'flex': '0 0 115px' },
-            '.search': { ...style.rules.item.fill, },
+            '.search': { ...style.flexItem.fill, },
             '.large': { 'margin-right': '10px' },
 
             ':host(.enabled)': { 'background-color': 'rgba(var(--col-active-low-rgb),0.5)', },
-            ':host(:not(.enabled)) .control:not(.main-toggle)': { opacity: 0.5, 'pointer-events': 'none' },
+            ':host(:not(.enabled)) .item:not(.main-toggle)': { opacity: 0.5, 'pointer-events': 'none' },
             '.small': {
                 'flex': '1 1 45%'
             },

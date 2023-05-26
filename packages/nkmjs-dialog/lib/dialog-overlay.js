@@ -23,7 +23,7 @@ class DialogOverlay extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.flex.center,
+                ...style.flex.align.center.all,
             },
             '.content': {
                // See ui.overlays.Overlay

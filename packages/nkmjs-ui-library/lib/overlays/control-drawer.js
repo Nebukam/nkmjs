@@ -25,6 +25,8 @@ class ControlDrawer extends base {
         css: [`@/views/drawer.css`]
     }, base, ['css']);
 
+    static __width = `400px`;
+
     static __ppdata = (p_owner, p_data) => {
 
         if (u.isInstanceOf(p_data, ui.overlays.OverlayOptions)) {
@@ -70,7 +72,8 @@ class ControlDrawer extends base {
         return style.Extends({
             ':host': {
                 'display': `grid`,
-                'grid-template-rows': 'max-content auto'
+                'grid-template-rows': 'max-content auto',
+                'width':`${this.__width}`
             },
             '.header': {
                 'grid-row': '1'

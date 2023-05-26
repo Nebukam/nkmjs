@@ -81,10 +81,9 @@ class InputCatalogBase extends base {
                 ...style.rules.display.flex,
                 'align-content': `stretch`,
                 'align-items': `center`,
-                'min-height': `28px !important` //min height for input field
             },
             '.item': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
                 'min-width': 0
             }
         }, base._Style());

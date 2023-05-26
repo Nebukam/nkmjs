@@ -58,7 +58,7 @@ class InspectorWidgetGroup extends base {
             ':host': {
                 //...style.rules.fadeIn,
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
+                ...style.flex.column.nowrap,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
@@ -70,25 +70,26 @@ class InspectorWidgetGroup extends base {
 
             '.header': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.row.inlineNowrap,
+                ...style.flex.row.nowrap,
+                ...style.flex.align.center.cross,
                 'box-sizing': `border-box`,
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
                 'width': `100%`,
                 'justify-items': `flex-start`,
             },
 
             '.toolbar': {
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             },
 
             '.label': {
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
 
             '.body': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.column.nowrap,
-                ...style.rules.item.grow,
+                ...style.flex.column.nowrap,
+                ...style.flexItem.grow,
             },
 
             ':host(.expanded) .body': { ...style.rules.display.flex, },

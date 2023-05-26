@@ -55,16 +55,17 @@ class ControlGroup extends base {
             },
             '.header': {
                 ...style.rules.pos.rel,
-                ...style.rules.flex.row.inlineWrap,
+                ...style.flex.row.wrap,
+                ...style.flex.align.center.cross,
                 'align-content': `stretch`,
                 'padding': `4px`,
                 'box-sizing': `border-box`,
 
-                ...style.rules.item.shrink,
+                ...style.flexItem.shrink,
             },
-            '.toggle': { ...style.rules.item.fixed, },
-            '.facade': { ...style.rules.item.fill, },
-            '.toolbar': { ...style.rules.item.fixed, },
+            '.toggle': { ...style.flexItem.fixed, },
+            '.facade': { ...style.flexItem.fill, },
+            '.toolbar': { ...style.flexItem.fixed, },
 
             '.content': {
 

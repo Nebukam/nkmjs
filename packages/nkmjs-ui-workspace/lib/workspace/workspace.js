@@ -75,7 +75,7 @@ class Workspace extends base {
             },
             '.navigation': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
                 outline: `1px rgba(0,255,0,0.5) solid`,
                 'outline-offset': `-1px`,
             },

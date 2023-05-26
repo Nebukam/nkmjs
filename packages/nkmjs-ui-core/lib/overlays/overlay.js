@@ -80,7 +80,7 @@ class Overlay extends base {
             },
             '.content': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.shrink,
+                ...style.flexItem.shrink,
                 'max-width': `100%`,
                 'max-height': `100%`,
             }

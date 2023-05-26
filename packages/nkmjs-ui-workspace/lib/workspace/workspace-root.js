@@ -50,7 +50,7 @@ class RootWorkspace extends base {
                 ...style.rules.pos.rel,
                 ...style.rules.display.flex,
                 //height:`100%`,
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
         }, base._Style());
     }

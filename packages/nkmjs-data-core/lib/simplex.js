@@ -489,7 +489,7 @@ module.exports.RegisterDescriptors({
     [IDS.SEARCH_ENABLED]: {
         valueType: TYPES.BOOLEAN,
         label: `Search`,
-        inputOptions: { placeholder: `...` }, //, size: nkm.ui.FLAGS.SIZE_XS
+        inputOptions: { size: `size-xs` }, 
         desc: `Enable filter within current glyph selection.\nSeparate terms with an empty space.\nNote : search can impact responsiveness.`
     },
 
@@ -505,7 +505,7 @@ module.exports.RegisterDescriptors({
         recompute: true,
         valueType: TYPES.BOOLEAN_CHECK,
         label: `Insensitive`,
-        inputOptions: { placeholder: `...` },
+        inputOptions: { size: `size-xs` },
         desc: `Broad search doesn't care whether the case is uppercase or lowercase.`
     },
 
@@ -513,7 +513,7 @@ module.exports.RegisterDescriptors({
         recompute: true,
         valueType: TYPES.BOOLEAN_CHECK,
         label: `Exact Match`,
-        inputOptions: { placeholder: `...` },
+        inputOptions: { size: `size-xs` },
         desc: `Show only the results that have an exact match.`
     }
 

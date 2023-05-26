@@ -31,29 +31,29 @@ class Group extends base {
             ':host': {
                 ...style.rules.pos.rel,
                 ...style.rules.display.flex,
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
                 'margin-bottom': `20px`
             },
             '.header': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             },
             '.footer': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.fixed,
+                ...style.flexItem.fixed,
             },
             '.body': {
                 ...style.rules.pos.rel,
-                ...style.rules.item.fill,
+                ...style.flexItem.fill,
             },
             ':host(.horizontal) .body': {
-                ...style.rules.flex.row.wrap,
+                ...style.flex.row.wrap,
                 'align-content': `flex-start`,
                 'align-items': `flex-start`,
             },
             ':host(.vertical) .body': {
-                ...style.rules.flex.column.nowrap,
-                ...style.rules.flex.stretch,
+                ...style.flex.column.nowrap,
+                ...style.flex.stretch,
             }
 
         }
