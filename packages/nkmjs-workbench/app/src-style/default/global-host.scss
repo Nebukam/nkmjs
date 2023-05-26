@@ -10,6 +10,11 @@
 
 :host{
     transition: $transition_opacity;
+    position: relative;
+}
+
+div, span{
+    position: relative;
 }
 
 :host(:not(.unpainted)){

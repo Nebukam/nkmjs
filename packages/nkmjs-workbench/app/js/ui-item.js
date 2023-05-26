@@ -47,7 +47,7 @@ class UIItem extends base {
                 //'background-color': 'rgba(200,200,200,1)',
                 'background-image': `url('img/checker_20a.png')`,
                 'overflow': 'hidden',
-                ...style.rules.zeroMin.all,
+                ...nkm.style.rules.zeroMin.all,
             },
             '.content': {
                 ...nkm.style.flexItem.fill,
