@@ -54,8 +54,7 @@ class ControlGroup extends base {
 
             },
             '.header': {
-                ...style.rules.pos.rel,
-                ...style.flex.row.wrap,
+                ...style.flex.rows,
                 ...style.flex.align.center.cross,
                 'align-content': `stretch`,
                 'padding': `4px`,

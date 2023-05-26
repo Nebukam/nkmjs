@@ -28,7 +28,7 @@ class AppSettingsExplorer extends base {
 
             },
             '.list': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 'overflow': 'auto',
             },
             '.body': {

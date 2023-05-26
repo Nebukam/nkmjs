@@ -104,7 +104,6 @@ class WidgetButton extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 'box-sizing': `border-box`,
                 '--size': `32px`,
             }

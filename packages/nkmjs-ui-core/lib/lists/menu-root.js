@@ -78,8 +78,7 @@ class MenuRoot extends base {
         return {
             ':host': {
 
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 'justify-content': 'flex-start',
 
             },

@@ -40,11 +40,11 @@ class DrawerOverlay extends base {
             },
             // Vertical ( drawer on the left or right )
             ':host(.vertical)': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
             },
             // Horizontal ( drawer on the top or bottom )
             ':host(.horizontal)': {
-                ...style.flex.row.nowrap,
+                ...style.flex.row,
             },
             '.content': {
                 // See ui.overlays.Overlay

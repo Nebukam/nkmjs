@@ -130,21 +130,21 @@ class BaseCard extends base {
                 'min-width': '100px',
             },
             '.body': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 ...style.flexItem.fill,
                 //'justify-content': `flex-start`,
                 //'align-items': `stretch`,
             },
 
             //Vertical
-            ':host(.header-top)': { 'flex-flow': 'column nowrap', },
-            ':host(.header-bottom)': { 'flex-flow': 'column-reverse nowrap' },
+            ':host(.header-top)': { ...style.flex.column, },
+            ':host(.header-bottom)': { ...style.flex.columnReverse, },
             ':host(.vertical)': {},
             ':host(.vertical) .header': {},
 
             //Horizontal
-            ':host(.header-left)': { 'flex-flow': 'row nowrap', },
-            ':host(.header-right)': { 'flex-flow': 'row-reverse nowrap', },
+            ':host(.header-left)': { ...style.flex.row, },
+            ':host(.header-right)': { ...style.flex.rowReverse, },
             ':host(.horizontal)': {},
             ':host(.horizontal) .header': {},
 

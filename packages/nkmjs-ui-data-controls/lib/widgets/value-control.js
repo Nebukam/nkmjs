@@ -68,8 +68,7 @@ class ValueControl extends base {
         return style.Extends({
             ':host': {
                 //...style.rules.fadeIn,
-                ...style.rules.pos.rel,
-                ...style.flex.row.nowrap,
+                ...style.flex.row,
                 ...style.flex.align.center.all,
                 ...style.flexItem.fill,
             },

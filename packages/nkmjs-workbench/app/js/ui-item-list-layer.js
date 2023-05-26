@@ -28,7 +28,7 @@ class UIItemListLayer extends base {
             },
             '.list-ctnr': {
                 width: `100%`,
-                ...nkm.style.flex.row.wrap,
+                ...nkm.style.flex.rows,
                 'overflow-y': 'scroll'
             },
             '.item': {

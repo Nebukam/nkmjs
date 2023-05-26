@@ -34,7 +34,7 @@ class MetaControlItem extends Inspec__BASE__torItem {
             ':host': {
                 margin: `5px`,
                 padding: `6px`,
-                ...style.flex.column.wrap,
+                ...style.flex.columns,
                 ...style.flex.stretch,
             },
             '.facade': {

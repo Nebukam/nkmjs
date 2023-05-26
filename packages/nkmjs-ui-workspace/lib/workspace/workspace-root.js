@@ -47,7 +47,6 @@ class RootWorkspace extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.rules.display.flex,
                 //height:`100%`,
                 ...style.flexItem.fill,

@@ -40,9 +40,8 @@ class SearchBar extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.rules.fadeIn,
-                ...style.flex.row.wrap,
+                ...style.flex.rows,
                 //'min-height': '0',
                 //'overflow': 'auto',
                 //'padding': '10px',

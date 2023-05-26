@@ -259,7 +259,7 @@ class Shelf extends base {
 
             // Vertical ( nav on the left or right )
             ':host(.vertical)': {
-                'flex-flow': `row nowrap`,
+                ...style.flex.row,
             },
             [`:host(.vertical), :host(.vertical.${NAV_START})`]: {
                 'grid-template-columns': 'max-content auto'
@@ -268,13 +268,12 @@ class Shelf extends base {
                 'grid-template-columns': 'auto max-content'
             },
             [`:host(.vertical) .${ui.IDS.VIEW}`]: {
-                //'flex-flow': `column nowrap`,//should be managed by the view
 
                 'overflow-x': `auto`,
                 'overflow-y': `auto`,
 
                 'height': '100%',
-                'min-width': '0',
+                ...style.rules.zeroMin.width,
             },
             [`:host(.vertical) .${NAV}, :host(.vertical) .${ui.IDS.VIEW}`]: { 'grid-row': '1' },
             [`:host(.vertical) .${NAV}, :host(.vertical.${NAV_START}) .${NAV}`]: { 'grid-column': '1' },
@@ -290,13 +289,11 @@ class Shelf extends base {
                 'grid-template-rows': 'auto max-content'
             },
             [`:host(.horizontal) .${ui.IDS.VIEW}`]: {
-                //'flex-flow': `row nowrap`,//should be managed by the view
-
                 'overflow-x': `auto`,
                 'overflow-y': `auto`,
 
                 'width': '100%',
-                'min-height': '0',
+                ...style.rules.zeroMin.height,
             },
             [`:host(.horizontal) .${NAV}, :host(.horizontal) .${ui.IDS.VIEW}`]: { 'grid-column': '1' },
             [`:host(.horizontal) .${NAV}, :host(.horizontal.${NAV_START}) .${NAV}`]: { 'grid-row': '1' },

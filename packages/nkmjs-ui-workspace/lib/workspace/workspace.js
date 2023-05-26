@@ -70,17 +70,14 @@ class Workspace extends base {
 
         return {
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.rules.display.flex,
             },
             '.navigation': {
-                ...style.rules.pos.rel,
                 ...style.flexItem.fill,
                 outline: `1px rgba(0,255,0,0.5) solid`,
                 'outline-offset': `-1px`,
             },
             '.cell': {
-                ...style.rules.pos.rel,
             }
         };
 

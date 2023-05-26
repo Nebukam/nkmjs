@@ -163,7 +163,6 @@ class InputNumberBase extends base {
 
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.flex.stretch,
             },
             '.field': {

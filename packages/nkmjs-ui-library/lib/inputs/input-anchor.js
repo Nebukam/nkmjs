@@ -66,11 +66,9 @@ class InputAnchor extends base {
         return style.Extends({
             ':host': {
                 ...style.rules.fadeIn,
-                ...style.rules.pos.rel,
                 ...style.flex.center,
             },
             '.grid': {
-                ...style.rules.pos.rel,
                 display: `grid`,
                 'grid-template-columns': 'repeat(3, calc(var(--size) / 3))',
                 'grid-template-rows': 'repeat(3, calc(var(--size) / 3))',
@@ -78,7 +76,6 @@ class InputAnchor extends base {
                 ...style.flexItem.fixed,
             },
             '.anch': {
-                ...style.rules.pos.rel,
                 ...style.flexItem.fill,
             }
         }, base._Style());

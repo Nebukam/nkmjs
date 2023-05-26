@@ -41,7 +41,6 @@ class ProgressBar extends base {
             ':host': {
                 ...style.rules.fadeIn,
                 'opacity': 0,
-                ...style.rules.pos.rel,
                 'height': 'var(--size)',
                 'min-height': 'var(--size)',
                 'max-height': 'var(--size)',

@@ -98,7 +98,6 @@ class DOMStreamer extends base {
     static _Style() {
         return {
             ':host': {
-                ...style.rules.pos.rel,
                 'display': 'grid',
                 //'justify-items': `center`,
                 'overflow-x': 'clip !important',
@@ -107,9 +106,9 @@ class DOMStreamer extends base {
                 'display': 'none'
             },
             '.fixture': {
-                'min-height': 0,
                 'width': '100%',
                 ...style.flexItem.fixed,
+                ...style.rules.zeroMin.width,
                 'grid-row-start': 'header',
                 'grid-column': `1/-1`, // take one full width
             },

@@ -56,8 +56,7 @@ class FolderItem extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
-                'min-width': 0,
+                ...style.rules.zeroMin.width,
                 //...style.rules.fadeIn,
 
                 'box-sizing': `border-box`,

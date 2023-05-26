@@ -46,10 +46,10 @@ class ActionStackInspector extends base {
 
         return style.Extends({
             ':host': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
             },
             '.list': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 ...style.flexItem.fill,
                 'overflow': 'auto'
             },

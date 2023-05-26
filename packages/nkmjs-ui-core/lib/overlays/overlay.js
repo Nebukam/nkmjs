@@ -79,7 +79,6 @@ class Overlay extends base {
                 'transition': 'transform 0s linear'
             },
             '.content': {
-                ...style.rules.pos.rel,
                 ...style.flexItem.shrink,
                 'max-width': `100%`,
                 'max-height': `100%`,

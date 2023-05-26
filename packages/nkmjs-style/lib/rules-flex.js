@@ -6,15 +6,30 @@ const flexWrap = { 'flex-wrap': 'wrap' };
 const flexNowrap = { 'flex-wrap': 'nowrap' };
 
 const col = {
-    ...RULES.display.flex,
-    'flex-direction': 'column',
-    ...RULES.zeroMin.height
+    default: {
+        ...RULES.display.flex,
+        'flex-direction': 'column',
+        ...RULES.zeroMin.height
+    },
+    reverse: {
+        ...RULES.display.flex,
+        'flex-direction': 'column-reverse',
+        ...RULES.zeroMin.height
+    }
+
 };
 
 const row = {
-    ...RULES.display.flex,
-    'flex-direction': 'row',
-    ...RULES.zeroMin.width
+    default: {
+        ...RULES.display.flex,
+        'flex-direction': 'row',
+        ...RULES.zeroMin.heigwidthht
+    },
+    reverse: {
+        ...RULES.display.flex,
+        'flex-direction': 'row-reverse',
+        ...RULES.zeroMin.width
+    }
 };
 
 const wrapperStretchAll = {
@@ -28,90 +43,15 @@ const wrapperCenterAll = {
     'align-content': `center`
 };
 
-FLEX.column = {
+FLEX.row = { ...row.default, ...flexNowrap }
+FLEX.rows = { ...row.default, ...flexWrap }
+FLEX.rowReverse = { ...row.reverse, ...flexNowrap }
+FLEX.rowsReverse = { ...row.reverse, ...flexWrap }
 
-    wrap: { ...col, ...flexWrap },
-    nowrap: { ...col, ...flexNowrap },
-
-    inlineWrap: {
-        ...col, ...flexWrap,
-        'align-items': 'center'
-    },
-    inlineNowrap: {
-        ...col, ...flexNowrap,
-        'align-items': 'center'
-    },
-
-    centerWrap: {
-        ...col, ...flexWrap,
-        'align-items': 'center', 'justify-content': 'center'
-    },
-    centerNowrap: {
-        ...col, ...flexNowrap,
-        'align-items': 'center', 'justify-content': 'center'
-    },
-
-    distributeWrap: {
-        ...col, ...flexWrap,
-        'align-items': 'center', 'justify-content': 'space-between'
-    },
-    distributeNowrap: {
-        ...col, ...flexNowrap,
-        'align-items': 'center', 'justify-content': 'space-between'
-    },
-
-    stretchWrap: {
-        ...col, ...flexWrap,
-        ...wrapperStretchAll
-    },
-    stretchNowrap: {
-        ...col, ...flexNowrap,
-        ...wrapperStretchAll
-    },
-
-};
-
-FLEX.row = {
-
-    wrap: { ...row, ...flexWrap },
-    nowrap: { ...row, ...flexNowrap },
-
-    inlineWrap: {
-        ...row, ...flexWrap,
-        'align-items': 'center'
-    },
-    inlineNowrap: {
-        ...row, ...flexNowrap,
-        'align-items': 'center'
-    },
-
-    centerWrap: {
-        ...row, ...flexWrap,
-        'align-items': 'center',
-        'justify-content': 'center'
-    },
-    centerNowrap: {
-        ...row, ...flexNowrap,
-        'align-items': 'center',
-        'justify-content': 'center'
-    },
-
-    distributeWrap: {
-        ...row, ...flexWrap,
-        'align-items': 'center',
-        'justify-content': 'space-between'
-    },
-    distributeNowrap: {
-        ...row, ...flexNowrap,
-        'align-items': 'center',
-        'justify-content': 'space-between'
-    },
-
-    stretchWrap: { ...row, ...flexWrap, ...wrapperStretchAll },
-    stretchNowrap: { ...row, ...flexNowrap, ...wrapperStretchAll },
-
-
-};
+FLEX.column = { ...col.default, ...flexNowrap }
+FLEX.columns = { ...col.default, ...flexWrap }
+FLEX.columnReverse = { ...col.reverse, ...flexNowrap }
+FLEX.columnsReverse = { ...col.reverse, ...flexWrap }
 
 const alignMainCenter = { ...RULES.display.flex, ...RULES.zeroMin.all, 'justify-content': 'center' }
 const alignCrossCenter = { ...RULES.display.flex, ...RULES.zeroMin.all, 'align-items': 'center' }
@@ -139,6 +79,7 @@ FLEX.align = {
         main: alignMainStart,
         cross: alignCrossStart,
         all: { ...alignMainStart, ...alignCrossStart },
+        center: { ...alignMainStart, ...alignCrossCenter },
         start: { ...alignCrossStart, ...alignMainStart },
         end: { ...alignCrossStart, ...alignMainEnd },
         spread: { ...alignCrossStart, 'justify-content': 'space-between' },
@@ -148,6 +89,7 @@ FLEX.align = {
         main: alignMainEnd,
         cross: alignCrossEnd,
         all: { ...alignMainEnd, ...alignCrossEnd },
+        center: { ...alignMainEnd, ...alignCrossCenter },
         start: { ...alignCrossEnd, ...alignMainStart },
         end: { ...alignCrossEnd, ...alignMainEnd },
         spread: { ...alignCrossStart, 'justify-content': 'space-between' },

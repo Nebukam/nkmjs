@@ -42,7 +42,7 @@ class DialogBox extends base {
 
         return style.Extends({
             ':host': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 'align-content': `stretch`,
                 'align-items': `stretch`,
                 'justify-content': `center`,
@@ -52,7 +52,7 @@ class DialogBox extends base {
 
             },
             '.footer': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 'align-content': `flex-end`,
                 'align-items': `flex-end`,
 

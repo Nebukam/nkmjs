@@ -29,30 +29,26 @@ class Group extends base {
     static _Style() {
         return {
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.rules.display.flex,
                 ...style.flexItem.fill,
                 'margin-bottom': `20px`
             },
             '.header': {
-                ...style.rules.pos.rel,
                 ...style.flexItem.fixed,
             },
             '.footer': {
-                ...style.rules.pos.rel,
                 ...style.flexItem.fixed,
             },
             '.body': {
-                ...style.rules.pos.rel,
                 ...style.flexItem.fill,
             },
             ':host(.horizontal) .body': {
-                ...style.flex.row.wrap,
+                ...style.flex.rows,
                 'align-content': `flex-start`,
                 'align-items': `flex-start`,
             },
             ':host(.vertical) .body': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 ...style.flex.stretch,
             }
 

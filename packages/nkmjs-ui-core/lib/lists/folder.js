@@ -113,9 +113,7 @@ class Folder extends base {
                 '--folder-size': `${this.constructor.__itemHeight}px`,
                 '--half-indent': `calc(var(--folder-indent) / 2)`,
 
-
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
@@ -133,7 +131,6 @@ class Folder extends base {
             },
 
             '.header': {
-                ...style.rules.pos.rel,
                 ...style.flexItem.fixed,
 
                 'box-sizing': `border-box`,
@@ -145,8 +142,7 @@ class Folder extends base {
             },
 
             '.body': {
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
                 ...style.flexItem.grow,

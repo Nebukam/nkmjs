@@ -63,7 +63,6 @@ class InputField extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.flex.stretch,
                 ...style.flex.align.center.cross,
             },
@@ -71,7 +70,7 @@ class InputField extends base {
                 ...style.rules.display.none,
                 ...style.flexItem.fill,
                 'box-sizing':'border-box',
-                'min-width': 0,
+                ...style.rules.zeroMin.width,
                 'min-height': `28px !important` //min height for input field
             }
         }, base._Style());

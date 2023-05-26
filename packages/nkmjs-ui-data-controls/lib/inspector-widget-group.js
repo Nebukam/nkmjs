@@ -57,8 +57,7 @@ class InspectorWidgetGroup extends base {
         return style.Extends({
             ':host': {
                 //...style.rules.fadeIn,
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
 
@@ -69,8 +68,7 @@ class InspectorWidgetGroup extends base {
             ':host(.expanded) .icon.expand': { 'transform': `rotate(90deg)` },
 
             '.header': {
-                ...style.rules.pos.rel,
-                ...style.flex.row.nowrap,
+                ...style.flex.row,
                 ...style.flex.align.center.cross,
                 'box-sizing': `border-box`,
                 ...style.flexItem.fill,
@@ -87,8 +85,7 @@ class InspectorWidgetGroup extends base {
             },
 
             '.body': {
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 ...style.flexItem.grow,
             },
 

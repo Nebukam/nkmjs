@@ -90,13 +90,13 @@ class ShelfNav extends base {
             ':host(.vertical) .footer': { 'grid-row': '3' },
             ':host(.vertical) .body': {
                 'grid-row': '2',
-                'flex-flow': `column nowrap`,
+                ...style.flex.column,
 
                 'overflow-x': `hidden`,
                 'overflow-y': `auto`,
 
                 'width': '100%',
-                'min-height': '0',
+                ...style.rules.zeroMin.height,
             },
 
             //Horizontal
@@ -105,13 +105,13 @@ class ShelfNav extends base {
             ':host(.horizontal) .footer': { 'grid-column': '3' },
             ':host(.horizontal) .body': {
                 'grid-column': '2',
-                'flex-flow': `row nowrap`,
+                ...style.flex.row,
 
                 'overflow-x': `auto`,
                 'overflow-y': `hidden`,
 
                 'height': '100%',
-                'min-width': '0',
+                ...style.rules.zeroMin.width,
             }
 
         }, base._Style());

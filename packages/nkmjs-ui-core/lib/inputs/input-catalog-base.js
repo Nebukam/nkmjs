@@ -77,14 +77,13 @@ class InputCatalogBase extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.rules.display.flex,
                 'align-content': `stretch`,
                 'align-items': `center`,
             },
             '.item': {
                 ...style.flexItem.fill,
-                'min-width': 0
+                ...style.rules.zeroMin.width,
             }
         }, base._Style());
 

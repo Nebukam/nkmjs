@@ -54,7 +54,7 @@ class InspectorShellEx extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 ...style.flex.stretch,
                 'justify-content': `flex-start`,
             },
@@ -62,7 +62,7 @@ class InspectorShellEx extends base {
                 ...style.flexItem.fixed,
             },
             '.body': {
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 'justify-content': `flex-start`,
                 'align-items': `stretch`,
                 'overflow': 'auto',

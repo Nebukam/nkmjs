@@ -45,7 +45,6 @@ class InputSelect extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.rules.display.flex,
                 'align-content': `stretch`,
                 'align-items': `center`,

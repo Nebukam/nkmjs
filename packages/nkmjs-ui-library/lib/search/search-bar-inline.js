@@ -40,9 +40,8 @@ class SearchBarInline extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.rules.fadeIn,
-                ...style.flex.row.nowrap,
+                ...style.flex.row,
                 //'overflow': 'auto',
                 //'padding': '10px',
                 'align-content': 'flex-start',

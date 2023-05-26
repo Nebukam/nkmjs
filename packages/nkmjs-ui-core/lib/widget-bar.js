@@ -115,29 +115,22 @@ class WidgetBar extends base {
     static _Style() {
         return {
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.rules.display.flex,
-                'justify-content': `flex-start`,
-                'align-items': `center`
+                ...style.flex.align.start.center,
             },
 
-            ':host(.vertical)': { 'flex-flow': `column nowrap` },
-            ':host(.horizontal)': { 'flex-flow': `row nowrap` },
+            ':host(.vertical)': { ...style.flex.column },
+            ':host(.horizontal)': { ...style.flex.row },
 
             [`.${IDS.GROUP}`]: {
-                ...style.rules.pos.rel,
-                ...style.rules.display.flex,
-                'justify-content': `flex-start`,
-                'align-items': `center`,
+                ...style.flex.align.start.center,
 
                 ...style.flexItem.fixed,
             },
 
             [`.${IDS.ITEM}`]: {
-                ...style.rules.pos.rel,
                 ...style.flexItem.fixed,
-                'min-width': '0',
-                'min-height': '0',
+                ...style.rules.zeroMin.all,
             },
             [`:host(.${FLAGS.STRETCH}) .${IDS.GROUP}`]: {
                 ...style.flexItem.grow,

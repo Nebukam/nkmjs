@@ -41,7 +41,7 @@ class InputSlider extends base {
         return style.Extends({
             ':host': {
                 'height': `var(--size)`,
-                ...style.flex.row.nowrap,
+                ...style.flex.row,
                 ...style.flex.align.center.all,
                 '--thumbSize':'calc(var(--size) * 0.5)',
                 'min-width':'calc(var(--size) * 2)'

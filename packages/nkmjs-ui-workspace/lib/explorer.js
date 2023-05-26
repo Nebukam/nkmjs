@@ -32,13 +32,12 @@ class Explorer extends base {
         let shadowColor = `rgba(0,0,0,0.5)`;
         return {
             ':host': {
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 ...style.flex.stretch,
                 ...style.flexItem.fill,
             },
             '.group': {
-                ...style.rules.pos.rel,
+
             },
             '.header': {
                 ...style.flexItem.fixed,
@@ -49,8 +48,8 @@ class Explorer extends base {
 
             '.body': {
                 'overflow-y': `auto`,
-                'min-width': 0,
-                flex: `1 1 1px`,
+                ...style.rules.zeroMin.width,
+                ...style.flexItem.fillAbs(1),
             }
         };
     }

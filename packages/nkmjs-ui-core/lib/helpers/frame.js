@@ -31,8 +31,7 @@ class Frame extends base {
     static _Style() {
         return {
             ':host': {
-                position: `relative`,
-                'min-width': 0,
+                ...style.rules.zeroMin.width,
                 ...style.rules.cover.default,
             },
 

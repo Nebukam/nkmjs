@@ -151,14 +151,13 @@ class EditorEx extends base {
     static _Style() {
         return style.Extends({
             ':host': {
-                ...style.rules.pos.rel,
                 ...style.flex.stretch,
             },
             ':host(.vertical)': {
-                'flex-flow': `row`,
+                ...style.flex.row,
             },
             ':host(.horizontal)': {
-                'flex-flow': `column`,
+                ...style.flex.column,
             },
 
             ':host(.vertical).fs': {
@@ -172,12 +171,10 @@ class EditorEx extends base {
                 ...style.flexItem.fixed,
             },
             '.body': {
-                ...style.rules.pos.rel,
                 ...style.flex.stretch,
                 ...style.flexItem.fill,
             },
             '.viewport': {
-                ...style.rules.pos.rel,
                 ...style.rules.display.flex,
                 ...style.flexItem.fill,
             },

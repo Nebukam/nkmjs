@@ -79,8 +79,7 @@ class Foldout extends base {
     static _Style() {
         return {
             ':host': {
-                ...style.rules.pos.rel,
-                ...style.flex.row.wrap,
+                ...style.flex.rows,
                 'justify-content': 'flex-start',
                 'align-items': `stretch`,
                 'box-sizing': `border-box`
@@ -89,8 +88,7 @@ class Foldout extends base {
             ':host(.expanded)': { 'height': 'auto', },
             ':host(.expanded) .icon.expand': { 'transform': `rotate(90deg)` },
             '.header': {
-                ...style.rules.pos.rel,
-                ...style.flex.row.nowrap,
+                ...style.flex.row,
                 ...style.flex.align.center.all,
 
                 'box-sizing': `border-box`,
@@ -108,8 +106,7 @@ class Foldout extends base {
             },
 
             '.body': {
-                ...style.rules.pos.rel,
-                ...style.flex.row.wrap,
+                ...style.flex.rows,
                 ...nkm.style.rules.gap.small,
 
                 ...style.flexItem.grow,

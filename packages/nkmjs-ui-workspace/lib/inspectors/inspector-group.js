@@ -58,14 +58,12 @@ class InspectorGroup extends base {
         return style.Extends({
             ':host': {
                 //TODO : Implement orientation in styling
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 ...style.flex.stretch,
                 'margin': `5px`,
             },
             '.header': {
-                ...style.rules.pos.rel,
-                ...style.flex.row.nowrap,
+                ...style.flex.row,
                 ...style.flex.stretch,
                 'justify-content': `space-between`,
 
@@ -84,14 +82,13 @@ class InspectorGroup extends base {
                 opacity: 1
             },
             '.body': {
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
                 ...style.flex.stretch,
 
                 ...style.flexItem.fill,
             },
             '.group': {
-                'min-width': 0,
+                ...style.rules.zeroMin.width,
             },
             ':host(.collapsed) .body': {
                 ...style.rules.display.none,

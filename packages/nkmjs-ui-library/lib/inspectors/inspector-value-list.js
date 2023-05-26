@@ -25,13 +25,13 @@ class ValueListInspector extends base {
 
             ':host': {
                 ...style.rules.fadeIn,
-                ...style.flex.row.wrap,
+                ...style.flex.rows,
                 'align-content': 'flex-start',
                 'width': `${this.__width}`,
             },
 
             '.body': {
-                ...style.flex.row.wrap,
+                ...style.flex.rows,
                 ...nkm.style.rules.gap.small,
 
                 ...style.flexItem.fill,

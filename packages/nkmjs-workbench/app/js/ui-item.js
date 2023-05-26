@@ -26,7 +26,7 @@ class UIItem extends base {
     static _Style() {
         return nkm.style.Extends({
             ':host': {
-                ...nkm.style.flex.column.wrap,
+                ...nkm.style.flex.columns,
                 //opacity: 0,
                 margin: `5px`,
                 padding: `5px`,
@@ -47,8 +47,7 @@ class UIItem extends base {
                 //'background-color': 'rgba(200,200,200,1)',
                 'background-image': `url('img/checker_20a.png')`,
                 'overflow': 'hidden',
-                'min-width': 0,
-                'min-height': 0,
+                ...style.rules.zeroMin.all,
             },
             '.content': {
                 ...nkm.style.flexItem.fill,

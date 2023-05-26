@@ -89,8 +89,7 @@ class List extends base {
         return {
             ':host': {
 
-                ...style.rules.pos.rel,
-                ...style.flex.column.nowrap,
+                ...style.flex.column,
 
                 'padding': 0,
                 'margin': 0,
@@ -115,7 +114,7 @@ class List extends base {
             },
 
             '.header': {
-                ...style.rules.pos.rel,
+
                 ...style.flexItem.fixed,
 
                 'box-sizing': `border-box`,
@@ -126,15 +125,15 @@ class List extends base {
             },
 
             '.body': {
-                ...style.rules.pos.rel,
-                ...style.flexItem.grow,
 
-                'display': `none`,
-                'flex-flow': `column nowrap`,
-                'justify-content': 'flex-start',
+                ...style.flexItem.grow,
+                
+                ...style.flex.column,
+                ...style.flex.align.start.main,
                 'align-items': `stretch`,
 
-                'min-width': 0,
+                ...style.rules.zeroMin.width,
+                ...style.rules.display.none,
             },
             ':host(.expanded) .body': { ...style.rules.display.flex, },
 
