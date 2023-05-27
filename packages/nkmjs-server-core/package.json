@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/server-core",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "NKMjs Server-side core, built on top of express",
   "main": "index.js",
   "repository": {
@@ -18,9 +18,9 @@
   "license": "MIT",
   "dependencies": {
     "@nkmjs/collections": "^1.1.2",
-    "@nkmjs/common": "^1.2.3",
-    "@nkmjs/environment": "^1.2.3",
-    "@nkmjs/server-io": "^0.2.3",
+    "@nkmjs/common": "^1.2.4",
+    "@nkmjs/environment": "^1.2.4",
+    "@nkmjs/server-io": "^0.2.4",
     "@nkmjs/utils": "^1.2.2",
     "axios": "^1.4.0",
     "cors": "^2.8.5",

@@ -1,6 +1,6 @@
 {
     "name": "@nkmjs/core-dev",
-    "version": "1.3.4",
+    "version": "1.3.5",
     "description": "NKMjs Framework Core Dev Tools",
     "main": "lib.js",
     "repository": {
@@ -17,7 +17,7 @@
         "generate-docs": "jsdoc -c jsdoc.config.json --readme ./README-jsdoc.md",
         "postinstall": "node ./lib/script-post-install.js",
         "link-nkmjs": "yarn install && yarn link-nkmjs-core",
-        "link-nkmjs-core":"yarn link @nkmjs/actions && yarn link @nkmjs/app-core && yarn link @nkmjs/collections && yarn link @nkmjs/common && yarn link @nkmjs/data-core && yarn link @nkmjs/dialog && yarn link @nkmjs/documents && yarn link @nkmjs/electron-core && yarn link @nkmjs/environment && yarn link @nkmjs/i18n && yarn link @nkmjs/io-core && yarn link @nkmjs/io-electron && yarn link @nkmjs/metrics && yarn link @nkmjs/server-core && yarn link @nkmjs/server-io && yarn link @nkmjs/services && yarn link @nkmjs/style && yarn link @nkmjs/ui-core && yarn link @nkmjs/ui-data-controls && yarn link @nkmjs/ui-library && yarn link @nkmjs/ui-workspace && yarn link @nkmjs/utils && yarn link @nkmjs/core",
+        "link-nkmjs-core": "yarn link @nkmjs/actions && yarn link @nkmjs/app-core && yarn link @nkmjs/collections && yarn link @nkmjs/common && yarn link @nkmjs/data-core && yarn link @nkmjs/dialog && yarn link @nkmjs/documents && yarn link @nkmjs/electron-core && yarn link @nkmjs/environment && yarn link @nkmjs/i18n && yarn link @nkmjs/io-core && yarn link @nkmjs/io-electron && yarn link @nkmjs/metrics && yarn link @nkmjs/server-core && yarn link @nkmjs/server-io && yarn link @nkmjs/services && yarn link @nkmjs/style && yarn link @nkmjs/ui-core && yarn link @nkmjs/ui-data-controls && yarn link @nkmjs/ui-library && yarn link @nkmjs/ui-workspace && yarn link @nkmjs/utils && yarn link @nkmjs/core",
         "nkmjs": "nkmjs"
     },
     "bin": {
@@ -28,7 +28,7 @@
         "@babel/core": "^7.15.5",
         "@babel/plugin-proposal-class-properties": "^7.12.1",
         "@babel/preset-env": "^7.12.11",
-        "@nkmjs/core": "^1.3.4",
+        "@nkmjs/core": "^1.3.5",
         "@nkmjs/utils": "^1.2.2",
         "adm-zip": "^0.5.3",
         "axios": "^1.4.0",
