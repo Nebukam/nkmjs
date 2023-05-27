@@ -25,14 +25,8 @@ class WorkspaceCell extends base {
 
     _Init() {
         super._Init();
-
         this._navClass = WorkspaceCellNav;
-        this._gridItemController = new ui.manipulators.GridItem(this);
     }
-
-    // ----> Grid
-
-    get gridItemController() { return this._gridItemController; }
 
     // ----> Catalog Management
 

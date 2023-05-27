@@ -20,6 +20,7 @@ module.exports = {
     flex: require(`./lib/rules-flex`),
     flexItem: require(`./lib/rules-flex-item`),
     grid: require(`./lib/rules-grid`),
+    gridTemplates:require(`./lib/rules-grid-tpl`),
 
     colors: require(`./lib/colors`),
 

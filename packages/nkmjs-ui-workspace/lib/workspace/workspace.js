@@ -39,8 +39,6 @@ class Workspace extends base {
             .Watch(com.SIGNAL.ITEM_ADDED, this._OnCellCatalogAdded, this)
             .Watch(com.SIGNAL.ITEM_REMOVED, this._OnCellCatalogRemoved, this);
 
-        this._gridController = new ui.manipulators.Grid(this, [1, 1]);
-
         this._cellObserver = new com.signals.Observer();
         this._cellObserver
             .Hook(ui.SIGNAL.DISPLAY_REQUESTED, this._OnCellDisplayRequested, this)
@@ -54,8 +52,6 @@ class Workspace extends base {
         this._OnWorkspacefEmpty();
     }
 
-    get gridController() { return this._gridController; }
-
     /**
      * @type {data.core.catalogs.Catalog}
      */
@@ -67,20 +63,10 @@ class Workspace extends base {
     // ----> Rendering
 
     static _Style() {
-
         return {
-            ':host': {
-                ...style.rules.display.flex,
-            },
-            '.navigation': {
-                ...style.flexItem.fill,
-                outline: `1px rgba(0,255,0,0.5) solid`,
-                'outline-offset': `-1px`,
-            },
-            '.cell': {
-            }
+            ':host': { ...style.gridTemplates.classic.base, },
+            '.cell': { ...style.rules.zeroMin.all, }
         };
-
     }
 
     _Render() {
@@ -108,6 +94,7 @@ class Workspace extends base {
         if (p_item.data) {
             p_item.data.Watch(com.SIGNAL.RELEASED, this._OnItemDataReleased, this);
         }
+
         //TODO : Listen to the data in case of release
         //if the data is released, then close associated catalog items
         //NOTE : Why would a cell be associated with a data item?

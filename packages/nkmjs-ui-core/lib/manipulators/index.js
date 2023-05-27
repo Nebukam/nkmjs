@@ -12,8 +12,5 @@ module.exports = {
     Embed: require(`./handler-embed`),
     Icon: require(`./handler-icon`),
     Text: require(`./handler-text`),
-
-    Grid: require(`./handler-grid`),
-    GridItem: require(`./handler-grid-item`),
     
 }

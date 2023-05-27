@@ -25,9 +25,7 @@ class DrawerOverlay extends base {
 
     static _Style() {
         return style.Extends({
-            ':host': {
-                ...style.rules.display.flex,
-            },
+            ':host': { ...style.rules.display.flex, },
             // align from the start
             ':host(.content-left), :host(.content-top)': {
                 'justify-content': `flex-start`,
@@ -39,13 +37,9 @@ class DrawerOverlay extends base {
                 'align-content': `flex-end`,
             },
             // Vertical ( drawer on the left or right )
-            ':host(.vertical)': {
-                ...style.flex.column,
-            },
+            ':host(.vertical)': { ...style.flex.column, },
             // Horizontal ( drawer on the top or bottom )
-            ':host(.horizontal)': {
-                ...style.flex.row,
-            },
+            ':host(.horizontal)': { ...style.flex.row, },
             '.content': {
                 // See ui.overlays.Overlay
             }

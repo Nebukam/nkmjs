@@ -131,18 +131,15 @@ class Overlay extends base {
             dom.CSSClass(this, `content-${this._contentPlacement}`);
         }
 
+        this._content.placement = simplified;
 
-
-        if (this._content.placement) { this._content.placement = simplified; }
     }
 
     /**
      * @description TODO
      * @type {string}
      */
-    set contentFlavor(p_value) {
-        if (this._content.flavor) { this._content.flavor = p_value; }
-    }
+    set contentFlavor(p_value) { this._content.flavor = p_value; }
 
     /**
      * @access protected

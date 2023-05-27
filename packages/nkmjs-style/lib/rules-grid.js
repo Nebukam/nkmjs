@@ -13,16 +13,6 @@ const wrapperCenterAll = {
     'align-content': `center`
 };
 
-GRID.stretch = {
-    ...RULES.display.grid,
-    ...wrapperStretchAll
-};
-
-GRID.center = {
-    ...RULES.display.grid,
-    ...wrapperCenterAll
-}
-
 //#endregion
 
 module.exports = GRID;

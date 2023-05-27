@@ -234,64 +234,39 @@ class Shelf extends base {
 
         return {
             ':host': {
-                'display': `grid`,
-                'justify-content': `stretch`,
+                ...style.gridTemplates.tabs.base,
             },
 
-            [`:host(.empty) .${NAV}`]: {
-                'display': 'none'
-            },
-            [`.${NAV}`]: {
-                ...style.flexItem.fixed,
-            },
+            [`:host(.empty) .${NAV}`]: { ...style.rules.display.none, },
+            [`.${NAV}`]: { ...style.gridTemplates.areas.nav, },
             [`.${ui.IDS.VIEW}`]: {
-                ...style.flexItem.fill,
+                ...style.gridTemplates.areas.body,
+                'overflow': `auto`
             },
 
             // Vertical ( nav on the left or right )
             ':host(.vertical)': {
-                ...style.flex.row,
+
             },
             [`:host(.vertical), :host(.vertical.${NAV_START})`]: {
-                'grid-template-columns': 'max-content auto'
+                ...style.gridTemplates.tabs.left,
             },
             [`:host(.vertical.${NAV_END})`]: {
-                'grid-template-columns': 'auto max-content'
+                ...style.gridTemplates.tabs.right,
             },
-            [`:host(.vertical) .${ui.IDS.VIEW}`]: {
-
-                'overflow-x': `auto`,
-                'overflow-y': `auto`,
-
-                'height': '100%',
-                ...style.rules.zeroMin.width,
-            },
-            [`:host(.vertical) .${NAV}, :host(.vertical) .${ui.IDS.VIEW}`]: { 'grid-row': '1' },
-            [`:host(.vertical) .${NAV}, :host(.vertical.${NAV_START}) .${NAV}`]: { 'grid-column': '1' },
-            [`:host(.vertical) .${ui.IDS.VIEW}, :host(.vertical.${NAV_START}) .${ui.IDS.VIEW}`]: { 'grid-column': '2' },
-            [`:host(.vertical.${NAV_END}) .${NAV}`]: { 'grid-column': '2', },
-            [`:host(.vertical.${NAV_END}) .${ui.IDS.VIEW}`]: { 'grid-column': '1' },
+            [`:host(.vertical) .${ui.IDS.VIEW}`]: {},
 
             // Horizontal ( nav on top or bottom )
+            ':host(.horizontal)': {
+
+            },
             [`:host(.horizontal), :host(.horizontal.${NAV_START})`]: {
-                'grid-template-rows': 'max-content auto'
+                ...style.gridTemplates.tabs.top,
             },
             [`:host(.horizontal.${NAV_END})`]: {
-                'grid-template-rows': 'auto max-content'
+                ...style.gridTemplates.tabs.bottom,
             },
-            [`:host(.horizontal) .${ui.IDS.VIEW}`]: {
-                'overflow-x': `auto`,
-                'overflow-y': `auto`,
-
-                'width': '100%',
-                ...style.rules.zeroMin.height,
-            },
-            [`:host(.horizontal) .${NAV}, :host(.horizontal) .${ui.IDS.VIEW}`]: { 'grid-column': '1' },
-            [`:host(.horizontal) .${NAV}, :host(.horizontal.${NAV_START}) .${NAV}`]: { 'grid-row': '1' },
-            [`:host(.horizontal) .${ui.IDS.VIEW}, :host(.horizontal.${NAV_START}) .${ui.IDS.VIEW}`]: { 'grid-row': '2' },
-            [`:host(.horizontal.${NAV_END}) .${NAV}`]: { 'grid-row': '2' },
-            [`:host(.horizontal.${NAV_END}) .${ui.IDS.VIEW}`]: { 'grid-row': '1' },
-
+            [`:host(.horizontal) .${ui.IDS.VIEW}`]: {},
 
             ':host(.fixed-horizontal.fixed-size:not(.collapsed))': {
                 'width': 'var(--fixed-size)',

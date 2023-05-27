@@ -150,30 +150,19 @@ class EditorEx extends base {
 
     static _Style() {
         return style.Extends({
-            ':host': {
-                ...style.flex.stretch,
-            },
-            ':host(.vertical)': {
-                ...style.flex.row,
-            },
-            ':host(.horizontal)': {
-                ...style.flex.column,
-            },
+            ':host': { ...style.gridTemplates.sandwich.base },
+            ':host(.vertical)': { ...style.gridTemplates.sandwich.horizontal },
+            ':host(.horizontal)': { ...style.gridTemplates.sandwich.vertical },
 
-            ':host(.vertical).fs': {
-                //height:`100%`
-            },
-            ':host(.horizontal).fs': {
-                //width:`100%`
-            },
+            '.header': { ...style.gridTemplates.areas.header },
 
-            '.fs': {
-                ...style.flexItem.fixed,
-            },
             '.body': {
-                ...style.flex.stretch,
-                ...style.flexItem.fill,
+                ...style.gridTemplates.areas.body,
+                ...style.rules.display.flex,
             },
+
+            '.footer': { ...style.gridTemplates.areas.footer },
+
             '.viewport': {
                 ...style.rules.display.flex,
                 ...style.flexItem.fill,
@@ -181,6 +170,7 @@ class EditorEx extends base {
             '.shelf': {
 
             },
+
             '.topstatus': {
                 ...style.rules.pos.abs,
                 width: `100%`
@@ -199,8 +189,6 @@ class EditorEx extends base {
 
         if (this.constructor.__default_footerClass) { this._footer = this.Attach(this.constructor.__default_footerClass, ui.IDS.FOOTER, this._host); }
         else { this._footer = ui.dom.El(`div`, { class: ui.IDS.FOOTER }, this._host); }
-
-        //ui.Render(uilib.dom.HeaderBodyFooter, this, { [ui.IDS.OWNER]: this });
 
         this._viewport = this.Attach(this.constructor.__default_viewportClass, `viewport`, this._body);
         this._shelf = this.Attach(this.constructor.__default_shelfClass, `shelf`, this._body);
