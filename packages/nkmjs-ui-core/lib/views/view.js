@@ -99,7 +99,7 @@ class View extends base {
             [`resize-${FLAGS.HORIZONTAL}`]: false,
         });
 
-        dom.CSSClass(this, `resize-${this._orientation._currentFlag}`, this._resizable);
+        dom.CSSClass(this, `resize-${this.orientation}`, this._resizable);
         dom.CSSClass(this, `resizable`, this._resizable);
     }
 

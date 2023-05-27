@@ -21,9 +21,8 @@ class ShortcutList extends base {
     _Init() {
         super._Init();
         this._shortcuts = null;
+        this.constructor.__distribute.Attach(this);
     }
-
-    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
 
     get shortcuts() { return this.this._shortcut; }
     set shortcuts(p_value) {

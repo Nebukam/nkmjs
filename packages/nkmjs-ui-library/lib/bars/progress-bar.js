@@ -17,23 +17,14 @@ class ProgressBar extends base {
     _Init() {
         super._Init();
 
-        this._sizeEnum = new ui.helpers.FlagEnum(ui.FLAGS.sizes, true);
-        this._sizeEnum.Add(this);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.SIZE, ui.FLAGS.sizes);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.FLAVOR, ui.FLAGS.flavorsExtended);
 
-        this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
-        this._flavorEnum.Add(this);
+        this.constructor.__distribute.Attach(this);
 
     }
 
-    /**
-     * @description TODO
-     * @type {object}
-     */
-    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
-
     set hideWhenComplete(p_value) { this._hideWhenComplete = p_value; }
-    set size(p_value) { this._sizeEnum.Set(p_value); }
-    set flavor(p_value) { this._flavorEnum.Set(p_value); }
     set inverted(p_value) { ui.dom.CSSClass(this, `inverted`, p_value); }
 
     static _Style() {

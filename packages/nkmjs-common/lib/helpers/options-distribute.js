@@ -57,6 +57,21 @@ class OptionsDistribute {
 
     Ext(p_config = null) { return OptionsDistribute.Ext(this, p_config); }
 
+    Attach(p_object, p_member = `options`) {
+        let distributor = this;
+        Object.defineProperty(
+            p_object,
+            p_member,
+            {
+                set(p_value) {
+                    if (!p_value) { return; }
+                    distributor.Update(this, p_value);
+                },
+                enumerable: true,
+                configurable: true,
+            });
+    }
+
     /**
      * @description A unique function to be called before the option
      * handler starts its update cycle.  

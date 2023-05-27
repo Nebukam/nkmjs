@@ -60,9 +60,8 @@ class Shelf extends base {
 
         this._flags.Add(this, ui.FLAGS.FIXED_SIZE, ui.FLAGS.COLLAPSED, ui.FLAGS.EMPTY);
 
-        this._navPlacement = new ui.helpers.FlagEnum(ui.FLAGS.placement, true);
-        this._navPlacement.Add(this);
-        this._navPlacement.onFlagChanged.Add(this._Bind(this._OnNavPlacementChanged));
+        ui.helpers.FlagEnum.Attach(this, `navPlacement`, ui.FLAGS.placement)
+            .onFlagChanged.Add(this._Bind(this._OnNavPlacementChanged));
 
         this._isCollapsable = false;
         this._fixedSizeAxis = this.constructor.__default_fixedSizeAxis;
@@ -75,7 +74,7 @@ class Shelf extends base {
     _PostInit() {
 
         super._PostInit();
-        this._navPlacement.Set(this.constructor.__default_navPlacement);
+        this.navPlacement = this.constructor.__default_navPlacement;
         this._nav.Watch(ShelfNav.HANDLE_ACTIVATED, this._OnNavItemActivated, this);
 
         let placholderViewClass = (this._placholderViewClass || this.constructor.__default_placeholderViewClass);
@@ -155,17 +154,9 @@ class Shelf extends base {
 
     // ----> Orientation
 
-    /**
-     * @description TODO
-     * @type {string}
-     * @group Placement & Orientation
-     */
-    get navPlacement() { return this._navPlacement; }
-    set navPlacement(p_value) { this._navPlacement.Set(p_value); }
-
     _OnOrientationChanged(p_newValue, p_oldValue) {
         super._OnOrientationChanged(p_newValue, p_oldValue);
-        let np = this._navPlacement.currentFlag;
+        let np = this.navPlacement;
         this._OnNavPlacementChanged(np, np);
         this._nav.orientation = p_newValue;
     }
@@ -182,10 +173,10 @@ class Shelf extends base {
      */
     _OnNavPlacementChanged(p_newValue, p_oldValue) {
         // We need the info to properly setup the shelf's CSS Grid
-        if (this._orientation.currentFlag === ui.FLAGS.VERTICAL) {
+        if (this.orientation === ui.FLAGS.VERTICAL) {
             // Vertical shelf ( nav on the left or right )
             // Only support top or bottom nav placement
-            switch (this._navPlacement.currentFlag) {
+            switch (this.navPlacement) {
                 case ui.FLAGS.RIGHT:
                 case ui.FLAGS.TOP_RIGHT:
                 case ui.FLAGS.BOTTOM_RIGHT:
@@ -211,7 +202,7 @@ class Shelf extends base {
         } else {
             // Horizontal shelf ( nav on top or bottom )
             // Only support left or right nav placement
-            switch (this._navPlacement.currentFlag) {
+            switch (this.navPlacement) {
                 case ui.FLAGS.BOTTOM:
                 case ui.FLAGS.BOTTOM_LEFT:
                 case ui.FLAGS.BOTTOM_RIGHT:
@@ -439,7 +430,7 @@ class Shelf extends base {
         // we only close a view from the signal broadcasted by the view itself, not the handle.
         let view = this._catalogHandler.Get(p_handle.data);
 
-        console.log(`_OnHandleCloseRequest`,view);
+        console.log(`_OnHandleCloseRequest`, view);
         if (view) {
             // If a view exists, give it control over its release.
             view.RequestClose();

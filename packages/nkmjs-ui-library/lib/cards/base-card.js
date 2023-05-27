@@ -44,8 +44,8 @@ class BaseCard extends base {
     static __distribute = base.__distribute.Ext()
         .To(`header-placement`,
             (p_target, p_value) => {
-                p_target._mediaPlacement.Set(p_value);
-                p_target._orientation.Set(ui.FLAGS.Orientation(p_value, true));
+                p_target.mediaPlacement = p_value;
+                p_target.orientation = ui.FLAGS.Orientation(p_value, true);
             }, null, `__defaultHeaderPlacement`)
         .To(ui.IDS.VARIANT)
         .To(ui.IDS.TITLE, null, ``)
@@ -60,59 +60,21 @@ class BaseCard extends base {
         this._actions = null;
         this._handles = null;
 
-        this._variantEnum = new ui.helpers.FlagEnum(ui.FLAGS.variants, true);
-        this._variantEnum.Add(this);
-
-        this._sizeEnum = new ui.helpers.FlagEnum(ui.FLAGS.sizes, true);
-        this._sizeEnum.Add(this);
-
-        this._mediaPlacement = new ui.helpers.FlagEnum(ui.FLAGS.placementSimplified, true, `header`);
-        this._mediaPlacement.Add(this);
-
-        this._orientation = new ui.helpers.FlagEnum(ui.FLAGS.orientations, true);
-        this._orientation.Add(this);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.VARIANT, ui.FLAGS.variants);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.SIZE, ui.FLAGS.sizes);
+        ui.helpers.FlagEnum.Attach(this, `mediaPlacement`, ui.FLAGS.placementSimplified, `header`);
+        ui.helpers.FlagEnum.Attach(this, `orientation`, ui.FLAGS.orientations);
 
     }
 
     _PostInit() {
         super._PostInit();
-        this._sizeEnum.Set(this.constructor.__defaultSize);
-        this._flavorEnum.Set(this.constructor.__defaultFlavor);
-        this._variantEnum.Set(this.constructor.__defaultVariant);
+        this.size = this.constructor.__defaultSize;
+        this.flavor = this.constructor.__defaultFlavor;
+        this.variant = this.constructor.__defaultVariant;
     }
 
     // ----> DOM
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     */
-    set variant(p_value) { this._variantEnum.Set(p_value); }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     */
-    get variant() { return this._variantEnum.currentFlag; }
-
-    /**
-    * @description TODO
-    * @type {ui.core.helpers.FlagEnum}
-    * @customtag read-only
-    * @group Styling
-    */
-    get size() { return this._sizeEnum.currentFlag; }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     * @group Styling
-     */
-    set size(p_value) { this._sizeEnum.Set(p_value); }
-
 
     set title(p_value) { this._frame[ui.IDS.TITLE].Set(p_value); }
     set subtitle(p_value) { this._frame[ui.IDS.SUBTITLE].Set(p_value); }

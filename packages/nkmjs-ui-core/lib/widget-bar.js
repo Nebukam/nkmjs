@@ -58,37 +58,16 @@ class WidgetBar extends base {
         this._groups = {};
         this._radioMap = {};
 
-        this._flags.Add(this, FLAGS.STRETCH, FLAGS.STRETCH_SAME);
-
-        this._stretchEnum = new FlagEnum(FLAGS.stretches, true);
-        this._stretchEnum.Add(this);
-
-        this._sizeEnum = new FlagEnum(FLAGS.sizes, true);
-        this._sizeEnum.Add(this);
-        this._sizeEnum.onFlagChanged.Add(this._Bind(this._OnSizeChanged));
+        FlagEnum.Attach(this, `stretch`, FLAGS.stretches);
+        FlagEnum.Attach(this, IDS.SIZE, FLAGS.sizes)
+            .onFlagChanged.Add((p_newValue, p_oldValue) => { this._size.Apply(this._handles); });
 
         this._handleObserver = new com.signals.Observer();
         this._handleObserver.Hook(com.SIGNAL.RELEASED, this._OnHandleReleased, this);
 
+        this.constructor.__distribute.Attach(this);
+
     }
-
-    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     * @group Styling
-     */
-    get size() { return this._sizeEnum.currentFlag; }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     * @group Styling
-     */
-    set size(p_value) { this._sizeEnum.Set(p_value); }
 
     /**
      * @description TODO
@@ -154,16 +133,8 @@ class WidgetBar extends base {
         };
     }
 
-    set stretch(p_value) {
-        this._stretchEnum.Set(p_value);
-    }
-
     _Render() {
         this.focusArea = this;
-    }
-
-    _OnSizeChanged(p_newValue, p_oldValue) {
-        this._sizeEnum.Apply(IDS.SIZE, this._handles);
     }
 
     // ----> Handle management
@@ -269,8 +240,8 @@ class WidgetBar extends base {
 
         handle.flags.Set(this._orientation, true);
 
-        if (IDS.SIZE in handle) { handle.size = this._sizeEnum.currentFlag; }
-        if (`placement` in handle) { handle.placement = this._placement.currentFlag; }
+        if (IDS.SIZE in handle) { handle.size = this.size; }
+        if (`placement` in handle) { handle.placement = this.placement; }
 
         this._handles.push(handle);
         this._handleObserver.Observe(handle);
@@ -407,7 +378,7 @@ class WidgetBar extends base {
 
     _CleanUp() {
         this.Clear();
-        this._sizeEnum.Set(this.constructor.__defaultSize);
+        this.size = this.constructor.__defaultSize;
         super._CleanUp();
     }
 

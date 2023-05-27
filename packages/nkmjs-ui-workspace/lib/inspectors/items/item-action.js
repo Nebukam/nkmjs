@@ -5,7 +5,7 @@ const datacontrols = require("@nkmjs/ui-data-controls");
 const actions = require("@nkmjs/actions");
 const ui = require("@nkmjs/ui-core");
 
-const base = datacontrols.InspectorWidget;
+const base = datacontrols.ControlWidget;
 
 class ActionInspectorItem extends base {
     constructor() { super(); }
@@ -20,8 +20,7 @@ class ActionInspectorItem extends base {
     _Init() {
         super._Init();
         this._notifiesSelectionStack = true;
-        this._stateEnum = new ui.helpers.FlagEnum(actions.ACTION_STATE.stateList, true);
-        this._stateEnum.Add(this);
+        ui.helpers.FlagEnum.Attach(this, `state`, actions.ACTION_STATE.stateList);
     }
 
     _PostInit() {
@@ -33,7 +32,7 @@ class ActionInspectorItem extends base {
         return style.Extends({
             ':host': {
                 'min-height': `${this.__itemHeight}px`,
-                'cursor':`pointer`
+                'cursor': `pointer`
             },
             ':host(.done)': {
                 'opacity': `1`
@@ -65,7 +64,7 @@ class ActionInspectorItem extends base {
         this._label.Set(infos.name);
         this.htitle = infos.title;
         this._icon.Set(infos.icon);
-        this._stateEnum.Set(this._data.state);
+        this.state = this._data.state;
     }
 
     Activate(p_evt) {

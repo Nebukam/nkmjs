@@ -50,6 +50,7 @@ class SignalBroadcaster extends Disposable {
         if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
         this._slots.Set(p_listener, p_fn);
         this._onceSlots.Remove(p_listener, p_fn);
+        return this;
     }
 
     /**
@@ -62,6 +63,7 @@ class SignalBroadcaster extends Disposable {
         if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
         this._slots.Set(p_listener, p_fn);
         this._onceSlots.Set(p_listener, p_fn);
+        return this;
     }
 
     /**
@@ -83,6 +85,8 @@ class SignalBroadcaster extends Disposable {
             if (this._broadcasting) { this._deprecatedKVP.push([p_listener, p_fn]); }
             else { this._onceSlots.Remove(p_listener, p_fn); }
         }
+
+        return this;
 
     }
 

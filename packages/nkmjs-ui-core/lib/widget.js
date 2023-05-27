@@ -82,12 +82,9 @@ class Widget extends base {
             FLAGS.SELECTED,
             FLAGS.DISABLED);
 
-        this._placement = new FlagEnum(FLAGS.placement, true);
-        this._placement.Add(this);
-        this._placement.onFlagChanged.Add(this._Bind(this._OnPlacementChanged));
-
-        this._istateEnum = new FlagEnum(FLAGS.istates, true);
-        this._istateEnum.Add(this);
+        FlagEnum.Attach(this, `istate`, FLAGS.istates);
+        FlagEnum.Attach(this, `placement`, FLAGS.placement)
+            .onFlagChanged.Add(this._Bind(this._OnPlacementChanged));
 
         this._selectOnActivation = this.constructor.__defaultSelectOnActivation;
 
@@ -98,8 +95,8 @@ class Widget extends base {
 
     _PostInit() {
         super._PostInit();
-        this._istateEnum.Set(this.constructor.__default_iState);
-        this._placement.Set(this.constructor.__default_placement);
+        this.istate = this.constructor.__default_iState;
+        this.placement = this.constructor.__default_placement;
     }
 
     _OnPaintChange() {
@@ -121,19 +118,6 @@ class Widget extends base {
     set dataIndex(p_value) { this._dataIndex = p_value; }
 
     //#region Placement & Orientation
-
-    /**
-     * @description This property is controlled by the widget's parent and
-     * inform the widget on how it is positioned within its container :  
-     * TOP means the widget is at the top of its container  
-     * BOTTOM means the widget is at the bottom of its container  
-     * LEFT means the widget is at the left of its container  
-     * RIGHT means the widget is at the right of its container
-     * @type {string}
-     * @group Placement & Orientation
-     */
-    get placement() { return this._placement; }
-    set placement(p_value) { this._placement.Set(p_value); }
 
     /**
      * @access protected
@@ -306,10 +290,10 @@ class Widget extends base {
         this._isFocusable = p_value;
         if (!p_value) {
             this.Focus(false);
-            this._istateEnum.Set(FLAGS.DISABLED);
+            this.istate = FLAGS.DISABLED;
             this.style[`pointer-events`] = `none`;
         } else {
-            this._istateEnum.Set(FLAGS.IDLE);
+            this.istate = FLAGS.IDLE;
             dom.CSS(this, 'pointer-events');
         }
 
@@ -337,8 +321,8 @@ class Widget extends base {
 
         this._isFocused = p_toggle;
 
-        if (p_toggle) { this._istateEnum.Set(FLAGS.FOCUSED); }
-        else { this._istateEnum.Set(FLAGS.IDLE); }
+        if (p_toggle) { this.istate = FLAGS.FOCUSED; }
+        else { this.istate = FLAGS.IDLE; }
 
         if (p_toggle) {
             this._FocusGain();
@@ -535,8 +519,8 @@ class Widget extends base {
 
     _CleanUp() {
 
-        this._istateEnum.Set(this.constructor.__default_iState);
-        this._placement.Set(this.constructor.__default_placement);
+        this.istate = this.constructor.__default_iState;
+        this.placement = this.constructor.__default_placement;
 
         this.data = null;
         if (this._forwardData) { this._forwardData.Clear(); }

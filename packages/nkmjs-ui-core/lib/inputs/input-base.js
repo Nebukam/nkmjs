@@ -56,25 +56,19 @@ class BaseInput extends base {
         this._handler._updatePreviewFn = this._Bind(this._UpdatePreview);
         this._handler._onInputErrorFn = this._Bind(this._OnInputErrors);
 
-        this._sizeEnum = new helpers.FlagEnum(FLAGS.sizes, true);
-        this._sizeEnum.Add(this);
 
-        this._flavorEnum = new helpers.FlagEnum(FLAGS.flavorsExtended, true);
-        this._flavorEnum.Add(this);
+        helpers.FlagEnum.Attach(this, IDS.SIZE, FLAGS.sizes);
+        helpers.FlagEnum.Attach(this, IDS.FLAVOR, FLAGS.flavorsExtended);
 
         this._onSubmitFn = null;
         this._onChangeFn = null;
         this._onInputFn = null;
 
+        this.constructor.__distribute.Attach(this);
+
     }
 
     get handler() { return this._handler; }
-
-    set size(p_value) { this._sizeEnum.Set(p_value); }
-    get size() { return this._sizeEnum.currentFlag; }
-
-    set flavor(p_value) { this._flavorEnum.Set(p_value); }
-    get flavor() { return this._flavorEnum.currentFlag; }
 
 
     //#region Input properties
@@ -102,24 +96,6 @@ class BaseInput extends base {
     //#endregion
 
     //#region options handling
-
-    /**
-     * @description TODO
-     * @type {object}
-     */
-    set options(p_value) {
-        if (!p_value) { return; }
-        this.constructor.__distribute.Update(this, p_value);
-    }
-
-    /**
-     * @description TODO
-     * @type {object}
-     */
-    set altOptions(p_value) {
-        if (!p_value) { return; }
-        this.constructor.__distribute.UpdateNoDefaults(this, p_value, null, false, false);
-    }
 
     /**
      * @access protected
@@ -234,8 +210,8 @@ class BaseInput extends base {
         this.onChangeFn = null;
         this.onInputFn = null;
 
-        this._sizeEnum.Set(null);
-        this._flavorEnum.Set(null);
+        this.size = null;
+        this.flavor = null;
         this._handler.Clear();
 
     }

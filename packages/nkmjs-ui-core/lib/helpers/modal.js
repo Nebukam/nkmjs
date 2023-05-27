@@ -145,9 +145,7 @@ class Modal extends base {
         this._isReady = false;
         this._delayedReady = com.DelayedCall(this._Bind(this._Ready), 100);
 
-
-        this._modeEnum = new FlagEnum(this.constructor.modes, true);
-        this._modeEnum.Add(this);
+        FlagEnum.Attach(this, `mode`, this.constructor.modes);
 
         this._pointer = new extensions.PointerStatic(this);
 
@@ -187,7 +185,7 @@ class Modal extends base {
      */
     get options() { return this._options; }
     set options(p_options) {
-        
+
         this._options = p_options;
         this.content = p_options.content;
         if (this._content) {
@@ -219,14 +217,6 @@ class Modal extends base {
      */
     get keepWithinScreen() { return this._keepWithinScreen; }
     set keepWithinScreen(p_value) { this._keepWithinScreen = p_value; }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @group Mode
-     */
-    get mode() { return this._modeEnum.currentFlag; }
-    set mode(p_value) { this._modeEnum.Set(p_value); }
 
     /**
      * @description Point around the anchor where the origin point will be pinned

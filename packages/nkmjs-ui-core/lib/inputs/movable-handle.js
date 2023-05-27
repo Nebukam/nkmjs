@@ -30,8 +30,7 @@ class MovableHandle extends base {
             .Unhook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE, this.Activate)
             .Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.DOWN, this._PointerDown);
 
-        this._unitsFlagEnum = new FlagEnum(__units);
-        this._unitsFlagEnum.Add(this);
+        FlagEnum.Attach(this, `unit`, __units);
 
         this._movement = new u.helpers.Movement();
 
@@ -48,7 +47,7 @@ class MovableHandle extends base {
         
         this._movement.Update(POINTER.position.y, POINTER.position.y);
         
-        if (this._orientation.currentFlag === FLAGS.VERTICAL_AND_HORIZONTAL) {
+        if (this.orientation === FLAGS.VERTICAL_AND_HORIZONTAL) {
             // movement is multi-directional
             // use both x & y
 
@@ -57,10 +56,10 @@ class MovableHandle extends base {
             // use a single coord
             let offset = 0;
 
-            if (this._orientation.currentFlag === FLAGS.VERTICAL) {
+            if (this.orientation === FLAGS.VERTICAL) {
                 // movement is left-right
 
-            } else if (this._orientation.currentFlag === FLAGS.HORIZONTAL) {
+            } else if (this.orientation === FLAGS.HORIZONTAL) {
                 // movement is top-down
                 
             }

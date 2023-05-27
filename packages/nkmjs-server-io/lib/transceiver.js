@@ -43,6 +43,8 @@ class Transceiver extends com.Observable {
         this._backedWrites = {};
         for (const mtd of __writeMethods) { this._backedWrites[mtd] = this._Bind(this[mtd]); };
 
+        this.constructor.__distribute.Attach(this);
+
     }
 
     get service() { return this._service; }
@@ -112,7 +114,7 @@ class Transceiver extends com.Observable {
         this.Broadcast(services.SIGNAL.STARTING, this);
         this._running = true;
 
-        this.constructor.__distribute.Update(this, p_options || {});
+        this.options = p_options || {};
 
         return true;
     }

@@ -11,13 +11,32 @@ const dom = require(`../utils-dom`);
  * @memberof ui.core.helpers
  */
 class FlagEnum {
-    constructor(p_enum = null, p_staticEnum = false, p_prefix = null) {
+
+    static Attach(p_owner, p_member, p_enum = null, p_prefix = null) {
+        let flags = new FlagEnum(p_enum, p_prefix);
+        p_owner[`_${p_member}`] = flags;
+        flags._id = p_member;
+        flags.Add(p_owner);
+        Object.defineProperty(
+            p_owner,
+            p_member,
+            {
+                get() { return flags.currentFlag; },
+                set(p_value) { flags.Set(p_value) },
+                enumerable: true,
+                configurable: true,
+            });
+        return flags;
+    }
+
+    constructor(p_enum, p_prefix = null) {
+
         this._elements = [];
         this._managed = [];
         this._prefix = p_prefix;
-        this._isStaticEnum = p_staticEnum;
-        this._enum = p_enum ? p_enum : [];
-        this._currentFlag = null;
+        this._enum = p_enum;
+        this._current = null;
+        this._id = null;
 
         this._onFlagChanged = com.Rent(com.signals.SignalBroadcaster);
     }
@@ -27,7 +46,7 @@ class FlagEnum {
      * @type {string}
      * @customtag read-only
      */
-    get currentFlag() { return this._currentFlag; }
+    get currentFlag() { return this._current; }
 
     /**
      * @description TODO
@@ -36,34 +55,6 @@ class FlagEnum {
      */
     get onFlagChanged() { return this._onFlagChanged; }
 
-    // ----> Enum
-
-    /**
-     * @description Adds a set of possible values to this object
-     * @param  {...string} values 
-     */
-    AddEnum(...values) {
-        if (this._isStaticEnum) { throw new Error(`FlagEnum is using a static enum.`); }
-        if (values.length === 1 && u.isArray(values[0])) { values = values[0]; }
-        for (let i = 0, n = values.length; i < n; i++) {
-            if (!this._enum.includes(values[i])) { this._enum.push(values[i]); }
-        }
-    }
-
-    /**
-     * @description Removes a set of possible values from this object
-     * @param  {...string} values 
-     */
-    RemoveEnum(...values) {
-        if (this._isStaticEnum) { throw new Error(`FlagEnum is using a static enum.`); }
-        if (values.length === 1 && u.isArray(values[0])) { values = values[0]; }
-        let index;
-        for (let i = 0, n = values.length; i < n; i++) {
-            index = this._enum.indexOf(values[i]);
-            if (index != -1) { this._enum.slice(index, 1); }
-        }
-    }
-
     // ----> Elements
 
     /**
@@ -71,9 +62,7 @@ class FlagEnum {
      * @param  {...HTMLElement} values 
      */
     Add(...values) {
-        for (let i = 0, n = values.length; i < n; i++) {
-            if (!this._elements.includes(values[i])) { this._elements.push(values[i]); }
-        }
+        for (const val of values) { if (this._elements.indexOf(val) == -1) { this._elements.push(val); } }
     }
 
     /**
@@ -81,8 +70,8 @@ class FlagEnum {
      * @param  {...HTMLElement} values 
      */
     Remove(...values) {
-        for (let i = 0, n = values.length; i < n; i++) {
-            let index = this._elements.indexOf(values[i]);
+        for (const val of values) {
+            let index = this._elements.indexOf(val);
             if (index != -1) { this._elements.slice(index, 1); }
         }
     }
@@ -118,11 +107,8 @@ class FlagEnum {
      * @param {string} p_key 
      * @param {array} p_list 
      */
-    Apply(p_key, p_list) {
-        for (let i = 0, n = p_list.length; i < n; i++) {
-            let item = p_list[i];
-            if (p_key in item) { item[p_key] = this._currentFlag; }
-        }
+    Apply(p_list) {
+        for (const item of p_list) { if (this._id in item) { item[this._id] = this._current; } }
     }
 
     /**
@@ -138,46 +124,21 @@ class FlagEnum {
             throw new Error(`flag '${p_flag}' not part of enum ${this._enum}`);
         }
 
-        for (let i = 0, n = this._managed.length; i < n; i++) {
-            this._managed[i].Set(p_flag);
-        }
+        for (const mngd of this._managed) { mngd.Set(p_flag); }
+        if (this._current === p_flag) { return; }
 
-        if (this._currentFlag === p_flag) { return; }
-
-        let oldFlag = this._currentFlag,
+        let oldFlag = this._current,
             prefixed_oldFlag = oldFlag ? this._prefix ? `${this._prefix}-${oldFlag}` : oldFlag : null,
-            prefixed_flag = p_flag ? this._prefix ? `${this._prefix}-${p_flag}` : p_flag : null,
-            el;
+            prefixed_flag = p_flag ? this._prefix ? `${this._prefix}-${p_flag}` : p_flag : null;
 
-        this._currentFlag = p_flag;
+        this._current = p_flag;
 
-        if (!oldFlag && p_flag) {
-            dom.CSSClass(this._elements, prefixed_flag);
-        } else if (oldFlag && !p_flag) {
-            dom.CSSClass(this._elements, prefixed_oldFlag, false);
-        } else {
-            for (const el of this._elements) {
-                dom.CSSClass(el, prefixed_flag);
-                dom.CSSClass(el, prefixed_oldFlag, false);
-            };
-        }
+        if (oldFlag) { dom.CSSClass(this._elements, prefixed_oldFlag, false); }
+        if (p_flag) { dom.CSSClass(this._elements, prefixed_flag); }
 
         this._onFlagChanged.Dispatch(p_flag, oldFlag);
         return p_flag;
 
-    }
-
-    //
-
-    /**
-     * @description Bumps the current value to the provided flag if its index is higher than the current one.
-     * @param {string} p_flag 
-     */
-    Bump(p_flag) {
-        let currentIndex = this._enum.indexOf(this._currentFlag),
-            bumpIndex = this._enum.indexOf(p_flag);
-
-        if (bumpIndex > currentIndex) { this.Set(p_flag); }
     }
 
     /**
@@ -185,9 +146,7 @@ class FlagEnum {
      */
     Clear() {
         this.Set(null);
-        this._flags.Clear();
         this._elements.length = 0;
-        this._enum.length = 0;
     }
 
 }

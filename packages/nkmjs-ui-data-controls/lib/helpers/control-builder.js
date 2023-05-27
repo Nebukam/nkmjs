@@ -41,9 +41,9 @@ class ControlBuilder {
         this._dataObserver = new com.signals.Observer();
         this._dataObserver.Hook(com.SIGNAL.UPDATED, this.RefreshConditionals, this);
 
-    }
+        this.constructor.__distribute.Attach(this);
 
-    set options(p_options) { this.constructor.__distribute.Update(this, p_options); }
+    }
 
     set host(p_value) { this._host = p_value; }
     get host() { return this._host; }
@@ -107,6 +107,8 @@ class ControlBuilder {
     Build(p_controls, p_host = null) {
 
         this.Clear();
+
+        if (!p_controls || !p_controls.length) { return; }
 
         let fragment = document.createDocumentFragment();
 

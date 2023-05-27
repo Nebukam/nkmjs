@@ -43,12 +43,10 @@ class DialogBox extends base {
 
         this._Bind(this._Close);
 
-        this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
-        this._flavorEnum.Add(this);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.FLAVOR, ui.FLAGS.flavorsExtended);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.VARIANT, ui.FLAGS.variants);
 
-        this._variantEnum = new ui.helpers.FlagEnum(ui.FLAGS.variants, true);
-        this._variantEnum.Add(this);
-
+        this.constructor.__distribute.Attach(this);
     }
 
     _PostInit() {
@@ -86,38 +84,6 @@ class DialogBox extends base {
     }
 
     set title(p_value) { throw new Error(`dialog.title not implemented.`); }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     * @group Styling
-     */
-    set flavor(p_value) { this._flavorEnum.Set(p_value); }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     * @group Styling
-     */
-    get flavor() { return this._flavorEnum.currentFlag; }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     * @group Styling
-     */
-    set variant(p_value) { this._variantEnum.Set(p_value); }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     * @group Styling
-     */
-    get variant() { return this._variantEnum.currentFlag; }
 
     /**
      * 
@@ -178,7 +144,7 @@ class DialogBox extends base {
     _OnDataUpdated(p_data) {
 
         this._Clear();
-        this.constructor.__distribute.Update(this, p_data.options);
+        this.options = p_data.options;
 
         /* DATA FORMAT
 

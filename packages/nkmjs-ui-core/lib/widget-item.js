@@ -42,8 +42,7 @@ class WidgetItem extends base {
         this._dataObserver.Hook(data.catalogs.SIGNAL.ITEM_DATA_CHANGED, this._OnCatalogItemDataChanged, this);
         this._itemData = null;
 
-        this._flavorEnum = new helpers.FlagEnum(FLAGS.flavorsExtended, true);
-        this._flavorEnum.Add(this);
+        helpers.FlagEnum.Attach(this, IDS.FLAVOR, FLAGS.flavorsExtended);
 
         this._pointer.Hook(POINTER.KEYS.MOUSE_LEFT, POINTER.KEYS.RELEASE_TWICE, this._Bind(this.AltActivate));
 
@@ -55,6 +54,8 @@ class WidgetItem extends base {
         this._dragActivator = null;
         this._dragFeedbackHost = this;
 
+        this.constructor.__distribute.Attach(this);
+
     }
 
     _PostInit() {
@@ -64,22 +65,6 @@ class WidgetItem extends base {
             this._extDrag.feedbackHost = this._dragFeedbackHost;
         }
     }
-
-    // ----> DOM
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     */
-    set flavor(p_value) { this._flavorEnum.Set(p_value); }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     */
-    get flavor() { return this._flavorEnum.currentFlag; }
 
     // ----> DATA    
 
@@ -92,12 +77,11 @@ class WidgetItem extends base {
 
         super._OnDataUpdated(p_data);
 
-        let options = null;
+        let opts = null
+        if (u.isInstanceOf(this._data, data.catalogs.CatalogItem)) { opts = this._data.options; }
+        else { opts = this._data; }
 
-        if (u.isInstanceOf(this._data, data.catalogs.CatalogItem)) { options = this._data.options; }
-        else { options = this._data; }
-
-        this.constructor.__distribute.Update(this, options);
+        this.options = opts;
 
         if (this._isFocused) { this._BuildCommandHandles(); }
 
@@ -169,7 +153,7 @@ class WidgetItem extends base {
      * @param {*} p_data 
      * @customtag override-me
      */
-    _OnItemDataDirty(p_data) { this._flavorEnum.Set(com.FLAGS.WARNING); }
+    _OnItemDataDirty(p_data) { this.flavor = com.FLAGS.WARNING; }
 
     /**
      * @access protected
@@ -177,7 +161,7 @@ class WidgetItem extends base {
      * @param {*} p_data 
      * @customtag override-me
      */
-    _OnItemDataCleaned(p_data) { this._flavorEnum.Set(null); }
+    _OnItemDataCleaned(p_data) { this.flavor = null; }
 
     /**
      * @access protected

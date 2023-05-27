@@ -79,6 +79,9 @@ class ControlView extends base {
         this._editor = null;
         this._defaultModalContentOptions = () => { return { editor: this.editor, data: this._data, context: this._context } };
 
+        
+        this.constructor.__distribute.Attach(this);
+
     }
 
     _PostInit() {
@@ -130,18 +133,6 @@ class ControlView extends base {
     }
 
     //#region Options handling
-
-    /**
-     * @description TODO
-     * @type {object}
-     */
-    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
-
-    /**
-     * @description TODO
-     * @type {object}
-     */
-    set altOptions(p_value) { this.constructor.__distribute.UpdateNoDefaults(this, p_value, null, false, false); }
 
     /**
      * @access protected

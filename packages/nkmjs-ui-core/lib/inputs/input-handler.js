@@ -8,10 +8,6 @@ const u = require("@nkmjs/utils");
 const collections = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
-const FLAGS = require(`../flags`);
-const Widget = require(`../widget`);
-const FlagEnum = require(`../helpers/flag-enum`);
-
 const SIGNAL = require(`./input-signal`);
 
 class InputHandler extends com.Observable {

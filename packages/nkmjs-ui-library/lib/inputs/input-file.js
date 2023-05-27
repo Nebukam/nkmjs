@@ -69,7 +69,7 @@ class InputFile extends base {
                 variant: ui.FLAGS.MINIMAL
             };
 
-            this._sizeEnum.Add(this._picker);
+            this._size.Add(this._picker);
 
         } else {
             this._picker = ui.dom.El(`input`, { class: 'input-btn', type: 'file' }, this._host);

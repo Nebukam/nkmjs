@@ -44,9 +44,8 @@ class WidgetOrientable extends base {
         /**
          * @type {FlagEnum}
          */
-        this._orientation = new FlagEnum(FLAGS.orientations, true);
-        this._orientation.Add(this);
-        this._orientation.onFlagChanged.Add(this._Bind(this._OnOrientationChanged));
+        FlagEnum.Attach(this, `orientation`, FLAGS.orientations)
+            .onFlagChanged.Add(this._Bind(this._OnOrientationChanged));
 
         this._Bind(this._HorizontalScroll);
 
@@ -54,18 +53,10 @@ class WidgetOrientable extends base {
 
     _PostInit() {
         super._PostInit();
-        this._orientation.Set(this.constructor.__defaultOrientation);
+        this.orientation = this.constructor.__defaultOrientation;
     }
 
     // ----> Placement & Orientation
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @group Placement & Orientation
-     */
-    get orientation() { return this._orientation._currentFlag; }
-    set orientation(p_value) { this._orientation.Set(p_value); }
 
     /**
      * @access protected
@@ -77,7 +68,7 @@ class WidgetOrientable extends base {
      */
     _OnOrientationChanged(p_newValue, p_oldValue) {
         if (this._isHorizontalScrollEnabled) {
-            if (this._orientation.currentFlag === FLAGS.VERTICAL) { this._pointer.wheelFn = null; }
+            if (this.orientation === FLAGS.VERTICAL) { this._pointer.wheelFn = null; }
             else { this._pointer.wheelFn = this._HorizontalScroll; }
         }
     }
@@ -104,7 +95,7 @@ class WidgetOrientable extends base {
 
     _CleanUp() {
         super._CleanUp();
-        this._orientation.Set(this.constructor.__defaultOrientation);
+        this.orientation = this.constructor.__defaultOrientation;
     }
 
 }

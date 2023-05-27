@@ -33,9 +33,8 @@ class Shortcut extends base {
     _Init() {
         super._Init();
         this._shortcut = null;
+        this.constructor.__distribute.Attach(this);
     }
-
-    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
 
     get htitle() { this.getAttribute(`title`); }
     set htitle(p_value) {

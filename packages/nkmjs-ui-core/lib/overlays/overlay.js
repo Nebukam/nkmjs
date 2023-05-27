@@ -124,7 +124,7 @@ class Overlay extends base {
 
         let simplified = FLAGS.SimplifyPlacement(
             p_value,
-            this._orientation.currentFlag == FLAGS.VERTICAL ? true : false);
+            this.orientation == FLAGS.VERTICAL);
 
         if (simplified) {
             this._contentPlacement = simplified;

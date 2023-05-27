@@ -1,11 +1,6 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const com = require("@nkmjs/common");
-
-const FLAGS = require(`../flags`);
-const FlagEnum = require("../helpers/flag-enum");
-const UI = require("../ui");
 const dom = require(`../utils-dom`);
 
 const Manipulator = require(`./manipulator`);

@@ -83,22 +83,19 @@ class WidgetButton extends base {
 
         this._flags.Add(this, FLAGS.TOGGLABLE, FLAGS.TOGGLED);
 
-        this._sizeEnum = new helpers.FlagEnum(FLAGS.sizes, true);
-        this._sizeEnum.Add(this);
+        helpers.FlagEnum.Attach(this, IDS.SIZE, FLAGS.sizes);
+        helpers.FlagEnum.Attach(this, IDS.FLAVOR, FLAGS.flavorsExtended);
+        helpers.FlagEnum.Attach(this, IDS.VARIANT, FLAGS.variants);
 
-        this._flavorEnum = new helpers.FlagEnum(FLAGS.flavorsExtended, true);
-        this._flavorEnum.Add(this);
-
-        this._variantEnum = new helpers.FlagEnum(FLAGS.variants, true);
-        this._variantEnum.Add(this);
+        this.constructor.__distribute.Attach(this);
 
     }
 
     _PostInit() {
         super._PostInit();
-        this._sizeEnum.Set(this.constructor.__defaultSize);
-        this._flavorEnum.Set(this.constructor.__defaultFlavor);
-        this._variantEnum.Set(this.constructor.__defaultVariant);
+        this.sizeEnum = this.constructor.__defaultSize;
+        this.flavor = this.constructor.__defaultFlavor;
+        this.variant = this.constructor.__defaultVariant;
     }
 
     static _Style() {
@@ -109,54 +106,6 @@ class WidgetButton extends base {
             }
         }, {});//base._Style());
     }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     * @group Styling
-     */
-    get size() { return this._sizeEnum.currentFlag; }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     * @group Styling
-     */
-    set size(p_value) { this._sizeEnum.Set(p_value); }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     * @group Styling
-     */
-    set flavor(p_value) { this._flavorEnum.Set(p_value); }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     * @group Styling
-     */
-    get flavor() { return this._flavorEnum.currentFlag; }
-
-    /**
-     * @description TODO
-     * @type {string}
-     * @customtag write-only
-     * @group Styling
-     */
-    set variant(p_value) { this._variantEnum.Set(p_value); }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customtag read-only
-     * @group Styling
-     */
-    get variant() { return this._variantEnum.currentFlag; }
 
     /**
      * @description TODO
@@ -247,18 +196,6 @@ class WidgetButton extends base {
     }
 
     // ----> Options handling
-
-    /**
-     * @description TODO
-     * @type {object}
-     */
-    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
-
-    /**
-     * @description TODO
-     * @type {object}
-     */
-    set altOptions(p_value) { this.constructor.__distribute.UpdateNoDefaults(this, p_value, null, false, false); }
 
     /**
      * @description TODO
@@ -435,9 +372,9 @@ class WidgetButton extends base {
         this.isActivable = true;
 
         this._flags.ApplyAll(false);
-        this._sizeEnum.Set(this.constructor.__defaultSize);
-        this._flavorEnum.Set(this.constructor.__defaultFlavor);
-        this._variantEnum.Set(this.constructor.__defaultVariant);
+        this.sizeEnum = this.constructor.__defaultSize;
+        this.flavor = this.constructor.__defaultFlavor;
+        this.variant = this.constructor.__defaultVariant;
 
         super._CleanUp();
     }

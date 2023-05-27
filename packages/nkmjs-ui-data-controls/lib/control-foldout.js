@@ -1,23 +1,21 @@
-'use strict';
+'use struct';
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const style = require("@nkmjs/style");
 const ui = require(`@nkmjs/ui-core`);
 
-const dom = require(`../dom`);
-const Tool = require(`../buttons/button-tool`);
+const ControlBuilder = require(`./helpers/control-builder`);
 
-const base = ui.Widget;
-
-class Foldout extends base {
+const base = require(`./control-view`);
+class ControlFoldout extends base {
     constructor() { super(); }
 
     static __NFO__ = com.NFOS.Ext({
         css: [`@/views/foldout.css`]
     }, base, ['css']);
-   
-    static __distribute = com.helpers.OptionsDistribute.Ext()
+
+    static __distribute = base.__distribute.Ext()
         .To(ui.IDS.LABEL)
         .To(ui.IDS.ICON)
         .To(`htitle`)
@@ -25,7 +23,20 @@ class Foldout extends base {
         .To(ui.IDS.NAME, ui.IDS.LABEL)
         .To(ui.IDS.TITLE, ui.IDS.LABEL)
         .To(`expanded`, null, false)
-        .To(`prefId`);
+        .To(`prefId`)
+        .To(ui.IDS.FLAVOR)
+        .To(ui.IDS.VARIANT)
+        .To(`builderOptions`)
+        .To(`controls`);
+
+    static __builderOptions = null;
+    static __buildOnExpand = false;
+
+    /**
+     * @description TODO
+     * @type {string}
+     */
+    static __defaultVariant = null;
 
     _Init() {
         super._Init();
@@ -36,22 +47,30 @@ class Foldout extends base {
         this._extExpand._toggled = false;
 
         this._prefId = null;
+        this._tempControls = null;
 
         this._extExpand
             .Watch(ui.SIGNAL.EXPANDED, this._Expand, this)
             .Watch(ui.SIGNAL.COLLAPSED, this._Collapse, this);
 
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.FLAVOR, ui.FLAGS.flavorsExtended);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.VARIANT, ui.FLAGS.variants);
+
         this.focusArea = this;
+
+        if (this.constructor.__builderOptions) { this._builder.options = this.constructor.__builderOptions; }
 
     }
 
     _PostInit() {
         super._PostInit();
         this._extExpand.Setup(this, this._body, this._expandIcon.element);
+        this._builder.host = this._body;
+        this._builder.defaultCSS = `item`;
         this._rendered = true;
     }
 
-    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
+    get builder() { return this._builder; }
 
     // ----> DOM
 
@@ -75,7 +94,24 @@ class Foldout extends base {
 
     set handles(p_handles) { this._toolbar.CreateHandles(...p_handles); }
 
-    //TODO : Body must break flex row
+    set controls(p_value) {
+
+        this._builder.Clear();
+        this._instanceControls = p_value;
+
+        if (p_value) {
+            this._dynamicBuilder = true;
+            if (this.constructor.__buildOnExpand) {
+                if (this.expanded) { this._builder.Build(p_value); }
+            } else {
+                this._builder.Build(p_value);
+            }
+        }
+
+    }
+
+    set builderOptions(p_value) { this._builder.options = p_value; }
+
     static _Style() {
         return {
             ':host': {
@@ -124,12 +160,13 @@ class Foldout extends base {
 
     _Render() {
 
-        ui.DOMTemplate.Render(dom.BodyExpand, this, {
+        ui.DOMTemplate.Render(nkm.uilib.dom.BodyExpand, this, {
             [ui.IDS.OWNER]: this,
             //[ui.IDS.ICON]: { autoHide: true },
             expandIcon: { htitle: `Expand` }
         });
 
+        
         this._icon.autoHide = true;
         this._label.ellipsis = true;
 
@@ -137,10 +174,15 @@ class Foldout extends base {
         this._toolbar.options = {
             size: ui.FLAGS.SIZE_S,
             inline: true,
-            defaultWidgetClass: Tool,
+            defaultWidgetClass: nkm.uilib.buttons.Tool,
         };
 
         this._wrapper = this._body;
+
+        if (!this.constructor.__buildOnExpand) {
+            //  this._builder.Build(this.constructor.__controls || this._instanceControls);
+            super._Render();
+        }
 
         //this.focusArea = this._header;
     }
@@ -167,6 +209,9 @@ class Foldout extends base {
     Expand() { this._extExpand.Expand(); }
     _Expand() {
         if (this._prefId) { this.expanded = nkm.env.prefs.Set(`ui.foldout.${this._prefId}.expanded`, true); }
+        if (this.constructor.__buildOnExpand) {
+            this._builder.Build(this.constructor.__controls || this._instanceControls);
+        }
     }
 
     /**
@@ -175,16 +220,24 @@ class Foldout extends base {
     Collapse() { this._extExpand.Collapse(); }
     _Collapse() {
         if (this._prefId) { this.expanded = nkm.env.prefs.Set(`ui.foldout.${this._prefId}.expanded`, false); }
+        if (this.constructor.__buildOnExpand) { this._builder.Clear(); }
     }
 
     _CleanUp() {
+        if (this._instanceControls) {
+            this._builder.Clear();
+            this._instanceControls = null;
+        }
+
         this._prefId = null;
         this._toolbar.Clear();
         this.expanded = false;
+        this._dynamicBuilder = false;
+
         super._CleanUp();
     }
 
 }
 
-module.exports = Foldout;
-ui.Register(`nkmjs-foldout`, Foldout);
+module.exports = ControlFoldout;
+ui.Register(`nkmjs-control-foldout`, ControlFoldout);

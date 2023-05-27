@@ -26,21 +26,12 @@ class Tag extends base {
     _Init() {
         super._Init();
 
-        this._sizeEnum = new ui.helpers.FlagEnum(ui.FLAGS.sizes, true);
-        this._sizeEnum.Add(this);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.SIZE, ui.FLAGS.sizes);
+        ui.helpers.FlagEnum.Attach(this, ui.IDS.FLAVOR, ui.FLAGS.flavorsExtended);
 
-        this._flavorEnum = new ui.helpers.FlagEnum(ui.FLAGS.flavorsExtended, true);
-        this._flavorEnum.Add(this);
+        this.constructor.__distribute.Attach(this);
 
     }
-
-    set options(p_value) { this.constructor.__distribute.Update(this, p_value); }
-
-    get size() { return this._sizeEnum.currentFlag; }
-    set size(p_value) { this._sizeEnum.Set(p_value); }
-
-    get flavor() { return this._flavorEnum.currentFlag; }
-    set flavor(p_value) { this._flavorEnum.Set(p_value); }
 
     set bgColor(p_value) { ui.dom.CSS(this, 'background-color', p_value ? p_value : null); }
 

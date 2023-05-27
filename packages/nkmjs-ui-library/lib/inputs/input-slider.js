@@ -63,7 +63,7 @@ class InputSlider extends base {
         this._directField = this.Attach(InputNumber, `direct-field item`, this._host);
         //directField._updatePreviewOnInput = false;
 
-        this._sizeEnum.AddManaged(this._directField._sizeEnum);
+        this._size.AddManaged(this._directField._size);
         this._handler.AddManaged(this._directField._handler);
         this._directField.hideArrow = true;
 

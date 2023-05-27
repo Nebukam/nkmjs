@@ -5,6 +5,7 @@ const com = require("@nkmjs/common");
 
 const dom = require(`../utils-dom`);
 const FLAGS = require(`../flags`);
+const IDS = require(`../ids`);
 const FlagEnum = require("../helpers/flag-enum");
 const Manipulator = require("./manipulator");
 
@@ -31,8 +32,7 @@ class ContentManipulator extends Manipulator {
         this._autoHide = p_autoHide;
         this._isVisible = true;
 
-        if (p_sizeControl) { this._sizeFlags = new FlagEnum(FLAGS.sizes, true); }
-        else { this._sizeFlags = null; }
+        if (p_sizeControl) { FlagEnum.Attach(this, IDS.SIZE, FLAGS.sizes); }
     }
 
     /**
@@ -51,18 +51,17 @@ class ContentManipulator extends Manipulator {
 
     _OnElementChanged(p_oldElement) {
 
-        if (this._sizeFlags) {
+        if (this._size) {
             if (p_oldElement) {
+                this.size = null;
+                this._size.Remove(p_oldElement);
+                let oldFlag = this.size;
 
-                this._sizeFlags.Set(null);
-                this._sizeFlags.Remove(p_oldElement);
-                let oldFlag = this._sizeFlags._currentFlag;
-
-                if (this._element) { this._sizeFlags.Add(this._element); }
-                this._sizeFlags.Set(oldFlag);
+                if (this._element) { this._size.Add(this._element); }
+                this.size = oldFlag;
 
             } else if (this._element) {
-                this._sizeFlags.Add(this._element);
+                this._size.Add(this._element);
             }
         }
 
@@ -74,13 +73,6 @@ class ContentManipulator extends Manipulator {
      * @customflag read-only
      */
     get content() { return this._content; }
-
-    /**
-     * @description TODO
-     * @type {ui.core.helpers.FlagEnum}
-     * @customflag read-only
-     */
-    get size() { return this._sizeFlags; }
 
     /**
      * @description Set the content of the manipulated element.

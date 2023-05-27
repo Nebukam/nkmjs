@@ -13,20 +13,18 @@ module.exports = {
 
     ControlView: require(`./lib/control-view`),
     ControlWidget: require(`./lib/control-widget`),
+    ControlFoldout: require(`./lib/control-foldout`),
 
     Editor: Editor,
 
     InspectorShell: require(`./lib/inspector-shell`),
     InspectorView: require(`./lib/inspector-view`),
-    InspectorWidgetGroup: require(`./lib/inspector-widget-group`),
-    InspectorWidget: require(`./lib/inspector-widget`),
     ListInspectorView: require(`./lib/list-inspector-view`),
 
     editors: require(`./lib/editors`),
     views: require(`./lib/views`),
     widgets: require(`./lib/widgets`),
     helpers: require(`./lib/helpers`),
-    inspectors: require(`./lib/inspectors`),
 
     FindEditor: (p_displayObject) => {
         let p = p_displayObject;

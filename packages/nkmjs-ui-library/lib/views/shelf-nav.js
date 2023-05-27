@@ -126,7 +126,7 @@ class ShelfNav extends base {
         this._orientation.AddManaged(this._toolbar._orientation);
         this._toolbar.orientation = this.constructor.__defaultOrientation;
 
-        this._sizeEnum.AddManaged(this._toolbar._sizeEnum);
+        this._size.AddManaged(this._toolbar._size);
         this._toolbar.size = this.constructor.__defaultSize;
 
         this._wrapper = this._body;
@@ -141,7 +141,7 @@ class ShelfNav extends base {
 
     _OnOrientationChanged(p_newValue, p_oldValue) {
         super._OnOrientationChanged(p_newValue, p_oldValue);
-        this._orientation.Apply(`orientation`, this._handles);
+        this._orientation.Apply(this._handles);
     }
 
     _OnPlacementChanged(p_newValue, p_oldValue) {
@@ -187,7 +187,7 @@ class ShelfNav extends base {
 
         navItem.Watch(ui.SIGNAL.ACTIVATED, this._OnNavItemActivated, this);
 
-        if (navItem.orientation) { navItem.orientation = this._orientation.currentFlag; }
+        if (navItem.orientation) { navItem.orientation = this.orientation; }
 
         return navItem;
     }

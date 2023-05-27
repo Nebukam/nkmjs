@@ -16,7 +16,7 @@ const ControlManager = require("./control-manager");
  */
 class DataListHandler extends ControlManager {
 
-    static __distribute = com.helpers.OptionsDistribute.Ext()
+    static __distribute = ControlManager.__distribute.Ext()
         .To(`host`, `_host`)
         .To(`css`, `_defaultCSS`)
         .To(`dataFn`, `_preProcessDataFn`);
@@ -34,6 +34,8 @@ class DataListHandler extends ControlManager {
             .Hook(com.SIGNAL.SORTED, this._OnListSorted, this);
 
         this._scheduledIndicesRefresh = com.DelayedCall(this._RefreshIndices);
+
+        this.constructor.__distribute.Attach(this);
 
     }
 

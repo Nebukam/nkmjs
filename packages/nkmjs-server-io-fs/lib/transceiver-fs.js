@@ -8,7 +8,7 @@ const base = nkm.io.Transceiver;
 class Transceiver_FS extends base {
     constructor() { super(); }
 
-    static __distribute = nkm.com.helpers.OptionsDistribute.Ext(base);
+    static __distribute = nkm.com.helpers.OptionsDistribute.Ext();
 
     _Init() {
         super._Init();

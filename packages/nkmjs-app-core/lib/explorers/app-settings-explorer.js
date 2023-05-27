@@ -73,7 +73,7 @@ class AppSettingsExplorer extends base {
                 foldout.controls.push(options);
             };
 
-            uilib.views.ControlsFoldout.Build(this, foldout);
+            uilib.views.Foldout(this, foldout);
 
         };
 

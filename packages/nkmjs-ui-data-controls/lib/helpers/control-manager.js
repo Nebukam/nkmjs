@@ -40,6 +40,8 @@ class ControlManager {
         this._ctrlObserver = new com.signals.Observer();
         this._ctrlObserver.Hook(com.SIGNAL.RELEASED, this._OnCtrlReleased, this);
 
+        this.constructor.__distribute.Attach(this);
+
     }
 
     set host(p_value) { this._host = p_value; }

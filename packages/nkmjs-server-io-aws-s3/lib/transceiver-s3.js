@@ -7,7 +7,7 @@ const base = nkm.io.Transceiver;
 class Transceiver_AWS_S3 extends base {
     constructor() { super(); }
 
-    static __distribute = nkm.com.helpers.OptionsDistribute.Ext(base)
+    static __distribute = base.__distribute.Ext()
         .To(`allowCreate`, false)
         .To(`rateLimit`, null, { tokensPerInterval: 3500, interval: "second" });
 

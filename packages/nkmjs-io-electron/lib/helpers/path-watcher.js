@@ -41,9 +41,9 @@ class PathWatcher extends com.Observable {
         this._usePolling = true;
         this._ignoreInitial = true;
 
-    }
+        this.constructor.__distribute.Attach(this);
 
-    set options(p_options) { this.constructor.__distribute.Update(this, p_options); }
+    }
 
     get depth() { return this._depth; }
     set depth(p_value) { this._depth = p_value; }

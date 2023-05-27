@@ -3,8 +3,7 @@ const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
 const env = require(`@nkmjs/environment`);
 const datacontrols = require(`@nkmjs/ui-data-controls`);
-
-const ControlsFoldout = require(`../views/controls-foldout`);
+const views = require(`../views`);
 
 const base = datacontrols.InspectorView;
 class ValueListInspector extends base {
@@ -35,9 +34,9 @@ class ValueListInspector extends base {
                 ...nkm.style.rules.gap.small,
 
                 ...style.flexItem.fill,
-                'overflow': 'auto',                
+                'overflow': 'auto',
             },
-            
+
             '.foldout': {
                 ...style.flexItem.fillAbs(350),
             },
@@ -58,9 +57,7 @@ class ValueListInspector extends base {
         let foldouts = this._GetFoldouts([]);
         if (!foldouts.length) { foldouts = this.constructor.__foldouts; }
 
-        for (const foldout of foldouts) {
-            ControlsFoldout.Build(this, foldout, this._body);
-        };
+        for (const foldout of foldouts) { views.Foldout(this, foldout, this._body); };
     }
 
     _GetFoldouts(p_foldouts) { return p_foldouts; }
