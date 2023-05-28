@@ -1,6 +1,6 @@
 {
   "name": "@nkmjs/electron-core",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "NKMjs Framework Electron App Core",
   "main": "index.js",
   "repository": {
@@ -18,12 +18,12 @@
   "license": "MIT",
   "dependencies": {
     "@electron/remote": "^2.0.5",
-    "@nkmjs/actions": "^1.2.4",
-    "@nkmjs/app-core": "^1.2.5",
-    "@nkmjs/collections": "^1.1.2",
-    "@nkmjs/common": "^1.2.4",
-    "@nkmjs/io-electron": "^1.2.4",
-    "@nkmjs/services": "^1.2.4",
+    "@nkmjs/actions": "^1.2.5",
+    "@nkmjs/app-core": "^1.2.6",
+    "@nkmjs/collections": "^1.1.3",
+    "@nkmjs/common": "^1.2.5",
+    "@nkmjs/io-electron": "^1.2.5",
+    "@nkmjs/services": "^1.2.5",
     "@nkmjs/utils": "^1.2.2",
     "electron-deeplink": "^1.0.10"
   },
