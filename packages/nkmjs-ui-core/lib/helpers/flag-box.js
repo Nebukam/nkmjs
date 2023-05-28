@@ -14,7 +14,7 @@ const __NULL = Symbol(`null`);
 class FlagBox {
     constructor() {
         this._elements = null;
-        this._flags = new collections.Dictionary();
+        this._flags = new Set();
     }
 
     // ----> Flags
@@ -26,10 +26,10 @@ class FlagBox {
      */
     Set(p_flag, p_toggle) {
         if (p_toggle) {
-            this._flags.Set(p_flag, true);
+            this._flags.add(p_flag);
             this.Apply(p_flag, true);
         } else {
-            this._flags.Set(p_flag, false);
+            this._flags.delete(p_flag);
             this.Apply(p_flag, false);
         }
         return p_toggle;
@@ -40,11 +40,7 @@ class FlagBox {
      * @param {string} p_flag 
      * @returns {boolean} Returns true if the given flag is currently set,  otherwise false.
      */
-    IsSet(p_flag) {
-        let flag = this._flags.Get(p_flag);
-        if (!flag) { return false; }
-        return flag;
-    }
+    IsSet(p_flag) { return this._flags.has(p_flag); }
 
     /**
      * @description TODO
@@ -110,7 +106,7 @@ class FlagBox {
      * @description Clear all flags & elements (wipe)
      */
     Clear() {
-        this._flags.Clear();
+        this._flags.clear();
         if (!this._elements) { return; }
         this._elements.Clear();
     }

@@ -9,7 +9,7 @@ class InputListHandler extends com.Observable {
         super();
         this._owner = p_owner;
         this._inputs = [];
-        this._map = new collections.Dictionary();
+        this._map = new Map();
         this._Bind(this._OnInputSubmit);
         this._Bind(this._OnInputChanged);
         this._Bind(this._OnInputError);
@@ -62,7 +62,7 @@ class InputListHandler extends com.Observable {
             if (config.sanitization) { input.AddSanitization(config.sanitization); }
 
             this._inputs.push(input);
-            this._map.Set(input, config);
+            this._map.set(input, config);
 
             input._handler
                 .Watch(SIGNAL.VALUE_SUBMITTED, this._OnInputSubmit)
@@ -75,11 +75,11 @@ class InputListHandler extends com.Observable {
     Clear() {
         for (let i = 0, n = this._inputs.length; i < n; i++) { this._inputs[i].Release(); }
         this._inputs.length = 0;
-        this._map.Clear();
+        this._map.clear();
     }
 
     _OnInputSubmit(p_input, p_newValue) {
-        let config = this._map.Get(p_input);
+        let config = this._map.get(p_input);
         if (config.onSubmit) {
             if (config.onSubmit.thisArg) { config.onSubmit.call(config.onSubmit.thisArg, p_input, p_newValue); }
             else { config.onSubmit(p_input, p_newValue); }
@@ -87,7 +87,7 @@ class InputListHandler extends com.Observable {
     }
 
     _OnInputChanged(p_input, p_newValue) {
-        let config = this._map.Get(p_input);
+        let config = this._map.get(p_input);
         if (config.onChange) {
             if (config.onChange.thisArg) { config.onChange.call(config.onChange.thisArg, p_input, p_newValue); }
             else { config.onChange(p_input, p_newValue); }
@@ -95,7 +95,7 @@ class InputListHandler extends com.Observable {
     }
 
     _OnInputError(p_input, p_errors) {
-        let config = this._map.Get(p_input);
+        let config = this._map.get(p_input);
         if (config.onError) {
             if (config.onError.thisArg) { config.onError.call(config.onError.thisArg, p_input, p_newValue); }
             else { config.onError(p_input, p_newValue); }

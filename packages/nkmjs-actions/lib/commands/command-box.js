@@ -22,7 +22,7 @@ class CommandBox {
         this._emitter = p_emitter;
 
         this._commandList = new collections.List(0);
-        this._commandHooks = new collections.Dictionary();
+        this._commandHooks = new Map();
         this._onRegisterCmd = p_onRegister;
 
         this._idMap = new Map();
@@ -109,7 +109,7 @@ class CommandBox {
     _Register(p_cmd, p_hooks = null) {
         if (this._commandList.Add(p_cmd)) {
             if (p_hooks) {
-                this._commandHooks.Set(p_cmd, p_hooks);
+                this._commandHooks.set(p_cmd, p_hooks);
                 for (let i = 0, n = p_hooks.length; i < n; i++) {
                     let hook = p_hooks[i];
                     p_cmd.Watch(hook.evt, hook.fn, (hook.thisArg || null));
@@ -136,9 +136,9 @@ class CommandBox {
      */
     RemoveCommand(p_cmd) {
         if (this._commandList.Remove(p_cmd)) {
-            let hooks = this._commandHooks.Get(p_cmd);
+            let hooks = this._commandHooks.get(p_cmd);
             if (hooks) {
-                this._commandHooks.Remove(p_cmd);
+                this._commandHooks.delete(p_cmd);
                 for (let i = 0, n = hooks.length; i < n; i++) {
                     let hook = hooks[i];
                     p_cmd.Unwatch(hook.evt, hook.fn, (hook.thisArg || null));

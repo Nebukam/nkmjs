@@ -28,7 +28,7 @@ class Repertoire extends com.Observable {
         this._idDispenser = new IDDispenser();
 
         this._itemList = new collections.List(0);
-        this._itemMap = new collections.Dictionary(); // <ID, entry>
+        this._itemMap = new Map(); // <ID, entry>
 
     }
 
@@ -48,7 +48,7 @@ class Repertoire extends com.Observable {
 
     /**
      * @description TODO
-     * @type {collections.Dictionary}
+     * @type {Map}
      * @customtag read-only
      */
     get itemMap() { return this._itemMap; }
@@ -131,7 +131,7 @@ class Repertoire extends com.Observable {
      * @param {data.core.ID} p_id 
      */
     _OnIDReleased(p_id) {
-        let item = this._itemMap.Get(p_id);
+        let item = this._itemMap.get(p_id);
         if (item) {
             console.warn(`An ID (${p_id.name}) has been released. Removing existing item from repertoire.`);
             this.Unregister(item);
@@ -160,14 +160,14 @@ class Repertoire extends com.Observable {
             if (u.isString(p_id)) {
                 let existingId = this._idDispenser.Get(p_id);
                 if (existingId) {
-                    if (this._itemMap.Contains(existingId)) { throw new Error(`ID '${p_id}' already in use.`); }
+                    if (this._itemMap.has(existingId)) { throw new Error(`ID '${p_id}' already in use.`); }
                     itemID = existingId; // Take ownership of the existing ID.
                 } else {
                     itemID = this.ReserveID(p_id);
                 }
             } else if (u.isInstanceOf(p_id, ID)) {
                 if (this._idDispenser.ContainsID(p_id)) {
-                    if (this._itemMap.Contains(p_id)) { throw new Error(`ID '${p_id}' already in use.`); }
+                    if (this._itemMap.has(p_id)) { throw new Error(`ID '${p_id}' already in use.`); }
                     itemID = p_id; // Take ownership of the existing ID.
                 } else {
                     throw new Error(`ID '${p_id.name}' must be provided by local dispenser.`);
@@ -210,7 +210,7 @@ class Repertoire extends com.Observable {
         if (u.isVoid(itemID)) { throw new Error(`Cannot unregister a item with no ID.`); }
         if (u.isVoid(this._itemList.Remove(p_item))) { throw new Error(`Cannot unregister an item that is not in the repertoire.`); }
 
-        this._itemMap.Remove(itemID);
+        this._itemMap.delete(itemID);
         this._OnItemUnregistered(p_item);
 
         //Free ID
@@ -243,7 +243,7 @@ class Repertoire extends com.Observable {
      * @param {data.core.ID} p_id 
      * @returns {data.core.DataBlock} Item mapped to this ID, if any. Otherwise, null.
      */
-    Get(p_id) { return this._itemMap.Get(p_id); }
+    Get(p_id) { return this._itemMap.get(p_id); }
 
     /**
      * @description TODO
@@ -252,7 +252,7 @@ class Repertoire extends com.Observable {
      */
     GetByName(p_name) {
         let id = this._idDispenser.Get(p_name);
-        return id ? this._itemMap.Get(id) : null;
+        return id ? this._itemMap.get(id) : null;
     }
 
     /**
@@ -266,7 +266,7 @@ class Repertoire extends com.Observable {
      * @description TODO
      */
     Clear() {
-        while(!this._itemList.isEmpty){
+        while (!this._itemList.isEmpty) {
             this._itemList.last.Release();
         }
     }

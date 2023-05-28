@@ -49,84 +49,68 @@ class SignalBox {
 
     get hasWatchers() { return this._signals.size > 0; }
 
-    isEmpty(p_signal) {
-        if (!this._signals.has(p_signal)) { return true; }
-        else { return this._signals.get(p_signal).isEmpty; }
-    }
+    isEmpty(p_signal) { return this._signals.get(p_signal)?.isEmpty === false ? false : true; }
 
-    Get(p_signalId) { return this._signals.get(p_signalId) }
+    Get(p_id) { return this._signals.get(p_id) }
+
+    _GetOrMake(p_id) {
+        let signal = this._signals.get(p_id);
+        if (!signal) {
+            signal = POOL.Rent(SignalBroadcaster);
+            signal.id = p_id;
+            this._signals.set(p_id, signal);
+        }
+        return signal;
+    }
 
     /**
      * @description Broadcast a signal with arguments
-     * @param {Symbol} p_signalId 
+     * @param {Symbol} p_id 
      * @param {*} args
      */
-    Broadcast(p_signalId, ...args) {
-
-        if (this._silent || this._signals.isEmpty) { return this; }
-        if (!p_signalId) {
-            throw new Error(`Signal may not be undefined or null.`);
-        }
-        let signal = this._signals.get(p_signalId);
-        if (!signal) { return; }
-        signal.__dispatchId = p_signalId;
-        signal.Dispatch(...args);
-        signal.__dispatchId = null;
-
+    Broadcast(p_id, ...args) {
+        if (this._silent) { return this._owner || this; }
+        this._signals.get(p_id)?.Dispatch(...args);
         return this._owner || this;
     }
 
     /**
      * @description Register a signal subscription
-     * @param {Symbol} p_signalId 
+     * @param {Symbol} p_id 
      * @param {function} p_fn 
-     * @param {*} p_listener 
+     * @param {*} p_watcher 
      */
-    Watch(p_signalId, p_fn, p_listener = null) {
-
-        let signal = this._signals.get(p_signalId);
-        if (u.isVoid(signal)) {
-            signal = POOL.Rent(SignalBroadcaster);
-            this._signals.set(p_signalId, signal);
-        }
-
-        signal.Add(p_fn, p_listener);
+    Watch(p_id, p_fn, p_watcher = null) {
+        this._GetOrMake(p_id).Add(p_fn, p_watcher);
         return this._owner || this;
     }
 
     /**
      * @description Register a signal subscription that will be removed after it fires once.
-     * @param {Symbol} p_signalId 
+     * @param {Symbol} p_id 
      * @param {function} p_fn 
-     * @param {*} p_listener 
+     * @param {*} p_watcher 
      */
-    WatchOnce(p_signalId, p_fn, p_listener = null) {
-
-        let signal = this._signals.get(p_signalId);
-        if (u.isVoid(signal)) {
-            signal = POOL.Rent(SignalBroadcaster);
-            this._signals.set(p_signalId, signal);
-        }
-
-        signal.AddOnce(p_fn, p_listener);
+    WatchOnce(p_id, p_fn, p_watcher = null) {
+        this._GetOrMake(p_id).AddOnce(p_fn, p_watcher);
         return this._owner || this;
     }
 
     /**
      * @description Unregister a signal subscription
-     * @param {Symbol} p_signalId 
+     * @param {Symbol} p_id 
      * @param {function} p_fn 
-     * @param {*} p_listener 
+     * @param {*} p_watcher 
      */
-    Unwatch(p_signalId, p_fn, p_listener = null) {
+    Unwatch(p_id, p_fn, p_watcher = null) {
 
-        let signal = this._signals.get(p_signalId);
-        if (u.isVoid(signal)) { return this; }
+        let signal = this._signals.get(p_id);
+        if (!signal) { return this._owner || this; }
 
-        signal.Remove(p_fn, p_listener);
+        signal.Remove(p_fn, p_watcher);
 
         if (signal.isEmpty) {
-            this._signals.delete(p_signalId);
+            this._signals.delete(p_id);
             signal.Release();
         }
 
@@ -136,24 +120,18 @@ class SignalBox {
 
     /**
      * @description Unregister all subscription to a given signal
-     * @param {Symbol} p_signalId 
+     * @param {Symbol} p_id 
      */
-    RemoveAll(p_signalId) {
-
-        let signal = this._signals.get(p_signalId);
-        if (u.isVoid(signal)) { return; }
-
-        this._signals.delete(p_signalId);
-        signal.Release();
-
+    RemoveAll(p_id) {
+        this._signals.get(p_id)?.Release();
+        this._signals.delete(p_id);
     }
 
     /**
      * @description Clears all signals & subscriptions
      */
     Clear() {
-        let keys = this._signals.keys();
-        for (const key of keys) { this._signals.get(key).Release(); }
+        for (const k of this._signals.keys()) { this._signals.get(k).Release(); }
         this._signals.clear();
     }
 

@@ -61,7 +61,7 @@ class BindingKit extends Observable {
         this._deployed = false;
         this._KVPS = [];
         this._CLASSES = [];
-        this._classDict = new collections.Dictionary();
+        this._classDict = new Map();
 
         /* KVP Example
 
@@ -131,14 +131,10 @@ class BindingKit extends Observable {
 
         if (this._deployed) { return; }
 
-        for (let i = 0, n = this._KVPS.length; i < n; i++) {
-
-            let assoc = this._KVPS[i],
-                context = assoc.ctx,
-                kvps = assoc.kvps;
-
-            for (const kvp of kvps) { this.constructor._InternalSetBinding(context, kvp); };
-
+        for (const assoc of this._KVPS) {
+            for (const kvp of assoc.kvps) {
+                this.constructor._InternalSetBinding(assoc.ctx, kvp);
+            }
         }
 
         for (const cl of this._CLASSES) { this.constructor._InternalSetClass(cl, this); };
@@ -163,7 +159,7 @@ class BindingKit extends Observable {
 
     static _InternalSetClass(p_class, p_wrapper = null) {
         let uid = BINDINGS.RegisterFromNFO(p_class);
-        if (p_wrapper) { p_wrapper._classDict.Set(p_class, uid); }
+        if (p_wrapper) { p_wrapper._classDict.set(p_class, uid); }
     }
 
     /**
@@ -173,22 +169,13 @@ class BindingKit extends Observable {
 
         if (!this._deployed) { return; }
 
-        for (let i = 0, n = this._KVPS.length; i < n; i++) {
-
-            let assoc = this._KVPS[i],
-                context = assoc.ctx,
-                kvps = assoc.kvps;
-
-            for (let k = 0, n = kvps.length; k < n; k++) {
-                let kvp = kvps[k];
-                BINDINGS._Remove(context, kvp.key, kvp.binding);
+        for (const assoc of this._KVPS) {
+            for (const kvp of assoc.kvps) {
+                BINDINGS._Remove(assoc.ctx, kvp.key, kvp.binding);
             }
         }
 
-        let kvps = this._classDict.keys;
-        for (let i = 0, n = kvps.length; i < n; i++) {
-            BINDINGS._RemoveClass(this._classDict.Get(kvps[i]));
-        }
+        for (const k of this._classDict.keys()) { BINDINGS._RemoveClass(k); }
 
         this._deployed = false;
     }

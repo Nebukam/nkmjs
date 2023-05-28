@@ -24,7 +24,7 @@ class OverlayHandler extends base {
     _Init() {
         super._Init();
 
-        this._overlayMap = new collections.Dictionary();
+        this._overlayMap = new Map();
         this._overlayList = new collections.List(0);
         this._Bind(this._OnOverlayOptionsConsumed);
 
@@ -67,7 +67,7 @@ class OverlayHandler extends base {
         overlayOptions.request = p_request;
 
         // Check if overlayOptions aren't in use already
-        let existingOverlay = this._overlayMap.Get(overlayOptions);
+        let existingOverlay = this._overlayMap.get(overlayOptions);
 
         if (existingOverlay) {
             existingOverlay.RequestDisplay();
@@ -82,7 +82,7 @@ class OverlayHandler extends base {
             com.GetBinding(CTX.OVERLAY, p_request.requestType, this.constructor.__default_overlayClass),
             newOverlay = this.Attach(overlayClass, `overlay`);
 
-        this._overlayMap.Set(overlayOptions, newOverlay);
+        this._overlayMap.set(overlayOptions, newOverlay);
         overlayOptions.Watch(com.SIGNAL.CONSUMED, this._OnOverlayOptionsConsumed);
         newOverlay.data = overlayOptions;
 
@@ -93,22 +93,23 @@ class OverlayHandler extends base {
     }
 
     _OnOverlayOptionsConsumed(p_overlayOptions) {
+        
+        let overlay = this._overlayMap.get(p_overlayOptions);
 
-        let overlay = this._overlayMap.Get(p_overlayOptions);
-        this._overlayMap.Remove(p_overlayOptions);
+        this._overlayMap.delete(p_overlayOptions);
         this._overlayList.Remove(overlay);
 
         overlay.Release();
         p_overlayOptions.Release();
 
-        if (this._overlayMap.count === 0) {
+        if (this._overlayMap.size === 0) {
             // Hide overlay handler if empty stack
             this._delayedHide.Schedule();
         }
 
     }
 
-    _Hide(){
+    _Hide() {
         this.visible = false;
     }
 

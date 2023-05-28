@@ -6,8 +6,8 @@ const collections = require(`@nkmjs/collections`);
 const NFOS = require(`./nfos`);
 const IDS = require(`./ids`);
 
-const _classLookup = new collections.Dictionary();
-const _classReverseLookup = new collections.Dictionary();
+const _classLookup = new Map();
+const _classReverseLookup = new Map();
 
 const _contextMap = new collections.KDictionary();
 const _contextKeyLists = new collections.DictionaryList();
@@ -60,8 +60,8 @@ module.exports = {
      * as serialized data store its string identifier to be deserialized afterward.</div>
      */
     SetClass: function (p_key, p_class) {
-        _classLookup.Set(p_key, p_class);
-        _classReverseLookup.Set(p_class, p_key);
+        _classLookup.set(p_key, p_class);
+        _classReverseLookup.set(p_class, p_key);
     },
 
     /**
@@ -70,7 +70,7 @@ module.exports = {
      * @returns {function}
      * @group Class repertoire
      */
-    GetClass: function (p_key) { return _classLookup.Get(p_key); },
+    GetClass: function (p_key) { return _classLookup.get(p_key); },
 
     /**
      * Retrieve the string identifier associated with a given class constructor, if any.
@@ -85,7 +85,7 @@ module.exports = {
         if (u.isObject(p_constructor)) { p_constructor = p_constructor.constructor; }
         if (!p_constructor) { throw new Error(`Could not find valid constructor ref in ${p_constructor}`); }
 
-        let uid = _classReverseLookup.Get(p_constructor);
+        let uid = _classReverseLookup.get(p_constructor);
 
         if (!uid) {
             uid = NFOS.GetStr(p_constructor, IDS.UID, null);
@@ -108,7 +108,7 @@ module.exports = {
      * @returns {function}
      * @group Class repertoire
      */
-    RemoveClass: function (p_key) { _classLookup.Remove(p_key); },
+    RemoveClass: function (p_key) { _classLookup.delete(p_key); },
 
     /**
      * @description Registers an key-control pair within a given context.

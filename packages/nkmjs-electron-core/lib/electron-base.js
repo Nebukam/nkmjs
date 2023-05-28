@@ -67,10 +67,6 @@ class ElectronBase {
         this._Bind(this._OnRequestDialog);
         this._Bind(this._RequestDialogResponse);
 
-        this._windows = new collections.List();
-        this._windowsMap = new collections.Dictionary();
-        this._windowsIDMap = new collections.Dictionary();
-
         ipcMain.on(APP_MESSAGES.AU_CHECK_REQUEST, this._Bind(this._OnRequestCheckForUpdates));
         ipcMain.on('start-nkm-env', this._Bind(this._OnNKMEnvRequest));
 
@@ -374,10 +370,7 @@ class ElectronBase {
     // ----> Exit
 
     _OnMainWindowClosed() {
-        this._mainWindow = null;
-        for (let i = 0, n = this._windows.count; i < n; i++) {
-            this._windows.At(0).close();
-        }
+        //TODO: Close all other windows
     }
 
 }

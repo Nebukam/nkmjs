@@ -34,18 +34,18 @@ class StateBase {
      * @returns {StateBase} Requested state
      */
     static GetOrCreate(p_stateId, p_data = null) {
-        if (u.isVoid(this._stateMap)) { this._stateMap = new collections.Dictionary(); }
-        let state = this._stateMap.Get(p_stateId);
-        if (u.isVoid(state)) {
+        if (!this._stateMap) { this._stateMap = new Map(); }
+        let state = this._stateMap.get(p_stateId);
+        if (!state) {
             state = new this();
             state._id = p_stateId;
             state._data = p_data;
-            this._stateMap.Set(p_stateId, state);
+            this._stateMap.set(p_stateId, state);
         }
         return state;
     }
 
-    toString(){ return this._id; }
+    toString() { return this._id; }
 
 }
 

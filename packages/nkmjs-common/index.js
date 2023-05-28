@@ -4,6 +4,8 @@ const POOL = require(`./lib/pool`);
 const time = require(`./lib/time`);
 const BINDINGS = require(`./lib/bindings`);
 
+const { CSYMBOL, CKEY } = require(`./lib/class-symbol`)
+
 module.exports = {
 
     NFOS: require(`./lib/nfos`),
@@ -13,8 +15,8 @@ module.exports = {
     IDS: require(`./lib/ids`),
     SORTING: require(`./lib/sorting`),
 
-    CSYMBOL: require(`./lib/class-symbol`),
-    CKEY: require(`./lib/class-key`),
+    CSYMBOL: CSYMBOL,
+    CKEY: CKEY,
 
     Disposable: require(`./lib/disposable`),
     Observable: require(`./lib/observable`),

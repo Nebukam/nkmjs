@@ -4,6 +4,8 @@ const u = require("@nkmjs/utils");
 const collections = require(`@nkmjs/collections`);
 const Disposable = require(`../disposable`);
 
+const BLANK = Symbol(`none`);
+
 /**
  * An single signal broadcast manager.  
  * @class
@@ -13,16 +15,13 @@ const Disposable = require(`../disposable`);
 class SignalBroadcaster extends Disposable {
     constructor() { super(); }
 
-    static BLANK = Symbol(`none`);
-
     _Init() {
         super._Init();
         this._broadcasting = false;
         this._removeAll = false;
         this._slots = new collections.DictionaryList();
-        this._onceSlots = new collections.DictionaryList();
-        this._deprecatedKVP = [];
-        this._queuedBroadcasts = [];
+        this._onceSlots = new collections.DictionarySet();
+        this._deprecated = [];
     }
 
     /**
@@ -43,47 +42,45 @@ class SignalBroadcaster extends Disposable {
      * @description Register a subscriber.
      * NOTE : If a 'once' subscription exists with the same signature, it will change to be permanent
      * @param {function} p_fn 
-     * @param {*} p_listener 
+     * @param {*} p_watcher 
      */
-    Add(p_fn, p_listener = null) {
+    Add(p_fn, p_watcher = null) {
         if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
-        if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
-        this._slots.Set(p_listener, p_fn);
-        this._onceSlots.Remove(p_listener, p_fn);
+        p_watcher = p_watcher || BLANK;
+        this._slots.Set(p_watcher, p_fn);
+        this._onceSlots.Remove(p_watcher, p_fn);
         return this;
     }
 
     /**
      * @description TODO
      * @param {*} p_fn 
-     * @param {*} p_listener 
+     * @param {*} p_watcher 
      */
-    AddOnce(p_fn, p_listener = null) {
+    AddOnce(p_fn, p_watcher = null) {
         if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
-        if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
-        this._slots.Set(p_listener, p_fn);
-        this._onceSlots.Set(p_listener, p_fn);
+        p_watcher = p_watcher || BLANK;
+        this._slots.Set(p_watcher, p_fn);
+        this._onceSlots.Set(p_watcher, p_fn);
         return this;
     }
 
     /**
      * @description Unregister a subscriber
      * @param {function} p_fn 
-     * @param {*} p_listener 
+     * @param {*} p_watcher 
      */
-    Remove(p_fn, p_listener = null) {
+    Remove(p_fn, p_watcher = null) {
 
         if (!u.isFunc(p_fn)) { throw new Error(`p_fn is not a function`); }
-        if (u.isVoid(p_listener)) { p_listener = SignalBroadcaster.BLANK; }
 
-        if (this._slots.Contains(p_listener)) {
-            if (this._broadcasting) { this._deprecatedKVP.push([p_listener, p_fn]); }
-            else { this._slots.Remove(p_listener, p_fn); }
-        }
+        p_watcher = p_watcher || BLANK;
 
-        if (this._onceSlots.Contains(p_listener)) {
-            if (this._broadcasting) { this._deprecatedKVP.push([p_listener, p_fn]); }
-            else { this._onceSlots.Remove(p_listener, p_fn); }
+        if (this._broadcasting) {
+            this._deprecated.push([p_watcher, p_fn]);
+        } else {
+            this._slots.Remove(p_watcher, p_fn);
+            this._onceSlots.Remove(p_watcher, p_fn);
         }
 
         return this;
@@ -94,16 +91,15 @@ class SignalBroadcaster extends Disposable {
      * @description Remove all subscribers
      */
     RemoveAll() {
-        
+
         if (this._broadcasting) {
             this._removeAll = true;
             return;
         }
 
-        this._queuedBroadcasts.length = 0;
         this._slots.Clear();
         this._onceSlots.Clear();
-        this._deprecatedKVP.length = 0;
+        this._deprecated.length = 0;
         this._removeAll = false;
 
     }
@@ -112,199 +108,38 @@ class SignalBroadcaster extends Disposable {
      * @description Dispatch arguments to subscribers
      * @param  {...any} args
      */
-     Dispatch(...args) {
+    Dispatch(...args) {
 
         if (this._broadcasting) {
-            //May cause chaos.
-            this._queuedBroadcasts.push(args);
-            console.warn(`Dispatching signal while already dispatching (${this.__dispatchId.toString()}). Queueing.`);
+            console.warn(`Dispatching signal while already dispatching (${this.id.toString()}) -- signal ignored. This is usually caused by this signal a re-dispatching inside the initial dispatch loop.`);
             return;
         }
 
         this._broadcasting = true;
 
-        let slots = this._slots._map,
-            keys = slots.keys();
+        let slots = this._slots._map;
+        for (const watcher of slots.keys()) {
 
-        if (args === null || args === undefined) {
+            //console.log(watcher);
+            let onceSet = this._onceSlots.Get(watcher);
 
-            // Dispatch without args
-
-            for (let si = 0, sn = slots.size; si < sn; si++) {
-
-                let watcher = keys.next().value,
-                    callbacks = slots.get(watcher),
-                    n = callbacks.length,
-                    onceList = this._onceSlots.Get(watcher);
-
-                if (watcher === SignalBroadcaster.BLANK) {
-                    if (onceList) {
-                        for (let i = 0; i < n; i++) {
-                            let fn = callbacks[i];
-                            fn.apply(null);
-                            if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
-                        }
-                    } else {
-                        for (let i = 0; i < n; i++) {
-                            callbacks[i].apply(null);
-                        }
-                    }
-                } else {
-                    if (onceList) {
-                        for (let i = 0; i < n; i++) {
-                            let fn = callbacks[i];
-                            fn.apply(watcher);
-                            if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
-                        }
-                    } else {
-                        for (let i = 0; i < n; i++) {
-                            callbacks[i].apply(watcher);
-                        }
-                    }
-                }
+            for (const cb of slots.get(watcher)) {
+                cb.apply(watcher === BLANK ? null : watcher, args);
+                if (onceSet?.has(cb)) { this._deprecated.push([watcher, cb]); }
             }
 
-        } else {
-
-            // Dispatch with args
-
-            for (let si = 0, sn = slots.size; si < sn; si++) {
-
-                let watcher = keys.next().value,
-                    callbacks = slots.get(watcher),
-                    n = callbacks.length,
-                    onceList = this._onceSlots.Get(watcher);
-
-                if (watcher === SignalBroadcaster.BLANK) {
-                    if (onceList) {
-                        for (let i = 0; i < n; i++) {
-                            let fn = callbacks[i];
-                            fn.apply(null, args);
-                            if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
-                        }
-                    } else {
-                        for (let i = 0; i < n; i++) { callbacks[i].apply(null, args); }
-                    }
-
-                } else {
-                    if (onceList) {
-                        for (let i = 0; i < n; i++) {
-                            let fn = callbacks[i];
-                            fn.apply(watcher, args);
-                            if (onceList.includes(fn)) { this._deprecatedKVP.push([watcher, fn]); }
-                        }
-                    } else {
-                        for (let i = 0; i < n; i++) { callbacks[i].apply(watcher, args); }
-                    }
-                }
-            }
-
-        }
-
-        this._PostDispatch();
-
-    }
-
-    /**
-     * @access private
-     * @param {*} p_obj 
-     */
-    _PostDispatch() {
+        };
 
         this._broadcasting = false;
+
         this._onceSlots.Clear();
 
-        if (this._removeAll) {
-            this.RemoveAll();
-        } else {
-            for (let i = 0, n = this._deprecatedKVP.length; i < n; i++) {
-                let kvp = this._deprecatedKVP[i];
-                this._slots.Remove(kvp[0], kvp[1]);
-            }
+        if (this._removeAll) { this.RemoveAll(); }
+        else {
+            for (const kvp of this._deprecated) { this._slots.Remove(kvp[0], kvp[1]); kvp.length = 0; }
+            this._deprecated.length = 0;
         }
 
-        this._deprecatedKVP.length = 0;
-
-        if (this._queuedBroadcasts.length != 0) {
-            this.Dispatch.apply(this, this._queuedBroadcasts.shift());
-        }
-
-    }
-
-    /**
-     * Note : this has been inlined in Dispatch.
-     * @access private
-     * @param {array} p_callbacks 
-     * @param {*} p_listener 
-     * @param {Map} p_map 
-     */
-    __DispatchWithoutArgs(p_callbacks, p_listener, p_map) {
-
-        let onceList = this._onceSlots.Get(p_listener);
-
-        if (p_listener === SignalBroadcaster.BLANK) {
-            if (onceList) {
-                for (let i = 0, n = p_callbacks.length; i < n; i++) {
-                    let fn = p_callbacks[i];
-                    fn.apply(null);
-                    if (onceList.includes(fn)) { this._deprecatedKVP.push([p_listener, fn]); }
-                }
-            } else {
-                for (let i = 0, n = p_callbacks.length; i < n; i++) {
-                    p_callbacks[i].apply(null);
-                }
-            }
-        } else {
-            if (onceList) {
-                for (let i = 0, n = p_callbacks.length; i < n; i++) {
-                    let fn = p_callbacks[i];
-                    fn.apply(p_listener);
-                    if (onceList.includes(fn)) { this._deprecatedKVP.push([p_listener, fn]); }
-                }
-            } else {
-                for (let i = 0, n = p_callbacks.length; i < n; i++) {
-                    p_callbacks[i].apply(p_listener);
-                }
-            }
-        }
-    }
-
-    /**
-     * Note : this has been inlined in Dispatch
-     * @access private
-     * @param {array} p_callbacks 
-     * @param {*} p_listener 
-     * @param {Map} p_map 
-     */
-    __DispatchWithArgs(p_callbacks, p_listener, p_map) {
-
-        let onceList = this._onceSlots.Get(p_listener);
-        if (p_listener === SignalBroadcaster.BLANK) {
-            if (onceList) {
-                for (let i = 0, n = p_callbacks.length; i < n; i++) {
-                    let fn = p_callbacks[i];
-                    fn.apply(null, this._args);
-                    if (onceList.includes(fn)) { this._deprecatedKVP.push([p_listener, fn]); }
-                }
-            } else {
-                for (let i = 0, n = p_callbacks.length; i < n; i++) {
-                    p_callbacks[i].apply(null, this._args);
-                }
-            }
-
-        } else {
-            if (onceList) {
-                for (let i = 0, n = p_callbacks.length; i < n; i++) {
-                    let fn = p_callbacks[i];
-                    fn.apply(p_listener, this._args);
-                    if (onceList.includes(fn)) { this._deprecatedKVP.push([p_listener, fn]); }
-                }
-            } else {
-                for (let i = 0, n = p_callbacks.length; i < n; i++) {
-                    p_callbacks[i].apply(p_listener, this._args);
-                }
-            }
-        }
     }
 
     /**

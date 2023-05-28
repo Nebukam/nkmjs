@@ -34,7 +34,7 @@ class ValueListInspector extends base {
                 ...nkm.style.rules.gap.small,
 
                 ...style.flexItem.fill,
-                'overflow': 'auto',
+             //   'overflow': 'auto',
             },
 
             '.foldout': {

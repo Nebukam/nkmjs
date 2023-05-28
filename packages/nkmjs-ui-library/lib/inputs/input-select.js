@@ -30,8 +30,8 @@ class InputSelect extends base {
         this._handler._updatePreviewOnChange = true;
         this._handler._submitOnChange = true;
 
-        this._idMap = new collections.Dictionary();
-        this._reverseIdMap = new collections.Dictionary();
+        this._idMap = new Map();
+        this._reverseIdMap = new Map();
         this._selectedOption = null;
     }
 
@@ -76,7 +76,7 @@ class InputSelect extends base {
             control = ui.dom.El(`option`, { class: 'field-option', value: cid }, this._inputField);
             control.innerText = p_item.name;
             //TODO : Listen to renaming to update option
-            this._idMap.Set(cid, p_item);
+            this._idMap.set(cid, p_item);
         }
 
         return control;
@@ -86,13 +86,13 @@ class InputSelect extends base {
         if (this._useCatalogsAsGroup && p_item.isDir) {
             // Cleanup group AND childrens
         }
-        let cid = this._reverseIdMap.Get(p_item);
-        this._idMap.Remove(cid);
-        this._reverseIdMap.Remove(p_item);
+        let cid = this._reverseIdMap.get(p_item);
+        this._idMap.delete(cid);
+        this._reverseIdMap.delete(p_item);
     }
 
     _onInput(p_evt) {
-        this._handler.changedValue = this._KeyValue(this._idMap.Get(p_evt.currentTarget.value));
+        this._handler.changedValue = this._KeyValue(this._idMap.get(p_evt.currentTarget.value));
     }
 
     _GrabValue() {

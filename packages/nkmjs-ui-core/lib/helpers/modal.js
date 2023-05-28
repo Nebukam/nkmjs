@@ -23,6 +23,7 @@ const RectTracker = require(`./rect-tracker`);
 const base = DisplayObjectContainer;
 const __defaultBody = Symbol(`defaultBody`);
 const __isReady = `isready`;
+const __modalStack = new collections.List();
 /**
  * A Modal is a lightweight container with absolute positioning added to an object.
  * It is attached to a specific position in parent screen-space, and can follow an object if attached to one.
@@ -42,8 +43,6 @@ class Modal extends base {
     constructor() { super(); }
 
     static __NFO__ = { css: [`@/global-host.css`] }
-
-    static modalStack = new collections.List();
 
     /**
      * @description TODO
@@ -100,7 +99,7 @@ class Modal extends base {
      * @param {*} [p_parent] 
      */
     static PopChild(p_options, p_parent = null) {
-        if (!p_parent) { p_parent = this.modalStack.last; }
+        if (!p_parent) { p_parent = __modalStack.last; }
         if (!p_parent) { return this.Pop(p_options); }
         p_options.parent = p_parent;
         return this.Pop(p_options);
@@ -160,7 +159,7 @@ class Modal extends base {
         super._Wake();
         POINTER.Watch(SIGNAL.MOUSE_DOWN, this._mDown);
         this._pointer.Enable();
-        this.constructor.modalStack.Add(this);
+        __modalStack.Add(this);
     }
 
     /**
@@ -544,8 +543,8 @@ class Modal extends base {
             child.Close();
         }
 
-
         this.Release();
+
     }
 
     _CleanUp() {
@@ -554,7 +553,7 @@ class Modal extends base {
 
         this._margins = { x: 0, y: 0 };
 
-        this.constructor.modalStack.Remove(this);
+        __modalStack.Remove(this);
 
         POINTER.Unwatch(SIGNAL.MOUSE_DOWN, this._mDown);
         POINTER.Unwatch(SIGNAL.MOUSE_UP, this._mUp);

@@ -24,7 +24,7 @@ class EntryManager extends EcosystemPart {
         super._Init();
         this._models = null;
         this._libraryList = new collections.List();
-        this._libraryMap = new collections.Dictionary();
+        this._libraryMap = new Map();
     }
 
     get models() { return this._models; }
@@ -64,7 +64,7 @@ class EntryManager extends EcosystemPart {
         library.model = p_model;
 
         this._libraryList.Add(library);
-        this._libraryMap.Set(p_model, library);
+        this._libraryMap.set(p_model, library);
 
     }
 
@@ -76,16 +76,16 @@ class EntryManager extends EcosystemPart {
      */
     _OnModelUnregistered(p_factory, p_model) {
 
-        let library = this._libraryMap.Get(p_model);
+        let library = this._libraryMap.get(p_model);
 
         this._libraryList.Remove(library);
-        this._libraryMap.Remove(p_model);
+        this._libraryMap.delete(p_model);
 
         library.Release();
 
     }
 
-    GetLibrary(p_model) { return this._libraryMap.Get(p_model); }
+    GetLibrary(p_model) { return this._libraryMap.get(p_model); }
 
     /**
      * @description TODO
@@ -96,11 +96,13 @@ class EntryManager extends EcosystemPart {
      */
     Create(p_id, p_model, p_class = null) {
 
-        let library = null;
+        let lookup = null;
 
-        if (u.isInstanceOf(p_model, DataModel)) { library = this._libraryMap.Get(p_model); }
-        else if (u.isString(p_model)) { library = this._libraryMap.Get(this._models._factory.GetByName(p_model)); }
-        else if (u.isInstanceOf(p_model, data.ID)) { library = this._libraryMap.Get(this._models._factory.Get(p_model)); }
+        if (u.isInstanceOf(p_model, DataModel)) { lookup = p_model; }
+        else if (u.isString(p_model)) { library = lookup = this._models._factory.GetByName(p_model); }
+        else if (u.isInstanceOf(p_model, data.ID)) { lookup = this._models._factory.Get(p_model); }
+
+        let library = this._libraryMap.get(lookup);
 
         if (!library) { throw new Error(`Could not find a valid library to create entry`); }
 
@@ -111,7 +113,7 @@ class EntryManager extends EcosystemPart {
 
     Clear() {
         super.Clear();
-        
+
         this._libraryList.ForEach((lib) => { lib.Release(); });
         this._libraryList.Clear();
         this._libraryMap.Clear();

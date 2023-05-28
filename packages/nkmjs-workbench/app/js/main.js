@@ -136,7 +136,10 @@ class StyleguideApp extends nkm.app.AppBase {
         super.AppReady();
         this._scrollTarget = null;
 
-        let keys = ui.UI._uiTypes.keys,
+        let kkeys = ui.UI._uiTypes.keys(), kkarr = [];
+        for (const k of kkeys) { kkarr.push(k); }
+
+        let keys = kkarr,
             cardBtns = [
                 { htitle: `htitle A text`, label: 'Overlay', trigger: { fn: this._Overlay } },
                 { htitle: `htitle E text`, icon: 'refresh', trigger: { fn: this._Dialog } }
@@ -286,7 +289,7 @@ class StyleguideApp extends nkm.app.AppBase {
             if (i === 0) {
                 this._mainContainer.Handle(`Features`, FeaturesWidget);
             }
-            let cl = ui.UI._uiTypes.Get(key);
+            let cl = ui.UI._uiTypes.get(key);
             this._mainContainer.Handle(cl, key);
         }
 

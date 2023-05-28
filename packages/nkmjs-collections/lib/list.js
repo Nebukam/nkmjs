@@ -52,17 +52,13 @@ class List {
      * @description Return whether or not the List contains the given item.
      * @param {*} p_item 
      */
-    Contains(p_item) {
-        return this._array.includes(p_item);
-    }
+    Contains(p_item) { return this._array.includes(p_item); }
 
     /**
      * @description TODO
      * @param {*} p_item 
      */
-    IndexOf(p_item) {
-        return this._array.indexOf(p_item);
-    }
+    IndexOf(p_item) { return this._array.indexOf(p_item); }
 
     /**
      * @description TODO
@@ -254,7 +250,7 @@ class List {
         return p_targetArray;
     }
 
-    
+
     Sort(p_method) { this._array.sort(p_method); }
 
     /**

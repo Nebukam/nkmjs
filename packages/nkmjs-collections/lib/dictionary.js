@@ -32,7 +32,7 @@ class Dictionary {
      * @type {boolean}
      * @customtag read-only
      */
-    get isEmpty(){ return this._map.size <= 0; }
+    get isEmpty() { return this._map.size <= 0; }
 
     /**
      * @description TODO
@@ -46,27 +46,21 @@ class Dictionary {
      * @param {*} p_key 
      * @returns {boolean} True if the Dictionary contains the key, otherwise false
      */
-    Contains(p_key) {
-        return this._map.has(p_key);
-    }
+    Contains(p_key) { return this._map.has(p_key); }
 
     /**
      * @description Associate a value to a given key.
      * @param {*} p_key 
      * @param {*} p_value
      */
-    Set(p_key, p_value) {
-        this._map.set(p_key, p_value);
-    }
+    Set(p_key, p_value) { this._map.set(p_key, p_value); }
 
     /**
      * @description Return the value associated with the given key.
      * @param {*} p_key 
      * @returns {*} 
      */
-    Get(p_key) {
-        return this._map.get(p_key);
-    }
+    Get(p_key) { return this._map.get(p_key); }
 
     /**
      * @description Reverse lookup through the keys and return an array 
@@ -75,6 +69,7 @@ class Dictionary {
      * @returns {array} 
      */
     GetValueKeys(p_value) {
+
         if (isVoid(p_value)) { return null; }
 
         let result = null,
@@ -87,7 +82,9 @@ class Dictionary {
                 result.push(key);
             }
         }
+
         return result;
+
     }
 
     /**
@@ -96,9 +93,7 @@ class Dictionary {
      * @param {*} p_key 
      * @returns {boolean} True if the value has been deleted, otherwise false
      */
-    Remove(p_key) {
-        return this._map.delete(p_key);
-    }
+    Remove(p_key) { return this._map.delete(p_key); }
 
     /**
      * @description Loops through all keys in Dictionary. Callback should match the signature : (key, value).

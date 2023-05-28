@@ -73,18 +73,18 @@ class ServerBase extends com.Observable {
         if (waitForIO) {
 
             let
-                dict = new collections.Dictionary(),
+                dict = new Map(),
                 ios = [];
 
             for (const conf of ioservices) {
 
-                let mainConf = dict.Get(conf.cl);
+                let mainConf = dict.get(conf.cl);
 
                 if (!mainConf) {
                     ios.push(conf.cl);
                     mainConf = { ...conf.config };
                     if (!mainConf.transceivers) { mainConf.transceivers = []; }
-                    dict.Set(conf.cl, mainConf);
+                    dict.set(conf.cl, mainConf);
                     continue;
                 }
 
@@ -97,9 +97,9 @@ class ServerBase extends com.Observable {
 
             };
 
-            for (const ioss of ios) { io.IO_SERVICES.Use(ioss, dict.Get(ioss)); };
+            for (const ioss of ios) { io.IO_SERVICES.Use(ioss, dict.get(ioss)); };
 
-            dict.Clear();
+            dict.clear();
             io.IO_SERVICES.WatchOnce(com.SIGNAL.READY, () => {
                 if (this._starting) { this._PrepareInternalInit(); }
             });
@@ -176,7 +176,7 @@ class ServerBase extends com.Observable {
 
     async _InitServer() {
 
-        this._apiMap = new collections.Dictionary();
+        this._apiMap = new Map();
 
         this._express = express();
         await this._InitRenderEngine(this._express);
@@ -288,7 +288,7 @@ class ServerBase extends com.Observable {
             });
         }
 
-        for (const key of this._apiMap.keys) { apis.push(this._apiMap.Get(key)); };
+        for (const key of this._apiMap.keys()) { apis.push(this._apiMap.get(key)); };
 
         apis.sort((a, b) => { return a.route.localeCompare(b.route) * -1; });
         for (const api of apis) { api.Start(); };
@@ -357,7 +357,7 @@ class ServerBase extends com.Observable {
      */
     _RegisterAPI(p_identifier, p_config) {
 
-        let api = this._apiMap.Get(p_identifier);
+        let api = this._apiMap.get(p_identifier);
         if (api) { console.warn(`identifier '${p_identifier}' already in use, and will be overrwritten.`); }
         else { api = new APIDefinition(this._express, this); }
 
@@ -368,7 +368,7 @@ class ServerBase extends com.Observable {
         api.requireAuth = p_config.requireAuth ? this._authFn : false;
         api.options = p_config;
 
-        this._apiMap.Set(p_identifier, api);
+        this._apiMap.set(p_identifier, api);
 
         if (p_config.owner) { p_config.owner[p_identifier] = api; }
 

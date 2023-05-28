@@ -23,7 +23,7 @@ class DialogForm extends base {
 
         this._hasInput = false;
 
-        this._submitMap = new collections.Dictionary();
+        this._submitMap = new Map();
         this._submitList = new collections.List();
 
         this._Bind(this._Submit);
@@ -75,7 +75,7 @@ class DialogForm extends base {
         if (('submit' in p_options ? p_options.submit : false)) {
             //TODO : Need to add a generic 'triggered' activation  signal
             //to close the dialog box. Otherwise, close by default.
-            this._submitMap.Set(handle, p_options.submit);
+            this._submitMap.set(handle, p_options.submit);
             this._submitList.Add(handle);
             handle.Watch(ui.SIGNAL.TRIGGERED, this._Submit);
         }
@@ -97,13 +97,13 @@ class DialogForm extends base {
     // ---->
 
     _Submit(p_source) {
-        let cb = this._submitMap.Get(p_source);
+        let cb = this._submitMap.get(p_source);
         u.Call(cb, this._formHandler.inputValues);
     }
 
     _Clear() {
 
-        this._submitMap.Clear();
+        this._submitMap.clear();
         this._submitList.Clear();
         this._formHandler.Clear();
 

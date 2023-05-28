@@ -5,7 +5,7 @@ const collections = require(`@nkmjs/collections`);
 
 const Disposable = require(`./disposable`);
 
-const _globalTypes = new collections.Dictionary();
+const _globalTypes = new Map();
 const _globalPool = new collections.DictionaryList();
 
 /**
@@ -38,7 +38,7 @@ class POOL {
     Register(p_class) {
 
         if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
-        _globalTypes.Set(p_class.name, p_class);
+        _globalTypes.set(p_class.name, p_class);
         //#LOG console.log(`%c+ ${p_class.name}`, 'color: #ff8a00');
     }
 
@@ -57,7 +57,7 @@ class POOL {
      * @group Utils
      */
     GetClass(p_id) {
-        return _globalTypes.Get(p_id);
+        return _globalTypes.get(p_id);
     }
 
     /// POOLING ///
@@ -74,7 +74,7 @@ class POOL {
 
         let keyName = p_obj.constructor.name;
 
-        if (!_globalTypes.Contains(keyName)) { throw new Error("Return used with a never-registered object type : " + keyName); }
+        if (!_globalTypes.has(keyName)) { throw new Error("Return used with a never-registered object type : " + keyName); }
 
         _globalPool.Set(keyName, p_obj);
 
@@ -95,14 +95,14 @@ class POOL {
             keyName = p_class.name;
         } else { throw new Error(`Rent requires either a string or a constructor, got: ${p_class}`); }
 
-        if (!_globalTypes.Contains(keyName)) {
+        if (!_globalTypes.has(keyName)) {
             if (typeof p_class === `function`
                 && u.isInstanceOf(p_class.prototype, Disposable)) {
                 this.Register(p_class);
             } else { throw new Error(`Could not find any constructor association for : ${keyName}`); }
         }
 
-        p_class = _globalTypes.Get(keyName);
+        p_class = _globalTypes.get(keyName);
         let obj = _globalPool.Pop(keyName);
 
         if (!obj) {

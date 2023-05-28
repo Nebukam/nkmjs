@@ -31,8 +31,8 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
         super._Init();
 
         this._windows = new collections.List();
-        this._mapIDToWrapper = new collections.Dictionary();
-        this._mapWindowToID = new collections.Dictionary();
+        this._mapIDToWrapper = new Map();
+        this._mapWindowToID = new Map();
 
         DEV_MODE = process.argv.includes('--dev') || process.argv.includes('-dev') || process.argv.includes('dev');
 
@@ -85,7 +85,7 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
     CreateWindow(p_options, p_parent = null) {
 
         let winID = p_options.id || `unidentified_window`,
-            wrapper = this._mapIDToWrapper.Get(winID);
+            wrapper = this._mapIDToWrapper.get(winID);
 
         console.log(`WINDOWS >> CreateWindow ${winID}`);
 
@@ -130,8 +130,8 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
             wrapper.window = newWindow;
 
             this._windows.Add(newWindow);
-            this._mapIDToWrapper.Set(winID, wrapper);
-            this._mapWindowToID.Set(newWindow, winID);
+            this._mapIDToWrapper.set(winID, wrapper);
+            this._mapWindowToID.set(newWindow, winID);
 
             // Clean up mainWindow when closed
             newWindow.on(`close`, this._OnWindowClosing);
@@ -184,7 +184,7 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
      * @param {string} p_id 
      */
     CloseWindow(p_id) {
-        let wrapper = this._mapIDToWrapper.Get(p_id);
+        let wrapper = this._mapIDToWrapper.get(p_id);
         if (wrapper) {
             this._closingSet.add(wrapper.window);
             wrapper.window.close();
@@ -203,15 +203,15 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
     _OnWindowClosed(p_evt) {
 
         let p_win = p_evt.sender,
-            winID = this._mapWindowToID.Get(p_win),
-            wrapper = this._mapIDToWrapper.Get(winID);
+            winID = this._mapWindowToID.get(p_win),
+            wrapper = this._mapIDToWrapper.get(winID);
 
         this._windows.Remove(p_win);
 
         wrapper.Release();
 
-        this._mapIDToWrapper.Remove(winID);
-        this._mapWindowToID.Remove(p_win);
+        this._mapIDToWrapper.delete(winID);
+        this._mapWindowToID.delete(p_win);
 
         console.log(`[x] ${winID}`);
 
@@ -228,14 +228,14 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
 
         p_data.onDomReady = this._OnRequestedWindowReady;
 
-        let originID = this._mapWindowToID(p_evt.sender),
-            originWrapper = this._mapIDToWrapper.Get(originID),
+        let originID = this._mapWindowToID.get(p_evt.sender),
+            originWrapper = this._mapIDToWrapper.get(originID),
             newWrapper = this.CreateWindow(p_data);
 
     }
 
     _OnRequestedWindowReady(p_evt) {
-        let winID = this._mapWindowToID(p_evt.sender);
+        let winID = this._mapWindowToID.get(p_evt.sender);
 
         //originator.webContent.send "yey your window is ready"
     }
@@ -262,7 +262,7 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
      * @param {*} p_data 
      */
     _OnRequestWindowReload(p_evt, p_data) {
-        let wrapper = this._mapIDToWrapper.Get(p_data.id);
+        let wrapper = this._mapIDToWrapper.get(p_data.id);
         //if (wrapper) { wrapper.window.webContents }
     }
 
@@ -300,7 +300,7 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
 
         //TODO : MAke this a promise instead of a direct callback
 
-        let wrapper = this._mapIDToWrapper.Get(p_data.id);
+        let wrapper = this._mapIDToWrapper.get(p_data.id);
 
         if (!wrapper) { return; }
 

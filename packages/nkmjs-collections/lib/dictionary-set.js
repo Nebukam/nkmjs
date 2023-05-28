@@ -5,7 +5,7 @@
  * @class
  * @memberof collections
  */
-class DictionaryList {
+class DictionarySet {
 
     constructor() {
         this._map = new Map();
@@ -46,7 +46,7 @@ class DictionaryList {
      * @param {*} p_value 
      * @returns {boolean} True if the Dictionary contains the matching KVP, otherwise false.
      */
-    Contains(p_key, p_value = undefined) { return this._map.get(p_key)?.includes(p_value) ? true : false; }
+    Contains(p_key, p_value = undefined) { return this._map.get(p_key)?.has(p_value) ? true : false; }
 
     /**
      * @description Return the value count for the given key.
@@ -62,14 +62,14 @@ class DictionaryList {
      */
     Set(p_key, p_value) {
 
-        let list = null;
+        let set = null;
 
-        if (this._map.has(p_key)) { list = this._map.get(p_key); }
-        else { list = []; this._map.set(p_key, list); }
+        if (this._map.has(p_key)) { set = this._map.get(p_key); }
+        else { this._map.set(p_key, set = new Set()); }
 
-        if (list.includes(p_value)) { return false; }
-        list.push(p_value);
+        if (set.has(p_value)) { return false; }
 
+        set.add(p_value);
         return true;
 
     }
@@ -81,9 +81,7 @@ class DictionaryList {
      * @param {number} p_index 
      * @returns {*} 
      */
-    Get(p_key, p_index = -1) {
-        return p_index === -1 ? this._map.get(p_key) : this._map.get(p_key)?.at(p_index);
-    }
+    Get(p_key) { return this._map.get(p_key); }
 
     /**
      * @description Remove the given value from the list associated with the given key.
@@ -96,14 +94,12 @@ class DictionaryList {
 
         if (!p_value || !p_key) { return false; }
 
-        let list = this._map.get(p_key);
+        let set = this._map.get(p_key);
+        if (!set) { return false; }
 
-        if (!list) { return false; }
-
-        let index = list.indexOf(p_value);
-        if (index != -1) {
-            list.splice(index, 1);
-            if (!list.length) { this._map.delete(p_key); }
+        if (set.has(p_value)) {
+            set.delete(p_value);
+            if (!set.size) { this._map.delete(p_key); }
             return true;
         }
 
@@ -118,47 +114,19 @@ class DictionaryList {
      * @returns {boolean} True if the KVP has been found and removed, otherwise false.
      */
     RemoveKey(p_key) {
-
-        if (!p_value || !p_key) { return false; }
-
-        let list = this._map.get(p_key);
-
-        if (!list) { return false; }
-
-        list.length = 0;
+        this._map.get(p_key)?.clear();
         this._map.delete(p_key);
-
         return false;
-
-    }
-
-    /**
-     * @description Remove and return the last value from the list associated with the given key
-     * @param {*} p_key 
-     * @returns {*} 
-     */
-    Pop(p_key) {
-
-        if (!this._map.has(p_key)) { return undefined; }
-
-        let
-            list = this._map.get(p_key),
-            value = list.pop();
-
-        if (!list.length) { this._map.delete(p_key); }
-
-        return value;
-
     }
 
     /**
      * @description Clears all keys and values.
      */
     Clear() {
-        for (const k of this._map.keys()) { this._map.get(k).length = 0; }
+        this._map.forEach(set => { set.clear(); });
         this._map.clear();
     }
 
 }
 
-module.exports = DictionaryList;
+module.exports = DictionarySet;

@@ -23,7 +23,7 @@ class UI extends com.Observable { // PORT_TO_MODULE
         super._Init();
 
         this._uiPool = new collections.DictionaryList();
-        this._uiTypes = new collections.Dictionary();
+        this._uiTypes = new Map();
         this._definedSet = new Set();
         this._typeMap = {};
 
@@ -45,7 +45,7 @@ class UI extends com.Observable { // PORT_TO_MODULE
 
         if (!u.isFunc(p_class)) { throw new Error(`Register used with invalid constructor : ${p_class}`); }
         //console.log(p_id);
-        this._uiTypes.Set(p_class, p_id);
+        this._uiTypes.set(p_class, p_id);
         //this.Define(p_id, p_class);
         this._typeMap[p_id] = p_class;
 
@@ -95,7 +95,7 @@ class UI extends com.Observable { // PORT_TO_MODULE
 
         let key = p_displayObject.constructor;
 
-        if (!this._uiTypes.Contains(key)) {
+        if (!this._uiTypes.has(key)) {
             throw new Error(`Return used with a never-registered object type : ${key}`);
         }
 

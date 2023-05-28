@@ -18,7 +18,7 @@ class IDDispenser extends com.Observable {
 
     _Init() {
         super._Init();
-        this._idMap = new collections.Dictionary();
+        this._idMap = new Map();
         this._idList = new collections.List();
         // - Repertoire for IDs to avoid duplicate IDs.
         // - factory should check for duplicates through repertoire
@@ -37,7 +37,7 @@ class IDDispenser extends com.Observable {
      * @returns {boolean} True if the string ID is available, other false.
      */
     IsNameAvailable(p_name) {
-        return !this._idMap.Contains(p_name);
+        return !this._idMap.has(p_name);
     }
 
     /**
@@ -47,7 +47,7 @@ class IDDispenser extends com.Observable {
      * @returns {boolean} True if the Dispenser contains the given ID, otherwise false.
      */
     Contains(p_id) {
-        if (u.isString(p_id)) { return this._idMap.Contains(p_id); }
+        if (u.isString(p_id)) { return this._idMap.has(p_id); }
         else if (u.isInstanceOf(p_id, ID)) { return this._idList.Contains(p_id); }
         throw new Error(`p_id must be either string or ID.`);
     }
@@ -58,7 +58,7 @@ class IDDispenser extends com.Observable {
      * @param {string} p_name 
      * @returns {boolean} True if the Dispenser contains the given name, otherwise false.
      */
-    ContainsName(p_name) { return this._idMap.Contains(p_name); }
+    ContainsName(p_name) { return this._idMap.has(p_name); }
 
     /**
      * @description Return whether or not the repertoire contains a given ID
@@ -74,7 +74,7 @@ class IDDispenser extends com.Observable {
      * @returns {data.core.ID} The ID, if any. Otherwise, null.
      */
     Get(p_name) {
-        return this._idMap.Get(p_name);
+        return this._idMap.has(p_name);
     }
 
     /**
@@ -106,7 +106,8 @@ class IDDispenser extends com.Observable {
      * @returns {boolean} True if the ID existed and has been released, otherwise false.
      */
     Remove(p_id) {
-        if (this._idMap.Remove(p_id.name)) {
+        if (this._idMap.has(p_id.name)) {
+            this._idMap.delete(p_id.name)
             p_id.Release();
             this._idList.Remove(p_id);
             return true;
@@ -121,7 +122,7 @@ class IDDispenser extends com.Observable {
      * @param {string} p_newName 
      */
     _OnIDRenaming(p_id, p_newName) {
-        if (this._idMap.Contains(p_newName)) {
+        if (this._idMap.has(p_newName)) {
             p_id.PreventRenaming();
         }
     }
@@ -134,7 +135,7 @@ class IDDispenser extends com.Observable {
      * @param {string} p_oldName 
      */
     _OnIDRenamed(p_id, p_newName, p_oldName) {
-        this._idMap.Remove(p_oldName);
+        this._idMap.delete(p_oldName);
         this._idMap.Set(p_newName, p_id);
     }
 

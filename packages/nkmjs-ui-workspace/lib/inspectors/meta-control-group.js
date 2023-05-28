@@ -8,7 +8,7 @@ const InspectorGroup = require(`./inspector-group`);
 const MetaControlItem = require(`./meta-control-item`);
 
 const base = InspectorGroup;
-let _expandedMetaPaths = new collections.Dictionary();
+let _expandedMetaPaths = new Set();
 
 class MetaControlGroup extends base {
     constructor() { super(); }
@@ -17,16 +17,11 @@ class MetaControlGroup extends base {
     static __ignoreMetaStyle = true;
 
     static TogglePathExpansion(p_path, p_toggle) {
-        if (p_toggle) {
-            _expandedMetaPaths.Set(p_path, true);
-        } else {
-            _expandedMetaPaths.Remove(p_path);
-        }
+        if (p_toggle) { _expandedMetaPaths.add(p_path); }
+        else { _expandedMetaPaths.delete(p_path); }
     }
 
-    static IsPathExpanded(p_path) {
-        return _expandedMetaPaths.Get(p_path);
-    }
+    static IsPathExpanded(p_path) { return _expandedMetaPaths.has(p_path); }
 
     _Init() {
         super._Init();

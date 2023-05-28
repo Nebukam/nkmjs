@@ -16,7 +16,7 @@ const IO_TYPE = require(`./io-type`);
 const ResourceOperation = require(`./resource-operation`);
 const IOProcess = require(`./io-process`);
 
-const _resourcesMap = new collections.Dictionary();
+const _resourcesMap = new Map();
 
 /**
  * @description TODO
@@ -144,7 +144,7 @@ class RESOURCES extends services.ServiceBase {
      * @param {string} p_path 
      * @returns {io.core.Resource|*}
      */
-    TryGet(p_path) { return _resourcesMap.Get(u.SHORT(p_path)); }
+    TryGet(p_path) { return _resourcesMap.get(u.SHORT(p_path)); }
 
     /**
      * @description TODO
@@ -160,7 +160,7 @@ class RESOURCES extends services.ServiceBase {
         //Rule of thumb : resources are mapped using SHRINKED path.
 
         let shortPath = u.SHORT(p_path),
-            rsc = _resourcesMap.Get(shortPath),
+            rsc = _resourcesMap.get(shortPath),
             rscClass = p_options?.cl || null,
             stats = null,
             fullPath = u.FULL(p_path);
@@ -224,10 +224,10 @@ class RESOURCES extends services.ServiceBase {
         }
 
         p_rsc.Watch(com.SIGNAL.RELEASED, this._OnRscReleased, this);
-        _resourcesMap.Set(p_rsc.path, p_rsc);
+        _resourcesMap.set(p_rsc.path, p_rsc);
 
         let dirPath = u.PATH.dir(p_rsc.path),
-            dirRsc = _resourcesMap.Get(dirPath);
+            dirRsc = _resourcesMap.get(dirPath);
 
         if (dirRsc && dirRsc != p_rsc) { dirRsc.Add(p_rsc); }
 
@@ -325,15 +325,15 @@ class RESOURCES extends services.ServiceBase {
      * @param {string} p_oldKey 
      */
     _CommitRename(p_rsc, p_oldKey) {
-        _resourcesMap.Remove(p_oldKey);
+        _resourcesMap.delete(p_oldKey);
         let newPath = p_rsc.path;
-        _resourcesMap.Set(newPath, p_rsc);
+        _resourcesMap.set(newPath, p_rsc);
 
         //Check if target directory is loaded
         //and add the item if necessary
 
         let dirPath = u.PATH.dir(newPath),
-            dir = _resourcesMap.Get(dirPath);
+            dir = _resourcesMap.get(dirPath);
 
         if (dir) {
             //If found, update directory
@@ -362,7 +362,7 @@ class RESOURCES extends services.ServiceBase {
      * @param {io.core.Resource} p_rsc 
      */
     _OnRscReleased(p_rsc) {
-        _resourcesMap.Remove(p_rsc.path);
+        _resourcesMap.delete(p_rsc.path);
         this.Broadcast(IO_SIGNAL.RSC_UNREGISTERED, p_rsc);
     }
 

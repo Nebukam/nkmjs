@@ -96,7 +96,7 @@ class INPUT extends services.ServiceBase {
 
         this._enabled = false;
 
-        this._down = new collections.Dictionary();
+        this._down = new Set();
         this._kcodes = {};
 
         this._mouseDownPosition = { x: 0, y: 0, relX: 0, relY: 0 };
@@ -285,7 +285,7 @@ class INPUT extends services.ServiceBase {
 
         this._kcodes[p_name] = p_keyCode;
 
-        this._down.Set(p_name, true);
+        this._down.add(p_name);
 
         this.Broadcast(SIGNAL.KEY_DOWN);
         this.Broadcast(`D_${p_name}`);
@@ -298,7 +298,7 @@ class INPUT extends services.ServiceBase {
 
     _processKeyRepeat(p_name, p_keyCode, p_evt) {
 
-        if (!this._down.Get(p_name)) {
+        if (!this._down.has(p_name)) {
             this._processKeyDown(p_name, p_keyCode);
         }
 
@@ -309,9 +309,9 @@ class INPUT extends services.ServiceBase {
 
     _processKeyUp(p_name, p_keyCode, p_evt) {
 
-        if (!this._down.Get(p_name)) { return; }
+        if (!this._down.has(p_name)) { return; }
 
-        this._down.Remove(p_name);
+        this._down.delete(p_name);
         this.Broadcast(SIGNAL.KEY_UP, p_name);
         this.Broadcast(`U_${p_name}`);
         this.Broadcast(`T_${p_name}`, false);
@@ -324,17 +324,8 @@ class INPUT extends services.ServiceBase {
      * @param {*} p_evt 
      */
     _KBlur(p_evt) {
-
-        let keys = this._down.keys;
-
-        // Broadcast up events for all keys currently pressed.
-        for (let i = 0, n = keys.length; i < n; i++) {
-            let name = keys[i];
-            this._processKeyUp(name, this._kcodes[name]);
-        }
-
-        this._down.Clear();
-
+        for (const key of this._down.keys()) { this._processKeyUp(key, this._kcodes[key]); }
+        this._down.clear();
     }
 
 

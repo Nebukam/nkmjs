@@ -15,7 +15,7 @@ class Group extends base {
         this._header = null;
         this._footer = null;
 
-        this._groupMap = new collections.Dictionary();
+        this._groupMap = new Map();
         this._groupList = [];
 
     }
@@ -63,11 +63,11 @@ class Group extends base {
 
     _GetOrCreateGroup(p_key, p_flags = null, p_class = null) {
         p_class = (p_class || Group);
-        let group = this._groupMap.Get(p_key);
+        let group = this._groupMap.get(p_key);
         if (!group) {
 
             group = this.Attach(p_class, `group tile-ctnr`, this._viewport.wrapper);
-            this._groupMap.Set(p_key, group);
+            this._groupMap.set(p_key, group);
             this._groupList.push(group);
 
             if (p_flags) {
@@ -87,17 +87,17 @@ class Group extends base {
     }
 
     _ClearGroup(p_key) {
-        let group = this._groupMap.Get(p_key);
+        let group = this._groupMap.get(p_key);
         if (group) {
             let index = this._groupList.indexOf(group);
             this._groupList.splice(index, 1);
-            this._groupMap.Remove(p_key);
+            this._groupMap.delete(p_key);
             group.Release();
         }
     }
 
     _ClearAllGroups() {
-        this._groupMap.Clear();
+        this._groupMap.clear();
         let list = this._groupList;
         for (let i = 0, n = list.length; i < n; i++) {
             list[i].Release();
