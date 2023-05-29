@@ -74,7 +74,7 @@ class InspectionDataBridge extends com.Observable {
         }
 
         if (this._smartClear && this._dataSelection) {
-            if (this._dataSelection.stack.count == 1 && this._dataSelection.stack.last == p_item) {
+            if (this._dataSelection.stack.length == 1 && this._dataSelection.stack.last == p_item) {
                 // Clear the inspected selection if the managed selection is a fresh new one
                 if (!this._mirroring) { this._inspectionData.Clear(); }
             }

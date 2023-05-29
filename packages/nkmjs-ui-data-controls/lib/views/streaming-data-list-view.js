@@ -59,7 +59,7 @@ class StreamingDataListView extends base {
                 }, thisArg: this
             },
             count: {
-                fn: (p_sel) => { return this._contentSource ? this._contentSource.count : 0; }, thisArg: this
+                fn: (p_sel) => { return this._contentSource ? this._contentSource.length : 0; }, thisArg: this
             },
             index: {
                 fn: (p_sel, p_data) => { return this._contentSource ? this._contentSource.IndexOf(p_data) : -1; }, thisArg: this
@@ -167,7 +167,7 @@ class StreamingDataListView extends base {
     _SetContentSource(p_dataList) {
 
         this._contentSource = p_dataList;
-        this._domStreamer.itemCount = p_dataList ? p_dataList.count : 0;
+        this._domStreamer.itemCount = p_dataList ? p_dataList.length : 0;
 
         if (p_dataList != null) {
             let e = this.editor;

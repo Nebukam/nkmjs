@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const NFOS = require(`./nfos`);
 const IDS = require(`./ids`);
@@ -9,11 +9,11 @@ const IDS = require(`./ids`);
 const _classLookup = new Map();
 const _classReverseLookup = new Map();
 
-const _contextMap = new collections.KDictionary();
-const _contextKeyLists = new collections.DictionaryList();
+const _contextMap = new col.KDictionary();
+const _contextKeyLists = new col.DictionaryList();
 
-const _contextTemplateMap = new collections.KDictionary();
-const _contextTemplateKeysLists = new collections.DictionaryList();
+const _contextTemplateMap = new col.KDictionary();
+const _contextTemplateKeysLists = new col.DictionaryList();
 
 
 /**

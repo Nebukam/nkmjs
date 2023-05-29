@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const RectTracker = require(`./rect-tracker`);
 /**
  * @description TODO
@@ -14,8 +14,8 @@ class SizeTracker {
     constructor(p_owner) {
         this._rectTracker = new RectTracker(this._Bind(this._OnRectUpdate));
         this._owner = p_owner;
-        this._breakpoints = new collections.List();
-        this._elements = new collections.DictionaryList();
+        this._breakpoints = [];
+        this._elements = new col.DictionaryList();
         this._toggles = new Map();
         this._widthOnly = [];
         this._heightOnly = [];
@@ -37,7 +37,7 @@ class SizeTracker {
      * @param {*} param0 
      */
     AddBreakpoint(p_breakpoint, ...p_elements) {
-        if (this._breakpoints.Add(p_breakpoint)) {
+        if (this._breakpoints.AddNew(p_breakpoint)) {
             let match_w = ('width' in p_breakpoint),
                 match_h = ('height' in p_breakpoint);
 
@@ -64,7 +64,7 @@ class SizeTracker {
     }
 
     AddElements(p_breakpoint, ...p_elements) {
-        if (!this._breakpoints.Contains(p_breakpoint)) { return; }
+        if (!this._breakpoints.includes(p_breakpoint)) { return; }
         for (const el of p_elements) { this._elements.Set(p_breakpoint, el); };
     }
 
@@ -73,10 +73,11 @@ class SizeTracker {
         //Go through the breakpoint and toggle the one that make sense
         let rect = p_tracker.GetRect(this._owner);
 
-        this._breakpoints.ForEach(bp => { this._toggles.set(bp, this._Check(p_breakpoint, rect)); });
+        for (const bp of this._breakpoints) { this._toggles.set(bp, this._Check(p_breakpoint, rect)); }
 
         this._Process(this._widthOnly);
         this._Process(this._heightOnly);
+        
         for (const bp of this._both) { this._ToggleBP(bp, this._elements.Get(bp), false); };
 
     }

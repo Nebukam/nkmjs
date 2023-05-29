@@ -24,7 +24,7 @@ class ACTION_STATE {
 
     /**
      * @description TODO
-     * @type {array}
+     * @type {Array}
      * @customtag read-only
      * @group Position
      */

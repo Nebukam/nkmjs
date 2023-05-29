@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const { ID, IDDispenser } = require(`../id`);
 
@@ -27,7 +27,7 @@ class Repertoire extends com.Observable {
 
         this._idDispenser = new IDDispenser();
 
-        this._itemList = new collections.List(0);
+        this._itemList = [];
         this._itemMap = new Map(); // <ID, entry>
 
     }
@@ -41,7 +41,7 @@ class Repertoire extends com.Observable {
 
     /**
      * @description TODO
-     * @type {collections.List}
+     * @type {Array}
      * @customtag read-only
      */
     get itemList() { return this._itemList; }
@@ -58,13 +58,13 @@ class Repertoire extends com.Observable {
      * @type {number}
      * @customtag read-only
      */
-    get count() { return this._itemList.count; }
+    get length() { return this._itemList.length; }
 
     /**
      * @description TODO
      * @param {data.core.DataBlock} p_item 
      */
-    IndexOf(p_item) { return this._itemList.IndexOf(p_item); }
+    IndexOf(p_item) { return this._itemList.indexOf(p_item); }
 
     /**
      * @description Return whether a given string is available to be used
@@ -146,7 +146,7 @@ class Repertoire extends com.Observable {
      */
     Register(p_item, p_id = null) {
 
-        if (this._itemList.Contains(p_item)) { throw new Error(`Cannot re-register an item.`); }
+        if (this._itemList.includes(p_item)) { throw new Error(`Cannot re-register an item.`); }
         if (!u.isInstanceOf(p_item, DataBlock)) { throw new Error(`Cannot register a non-DataBlock item.`); }
         if (p_item.id) { throw new Error(`Cannot register an item with an ID already set.`); }
 
@@ -208,7 +208,7 @@ class Repertoire extends com.Observable {
         let itemID = p_item.id;
 
         if (u.isVoid(itemID)) { throw new Error(`Cannot unregister a item with no ID.`); }
-        if (u.isVoid(this._itemList.Remove(p_item))) { throw new Error(`Cannot unregister an item that is not in the repertoire.`); }
+        if (this._itemList.Remove(p_item) === false) { throw new Error(`Cannot unregister an item that is not in the repertoire.`); }
 
         this._itemMap.delete(itemID);
         this._OnItemUnregistered(p_item);
@@ -260,15 +260,13 @@ class Repertoire extends com.Observable {
      * @param {*} p_index 
      * @returns {data.core.DataBlock}
      */
-    At(p_index) { return this._itemList.At(p_index); }
+    At(p_index) { return this._itemList[p_index]; }
 
     /**
      * @description TODO
      */
     Clear() {
-        while (!this._itemList.isEmpty) {
-            this._itemList.last.Release();
-        }
+        while (this._itemList.length) { this._itemList.pop().Release(); }
     }
 
     _CleanUp() {

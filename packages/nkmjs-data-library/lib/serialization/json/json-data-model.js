@@ -28,12 +28,12 @@ class DataModelJSONSerializer extends DataBlockExtendableJSONSerializer {
             slotList = p_data._slotRep._itemList,
             slots = [];
 
-        for (let i = 0, n = groupList.count; i < n; i++) {
-            groups.push(this.__master.Serialize(groupList.At(i), p_options));
+        for (let i = 0, n = groupList.length; i < n; i++) {
+            groups.push(this.__master.Serialize(groupList[i], p_options));
         }
 
-        for (let i = 0, n = slotList.count; i < n; i++) {
-            let slot = slotList.At(i);
+        for (let i = 0, n = slotList.length; i < n; i++) {
+            let slot = slotList[i];
             slots.push(this.__master.Serialize(slot, p_options));
         }
 

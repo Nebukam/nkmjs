@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 
 const dom = require(`./utils-dom`);
 const UI = require(`./ui`);
@@ -54,7 +54,7 @@ class DisplayObjectContainer extends base {
 
     _Init() {
         super._Init();
-        this._displayList = new collections.List(0);
+        this._displayList = [];
     }
 
     _PostInit() {
@@ -70,7 +70,7 @@ class DisplayObjectContainer extends base {
      * @type {number}
      * @group Child Management
      */
-    get count() { return this._displayList.count; }
+    get length() { return this._displayList.length; }
 
     /**
      * @description <div class="tip warning" data-title="Important">This property is exposed for iteration purposes only.
@@ -78,7 +78,7 @@ class DisplayObjectContainer extends base {
      * 
      * The DisplayObjectContainer' display list.
      * @customtag read-only
-     * @type {collections.List}
+     * @type {Array}
      * @group Child Management
      */
     get displayList() { return this._displayList; }
@@ -116,7 +116,7 @@ class DisplayObjectContainer extends base {
      */
     Attach(p_displayObject, p_cssClass = null, p_container = null, p_index = -1) {
 
-        if (p_index >= this._displayList.count || p_index < 0) { p_index = -1; }
+        if (p_index >= this._displayList.length || p_index < 0) { p_index = -1; }
 
         if (u.isFunc(p_displayObject) && u.isInstanceOf(p_displayObject, HTMLElement)) {
             p_displayObject = UI.Rent(p_displayObject);
@@ -124,7 +124,7 @@ class DisplayObjectContainer extends base {
 
         if (!p_displayObject) { throw new Error(`Cannot Add an empty display object (${p_displayObject}).`); }
 
-        if (this._displayList.Contains(p_displayObject)) {
+        if (this._displayList.includes(p_displayObject)) {
             if (p_index === -1) { return p_displayObject; }
             this.Move(p_displayObject, p_index);
             return p_displayObject;
@@ -138,7 +138,7 @@ class DisplayObjectContainer extends base {
 
         if (p_index === -1) {
             this._displayList.Add(p_displayObject);
-            p_index = this._displayList.count - 1;
+            p_index = this._displayList.length - 1;
 
             try { p_container.appendChild(p_displayObject); } catch (err) {
                 console.log(p_displayObject);
@@ -146,8 +146,8 @@ class DisplayObjectContainer extends base {
             }
         }
         else {
-            this._displayList.Insert(p_displayObject, p_index);
-            p_container.insertBefore(p_displayObject, this._displayList.At(p_index));
+            this._displayList.AddAt(p_displayObject, p_index);
+            p_container.insertBefore(p_displayObject, this._displayList[p_index]);
         }
 
         p_displayObject.parent = this;
@@ -171,7 +171,7 @@ class DisplayObjectContainer extends base {
      * @group Child Management
      */
     Move(p_displayObject, p_index) {
-        if (!this._displayList.Contains(p_displayObject)) {
+        if (!this._displayList.includes(p_displayObject)) {
             throw new Error(`Provided display object is not a child of this container.`);
         }
         //TODO : Implement Move
@@ -187,7 +187,7 @@ class DisplayObjectContainer extends base {
      * @group Child Management
      */
     Detach(p_displayObject) {
-        let index = this._displayList.IndexOf(p_displayObject);
+        let index = this._displayList.indexOf(p_displayObject);
         if (index === -1) { return p_displayObject; }
         return this.DetachAt(index);
     }
@@ -200,7 +200,7 @@ class DisplayObjectContainer extends base {
      */
     DetachAt(p_index) {
 
-        if (p_index < 0 || p_index >= this._displayList.count) { return null; }
+        if (p_index < 0 || p_index >= this._displayList.length) { return null; }
 
         let removedDisplayObject = this._displayList.RemoveAt(p_index);
 
@@ -223,7 +223,7 @@ class DisplayObjectContainer extends base {
      * @group Child Management
      */
     DetachAll() {
-        while (!this._displayList.isEmpty) { this._displayList.last.Release(); }
+        while (this._displayList.length) { this._displayList.last.Release(); }
     }
 
 }

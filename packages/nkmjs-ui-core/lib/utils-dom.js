@@ -2,11 +2,11 @@
 'use strict';
 
 const u = require(`@nkmjs/utils`);
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const style = require(`@nkmjs/style`);
 
 const __observedElements = [];
-const __observedCallbacks = new collections.DictionaryList();
+const __observedCallbacks = new col.DictionaryList();
 const __rectObserver = new IntersectionObserver(
     (entries, observer) => {
 

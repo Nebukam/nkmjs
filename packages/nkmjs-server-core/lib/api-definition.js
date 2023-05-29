@@ -1,6 +1,6 @@
 'use strict';
 
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require(`@nkmjs/common`);
 const u = require(`@nkmjs/utils`);
 const handlers = require(`./handlers`);
@@ -20,7 +20,7 @@ class APIDefinition extends com.Observable {
 
         super._Init();
 
-        this._activeHandlers = new collections.List();
+        this._activeHandlers = [];
 
         this._options = null;
         this._id = ``;
@@ -116,8 +116,8 @@ class APIDefinition extends com.Observable {
             }
         }
 
-        while (!this._activeHandlers.isEmpty) {
-            this._activeHandlers.Pop().Abort();
+        while (this._activeHandlers.length) {
+            this._activeHandlers.pop().Abort();
         }
 
     }

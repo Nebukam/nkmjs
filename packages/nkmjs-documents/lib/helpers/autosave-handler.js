@@ -39,7 +39,7 @@ class AutosaveHandler {
     AutoSave() {
         if (this._running) { return; }
         this._running = true;
-        this._cachedList = [...this._MANAGER._dirtyDocuments._array]
+        this._cachedList = [...this._MANAGER._dirtyDocuments]
         this.Advance();
     }
 

@@ -4,7 +4,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const services = require(`@nkmjs/services`);
 const actions = require("@nkmjs/actions");
@@ -12,7 +12,7 @@ const ui = require("@nkmjs/ui-core");
 
 const REQUEST = require(`./request`);
 
-const _dialogs = new collections.List();
+const _dialogs = [];
 
 /**
  * @description TODO
@@ -57,7 +57,7 @@ class DIALOG extends services.ServiceBase {
             //i.e store a LIFO stack of dialogs [A <-> B <-> C]
         }
 
-        if (!_dialogs.Add(dialogOptions)) {
+        if (!_dialogs.AddNew(dialogOptions)) {
             throw Error(`OverlayOptions already exists in stack. Are you trying to push the same dialogInfo multiple times ?`);
         }
 
@@ -77,7 +77,7 @@ class DIALOG extends services.ServiceBase {
 
         if (this._inDialog) { return null; }
 
-        let next = _dialogs.Shift();
+        let next = _dialogs.shift();
 
         if (!next) {
             this._inDialog = false;

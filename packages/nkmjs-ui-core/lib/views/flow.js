@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const actions = require("@nkmjs/actions");
 
 const UI = require(`../ui`);
@@ -17,7 +17,7 @@ class Flow extends base {
 
     _Init(){
         super._Init();
-        this._chain = new collections.List();
+        this._chain = [];
         this._currentView = null;
     }
 

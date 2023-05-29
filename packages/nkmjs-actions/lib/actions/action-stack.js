@@ -35,7 +35,7 @@ class ActionStack extends com.Observable {
         this._groupDisplayInfos = null;
     }
 
-    get count() { return this._stack.length; }
+    get length() { return this._stack.length; }
 
     // ----> Availability
 

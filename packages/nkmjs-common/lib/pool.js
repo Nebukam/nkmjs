@@ -1,12 +1,12 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const Disposable = require(`./disposable`);
 
 const _globalTypes = new Map();
-const _globalPool = new collections.DictionaryList();
+const _globalPool = new col.DictionaryList();
 
 /**
  * Pool object for all non-ui objects in NKMjs.
@@ -127,7 +127,7 @@ class POOL {
 
         let list = _globalPool.Get(keyName, -1);
         if (list && !list.isEmpty) {
-            list.ForEach(item => { item.Dismantle?.(); });
+            list.forEach(item => { item.Dismantle?.(); });
             list.Clear();
         }
     }

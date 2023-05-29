@@ -5,7 +5,7 @@ const fs = require(`fs`);
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const APP_MESSAGES = require(`@nkmjs/app-core/lib/app-messages`);
 
 const WindowWrapper = require(`./helpers/window-wrapper`);
@@ -30,7 +30,7 @@ class WINDOWS extends com.Observable {// PORT_TO_MODULE
 
         super._Init();
 
-        this._windows = new collections.List();
+        this._windows = [];
         this._mapIDToWrapper = new Map();
         this._mapWindowToID = new Map();
 

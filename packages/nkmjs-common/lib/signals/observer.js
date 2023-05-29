@@ -112,7 +112,7 @@ class Observer extends Observable {
 
     /**
      * @description TODO
-     * @type {array}
+     * @type {Array}
      * @customtag read-only
      */
     get targets() { return this._targets; }

@@ -97,7 +97,7 @@ class SimpleDataBlockJSONSerializer extends DataBlockJSONSerializer {
                     dataList = p_data[dataListHeader.member],
                     contents = [];
 
-                for (let i = 0, n = dataList.count; i < n; i++) {
+                for (let i = 0, n = dataList.length; i < n; i++) {
                     contents.push(this.__master.Serialize(dataList.At(i), p_options));
                 }
 

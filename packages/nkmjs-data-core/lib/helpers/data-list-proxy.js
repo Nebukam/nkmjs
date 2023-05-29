@@ -5,7 +5,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const SIGNAL = require(`../signal`);
 const DataList = require(`./data-list`);

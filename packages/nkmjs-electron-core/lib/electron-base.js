@@ -6,7 +6,7 @@ const url = require(`url`);
 const fs = require(`fs`);
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const APP_MESSAGES = require(`@nkmjs/app-core/lib/app-messages`);
 const WINDOWS = require(`./windows`);
@@ -26,7 +26,7 @@ class ElectronBase {
     /**
      * @description TODO
      * @param {object} p_constants 
-     * @param {array} p_constants.argv 
+     * @param {Array} p_constants.argv 
      * @param {string} p_constants.dirname execution directory
      * @param {string} p_constants.html landing html page for the main app window (can also be an html string)
      * @param {string} p_constants.theme default style theme

@@ -36,7 +36,7 @@ assert.ok(u.isVoid(catalog.Add(cItem)));
 //assert.ok(catalog.Resolve(`Test ListItem`) === cItem); //Not implemented  yet
 
 cItem.Release();
-assert.ok(catalog.count === 0);
+assert.ok(catalog.length === 0);
 
 
 // ----> SERIALIZER

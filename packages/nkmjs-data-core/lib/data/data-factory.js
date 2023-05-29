@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const SIGNAL = require(`../signal`);
@@ -25,7 +25,7 @@ class DataFactory extends com.Observable {
         super._Init();
 
         this._id = null;
-        this._tempItemList = new collections.List(0);
+        this._tempItemList = [];
 
         this._itemRep = new Repertoire();
         this._itemRep
@@ -55,7 +55,7 @@ class DataFactory extends com.Observable {
 
     /**
      * @description TODO
-     * @type {collections.List}
+     * @type {Array}
      * @customtag read-only
      */
     get itemList() { return this._itemRep.itemList; }
@@ -65,7 +65,7 @@ class DataFactory extends com.Observable {
      * @type {number}
      * @customtag read-only
      */
-    get count() { return this._itemRep.itemList.length; }
+    get length() { return this._itemRep.itemList.length; }
 
     /**
      * @description Return whether an string ID already exists
@@ -111,7 +111,7 @@ class DataFactory extends com.Observable {
      */
     RegisterTemp(p_item) {
 
-        if (!this._tempItemList.Add(p_item)) { return; }
+        if (!this._tempItemList.AddNew(p_item)) { return; }
 
         p_item._isTemp = true;
         p_item.Watch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
@@ -128,7 +128,7 @@ class DataFactory extends com.Observable {
      */
     Register(p_item, p_id) {
 
-        if (!this._tempItemList.Contains(p_item)) {
+        if (!this._tempItemList.includes(p_item)) {
             throw new Error(`Cannot register an item that hasn't been created by this factory.`);
         } else {
             this._tempItemList.Remove(p_item);

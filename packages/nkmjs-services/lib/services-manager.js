@@ -1,6 +1,6 @@
 'use strict';
 
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 /**
@@ -15,7 +15,7 @@ class ServicesManager extends com.Observable {
 
     _Init() {
         super._Init();
-        this._services = new collections.List();
+        this._services = [];
     }
 
     /**

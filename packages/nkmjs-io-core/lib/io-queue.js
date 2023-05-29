@@ -2,7 +2,7 @@
 
 const utils = require(`@nkmjs/utils`);
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const ResourceOperation = require(`./resource-operation`);
 
@@ -20,7 +20,7 @@ class IOQueue extends com.Observable {
 
     _Init() {
         super._Init();
-        this._queue = new collections.List();
+        this._queue = [];
         this._currentItem = null;
         this._running = false;
 
@@ -84,13 +84,12 @@ class IOQueue extends com.Observable {
 
     Bump(p_process) {
 
-        let array = this._queue.internalArray;
         if (utils.isInstanceOf(p_process, ResourceOperation)) {
             // Find process of operation in queue
             let op = p_process;
             p_process = null;
-            for (var i = 0; i < array.length; i++) {
-                let p = array[i];
+            for (var i = 0; i < this._queue.length; i++) {
+                let p = this._queue[i];
                 if (p.operation == op) {
                     p_process = p;
                     break;
@@ -112,7 +111,7 @@ class IOQueue extends com.Observable {
         if (this._running) { return; }
 
         this._running = true;
-        this._currentItem = this._queue.Shift();
+        this._currentItem = this._queue.shift();
 
         if (!this._currentItem) {
             this._running = false;

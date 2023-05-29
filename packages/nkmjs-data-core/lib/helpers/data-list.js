@@ -5,7 +5,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const SIGNAL = require(`../signal`);
 
@@ -16,7 +16,7 @@ const SIGNAL = require(`../signal`);
  * @augments common.Observable
  * @memberof data.core
  */
-class DataList extends collections.List {
+class DataList extends col.List {
 
     static FLUSH_DEFAULT = Symbol(`default`);
     static FLUSH_DIRECT_RELEASE = Symbol(`directRelease`);
@@ -220,7 +220,18 @@ class DataList extends collections.List {
      * @returns {boolean} True if the item has been added to the list, otherwise false.
     */
     Add(p_item, p_silent = true) {
-        return super.Add(p_item) ?
+        return super.AddNew(p_item) ?
+            this._OnItemAdded(p_item, this._array.length - 1, p_silent) :
+            false;
+    }
+
+    /**
+     * @description TODO
+     * @param {*} p_item 
+     * @returns {boolean} True if the item has been added to the list, otherwise false.
+    */
+    AddNew(p_item) {
+        return super.AddNew(p_item) ?
             this._OnItemAdded(p_item, this._array.length - 1, p_silent) :
             false;
     }

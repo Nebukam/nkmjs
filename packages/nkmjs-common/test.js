@@ -20,22 +20,22 @@ let singleSignal = POOL.Rent(signals.SignalBroadcaster);
 assert.ok(!u.isVoid(singleSignal));
 
 singleSignal.Add(signalFn);
-assert.ok(singleSignal._slots.count === 1);
+assert.ok(singleSignal._slots.length === 1);
 singleSignal.Broadcast(`Test 1 (should read once)`);
 singleSignal.Remove(signalFn);
-assert.ok(singleSignal._slots.count === 0);
+assert.ok(singleSignal._slots.length === 0);
 singleSignal.Broadcast(`Test 1 (should NOT read)`);
 singleSignal.Add(signalFn);
 singleSignal.Add(signalFn);
-assert.ok(singleSignal._slots.count === 1);
+assert.ok(singleSignal._slots.length === 1);
 singleSignal.Broadcast(`Test 2 (should read once)`);
 singleSignal.RemoveAll();
-assert.ok(singleSignal._slots.count === 0);
+assert.ok(singleSignal._slots.length === 0);
 singleSignal.Broadcast(`Test 3 (should NOT read)`);
 
 singleSignal.Add(signalFn);
 singleSignal.Add(signalFn2);
-assert.ok(singleSignal._slots.count === 1); //Subscriber being null.
+assert.ok(singleSignal._slots.length === 1); //Subscriber being null.
 singleSignal.Broadcast(`Test 3`, `Second Arg`);
 
 singleSignal.Release();

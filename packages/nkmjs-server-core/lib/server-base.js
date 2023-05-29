@@ -3,7 +3,7 @@ const io = require(`@nkmjs/server-io`);
 const u = require(`@nkmjs/utils`);
 const com = require(`@nkmjs/common`);
 const env = require(`@nkmjs/environment`);
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 env.ENV.features._isNodeEnabled = true;
 

@@ -23,7 +23,7 @@ class DictionarySet {
      * @type {number}
      * @customtag read-only
      */
-    get count() { return this._map.size; }
+    get length() { return this._map.size; }
 
     /**
      * @description TODO
@@ -40,11 +40,11 @@ class DictionarySet {
     get keys() { return Array.from(this._map.keys()); }
 
     /**
-     * @description Return whether or not the Dictionary contains the given key.
+     * @description Return whether or not the Map contains the given key.
      * If a value is specified, return whether or not the key has the given value registered.
      * @param {*} p_key 
      * @param {*} p_value 
-     * @returns {boolean} True if the Dictionary contains the matching KVP, otherwise false.
+     * @returns {boolean} True if the Map contains the matching KVP, otherwise false.
      */
     Contains(p_key, p_value = undefined) { return this._map.get(p_key)?.has(p_value) ? true : false; }
 

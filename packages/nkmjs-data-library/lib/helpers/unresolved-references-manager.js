@@ -2,7 +2,7 @@
 
 const nkm = require(`@nkmjs/core/nkmin`);
 
-const collections = nkm.collections;
+const col = nkm.collections;
 const u = nkm.u;
 const com = nkm.com;
 
@@ -15,7 +15,7 @@ class UnresolvedReferenceManager extends com.Observable {
     _Init() {
         super._Init();
         this._unresolvedURI = {};
-        this._waitingOnResolve = new collections.DictionaryList();
+        this._waitingOnResolve = new col.DictionaryList();
     }
 
     ContainsURI(p_uri) { return this._unresolvedURI.hasOwnProperty(p_uri); }
@@ -67,7 +67,7 @@ class UnresolvedReferenceManager extends com.Observable {
      * @access protected
      * @description
      * @param {ecosystem.helpers.UnresolvedReference} p_reference 
-     * @param {array} p_dependencies 
+     * @param {Array} p_dependencies 
      */
     _OnReferenceSolved(p_reference, p_dependencies) {
 

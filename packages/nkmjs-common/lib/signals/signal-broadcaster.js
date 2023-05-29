@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const Disposable = require(`../disposable`);
 
 const BLANK = Symbol(`none`);
@@ -19,8 +19,8 @@ class SignalBroadcaster extends Disposable {
         super._Init();
         this._broadcasting = false;
         this._removeAll = false;
-        this._slots = new collections.DictionaryList();
-        this._onceSlots = new collections.DictionarySet();
+        this._slots = new col.DictionaryList();
+        this._onceSlots = new col.DictionarySet();
         this._deprecated = [];
     }
 
@@ -29,14 +29,14 @@ class SignalBroadcaster extends Disposable {
      * @type {boolean}
      * @customtag read-only
      */
-    get isEmpty() { return this._slots.count === 0; }
+    get isEmpty() { return this._slots.length === 0; }
 
     /**
      * @description TODO
      * @type {number}
      * @customtag read-only
      */
-    get count() { return this._slots.count; }
+    get length() { return this._slots.length; }
 
     /**
      * @description Register a subscriber.

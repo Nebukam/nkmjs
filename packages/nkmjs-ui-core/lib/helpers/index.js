@@ -54,8 +54,8 @@ module.exports = {
                     }, p_host)
                 .Watch(SIGNAL.SEL_REQ_LENGTH,
                     (p_dataSel, p_fn) => {
-                        if (!p_host.__selReqHandlers.count) { return; }
-                        p_fn(nkm.u.CallPrepend(p_host.__selReqHandlers.count, p_dataSel));
+                        if (!p_host.__selReqHandlers.length) { return; }
+                        p_fn(nkm.u.CallPrepend(p_host.__selReqHandlers.length, p_dataSel));
                     }, p_host)
                 .Watch(SIGNAL.SEL_REQ_INDEX,
                     (p_dataSel, p_data, p_fn) => {

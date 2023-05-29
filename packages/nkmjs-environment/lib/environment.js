@@ -4,7 +4,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const services = require(`@nkmjs/services`);
 
@@ -65,7 +65,7 @@ class ENV extends com.Observable {
         this._started = false;
         this._running = false;
 
-        this._services = new collections.List();
+        this._services = [];
         this._pwaSWHandler = new ServiceWorkerHandler();
         this._pwaSWHandler
             .Watch(SW_SIGNAL.SW_READY, this._OnServiceWorkerReady, this)
@@ -106,7 +106,7 @@ class ENV extends com.Observable {
 
     /**
      * @description TODO
-     * @type {array}
+     * @type {Array}
      * @customtag read-only
      */
     get paths() { return this._config.paths; }
@@ -125,7 +125,7 @@ class ENV extends com.Observable {
     RegisterServices(...args) {
 
         for (const serviceClass of args) {
-            if (this._services.Add(serviceClass)) {
+            if (this._services.AddNew(serviceClass)) {
                 if (this._running) {
                     console.warn(`RegisterServices called post-Start. Make sure this is intended.`);
                     this._BootService(serviceClass);
@@ -137,7 +137,7 @@ class ENV extends com.Observable {
 
     /**
      * 
-     * @param {array} p_semVer [0,0,0]
+     * @param {Array} p_semVer [0,0,0]
      * @return -1 : p_semVer is inferior, 1: p_semVer is superior, 0 : p_semVer == 
      */
     VersionDiff(p_semVer) {
@@ -276,12 +276,13 @@ class ENV extends com.Observable {
     }
 
     _ProcessNextService() {
-        if (this._services.isEmpty) {
+
+        if (!this._services.length) {
             this._OnServicesReady();
             return;
         }
 
-        let newService = this._services.Shift();
+        let newService = this._services.shift();
         newService.WatchOnce(services.SIGNAL.STARTED, () => { this._ProcessNextService(); });
 
         this._BootService(newService);
@@ -303,7 +304,7 @@ class ENV extends com.Observable {
     _OnServicesReady() {
 
         u.LOG._(`All services ready!`, `#33979b`, `#212121`);
-        this._services.ForEach(this._BootService);
+        //this._services.forEach(this._BootService);
 
         // Only dispatch SIGNAL.START once the DOM is ready.
         // otherwise _OnStart() will be called in _OnDOMReady

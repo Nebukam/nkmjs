@@ -1,5 +1,7 @@
 'use strict';
 
+const utils = require(`./array-ext`);
+
 /**
  * @description TODO
  * @class
@@ -23,7 +25,7 @@ class DictionaryList {
      * @type {number}
      * @customtag read-only
      */
-    get count() { return this._map.size; }
+    get length() { return this._map.size; }
 
     /**
      * @description TODO
@@ -40,11 +42,11 @@ class DictionaryList {
     get keys() { return Array.from(this._map.keys()); }
 
     /**
-     * @description Return whether or not the Dictionary contains the given key.
+     * @description Return whether or not the Map contains the given key.
      * If a value is specified, return whether or not the key has the given value registered.
      * @param {*} p_key 
      * @param {*} p_value 
-     * @returns {boolean} True if the Dictionary contains the matching KVP, otherwise false.
+     * @returns {boolean} True if the Map contains the matching KVP, otherwise false.
      */
     Contains(p_key, p_value = undefined) { return this._map.get(p_key)?.includes(p_value) ? true : false; }
 
@@ -62,12 +64,23 @@ class DictionaryList {
      */
     Set(p_key, p_value) {
 
-        let list = null;
+        let list = this._map.get(p_key);
 
-        if (this._map.has(p_key)) { list = this._map.get(p_key); }
-        else { list = []; this._map.set(p_key, list); }
+        if(!list){ list = []; this._map.set(p_key, list); }
+        if (!list.includes(p_value)) { list.push(p_value); }
 
+        return p_value;
+        
+
+    }
+
+    SetNew(p_key, p_value) {
+
+        let list = this._map.get(p_key);
+
+        if(!list){ list = []; this._map.set(p_key, list); }
         if (list.includes(p_value)) { return false; }
+
         list.push(p_value);
 
         return true;

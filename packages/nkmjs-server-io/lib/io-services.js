@@ -1,6 +1,6 @@
 const com = require(`@nkmjs/common`);
 const env = require(`@nkmjs/environment`);
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const services = require(`@nkmjs/services`);
 
 class IO_SERVICES extends com.Observable { // PORT_TO_MODULE
@@ -11,8 +11,8 @@ class IO_SERVICES extends com.Observable { // PORT_TO_MODULE
 
         this._defaultIO = null;
 
-        this._ioServices = new collections.List();
-        this._queue = new collections.List();
+        this._ioServices = [];
+        this._queue = [];
 
         this._ready = false;
 
@@ -57,14 +57,14 @@ class IO_SERVICES extends com.Observable { // PORT_TO_MODULE
 
         if (this._ready) { throw new Error(`Cannot register new IO Services after boot`); }
 
-        if (!this._ioServices.Add(p_serviceClass)) { return p_serviceClass; }
+        if (!this._ioServices.AddNew(p_serviceClass)) { return p_serviceClass; }
 
         this._ready = false;
 
         this._queue.Add(p_serviceClass);
         p_serviceClass.Watch(services.SIGNAL.STARTED, (p_service) => {
             this._queue.Remove(p_service);
-            if (this._queue.isEmpty) { this._OnServiceQueueEmpty(); }
+            if (!this._queue.length) { this._OnServiceQueueEmpty(); }
         });
 
         p_serviceClass._config = p_config;

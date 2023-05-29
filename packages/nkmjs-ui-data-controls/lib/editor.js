@@ -5,13 +5,13 @@ const u = require(`@nkmjs/utils`);
 const actions = require("@nkmjs/actions");
 const data = require(`@nkmjs/data-core`);
 const ui = require(`@nkmjs/ui-core`);
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const IDS = require(`./ids`);
 const SIGNAL = require(`./signal`);
 const InspectionDataList = require(`./helpers/inspection-data-list`);
 
-const __editorMap = new collections.DictionaryList();
+const __editorMap = new col.DictionaryList();
 const __activeData = new Set();
 
 function __CheckEditorMap() {
@@ -237,7 +237,7 @@ class Editor extends base {
             } else {
 
                 this._stateStack.Push({
-                    data: [...this._inspectedData.stack._array],
+                    data: [...this._inspectedData.stack],
                     restore: (p_self) => {
                         this._skipNextSelectionState = true;
                         this._inspectedData.SetList(p_self.data);

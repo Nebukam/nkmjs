@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const ID = require(`./id`);
@@ -19,14 +19,14 @@ class IDDispenser extends com.Observable {
     _Init() {
         super._Init();
         this._idMap = new Map();
-        this._idList = new collections.List();
+        this._idList = [];
         // - Repertoire for IDs to avoid duplicate IDs.
         // - factory should check for duplicates through repertoire
     }
 
     /**
      * @description TODO
-     * @type {collections.List}
+     * @type {Array}
      * @customtag read-only
      */
     get idList() { return this._idList; }
@@ -48,7 +48,7 @@ class IDDispenser extends com.Observable {
      */
     Contains(p_id) {
         if (u.isString(p_id)) { return this._idMap.has(p_id); }
-        else if (u.isInstanceOf(p_id, ID)) { return this._idList.Contains(p_id); }
+        else if (u.isInstanceOf(p_id, ID)) { return this._idList.includes(p_id); }
         throw new Error(`p_id must be either string or ID.`);
     }
 
@@ -65,7 +65,7 @@ class IDDispenser extends com.Observable {
      * @param {data.core.ID} p_id 
      * @returns {boolean} True if the Dispenser contains the given ID, otherwise false.
      */
-    ContainsID(p_id) { return this._idList.Contains(p_id); }
+    ContainsID(p_id) { return this._idList.includes(p_id); }
 
 
     /**

@@ -6,7 +6,7 @@ const ui = require(`@nkmjs/ui-core`);
 const style = require(`@nkmjs/style`);
 const actions = require("@nkmjs/actions");
 const data = require("@nkmjs/data-core");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 
 const base = ui.inputs.InputCatalogBase;
 const __slider = `slider`;

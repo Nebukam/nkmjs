@@ -2,7 +2,7 @@
 
 const nkm = require(`@nkmjs/core/nkmin`);
 
-const collections = nkm.collections;
+const col = nkm.collections;
 const u = nkm.u;
 const com = nkm.com;
 const data = nkm.data;
@@ -63,7 +63,7 @@ class DataModel extends DataBlockExtendable {
             .Hook(SIGNAL.SLOT_REMOVED, this._OnBaseFieldRemoved, this)
             .Hook(SIGNAL.SLOT_RENAMED, this._OnBaseFieldRenamed, this);
 
-        this._cachedSlotList = new collections.List();
+        this._cachedSlotList = [];
 
     }
 
@@ -110,7 +110,7 @@ class DataModel extends DataBlockExtendable {
             p_slot.base = overloadField;
             p_slot.fieldIndex = overloadField.fieldIndex;
         } else {
-            p_slot.fieldIndex = this._slotRep._itemList.count - 1;
+            p_slot.fieldIndex = this._slotRep._itemList.length - 1;
         }
 
         this.Broadcast(SIGNAL.SLOT_ADDED, this, p_slot);
@@ -272,13 +272,8 @@ class DataModel extends DataBlockExtendable {
      */
     InitEntry(p_entry) {
         // TODO : For each field in model, init
-        let dataObject = p_entry._fieldValues,
-            fieldList = this._cachedSlotList._array;
-        for (let i = 0, n = fieldList.length; i < n; i++) {
-            let fieldDetails = fieldList[i];
-            fieldDetails._model.InitValues(fieldDetails, dataObject);
-        }
-
+        let dataObject = p_entry._fieldValues;
+        for (const details in this._cachedSlotList) { details._model.InitValues(details, dataObject); }
     }
 
     //#endregion
@@ -309,7 +304,7 @@ class DataModel extends DataBlockExtendable {
      * @param {boolean} [p_localOnly] 
      * @returns 
      */
-     GetSlotGroupByName(p_name) { return this._groupRep.GetByName(p_name); }
+    GetSlotGroupByName(p_name) { return this._groupRep.GetByName(p_name); }
 
     //#endregion
 

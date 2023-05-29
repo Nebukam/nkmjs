@@ -1,6 +1,6 @@
 'use strict';
 
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const dom = require(`../utils-dom`);
 
 const __NULL = Symbol(`null`);
@@ -57,7 +57,7 @@ class FlagBox {
      * @param  {...string} args 
      */
     Add(p_element, ...args) {
-        if (!this._elements) { this._elements = new collections.DictionaryList(); }
+        if (!this._elements) { this._elements = new col.DictionaryList(); }
         //TODO : Check whether the flag is already active or not and apply it.
         for (let i = 0, n = args.length; i < n; i++) {
             this._elements.Set(args[i], p_element);

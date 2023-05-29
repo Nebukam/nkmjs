@@ -75,7 +75,7 @@ class DOMTemplate {
     /**
      * @access protected
      * @description TODO
-     * @type {array}
+     * @type {Array}
      */
     static __fragment = null;
     static __HTMLtemplate = null;

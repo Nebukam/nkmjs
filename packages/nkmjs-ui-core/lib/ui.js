@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./signal`);
@@ -22,12 +22,12 @@ class UI extends com.Observable { // PORT_TO_MODULE
 
         super._Init();
 
-        this._uiPool = new collections.DictionaryList();
+        this._uiPool = new col.DictionaryList();
         this._uiTypes = new Map();
         this._definedSet = new Set();
         this._typeMap = {};
 
-        this._dirtyElements = new collections.List(0);
+        this._dirtyElements = [];
 
         this._Bind(this._Return);
         this._delayedUpdate = com.DelayedCall(this._Bind(this._UpdateDirty));
@@ -139,7 +139,7 @@ class UI extends com.Observable { // PORT_TO_MODULE
      * @group Pooling
      */
     AddDirty(p_element) {
-        if (this._dirtyElements.Add(p_element)) { this._delayedUpdate.Schedule(); }
+        if (this._dirtyElements.AddNew(p_element)) { this._delayedUpdate.Schedule(); }
     }
 
     /**
@@ -148,7 +148,7 @@ class UI extends com.Observable { // PORT_TO_MODULE
      * @group Pooling
      */
     _UpdateDirty(p_delta) {
-        this._dirtyElements.ForEach((p_item, p_index) => { p_item.ApplyTransforms(); });
+        for (const i of this._dirtyElements) { i.ApplyTransforms(); }
         this._dirtyElements.Clear();
     }
 

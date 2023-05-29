@@ -114,7 +114,7 @@ class TIME extends Observable {
         }
         else {
             this._nextTickScheduled = false;
-            if (this._nextTick.count > 0) { this._ScheduleNextTick(); }
+            if (this._nextTick.length > 0) { this._ScheduleNextTick(); }
         }
     }
 

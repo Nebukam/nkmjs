@@ -4,12 +4,12 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const services = require(`@nkmjs/services`);
 const env = require(`@nkmjs/environment`);
 const com = require("@nkmjs/common");
 
-const _requests = new collections.List();
+const _requests = [];
 
 /**
  * @description TODO
@@ -55,12 +55,10 @@ class RELAY extends services.ServiceBase {
         super._Tick(p_delta);
 
         //Clear requests stack
-        let list = _requests;
-
-        for (let i = 0; i < list.count; i++) {
+        for (let i = 0; i < _requests.length; i++) {
 
             let release = true,
-                request = list.At(i);
+                request = _requests[i];
 
             if (!request.isHandled) {
                 if (request.life >= request.timeout) {
@@ -75,7 +73,7 @@ class RELAY extends services.ServiceBase {
 
             if (release) {
                 request.Release();
-                list.RemoveAt(i);
+                _requests.RemoveAt(i);
                 i--;
             }
         }

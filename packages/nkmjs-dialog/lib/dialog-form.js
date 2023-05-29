@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
 const ui = require(`@nkmjs/ui-core`);
@@ -24,7 +24,7 @@ class DialogForm extends base {
         this._hasInput = false;
 
         this._submitMap = new Map();
-        this._submitList = new collections.List();
+        this._submitList = [];
 
         this._Bind(this._Submit);
 
@@ -44,7 +44,7 @@ class DialogForm extends base {
 
     _OnOptionsUpdated(p_options, p_altOptions, p_defaults) {
         super._OnOptionsUpdated(p_options, p_altOptions, p_defaults);
-        this._hasInput = (this._formHandler._inputList.count > 0);
+        this._hasInput = (this._formHandler._inputList.length > 0);
         if (this._hasInput) { this._formHandler.ValidateForm(); }
     }
 
@@ -87,11 +87,11 @@ class DialogForm extends base {
     // ----> Form handling
 
     _OnFormInvalid(p_handler) {
-        this._submitList.ForEach((p_item) => { p_item.activable = false; });
+        for (const i of this._submitList) { i.activable = false; }
     }
 
     _OnFormReady(p_handler) {
-        this._submitList.ForEach((p_item) => { p_item.activable = true; });
+        for (const i of this._submitList) { i.activable = true; }
     }
 
     // ---->

@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const SIGNAL = require(`../signal`);
 const INPUT = require(`../input`);
@@ -38,8 +38,8 @@ class DataSelection extends com.Observable {
 
         this._lastBump = null;
 
-        this._stack = new collections.List();
-        this._indices = new collections.List();
+        this._stack = [];
+        this._indices = [];
         this._dataSet = new Set();
         this._dataMember = `data`;
 
@@ -164,7 +164,7 @@ class DataSelection extends com.Observable {
             while (this._currentRangeContent.length != 0) {
                 let
                     data = this._currentRangeContent.pop(),
-                    index = this._indices.At(this._stack.IndexOf(data));
+                    index = this._indices[this._stack.indexOf(data)];
 
                 this.RequestRemove(index, data);
                 this.Remove(data);
@@ -226,7 +226,7 @@ class DataSelection extends com.Observable {
 
         if (!this._dataSet.has(p_data)) { return false; }
 
-        let index = this._stack.IndexOf(p_data);
+        let index = this._stack.indexOf(p_data);
         this._stack.RemoveAt(index);
         this._indices.RemoveAt(index);
         this._dataSet.delete(p_data);
@@ -242,16 +242,16 @@ class DataSelection extends com.Observable {
 
         if (!this._dataSet.has(p_data)) { return false; }
 
-        let dataIndex = this._indices.At(this._stack.IndexOf(p_data));
+        let dataIndex = this._indices[this._stack.indexOf(p_data)];
         if (INPUT.selectionModifier == INPUT.MODIFIERS.RANGE && !this._isInsideRange
             && this._allowMultiple && dataIndex >= 0 && this._cachedRangeStart != -1) {
             return this.AddRange(-1, dataIndex, false);
         }
 
         if (p_data != this._stack.last) {
-            let index = this._stack.IndexOf(p_data);
-            this._stack._array.push(this._stack._array.splice(index, 1)[0]);
-            this._indices._array.push(this._indices._array.splice(index, 1)[0]);
+            let index = this._stack.indexOf(p_data);
+            this._stack.push(this._stack.splice(index, 1)[0]);
+            this._indices.push(this._indices.splice(index, 1)[0]);
         }
 
         if (this._lastBump != p_data) {
@@ -264,7 +264,7 @@ class DataSelection extends com.Observable {
     }
 
     _AutoBump() {
-        if (this._stack.isEmpty) { return; }
+        if (!this._stack.length) { return; }
         this.Broadcast(com.SIGNAL.ITEM_BUMPED, this._stack.last);
     }
 
@@ -328,9 +328,9 @@ class DataSelection extends com.Observable {
             if (!this._dataSet.has(data)) { add.push(data); }
         }
 
-        for (let i = 0; i < this._stack.count; i++) {
+        for (let i = 0; i < this._stack.length; i++) {
             let
-                existingData = this._stack.At(i),
+                existingData = this._stack[i],
                 item = map.get(existingData);
 
             if (!item) {
@@ -361,7 +361,7 @@ class DataSelection extends com.Observable {
     }
 
     ContainsDataIndex(p_index) {
-        return this._indices.Contains(p_index);
+        return this._indices.includes(p_index);
     }
 
     /**
@@ -370,9 +370,9 @@ class DataSelection extends com.Observable {
     Clear() {
         this._lastBump = null;
         this._cachedRangeStart = -1;
-        if (this._stack.isEmpty) { return; }
+        if (!this._stack.length) { return; }
         this._clearing = true;
-        while (!this._stack.isEmpty) { this.Remove(this._stack.last); }
+        while (this._stack.length) { this.Remove(this._stack.last); }
         this._clearing = false;
         this.Broadcast(SIGNAL.SEL_CLEARED, this);
     }

@@ -1,6 +1,6 @@
 'use strict';
 
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 /**
  * A Callbacks object is a very simple helper class that stores a list of functions
@@ -17,9 +17,9 @@ class Callbacks {
 
     constructor() {
         this._dispatching = false;
-        this._onSuccessList = new collections.List(0);
-        this._onErrorList = new collections.List(0);
-        this._onAnyList = new collections.List(0);
+        this._resolved = [];
+        this._rejected = [];
+        this._finally = [];
     }
 
     /**
@@ -28,7 +28,7 @@ class Callbacks {
      */
     set onSuccess(p_value) {
         if (this._dispatching) { return; }
-        this._onSuccessList.Add(p_value);
+        this._resolved.Add(p_value);
     }
 
     /**
@@ -37,7 +37,7 @@ class Callbacks {
      */
     set onError(p_value) {
         if (this._dispatching) { return; }
-        this._onErrorList.Add(p_value);
+        this._rejected.Add(p_value);
     }
 
     /**
@@ -46,7 +46,7 @@ class Callbacks {
      */
     set onAny(p_value) {
         if (this._dispatching) { return; }
-        this._onAnyList.Add(p_value);
+        this._finally.Add(p_value);
     }
 
     /**
@@ -58,9 +58,9 @@ class Callbacks {
      */
     Add(p_options) {
         if (!p_options || this._dispatching) { return this; }
-        if (p_options.success) { this._onSuccessList.Add(p_options.success); }
-        if (p_options.error) { this._onErrorList.Add(p_options.error); }
-        if (p_options.any) { this._onAnyList.Add(p_options.any); }
+        if (p_options.success) { this._resolved.Add(p_options.success); }
+        if (p_options.error) { this._rejected.Add(p_options.error); }
+        if (p_options.any) { this._finally.Add(p_options.any); }
         return this;
     }
 
@@ -88,8 +88,8 @@ class Callbacks {
      */
     OnSuccess(...args) {
         if (this._dispatching) { return this; }
-        this._Dispatch(this._onSuccessList, ...args);
-        this._Dispatch(this._onAnyList, ...args);
+        this._Dispatch(this._resolved, ...args);
+        this._Dispatch(this._finally, ...args);
         return this;
     }
 
@@ -99,8 +99,8 @@ class Callbacks {
      */
     OnError(...args) {
         if (this._dispatching) { return this; }
-        this._Dispatch(this._onErrorList, ...args);
-        this._Dispatch(this._onAnyList, ...args);
+        this._Dispatch(this._rejected, ...args);
+        this._Dispatch(this._finally, ...args);
         return this;
     }
 
@@ -112,7 +112,7 @@ class Callbacks {
     _Dispatch(p_list, ...args) {
         if (this._dispatching) { return; }
         this._dispatching = true;
-        p_list.ForEach((item) => { item.apply(null, args); });
+        for (const fn of p_list) { fn.apply(null, args); }
         this._dispatching = false;
     }
 
@@ -121,9 +121,9 @@ class Callbacks {
      */
     Clear() {
         if (this._dispatching) { return this; }
-        this._onSuccessList.Clear();
-        this._onErrorList.Clear();
-        this._onAnyList.Clear();
+        this._resolved.length = 0;
+        this._rejected.length = 0;
+        this._finally.length = 0;
         return this;
     }
 

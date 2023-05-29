@@ -90,7 +90,7 @@ class KDictionary {
     }
 
     /**
-     * @description Clears the Dictionary from all keys and values.
+     * @description Clears the Map from all keys and values.
      */
     Clear() {
         //TODO : In-depth clear to avoid generating too much garbage

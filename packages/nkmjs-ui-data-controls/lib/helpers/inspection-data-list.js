@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const ui = require("@nkmjs/ui-core");
 
 /**
@@ -41,7 +41,7 @@ class InspectionDataList extends com.Observable {
 
         this._lastBump = null;
 
-        this._stack = new collections.List();
+        this._stack = [];
         this._itemObserver = new com.signals.Observer();
         this._itemObserver.Hook(com.SIGNAL.RELEASED, this._OnDataReleased, this);
 
@@ -75,8 +75,8 @@ class InspectionDataList extends com.Observable {
     get isEmpty() { return this._stack.isEmpty; }
     get lastType() { return this._lastItemType; }
 
-    get isSingle() { return this._stack._array.length == 1; }
-    get isList() { return this._stack._array.length > 1; }
+    get isSingle() { return this._stack.length == 1; }
+    get isList() { return this._stack.length > 1; }
 
     get sharedType() {
         if (this._sharedItemTypeNeedRefresh) { this._FindSharedDataType(); }
@@ -167,8 +167,8 @@ class InspectionDataList extends com.Observable {
         if (!this._dataSet.has(p_data)) { return false; }
 
         if (p_data != this._stack.last) {
-            let index = this._stack.IndexOf(p_data);
-            this._stack._array.push(this._stack._array.splice(index, 1)[0]);
+            let index = this._stack.indexOf(p_data);
+            this._stack.push(this._stack.splice(index, 1)[0]);
         }
 
         if (this._invalidateAnalyticsOnBump) { this._analyticsDirty = true; }
@@ -213,14 +213,14 @@ class InspectionDataList extends com.Observable {
             return;
         }
 
-        for (let i = 0; i < this._stack._array.length; i++) {
-            let item = this._stack._array[i];
+        for (let i = 0; i < this._stack.length; i++) {
+            let item = this._stack[i];
             if (item != p_data) {
                 if (this.Remove(item, false)) { i--; }
             }
         }
 
-        if (this._stack.Contains(p_data)) { this.Bump(p_data, false); }
+        if (this._stack.includes(p_data)) { this.Bump(p_data, false); }
         else { this.Add(p_data, false); }
     }
 
@@ -251,9 +251,9 @@ class InspectionDataList extends com.Observable {
 
         this._sharedItemTypeNeedRefresh = false;
 
-        let count = this._stack.count;
+        let count = this._stack.length;
 
-        if (count == 0) {
+        if (!count) {
             this._sharedItemType = null;
             return;
         } else if (count == 1) {
@@ -267,7 +267,7 @@ class InspectionDataList extends com.Observable {
             shortestType = null;
 
         for (let i = 0; i < count; i++) {
-            let type = this._stack._array[i].constructor,
+            let type = this._stack[i].constructor,
                 dist = com.NFOS.GetDistanceToObject(type);
             if (dist < shortestDist) {
                 shortestDist = dist;
@@ -283,7 +283,7 @@ class InspectionDataList extends com.Observable {
         //Second pass : make sure every other type is an instanceof that smallest type.
 
         for (let i = 0; i < count; i++) {
-            let type = this._stack._array[i].constructor,
+            let type = this._stack[i].constructor,
                 dist = com.NFOS.GetSignedDistance(shortestType);
 
             if (Number.isNaN(dist)) {
@@ -349,10 +349,10 @@ class InspectionDataList extends com.Observable {
         if (this._analyticsDirty) {
             if (this._resetAnalyticsFn) { u.Call(this._resetAnalyticsFn, this._analytics); }
             if (this._itemAnalyticFn) {
-                let n = this._stack.count;
+                let n = this._stack.length;
                 this._analytics.total = n;
                 for (let i = 0; i < n; i++) {
-                    u.Call(this._itemAnalyticFn, this._stack.At(i), this._analytics, i, n);
+                    u.Call(this._itemAnalyticFn, this._stack[i], this._analytics, i, n);
                 }
             }
             this._analyticsDirty = false;

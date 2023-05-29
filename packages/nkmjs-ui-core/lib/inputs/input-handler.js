@@ -5,7 +5,7 @@
  */
 
 const u = require("@nkmjs/utils");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
 const SIGNAL = require(`./input-signal`);
@@ -27,8 +27,8 @@ class InputHandler extends com.Observable {
 
         this._invalidInput = false;
         this._inputErrors = [];
-        this._externalValidationStack = new collections.List();
-        this._externalSanitizationStack = new collections.List();
+        this._externalValidationStack = [];
+        this._externalSanitizationStack = [];
         this._errorFeedbacks = [];
 
         this._updatePreviewOnInput = true;
@@ -44,7 +44,7 @@ class InputHandler extends com.Observable {
         this._updatePreviewFn = null;
         this._onInputErrorFn = null;
 
-        this._managed = new collections.List();
+        this._managed = [];
         this._manager = null;
 
         this._delayedPreviewUpdate = com.DelayedCall(this._Bind(this._RequestPreviewUpdate));
@@ -105,7 +105,7 @@ class InputHandler extends com.Observable {
      * @param {*} p_oldValue 
      */
     _OnCurrentValueChanged(p_oldValue) {
-        this._managed.ForEach((item) => { item.currentValue = this._currentValue }, this);
+        for (const i of this._managed) { i.currentValue = this._currentValue; }
         this._delayedPreviewUpdate.Schedule();
     }
 
@@ -131,7 +131,7 @@ class InputHandler extends com.Observable {
         this._internalValidateChangedValue();
         this.Broadcast(com.SIGNAL.VALUE_CHANGED, this, this._changedValue);
 
-        this._managed.ForEach((item) => { item.changedValue = this._changedValue }, this);
+        for (const i of this._managed) { i.changedValue = this._changedValue; }
 
         if (this._updatePreviewOnChange) { this._delayedPreviewUpdate.Schedule(); }
         if (this._submitOnChange) { this.SubmitValue(); }
@@ -156,11 +156,11 @@ class InputHandler extends com.Observable {
             ? this._manager._externalSanitizationStack
             : this._externalSanitizationStack;
 
-        stack.ForEach((fn) => { p_value = u.CallPrepend(fn, p_value); });
+        stack.forEach((fn) => { p_value = u.CallPrepend(fn, p_value); });
 
         /*
-        for (let i = 0, n = stack.count; i < n; i++) {
-            p_value = u.CallPrepend(stack.At(i), p_value);
+        for (let i = 0, n = stack.length; i < n; i++) {
+            p_value = u.CallPrepend(stack[i], p_value);
         }
         */
 
@@ -183,7 +183,7 @@ class InputHandler extends com.Observable {
 
         this.Broadcast(SIGNAL.VALUE_INPUT_CHANGED, this, this._inputValue);
 
-        this._managed.ForEach((item) => { item.inputValue = this._inputValue; });
+        for (const i of this._managed) { i.inputValue = this._inputValue; }
 
         if (this._changeOnInput) { this.changedValue = this._inputValue; }
         if (this._updatePreviewOnInput) { this._delayedPreviewUpdate.Schedule(); }
@@ -216,10 +216,10 @@ class InputHandler extends com.Observable {
             : this._externalValidationStack;
 
         //Check external validation callbacks
-        stack.ForEach((fn) => {
+        for (const fn of stack) {
             let result = u.CallPrepend(fn, cValue);
             if (result) { this._PushError(result); }
-        }, this);
+        }
 
         this._invalidInput = (this._inputErrors.length);
         if (this._invalidInput) { this._internalOnInputError(); }
@@ -287,9 +287,10 @@ class InputHandler extends com.Observable {
     }
 
     __GetInternalListItemIndex(p_item, p_list) {
-        for (let i = 0; i < p_list.count; i++) {
-            let existingItem = p_list.At(i);
-            if (existingItem.fn == p_item.fn && existingItem.thisArg == p_item.thisArg) { return i; }
+        let index = 0;
+        for (const i of p_list) {
+            if (i.fn == p_item.fn && i.thisArg == p_item.thisArg) { return index; }
+            index++;
         }
         return -1;
     }
@@ -456,7 +457,7 @@ class InputHandler extends com.Observable {
     get manager() { return this._manager; }
 
     AddManaged(p_handler) {
-        if (!this._managed.Add(p_handler)) { return; }
+        if (!this._managed.AddNew(p_handler)) { return; }
         p_handler.manager = this;
         p_handler.Watch(SIGNAL.VALUE_INPUT_CHANGED, this._OnManagedInputValueChanged, this);
         p_handler.Watch(com.SIGNAL.VALUE_CHANGED, this._OnManagedValueChanged, this);
@@ -499,8 +500,8 @@ class InputHandler extends com.Observable {
     _CleanUp() {
         this.manager = null;
         super._CleanUp();
-        this._externalValidationStack.Clear();
-        this._externalSanitizationStack.Clear();
+        this._externalValidationStack.length = 0;
+        this._externalSanitizationStack.length = 0;
         this.Clear();
     }
 

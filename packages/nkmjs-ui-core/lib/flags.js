@@ -82,7 +82,7 @@ FLAGS.BOTH = Object.freeze(`both`);
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  * @group Orientation
  */
@@ -134,7 +134,7 @@ FLAGS.FOCUSED = Object.freeze(`focused`);
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  * @group Interactivity
  */
@@ -251,7 +251,7 @@ FLAGS.BOTTOM_RIGHT = Object.freeze(`bottom right`);
  * * {@link ui.core.UI_FLAG.RIGHT}
  * * {@link ui.core.UI_FLAG.TOP}
  * * {@link ui.core.UI_FLAG.BOTTOM}
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  * @group Position
  */
@@ -272,7 +272,7 @@ FLAGS.placement = [ // Order do matter!
  * * {@link ui.core.UI_FLAG.RIGHT}
  * * {@link ui.core.UI_FLAG.TOP}
  * * {@link ui.core.UI_FLAG.BOTTOM}
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  * @group Position
  */
@@ -449,7 +449,7 @@ FLAGS.SIZE_CUSTOM = Object.freeze(`size-custom`);
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  * @group Sizes
  */
@@ -499,7 +499,7 @@ FLAGS.STRETCH_SQUEEZE = Object.freeze(`stretch-squeeze`);
 
 /**
 * @description TODO
-* @type {array}
+* @type {Array}
 * @customtag read-only
 * @group Sizing
 */
@@ -522,7 +522,7 @@ FLAGS.CTA = Object.freeze(`cta`);
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  * @group Flavors
  */
@@ -535,7 +535,7 @@ FLAGS.flavors = [
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  * @group Flavors
  */
@@ -572,7 +572,7 @@ FLAGS.FRAME = Object.freeze(`frame`);
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  * @group Variants
  */

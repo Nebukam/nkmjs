@@ -1,7 +1,7 @@
 'use strict';
 
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const SIGNAL = require(`../signal`);
 const INPUT = require(`../input`);
@@ -54,7 +54,7 @@ class WidgetSelection extends com.Observable {
             .Hook(SIGNAL.DRAG_ENDED, this._OnItemDragEnded, this)
             .Hook(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
-        this._stack = new collections.List();
+        this._stack = [];
         this._shareSignals = true;
         this._allowMultiple = true;
         this._clearing = false;
@@ -76,7 +76,7 @@ class WidgetSelection extends com.Observable {
                 .Unhook(com.SIGNAL.RELEASING, this._OnItemReleasing, this)
                 .Unhook(com.SIGNAL.RELEASED, this._OnItemReleased, this);
 
-            this._data.RecomputeSelectionFromItems(this._stack.internalArray);
+            this._data.RecomputeSelectionFromItems(this._stack);
         } else {
             this._releasingItems = new Set();
             this._itemObserver
@@ -127,7 +127,7 @@ class WidgetSelection extends com.Observable {
 
         //if (p_mode == null) { p_mode = INPUT.selectionModifier; }
 
-        if (this._stack.Contains(p_item)) {
+        if (this._stack.includes(p_item)) {
             //if (p_mode == INPUT.MODIFIERS.TOGGLE) { this.Remove(p_item); } 
             return false;
         }
@@ -168,11 +168,11 @@ class WidgetSelection extends com.Observable {
 
     Bump(p_item) {
 
-        if (!this._stack.Contains(p_item)) { return false; }
+        if (!this._stack.includes(p_item)) { return false; }
 
         if (p_item != this._stack.last) {
-            let index = this._stack.IndexOf(p_item);
-            this._stack._array.push(this._stack._array.splice(index, 1)[0]);
+            let index = this._stack.indexOf(p_item);
+            this._stack.push(this._stack.splice(index, 1)[0]);
         }
 
         this._data.BumpFromItem(p_item);
@@ -203,17 +203,9 @@ class WidgetSelection extends com.Observable {
      * @param {*} p_emitter 
      */
     _SpreadEvent(p_signal, p_emitter) {
-
         if (!this._shareSignals || this._sharingEvent) { return; }
-
         this._sharingEvent = true;
-
-        let list = this._stack.internalArray;
-        for (let i = 0, n = list.length; i < n; i++) {
-            let item = list[i];
-            if (item != p_emitter) { item.Broadcast(p_signal, item); }
-        }
-
+        for (const i of this._stack) { if (i != p_emitter) { i.Broadcast(p_signal, i); } }
         this._sharingEvent = false;
     }
 
@@ -229,8 +221,8 @@ class WidgetSelection extends com.Observable {
      */
     Clear() {
         this._data.Clear();
-        if (this._stack.isEmpty) { return; }
-        while (!this._stack.isEmpty) { this.Remove(this._stack.last); }
+        if (!this._stack.length) { return; }
+        while (this._stack.length) { this.Remove(this._stack.last); }
         this.Broadcast(SIGNAL.SEL_CLEARED, this);
     }
 

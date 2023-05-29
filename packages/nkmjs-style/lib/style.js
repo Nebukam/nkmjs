@@ -45,7 +45,7 @@ module.exports = {
      * @param {class} p_class 
      * @param {function} p_generator 
      * @param {boolean} [p_invalidateCache] 
-     * @returns {array} an array of styling items. Contains
+     * @returns {Array} an array of styling items. Contains
      */
     Build: function (p_class, p_generator, p_invalidateCache = false) {
 

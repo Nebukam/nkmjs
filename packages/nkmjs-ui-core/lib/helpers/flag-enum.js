@@ -105,7 +105,7 @@ class FlagEnum {
     /**
      * @description Goes through a list of object and set a given property name to this flagEnum's current flag.
      * @param {string} p_key 
-     * @param {array} p_list 
+     * @param {Array} p_list 
      */
     Apply(p_list) {
         for (const item of p_list) { if (this._id in item) { item[this._id] = this._current; } }

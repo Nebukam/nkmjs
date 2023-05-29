@@ -4,7 +4,7 @@
  */
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const SIGNAL = require(`./input-signal`);
 const InputBase = require(`./input-base`);
@@ -14,7 +14,7 @@ class InputFormHandler extends com.Observable {
 
     _Init() {
         super._Init();
-        this._inputList = new collections.List();
+        this._inputList = [];
         this._inputValues = {};
         this._errorCount = 0;
         this._invalidForm = false;
@@ -36,7 +36,7 @@ class InputFormHandler extends com.Observable {
             throw new Error(`InputFormHandler cannot register non-input items.`);
         }
 
-        if (!this._inputList.Add(p_input)) { return; }
+        if (!this._inputList.AddNew(p_input)) { return; }
 
         this._inputValues[p_input.inputId] = p_input.currentValue;
         p_input._internalValidateChangedValue();
@@ -66,7 +66,8 @@ class InputFormHandler extends com.Observable {
         let was = this._invalidForm;
         this._invalidForm = false;
         this._errorCount = 0;
-        this._inputList.ForEach(this._CheckInput, this);
+
+        for (const i of this._inputList) { this._CheckInput(i); }
 
         if (this._invalidForm != was) {
             if (this._invalidForm) {
@@ -89,9 +90,7 @@ class InputFormHandler extends com.Observable {
     }
 
     Clear() {
-        for (let i = 0, n = this._inputList.count; i < n; i++) {
-            this.Unregister(this._inputList.last);
-        }
+        while (this._inputList.length) { this.Unregister(this._inputList.last); }
     }
 
     _OnInputSubmit(p_input, p_newValue) {

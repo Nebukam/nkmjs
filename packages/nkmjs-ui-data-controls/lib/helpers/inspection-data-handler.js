@@ -71,7 +71,7 @@ class InspectionDataHandler extends com.Observable {
     get lastType() { return this._inspectedData ? this._inspectedData.lastType : null; }
     get sharedType() { return this._inspectedData ? this._inspectedData.sharedType : null; }
 
-    get items() { return this._inspectedData ? this._inspectedData.stack._array : this._emptyArray; }
+    get items() { return this._inspectedData ? this._inspectedData.stack : this._emptyArray; }
 
     get lastItem() { return this._inspectedData ? this._inspectedData.lastItem : null; }
 

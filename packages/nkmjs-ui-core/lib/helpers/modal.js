@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 const env = require("@nkmjs/environment");
 const style = require(`@nkmjs/style`);
@@ -23,7 +23,7 @@ const RectTracker = require(`./rect-tracker`);
 const base = DisplayObjectContainer;
 const __defaultBody = Symbol(`defaultBody`);
 const __isReady = `isready`;
-const __modalStack = new collections.List();
+const __modalStack = [];
 /**
  * A Modal is a lightweight container with absolute positioning added to an object.
  * It is attached to a specific position in parent screen-space, and can follow an object if attached to one.
@@ -151,7 +151,7 @@ class Modal extends base {
         this._ownsContent = false;
 
         this._parentModal = null;
-        this._subModals = new collections.List();
+        this._subModals = [];
 
     }
 
@@ -528,8 +528,8 @@ class Modal extends base {
             return true;
         }
 
-        for (let i = 0, n = this._subModals.count; i < n; i++) {
-            if (this._subModals.At(i).ChecksPointer()) { return true; }
+        for (let i = 0, n = this._subModals.length; i < n; i++) {
+            if (this._subModals[i].ChecksPointer()) { return true; }
         }
 
         return false;
@@ -537,14 +537,8 @@ class Modal extends base {
     }
 
     Close() {
-
-        while (!this._subModals.isEmpty) {
-            let child = this._subModals.Pop();
-            child.Close();
-        }
-
+        while (this._subModals.length) { this._subModals.pop().Close(); }
         this.Release();
-
     }
 
     _CleanUp() {

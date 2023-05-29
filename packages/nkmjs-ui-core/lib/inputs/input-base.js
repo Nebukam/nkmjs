@@ -4,7 +4,7 @@
  */
 
 const u = require("@nkmjs/utils");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
 const helpers = require(`../helpers`);
@@ -152,7 +152,7 @@ class BaseInput extends base {
     /**
      * @access protected
      * @description TODO
-     * @param {array} p_errorList 
+     * @param {Array} p_errorList 
      */
     _OnInputErrors(p_errorList) {
 

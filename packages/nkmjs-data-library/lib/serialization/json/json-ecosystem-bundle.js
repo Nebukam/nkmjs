@@ -26,11 +26,11 @@ class EcosystemBundleJSONSerializer extends DataBlockJSONSerializer {
             modelReferenceList = p_data.models.modelList,
             entriesList = {};
 
-        for (let i = 0, n = modelReferenceList.count; i < n; i++) {
+        for (let i = 0, n = modelReferenceList.length; i < n; i++) {
             let model = modelReferenceList.At(i),
                 library = p_data.entries.GetLibrary(model),
                 libraryList = library.entryList,
-                librarySize = libraryList.count;
+                librarySize = libraryList.length;
 
             modelList.push(this.__master.Serialize(model, p_options));
 

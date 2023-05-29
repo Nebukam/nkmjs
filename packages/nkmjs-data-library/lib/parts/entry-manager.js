@@ -2,7 +2,7 @@
 
 const nkm = require(`@nkmjs/core/nkmin`);
 
-const collections = nkm.collections;
+const col = nkm.collections;
 const u = nkm.u;
 const com = nkm.com;
 const data = nkm.data;
@@ -23,7 +23,7 @@ class EntryManager extends EcosystemPart {
     _Init() {
         super._Init();
         this._models = null;
-        this._libraryList = new collections.List();
+        this._libraryList = [];
         this._libraryMap = new Map();
     }
 
@@ -114,7 +114,7 @@ class EntryManager extends EcosystemPart {
     Clear() {
         super.Clear();
 
-        this._libraryList.ForEach((lib) => { lib.Release(); });
+        for (const lib of this._libraryList) { lib.Release(); }
         this._libraryList.Clear();
         this._libraryMap.Clear();
     }

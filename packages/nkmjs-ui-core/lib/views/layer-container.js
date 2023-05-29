@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const style = require("@nkmjs/style");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 
 const dom = require(`../utils-dom`);
@@ -32,7 +32,7 @@ class LayerContainer extends base {
     _Init() {
         super._Init();
         this._updateDepths = com.DelayedCall(this._Bind(this._UpdateLayerDepth));
-        this._layerList = new collections.List(0);
+        this._layerList = [];
     }
 
     // ----> DOM
@@ -89,14 +89,12 @@ class LayerContainer extends base {
     _UpdateLayerDepth() {
 
         let index = 0,
-            layerCount = this._layerList.count,
+            layerCount = this._layerList.length,
             lastLayer = null;
-
-        this._layerList
 
         for (let i = 0; i < layerCount; i++) {
             let
-                layer = this._layerList.At(i),
+                layer = this._layerList[i],
                 isTopLayer = false;
             lastLayer = layer;
             layer.layerSiblingsCount = layerCount;

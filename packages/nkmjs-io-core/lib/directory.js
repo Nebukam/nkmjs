@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const Resource = require(`./resource`);
 
@@ -22,8 +22,8 @@ class Directory extends Resource {
 
         this._requestRsc = null;
 
-        this._directories = new collections.List();
-        this._resources = new collections.List();
+        this._directories = [];
+        this._resources = [];
 
     }
 
@@ -54,8 +54,8 @@ class Directory extends Resource {
     Add(p_rsc) {
 
         let added = false;
-        if (p_rsc.isDir) { added = this._directories.Add(p_rsc); }
-        else { added = this._resources.Add(p_rsc); }
+        if (p_rsc.isDir) { added = this._directories.AddNew(p_rsc); }
+        else { added = this._resources.AddNew(p_rsc); }
 
         if (added) {
             //console.log(`${this._path} += ${p_rsc._path}`);
@@ -86,14 +86,12 @@ class Directory extends Resource {
      */
     ReleaseContent() {
 
-        let arr = this._resources.internalArray;
-        for (let i = 0, n = arr.length; i < n; i++) {
-            arr[arr.length - 1].Release();
+        for (let i = 0, n = this._resources.length; i < n; i++) {
+            this._resources.last.Release();
         }
 
-        arr = this._directories.internalArray;
-        for (let i = 0, n = arr.length; i < n; i++) {
-            let dir = arr[arr.length - 1];
+        for (let i = 0, n = this._directories.length; i < n; i++) {
+            let dir = this._directories.last;
             dir.ReleaseContent();
             dir.Release();
         }

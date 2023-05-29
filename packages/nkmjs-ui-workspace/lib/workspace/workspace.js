@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 const style = require("@nkmjs/style");
@@ -30,7 +30,7 @@ class Workspace extends base {
         this._placeholderViewClass = null;
         this._placeholderView = null;
 
-        this._cells = new collections.List();
+        this._cells = [];
         this._isEmpty = true;
         this._flags.Add(this, ui.FLAGS.EMPTY);
 
@@ -197,7 +197,7 @@ class Workspace extends base {
             // TODO : Find the active cell's catalog
             // For now just grab the first available catalog.
             let cat = null;
-            let n = localCatalog.count;
+            let n = localCatalog.length;
             let i = 0;
             while (cat === null || i < n) {
                 cat = localCatalog.At(i);
@@ -224,14 +224,14 @@ class Workspace extends base {
         if (this._cells.isEmpty) {
             isEmpty = true;
         } else {
-            this._cells.ForEach((cell) => {
+            for(const cell of this._cells){
                 if (!cell.isEmpty) {
                     isEmpty = false;
                     cell.visible = true;
                 } else {
                     cell.visible = false;
                 }
-            });
+            }
         }
 
         if (this._isEmpty === isEmpty) { return; }

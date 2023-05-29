@@ -22,7 +22,7 @@ class RectTracker {
         this._enabled = false;
         this._onObserved = p_callback;
 
-        for (let i = 0; i < p_elements.length; i++) { this.Add(p_elements[i]); }
+        for (const i of p_elements) { this.Add(i); }
     }
 
     Enable() {

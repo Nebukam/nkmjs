@@ -1,7 +1,7 @@
 'use strict';
 const nkm = require(`@nkmjs/core/nkmin`);
 
-const collections = nkm.collections;
+const col = nkm.collections;
 const com = nkm.com;
 
 const SIGNAL = require(`../signal`);
@@ -12,7 +12,7 @@ class UnresolvedReference extends com.Observable {
     _Init() {
         super._Init();
         this._uri = null;
-        this._dataList = new collections.DictionaryList();
+        this._dataList = new col.DictionaryList();
     }
 
     set uri(p_value) { this._uri = p_value; }

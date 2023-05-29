@@ -2,7 +2,7 @@
 
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const data = require(`@nkmjs/data-core`);
 const documents = require(`@nkmjs/documents`);
 const datacontrols = require(`@nkmjs/ui-data-controls`);
@@ -17,7 +17,7 @@ class FileExtBinder extends com.Observable {
     _Init() {
 
         super._Init();
-        this._bindings = new collections.DictionaryList();
+        this._bindings = new col.DictionaryList();
         this._queue = [];
         this._currentItem = null;
         this._processing = false;
@@ -138,12 +138,12 @@ class FileExtBinder extends com.Observable {
         this._currentItem = this._queue[0];
 
         let cbs = this._bindings.Get(this._currentItem.key);
-        if (!cbs || !cbs.count) { return this._ShiftQueue(); }
+        if (!cbs || !cbs.length) { return this._ShiftQueue(); }
 
         let piped = this._currentItem.path;
         console.log(`Processing path -> `, piped);
-        for (let i = 0, n = cbs.count; i < n; i++) {
-            let cb = cbs.At(i);
+        for (let i = 0, n = cbs.length; i < n; i++) {
+            let cb = cbs[i];
             piped = u.Call(cb, piped);
             if (!piped) { return this._ShiftQueue(); }
         }

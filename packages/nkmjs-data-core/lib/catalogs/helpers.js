@@ -53,7 +53,7 @@ module.exports = {
     /**
      * @description Creates a Catalog from a mockup object.
      * @param {CatalogItemOptions} p_rootOptions
-     * @param {array} [p_content] 
+     * @param {Array} [p_content] 
      * @param {*} [p_parent] 
      * @returns {data.core.Catalog}
      */

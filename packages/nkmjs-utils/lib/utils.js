@@ -270,10 +270,10 @@ module.exports = {
 
     /**
      * @description Add missing content from p_source into p_base (no duplicates)
-     * @param {array} p_base 
-     * @param {array} p_source 
+     * @param {Array} p_base 
+     * @param {Array} p_source 
      * @param {int} p_mode <0 unshift, >=0 push
-     * @returns {array}
+     * @returns {Array}
      */
     MergeArray: function (p_base, p_source, p_mode = 1) {
 
@@ -325,8 +325,8 @@ module.exports = {
     /**
      * @description Clone an Array.
      * Recursive.
-     * @param {array} p_base The base object to clone
-     * @returns {array} Clone of p_base
+     * @param {Array} p_base The base object to clone
+     * @returns {Array} Clone of p_base
      */
     CloneArray: function (p_base) {
         if (!CHECKS.isArray(p_base)) { throw new Error(`Cannot CloneArray the non-array '${p_base}'`); }
@@ -353,11 +353,11 @@ module.exports = {
      * @description Creates a diff of two array, and 'old' one and a 'new' one,
      * and outputs the result into two array (out & in) that must
      * be provided.
-     * @param {array} p_oldArray The old array to compare p_newArray against
-     * @param {array} p_newArray The new array to compare p_oldArray against
-     * @param {array} p_out Empty Array, will be filled with the items 
+     * @param {Array} p_oldArray The old array to compare p_newArray against
+     * @param {Array} p_newArray The new array to compare p_oldArray against
+     * @param {Array} p_out Empty Array, will be filled with the items 
      * that are present in p_oldArray, but not in p_newArray
-     * @param {array} p_in Empty Array, will be filled with the items 
+     * @param {Array} p_in Empty Array, will be filled with the items 
      * that are not in p_oldArray, but present in p_newArray
      */
     ArrayDiff: function (p_oldArray, p_newArray, p_out, p_in) {
@@ -394,11 +394,11 @@ module.exports = {
     /**
      * @description Creates a diff of two array, and 'old' one and a 'new' one,
      * and call functions for each item that has been either added or removed
-     * @param {array} p_oldArray The old array to compare p_newArray against
-     * @param {array} p_newArray The new array to compare p_oldArray against
-     * @param {array} p_outCallback Will be called each time an item
+     * @param {Array} p_oldArray The old array to compare p_newArray against
+     * @param {Array} p_newArray The new array to compare p_oldArray against
+     * @param {Array} p_outCallback Will be called each time an item
      * is present in p_oldArray, but not in p_newArray
-     * @param {array} p_inCallback Will be called each time an item
+     * @param {Array} p_inCallback Will be called each time an item
      * is not in p_oldArray, but present in p_newArray
      */
     ArrayDiffCallbacks: function (p_oldArray, p_newArray, p_outCallback, p_inCallback) {
@@ -496,7 +496,7 @@ module.exports = {
     /**
      * @description Empty an array and clears any value that is an object or an array itself.
      * Recursive.
-     * @param {array} p_arr The object to be emptied
+     * @param {Array} p_arr The object to be emptied
      */
     DeepClearArray: function (p_arr) {
         let value = null;
@@ -554,8 +554,8 @@ module.exports = {
 
     /**
      * @description Checks whether two arrays contains exactly the same values at the same index
-     * @param {array} p_source The array to test
-     * @param {array} p_other The array to test against
+     * @param {Array} p_source The array to test
+     * @param {Array} p_other The array to test against
      * @returns {boolean} True if the arrays contains the exact same values, otherwise false
      */
     isSameArray: function (p_source, p_other) {
@@ -594,7 +594,7 @@ module.exports = {
 
     /**
      * @description Join the content of an array from/to specific indices
-     * @param {array} p_array The array to join
+     * @param {Array} p_array The array to join
      * @param {string} p_joinStr string to join with
      * @param {number} p_fromIndex Start join index
      * @param {number} p_toIndex End join index

@@ -1,6 +1,6 @@
 'use strict';
 
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const u = require("@nkmjs/utils");
 
 const NFOS = require(`../nfos`);
@@ -16,7 +16,7 @@ const BINDINGS = require(`../bindings`);
 /**
  * @typedef BindingDefinition
  * @property {*} context i.e 'Kitchen'
- * @property {array} kvps An array of {@link BindingKVP}
+ * @property {Array} kvps An array of {@link BindingKVP}
  */
 
 /**

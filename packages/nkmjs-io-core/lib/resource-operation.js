@@ -121,7 +121,7 @@ class ResourceOperation extends com.Observable {
      * @param {function} p_options.error
      * @param {function} p_options.any
      * 
-     * @param {array} args to be passed to p_fn
+     * @param {Array} args to be passed to p_fn
      */
     Prepare(p_rsc, p_fn, p_states, p_options = null, args = []) {
         this._preparationOptions = p_options;

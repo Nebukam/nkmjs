@@ -1,4 +1,4 @@
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require(`@nkmjs/common`);
 const services = require(`@nkmjs/services`);
 
@@ -11,7 +11,7 @@ class BaseIOService extends services.ServiceBase {
         super._Init();
 
         this._map = {};
-        this._transceivers = new collections.List();
+        this._transceivers = [];
         this._defaultConfig = null;
         this._config = null;
 
@@ -100,7 +100,7 @@ class BaseIOService extends services.ServiceBase {
         if (!this._starting) { this._registeredTransceivers++; }
 
         let newTransceiver = com.Rent(this.constructor.__transceiverClass);
-        this._transceivers.Add(newTransceiver)
+        this._transceivers.Add(newTransceiver);
 
         newTransceiver.service = this;
         newTransceiver.root = p_config.root;

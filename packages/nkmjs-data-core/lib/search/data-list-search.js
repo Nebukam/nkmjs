@@ -211,8 +211,8 @@ class DataListSearch extends SimpleData {
 
         let length = this._advanceOps;
 
-        if (this._searchCovered + length > this._sourceList.count) {
-            length = this._sourceList.count - this._searchCovered;
+        if (this._searchCovered + length > this._sourceList.length) {
+            length = this._sourceList.length - this._searchCovered;
         }
 
         if (length <= 0) {
@@ -237,7 +237,7 @@ class DataListSearch extends SimpleData {
 
             this._searchCovered += length;
 
-            this.Broadcast(SIGNAL.SEARCH_PROGRESS, this._searchCovered / this._sourceList.count);
+            this.Broadcast(SIGNAL.SEARCH_PROGRESS, this._searchCovered / this._sourceList.length);
 
             this._delayedAdvance.Schedule();
 

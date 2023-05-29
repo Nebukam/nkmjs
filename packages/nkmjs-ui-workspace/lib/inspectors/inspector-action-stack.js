@@ -118,11 +118,11 @@ class ActionStackInspector extends base {
     }
 
     _OnActionAdded(p_stack, p_action) {
-        this._itemStreamer.itemCount = p_stack.count;
+        this._itemStreamer.itemCount = p_stack.length;
     }
 
     _OnActionRemoved(p_stack, p_action) {
-        this._itemStreamer.itemCount = p_stack.count;
+        this._itemStreamer.itemCount = p_stack.length;
     }
 
     _OnRequestRangeUpdate(p_streamer, p_infos) {

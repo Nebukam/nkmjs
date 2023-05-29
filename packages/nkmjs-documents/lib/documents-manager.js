@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require("@nkmjs/utils");
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
 const actions = require("@nkmjs/actions");
@@ -27,12 +27,12 @@ class DOCUMENTS extends com.Observable {// PORT_TO_MODULE
 
         this._definitions = [];
 
-        this._dataMap = new collections.DictionaryList();
-        this._rscMap = new collections.DictionaryList();
-        this._defaultCommands = new collections.KDictionary();
+        this._dataMap = new col.DictionaryList();
+        this._rscMap = new col.DictionaryList();
+        this._defaultCommands = new col.KDictionary();
 
-        this._documents = new collections.List();
-        this._dirtyDocuments = new collections.List();
+        this._documents = [];
+        this._dirtyDocuments = [];
 
         this._documentObserver = new com.signals.Observer();
         this._documentObserver
@@ -55,7 +55,7 @@ class DOCUMENTS extends com.Observable {// PORT_TO_MODULE
     get lastDirtyDoc() { return this._dirtyDocuments.last; }
 
     HasUnsavedDocuments() {
-        return !this._dirtyDocuments.isEmpty;
+        return !this._dirtyDocuments.length;
     }
 
     /**
@@ -144,8 +144,8 @@ class DOCUMENTS extends com.Observable {// PORT_TO_MODULE
 
         p_path = u.SHORT(p_path);
 
-        for (let i = 0, n = this._documents.count; i < n; i++) {
-            let doc = this._documents.At(i);
+        for (let i = 0, n = this._documents.length; i < n; i++) {
+            let doc = this._documents[i];
             if (this._CheckMatch(doc, p_data, p_docType, p_path)) { return doc; }
         }
 

@@ -43,7 +43,7 @@ class CatalogWatcher extends com.Observable {
      * @type {number}
      * @customtag read-only
      */
-    get count() { return this._map.size; }
+    get length() { return this._map.size; }
 
     /**
      * @description TODO
@@ -240,7 +240,7 @@ class CatalogWatcher extends com.Observable {
     /**
      * @description TODO
      * @param {*} p_value 
-     * @returns {array}
+     * @returns {Array}
      */
     GetValueKeys(p_value) {
         let keys = this._map.keys,

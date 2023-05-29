@@ -102,7 +102,7 @@ class ControlBuilder {
 
     /**
      * { cl:class, css:'class', member:'member', options:{} }
-     * @param {array} p_controls 
+     * @param {Array} p_controls 
      */
     Build(p_controls, p_host = null) {
 

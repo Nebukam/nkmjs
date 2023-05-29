@@ -1,6 +1,6 @@
 'use strict';
 
-const isVoid = require(`./helpers/isVoid`);
+const isVoid = require(`./array-ext`).isVoid;
 
 /**
  * A list of item that does not accept duplicates nor null values.
@@ -15,7 +15,7 @@ class List {
 
     /**
      * @description TODO
-     * @type {array}
+     * @type {Array}
      * @customtag read-only
      */
     get internalArray() { return this._array; }
@@ -32,7 +32,7 @@ class List {
      * @type {number}
      * @customtag read-only
      */
-    get count() { return this._array.length; }
+    get length() { return this._array.length; }
 
     /**
      * @description TODO
@@ -66,6 +66,18 @@ class List {
      * @returns {boolean} True if the item has been added to the list, otherwise false.
     */
     Add(p_item) {
+        if (isVoid(p_item)) { return false; }
+        if (this._array.includes(p_item)) { return p_item; }
+        this._array.push(p_item);
+        return p_item;
+    }
+
+    /**
+     * @description TODO
+     * @param {*} p_item 
+     * @returns {boolean} True if the item has been added to the list, otherwise false.
+    */
+    AddNew(p_item) {
         if (isVoid(p_item)) { return false; }
         if (this._array.includes(p_item)) { return false; }
         this._array.push(p_item);

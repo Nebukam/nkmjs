@@ -105,7 +105,7 @@ class SearchBar extends base {
     _OnSearchProgress(p_progress) {
         if (this._status) {
             this._status.visible = this.activeSearch;
-            this._status.Progress(p_progress, this._data.count);
+            this._status.Progress(p_progress, this._data.length);
         }
         this._progressBar.progress = p_progress;
     }

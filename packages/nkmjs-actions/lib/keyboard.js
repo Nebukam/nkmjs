@@ -1,6 +1,6 @@
 'use strict';
 
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const KEYS = require(`./keyboard-keys`);
@@ -12,8 +12,8 @@ class KEYBOARD extends com.Observable {
 
     _Init() {
         super._Init();
-        this._keystrokes = new collections.List();
-        this._activeKeystrokes = new collections.List();
+        this._keystrokes = [];
+        this._activeKeystrokes = [];
         this._activeChain = [];
     }
 
@@ -42,24 +42,22 @@ class KEYBOARD extends com.Observable {
 
     _BuildActiveKeystrokes() {
 
-        let an = this._activeKeystrokes.count;
+        for (const k of this._activeKeystrokes) { k.Deactivate(); }
+        this._activeKeystrokes.length = 0;
 
-        this._activeKeystrokes.ForEach(k => { k.Deactivate() });
-        this._activeKeystrokes.Clear();
-
-        this._keystrokes.ForEach(k => {
+        for (const k of this._keystrokes) {
             if (k.GetMatch(this._activeChain) >= 0) { this._activeKeystrokes.Unshift(k); } // FILO
-        });
+        }
 
     }
 
     _UpdateActiveKeystrokes() {
 
-        if (this._activeKeystrokes.count == 0) { this._BuildActiveKeystrokes(); }
+        if (!this._activeKeystrokes.length) { this._BuildActiveKeystrokes(); }
 
-        for (let i = 0; i < this._activeKeystrokes.count; i++) {
+        for (let i = 0; i < this._activeKeystrokes.length; i++) {
 
-            let k = this._activeKeystrokes.At(i),
+            let k = this._activeKeystrokes[i],
                 match = k.GetMatch(this._activeChain);
 
             if (match < 0) { this._activeKeystrokes.Remove(k); i--; }

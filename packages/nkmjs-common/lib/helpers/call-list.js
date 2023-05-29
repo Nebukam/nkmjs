@@ -1,6 +1,6 @@
 'use strict';
 
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const u = require("@nkmjs/utils");
 
 const Disposable = require(`../disposable`);
@@ -13,24 +13,24 @@ const Disposable = require(`../disposable`);
  * @hideconstructor
  * @memberof common.helpers
  */
-class CallList extends Disposable{
+class CallList extends Disposable {
 
     constructor() {
         super();
-        this._list = new collections.List(0);
+        this._list = [];
     }
 
     /**
      * @description The number of functions currently registered in the list
      * @type {number}
      */
-    get count() { return this._list.count; }
+    get length() { return this._list.length; }
 
-    Has(p_fn) { return this._list.Contains(p_fn); }
+    Has(p_fn) { return this._list.includes(p_fn); }
 
     /**
      * @description Add a function to the list.  
-     * Note that the CallList use a {@link collections.List} internally,
+     * Note that the CallList use {@link col.Add} internally,
      * and as such **does not accept duplicate entries**.
      * @param {function} p_fn 
      * @returns {common.helpers.CallList} self
@@ -60,7 +60,7 @@ class CallList extends Disposable{
      * @returns {common.helpers.CallList} self
      */
     Notify(...args) {
-        this._list.ForEach((item) => { item.apply(null, args); });
+        for (const fn of this._list) { fn.apply(null, args); }
         return this;
     }
 
@@ -71,11 +71,11 @@ class CallList extends Disposable{
      * calllist.Notify().Clear();
      */
     Clear() {
-        this._list.Clear();
+        this._list.length = 0;
         return this;
     }
 
-    _CleanUp(){
+    _CleanUp() {
         this.Clear();
         super._CleanUp();
     }

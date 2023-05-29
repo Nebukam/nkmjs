@@ -3,7 +3,7 @@
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const data = require(`@nkmjs/data-core`);
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 
 const SIGNAL = require(`../signal`);
 const dom = require(`../utils-dom`);

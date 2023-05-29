@@ -2,7 +2,7 @@
 
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const ui = require("@nkmjs/ui-core");
 
 const dom = require(`../dom`);

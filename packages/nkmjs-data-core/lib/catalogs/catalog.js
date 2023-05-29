@@ -79,7 +79,7 @@ class Catalog extends base {
      * @type {number}
      * @customtag read-only
      */
-    get count() { return this._items.length; }
+    get length() { return this._items.length; }
 
     /**
      * @access protected

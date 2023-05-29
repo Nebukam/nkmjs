@@ -55,9 +55,9 @@ let
         }
     );
 
-assert.ok((newEcosystem.models._factory._itemRep._itemList.IndexOf(anotherModel) === 0), `First model is not at index 0.`);
+assert.ok((newEcosystem.models._factory._itemRep._itemList.indexOf(anotherModel) === 0), `First model is not at index 0.`);
 anotherModel.base = thirdModel;
-assert.ok((newEcosystem.models._factory._itemRep._itemList.IndexOf(anotherModel) === 1), `Extending model has not moved after its base in the list.`);
+assert.ok((newEcosystem.models._factory._itemRep._itemList.indexOf(anotherModel) === 1), `Extending model has not moved after its base in the list.`);
 
 console.log(thirdModel.GetSlotByName(fName_map).descriptor);
 

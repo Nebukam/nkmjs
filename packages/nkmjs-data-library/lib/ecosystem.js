@@ -12,7 +12,7 @@
 
 const nkm = require(`@nkmjs/core/nkmin`);
 
-const collections = nkm.collections;
+const col = nkm.collections;
 const u = nkm.u;
 const com = nkm.com;
 const data = nkm.data;

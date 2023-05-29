@@ -1,4 +1,4 @@
-const collections = require("@nkmjs/collections");
+const col = require("@nkmjs/collections");
 const u = require("@nkmjs/utils");
 const com = require("@nkmjs/common");
 const style = require(`@nkmjs/style`);
@@ -25,7 +25,7 @@ class OverlayHandler extends base {
         super._Init();
 
         this._overlayMap = new Map();
-        this._overlayList = new collections.List(0);
+        this._overlayList = [];
         this._Bind(this._OnOverlayOptionsConsumed);
 
         this.CaptureLocalRequest(REQUEST.OVERLAY);

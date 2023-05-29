@@ -1,6 +1,6 @@
 const com = require(`@nkmjs/common`);
 const env = require(`@nkmjs/environment`);
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const services = require(`@nkmjs/services`);
 
 class WS extends services.ServiceBase {

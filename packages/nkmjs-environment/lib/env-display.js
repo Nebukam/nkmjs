@@ -46,7 +46,7 @@ ENV_DISPLAY.STANDALONE = `standalone`;
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  */
 ENV_DISPLAY.displayModes = [
@@ -80,7 +80,7 @@ ENV_DISPLAY.COLORSCHEME_NO_PREFERENCES = `no-preferences`;
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  */
 ENV_DISPLAY.colorSchemes = [
@@ -113,7 +113,7 @@ ENV_DISPLAY.DESKTOP = `desktop`;
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  */
 ENV_DISPLAY.displayTypes = [
@@ -124,7 +124,7 @@ ENV_DISPLAY.displayTypes = [
 
 /**
  * @description TODO
- * @type {array}
+ * @type {Array}
  * @customtag read-only
  */
 ENV_DISPLAY.displayTypes_width = [

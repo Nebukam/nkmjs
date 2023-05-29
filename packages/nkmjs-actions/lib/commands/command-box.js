@@ -2,7 +2,7 @@
 
 
 const u = require("@nkmjs/utils");
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 
 const Command = require(`./command`);
 
@@ -21,7 +21,7 @@ class CommandBox {
         this._context = null;
         this._emitter = p_emitter;
 
-        this._commandList = new collections.List(0);
+        this._commandList = [];
         this._commandHooks = new Map();
         this._onRegisterCmd = p_onRegister;
 
@@ -33,7 +33,7 @@ class CommandBox {
 
     /**
      * @description TODO
-     * @type {collections.List}
+     * @type {Array}
      * @customtag read-only
      */
     get list() { return this._commandList; }
@@ -46,13 +46,13 @@ class CommandBox {
     set context(p_value) {
         if (this._context == p_value) { return; }
         this._context = p_value;
-        this._commandList.ForEach((cmd) => { cmd.context = p_value; });
+        for (const cmd of this._commandList) { cmd.context = p_value; }
     }
 
     //#endregion
 
     RefreshAvailability() {
-        this._commandList.ForEach((cmd) => { cmd.enabled = cmd.CanExecute(this._context) });
+        for (const cmd of this._commandList) { cmd.enabled = cmd.CanExecute(this._context); }
     }
 
     //#region Command management
@@ -62,13 +62,13 @@ class CommandBox {
      * @param {function} p_class The constructor of Command to be created
      * @param {string} p_name Name of the Command
      * @param {string} p_icon Icon of the Command
-     * @param {array} p_hooks Auto-hook for the Command, in the format { evt:`SIGNAL`, fn:`function`, thisArg:`function's this (optional)` }. 
+     * @param {Array} p_hooks Auto-hook for the Command, in the format { evt:`SIGNAL`, fn:`function`, thisArg:`function's this (optional)` }. 
      * Events are either generic Command events (COMMAND_SIGNAL.xxx) or custom ones, if any.
      * @returns {actions.Command} The newly created Command.
      */
     Create(p_class, p_options = null) {
 
-        if (!p_options) { p_options = u.tils.EMPTY_OBJECT; }
+        p_options = p_options || u.tils.EMPTY_OBJECT;
 
         let cmd = u.isFunc(p_class) ? Command.Rent(p_class, p_options) : p_class;
         this._Register(cmd, p_options.hooks || null);
@@ -83,7 +83,7 @@ class CommandBox {
 
     Add(p_cmd, p_options = null) {
 
-        if (!p_options) { p_options = u.tils.EMPTY_OBJECT; }
+        p_options = p_options || u.tils.EMPTY_OBJECT;
 
         this._Register(p_cmd, p_options.hooks || null);
 
@@ -104,20 +104,22 @@ class CommandBox {
      * @access protected
      * @description TODO
      * @param {actions.Command} p_cmd 
-     * @param {array} [p_hooks] {evt:'', fn:'', thisArg:''}
+     * @param {Array} [p_hooks] {evt:'', fn:'', thisArg:''}
      */
     _Register(p_cmd, p_hooks = null) {
-        if (this._commandList.Add(p_cmd)) {
-            if (p_hooks) {
-                this._commandHooks.set(p_cmd, p_hooks);
-                for (let i = 0, n = p_hooks.length; i < n; i++) {
-                    let hook = p_hooks[i];
-                    p_cmd.Watch(hook.evt, hook.fn, (hook.thisArg || null));
-                }
+
+        if (!this._commandList.AddNew(p_cmd)) { return; }
+
+        if (p_hooks) {
+            this._commandHooks.set(p_cmd, p_hooks);
+            for (let i = 0, n = p_hooks.length; i < n; i++) {
+                let hook = p_hooks[i];
+                p_cmd.Watch(hook.evt, hook.fn, (hook.thisArg || null));
             }
-            p_cmd.emitter = this._emitter;
-            this._OnCommandRegistered(p_cmd);
         }
+        p_cmd.emitter = this._emitter;
+        this._OnCommandRegistered(p_cmd);
+
     }
 
     /**
@@ -135,18 +137,20 @@ class CommandBox {
      * @param {actions.Command} p_cmd 
      */
     RemoveCommand(p_cmd) {
-        if (this._commandList.Remove(p_cmd)) {
-            let hooks = this._commandHooks.get(p_cmd);
-            if (hooks) {
-                this._commandHooks.delete(p_cmd);
-                for (let i = 0, n = hooks.length; i < n; i++) {
-                    let hook = hooks[i];
-                    p_cmd.Unwatch(hook.evt, hook.fn, (hook.thisArg || null));
-                }
+
+        if (!this._commandList.Remove(p_cmd)) { return; }
+
+        let hooks = this._commandHooks.get(p_cmd);
+        if (hooks) {
+            this._commandHooks.delete(p_cmd);
+            for (let i = 0, n = hooks.length; i < n; i++) {
+                let hook = hooks[i];
+                p_cmd.Unwatch(hook.evt, hook.fn, (hook.thisArg || null));
             }
-            //TODO : Retrieve creation options to clear up idMap
-            this._OnCommandRemoved(p_cmd);
         }
+        //TODO : Retrieve creation options to clear up idMap
+        this._OnCommandRemoved(p_cmd);
+
     }
 
     /**
@@ -154,9 +158,7 @@ class CommandBox {
      * @description TODO
      * @param {actions.Command} p_cmd 
      */
-    _OnCommandRemoved(p_cmd) {
-        p_cmd.context = null;
-    }
+    _OnCommandRemoved(p_cmd) { p_cmd.context = null; }
 
 
     //#endregion

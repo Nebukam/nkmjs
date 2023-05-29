@@ -1,7 +1,7 @@
 'use strict';
 
 const u = require(`@nkmjs/utils`);
-const collections = require(`@nkmjs/collections`);
+const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 const env = require(`@nkmjs/environment`);
 const actions = require(`@nkmjs/actions`);

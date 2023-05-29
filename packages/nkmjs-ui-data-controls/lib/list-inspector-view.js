@@ -59,7 +59,7 @@ class ListInspectorView extends base {
         this._OnDataTypeChanged(old);
     }
 
-    get itemCount() { return this._data ? this._data.stack.count : 0; }
+    get itemCount() { return this._data ? this._data.stack.length : 0; }
 
     _OnDataTypeChanged(p_oldValue){
 
