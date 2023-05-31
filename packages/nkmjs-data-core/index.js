@@ -15,6 +15,7 @@ module.exports = {
     // hoist ./lib/data/
     SIMPLEX:__SIMPLEX,
     DataBlock: require(`./lib/data/data-block`),
+    DataList: require(`./lib/data/data-list`),
     SimpleDataBlock: require(`./lib/data/simple-data-block`),
     DataFactory: require(`./lib/data/data-factory`),
     Metadata: require(`./lib/data/metadata`),

@@ -43,9 +43,7 @@ class Observer extends Observable {
     Enable() {
         if (this._isEnabled) { return false; }
         this._isEnabled = true;
-        for (let i = 0, n = this._targets.length; i < n; i++) {
-            this._WatchAll(this._targets[i]);
-        }
+        for (const target of this._targets) { this._WatchAll(target); }
         return true;
     }
 
@@ -55,9 +53,7 @@ class Observer extends Observable {
     Disable() {
         if (this._isEnabled) { return false; }
         this._isEnabled = false;
-        for (let i = 0, n = this._targets.length; i < n; i++) {
-            this._UnwatchAll(this._targets[i]);
-        }
+        for (const target of this._targets) { this._UnwatchAll(target); }
         return true;
     }
 
@@ -69,15 +65,12 @@ class Observer extends Observable {
      * @description Register a signal subscription
      * @param {Symbol} p_evt 
      * @param {function} p_fn 
-     * @param {*} p_subscriber 
+     * @param {*} p_watcher 
      */
-    Hook(p_evt, p_fn, p_subscriber = null) {
-        this._hooks.push({ evt: p_evt, thisArg: p_subscriber, fn: p_fn });
-        if (this._isEnabled) {
-            for (let i = 0, n = this._targets.length; i < n; i++) {
-                this._targets[i].Watch(p_evt, p_fn, p_subscriber);
-            }
-        }
+    Hook(p_evt, p_fn, p_watcher = null) {
+        this._hooks.push({ evt: p_evt, thisArg: p_watcher, fn: p_fn });
+        if (!this._isEnabled) { return this; }
+        for (const target of this._targets) { target.Watch(p_evt, p_fn, p_watcher); }
         return this;
     }
 
@@ -85,23 +78,22 @@ class Observer extends Observable {
      * @description Unregister a signal subscription
      * @param {Symbol} p_evt 
      * @param {function} p_fn 
-     * @param {*} p_subscriber 
+     * @param {*} p_watcher 
      */
-    Unhook(p_evt, p_fn, p_subscriber = null) {
-        for (let i = 0, n = this._hooks.length; i < n; i++) {
+    Unhook(p_evt, p_fn, p_watcher = null) {
+
+        for (let i = 0; i < this._hooks.length; i++) {
             let hook = this._hooks[i];
-            if (hook.evt === p_evt
-                && hook.thisArg === p_subscriber
-                && hook.fn === p_fn) {
+            if (hook.evt === p_evt && hook.thisArg === p_watcher && hook.fn === p_fn) {
                 this._hooks.splice(i, 1);
-                i--; n--;
-                if (this._isEnabled) {
-                    for (let i = 0, n = this._targets.length; i < n; i++) {
-                        this._targets[i].Unwatch(p_evt, p_fn, p_subscriber);
-                    }
-                }
+                i--;
             }
         }
+
+        if (this._isEnabled) {
+            for (const target of this._targets) { target.Unwatch(p_evt, p_fn, p_watcher); }
+        }
+
         return this;
     }
 
@@ -131,9 +123,7 @@ class Observer extends Observable {
     Observe(p_target) {
         if (!p_target) { throw new Error(`Target cannot be null.`); }
         if (!isObservable(p_target)) { return p_target; } //console.warn(`Attempting to observe a non-observable target : `, this);
-        if (this._targets.includes(p_target)) { return p_target; }
-        this._targets.push(p_target);
-        if (this._isEnabled) { this._WatchAll(p_target); }
+        if (this._targets.AddNew(p_target)) { this._WatchAll(p_target); }
         return p_target;
     }
 
@@ -156,10 +146,7 @@ class Observer extends Observable {
     Unobserve(p_target) {
         if (!p_target) { throw new Error(`Target cannot be null.`); }
         if (!isObservable(p_target)) { return p_target; }
-        let index = this._targets.indexOf(p_target);
-        if (index === -1) { return p_target; }
-        this._targets.splice(index, 1);
-        if (this._isEnabled) { this._UnwatchAll(p_target); }
+        if (this._targets.Remove(p_target)) { this._UnwatchAll(p_target); }
         return p_target;
     }
 
@@ -168,6 +155,7 @@ class Observer extends Observable {
      * @param {*} p_target 
      */
     _WatchAll(p_target) {
+        if (!this._isEnabled) { return; }
         for (const hook of this._hooks) { p_target.Watch(hook.evt, hook.fn, hook.thisArg); };
     }
 
@@ -176,7 +164,7 @@ class Observer extends Observable {
      * @param {*} p_target 
      */
     _UnwatchAll(p_target) {
-        if (p_target.isReleasing) { return; }
+        if (!this._isEnabled || p_target.isReleasing) { return; }
         for (const hook of this._hooks) { p_target.Unwatch(hook.evt, hook.fn, hook.thisArg); };
     }
 

@@ -5,7 +5,7 @@ const col = require(`@nkmjs/collections`);
 const com = require("@nkmjs/common");
 
 const CTX = require(`./context`);
-const DataList = require("./helpers/data-list");
+const DataList = require("./data/data-list");
 
 const IDS = require(`./ids`);
 const TYPES = require(`./types`);

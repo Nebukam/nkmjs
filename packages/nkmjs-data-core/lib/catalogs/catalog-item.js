@@ -35,7 +35,7 @@ class CatalogItem extends base {
         this._isFirstUpdate = true;
 
         this._delayedUpdate = com.DelayedCall(this._Bind(this._OnUpdate));
-        
+
     }
 
     /**
@@ -74,12 +74,15 @@ class CatalogItem extends base {
      * @type {data.core.catalogs.Catalog}
      */
     set parent(p_value) {
+        
         if (this._parent === p_value) { return; }
+        
         let oldValue = this._parent;
         this._parent = p_value;
 
-        if (oldValue) { oldValue.Remove(this); }
-        if (p_value) { p_value.Add(this); }
+        oldValue?.Remove(this);
+        p_value?.Add(this);
+
     }
     get parent() { return this._parent; }
 

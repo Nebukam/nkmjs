@@ -128,7 +128,7 @@ class POOL {
         let list = _globalPool.Get(keyName, -1);
         if (list && !list.isEmpty) {
             list.forEach(item => { item.Dismantle?.(); });
-            list.Clear();
+            list.length = 0;
         }
     }
 

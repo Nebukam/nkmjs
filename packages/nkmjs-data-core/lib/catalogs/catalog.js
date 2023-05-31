@@ -113,10 +113,7 @@ class Catalog extends base {
      * @param {number} p_index the item's index.
      * @returns {data.core.catalogs.CatalogItem|data.core.catalogs.Catalog} The item present at the given index. Otherwise throws an out-of-bound error.
      */
-    At(p_index) {
-        if (this._items.length <= p_index) { throw new Error(`Argument error : Catalog index outside boundaries.`); }
-        return this._items[p_index];
-    }
+    At(p_index) { return this._items[p_index]; }
 
     /**
      * @description Loops through all items in Catalog. Callback should match the signature :
@@ -125,35 +122,9 @@ class Catalog extends base {
      * @param {object} [p_thisArg]
      * @param {boolean} [p_reverse]
      */
-    ForEach(p_fn, p_thisArg = null, p_reverse = false) {
-
-
-        let n = this._items.length;
-
-        if (p_thisArg) {
-            if (p_reverse) {
-                for (let i = n - 1; i >= 0; i--) {
-                    p_fn.call(p_thisArg, this._items[i], i);
-                }
-            }
-            else {
-                for (let i = 0; i < n; i++) {
-                    p_fn.call(p_thisArg, this._items[i], i);
-                }
-            }
-        }
-        else {
-            if (p_reverse) {
-                for (let i = n - 1; i >= 0; i--) {
-                    p_fn.call(null, this._items[i], i);
-                }
-            }
-            else {
-                for (let i = 0; i < n; i++) {
-                    p_fn.call(null, this._items[i], i);
-                }
-            }
-        }
+    ForEach(p_fn, p_thisArg = null) {
+        let i = 0;
+        for (const item of this._items) { p_fn.call(p_thisArg, item, i++); }
     }
 
     //#region Child management
@@ -165,19 +136,16 @@ class Catalog extends base {
      */
     GetOrCreateCatalog(p_options) {
 
-        let catalogName = u.isString(p_options) ? p_options : p_options[com.IDS.NAME];
+        let cName = u.isString(p_options) ? p_options : p_options[com.IDS.NAME];
 
         let list = this._items,
-            catalog = null;
+            catalog = this._items.find(item => { return u.isInstanceOf(item, Catalog) && item.name === cName; });
 
-        for (let i = 0, n = list.length; i < n; i++) {
-            catalog = list[i];
-            if (u.isInstanceOf(catalog, Catalog) && catalog.name === catalogName) { return catalog; }
-        }
+        if (catalog) { return catalog; }
 
         catalog = com.Rent(Catalog.__getItemClass(p_options, true, this));
         catalog.options = u.tils.Ensure(u.isObject(p_options) ? p_options : {}, {
-            [com.IDS.NAME]: catalogName,
+            [com.IDS.NAME]: cName,
             [com.IDS.ICON]: `directory`
         });
 
@@ -243,10 +211,8 @@ class Catalog extends base {
 
         if (!u.isInstanceOf(p_item, CatalogItem)) { throw new Error(`Cannot Add a non-CatalogItem (${p_item}) to Catalog.`); }
 
-        if (this._items.includes(p_item)) { return null; }
+        if (!this._items.AddNew(p_item)) { return null; }
 
-        this._items.push(p_item);
-        
         p_item.parent = this;
         p_item.rootCatalog = this._rootCatalog;
         p_item.rootDistance = this._rootDistance + 1;
@@ -276,21 +242,10 @@ class Catalog extends base {
      * @param {data.core.CatalogItem} p_item 
      */
     Remove(p_item) {
-        if (!u.isInstanceOf(p_item, CatalogItem)) { return; }
 
-        let index = this._items.indexOf(p_item);
-        if (index === -1) { return; }
+        if (!u.isInstanceOf(p_item, CatalogItem) ||
+            !this._items.Remove(p_item)) { return; }
 
-        this._items.splice(index, 1);
-        this._OnItemRemoved(p_item, index);
-    }
-
-    /**
-     * @access protected
-     * @description Callback when an item is removed from this catalog
-     * @param {data.core.CatalogItem} p_item 
-     */
-    _OnItemRemoved(p_item, p_index) {
         this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, p_index);
 
         if (this._rootCatalog) {
@@ -301,10 +256,9 @@ class Catalog extends base {
 
         if (p_item.parent === this) {
             p_item.parent = null;
-            if (p_item.autoRelease) {
-                p_item.Release();
-            }
+            if (p_item.autoRelease) { p_item.Release(); }
         }
+
     }
 
     /**
@@ -376,7 +330,7 @@ class Catalog extends base {
      * @description Clears the catalog and releases all items
      */
     Clear() {
-        while (this._items != 0) { this._items.pop().Release(); }
+        while (this._items.length) { this._items.pop().Release(); }
         this._delayedSort.Cancel();
     }
 

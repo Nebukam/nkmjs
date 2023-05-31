@@ -77,12 +77,9 @@ class Command extends com.helpers.InfosObjectEx {
         if (this._emitter === p_value) { return; }
         let oldEmitter = this._emitter;
         this._emitter = p_value;
-        if (oldEmitter) {
-            oldEmitter.Unwatch(com.SIGNAL.RELEASED, this._OnEmitterReleased, this);
-        }
-        if (p_value) {
-            p_value.Watch(com.SIGNAL.RELEASED, this._OnEmitterReleased, this);
-        }
+
+        oldEmitter?.Unwatch(com.SIGNAL.RELEASED, this._OnEmitterReleased, this);
+        p_value?.Watch(com.SIGNAL.RELEASED, this._OnEmitterReleased, this);
     }
 
     get shortcut() { return this._shortcut; }

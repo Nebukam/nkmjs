@@ -267,7 +267,7 @@ class OptionsDistribute {
      * @description Resets the handler, removing all registered hooks.
      */
     Clear() {
-        this._hooks.Clear();
+        this._hooks.length = 0;
         this._defaults = null;
     }
 

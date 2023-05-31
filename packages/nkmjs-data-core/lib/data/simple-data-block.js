@@ -5,7 +5,6 @@ const com = require("@nkmjs/common");
 
 const DataBlock = require(`./data-block`);
 const SIMPLEX = require(`../simplex`);
-const DataList = require("../helpers/data-list");
 
 const __noResolution = Object.freeze([]);
 

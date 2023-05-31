@@ -8,7 +8,7 @@ const IDS = require(`../ids`);
 const SIMPLEX = require(`../simplex`);
 
 const SimpleData = require(`../data/simple-data-block`);
-const DataList = require(`../helpers/data-list`);
+const DataList = require(`../data/data-list`);
 const DataListProxy = require("../helpers/data-list-proxy");
 
 class DataListSearch extends SimpleData {

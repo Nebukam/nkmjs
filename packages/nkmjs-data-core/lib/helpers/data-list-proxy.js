@@ -8,7 +8,7 @@ const com = require("@nkmjs/common");
 const col = require(`@nkmjs/collections`);
 
 const SIGNAL = require(`../signal`);
-const DataList = require(`./data-list`);
+const DataList = require(`../data/data-list`);
 
 /**
  * @description Exists for custom sorting purposes only
