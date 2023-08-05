@@ -28,7 +28,7 @@ const itemFull = { 'flex': '1 1 100%', };
 const itemLarge = { 'flex': '1 1 70%', };
 const itemMedium = { 'flex': '1 1 40%', };
 const itemSmall = { 'flex': '1 1 20%', };
-const itemXSmall = { 'flex': '1 1 10%', };
+const itemXSmall = { 'flex': '0.1 1 10%', };
 
 FLEX_ITEM.items = {
 
