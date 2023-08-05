@@ -109,8 +109,8 @@ class EditorEx extends base {
 
             if (view) {
 
-                if (!conf.forwardData) { }
-                else { this.forwardData.To(view); }
+                if ('forwardData' in conf && !conf.forwardData) { }
+                else { this.forwardData.To(view);}
 
                 this._forwardContext.To(view);
                 this._forwardEditor.To(view);
