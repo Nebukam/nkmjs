@@ -14,20 +14,38 @@ const InspectionDataList = require(`./helpers/inspection-data-list`);
 const __editorMap = new col.DictionaryList();
 const __activeData = new Set();
 
+//#region Global editor tracking
+
 function __CheckEditorMap() {
 
     let stack = [];
-    __activeData.forEach(p_activeData => {
-        // Check if still edited.
-        if (__editorMap.Count(p_activeData) == 0) { stack.push(p_activeData); }
-        for (let i = 0; i < stack.length; i++) {
-            let d = stack[i];
-            __activeData.delete(d);
-            d.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, d);
-        }
-    });
+
+    for (const d of __activeData) {
+        if (!__editorMap.Count(d)) { stack.Add(d); }
+    }
+
+    for (const d of stack) {
+        __activeData.delete(d);
+        d.Broadcast(data.SIGNAL.NO_ACTIVE_EDITOR, d);
+    }
 
 }
+
+function __Register(p_editor, p_data) {
+    console.log(`__Register ${p_editor} :::: ${p_data}`);
+    __editorMap.Set(p_data, p_editor);
+    __activeData.add(p_data);
+    p_data.Broadcast(data.SIGNAL.ACTIVE_EDITOR_GAIN, p_data, p_editor);
+}
+
+function __Unregister(p_editor, p_data) {
+    console.log(`__Unregister ${p_editor} :::: ${p_data}`);
+    __editorMap.Remove(p_data, p_editor);
+    p_data.Broadcast(data.SIGNAL.ACTIVE_EDITOR_LOST, p_data, p_editor);
+    __delayedCheckEditorMap.Schedule();
+}
+
+//#endregion
 
 const __delayedCheckEditorMap = com.DelayedCall(__CheckEditorMap);
 
@@ -52,22 +70,6 @@ class Editor extends base {
     */
     static __registerableEditor = false;
     static __default_shortcutRequireFocus = true;
-
-    //#region Global editor tracking
-
-    static __Register(p_editor, p_data) {
-        __editorMap.Set(p_data, p_editor);
-        __activeData.add(p_data);
-        p_data.Broadcast(data.SIGNAL.ACTIVE_EDITOR_GAIN, p_data, p_editor);
-    }
-
-    static __Unregister(p_editor, p_data) {
-        __editorMap.Remove(p_data, p_editor);
-        p_data.Broadcast(data.SIGNAL.ACTIVE_EDITOR_LOST, p_data, p_editor);
-        __delayedCheckEditorMap.Schedule();
-    }
-
-    //#endregion
 
     _Init() {
 
@@ -175,8 +177,8 @@ class Editor extends base {
         this.inspectedData.Clear();
 
         if (this.constructor.__registerableEditor) {
-            if (p_oldData) { Editor.__Unregister(this, p_oldData); }
-            if (this._data) { Editor.__Register(this, this._data); }
+            if (p_oldData) { __Unregister(this, p_oldData); }
+            if (this._data) { __Register(this, this._data); }
         }
 
     }

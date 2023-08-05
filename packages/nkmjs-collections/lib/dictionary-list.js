@@ -55,7 +55,7 @@ class DictionaryList {
      * @param {*} p_key 
      * @returns {number} 
      */
-    Count(p_key) { return this._map.get(p_key)?.size || 0; }
+    Count(p_key) { return this._map.get(p_key)?.length || 0; }
 
     /**
      * @description Add a value to the list associated with the given key.
