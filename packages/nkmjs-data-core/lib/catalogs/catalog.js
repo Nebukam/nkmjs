@@ -243,13 +243,15 @@ class Catalog extends base {
      */
     Remove(p_item) {
 
+        let index = this._items.indexOf(p_item);
+
         if (!u.isInstanceOf(p_item, CatalogItem) ||
             !this._items.Remove(p_item)) { return; }
 
-        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, p_index);
+        this.Broadcast(com.SIGNAL.ITEM_REMOVED, this, p_item, index);
 
         if (this._rootCatalog) {
-            this._rootCatalog.Broadcast(SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item, p_index);
+            this._rootCatalog.Broadcast(SIGNAL.ROOT_ITEM_REMOVED, this._rootCatalog, p_item, index);
         }
 
         p_item.Unwatch(com.SIGNAL.RELEASED, this._OnItemReleased, this);
