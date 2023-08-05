@@ -280,9 +280,9 @@ class ValueControl extends base {
 
         if (oldValue == null) { return; }
 
-        SetPropertyCmd.SetProperty.emitter = this;
-        SetPropertyCmd.SetProperty.inputValue = null;
-        SetPropertyCmd.SetProperty.Execute();
+        SetPropertyCmd.emitter = this;
+        SetPropertyCmd.inputValue = null;
+        SetPropertyCmd.Execute();
 
     }
 
